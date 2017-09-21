@@ -1,0 +1,51 @@
+[
+  {
+    "id": "1",
+    "productKindId": "1",
+    "productKindName": "Current Account",
+    "productTypeId": "1111111",
+    "productTypeName": "Flex Account"
+  },
+  {
+    "id": "2",
+    "productKindId": "2",
+    "productKindName": "Savings Account",
+    "productTypeId": "2222222",
+    "productTypeName": "Student Savings Account"
+  },
+  {
+    "id": "3",
+    "productKindId": "3",
+    "productKindName": "Debit Card",
+    "productTypeId": "3333333",
+    "productTypeName": "Flex Visa Debit Card"
+  },
+  {
+    "id": "4",
+    "productKindId": "4",
+    "productKindName": "Credit Card",
+    "productTypeId": "4444444",
+    "productTypeName": "Platinum Credit Card"
+  },
+  {
+    "id": "5",
+    "productKindId": "5",
+    "productKindName": "Loan",
+    "productTypeId": "5555555",
+    "productTypeName": "Short Term Loan"
+  },
+  {
+    "id": "6",
+    "productKindId": "6",
+    "productKindName": "Term Deposit",
+    "productTypeId": "6666666",
+    "productTypeName": "One Year Deposit"
+  },
+  {
+    "id": "7",
+    "productKindId": "7",
+    "productKindName": "Investment Account",
+    "productTypeId": "7777777",
+    "productTypeName": "Investment Fund"
+  }
+]

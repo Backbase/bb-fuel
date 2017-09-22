@@ -49,6 +49,8 @@ public class Runner {
         productSummaryConfigurator.ingestProducts();
 
         for (String externalUserId : externalUserIds) {
+            loginRestClient.login(USER_ADMIN, USER_ADMIN);
+
             LegalEntityByUserGetResponseBody legalEntity = userPresentationRestClient.retrieveLegalEntityByExternalUserId(externalUserId)
                     .then()
                     .statusCode(SC_OK)
@@ -58,7 +60,6 @@ public class Runner {
             String externalLegalEntityId = legalEntity.getExternalId();
             String internalLegalEntityId = legalEntity.getId();
 
-            loginRestClient.login(USER_ADMIN, USER_ADMIN);
             List<String> internalArrangementIds = productSummaryConfigurator.ingestArrangementsByLegalEntityAndReturnInternalArrangementIds(externalLegalEntityId);
 
             FunctionAccessGroupsGetResponseBody[] functionGroups = accessGroupPresentationRestClient.retrieveFunctionGroupsByLegalEntity(internalLegalEntityId)

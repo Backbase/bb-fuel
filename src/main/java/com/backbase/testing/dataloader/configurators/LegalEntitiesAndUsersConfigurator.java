@@ -11,6 +11,7 @@ import java.util.List;
 
 import static com.backbase.testing.dataloader.data.CommonConstants.EXTERNAL_ROOT_LEGAL_ENTITY_ID;
 import static org.apache.http.HttpStatus.SC_CREATED;
+import static org.apache.http.HttpStatus.SC_OK;
 
 public class LegalEntitiesAndUsersConfigurator {
 
@@ -33,7 +34,7 @@ public class LegalEntitiesAndUsersConfigurator {
 
         userIntegrationRestClient.ingestEntitlementsAdminUnderLE(externalEntitlementsAdminUserId, rootLegalEntityId)
                 .then()
-                .statusCode(SC_CREATED);
+                .statusCode(SC_OK);
         LOGGER.info(String.format("Entitlements admin [%s] ingested under legal entity [%s]", externalEntitlementsAdminUserId, EXTERNAL_ROOT_LEGAL_ENTITY_ID));
     }
 

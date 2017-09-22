@@ -31,7 +31,7 @@ public class TransactionsDataGenerator {
                 .withInstructedAmount(CommonHelpers.generateRandomAmountInRange(100L, 9999L))
                 .withInstructedCurrency(TransactionsPostRequestBody.Currency.EUR)
                 .withCurrencyExchangeRate(CommonHelpers.generateRandomAmountInRange(1L, 2L))
-                .withCounterPartyName(faker.name().toString())
+                .withCounterPartyName(faker.name().fullName())
                 .withCounterPartyAccountNumber(Iban.random().toString())
                 .withCounterPartyBIC(faker.finance().bic())
                 .withCounterPartyCountry(faker.address().countryCode())

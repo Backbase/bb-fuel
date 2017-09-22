@@ -45,7 +45,7 @@ public class AccessGroupsConfigurator {
         accessGroupIntegrationRestClient.ingestFunctionGroup(entitlementsDataGenerator.generateFunctionGroupsPostRequestBody(externalLegalEntityId, functionId, privileges))
                 .then()
                 .statusCode(SC_CREATED);
-        LOGGER.info(String.format("Function group ingested (legal entity [%s]) for function %s with privileges %s", externalLegalEntityId, functionName, privileges));
+        LOGGER.info(String.format("Function group ingested (legal entity [%s]) for function [%s] with privileges %s", externalLegalEntityId, functionName, privileges));
     }
 
     public void ingestDataGroupForArrangements(String externalLegalEntityId, List<String> internalArrangementIds) {

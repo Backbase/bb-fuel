@@ -25,7 +25,6 @@ public class ProductSummaryConfigurator {
     private ProductSummaryDataGenerator productSummaryDataGenerator = new ProductSummaryDataGenerator();
     private ProductIntegrationRestClient productIntegrationRestClient = new ProductIntegrationRestClient();
     private ArrangementsIntegrationRestClient arrangementsIntegrationRestClient = new ArrangementsIntegrationRestClient();
-    private UserPresentationRestClient userPresentationRestClient = new UserPresentationRestClient();
 
     public void ingestProducts() throws IOException {
         ProductsPostRequestBody[] products = productSummaryDataGenerator.generateProductsPostRequestBodies();

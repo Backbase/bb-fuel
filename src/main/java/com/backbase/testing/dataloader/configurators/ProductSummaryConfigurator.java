@@ -6,6 +6,7 @@ import com.backbase.testing.dataloader.clients.productsummary.ArrangementsIntegr
 import com.backbase.testing.dataloader.clients.productsummary.ProductIntegrationRestClient;
 import com.backbase.testing.dataloader.clients.user.UserPresentationRestClient;
 import com.backbase.testing.dataloader.data.ProductSummaryDataGenerator;
+import com.backbase.testing.dataloader.dto.ArrangementId;
 import com.backbase.testing.dataloader.utils.CommonHelpers;
 import com.backbase.integration.product.rest.spec.v2.products.ProductsPostRequestBody;
 import org.slf4j.Logger;
@@ -37,8 +38,8 @@ public class ProductSummaryConfigurator {
         }
     }
 
-    public List<String> ingestArrangementsByLegalEntityAndReturnInternalArrangementIds(String externalLegalEntityId) {
-        List<String> internalArrangementIds = new ArrayList<>();
+    public List<ArrangementId> ingestArrangementsByLegalEntityAndReturnArrangementIds(String externalLegalEntityId) {
+        List<ArrangementId> arrangementIds = new ArrayList<>();
 
         for (int i = 0; i < CommonHelpers.generateRandomNumberInRange(10, 50); i++) {
             ArrangementsPostRequestBody arrangement = productSummaryDataGenerator.generateArrangementsPostRequestBody(externalLegalEntityId);
@@ -49,10 +50,10 @@ public class ProductSummaryConfigurator {
                     .extract()
                     .as(ArrangementsPostResponseBody.class);
 
-            internalArrangementIds.add(arrangementsPostResponseBody.getId());
+            arrangementIds.add(new ArrangementId(arrangementsPostResponseBody.getId(), arrangement.getId()));
 
             LOGGER.info(String.format("Arrangement [%s] ingested for product [%s] under legal entity [%s]", arrangement.getName(), arrangement.getProductId(), externalLegalEntityId));
         }
-        return internalArrangementIds;
+        return arrangementIds;
     }
 }

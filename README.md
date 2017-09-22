@@ -24,7 +24,7 @@ All function groups and data groups are assigned to the user via master service 
 - Random arrangements (between 10 and 50) per legal entity
 
 ## Transactions setup
-- Random transactions (between 100 and 300) per arrangement per today's date
+- Random transactions (between 10 and 50) per arrangement per today's date
 
 ## Users setup
 - Out of the box only the following users are covered: `user`, `designer`, `manager`

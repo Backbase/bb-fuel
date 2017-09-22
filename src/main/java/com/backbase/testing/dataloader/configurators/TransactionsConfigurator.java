@@ -17,7 +17,7 @@ public class TransactionsConfigurator {
     private TransactionsIntegrationRestClient transactionsIntegrationRestClient = new TransactionsIntegrationRestClient();
 
     public void ingestTransactionsByArrangement(String externalArrangementId) {
-        for (int i = 0; i < CommonHelpers.generateRandomNumberInRange(100, 300); i++) {
+        for (int i = 0; i < CommonHelpers.generateRandomNumberInRange(10, 50); i++) {
             TransactionsPostRequestBody transaction = transactionsDataGenerator.generateTransactionsPostRequestBody(externalArrangementId);
             transactionsIntegrationRestClient.ingestTransaction(transaction)
                     .then()

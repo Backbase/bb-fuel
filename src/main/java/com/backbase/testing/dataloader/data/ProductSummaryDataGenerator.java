@@ -42,7 +42,7 @@ public class ProductSummaryDataGenerator {
     public ArrangementsPostRequestBody generateArrangementsPostRequestBody(String externalLegalEntityId) {
         return new ArrangementsPostRequestBody().withId(UUID.randomUUID().toString())
                 .withLegalEntityId(externalLegalEntityId)
-                .withProductId(String.format("%s", CommonHelpers.generateRandomNumberInRange(1, 4)))
+                .withProductId(String.format("%s", CommonHelpers.generateRandomNumberInRange(1, 7)))
                 .withName(faker.lorem().sentence(3).replace(".", ""))
                 .withAlias(faker.lorem().characters(10))
                 .withBookedBalance(CommonHelpers.generateRandomAmountInRange(1000L, 99999L))

@@ -45,9 +45,9 @@ public class ProductSummaryDataGenerator {
                 .withProductId(String.format("%s", CommonHelpers.generateRandomNumberInRange(1, 7)))
                 .withName(faker.lorem().sentence(3, 0).replace(".", ""))
                 .withAlias(faker.lorem().characters(10))
-                .withBookedBalance(CommonHelpers.generateRandomAmountInRange(1000L, 99999L))
-                .withAvailableBalance(CommonHelpers.generateRandomAmountInRange(1000L, 99999L))
-                .withCreditLimit(CommonHelpers.generateRandomAmountInRange(1000L, 99999L))
+                .withBookedBalance(CommonHelpers.generateRandomAmountInRange(10000L, 9999999L))
+                .withAvailableBalance(CommonHelpers.generateRandomAmountInRange(10000L, 9999999L))
+                .withCreditLimit(CommonHelpers.generateRandomAmountInRange(10000L, 999999L))
                 .withIBAN(generateRandomIban())
                 .withBBAN(faker.lorem().characters(20).toUpperCase())
                 .withCurrency(ArrangementsPostRequestBodyParent.Currency.EUR)
@@ -55,8 +55,8 @@ public class ProductSummaryDataGenerator {
                 .withUrgentTransferAllowed(true)
                 .withAccruedInterest(BigDecimal.valueOf(random.nextInt(10)))
                 .withNumber((String.format("%s", random.nextInt(9999))))
-                .withPrincipalAmount(CommonHelpers.generateRandomAmountInRange(1000L, 99999L))
-                .withCurrentInvestmentValue(CommonHelpers.generateRandomAmountInRange(1000L, 99999L))
+                .withPrincipalAmount(CommonHelpers.generateRandomAmountInRange(10000L, 999999L))
+                .withCurrentInvestmentValue(CommonHelpers.generateRandomAmountInRange(10000L, 999999L))
                 .withDebitAccount(true)
                 .withCreditAccount(true);
     }

@@ -1,0 +1,31 @@
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+           http://maven.apache.org/xsd/settings-1.0.0.xsd">
+    <servers>
+        <server>
+            <id>Backbase Artifact Builds Repository</id>
+            <username>${internal.repo.username}</username>
+            <password>${internal.repo.password}</password>
+        </server>
+        <server>
+            <id>Backbase Artifactory Repository</id>
+            <username>${internal.repo.username}</username>
+            <password>${internal.repo.password}</password>
+        </server>
+        <server>
+            <id>Backbase Artifact Snapshot Repository</id>
+            <username>${internal.repo.username}</username>
+            <password>${internal.repo.password}</password>
+        </server>
+    </servers>
+    <mirrors>
+        <mirror>
+            <id>Backbase Artifactory Repository</id>
+            <url>https://artifacts.backbase.com/repo</url>
+            <mirrorOf>*,!maven-s3-snapshots-repo</mirrorOf>
+        </mirror>
+    </mirrors>
+
+</settings>
+

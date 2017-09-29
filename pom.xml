@@ -136,23 +136,4 @@
         </plugins>
     </build>
 
-    <repositories>
-        <repository>
-            <id>Backbase Artifactory Repository</id>
-            <url>https://artifacts.backbase.com/repo</url>
-            <releases>
-                <updatePolicy>always</updatePolicy>
-            </releases>
-        </repository>
-    </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>Backbase Artifactory Repository</id>
-            <url>https://artifacts.backbase.com/repo</url>
-            <releases>
-                <updatePolicy>always</updatePolicy>
-            </releases>
-        </pluginRepository>
-    </pluginRepositories>
-
 </project>

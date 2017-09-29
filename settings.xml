@@ -15,5 +15,32 @@
         </server>
     </servers>
 
+    <profiles>
+        <profile>
+            <id>default</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <repositories>
+                <repository>
+                    <id>Backbase Artifactory Repository</id>
+                    <url>https://artifacts.backbase.com/repo</url>
+                    <releases>
+                        <updatePolicy>always</updatePolicy>
+                    </releases>
+                </repository>
+            </repositories>
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>Backbase Artifactory Repository</id>
+                    <url>https://artifacts.backbase.com/repo</url>
+                    <releases>
+                        <updatePolicy>always</updatePolicy>
+                    </releases>
+                </pluginRepository>
+            </pluginRepositories>
+        </profile>
+    </profiles>
+
 </settings>
 

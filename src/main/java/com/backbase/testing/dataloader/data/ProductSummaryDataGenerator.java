@@ -40,9 +40,16 @@ public class ProductSummaryDataGenerator {
     }
 
     public ArrangementsPostRequestBody generateArrangementsPostRequestBody(String externalLegalEntityId) {
+        int productId = CommonHelpers.generateRandomNumberInRange(1, 7);
+        boolean debitCreditAccountIndicator = false;
+
+        if (productId == 1 || productId == 2) {
+            debitCreditAccountIndicator = true;
+        }
+
         return new ArrangementsPostRequestBody().withId(UUID.randomUUID().toString())
                 .withLegalEntityId(externalLegalEntityId)
-                .withProductId(String.format("%s", CommonHelpers.generateRandomNumberInRange(1, 7)))
+                .withProductId(String.format("%s", productId))
                 .withName(faker.lorem().sentence(3, 0).replace(".", ""))
                 .withAlias(faker.lorem().characters(10))
                 .withBookedBalance(CommonHelpers.generateRandomAmountInRange(10000L, 9999999L))
@@ -57,7 +64,7 @@ public class ProductSummaryDataGenerator {
                 .withNumber((String.format("%s", random.nextInt(9999))))
                 .withPrincipalAmount(CommonHelpers.generateRandomAmountInRange(10000L, 999999L))
                 .withCurrentInvestmentValue(CommonHelpers.generateRandomAmountInRange(10000L, 999999L))
-                .withDebitAccount(true)
-                .withCreditAccount(true);
+                .withDebitAccount(debitCreditAccountIndicator)
+                .withCreditAccount(debitCreditAccountIndicator);
     }
 }

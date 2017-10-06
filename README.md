@@ -22,6 +22,7 @@ All function groups and data groups are assigned to the user via master service 
 ## Product summary setup
 - 7 products: current account, savings account, debit card, credit card, loan, term deposit and investment account.
 - Random arrangements (between 10 and 50) per legal entity
+- In case of current account arrangements random debit cards (between 3 and 10) are associated
 
 ## Transactions setup
 - Random transactions (between 10 and 50) per arrangement per today's date

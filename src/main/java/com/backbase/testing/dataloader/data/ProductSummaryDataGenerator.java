@@ -1,5 +1,6 @@
 package com.backbase.testing.dataloader.data;
 
+import com.backbase.integration.arrangement.rest.spec.v2.arrangements.DebitCard;
 import com.backbase.testing.dataloader.utils.CommonHelpers;
 import com.backbase.testing.dataloader.utils.ParserUtil;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBody;
@@ -42,9 +43,19 @@ public class ProductSummaryDataGenerator {
     public ArrangementsPostRequestBody generateArrangementsPostRequestBody(String externalLegalEntityId) {
         int productId = CommonHelpers.generateRandomNumberInRange(1, 7);
         boolean debitCreditAccountIndicator = false;
+        final HashSet<DebitCard> debitCards = new HashSet<>();
 
         if (productId == 1 || productId == 2) {
             debitCreditAccountIndicator = true;
+        }
+
+        if (productId == 1) {
+            for (int i = 0; i < CommonHelpers.generateRandomNumberInRange(3, 10); i++) {
+                debitCards.add(new DebitCard().withNumber(faker.business()
+                        .creditCardNumber())
+                        .withExpiryDate(faker.business()
+                                .creditCardExpiry()));
+            }
         }
 
         return new ArrangementsPostRequestBody().withId(UUID.randomUUID().toString())
@@ -65,6 +76,7 @@ public class ProductSummaryDataGenerator {
                 .withPrincipalAmount(CommonHelpers.generateRandomAmountInRange(10000L, 999999L))
                 .withCurrentInvestmentValue(CommonHelpers.generateRandomAmountInRange(10000L, 999999L))
                 .withDebitAccount(debitCreditAccountIndicator)
-                .withCreditAccount(debitCreditAccountIndicator);
+                .withCreditAccount(debitCreditAccountIndicator)
+                .withDebitCards(debitCards);
     }
 }

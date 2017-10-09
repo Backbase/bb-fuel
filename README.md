@@ -65,13 +65,13 @@ capabilities="Entitlements,ProductSummary,Transactions"
 ```
 2. Run the data loader as follows:
 ```
-java -Denvironment-name=your-env-00 -jar dataloader-jar-with-dependencies.jar
+java -Denvironment.name=your-env-00 -jar dataloader-jar-with-dependencies.jar
 ```
 Note: It only works on a *clean* environment, in other words: an environment without any data ingested before.
 
 ### Run with custom user list
 ```
-java -Denvironment-name=your-env-00 -cp /path/to/custom/resources/folder/:dataloader-jar-with-dependencies.jar com.backbase.testing.dataloader.Runner
+java -Denvironment.name=your-env-00 -cp /path/to/custom/resources/folder/:dataloader-jar-with-dependencies.jar com.backbase.testing.dataloader.Runner
 ```
 `/path/to/custom/resources/folder/` must contain `data/users.json`
 

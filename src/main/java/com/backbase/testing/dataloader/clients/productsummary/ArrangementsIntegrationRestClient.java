@@ -1,5 +1,6 @@
 package com.backbase.testing.dataloader.clients.productsummary;
 
+import com.backbase.integration.product.rest.spec.v2.products.ProductsPostRequestBody;
 import com.backbase.testing.dataloader.clients.common.RestClient;
 import com.backbase.testing.dataloader.utils.GlobalProperties;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBody;
@@ -19,6 +20,13 @@ public class ArrangementsIntegrationRestClient extends RestClient {
     }
 
     public Response ingestArrangement(ArrangementsPostRequestBody body) {
+        return requestSpec()
+                .contentType(ContentType.JSON)
+                .body(body)
+                .post(ENDPOINT_ARRANGEMENTS_INTEGRATION_SERVICE);
+    }
+
+    public Response ingestProduct(ProductsPostRequestBody body) {
         return requestSpec()
                 .contentType(ContentType.JSON)
                 .body(body)

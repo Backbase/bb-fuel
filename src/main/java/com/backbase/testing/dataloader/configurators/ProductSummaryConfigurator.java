@@ -2,13 +2,11 @@ package com.backbase.testing.dataloader.configurators;
 
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBody;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostResponseBody;
+import com.backbase.integration.product.rest.spec.v2.products.ProductsPostRequestBody;
 import com.backbase.testing.dataloader.clients.productsummary.ArrangementsIntegrationRestClient;
-import com.backbase.testing.dataloader.clients.productsummary.ProductIntegrationRestClient;
-import com.backbase.testing.dataloader.clients.user.UserPresentationRestClient;
 import com.backbase.testing.dataloader.data.ProductSummaryDataGenerator;
 import com.backbase.testing.dataloader.dto.ArrangementId;
 import com.backbase.testing.dataloader.utils.CommonHelpers;
-import com.backbase.integration.product.rest.spec.v2.products.ProductsPostRequestBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,14 +21,13 @@ public class ProductSummaryConfigurator {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductSummaryConfigurator.class);
 
     private ProductSummaryDataGenerator productSummaryDataGenerator = new ProductSummaryDataGenerator();
-    private ProductIntegrationRestClient productIntegrationRestClient = new ProductIntegrationRestClient();
     private ArrangementsIntegrationRestClient arrangementsIntegrationRestClient = new ArrangementsIntegrationRestClient();
 
     public void ingestProducts() throws IOException {
         ProductsPostRequestBody[] products = productSummaryDataGenerator.generateProductsPostRequestBodies();
 
         for (ProductsPostRequestBody product : products) {
-            productIntegrationRestClient.ingestProduct(product)
+            arrangementsIntegrationRestClient.ingestProduct(product)
                     .then()
                     .statusCode(SC_CREATED);
             LOGGER.info(String.format("Product [%s] ingested", product.getProductKindName()));

@@ -51,8 +51,7 @@ public class ProductSummaryDataGenerator {
 
         if (productId == 1) {
             for (int i = 0; i < CommonHelpers.generateRandomNumberInRange(3, 10); i++) {
-                debitCards.add(new DebitCard().withNumber(faker.business()
-                        .creditCardNumber())
+                debitCards.add(new DebitCard().withNumber(String.format("%s", CommonHelpers.generateRandomNumberInRange(1111, 9999)))
                         .withExpiryDate(faker.business()
                                 .creditCardExpiry()));
             }
@@ -72,7 +71,7 @@ public class ProductSummaryDataGenerator {
                 .withExternalTransferAllowed(true)
                 .withUrgentTransferAllowed(true)
                 .withAccruedInterest(BigDecimal.valueOf(random.nextInt(10)))
-                .withNumber((String.format("%s", random.nextInt(9999))))
+                .withNumber(String.format("%s", random.nextInt(9999)))
                 .withPrincipalAmount(CommonHelpers.generateRandomAmountInRange(10000L, 999999L))
                 .withCurrentInvestmentValue(CommonHelpers.generateRandomAmountInRange(10000L, 999999L))
                 .withDebitAccount(debitCreditAccountIndicator)

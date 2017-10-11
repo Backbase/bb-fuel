@@ -13,7 +13,9 @@ public class ArrangementsIntegrationRestClient extends RestClient {
 
     private static GlobalProperties globalProperties = GlobalProperties.getInstance();
     private static final String SERVICE_VERSION = "v2";
-    private static final String ENDPOINT_ARRANGEMENTS_INTEGRATION_SERVICE = "/arrangements-integration-service/" + SERVICE_VERSION + "/arrangements";
+    private static final String ENDPOINT_ARRANGEMENTS_INTEGRATION_SERVICE = "/arrangements-integration-service/" + SERVICE_VERSION;
+    private static final String ENDPOINT_ARRANGEMENTS = ENDPOINT_ARRANGEMENTS_INTEGRATION_SERVICE + "/arrangements";
+    private static final String ENDPOINT_PRODUCTS = ENDPOINT_ARRANGEMENTS_INTEGRATION_SERVICE + "/products";
 
     public ArrangementsIntegrationRestClient() {
         super(globalProperties.get(PROPERTY_PRODUCTSUMMARY_BASE_URI));
@@ -23,13 +25,13 @@ public class ArrangementsIntegrationRestClient extends RestClient {
         return requestSpec()
                 .contentType(ContentType.JSON)
                 .body(body)
-                .post(ENDPOINT_ARRANGEMENTS_INTEGRATION_SERVICE);
+                .post(ENDPOINT_ARRANGEMENTS);
     }
 
     public Response ingestProduct(ProductsPostRequestBody body) {
         return requestSpec()
                 .contentType(ContentType.JSON)
                 .body(body)
-                .post(ENDPOINT_ARRANGEMENTS_INTEGRATION_SERVICE);
+                .post(ENDPOINT_PRODUCTS);
     }
 }

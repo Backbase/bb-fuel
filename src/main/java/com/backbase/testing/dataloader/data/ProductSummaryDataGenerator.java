@@ -41,6 +41,7 @@ public class ProductSummaryDataGenerator {
     }
 
     public ArrangementsPostRequestBody generateArrangementsPostRequestBody(String externalLegalEntityId) {
+        ArrangementsPostRequestBodyParent.AccountHolderCountry[] accountHolderCountries = ArrangementsPostRequestBodyParent.AccountHolderCountry.values();
         int productId = CommonHelpers.generateRandomNumberInRange(1, 7);
         boolean debitCreditAccountIndicator = false;
         final HashSet<DebitCard> debitCards = new HashSet<>();
@@ -76,6 +77,12 @@ public class ProductSummaryDataGenerator {
                 .withCurrentInvestmentValue(CommonHelpers.generateRandomAmountInRange(10000L, 999999L))
                 .withDebitAccount(debitCreditAccountIndicator)
                 .withCreditAccount(debitCreditAccountIndicator)
-                .withDebitCards(debitCards);
+                .withDebitCards(debitCards)
+                .withAccountHolderName(faker.name().fullName())
+                .withAccountHolderAddressLine1(faker.address().streetAddress())
+                .withAccountHolderAddressLine2(faker.address().secondaryAddress())
+                .withAccountHolderAddressLine3(faker.address().cityName())
+                .withAccountHolderAddressLine4(faker.address().zipCode())
+                .withAccountHolderCountry(accountHolderCountries[CommonHelpers.generateRandomNumberInRange(0, accountHolderCountries.length - 1)]);
     }
 }

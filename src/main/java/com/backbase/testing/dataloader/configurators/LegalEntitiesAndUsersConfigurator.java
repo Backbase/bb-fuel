@@ -1,6 +1,5 @@
 package com.backbase.testing.dataloader.configurators;
 
-
 import com.backbase.testing.dataloader.clients.legalentity.LegalEntityIntegrationRestClient;
 import com.backbase.testing.dataloader.clients.user.UserIntegrationRestClient;
 import com.backbase.testing.dataloader.data.EntitlementsDataGenerator;
@@ -22,7 +21,7 @@ public class LegalEntitiesAndUsersConfigurator {
     private UserIntegrationRestClient userIntegrationRestClient = new UserIntegrationRestClient();
 
     public void ingestRootLegalEntityAndEntitlementsAdmin(String rootLegalEntityId, String externalEntitlementsAdminUserId) {
-        legalEntityIntegrationRestClient.ingestLegalEntity(entitlementsDataGenerator.generateLegalEntitiesPostRequestBody(EXTERNAL_ROOT_LEGAL_ENTITY_ID, null))
+        legalEntityIntegrationRestClient.ingestLegalEntity(entitlementsDataGenerator.generateRootLegalEntitiesPostRequestBody(EXTERNAL_ROOT_LEGAL_ENTITY_ID))
                 .then()
                 .statusCode(SC_CREATED);
         LOGGER.info(String.format("Root legal entity [%s] ingested", EXTERNAL_ROOT_LEGAL_ENTITY_ID));

@@ -13,11 +13,9 @@ import com.backbase.testing.dataloader.data.ServiceAgreementsDataGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import static org.apache.http.HttpStatus.SC_OK;
@@ -49,15 +47,7 @@ public class ServiceAgreementsConfigurator {
                 .extract()
                 .as(FunctionAccessGroupsGetResponseBody[].class);
 
-        DataAccessGroupsGetResponseBody[] dataGroups = accessGroupPresentationRestClient.retrieveDataGroupsByLegalEntityAndType(internalLegalEntityId, "arrangements")
-                .then()
-                .statusCode(SC_OK)
-                .extract()
-                .as(DataAccessGroupsGetResponseBody[].class);
-
-        Set<String> dataGroupIds = new HashSet<>();
-        Arrays.stream(dataGroups)
-                .forEach(dg -> dataGroupIds.add(dg.getDataAccessGroupId()));
+        Set<String> dataGroupIds = new HashSet<>(accessGroupPresentationRestClient.retrieveAllDataGroupIdsByLegalEntity(internalLegalEntityId));
 
         for (FunctionAccessGroupsGetResponseBody functionGroup : functionGroups) {
             functionDataGroupPairs.add(new FunctionDataGroupPair()

@@ -1,6 +1,7 @@
 package com.backbase.testing.dataloader.configurators;
 
 
+import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.users.permissions.AssignPermissionsPostRequestBody;
 import com.backbase.testing.dataloader.clients.accessgroup.AccessGroupIntegrationRestClient;
 import com.backbase.testing.dataloader.clients.accessgroup.AccessGroupPresentationRestClient;
 import com.backbase.testing.dataloader.clients.legalentity.LegalEntityPresentationRestClient;
@@ -25,7 +26,7 @@ public class PermissionsConfigurator {
     private AccessGroupPresentationRestClient accessGroupPresentationRestClient = new AccessGroupPresentationRestClient();
     private LegalEntityPresentationRestClient legalEntityPresentationRestClient = new LegalEntityPresentationRestClient();
 
-    public void assignAllFunctionDataGroupsToMasterServiceAgreementAndUser(String externalLegalEntityId, String externalUserId) {
+    public void assignAllFunctionDataGroupsOfLegalEntityToUserAndServiceAgreement(String externalLegalEntityId, String externalUserId, String internalServiceAgreementId) {
         String internalLegalEntityId = legalEntityPresentationRestClient.retrieveLegalEntityByExternalId(externalLegalEntityId)
                 .then()
                 .statusCode(SC_OK)
@@ -42,34 +43,16 @@ public class PermissionsConfigurator {
         List<String> dataGroupIds = accessGroupPresentationRestClient.retrieveAllDataGroupIdsByLegalEntity(internalLegalEntityId);
 
         for (FunctionAccessGroupsGetResponseBody functionGroup : functionGroups) {
-            accessGroupIntegrationRestClient.assignPermissions(externalLegalEntityId, externalUserId, null, functionGroup.getFunctionAccessGroupId(), dataGroupIds)
+            accessGroupIntegrationRestClient.assignPermissions(new AssignPermissionsPostRequestBody()
+                    .withExternalLegalEntityId(externalLegalEntityId)
+                    .withExternalUserId(externalUserId)
+                    .withServiceAgreementId(internalServiceAgreementId)
+                    .withFunctionGroupId(functionGroup.getFunctionAccessGroupId())
+                    .withDataGroupIds(dataGroupIds))
                     .then()
                     .statusCode(SC_OK);
-            LOGGER.info(String.format("Permission assigned for legal entity [%s], user [%s], master service agreement, function group [%s], data groups %s", externalLegalEntityId, externalUserId, functionGroup.getFunctionAccessGroupId(), dataGroupIds));
-        }
-    }
 
-    public void assignAllFunctionDataGroupsToServiceAgreementAndUser(String externalLegalEntityId, String externalUserId, String internalServiceAgreementId) {
-        String internalLegalEntityId = legalEntityPresentationRestClient.retrieveLegalEntityByExternalId(externalLegalEntityId)
-                .then()
-                .statusCode(SC_OK)
-                .extract()
-                .as(LegalEntityByExternalIdGetResponseBody.class)
-                .getId();
-
-        FunctionAccessGroupsGetResponseBody[] functionGroups = accessGroupPresentationRestClient.retrieveFunctionGroupsByLegalEntity(internalLegalEntityId)
-                .then()
-                .statusCode(SC_OK)
-                .extract()
-                .as(FunctionAccessGroupsGetResponseBody[].class);
-
-        List<String> dataGroupIds = accessGroupPresentationRestClient.retrieveAllDataGroupIdsByLegalEntity(internalLegalEntityId);
-
-        for (FunctionAccessGroupsGetResponseBody functionGroup : functionGroups) {
-            accessGroupIntegrationRestClient.assignPermissions(externalLegalEntityId, externalUserId, internalServiceAgreementId, functionGroup.getFunctionAccessGroupId(), dataGroupIds)
-                    .then()
-                    .statusCode(SC_OK);
-            LOGGER.info(String.format("Permission assigned for legal entity [%s], user [%s], service agreement [%s], function group [%s], data groups %s", externalLegalEntityId, externalUserId, internalServiceAgreementId, functionGroup.getFunctionAccessGroupId(), dataGroupIds));
+            LOGGER.info(String.format("Permission assigned for legal entity [%s], user [%s], service agreement [%s], function group [%s], data groups %s", externalLegalEntityId, externalUserId, internalServiceAgreementId == null ? "master" : internalServiceAgreementId, functionGroup.getFunctionAccessGroupId(), dataGroupIds));
         }
     }
 }

@@ -80,7 +80,7 @@ public class Runner {
             }
 
             accessGroupsConfigurator.ingestDataGroupForArrangements(externalLegalEntityId, internalArrangementIds);
-            permissionsConfigurator.assignAllFunctionDataGroupsToMasterServiceAgreementAndUser(externalLegalEntityId, externalUserId);
+            permissionsConfigurator.assignAllFunctionDataGroupsOfLegalEntityToUserAndServiceAgreement(externalLegalEntityId, externalUserId, null);
 
             for (ArrangementId arrangementId : arrangementIds) {
                 transactionsConfigurator.ingestTransactionsByArrangement(arrangementId.getExternalArrangementId());

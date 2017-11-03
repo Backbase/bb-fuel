@@ -3,7 +3,6 @@ package com.backbase.testing.dataloader.configurators;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.Consumer;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.FunctionDataGroupPair;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.Provider;
-import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.data.DataAccessGroupsGetResponseBody;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.function.FunctionAccessGroupsGetResponseBody;
 import com.backbase.presentation.legalentity.rest.spec.v2.legalentities.LegalEntityByExternalIdGetResponseBody;
 import com.backbase.testing.dataloader.clients.accessgroup.AccessGroupPresentationRestClient;
@@ -13,9 +12,7 @@ import com.backbase.testing.dataloader.data.ServiceAgreementsDataGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import static org.apache.http.HttpStatus.SC_OK;

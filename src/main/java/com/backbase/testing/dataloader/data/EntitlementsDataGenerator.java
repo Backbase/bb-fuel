@@ -4,6 +4,9 @@ import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.data.DataG
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.FunctionGroupsPostRequestBody;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.Permission;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.Privilege;
+import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.Consumer;
+import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.Provider;
+import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementPostRequestBody;
 import com.backbase.integration.legalentity.rest.spec.v2.legalentities.LegalEntitiesPostRequestBody;
 import com.backbase.integration.legalentity.rest.spec.v2.legalentities.enumeration.LegalEntityType;
 import com.backbase.integration.user.rest.spec.v2.users.UsersPostRequestBody;
@@ -13,6 +16,7 @@ import org.apache.commons.lang.RandomStringUtils;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.backbase.testing.dataloader.data.CommonConstants.EXTERNAL_LEGAL_ENTITY_ID_PREFIX;
@@ -44,20 +48,23 @@ public class EntitlementsDataGenerator {
     }
 
     public UsersPostRequestBody generateUsersPostRequestBody(String externalUserId, String externalLegalEntityId) {
-        return new UsersPostRequestBody().withExternalId(externalUserId)
+        return new UsersPostRequestBody()
+                .withExternalId(externalUserId)
                 .withLegalEntityExternalId(externalLegalEntityId)
                 .withFullName(faker.name().fullName());
     }
 
     public FunctionGroupsPostRequestBody generateFunctionGroupsPostRequestBody(String externalLegalEntityId, String functionId, List<String> privileges) {
-        return new FunctionGroupsPostRequestBody().withName(faker.lorem().characters(8))
+        return new FunctionGroupsPostRequestBody()
+                .withName(faker.lorem().characters(8))
                 .withDescription(faker.lorem().characters(8))
                 .withExternalLegalEntityId(externalLegalEntityId)
                 .withPermissions(setPermissions(functionId, privileges));
     }
 
     public DataGroupsPostRequestBody generateDataGroupsPostRequestBody(String externalLegalEntityId, DataGroupsPostRequestBody.Type type, List<String> items) {
-        return new DataGroupsPostRequestBody().withName(faker.lorem().characters(8))
+        return new DataGroupsPostRequestBody()
+                .withName(faker.lorem().characters(8))
                 .withDescription(faker.lorem().characters(8))
                 .withExternalLegalEntityId(externalLegalEntityId)
                 .withType(type)
@@ -75,5 +82,14 @@ public class EntitlementsDataGenerator {
                         .stream()
                         .map(privilege -> new Privilege().withPrivilege(privilege))
                         .collect(Collectors.toList()));
+    }
+
+    public ServiceAgreementPostRequestBody generateServiceAgreementPostRequestBody(String externalSaId, Set<Provider> providers, Set<Consumer> consumers) {
+        return new ServiceAgreementPostRequestBody()
+                .withName(faker.lorem().characters(8))
+                .withDescription(faker.lorem().characters(8))
+                .withExternalId(externalSaId)
+                .withProviders(providers)
+                .withConsumers(consumers);
     }
 }

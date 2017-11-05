@@ -51,12 +51,12 @@ public class ServiceAgreementsConfigurator {
                 functionDataGroupPairs.add(new FunctionDataGroupPair()
                         .withFunctionGroup(functionGroup.getFunctionAccessGroupId())
                         .withDataGroup(dataGroupIds));
-
-                consumers.add(new Consumer()
-                        .withId(externalConsumerLegalEntityId)
-                        .withAdmins(externalConsumerAdminUserIds)
-                        .withFunctionDataGroupPairs(functionDataGroupPairs));
             }
+
+            consumers.add(new Consumer()
+                    .withId(externalConsumerLegalEntityId)
+                    .withAdmins(externalConsumerAdminUserIds)
+                    .withFunctionDataGroupPairs(functionDataGroupPairs));
         }
 
         for (String externalProviderLegalEntityId : externalProviderLegalEntityIds) {

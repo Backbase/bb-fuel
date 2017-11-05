@@ -26,43 +26,47 @@ public class ServiceAgreementsConfigurator {
     private AccessGroupPresentationRestClient accessGroupPresentationRestClient = new AccessGroupPresentationRestClient();
     private LegalEntityPresentationRestClient legalEntityPresentationRestClient = new LegalEntityPresentationRestClient();
 
-    public void ingestServiceAgreementWithOneProviderOneConsumerAndUsersWithAllPrivileges(String externalProviderLegalEntityId, Set<String> externalProviderUserIds, String externalConsumerLegalEntityId, Set<String> externalConsumerUserIds) {
+    public void ingestServiceAgreementWithProvidersAndConsumersWithAllFunctionDataGroups(Set<String> externalProviderLegalEntityIds, Set<String> externalProviderUserIds, Set<String> externalConsumerLegalEntityIds, Set<String> externalConsumerAdminUserIds) {
         Set<Provider> providers = new HashSet<>();
         Set<Consumer> consumers = new HashSet<>();
         Set<FunctionDataGroupPair> functionDataGroupPairs = new HashSet<>();
 
-        String internalLegalEntityId = legalEntityPresentationRestClient.retrieveLegalEntityByExternalId(externalConsumerLegalEntityId)
-                .then()
-                .statusCode(SC_OK)
-                .extract()
-                .as(LegalEntityByExternalIdGetResponseBody.class)
-                .getId();
+        for (String externalConsumerLegalEntityId : externalConsumerLegalEntityIds) {
+            String internalLegalEntityId = legalEntityPresentationRestClient.retrieveLegalEntityByExternalId(externalConsumerLegalEntityId)
+                    .then()
+                    .statusCode(SC_OK)
+                    .extract()
+                    .as(LegalEntityByExternalIdGetResponseBody.class)
+                    .getId();
 
-        FunctionAccessGroupsGetResponseBody[] functionGroups = accessGroupPresentationRestClient.retrieveFunctionGroupsByLegalEntity(internalLegalEntityId)
-                .then()
-                .statusCode(SC_OK)
-                .extract()
-                .as(FunctionAccessGroupsGetResponseBody[].class);
+            FunctionAccessGroupsGetResponseBody[] functionGroups = accessGroupPresentationRestClient.retrieveFunctionGroupsByLegalEntity(internalLegalEntityId)
+                    .then()
+                    .statusCode(SC_OK)
+                    .extract()
+                    .as(FunctionAccessGroupsGetResponseBody[].class);
 
-        Set<String> dataGroupIds = new HashSet<>(accessGroupPresentationRestClient.retrieveAllDataGroupIdsByLegalEntity(internalLegalEntityId));
+            Set<String> dataGroupIds = new HashSet<>(accessGroupPresentationRestClient.retrieveAllDataGroupIdsByLegalEntity(internalLegalEntityId));
 
-        for (FunctionAccessGroupsGetResponseBody functionGroup : functionGroups) {
-            functionDataGroupPairs.add(new FunctionDataGroupPair()
-                    .withFunctionGroup(functionGroup.getFunctionAccessGroupId())
-                    .withDataGroup(dataGroupIds));
+            for (FunctionAccessGroupsGetResponseBody functionGroup : functionGroups) {
+                functionDataGroupPairs.add(new FunctionDataGroupPair()
+                        .withFunctionGroup(functionGroup.getFunctionAccessGroupId())
+                        .withDataGroup(dataGroupIds));
 
+                consumers.add(new Consumer()
+                        .withId(externalConsumerLegalEntityId)
+                        .withAdmins(externalConsumerAdminUserIds)
+                        .withFunctionDataGroupPairs(functionDataGroupPairs));
+            }
+        }
+
+        for (String externalProviderLegalEntityId : externalProviderLegalEntityIds) {
             providers.add(new Provider()
                     .withId(externalProviderLegalEntityId)
                     .withAdmins(externalProviderUserIds)
                     .withUsers(externalProviderUserIds));
-
-            consumers.add(new Consumer()
-                    .withId(externalConsumerLegalEntityId)
-                    .withAdmins(externalConsumerUserIds)
-                    .withFunctionDataGroupPairs(functionDataGroupPairs));
-
-            serviceAgreementsIntegrationRestClient.ingestServiceAgreement(serviceAgreementsDataGenerator.generateServiceAgreementPostRequestBody(providers, consumers));
-            LOGGER.info(String.format("Service agreement ingested for provider legal entity [%s], provider users %s, consumer legal entity [%s], consumer users %s, master service agreement, function group [%s], data groups %s", externalProviderLegalEntityId, externalProviderUserIds, externalConsumerLegalEntityId, externalConsumerUserIds, functionGroup.getFunctionAccessGroupId(), dataGroupIds));
         }
+
+        serviceAgreementsIntegrationRestClient.ingestServiceAgreement(serviceAgreementsDataGenerator.generateServiceAgreementPostRequestBody(providers, consumers));
+        LOGGER.info(String.format("Service agreement ingested for provider legal entities %s, provider admins/users %s, consumer legal entities [%s], consumer admins %s with all function groups and data groups exposed", externalProviderLegalEntityIds, externalProviderUserIds, externalConsumerLegalEntityIds, externalConsumerAdminUserIds));
     }
 }

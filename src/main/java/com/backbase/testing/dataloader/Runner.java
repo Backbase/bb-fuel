@@ -25,7 +25,7 @@ public class Runner {
         UsersSetup usersSetup = new UsersSetup();
         ServiceAgreementsConfigurator serviceAgreementsConfigurator = new ServiceAgreementsConfigurator();
         List<HashMap<String, List<String>>> userLists = ParserUtil.convertJsonToObject(globalProperties.get(PROPERTY_USERS_JSON_LOCATION), new TypeReference<List<HashMap<String, List<String>>>>() {});
-        ServiceAgreementPostRequestBody[] serviceAgreementPostRequestBodies = ParserUtil.convertJsonToObject(PROPERTY_SERVICEAGREEMENTS_JSON_LOCATION, ServiceAgreementPostRequestBody[].class);
+        ServiceAgreementPostRequestBody[] serviceAgreementPostRequestBodies = ParserUtil.convertJsonToObject(globalProperties.get(PROPERTY_SERVICEAGREEMENTS_JSON_LOCATION), ServiceAgreementPostRequestBody[].class);
 
         bankSetup.setupBankWithEntitlementsAdminAndProducts();
 

@@ -32,9 +32,9 @@ public class UsersSetup {
 
     public void setupUsersWithAllFunctionDataGroupsAndPrivilegesUnderNewLegalEntity(List<String> externalUserIds) {
         legalEntitiesAndUsersConfigurator.ingestUsersUnderNewLegalEntity(externalUserIds, EXTERNAL_ROOT_LEGAL_ENTITY_ID);
+        loginRestClient.login(USER_ADMIN, USER_ADMIN);
 
         for (String externalUserId : externalUserIds) {
-            loginRestClient.login(USER_ADMIN, USER_ADMIN);
 
             LegalEntityByUserGetResponseBody legalEntity = userPresentationRestClient.retrieveLegalEntityByExternalUserId(externalUserId)
                     .then()

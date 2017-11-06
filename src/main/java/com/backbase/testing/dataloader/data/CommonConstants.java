@@ -12,7 +12,9 @@ public class CommonConstants {
 
     // Users
     public static final String USER_ADMIN = "admin";
-    public static final String USERS_JSON = "data/users.json";
+    public static final String USERS_JSON_EXTERNAL_USER_IDS_FIELD = "externalUserIds";
+    public static final String PROPERTY_USERS_JSON_LOCATION = "users.json.location";
+    public static final String PROPERTY_SERVICEAGREEMENTS_JSON_LOCATION = "serviceagreements.json.location";
 
     // Entitlements
     public static final String EXTERNAL_LEGAL_ENTITY_ID_PREFIX = "C00000";

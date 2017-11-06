@@ -31,6 +31,8 @@ For users in the file [users.json](src/main/resources/data/users.json):
 
 ## Service agreements setup
 By default only one custom service agreement: [serviceagreements.json](src/main/resources/data/serviceagreements.json)
+- Legal entity ids will be retrieved via the external user ids given in the json file to set up the service agreements.
+- All function groups and data groups related to the legal entities of the consumers will be exposed to the service agreements.
 
 ## Users setup
 By default only the following users are covered:

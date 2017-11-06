@@ -14,8 +14,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import static org.apache.http.HttpStatus.SC_OK;
@@ -29,14 +27,12 @@ public class ServiceAgreementsConfigurator {
     private AccessGroupPresentationRestClient accessGroupPresentationRestClient = new AccessGroupPresentationRestClient();
     private LegalEntityPresentationRestClient legalEntityPresentationRestClient = new LegalEntityPresentationRestClient();
 
-    public void ingestServiceAgreementWithProvidersAndConsumersWithAllFunctionDataGroups(Map<String, Set<String>> externalProviderUserIdsPerLegalEntityId, Map<String, Set<String>> externalConsumerAdminUserIdsPerLegalEntityId) {
-        Set<Provider> providers = new HashSet<>();
-        Set<Consumer> consumers = new HashSet<>();
+    public void ingestServiceAgreementWithProvidersAndConsumersWithAllFunctionDataGroups(Set<Provider> providers, Set<Consumer> consumersWithoutFunctionDataPairs) {
+        Set<Consumer> consumersWithFunctionDataGroupPairs = new HashSet<>();
         Set<FunctionDataGroupPair> functionDataGroupPairs = new HashSet<>();
 
-        for (Map.Entry<String, Set<String>> entry : externalConsumerAdminUserIdsPerLegalEntityId.entrySet()) {
-            String externalConsumerLegalEntityId = entry.getKey();
-            Set<String> externalConsumerAdminUserIds = entry.getValue();
+        for (Consumer consumer : consumersWithoutFunctionDataPairs) {
+            String externalConsumerLegalEntityId = consumer.getId();
 
             String internalLegalEntityId = legalEntityPresentationRestClient.retrieveLegalEntityByExternalId(externalConsumerLegalEntityId)
                     .then()
@@ -59,23 +55,13 @@ public class ServiceAgreementsConfigurator {
                         .withDataGroup(dataGroupIds));
             }
 
-            consumers.add(new Consumer()
+            consumersWithFunctionDataGroupPairs.add(new Consumer()
                     .withId(externalConsumerLegalEntityId)
-                    .withAdmins(externalConsumerAdminUserIds)
+                    .withAdmins(consumer.getAdmins())
                     .withFunctionDataGroupPairs(functionDataGroupPairs));
         }
 
-        for (Map.Entry<String, Set<String>> entry : externalProviderUserIdsPerLegalEntityId.entrySet()) {
-            String externalProviderLegalEntityId = entry.getKey();
-            Set<String> externalProviderUserIds = entry.getValue();
-
-            providers.add(new Provider()
-                    .withId(externalProviderLegalEntityId)
-                    .withAdmins(externalProviderUserIds)
-                    .withUsers(externalProviderUserIds));
-        }
-
-        serviceAgreementsIntegrationRestClient.ingestServiceAgreement(serviceAgreementsDataGenerator.generateServiceAgreementPostRequestBody(providers, consumers));
-        LOGGER.info(String.format("Service agreement ingested for provider legal entities - admins/users %s, consumer legal entities - admins with all function groups and data groups exposed %s", Arrays.toString(externalProviderUserIdsPerLegalEntityId.entrySet().toArray()), Arrays.toString(externalConsumerAdminUserIdsPerLegalEntityId.entrySet().toArray())));
+        serviceAgreementsIntegrationRestClient.ingestServiceAgreement(serviceAgreementsDataGenerator.generateServiceAgreementPostRequestBody(providers, consumersWithFunctionDataGroupPairs));
+        LOGGER.info(String.format("Service agreement ingested for provider legal entities - admins/users %s, consumer legal entities - admins with all function groups and data groups exposed %s", Arrays.toString(providers.toArray()), Arrays.toString(consumersWithFunctionDataGroupPairs.toArray())));
     }
 }

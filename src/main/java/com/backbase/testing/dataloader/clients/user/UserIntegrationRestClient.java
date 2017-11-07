@@ -17,7 +17,7 @@ public class UserIntegrationRestClient extends RestClient {
     private static final String ENDPOINT_ENTITLEMENTS_ADMIN = ENDPOINT_USER_INTEGRATION_SERVICE + "/entitlementsAdmin";
 
     public UserIntegrationRestClient() {
-        super(globalProperties.get(CommonConstants.PROPERTY_ENTITLEMENTS_BASE_URI));
+        super(globalProperties.getString(CommonConstants.PROPERTY_ENTITLEMENTS_BASE_URI));
     }
 
     public Response ingestEntitlementsAdminUnderLE(String userExternalId, String legalEntityExternalId) {

@@ -22,12 +22,12 @@ For users in the file [users.json](src/main/resources/data/users.json):
 - All function groups and data groups are assigned to the user via master service agreement of the legal entity.
 
 ## Product summary setup
-- 7 products: current account, savings account, debit card, credit card, loan, term deposit and investment account.
-- Random arrangements (between 10 and 50) per legal entity of these users: [users.json](src/main/resources/data/users.json)
-- In case of current account arrangements random debit cards (between 3 and 10) are associated
+- Default products: [products.json](src/main/resources/data/products.json)
+- Random arrangements (by default: between 10 and 30) per legal entity of these users: [users.json](src/main/resources/data/users.json)
+- In case of current account arrangements random debit cards (by default: between 3 and 10) are associated
 
 ## Transactions setup
-- Random transactions (between 10 and 50) per arrangement per today's date
+- Random transactions (by default: between 10 and 50) per arrangement per today's date
 
 ## Service agreements setup
 By default only one custom service agreement: [serviceagreements.json](src/main/resources/data/serviceagreements.json)
@@ -52,6 +52,15 @@ java -Denvironment.name=your-env-00 -jar dataloader-jar-with-dependencies.jar
 ```
 Note: It only works on a *clean* environment, in other words: an environment without any data ingested before.
 
+## Custom configuration
+
+The following properties can be set to custom values for different purposes: [environment.properties](src/main/resources/environment.properties)
+
+Example:
+```
+java -Denvironment.name=your-env-00 -Darrangements.max=20 -Ddebit.cards.min=10 -Ddebit.cards.max=30 -Dtransactions-max=50 -jar dataloader-jar-with-dependencies.jar
+```
+
 ## Custom data
 
 ### Run with custom data
@@ -61,7 +70,7 @@ java -Denvironment.name=your-env-00 -cp /path/to/custom/resources/folder/:datalo
 `/path/to/custom/resources/folder/` must contain the custom `json` files
 
 ### How to create custom data
-Example for the `users.json` (other files are: `users-without-permissions.json` and `serviceagreements.json`):
+Example for the `users.json` (other files are: `users-without-permissions.json`, `serviceagreements.json` and `products.json`):
 
 1. Create json file named `users.json` custom user list conforming existing format (in this case conforming: [users.json](src/main/resources/data/users.json))
 

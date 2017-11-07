@@ -15,7 +15,7 @@ public class TransactionsIntegrationRestClient extends RestClient {
     private static final String ENDPOINT_TRANSACTION_INTEGRATION_SERVICE = "/transaction-integration-service/" + SERVICE_VERSION + "/transactions";
 
     public TransactionsIntegrationRestClient() {
-        super(globalProperties.get(PROPERTY_TRANSACTIONS_BASE_URI));
+        super(globalProperties.getString(PROPERTY_TRANSACTIONS_BASE_URI));
     }
 
     public Response ingestTransaction(TransactionsPostRequestBody body) {

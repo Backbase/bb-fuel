@@ -2,15 +2,19 @@ package com.backbase.testing.dataloader.utils;
 
 
 import com.backbase.testing.dataloader.data.CommonConstants;
-import org.apache.commons.configuration.*;
+import org.apache.commons.configuration.CompositeConfiguration;
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.EnvironmentConfiguration;
+import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.commons.configuration.SystemConfiguration;
 
 /**
  * This is the single thread-safe source of retrieving properties.
- *  <p>
+ * <p>
  * Usage example:
  * <pre>
  * GlobalProperties globalProperties = GlobalProperties.getInstance();
- * String aUrl = globalProperties.get("url");
+ * String aUrl = globalProperties.getString("url");
  * </pre>
  * </p>
  * note: GlobalProperties is a thread-safe singleton - it maintains a single instance within execution
@@ -20,13 +24,13 @@ import org.apache.commons.configuration.*;
  *  private GlobalProperties globalProperties = GlobalProperties.getInstance();
  * </pre>
  * </p>
- * */
+ */
 public class GlobalProperties {
 
     private static GlobalProperties instance;
     private static CompositeConfiguration configuration;
 
-    private GlobalProperties(){
+    private GlobalProperties() {
         configuration = new CompositeConfiguration();
         configuration.addConfiguration(new SystemConfiguration());
         configuration.addConfiguration(new EnvironmentConfiguration());
@@ -36,10 +40,10 @@ public class GlobalProperties {
         }
     }
 
-    public static GlobalProperties getInstance(){
-        if(instance == null){
+    public static GlobalProperties getInstance() {
+        if (instance == null) {
             synchronized (GlobalProperties.class) {
-                if(instance == null){
+                if (instance == null) {
                     instance = new GlobalProperties();
                 }
             }
@@ -47,11 +51,15 @@ public class GlobalProperties {
         return instance;
     }
 
-    public String get(String key){
+    public String getString(String key) {
         return configuration.getString(key);
     }
 
-    public synchronized String syncGet(String key){
+    public int getInt(String key) {
+        return configuration.getInt(key);
+    }
+
+    public synchronized String syncGet(String key) {
         return configuration.getString(key);
     }
 }

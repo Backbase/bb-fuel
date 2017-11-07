@@ -28,9 +28,9 @@ public class Runner {
         UsersSetup usersSetup = new UsersSetup();
         LegalEntitiesAndUsersConfigurator legalEntitiesAndUsersConfigurator = new LegalEntitiesAndUsersConfigurator();
         ServiceAgreementsConfigurator serviceAgreementsConfigurator = new ServiceAgreementsConfigurator();
-        List<HashMap<String, List<String>>> userLists = ParserUtil.convertJsonToObject(globalProperties.get(PROPERTY_USERS_JSON_LOCATION), new TypeReference<List<HashMap<String, List<String>>>>() {});
-        List<HashMap<String, List<String>>> usersWithoutPermissionsLists = ParserUtil.convertJsonToObject(globalProperties.get(PROPERTY_USERS_WITHOUT_PERMISSIONS), new TypeReference<List<HashMap<String, List<String>>>>() {});
-        ServiceAgreementPostRequestBody[] serviceAgreementPostRequestBodies = ParserUtil.convertJsonToObject(globalProperties.get(PROPERTY_SERVICEAGREEMENTS_JSON_LOCATION), ServiceAgreementPostRequestBody[].class);
+        List<HashMap<String, List<String>>> userLists = ParserUtil.convertJsonToObject(globalProperties.getString(PROPERTY_USERS_JSON_LOCATION), new TypeReference<List<HashMap<String, List<String>>>>() {});
+        List<HashMap<String, List<String>>> usersWithoutPermissionsLists = ParserUtil.convertJsonToObject(globalProperties.getString(PROPERTY_USERS_WITHOUT_PERMISSIONS), new TypeReference<List<HashMap<String, List<String>>>>() {});
+        ServiceAgreementPostRequestBody[] serviceAgreementPostRequestBodies = ParserUtil.convertJsonToObject(globalProperties.getString(PROPERTY_SERVICEAGREEMENTS_JSON_LOCATION), ServiceAgreementPostRequestBody[].class);
 
         bankSetup.setupBankWithEntitlementsAdminAndProducts();
 

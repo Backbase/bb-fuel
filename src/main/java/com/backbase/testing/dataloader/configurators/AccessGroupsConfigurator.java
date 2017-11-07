@@ -1,6 +1,5 @@
 package com.backbase.testing.dataloader.configurators;
 
-
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.config.functions.FunctionsGetResponseBody;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.data.DataGroupsPostRequestBody;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.Privilege;

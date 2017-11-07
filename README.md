@@ -30,7 +30,7 @@ For users in the file [users.json](src/main/resources/data/users.json):
 - Random transactions (by default: between 10 and 50) per arrangement per today's date
 
 ## Service agreements setup
-By default only one custom service agreement: [serviceagreements.json](src/main/resources/data/serviceagreements.json)
+Default service agreements (each object represents one service agreement): [serviceagreements.json](src/main/resources/data/serviceagreements.json)
 - Legal entity ids will be retrieved via the external user ids given in the json file to set up the service agreements.
 - All function groups and data groups related to the legal entities of the consumers will be exposed to the service agreements.
 

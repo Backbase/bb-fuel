@@ -14,7 +14,7 @@ public class ProductIntegrationRestClient extends RestClient {
     private static final String ENDPOINT_PRODUCT_INTEGRATION_SERVICE = "/product-integration-service/" + SERVICE_VERSION + "/products";
 
     public ProductIntegrationRestClient() {
-        super(globalProperties.get(CommonConstants.PROPERTY_PRODUCTSUMMARY_BASE_URI));
+        super(globalProperties.getString(CommonConstants.PROPERTY_PRODUCTSUMMARY_BASE_URI));
     }
 
     public Response ingestProduct(ProductsPostRequestBody body) {

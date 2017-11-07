@@ -14,7 +14,7 @@ public class LegalEntityIntegrationRestClient extends RestClient {
     private static final String ENDPOINT_LEGALENTITY_INTEGRATION_SERVICE = "/legalentity-integration-service/" + SERVICE_VERSION + "/legalentities";
 
     public LegalEntityIntegrationRestClient() {
-        super(globalProperties.get(CommonConstants.PROPERTY_ENTITLEMENTS_BASE_URI));
+        super(globalProperties.getString(CommonConstants.PROPERTY_ENTITLEMENTS_BASE_URI));
     }
 
     public Response ingestLegalEntity(LegalEntitiesPostRequestBody body) {

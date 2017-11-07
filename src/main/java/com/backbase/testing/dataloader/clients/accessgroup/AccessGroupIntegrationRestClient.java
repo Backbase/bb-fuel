@@ -22,7 +22,7 @@ public class AccessGroupIntegrationRestClient extends RestClient {
     private static final String ENDPOINT_DATA = ENDPOINT_ACCESSGROUP_INTEGRATION_SERVICE + "/data";
 
     public AccessGroupIntegrationRestClient() {
-        super(globalProperties.get(PROPERTY_ENTITLEMENTS_BASE_URI));
+        super(globalProperties.getString(PROPERTY_ENTITLEMENTS_BASE_URI));
     }
 
     public Response ingestFunctionGroup(FunctionGroupsPostRequestBody body) {

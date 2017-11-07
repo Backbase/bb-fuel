@@ -16,7 +16,7 @@ public class ServiceAgreementsIntegrationRestClient extends RestClient {
     private static final String ENDPOINT_SERVICEAGREEMENTS = ENDPOINT_ACCESSGROUP_INTEGRATION_SERVICE + "/serviceagreements";
 
     public ServiceAgreementsIntegrationRestClient() {
-        super(globalProperties.get(PROPERTY_ENTITLEMENTS_BASE_URI));
+        super(globalProperties.getString(PROPERTY_ENTITLEMENTS_BASE_URI));
     }
 
     public Response ingestServiceAgreement(ServiceAgreementPostRequestBody body) {

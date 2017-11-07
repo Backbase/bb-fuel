@@ -26,8 +26,8 @@ public class AccessGroupPresentationRestClient extends RestClient {
     }
 
     public AccessGroupPresentationRestClient() {
-        super(globalProperties.get(PROPERTY_INFRA_BASE_URI));
-        setInitialPath(globalProperties.get(PROPERTY_GATEWAY_PATH));
+        super(globalProperties.getString(PROPERTY_INFRA_BASE_URI));
+        setInitialPath(globalProperties.getString(PROPERTY_GATEWAY_PATH));
     }
 
     public Response retrieveFunctionGroupsByLegalEntity(String internalLegalEntityId) {

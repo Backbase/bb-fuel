@@ -7,6 +7,7 @@ import com.backbase.testing.dataloader.clients.productsummary.ArrangementsIntegr
 import com.backbase.testing.dataloader.data.ProductSummaryDataGenerator;
 import com.backbase.testing.dataloader.dto.ArrangementId;
 import com.backbase.testing.dataloader.utils.CommonHelpers;
+import com.backbase.testing.dataloader.utils.GlobalProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,11 +15,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_ARRANGEMENTS_MAX;
+import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_ARRANGEMENTS_MIN;
 import static org.apache.http.HttpStatus.SC_CREATED;
 
 public class ProductSummaryConfigurator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductSummaryConfigurator.class);
+    private static GlobalProperties globalProperties = GlobalProperties.getInstance();
 
     private ProductSummaryDataGenerator productSummaryDataGenerator = new ProductSummaryDataGenerator();
     private ArrangementsIntegrationRestClient arrangementsIntegrationRestClient = new ArrangementsIntegrationRestClient();
@@ -37,7 +41,7 @@ public class ProductSummaryConfigurator {
     public List<ArrangementId> ingestArrangementsByLegalEntityAndReturnArrangementIds(String externalLegalEntityId) {
         List<ArrangementId> arrangementIds = new ArrayList<>();
 
-        for (int i = 0; i < CommonHelpers.generateRandomNumberInRange(10, 50); i++) {
+        for (int i = 0; i < CommonHelpers.generateRandomNumberInRange(globalProperties.getInt(PROPERTY_ARRANGEMENTS_MIN), globalProperties.getInt(PROPERTY_ARRANGEMENTS_MAX)); i++) {
             ArrangementsPostRequestBody arrangement = productSummaryDataGenerator.generateArrangementsPostRequestBody(externalLegalEntityId);
 
             ArrangementsPostResponseBody arrangementsPostResponseBody = arrangementsIntegrationRestClient.ingestArrangement(arrangement)

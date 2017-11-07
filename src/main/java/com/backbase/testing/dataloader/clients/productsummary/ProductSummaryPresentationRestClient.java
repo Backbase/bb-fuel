@@ -15,8 +15,8 @@ public class ProductSummaryPresentationRestClient extends RestClient {
     private static final String ENDPOINT_ARRANGEMENTS = ENDPOINT_PRODUCTSUMMARY_PRESENTATION_SERVICE + "/arrangements";
 
     public ProductSummaryPresentationRestClient() {
-        super(globalProperties.get(PROPERTY_INFRA_BASE_URI));
-        setInitialPath(globalProperties.get(PROPERTY_GATEWAY_PATH));
+        super(globalProperties.getString(PROPERTY_INFRA_BASE_URI));
+        setInitialPath(globalProperties.getString(PROPERTY_GATEWAY_PATH));
     }
 
     public Response getProductSummaryArrangements() {

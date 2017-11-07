@@ -11,16 +11,26 @@ import com.backbase.testing.dataloader.configurators.PermissionsConfigurator;
 import com.backbase.testing.dataloader.configurators.ProductSummaryConfigurator;
 import com.backbase.testing.dataloader.configurators.TransactionsConfigurator;
 import com.backbase.testing.dataloader.dto.ArrangementId;
+import com.backbase.testing.dataloader.utils.GlobalProperties;
+import com.backbase.testing.dataloader.utils.ParserUtil;
+import com.fasterxml.jackson.core.type.TypeReference;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.backbase.testing.dataloader.data.CommonConstants.EXTERNAL_ROOT_LEGAL_ENTITY_ID;
+import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_USERS_JSON_LOCATION;
+import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_USERS_WITHOUT_PERMISSIONS;
+import static com.backbase.testing.dataloader.data.CommonConstants.USERS_JSON_EXTERNAL_USER_IDS_FIELD;
 import static com.backbase.testing.dataloader.data.CommonConstants.USER_ADMIN;
 import static org.apache.http.HttpStatus.SC_OK;
 
 public class UsersSetup {
 
+    private GlobalProperties globalProperties = GlobalProperties.getInstance();
     private LoginRestClient loginRestClient = new LoginRestClient();
     private UserPresentationRestClient userPresentationRestClient = new UserPresentationRestClient();
     private ProductSummaryConfigurator productSummaryConfigurator = new ProductSummaryConfigurator();
@@ -30,7 +40,24 @@ public class UsersSetup {
     private TransactionsConfigurator transactionsConfigurator = new TransactionsConfigurator();
     private LegalEntitiesAndUsersConfigurator  legalEntitiesAndUsersConfigurator = new LegalEntitiesAndUsersConfigurator();
 
-    public void setupUsersWithAllFunctionDataGroupsAndPrivilegesUnderNewLegalEntity(List<String> externalUserIds) {
+    public void setupUsersWithAndWithoutFunctionDataGroupsPrivileges() throws IOException {
+        List<HashMap<String, List<String>>> userLists = ParserUtil.convertJsonToObject(globalProperties.getString(PROPERTY_USERS_JSON_LOCATION), new TypeReference<List<HashMap<String, List<String>>>>() {});
+        List<HashMap<String, List<String>>> usersWithoutPermissionsLists = ParserUtil.convertJsonToObject(globalProperties.getString(PROPERTY_USERS_WITHOUT_PERMISSIONS), new TypeReference<List<HashMap<String, List<String>>>>() {});
+
+        for (Map<String, List<String>> userList : userLists) {
+            List<String> externalUserIds = userList.get(USERS_JSON_EXTERNAL_USER_IDS_FIELD);
+
+            setupUsersWithAllFunctionDataGroupsAndPrivilegesUnderNewLegalEntity(externalUserIds);
+        }
+
+        for (Map<String, List<String>> usersWithoutPermissionsList : usersWithoutPermissionsLists) {
+            List<String> externalUserIds = usersWithoutPermissionsList.get(USERS_JSON_EXTERNAL_USER_IDS_FIELD);
+
+            legalEntitiesAndUsersConfigurator.ingestUsersUnderNewLegalEntity(externalUserIds, EXTERNAL_ROOT_LEGAL_ENTITY_ID);
+        }
+    }
+
+    private void setupUsersWithAllFunctionDataGroupsAndPrivilegesUnderNewLegalEntity(List<String> externalUserIds) {
         legalEntitiesAndUsersConfigurator.ingestUsersUnderNewLegalEntity(externalUserIds, EXTERNAL_ROOT_LEGAL_ENTITY_ID);
         loginRestClient.login(USER_ADMIN, USER_ADMIN);
 

@@ -18,7 +18,7 @@ public class ArrangementsIntegrationRestClient extends RestClient {
     private static final String ENDPOINT_PRODUCTS = ENDPOINT_ARRANGEMENTS_INTEGRATION_SERVICE + "/products";
 
     public ArrangementsIntegrationRestClient() {
-        super(globalProperties.get(PROPERTY_PRODUCTSUMMARY_BASE_URI));
+        super(globalProperties.getString(PROPERTY_PRODUCTSUMMARY_BASE_URI));
     }
 
     public Response ingestArrangement(ArrangementsPostRequestBody body) {

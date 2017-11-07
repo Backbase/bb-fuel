@@ -17,8 +17,8 @@ public class LegalEntityPresentationRestClient extends RestClient {
     }
 
     public LegalEntityPresentationRestClient() {
-        super(globalProperties.get(CommonConstants.PROPERTY_INFRA_BASE_URI));
-        setInitialPath(globalProperties.get(CommonConstants.PROPERTY_GATEWAY_PATH));
+        super(globalProperties.getString(CommonConstants.PROPERTY_INFRA_BASE_URI));
+        setInitialPath(globalProperties.getString(CommonConstants.PROPERTY_GATEWAY_PATH));
     }
 
     public Response retrieveLegalEntityByExternalId(String externalLegalEntityId) {

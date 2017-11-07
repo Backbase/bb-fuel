@@ -32,4 +32,5 @@ public class CommonConstants {
     public static final String PROPERTY_DEBIT_CARDS_MAX = "debit.cards.max";
     public static final String PROPERTY_TRANSACTIONS_MIN = "transactions.min";
     public static final String PROPERTY_TRANSACTIONS_MAX = "transactions.max";
+    public static final String PROPERTY_INGEST_TRANSACTIONS = "ingest.transactions";
 }

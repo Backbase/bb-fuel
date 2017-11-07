@@ -27,7 +27,8 @@ For users in the file [users.json](src/main/resources/data/users.json):
 - In case of current account arrangements random debit cards (by default: between 3 and 10) are associated
 
 ## Transactions setup
-- Random transactions (by default: between 10 and 50) per arrangement per today's date
+- By default ingesting transactions is disabled - configurable via property
+- If enabled, random transactions (by default: between 10 and 50) per arrangement per today's date
 
 ## Service agreements setup
 Default service agreements (each object represents one service agreement): [serviceagreements.json](src/main/resources/data/serviceagreements.json)

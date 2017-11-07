@@ -59,6 +59,10 @@ public class GlobalProperties {
         return configuration.getInt(key);
     }
 
+    public boolean getBoolean(String key) {
+        return configuration.getBoolean(key);
+    }
+
     public synchronized String syncGet(String key) {
         return configuration.getString(key);
     }

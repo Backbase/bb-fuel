@@ -12,12 +12,13 @@ import org.apache.commons.configuration.*;
  * GlobalProperties globalProperties = GlobalProperties.getInstance();
  * String aUrl = globalProperties.get("url");
  * </pre>
+ * </p>
  * note: GlobalProperties is a thread-safe singleton - it maintains a single instance within execution
  * <p>
  * You can also use it as a property of a class;
  * <pre>
  *  private GlobalProperties globalProperties = GlobalProperties.getInstance();
- *  </pre>
+ * </pre>
  * </p>
  * */
 public class GlobalProperties {

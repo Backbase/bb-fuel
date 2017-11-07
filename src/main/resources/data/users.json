@@ -1,17 +1,23 @@
 [
   {
-    "users": [
+    "externalUserIds": [
       "user"
     ]
   },
   {
-    "users": [
+    "externalUserIds": [
       "designer"
     ]
   },
   {
-    "users": [
+    "externalUserIds": [
       "manager"
+    ]
+  },
+  {
+    "externalUserIds": [
+      "U0000010",
+      "U0000011"
     ]
   }
 ]

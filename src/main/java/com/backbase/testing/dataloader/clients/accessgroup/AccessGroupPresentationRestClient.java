@@ -1,11 +1,17 @@
 package com.backbase.testing.dataloader.clients.accessgroup;
 
+import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.data.DataAccessGroupsGetResponseBody;
 import com.backbase.testing.dataloader.clients.common.RestClient;
 import com.backbase.testing.dataloader.utils.GlobalProperties;
 import io.restassured.response.Response;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_GATEWAY_PATH;
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_INFRA_BASE_URI;
+import static org.apache.http.HttpStatus.SC_OK;
 
 public class AccessGroupPresentationRestClient extends RestClient {
 
@@ -32,5 +38,19 @@ public class AccessGroupPresentationRestClient extends RestClient {
     public Response retrieveDataGroupsByLegalEntityAndType(String internalLegalEntityId, String type) {
         return requestSpec()
                 .get(getEndpointDataGroupsByLegalEntityAndType(internalLegalEntityId, type));
+    }
+
+    public List<String> retrieveAllDataGroupIdsByLegalEntity(String internalLegalEntityId) {
+        DataAccessGroupsGetResponseBody[] dataGroups = retrieveDataGroupsByLegalEntityAndType(internalLegalEntityId, "arrangements")
+                .then()
+                .statusCode(SC_OK)
+                .extract()
+                .as(DataAccessGroupsGetResponseBody[].class);
+
+        List<String> dataGroupIds = new ArrayList<>();
+        Arrays.stream(dataGroups)
+                .forEach(dg -> dataGroupIds.add(dg.getDataAccessGroupId()));
+
+        return dataGroupIds;
     }
 }

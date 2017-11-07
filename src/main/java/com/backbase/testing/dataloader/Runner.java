@@ -1,90 +1,53 @@
 package com.backbase.testing.dataloader;
 
-import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.function.FunctionAccessGroupsGetResponseBody;
-import com.backbase.presentation.user.rest.spec.v2.users.LegalEntityByUserGetResponseBody;
-import com.backbase.testing.dataloader.clients.accessgroup.AccessGroupPresentationRestClient;
-import com.backbase.testing.dataloader.clients.common.LoginRestClient;
-import com.backbase.testing.dataloader.clients.user.UserPresentationRestClient;
-import com.backbase.testing.dataloader.configurators.AccessGroupsConfigurator;
+import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementPostRequestBody;
 import com.backbase.testing.dataloader.configurators.LegalEntitiesAndUsersConfigurator;
-import com.backbase.testing.dataloader.configurators.PermissionsConfigurator;
-import com.backbase.testing.dataloader.configurators.ProductSummaryConfigurator;
-import com.backbase.testing.dataloader.configurators.TransactionsConfigurator;
-import com.backbase.testing.dataloader.dto.ArrangementId;
+import com.backbase.testing.dataloader.configurators.ServiceAgreementsConfigurator;
+import com.backbase.testing.dataloader.setup.BankSetup;
+import com.backbase.testing.dataloader.setup.UsersSetup;
+import com.backbase.testing.dataloader.utils.GlobalProperties;
 import com.backbase.testing.dataloader.utils.ParserUtil;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.backbase.testing.dataloader.data.CommonConstants.EXTERNAL_ROOT_LEGAL_ENTITY_ID;
-import static com.backbase.testing.dataloader.data.CommonConstants.USERS_JSON;
-import static com.backbase.testing.dataloader.data.CommonConstants.USER_ADMIN;
-import static org.apache.http.HttpStatus.SC_OK;
+import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_SERVICEAGREEMENTS_JSON_LOCATION;
+import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_USERS_JSON_LOCATION;
+import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_USERS_WITHOUT_PERMISSIONS;
+import static com.backbase.testing.dataloader.data.CommonConstants.USERS_JSON_EXTERNAL_USER_IDS_FIELD;
 
 public class Runner {
 
     public static void main(String[] args) throws IOException {
-
-        LoginRestClient loginRestClient = new LoginRestClient();
+        GlobalProperties globalProperties = GlobalProperties.getInstance();
+        BankSetup bankSetup = new BankSetup();
+        UsersSetup usersSetup = new UsersSetup();
         LegalEntitiesAndUsersConfigurator legalEntitiesAndUsersConfigurator = new LegalEntitiesAndUsersConfigurator();
-        UserPresentationRestClient userPresentationRestClient = new UserPresentationRestClient();
-        AccessGroupPresentationRestClient accessGroupPresentationRestClient = new AccessGroupPresentationRestClient();
-        AccessGroupsConfigurator accessGroupsConfigurator = new AccessGroupsConfigurator();
-        PermissionsConfigurator permissionsConfigurator = new PermissionsConfigurator();
-        ProductSummaryConfigurator productSummaryConfigurator = new ProductSummaryConfigurator();
-        TransactionsConfigurator transactionsConfigurator = new TransactionsConfigurator();
+        ServiceAgreementsConfigurator serviceAgreementsConfigurator = new ServiceAgreementsConfigurator();
+        List<HashMap<String, List<String>>> userLists = ParserUtil.convertJsonToObject(globalProperties.get(PROPERTY_USERS_JSON_LOCATION), new TypeReference<List<HashMap<String, List<String>>>>() {});
+        List<HashMap<String, List<String>>> usersWithoutPermissionsLists = ParserUtil.convertJsonToObject(globalProperties.get(PROPERTY_USERS_WITHOUT_PERMISSIONS), new TypeReference<List<HashMap<String, List<String>>>>() {});
+        ServiceAgreementPostRequestBody[] serviceAgreementPostRequestBodies = ParserUtil.convertJsonToObject(globalProperties.get(PROPERTY_SERVICEAGREEMENTS_JSON_LOCATION), ServiceAgreementPostRequestBody[].class);
 
-        List<String> externalUserIds = new ArrayList<>();
-        List<HashMap<String, List<String>>> userLists = ParserUtil.convertJsonToObject(USERS_JSON, new TypeReference<List<HashMap<String, List<String>>>>() {});
+        bankSetup.setupBankWithEntitlementsAdminAndProducts();
 
-        userLists.forEach(userList -> externalUserIds.addAll(userList.get("users")));
+        for (Map<String, List<String>> userList : userLists) {
+            List<String> externalUserIds = userList.get(USERS_JSON_EXTERNAL_USER_IDS_FIELD);
 
-        legalEntitiesAndUsersConfigurator.ingestRootLegalEntityAndEntitlementsAdmin(EXTERNAL_ROOT_LEGAL_ENTITY_ID, USER_ADMIN);
-
-        for (HashMap<String, List<String>> userList : userLists) {
-            List<String> users = userList.get("users");
-
-            legalEntitiesAndUsersConfigurator.ingestUsersUnderNewLegalEntity(users, EXTERNAL_ROOT_LEGAL_ENTITY_ID);
+            usersSetup.setupUsersWithAllFunctionDataGroupsAndPrivilegesUnderNewLegalEntity(externalUserIds);
         }
 
-        productSummaryConfigurator.ingestProducts();
+        for (Map<String, List<String>> usersWithoutPermissionsList : usersWithoutPermissionsLists) {
+            List<String> externalUserIds = usersWithoutPermissionsList.get(USERS_JSON_EXTERNAL_USER_IDS_FIELD);
 
-        for (String externalUserId : externalUserIds) {
-            loginRestClient.login(USER_ADMIN, USER_ADMIN);
+            legalEntitiesAndUsersConfigurator.ingestUsersUnderNewLegalEntity(externalUserIds, EXTERNAL_ROOT_LEGAL_ENTITY_ID);
+        }
 
-            LegalEntityByUserGetResponseBody legalEntity = userPresentationRestClient.retrieveLegalEntityByExternalUserId(externalUserId)
-                    .then()
-                    .statusCode(SC_OK)
-                    .extract()
-                    .as(LegalEntityByUserGetResponseBody.class);
-
-            String externalLegalEntityId = legalEntity.getExternalId();
-            String internalLegalEntityId = legalEntity.getId();
-
-            List<ArrangementId> arrangementIds = productSummaryConfigurator.ingestArrangementsByLegalEntityAndReturnArrangementIds(externalLegalEntityId);
-            List<String> internalArrangementIds = new ArrayList<>();
-
-            arrangementIds.forEach(arrangementId -> internalArrangementIds.add(arrangementId.getInternalArrangementId()));
-
-            FunctionAccessGroupsGetResponseBody[] functionGroups = accessGroupPresentationRestClient.retrieveFunctionGroupsByLegalEntity(internalLegalEntityId)
-                    .then()
-                    .statusCode(SC_OK)
-                    .extract()
-                    .as(FunctionAccessGroupsGetResponseBody[].class);
-
-            if (functionGroups.length == 0) {
-                accessGroupsConfigurator.ingestFunctionGroupsWithAllPrivilegesForAllFunctions(externalLegalEntityId);
-            }
-
-            accessGroupsConfigurator.ingestDataGroupForArrangements(externalLegalEntityId, internalArrangementIds);
-            permissionsConfigurator.assignAllFunctionDataGroupsToMasterServiceAgreementAndUser(externalLegalEntityId, externalUserId);
-
-            for (ArrangementId arrangementId : arrangementIds) {
-                transactionsConfigurator.ingestTransactionsByArrangement(arrangementId.getExternalArrangementId());
-            }
+        for (ServiceAgreementPostRequestBody serviceAgreementGetResponseBody : serviceAgreementPostRequestBodies) {
+            serviceAgreementsConfigurator.ingestServiceAgreementWithProvidersAndConsumersWithAllFunctionDataGroups(serviceAgreementGetResponseBody.getProviders(), serviceAgreementGetResponseBody.getConsumers());
         }
     }
 }

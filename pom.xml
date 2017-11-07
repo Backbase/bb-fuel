@@ -54,32 +54,32 @@
         <dependency>
             <groupId>com.backbase.dbs.user</groupId>
             <artifactId>user-presentation-spec</artifactId>
-            <version>1.8.9</version>
+            <version>1.10.3</version>
         </dependency>
         <dependency>
             <groupId>com.backbase.dbs.user</groupId>
             <artifactId>user-integration-spec</artifactId>
-            <version>1.8.2</version>
+            <version>1.10.2</version>
         </dependency>
         <dependency>
             <groupId>com.backbase.dbs.accessgroup</groupId>
             <artifactId>accessgroup-presentation-spec</artifactId>
-            <version>1.8.13</version>
+            <version>1.10.5</version>
         </dependency>
         <dependency>
             <groupId>com.backbase.dbs.accessgroup</groupId>
             <artifactId>accessgroup-integration-spec</artifactId>
-            <version>1.8.7</version>
+            <version>1.10.2</version>
         </dependency>
         <dependency>
             <groupId>com.backbase.dbs.legalentity</groupId>
             <artifactId>legalentity-presentation-spec</artifactId>
-            <version>1.10.4</version>
+            <version>1.10.8</version>
         </dependency>
         <dependency>
             <groupId>com.backbase.dbs.legalentity</groupId>
             <artifactId>legalentity-integration-spec</artifactId>
-            <version>1.10.4</version>
+            <version>1.10.5</version>
         </dependency>
         <!-- productsummary specs -->
         <dependency>

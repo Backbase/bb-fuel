@@ -33,6 +33,7 @@ import static io.restassured.config.HttpClientConfig.httpClientConfig;
  * and now all requests made with this rest com.backbase.environment.clients will be made to the specified url, initial path and given setUpCookies.
  * RequestSpecification requestSpec = restClient.requestSpec();
  * </pre>
+ * </p>
  * <p>
  * You can also extend the RestClient to have a rest com.backbase.environment.clients class per capability:
  * <pre>
@@ -41,7 +42,7 @@ import static io.restassured.config.HttpClientConfig.httpClientConfig;
  *       super(globalProperties.get("url"));
  *    }
  *  }
- *  </pre>
+ * </pre>
  * then:
  * <pre>
  *  CapabilityRestClient capabilityRestClient = new CapabilityRestClient();

@@ -1,15 +1,13 @@
 package com.backbase.testing.dataloader.clients.accessgroup;
 
-import com.backbase.testing.dataloader.clients.common.RestClient;
-import com.backbase.testing.dataloader.utils.GlobalProperties;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.data.DataGroupsPostRequestBody;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.FunctionGroupsPostRequestBody;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.users.permissions.AssignPermissionsPostRequestBody;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.config.functions.FunctionsGetResponseBody;
+import com.backbase.testing.dataloader.clients.common.RestClient;
+import com.backbase.testing.dataloader.utils.GlobalProperties;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-
-import java.util.List;
 
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_ENTITLEMENTS_BASE_URI;
 
@@ -66,13 +64,5 @@ public class AccessGroupIntegrationRestClient extends RestClient {
                 .contentType(ContentType.JSON)
                 .body(body)
                 .post(ENDPOINT_USERS_PERMISSIONS);
-    }
-
-    public Response assignPermissions(String externalLegalEntityId, String externalUserId, String serviceAgreementId, String functionGroupId, List<String> dataGroupIds) {
-        return assignPermissions(new AssignPermissionsPostRequestBody().withExternalLegalEntityId(externalLegalEntityId)
-                .withExternalUserId(externalUserId)
-                .withServiceAgreementId(serviceAgreementId)
-                .withFunctionGroupId(functionGroupId)
-                .withDataGroupIds(dataGroupIds));
     }
 }

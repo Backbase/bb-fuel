@@ -14,8 +14,8 @@ public class ServiceAgreementsDataGenerator {
 
     public ServiceAgreementPostRequestBody generateServiceAgreementPostRequestBody(Set<Provider> providers, Set<Consumer> consumers) {
         return new ServiceAgreementPostRequestBody()
-                .withName(faker.lorem().characters(8))
-                .withDescription(faker.lorem().characters(8))
+                .withName(faker.lorem().sentence(3, 0).replace(".", ""))
+                .withDescription(faker.lorem().sentence(3, 0).replace(".", ""))
                 .withExternalId(UUID.randomUUID().toString())
                 .withProviders(providers)
                 .withConsumers(consumers);

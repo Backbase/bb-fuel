@@ -19,8 +19,8 @@ public class LegalEntitiesAndUsersDataGenerator {
     public LegalEntitiesPostRequestBody generateRootLegalEntitiesPostRequestBody(String externalLegalEntityId) {
         return new LegalEntitiesPostRequestBody()
                 .withExternalId(externalLegalEntityId)
-                .withName(faker.company()
-                        .name())
+                .withName(String.format(faker.company()
+                        .name(), faker.lorem().characters(8)))
                 .withParentExternalId(null)
                 .withType(LegalEntityType.BANK);
     }
@@ -28,8 +28,8 @@ public class LegalEntitiesAndUsersDataGenerator {
     public LegalEntitiesPostRequestBody generateLegalEntitiesPostRequestBody(String externalLegalEntityId, String externalParentLegalEntityId) {
         return new LegalEntitiesPostRequestBody()
                 .withExternalId(externalLegalEntityId)
-                .withName(faker.company()
-                        .name())
+                .withName(String.format(faker.company()
+                        .name(), faker.lorem().characters(8)))
                 .withParentExternalId(externalParentLegalEntityId)
                 .withType(LegalEntityType.CUSTOMER);
     }

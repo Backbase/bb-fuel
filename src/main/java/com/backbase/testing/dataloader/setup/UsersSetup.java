@@ -18,8 +18,10 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static com.backbase.testing.dataloader.data.CommonConstants.EXTERNAL_ROOT_LEGAL_ENTITY_ID;
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_INGEST_TRANSACTIONS;
@@ -61,42 +63,53 @@ public class UsersSetup {
     }
 
     private void setupUsersWithAllFunctionDataGroupsAndPrivilegesUnderNewLegalEntity(List<String> externalUserIds) {
+        Map<String, LegalEntityByUserGetResponseBody> userLegalEntities = new HashMap<>();
+        Set<LegalEntityByUserGetResponseBody> legalEntities = new HashSet<>();
+
         legalEntitiesAndUsersConfigurator.ingestUsersUnderNewLegalEntity(externalUserIds, EXTERNAL_ROOT_LEGAL_ENTITY_ID);
 
         for (String externalUserId : externalUserIds) {
             loginRestClient.login(USER_ADMIN, USER_ADMIN);
 
-            LegalEntityByUserGetResponseBody legalEntity = userPresentationRestClient.retrieveLegalEntityByExternalUserId(externalUserId)
+            userLegalEntities.put(externalUserId, userPresentationRestClient.retrieveLegalEntityByExternalUserId(externalUserId)
                     .then()
                     .statusCode(SC_OK)
                     .extract()
-                    .as(LegalEntityByUserGetResponseBody.class);
+                    .as(LegalEntityByUserGetResponseBody.class));
+        }
 
-            String externalLegalEntityId = legalEntity.getExternalId();
-            String internalLegalEntityId = legalEntity.getId();
+        legalEntities.addAll(userLegalEntities.values());
+        legalEntities.forEach(this::setupFunctionDataGroupsUnderLegalEntity);
 
-            List<ArrangementId> arrangementIds = productSummaryConfigurator.ingestArrangementsByLegalEntityAndReturnArrangementIds(externalLegalEntityId);
-            List<String> internalArrangementIds = new ArrayList<>();
+        for (Map.Entry<String, LegalEntityByUserGetResponseBody> entry : userLegalEntities.entrySet()) {
+            String externalUserId = entry.getKey();
+            LegalEntityByUserGetResponseBody legalEntity = entry.getValue();
 
-            arrangementIds.forEach(arrangementId -> internalArrangementIds.add(arrangementId.getInternalArrangementId()));
+            permissionsConfigurator.assignAllFunctionDataGroupsOfLegalEntityToUserAndServiceAgreement(legalEntity.getExternalId(), externalUserId, null);
+        }
+    }
 
-            FunctionAccessGroupsGetResponseBody[] functionGroups = accessGroupPresentationRestClient.retrieveFunctionGroupsByLegalEntity(internalLegalEntityId)
-                    .then()
-                    .statusCode(SC_OK)
-                    .extract()
-                    .as(FunctionAccessGroupsGetResponseBody[].class);
+    private void setupFunctionDataGroupsUnderLegalEntity(LegalEntityByUserGetResponseBody legalEntity) {
+        List<ArrangementId> arrangementIds = productSummaryConfigurator.ingestArrangementsByLegalEntityAndReturnArrangementIds(legalEntity.getExternalId());
+        List<String> internalArrangementIds = new ArrayList<>();
 
-            if (functionGroups.length == 0) {
-                accessGroupsConfigurator.ingestFunctionGroupsWithAllPrivilegesForAllFunctions(externalLegalEntityId);
-            }
+        arrangementIds.forEach(arrangementId -> internalArrangementIds.add(arrangementId.getInternalArrangementId()));
 
-            accessGroupsConfigurator.ingestDataGroupForArrangements(externalLegalEntityId, internalArrangementIds);
-            permissionsConfigurator.assignAllFunctionDataGroupsOfLegalEntityToUserAndServiceAgreement(externalLegalEntityId, externalUserId, null);
+        FunctionAccessGroupsGetResponseBody[] functionGroups = accessGroupPresentationRestClient.retrieveFunctionGroupsByLegalEntity(legalEntity.getId())
+                .then()
+                .statusCode(SC_OK)
+                .extract()
+                .as(FunctionAccessGroupsGetResponseBody[].class);
 
-            if (globalProperties.getBoolean(PROPERTY_INGEST_TRANSACTIONS)) {
-                for (ArrangementId arrangementId : arrangementIds) {
-                    transactionsConfigurator.ingestTransactionsByArrangement(arrangementId.getExternalArrangementId());
-                }
+        if (functionGroups.length == 0) {
+            accessGroupsConfigurator.ingestFunctionGroupsWithAllPrivilegesForAllFunctions(legalEntity.getExternalId());
+        }
+
+        accessGroupsConfigurator.ingestDataGroupForArrangements(legalEntity.getExternalId(), internalArrangementIds);
+
+        if (globalProperties.getBoolean(PROPERTY_INGEST_TRANSACTIONS)) {
+            for (ArrangementId arrangementId : arrangementIds) {
+                transactionsConfigurator.ingestTransactionsByArrangement(arrangementId.getExternalArrangementId());
             }
         }
     }

@@ -17,8 +17,8 @@ Data loader ingests the following:
 - Legal entity (under the root legal entity) per user array in the files [users.json](src/main/resources/data/users.json) and [users-without-permissions.json](src/main/resources/data/users-without-permissions.json) - configurable, see section *Custom data*
 
 For users in the file [users.json](src/main/resources/data/users.json):
-- Function groups for every business function with all privileges
-- Data group consisting of arrangements per user
+- Function groups for every business function with all privileges per legal entity
+- Data group consisting of arrangements per legal entity
 - All function groups and data groups are assigned to the user via master service agreement of the legal entity.
 
 ## Product summary setup

@@ -11,97 +11,114 @@
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <slf4j-simple.version>1.7.25</slf4j-simple.version>
+        <rest-assured.version>3.0.3</rest-assured.version>
+        <jackson-databind.version>2.9.0</jackson-databind.version>
+        <commons-configuration.version>1.10</commons-configuration.version>
+        <javafaker.version>0.13</javafaker.version>
+        <iban4j.version>3.2.1</iban4j.version>
+        <junit.version>4.12</junit.version>
+        <user-presentation-spec.version>1.10.3</user-presentation-spec.version>
+        <user-integration-spec.version>1.10.2</user-integration-spec.version>
+        <accessgroup-presentation-spec.version>1.10.5</accessgroup-presentation-spec.version>
+        <product-summary-presentation-spec.version>1.7.13</product-summary-presentation-spec.version>
+        <product-integration-spec.version>1.7.3</product-integration-spec.version>
+        <arrangement-integration-spec.version>1.7.11</arrangement-integration-spec.version>
+        <transaction-integration-external-inbound-spec.version>1.7.4</transaction-integration-external-inbound-spec.version>
+        <maven-assembly-plugin.version>2.4.1</maven-assembly-plugin.version>
+        <accessgroup-integration-spec.version>1.10.2</accessgroup-integration-spec.version>
+        <legalentity-presentation-spec.version>1.10.8</legalentity-presentation-spec.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
-            <version>3.0.3</version>
+            <version>${rest-assured.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.9.0</version>
+            <version>${jackson-databind.version}</version>
         </dependency>
         <dependency>
             <groupId>commons-configuration</groupId>
             <artifactId>commons-configuration</artifactId>
-            <version>1.10</version>
+            <version>${commons-configuration.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
-            <version>1.7.25</version>
+            <version>${slf4j-simple.version}</version>
         </dependency>
         <dependency>
             <groupId>com.github.javafaker</groupId>
             <artifactId>javafaker</artifactId>
-            <version>0.13</version>
+            <version>${javafaker.version}</version>
         </dependency>
         <dependency>
             <groupId>org.iban4j</groupId>
             <artifactId>iban4j</artifactId>
-            <version>3.2.1</version>
+            <version>${iban4j.version}</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
         <!-- entitlements specs -->
         <dependency>
             <groupId>com.backbase.dbs.user</groupId>
             <artifactId>user-presentation-spec</artifactId>
-            <version>1.10.3</version>
+            <version>${user-presentation-spec.version}</version>
         </dependency>
         <dependency>
             <groupId>com.backbase.dbs.user</groupId>
             <artifactId>user-integration-spec</artifactId>
-            <version>1.10.2</version>
+            <version>${user-integration-spec.version}</version>
         </dependency>
         <dependency>
             <groupId>com.backbase.dbs.accessgroup</groupId>
             <artifactId>accessgroup-presentation-spec</artifactId>
-            <version>1.10.5</version>
+            <version>${accessgroup-presentation-spec.version}</version>
         </dependency>
         <dependency>
             <groupId>com.backbase.dbs.accessgroup</groupId>
             <artifactId>accessgroup-integration-spec</artifactId>
-            <version>1.10.2</version>
+            <version>${accessgroup-integration-spec.version}</version>
         </dependency>
         <dependency>
             <groupId>com.backbase.dbs.legalentity</groupId>
             <artifactId>legalentity-presentation-spec</artifactId>
-            <version>1.10.8</version>
+            <version>${legalentity-presentation-spec.version}</version>
         </dependency>
         <dependency>
             <groupId>com.backbase.dbs.legalentity</groupId>
             <artifactId>legalentity-integration-spec</artifactId>
-            <version>1.10.5</version>
+            <version>${accessgroup-presentation-spec.version}</version>
         </dependency>
         <!-- productsummary specs -->
         <dependency>
             <groupId>com.backbase.dbs.productsummary</groupId>
             <artifactId>product-summary-presentation-spec</artifactId>
-            <version>1.7.13</version>
+            <version>${product-summary-presentation-spec.version}</version>
         </dependency>
         <dependency>
             <groupId>com.backbase.dbs.product</groupId>
             <artifactId>product-integration-spec</artifactId>
-            <version>1.7.3</version>
+            <version>${product-integration-spec.version}</version>
         </dependency>
         <dependency>
             <groupId>com.backbase.dbs.arrangement</groupId>
             <artifactId>arrangement-integration-spec</artifactId>
-            <version>1.7.11</version>
+            <version>${arrangement-integration-spec.version}</version>
         </dependency>
         <!-- transactions specs -->
         <dependency>
             <groupId>com.backbase.dbs.transaction</groupId>
             <artifactId>transaction-integration-external-inbound-spec</artifactId>
-            <version>1.7.4</version>
+            <version>${transaction-integration-external-inbound-spec.version}</version>
         </dependency>
     </dependencies>
 
@@ -111,7 +128,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
-                <version>2.4.1</version>
+                <version>${maven-assembly-plugin.version}</version>
                 <configuration>
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>

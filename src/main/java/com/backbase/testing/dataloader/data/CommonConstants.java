@@ -36,4 +36,9 @@ public class CommonConstants {
     public static final String PROPERTY_NOTIFICATIONS_MIN = "notifications.min";
     public static final String PROPERTY_NOTIFICATIONS_MAX = "notifications.max";
     public static final String PROPERTY_INGEST_NOTIFICATIONS = "ingest.notifications";
+    public static final String PROPERTY_CONTACTS_MIN = "contacts.min";
+    public static final String PROPERTY_CONTACTS_MAX = "contacts.max";
+    public static final String PROPERTY_CONTACT_ACCOUNTS_MIN = "contact.accounts.min";
+    public static final String PROPERTY_CONTACT_ACCOUNTS_MAX = "contact.accounts.max";
+    public static final String PROPERTY_INGEST_CONTACTS = "ingest.contacts";
 }

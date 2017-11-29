@@ -14,7 +14,7 @@ import static org.apache.http.HttpStatus.SC_CREATED;
 
 public class NotificationsConfigurator {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TransactionsConfigurator.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(NotificationsConfigurator.class);
     private static GlobalProperties globalProperties = GlobalProperties.getInstance();
 
     private NotificationsPresentationRestClient notificationsPresentationRestClient = new NotificationsPresentationRestClient();

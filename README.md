@@ -44,6 +44,7 @@ If more/other users are required, you can provide your own `json` files, see *Cu
 
 ## Extra data setup
 - The following is available for ingestion, but by default disabled - configurable via property:
+- Contacts with multiple accounts per user
 - Notifications on global target group
 
 ## How to run data loader

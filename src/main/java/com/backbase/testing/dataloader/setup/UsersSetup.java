@@ -6,6 +6,7 @@ import com.backbase.testing.dataloader.clients.accessgroup.AccessGroupPresentati
 import com.backbase.testing.dataloader.clients.common.LoginRestClient;
 import com.backbase.testing.dataloader.clients.user.UserPresentationRestClient;
 import com.backbase.testing.dataloader.configurators.AccessGroupsConfigurator;
+import com.backbase.testing.dataloader.configurators.ContactsConfigurator;
 import com.backbase.testing.dataloader.configurators.LegalEntitiesAndUsersConfigurator;
 import com.backbase.testing.dataloader.configurators.PermissionsConfigurator;
 import com.backbase.testing.dataloader.configurators.ProductSummaryConfigurator;
@@ -24,6 +25,8 @@ import java.util.Map;
 import java.util.Set;
 
 import static com.backbase.testing.dataloader.data.CommonConstants.EXTERNAL_ROOT_LEGAL_ENTITY_ID;
+import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_INGEST_CONTACTS;
+import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_INGEST_NOTIFICATIONS;
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_INGEST_TRANSACTIONS;
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_USERS_JSON_LOCATION;
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_USERS_WITHOUT_PERMISSIONS;
@@ -42,6 +45,7 @@ public class UsersSetup {
     private PermissionsConfigurator permissionsConfigurator = new PermissionsConfigurator();
     private TransactionsConfigurator transactionsConfigurator = new TransactionsConfigurator();
     private LegalEntitiesAndUsersConfigurator legalEntitiesAndUsersConfigurator = new LegalEntitiesAndUsersConfigurator();
+    private ContactsConfigurator contactsConfigurator = new ContactsConfigurator();
 
     public void setupUsersWithAndWithoutFunctionDataGroupsPrivileges() throws IOException {
         List<HashMap<String, List<String>>> userLists = ParserUtil.convertJsonToObject(globalProperties.getString(PROPERTY_USERS_JSON_LOCATION), new TypeReference<List<HashMap<String, List<String>>>>() {
@@ -59,6 +63,21 @@ public class UsersSetup {
             List<String> externalUserIds = usersWithoutPermissionsList.get(USERS_JSON_EXTERNAL_USER_IDS_FIELD);
 
             legalEntitiesAndUsersConfigurator.ingestUsersUnderNewLegalEntity(externalUserIds, EXTERNAL_ROOT_LEGAL_ENTITY_ID);
+        }
+    }
+
+    public void setupContactsPerUser() throws IOException {
+        if (globalProperties.getBoolean(PROPERTY_INGEST_CONTACTS)) {
+            List<HashMap<String, List<String>>> userLists = ParserUtil.convertJsonToObject(globalProperties.getString(PROPERTY_USERS_JSON_LOCATION), new TypeReference<List<HashMap<String, List<String>>>>() {
+            });
+            for (Map<String, List<String>> userList : userLists) {
+                List<String> externalUserIds = userList.get(USERS_JSON_EXTERNAL_USER_IDS_FIELD);
+
+                externalUserIds.forEach(externalUserId -> {
+                    loginRestClient.login(externalUserId, externalUserId);
+                    contactsConfigurator.ingestContacts();
+                });
+            }
         }
     }
 

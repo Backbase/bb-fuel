@@ -29,6 +29,7 @@
         <accessgroup-integration-spec.version>1.10.2</accessgroup-integration-spec.version>
         <legalentity-presentation-spec.version>1.10.8</legalentity-presentation-spec.version>
         <notifications-presentation-spec.version>1.8.5</notifications-presentation-spec.version>
+        <contact-presentation-spec.version>3.1.3</contact-presentation-spec.version>
     </properties>
 
     <dependencies>
@@ -126,6 +127,12 @@
             <groupId>com.backbase.dbs.notifications</groupId>
             <artifactId>notifications-presentation-spec</artifactId>
             <version>${notifications-presentation-spec.version}</version>
+        </dependency>
+        <!-- contact specs -->
+        <dependency>
+            <groupId>com.backbase.dbs.contact</groupId>
+            <artifactId>contact-presentation-spec</artifactId>
+            <version>${contact-presentation-spec.version}</version>
         </dependency>
     </dependencies>
 

@@ -16,6 +16,7 @@ public class Runner {
         bankSetup.setupBankWithEntitlementsAdminAndProducts();
         bankSetup.setupBankNotifications();
         usersSetup.setupUsersWithAndWithoutFunctionDataGroupsPrivileges();
+        usersSetup.setupContactsPerUser();
         serviceAgreementsSetup.setupCustomServiceAgreements();
     }
 }

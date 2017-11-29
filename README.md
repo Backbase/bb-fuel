@@ -42,6 +42,10 @@ By default only the following users are covered:
 
 If more/other users are required, you can provide your own `json` files, see *Custom data*.
 
+## Extra data setup
+- The following is available for ingestion, but by default disabled - configurable via property:
+- Notifications on global target group
+
 ## How to run data loader
 1. Provision an [Autoconfig](https://backbase.atlassian.net/wiki/x/94BtC) environment based on `dbs` or `dbs-microservices` stack with **at least** the following capabilities:
 ```

@@ -28,6 +28,7 @@
         <maven-assembly-plugin.version>2.4.1</maven-assembly-plugin.version>
         <accessgroup-integration-spec.version>1.10.2</accessgroup-integration-spec.version>
         <legalentity-presentation-spec.version>1.10.8</legalentity-presentation-spec.version>
+        <notifications-presentation-spec.version>1.8.5</notifications-presentation-spec.version>
     </properties>
 
     <dependencies>
@@ -119,6 +120,12 @@
             <groupId>com.backbase.dbs.transaction</groupId>
             <artifactId>transaction-integration-external-inbound-spec</artifactId>
             <version>${transaction-integration-external-inbound-spec.version}</version>
+        </dependency>
+        <!-- notifications specs -->
+        <dependency>
+            <groupId>com.backbase.dbs.notifications</groupId>
+            <artifactId>notifications-presentation-spec</artifactId>
+            <version>${notifications-presentation-spec.version}</version>
         </dependency>
     </dependencies>
 

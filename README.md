@@ -11,8 +11,11 @@ Data loader ingests the following:
 - Products
 - Arrangements
 - Transactions
+- Contacts
+- Payments
+- Notifications
 
-## Entitlements setup
+## Access control setup
 - Root legal entity with user `admin` as entitlements admin
 - Legal entity (under the root legal entity) per user array in the files [users.json](src/main/resources/data/users.json) and [users-without-permissions.json](src/main/resources/data/users-without-permissions.json) - configurable, see section *Custom data*
 

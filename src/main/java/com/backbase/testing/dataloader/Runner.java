@@ -14,9 +14,11 @@ public class Runner {
         ServiceAgreementsSetup serviceAgreementsSetup = new ServiceAgreementsSetup();
 
         bankSetup.setupBankWithEntitlementsAdminAndProducts();
-        bankSetup.setupBankNotifications();
         usersSetup.setupUsersWithAndWithoutFunctionDataGroupsPrivileges();
-        usersSetup.setupContactsPerUser();
         serviceAgreementsSetup.setupCustomServiceAgreements();
+
+        bankSetup.setupBankNotifications();
+        usersSetup.setupContactsPerUser();
+        usersSetup.setupPaymentsPerUser();
     }
 }

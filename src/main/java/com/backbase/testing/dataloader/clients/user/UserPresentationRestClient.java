@@ -11,6 +11,7 @@ public class UserPresentationRestClient extends RestClient {
     private static final String SERVICE_VERSION = "v2";
     private static final String ENDPOINT_USER_PRESENTATION_SERVICE = "/user-presentation-service/" + SERVICE_VERSION + "/users";
     private static final String ENDPOINT_EXTERNAL_ID_LEGAL_ENTITIES = ENDPOINT_USER_PRESENTATION_SERVICE + "/externalId/%s/legalentities";
+    private static final String ENDPOINT_USER_BY_EXTERNAL_ID = ENDPOINT_USER_PRESENTATION_SERVICE + "/externalId/%s";
 
     public UserPresentationRestClient() {
         super(globalProperties.getString(CommonConstants.PROPERTY_INFRA_BASE_URI));
@@ -19,5 +20,10 @@ public class UserPresentationRestClient extends RestClient {
 
     public Response retrieveLegalEntityByExternalUserId(String externalUserId) {
         return requestSpec().get(String.format(ENDPOINT_EXTERNAL_ID_LEGAL_ENTITIES, externalUserId));
+    }
+
+    public Response getUserByExternalId(String userExternalId) {
+        return requestSpec()
+                .get(String.format(ENDPOINT_USER_BY_EXTERNAL_ID, userExternalId));
     }
 }

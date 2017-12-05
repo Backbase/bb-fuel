@@ -45,7 +45,10 @@ If more/other users are required, you can provide your own `json` files, see *Cu
 ## Extra data setup
 - The following is available for ingestion, but by default disabled - configurable via property:
 - Contacts with multiple accounts per user
+- Payments per user
 - Notifications on global target group
+
+Note: This can be rerun on an existing environment which already contains data by setting the property `ingest.entitlements` to `false`
 
 ## How to run data loader
 1. Provision an [Autoconfig](https://backbase.atlassian.net/wiki/x/94BtC) environment based on `dbs` or `dbs-microservices` stack with **at least** the following capabilities:

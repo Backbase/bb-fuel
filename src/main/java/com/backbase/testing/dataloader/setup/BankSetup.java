@@ -9,6 +9,7 @@ import com.backbase.testing.dataloader.utils.GlobalProperties;
 import java.io.IOException;
 
 import static com.backbase.testing.dataloader.data.CommonConstants.EXTERNAL_ROOT_LEGAL_ENTITY_ID;
+import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_INGEST_ENTITLEMENTS;
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_INGEST_NOTIFICATIONS;
 import static com.backbase.testing.dataloader.data.CommonConstants.USER_ADMIN;
 
@@ -21,8 +22,10 @@ public class BankSetup {
     private NotificationsConfigurator notificationsConfigurator = new NotificationsConfigurator();
 
     public void setupBankWithEntitlementsAdminAndProducts() throws IOException {
-        legalEntitiesAndUsersConfigurator.ingestRootLegalEntityAndEntitlementsAdmin(EXTERNAL_ROOT_LEGAL_ENTITY_ID, USER_ADMIN);
-        productSummaryConfigurator.ingestProducts();
+        if (globalProperties.getBoolean(PROPERTY_INGEST_ENTITLEMENTS)) {
+            legalEntitiesAndUsersConfigurator.ingestRootLegalEntityAndEntitlementsAdmin(EXTERNAL_ROOT_LEGAL_ENTITY_ID, USER_ADMIN);
+            productSummaryConfigurator.ingestProducts();
+        }
     }
 
     public void setupBankNotifications() {

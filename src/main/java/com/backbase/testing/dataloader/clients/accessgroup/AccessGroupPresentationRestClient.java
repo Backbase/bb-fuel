@@ -20,6 +20,8 @@ public class AccessGroupPresentationRestClient extends RestClient {
     private static final String ENDPOINT_ACCESSGROUP_PRESENTATION_SERVICE = "/accessgroup-presentation-service/" + SERVICE_VERSION + "/accessgroups";
     private static final String ENDPOINT_FUNCTION_BY_LEGAL_ENTITY_ID = ENDPOINT_ACCESSGROUP_PRESENTATION_SERVICE + "/function?legalEntityId=";
     private static final String ENDPOINT_DATA_BY_LEGAL_ENTITY_ID_AND_TYPE = ENDPOINT_ACCESSGROUP_PRESENTATION_SERVICE + "/data?legalEntityId=%s&type=%s";
+    private static final String ENDPOINT_PRIVILEGES_ARRANGEMENTS_BY_FUNCTIONS = ENDPOINT_ACCESSGROUP_PRESENTATION_SERVICE + "/users/privileges/arrangements?userId=%s&functionName=%s&resourceName=%s&privilegeName=%s";
+
 
     private static String getEndpointDataGroupsByLegalEntityAndType(String internalLegalEntityId, String type) {
         return String.format(ENDPOINT_DATA_BY_LEGAL_ENTITY_ID_AND_TYPE, internalLegalEntityId, type);
@@ -52,5 +54,10 @@ public class AccessGroupPresentationRestClient extends RestClient {
                 .forEach(dg -> dataGroupIds.add(dg.getDataAccessGroupId()));
 
         return dataGroupIds;
+    }
+
+    public Response getListOfArrangementsWithPrivilegesForUser(String internalUserId, String functionName, String resourceName, String privilege) {
+        return requestSpec()
+                .get(String.format(ENDPOINT_PRIVILEGES_ARRANGEMENTS_BY_FUNCTIONS, internalUserId, functionName, resourceName, privilege));
     }
 }

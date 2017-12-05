@@ -41,7 +41,7 @@ public class ProductSummaryDataGenerator {
         }
     }
 
-    private String generateRandomIban() {
+    public String generateRandomIban() {
         return Iban.random(COUNTRY_CODES.get(random.nextInt(COUNTRY_CODES.size()))).toString();
     }
 

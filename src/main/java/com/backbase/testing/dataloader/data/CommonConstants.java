@@ -1,6 +1,9 @@
 package com.backbase.testing.dataloader.data;
 
-public class CommonConstants {
+public final class CommonConstants {
+
+    private CommonConstants() {
+    }
 
     // Environment
     public static final String PROPERTIES_FILE_NAME = "environment.properties";
@@ -9,7 +12,6 @@ public class CommonConstants {
     public static final String PROPERTY_ENTITLEMENTS_BASE_URI = "entitlements.base.uri";
     public static final String PROPERTY_PRODUCTSUMMARY_BASE_URI = "productsummary.base.uri";
     public static final String PROPERTY_TRANSACTIONS_BASE_URI = "transactions.base.uri";
-
 
     // Users
     public static final String USER_ADMIN = "admin";
@@ -21,6 +23,7 @@ public class CommonConstants {
     // Entitlements
     public static final String EXTERNAL_LEGAL_ENTITY_ID_PREFIX = "C00000";
     public static final String EXTERNAL_ROOT_LEGAL_ENTITY_ID = EXTERNAL_LEGAL_ENTITY_ID_PREFIX + "0";
+    public static final String PROPERTY_INGEST_ENTITLEMENTS = "ingest.entitlements";
 
     // Products
     public static final String PROPERTY_PRODUCTS_JSON_LOCATION = "products.json.location";
@@ -41,4 +44,7 @@ public class CommonConstants {
     public static final String PROPERTY_CONTACT_ACCOUNTS_MIN = "contact.accounts.min";
     public static final String PROPERTY_CONTACT_ACCOUNTS_MAX = "contact.accounts.max";
     public static final String PROPERTY_INGEST_CONTACTS = "ingest.contacts";
+    public static final String PROPERTY_PAYMENTS_MIN = "payments.min";
+    public static final String PROPERTY_PAYMENTS_MAX = "payments.max";
+    public static final String PROPERTY_INGEST_PAYMENTS = "ingest.payments";
 }

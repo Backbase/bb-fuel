@@ -37,7 +37,8 @@ public class PaymentsConfigurator {
     private static final String PRIVILEGE_CREATE = "create";
 
     public void ingestPaymentOrders(String externalUserId) {
-        List<ArrangementsByBusinessFunctionGetResponseBody> sepaArrangements = getSepaArrangementsByExternalUserId(externalUserId);
+        loginRestClient.login(externalUserId, externalUserId);
+        List<ArrangementsByBusinessFunctionGetResponseBody> sepaArrangements = getSepaArrangements();
 
         for (int i = 0; i < CommonHelpers.generateRandomNumberInRange(globalProperties.getInt(PROPERTY_PAYMENTS_MIN), globalProperties.getInt(PROPERTY_PAYMENTS_MAX)); i++) {
             ArrangementsByBusinessFunctionGetResponseBody randomArrangement = sepaArrangements.get(random.nextInt(sepaArrangements.size()));
@@ -50,9 +51,7 @@ public class PaymentsConfigurator {
         }
     }
 
-    public List<ArrangementsByBusinessFunctionGetResponseBody> getSepaArrangementsByExternalUserId(String externalUserId) {
-        loginRestClient.login(externalUserId, externalUserId);
-
+    public List<ArrangementsByBusinessFunctionGetResponseBody> getSepaArrangements() {
         ArrangementsByBusinessFunctionGetResponseBody[] arrangements = productSummaryPresentationRestClient.getProductSummaryContextArrangements(new ProductSummaryQueryParameters()
                 .withBusinessFunction(ENTITLEMENTS_PAYMENTS_FUNCTION_NAME)
                 .withResourceName(ENTITLEMENTS_PAYMENTS_RESOURCE_NAME)

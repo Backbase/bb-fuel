@@ -18,15 +18,15 @@
         <javafaker.version>0.13</javafaker.version>
         <iban4j.version>3.2.1</iban4j.version>
         <junit.version>4.12</junit.version>
+        <maven-assembly-plugin.version>2.4.1</maven-assembly-plugin.version>
         <user-presentation-spec.version>1.10.3</user-presentation-spec.version>
         <user-integration-spec.version>1.10.2</user-integration-spec.version>
         <accessgroup-presentation-spec.version>1.10.5</accessgroup-presentation-spec.version>
-        <product-summary-presentation-spec.version>1.7.13</product-summary-presentation-spec.version>
-        <product-integration-spec.version>1.7.3</product-integration-spec.version>
-        <arrangement-integration-spec.version>1.7.11</arrangement-integration-spec.version>
-        <transaction-integration-external-inbound-spec.version>1.7.4</transaction-integration-external-inbound-spec.version>
-        <maven-assembly-plugin.version>2.4.1</maven-assembly-plugin.version>
         <accessgroup-integration-spec.version>1.10.2</accessgroup-integration-spec.version>
+        <product-summary-presentation-spec.version>1.10.2</product-summary-presentation-spec.version>
+        <product-integration-spec.version>1.8.0</product-integration-spec.version>
+        <arrangement-integration-spec.version>1.10.2</arrangement-integration-spec.version>
+        <transaction-integration-external-inbound-spec.version>1.10.2</transaction-integration-external-inbound-spec.version>
         <legalentity-presentation-spec.version>1.10.8</legalentity-presentation-spec.version>
         <notifications-presentation-spec.version>1.8.5</notifications-presentation-spec.version>
         <contact-presentation-spec.version>3.1.3</contact-presentation-spec.version>

@@ -16,13 +16,14 @@ public class ContactsDataGenerator {
 
     private static GlobalProperties globalProperties = GlobalProperties.getInstance();
     private Faker faker = new Faker();
+    private ProductSummaryDataGenerator productSummaryDataGenerator = new ProductSummaryDataGenerator();
 
     public ContactsPostRequestBody generateContactsPostRequestBody() {
         List<AccountInformation> accounts = new ArrayList<>();
 
         for (int i = 0; i < CommonHelpers.generateRandomNumberInRange(globalProperties.getInt(PROPERTY_CONTACT_ACCOUNTS_MIN), globalProperties.getInt(PROPERTY_CONTACT_ACCOUNTS_MAX)); i++) {
             accounts.add(new AccountInformation().withName(faker.lorem().sentence(3, 0).replace(".", ""))
-                    .withIBAN(faker.finance().iban().trim().replaceAll("\\s",""))
+                    .withIBAN(productSummaryDataGenerator.generateRandomIban())
                     .withAccountNumber(faker.finance().iban())
                     .withAlias(faker.lorem().characters(10))
                     .withAccountHolderAddressLine1(faker.address().streetAddress())

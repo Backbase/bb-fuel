@@ -31,7 +31,7 @@ public class ProductSummaryDataGenerator {
     private Random random = new Random();
     private static final List<CountryCode> COUNTRY_CODES;
     static {
-        List<String> allowed = Arrays.asList("AT", "BE", "BG", "CH", "CY", "CZ", "DE", "DK", "EE", "ES", "FI", "FR", "GB", "GI", "GR", "HR", "HU", "IE", "IS", "IT", "LI", "LT", "LU", "LV", "MC", "MT", "NL", "NO", "PL", "PT", "RO", "SE", "SI", "SK", "SM");
+        List<String> allowed = Arrays.asList("AT", "BE", "BG", "CH", "CY", "CZ", "DE", "DK", "EE", "ES", "FI", "FR", "GB", "GI", "GR", "HR", "HU", "IE", "IS", "IT", "LI", "LT", "LU", "LV", "MC", "MT", "NL", "PL", "PT", "RO", "SE", "SI", "SK", "SM");
         COUNTRY_CODES = new ArrayList<>();
         CountryCode[] values = CountryCode.values();
         for (CountryCode code : values) {

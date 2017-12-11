@@ -63,6 +63,7 @@ public class UsersSetup {
             for (Map<String, List<String>> userList : userLists) {
                 List<String> externalUserIds = userList.get(USERS_JSON_EXTERNAL_USER_IDS_FIELD);
 
+                legalEntitiesAndUsersConfigurator.ingestUsersUnderNewLegalEntity(externalUserIds, EXTERNAL_ROOT_LEGAL_ENTITY_ID);
                 setupUsersWithAllFunctionDataGroupsAndPrivilegesUnderNewLegalEntity(externalUserIds);
             }
 
@@ -100,8 +101,6 @@ public class UsersSetup {
     private void setupUsersWithAllFunctionDataGroupsAndPrivilegesUnderNewLegalEntity(List<String> externalUserIds) {
         Map<String, LegalEntityByUserGetResponseBody> userLegalEntities = new HashMap<>();
         Set<LegalEntityByUserGetResponseBody> legalEntities = new HashSet<>();
-
-        legalEntitiesAndUsersConfigurator.ingestUsersUnderNewLegalEntity(externalUserIds, EXTERNAL_ROOT_LEGAL_ENTITY_ID);
 
         for (String externalUserId : externalUserIds) {
             loginRestClient.login(USER_ADMIN, USER_ADMIN);

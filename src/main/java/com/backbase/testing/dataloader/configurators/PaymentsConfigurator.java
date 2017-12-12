@@ -56,7 +56,8 @@ public class PaymentsConfigurator {
                 .withBusinessFunction(ENTITLEMENTS_PAYMENTS_FUNCTION_NAME)
                 .withResourceName(ENTITLEMENTS_PAYMENTS_RESOURCE_NAME)
                 .withPrivilege(PRIVILEGE_CREATE)
-                .withSize(999))
+                .withSize(999)
+                .withOrderBy("name"))
                 .then()
                 .extract()
                 .as(ArrangementsByBusinessFunctionGetResponseBody[].class);

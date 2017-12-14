@@ -12,7 +12,6 @@ import com.backbase.testing.dataloader.utils.GlobalProperties;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static com.backbase.testing.dataloader.data.CommonConstants.EXTERNAL_ROOT_LEGAL_ENTITY_ID;
@@ -41,7 +40,7 @@ public class BankSetup {
             productSummaryConfigurator.ingestProducts();
             setupFunctionDataGroupsUnderRootLegalEntity();
             loginRestClient.login(USER_ADMIN, USER_ADMIN);
-            permissionsConfigurator.assignAllFunctionDataGroupsOfLegalEntityToUserAndServiceAgreement(EXTERNAL_ROOT_LEGAL_ENTITY_ID, USER_ADMIN, null);
+            permissionsConfigurator.assignAllFunctionDataGroupsOfLegalEntityToUserAndMasterServiceAgreement(EXTERNAL_ROOT_LEGAL_ENTITY_ID, USER_ADMIN);
         }
     }
 

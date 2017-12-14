@@ -119,7 +119,7 @@ public class UsersSetup {
             String externalUserId = entry.getKey();
             LegalEntityByUserGetResponseBody legalEntity = entry.getValue();
 
-            permissionsConfigurator.assignAllFunctionDataGroupsOfLegalEntityToUserAndServiceAgreement(legalEntity.getExternalId(), externalUserId, null);
+            permissionsConfigurator.assignAllFunctionDataGroupsOfLegalEntityToUserAndMasterServiceAgreement(legalEntity.getExternalId(), externalUserId);
         }
     }
 

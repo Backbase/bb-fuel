@@ -3,6 +3,7 @@ package com.backbase.testing.dataloader.configurators;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.Consumer;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.FunctionDataGroupPair;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.Provider;
+import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementPostResponseBody;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.function.FunctionAccessGroupsGetResponseBody;
 import com.backbase.presentation.user.rest.spec.v2.users.LegalEntityByUserGetResponseBody;
 import com.backbase.testing.dataloader.clients.accessgroup.AccessGroupPresentationRestClient;
@@ -18,6 +19,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static com.backbase.testing.dataloader.data.CommonConstants.USER_ADMIN;
+import static org.apache.http.HttpStatus.SC_CREATED;
 import static org.apache.http.HttpStatus.SC_OK;
 
 public class ServiceAgreementsConfigurator {
@@ -30,10 +32,24 @@ public class ServiceAgreementsConfigurator {
     private ServiceAgreementsDataGenerator serviceAgreementsDataGenerator = new ServiceAgreementsDataGenerator();
     private AccessGroupPresentationRestClient accessGroupPresentationRestClient = new AccessGroupPresentationRestClient();
 
-    public void ingestServiceAgreementWithProvidersAndConsumersWithAllFunctionDataGroups(Set<Provider> providers, Set<Consumer> consumers) {
-        Set<FunctionDataGroupPair> functionDataGroupPairs = new HashSet<>();
-
+    public String ingestServiceAgreementWithProvidersAndConsumersWithAllFunctionDataGroups(Set<Provider> providers, Set<Consumer> consumers) {
         loginRestClient.login(USER_ADMIN, USER_ADMIN);
+        enrichConsumersWithIdAndFunctionDataGroupPairs(consumers);
+        enrichProvidersWithId(providers);
+
+        String serviceAgreementId = serviceAgreementsIntegrationRestClient.ingestServiceAgreement(serviceAgreementsDataGenerator.generateServiceAgreementPostRequestBody(providers, consumers))
+                .then()
+                .statusCode(SC_CREATED)
+                .extract()
+                .as(ServiceAgreementPostResponseBody.class)
+                .getId();
+
+        LOGGER.info(String.format("Service agreement ingested for provider legal entities - admins/users %s, consumer legal entities - admins with all function groups and data groups exposed %s", Arrays.toString(providers.toArray()), Arrays.toString(consumers.toArray())));
+
+        return serviceAgreementId;
+    }
+
+    private void enrichConsumersWithIdAndFunctionDataGroupPairs(Set<Consumer> consumers) {
         for (Consumer consumer : consumers) {
             String externalConsumerAdminUserId = consumer.getAdmins()
                     .iterator()
@@ -55,6 +71,7 @@ public class ServiceAgreementsConfigurator {
                     .as(FunctionAccessGroupsGetResponseBody[].class);
 
             Set<String> dataGroupIds = new HashSet<>(accessGroupPresentationRestClient.retrieveAllDataGroupIdsByLegalEntity(internalConsumerLegalEntityId));
+            Set<FunctionDataGroupPair> functionDataGroupPairs = new HashSet<>();
 
             for (FunctionAccessGroupsGetResponseBody functionGroup : functionGroups) {
                 functionDataGroupPairs.add(new FunctionDataGroupPair()
@@ -62,10 +79,12 @@ public class ServiceAgreementsConfigurator {
                         .withDataGroup(dataGroupIds));
             }
 
-            consumer.withId(externalConsumerLegalEntityId)
-                    .withFunctionDataGroupPairs(functionDataGroupPairs);
+            consumer.setId(externalConsumerLegalEntityId);
+            consumer.setFunctionDataGroupPairs(functionDataGroupPairs);
         }
+    }
 
+    private void enrichProvidersWithId(Set<Provider> providers) {
         for (Provider provider : providers) {
             String externalProviderAdminUserId = provider.getAdmins()
                     .iterator()
@@ -80,8 +99,5 @@ public class ServiceAgreementsConfigurator {
 
             provider.setId(externalProviderLegalEntityId);
         }
-
-        serviceAgreementsIntegrationRestClient.ingestServiceAgreement(serviceAgreementsDataGenerator.generateServiceAgreementPostRequestBody(providers, consumers));
-        LOGGER.info(String.format("Service agreement ingested for provider legal entities - admins/users %s, consumer legal entities - admins with all function groups and data groups exposed %s", Arrays.toString(providers.toArray()), Arrays.toString(consumers.toArray())));
     }
 }

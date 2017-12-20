@@ -12,6 +12,7 @@ properties([
 
 node {
     stage('Load data') {
+        cleanWs()
         git([credentialsId: 'e7e47e6e-8b7e-41f3-a854-b223f2985c96', url: 'ssh://git@stash.backbase.com:7999/~kwo/dataloader.git', branch: 'master'])
 
         withEnv(["JAVA_HOME=${tool name: 'jdk-8u152'}", "PATH+MAVEN=${tool name: 'maven-352'}/bin:${env.JAVA_HOME}/bin"]) {
@@ -29,7 +30,5 @@ node {
                     "-Dingest.notifications=${params.INGEST_NOTIFICATIONS} " +
                     "-Dingest.payments=${params.INGEST_PAYMENTS} -jar target/dataloader-jar-with-dependencies.jar"
         }
-
-        cleanWs()
     }
 }

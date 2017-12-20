@@ -29,5 +29,7 @@ node {
                     "-Dingest.notifications=${params.INGEST_NOTIFICATIONS} " +
                     "-Dingest.payments=${params.INGEST_PAYMENTS} -jar target/dataloader-jar-with-dependencies.jar"
         }
+
+        cleanWs()
     }
 }

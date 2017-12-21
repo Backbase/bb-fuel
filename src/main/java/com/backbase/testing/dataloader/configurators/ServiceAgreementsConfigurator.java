@@ -34,6 +34,7 @@ public class ServiceAgreementsConfigurator {
 
     public String ingestServiceAgreementWithProvidersAndConsumersWithAllFunctionDataGroups(Set<Provider> providers, Set<Consumer> consumers) {
         loginRestClient.login(USER_ADMIN, USER_ADMIN);
+        accessGroupPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
         enrichConsumersWithIdAndFunctionDataGroupPairs(consumers);
         enrichProvidersWithId(providers);
 

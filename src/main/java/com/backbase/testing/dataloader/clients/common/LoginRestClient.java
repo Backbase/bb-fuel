@@ -7,7 +7,6 @@ import io.restassured.response.ValidatableResponse;
 import java.util.HashMap;
 import java.util.Map;
 
-
 public class LoginRestClient extends RestClient {
 
     private static GlobalProperties globalProperties = GlobalProperties.getInstance();
@@ -19,7 +18,6 @@ public class LoginRestClient extends RestClient {
     }
 
     public void login(String username, String password) {
-
         ValidatableResponse response = requestSpec().param("username", username)
                 .param("password", password)
                 .param("submit", "Login")

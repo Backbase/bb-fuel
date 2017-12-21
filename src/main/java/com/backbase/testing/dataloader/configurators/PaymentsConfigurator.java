@@ -2,6 +2,7 @@ package com.backbase.testing.dataloader.configurators;
 
 import com.backbase.dbs.presentation.paymentorder.rest.spec.v2.paymentorders.InitiatePaymentOrder;
 import com.backbase.presentation.productsummary.rest.spec.v2.productsummary.ArrangementsByBusinessFunctionGetResponseBody;
+import com.backbase.testing.dataloader.clients.accessgroup.AccessGroupPresentationRestClient;
 import com.backbase.testing.dataloader.clients.common.LoginRestClient;
 import com.backbase.testing.dataloader.clients.payment.PaymentOrderPresentationRestClient;
 import com.backbase.testing.dataloader.clients.productsummary.ProductSummaryPresentationRestClient;
@@ -30,6 +31,7 @@ public class PaymentsConfigurator {
     private PaymentOrderPresentationRestClient paymentOrderPresentationRestClient = new PaymentOrderPresentationRestClient();
     private LoginRestClient loginRestClient = new LoginRestClient();
     private ProductSummaryPresentationRestClient productSummaryPresentationRestClient = new ProductSummaryPresentationRestClient();
+    private AccessGroupPresentationRestClient accessGroupPresentationRestClient = new AccessGroupPresentationRestClient();
     private PaymentsDataGenerator paymentsDataGenerator = new PaymentsDataGenerator();
 
     private static final String ENTITLEMENTS_PAYMENTS_FUNCTION_NAME = "SEPA CT";
@@ -38,6 +40,7 @@ public class PaymentsConfigurator {
 
     public void ingestPaymentOrders(String externalUserId) {
         loginRestClient.login(externalUserId, externalUserId);
+        accessGroupPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
         List<ArrangementsByBusinessFunctionGetResponseBody> sepaArrangements = getSepaArrangements();
 
         for (int i = 0; i < CommonHelpers.generateRandomNumberInRange(globalProperties.getInt(PROPERTY_PAYMENTS_MIN), globalProperties.getInt(PROPERTY_PAYMENTS_MAX)); i++) {

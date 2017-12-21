@@ -75,20 +75,21 @@ public class UsersSetup {
         }
     }
 
-    public void setupContactsPerUser() throws IOException {
+    public void setupContactsPerUser() {
         if (globalProperties.getBoolean(PROPERTY_INGEST_CONTACTS)) {
             for (Map<String, List<String>> userList : userLists) {
                 List<String> externalUserIds = userList.get(USERS_JSON_EXTERNAL_USER_IDS_FIELD);
 
                 externalUserIds.forEach(externalUserId -> {
                     loginRestClient.login(externalUserId, externalUserId);
+                    accessGroupPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
                     contactsConfigurator.ingestContacts();
                 });
             }
         }
     }
 
-    public void setupPaymentsPerUser() throws IOException {
+    public void setupPaymentsPerUser() {
         if (globalProperties.getBoolean(PROPERTY_INGEST_PAYMENTS)) {
             for (Map<String, List<String>> userList : userLists) {
                 List<String> externalUserIds = userList.get(USERS_JSON_EXTERNAL_USER_IDS_FIELD);
@@ -104,6 +105,7 @@ public class UsersSetup {
 
         for (String externalUserId : externalUserIds) {
             loginRestClient.login(USER_ADMIN, USER_ADMIN);
+            accessGroupPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
             userLegalEntities.put(externalUserId, userPresentationRestClient.retrieveLegalEntityByExternalUserId(externalUserId)
                     .then()

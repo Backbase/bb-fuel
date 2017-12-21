@@ -1,5 +1,6 @@
 package com.backbase.testing.dataloader.setup;
 
+import com.backbase.testing.dataloader.clients.accessgroup.AccessGroupPresentationRestClient;
 import com.backbase.testing.dataloader.clients.common.LoginRestClient;
 import com.backbase.testing.dataloader.configurators.AccessGroupsConfigurator;
 import com.backbase.testing.dataloader.configurators.LegalEntitiesAndUsersConfigurator;
@@ -27,12 +28,10 @@ public class BankSetup {
     private AccessGroupsConfigurator accessGroupsConfigurator = new AccessGroupsConfigurator();
     private ProductSummaryConfigurator productSummaryConfigurator = new ProductSummaryConfigurator();
     private PermissionsConfigurator permissionsConfigurator = new PermissionsConfigurator();
+    private AccessGroupPresentationRestClient accessGroupPresentationRestClient = new AccessGroupPresentationRestClient();
     private LoginRestClient loginRestClient = new LoginRestClient();
     private NotificationsConfigurator notificationsConfigurator = new NotificationsConfigurator();
     private TransactionsConfigurator transactionsConfigurator = new TransactionsConfigurator();
-
-    public BankSetup() throws IOException {
-    }
 
     public void setupBankWithEntitlementsAdminAndProducts() throws IOException {
         if (globalProperties.getBoolean(PROPERTY_INGEST_ENTITLEMENTS)) {
@@ -40,6 +39,7 @@ public class BankSetup {
             productSummaryConfigurator.ingestProducts();
             setupFunctionDataGroupsUnderRootLegalEntity();
             loginRestClient.login(USER_ADMIN, USER_ADMIN);
+            accessGroupPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
             permissionsConfigurator.assignAllFunctionDataGroupsOfLegalEntityToUserAndMasterServiceAgreement(EXTERNAL_ROOT_LEGAL_ENTITY_ID, USER_ADMIN);
         }
     }
@@ -47,6 +47,7 @@ public class BankSetup {
     public void setupBankNotifications() {
         if (globalProperties.getBoolean(PROPERTY_INGEST_NOTIFICATIONS)) {
             loginRestClient.login(USER_ADMIN, USER_ADMIN);
+            accessGroupPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
             notificationsConfigurator.ingestNotifications();
         }
     }

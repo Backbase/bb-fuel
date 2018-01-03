@@ -15,34 +15,36 @@ public class AccessGroupIntegrationRestClient extends RestClient {
 
     private static GlobalProperties globalProperties = GlobalProperties.getInstance();
     private static final String SERVICE_VERSION = "v2";
-    private static final String ENDPOINT_ACCESSGROUP_INTEGRATION_SERVICE = "/accessgroup-integration-service/" + SERVICE_VERSION + "/accessgroups";
-    private static final String ENDPOINT_CONFIG_FUNCTIONS = ENDPOINT_ACCESSGROUP_INTEGRATION_SERVICE + "/config/functions";
-    private static final String ENDPOINT_FUNCTION = ENDPOINT_ACCESSGROUP_INTEGRATION_SERVICE + "/function";
-    private static final String ENDPOINT_USERS_PERMISSIONS = ENDPOINT_ACCESSGROUP_INTEGRATION_SERVICE + "/users/permissions";
-    private static final String ENDPOINT_DATA = ENDPOINT_ACCESSGROUP_INTEGRATION_SERVICE + "/data";
+    private static final String ACCESSGROUP_INTEGRATION_SERVICE = "accessgroup-integration-service";
+    private static final String ENDPOINT_ACCESSGROUPS = "/accessgroups";
+    private static final String ENDPOINT_CONFIG_FUNCTIONS = ENDPOINT_ACCESSGROUPS + "/config/functions";
+    private static final String ENDPOINT_FUNCTION = ENDPOINT_ACCESSGROUPS + "/function";
+    private static final String ENDPOINT_USERS_PERMISSIONS = ENDPOINT_ACCESSGROUPS + "/users/permissions";
+    private static final String ENDPOINT_DATA = ENDPOINT_ACCESSGROUPS + "/data";
 
     public AccessGroupIntegrationRestClient() {
-        super(globalProperties.getString(PROPERTY_ENTITLEMENTS_BASE_URI));
+        super(globalProperties.getString(PROPERTY_ENTITLEMENTS_BASE_URI), SERVICE_VERSION);
+        setInitialPath(ACCESSGROUP_INTEGRATION_SERVICE);
     }
 
     public Response ingestFunctionGroup(FunctionGroupsPostRequestBody body) {
         return requestSpec()
                 .contentType(ContentType.JSON)
                 .body(body)
-                .post(ENDPOINT_FUNCTION);
+                .post(getPath(ENDPOINT_FUNCTION));
     }
 
     public Response ingestDataGroup(DataGroupsPostRequestBody body) {
         return requestSpec()
                 .contentType(ContentType.JSON)
                 .body(body)
-                .post(ENDPOINT_DATA);
+                .post(getPath(ENDPOINT_DATA));
     }
 
     public Response retrieveFunctions() {
         return requestSpec()
                 .contentType(ContentType.JSON)
-                .get(ENDPOINT_CONFIG_FUNCTIONS);
+                .get(getPath(ENDPOINT_CONFIG_FUNCTIONS));
     }
 
     public FunctionsGetResponseBody retrieveFunctionByName(String functionName) {
@@ -63,6 +65,6 @@ public class AccessGroupIntegrationRestClient extends RestClient {
         return requestSpec()
                 .contentType(ContentType.JSON)
                 .body(body)
-                .post(ENDPOINT_USERS_PERMISSIONS);
+                .post(getPath(ENDPOINT_USERS_PERMISSIONS));
     }
 }

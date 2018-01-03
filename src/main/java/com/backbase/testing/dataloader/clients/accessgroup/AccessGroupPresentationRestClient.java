@@ -24,32 +24,28 @@ public class AccessGroupPresentationRestClient extends RestClient {
 
     private static GlobalProperties globalProperties = GlobalProperties.getInstance();
     private static final String SERVICE_VERSION = "v2";
-    private static final String ENDPOINT_ACCESSGROUP_PRESENTATION_SERVICE = "/accessgroup-presentation-service/" + SERVICE_VERSION + "/accessgroups";
-    private static final String ENDPOINT_FUNCTION_BY_LEGAL_ENTITY_ID = ENDPOINT_ACCESSGROUP_PRESENTATION_SERVICE + "/function?legalEntityId=";
-    private static final String ENDPOINT_DATA_BY_LEGAL_ENTITY_ID_AND_TYPE = ENDPOINT_ACCESSGROUP_PRESENTATION_SERVICE + "/data?legalEntityId=%s&type=%s";
-    private static final String ENDPOINT_PRIVILEGES_ARRANGEMENTS_BY_FUNCTIONS = ENDPOINT_ACCESSGROUP_PRESENTATION_SERVICE + "/users/privileges/arrangements?userId=%s&functionName=%s&resourceName=%s&privilegeName=%s";
-    private static final String ENDPOINT_USER_CONTEXT = ENDPOINT_ACCESSGROUP_PRESENTATION_SERVICE + "/usercontext";
+    private static final String ACCESSGROUP_PRESENTATION_SERVICE = "accessgroup-presentation-service";
+    private static final String ENDPOINT_ACCESSGROUPS = "/accessgroups";
+    private static final String ENDPOINT_FUNCTION_BY_LEGAL_ENTITY_ID = ENDPOINT_ACCESSGROUPS + "/function?legalEntityId=%s";
+    private static final String ENDPOINT_DATA_BY_LEGAL_ENTITY_ID_AND_TYPE = ENDPOINT_ACCESSGROUPS + "/data?legalEntityId=%s&type=%s";
+    private static final String ENDPOINT_PRIVILEGES_ARRANGEMENTS_BY_FUNCTIONS = ENDPOINT_ACCESSGROUPS + "/users/privileges/arrangements?userId=%s&functionName=%s&resourceName=%s&privilegeName=%s";
+    private static final String ENDPOINT_USER_CONTEXT = ENDPOINT_ACCESSGROUPS + "/usercontext";
     private static final String ENDPOINT_USER_CONTEXT_SERVICE_AGREEMENTS = ENDPOINT_USER_CONTEXT + "/serviceagreements";
     private static final String ENDPOINT_USER_CONTEXT_LEGAL_ENTITIES_BY_SERVICE_AGREEMENT_ID = ENDPOINT_USER_CONTEXT_SERVICE_AGREEMENTS + "/%s/legalentities";
 
-
-    private static String getEndpointDataGroupsByLegalEntityAndType(String internalLegalEntityId, String type) {
-        return String.format(ENDPOINT_DATA_BY_LEGAL_ENTITY_ID_AND_TYPE, internalLegalEntityId, type);
-    }
-
     public AccessGroupPresentationRestClient() {
-        super(globalProperties.getString(PROPERTY_INFRA_BASE_URI));
-        setInitialPath(globalProperties.getString(PROPERTY_GATEWAY_PATH));
+        super(globalProperties.getString(PROPERTY_INFRA_BASE_URI), SERVICE_VERSION);
+        setInitialPath(globalProperties.getString(PROPERTY_GATEWAY_PATH) + "/" + ACCESSGROUP_PRESENTATION_SERVICE);
     }
 
     public Response retrieveFunctionGroupsByLegalEntity(String internalLegalEntityId) {
         return requestSpec()
-                .get(ENDPOINT_FUNCTION_BY_LEGAL_ENTITY_ID + internalLegalEntityId);
+                .get(String.format(getPath(ENDPOINT_FUNCTION_BY_LEGAL_ENTITY_ID), internalLegalEntityId));
     }
 
     public Response retrieveDataGroupsByLegalEntityAndType(String internalLegalEntityId, String type) {
         return requestSpec()
-                .get(getEndpointDataGroupsByLegalEntityAndType(internalLegalEntityId, type));
+                .get(String.format(getPath(ENDPOINT_DATA_BY_LEGAL_ENTITY_ID_AND_TYPE), internalLegalEntityId, type));
     }
 
     public List<String> retrieveAllDataGroupIdsByLegalEntity(String internalLegalEntityId) {
@@ -68,14 +64,14 @@ public class AccessGroupPresentationRestClient extends RestClient {
 
     public Response getListOfArrangementsWithPrivilegesForUser(String internalUserId, String functionName, String resourceName, String privilege) {
         return requestSpec()
-                .get(String.format(ENDPOINT_PRIVILEGES_ARRANGEMENTS_BY_FUNCTIONS, internalUserId, functionName, resourceName, privilege));
+                .get(String.format(getPath(ENDPOINT_PRIVILEGES_ARRANGEMENTS_BY_FUNCTIONS), internalUserId, functionName, resourceName, privilege));
     }
 
     public Response postUserContext(UserContextPostRequestBody userContextPostRequestBody) {
         Response response = requestSpec()
                 .contentType(ContentType.JSON)
                 .body(userContextPostRequestBody)
-                .post(ENDPOINT_USER_CONTEXT);
+                .post(getPath(ENDPOINT_USER_CONTEXT));
 
         Map<String, String> cookies = new HashMap<>(response.then().extract().cookies());
         setUpCookies(cookies);
@@ -86,13 +82,13 @@ public class AccessGroupPresentationRestClient extends RestClient {
     public Response getServiceAgreementsForUserContext() {
         return requestSpec()
                 .contentType(ContentType.JSON)
-                .get(ENDPOINT_USER_CONTEXT_SERVICE_AGREEMENTS);
+                .get(getPath(ENDPOINT_USER_CONTEXT_SERVICE_AGREEMENTS));
     }
 
     public Response getLegalEntitiesForServiceAgreements(String serviceAgreementId) {
         return requestSpec()
                 .contentType(ContentType.JSON)
-                .get(String.format(ENDPOINT_USER_CONTEXT_LEGAL_ENTITIES_BY_SERVICE_AGREEMENT_ID, serviceAgreementId));
+                .get(String.format(getPath(ENDPOINT_USER_CONTEXT_LEGAL_ENTITIES_BY_SERVICE_AGREEMENT_ID), serviceAgreementId));
     }
 
     public void selectContextBasedOnMasterServiceAgreement() {

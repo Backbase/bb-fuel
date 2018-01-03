@@ -12,17 +12,19 @@ public class ServiceAgreementsIntegrationRestClient extends RestClient {
 
     private static GlobalProperties globalProperties = GlobalProperties.getInstance();
     private static final String SERVICE_VERSION = "v2";
-    private static final String ENDPOINT_ACCESSGROUP_INTEGRATION_SERVICE = "/accessgroup-integration-service/" + SERVICE_VERSION + "/accessgroups";
-    private static final String ENDPOINT_SERVICEAGREEMENTS = ENDPOINT_ACCESSGROUP_INTEGRATION_SERVICE + "/serviceagreements";
+    private static final String ACCESSGROUP_INTEGRATION_SERVICE = "accessgroup-integration-service";
+    private static final String ENDPOINT_ACCESSGROUPS = "/accessgroups";
+    private static final String ENDPOINT_SERVICEAGREEMENTS = ENDPOINT_ACCESSGROUPS + "/serviceagreements";
 
     public ServiceAgreementsIntegrationRestClient() {
-        super(globalProperties.getString(PROPERTY_ENTITLEMENTS_BASE_URI));
+        super(globalProperties.getString(PROPERTY_ENTITLEMENTS_BASE_URI), SERVICE_VERSION);
+        setInitialPath(ACCESSGROUP_INTEGRATION_SERVICE);
     }
 
     public Response ingestServiceAgreement(ServiceAgreementPostRequestBody body) {
         return requestSpec()
                 .contentType(ContentType.JSON)
                 .body(body)
-                .post(ENDPOINT_SERVICEAGREEMENTS);
+                .post(getPath(ENDPOINT_SERVICEAGREEMENTS));
     }
 }

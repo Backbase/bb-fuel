@@ -14,7 +14,7 @@ public class LoginRestClient extends RestClient {
 
     public LoginRestClient() {
         super(globalProperties.getString(CommonConstants.PROPERTY_INFRA_BASE_URI));
-        super.setInitialPath(globalProperties.getString(CommonConstants.PROPERTY_GATEWAY_PATH) + globalProperties.getString(PROPERTY_LOGIN_PATH));
+        setInitialPath(globalProperties.getString(CommonConstants.PROPERTY_GATEWAY_PATH) + globalProperties.getString(PROPERTY_LOGIN_PATH));
     }
 
     public void login(String username, String password) {

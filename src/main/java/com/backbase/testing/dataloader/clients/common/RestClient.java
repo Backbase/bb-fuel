@@ -58,12 +58,18 @@ public class RestClient {
     private URI baseURI = null;
     private RestAssuredConfig restAssuredConfig;
     private String initialPath = "";
+    private String version;
 
     private static Map<String, String> cookiesJar = new LinkedHashMap<>();
     private final ResponseParserRegistrar responseParserRegistrar = new ResponseParserRegistrar();
 
     public RestClient(String baseUri) {
         setBaseUri(baseUri);
+    }
+
+    public RestClient(String baseUri, String version) {
+        setBaseUri(baseUri);
+        this.version = version;
     }
 
     private void setBaseUri(String baseUri) {
@@ -98,6 +104,10 @@ public class RestClient {
 
     public String getInitialPath() {
         return initialPath;
+    }
+
+    public String getPath(String endpoint) {
+        return version + endpoint;
     }
 
     public String getBaseURIWithoutPort() {

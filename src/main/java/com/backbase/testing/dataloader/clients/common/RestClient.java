@@ -7,11 +7,13 @@ import io.restassured.RestAssured;
 import io.restassured.config.LogConfig;
 import io.restassured.config.ObjectMapperConfig;
 import io.restassured.config.RestAssuredConfig;
+import io.restassured.http.ContentType;
 import io.restassured.internal.RequestSpecificationImpl;
 import io.restassured.internal.ResponseParserRegistrar;
 import io.restassured.internal.ResponseSpecificationImpl;
 import io.restassured.internal.TestSpecificationImpl;
 import io.restassured.internal.log.LogRepository;
+import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.apache.http.client.utils.URIBuilder;
 
@@ -22,6 +24,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static io.restassured.config.HttpClientConfig.httpClientConfig;
+import static org.apache.http.HttpStatus.SC_OK;
+import static org.hamcrest.CoreMatchers.equalTo;
 
 /**
  * <p>
@@ -54,6 +58,8 @@ public class RestClient {
 
     private static final String PARAMETER_NAME = "CONNECTION_MANAGER_TIMEOUT";
     private static final int TIMEOUT_VALUE = 10000;
+    private static final String DEFAULT_HEALTH_PATH = "/production-support/health";
+    private static final String SERVER_STATUS_UP = "UP";
 
     private URI baseURI = null;
     private RestAssuredConfig restAssuredConfig;
@@ -145,5 +151,26 @@ public class RestClient {
         requestSpec.cookies(getCookies());
 
         return requestSpec;
+    }
+
+    /**
+     * @return DbsResponse containing information about the health of this service:
+     * https://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-endpoints.html
+     */
+    public Response getHealth() {
+        return requestSpec()
+                .contentType(ContentType.JSON)
+                .get(DEFAULT_HEALTH_PATH);
+    }
+
+    /**
+     * Returns true when the health endpoint of the server returns 200 and status: "UP".
+     *
+     * @return Whether the service is up.
+     */
+    public boolean isUp() {
+        Response health = getHealth();
+        return health.statusCode() == SC_OK &&
+                health.getBody().jsonPath().getString("status").equals(SERVER_STATUS_UP);
     }
 }

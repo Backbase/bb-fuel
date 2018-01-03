@@ -21,4 +21,8 @@ public class CommonHelpers {
         long value = Math.abs((random.nextLong() % clamp));
         return new BigDecimal("" + ((value / 10D) + min)).setScale(2, BigDecimal.ROUND_HALF_UP);
     }
+
+    public static long convertMinutesToMillis(long minutes) {
+        return (minutes * 60L * 1000L);
+    }
 }

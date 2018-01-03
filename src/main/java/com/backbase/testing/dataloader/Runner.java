@@ -1,5 +1,8 @@
 package com.backbase.testing.dataloader;
 
+import com.backbase.testing.dataloader.healthchecks.EntitlementsHealthCheck;
+import com.backbase.testing.dataloader.healthchecks.ProductSummaryHealthCheck;
+import com.backbase.testing.dataloader.healthchecks.TransactionsHealthCheck;
 import com.backbase.testing.dataloader.setup.BankSetup;
 import com.backbase.testing.dataloader.setup.ServiceAgreementsSetup;
 import com.backbase.testing.dataloader.setup.UsersSetup;
@@ -12,6 +15,13 @@ public class Runner {
         BankSetup bankSetup = new BankSetup();
         UsersSetup usersSetup = new UsersSetup();
         ServiceAgreementsSetup serviceAgreementsSetup = new ServiceAgreementsSetup();
+        EntitlementsHealthCheck entitlementsHealthCheck = new EntitlementsHealthCheck();
+        ProductSummaryHealthCheck productSummaryHealthCheck = new ProductSummaryHealthCheck();
+        TransactionsHealthCheck transactionsHealthCheck = new TransactionsHealthCheck();
+
+        entitlementsHealthCheck.checkEntitlementsServicesHealth();
+        productSummaryHealthCheck.checkProductSummaryServicesHealth();
+        transactionsHealthCheck.checkTransactionsServicesHealth();
 
         bankSetup.setupBankWithEntitlementsAdminAndProducts();
         usersSetup.setupUsersWithAndWithoutFunctionDataGroupsPrivileges();

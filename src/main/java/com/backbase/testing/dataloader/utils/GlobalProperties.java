@@ -59,6 +59,10 @@ public class GlobalProperties {
         return configuration.getInt(key);
     }
 
+    public long getLong(String key) {
+        return configuration.getLong(key);
+    }
+
     public boolean getBoolean(String key) {
         return configuration.getBoolean(key);
     }

@@ -12,6 +12,7 @@ public final class CommonConstants {
     public static final String PROPERTY_ENTITLEMENTS_BASE_URI = "entitlements.base.uri";
     public static final String PROPERTY_PRODUCTSUMMARY_BASE_URI = "productsummary.base.uri";
     public static final String PROPERTY_TRANSACTIONS_BASE_URI = "transactions.base.uri";
+    public static final String PROPERTY_HEALTHCHECK_TIMEOUT_IN_MINUTES = "healthcheck.timeout.in.minutes";
 
     // Users
     public static final String USER_ADMIN = "admin";

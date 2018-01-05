@@ -2,6 +2,7 @@ package com.backbase.testing.dataloader.data;
 
 import com.backbase.dbs.presentation.paymentorder.rest.spec.v2.paymentorders.AccountIdentification;
 import com.backbase.dbs.presentation.paymentorder.rest.spec.v2.paymentorders.Identification;
+import com.backbase.dbs.presentation.paymentorder.rest.spec.v2.paymentorders.IdentifiedPaymentOrder;
 import com.backbase.dbs.presentation.paymentorder.rest.spec.v2.paymentorders.InitiateCreditTransaction;
 import com.backbase.dbs.presentation.paymentorder.rest.spec.v2.paymentorders.InitiatePaymentOrder;
 import com.backbase.dbs.presentation.paymentorder.rest.spec.v2.paymentorders.InvolvedParty;
@@ -12,6 +13,7 @@ import com.backbase.testing.dataloader.utils.CommonHelpers;
 import com.github.javafaker.Faker;
 import org.apache.commons.lang.time.DateUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Random;
@@ -23,17 +25,17 @@ public class PaymentsDataGenerator {
     private ProductSummaryDataGenerator productSummaryDataGenerator = new ProductSummaryDataGenerator();
 
     public InitiatePaymentOrder generateInitiatePaymentOrder(String debtorArrangementId) {
-        InitiatePaymentOrder.PaymentMode paymentMode = InitiatePaymentOrder.PaymentMode.values()[random.nextInt(InitiatePaymentOrder.PaymentMode.values().length)];
+        IdentifiedPaymentOrder.PaymentMode paymentMode = IdentifiedPaymentOrder.PaymentMode.values()[random.nextInt(IdentifiedPaymentOrder.PaymentMode.values().length)];
         Schedule schedule = null;
 
-        if (paymentMode == InitiatePaymentOrder.PaymentMode.RECURRING) {
+        if (paymentMode == IdentifiedPaymentOrder.PaymentMode.RECURRING) {
             schedule = new Schedule()
-                    .withStartDate(new Date())
+                    .withStartDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date().getTime()))
                     .withEvery(Schedule.Every.values()[random.nextInt(Schedule.Every.values().length)])
                     .withNonWorkingDayExecutionStrategy(Schedule.NonWorkingDayExecutionStrategy.values()[random.nextInt(Schedule.NonWorkingDayExecutionStrategy.values().length)])
                     .withTransferFrequency(Schedule.TransferFrequency.values()[random.nextInt(Schedule.TransferFrequency.values().length)])
                     .withOn(CommonHelpers.generateRandomNumberInRange(1, 7))
-                    .withEndDate(DateUtils.addYears(new Date(), 1));
+                    .withEndDate(new SimpleDateFormat("yyyy-MM-dd").format(DateUtils.addYears(new Date(), 1)));
         }
 
         return new InitiatePaymentOrder()
@@ -43,9 +45,9 @@ public class PaymentsDataGenerator {
                                 .withSchemeName(Identification.SchemeName.ID)
                                 .withIdentification(debtorArrangementId)))
                 .withBatchBooking(false)
-                .withInstructionPriority(InitiatePaymentOrder.InstructionPriority.values()[random.nextInt(InitiatePaymentOrder.InstructionPriority.values().length)])
+                .withInstructionPriority(IdentifiedPaymentOrder.InstructionPriority.values()[random.nextInt(IdentifiedPaymentOrder.InstructionPriority.values().length)])
                 .withPaymentMode(paymentMode)
-                .withRequestedExecutionDate(new Date())
+                .withRequestedExecutionDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date().getTime()))
                 .withSchedule(schedule)
                 .withCreditTransferTransactionInformation(Collections.singletonList(new InitiateCreditTransaction()
                         .withEndToEndIdentification(faker.lorem().characters(10))

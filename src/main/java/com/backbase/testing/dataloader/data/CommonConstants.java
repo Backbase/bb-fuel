@@ -48,4 +48,7 @@ public final class CommonConstants {
     public static final String PROPERTY_PAYMENTS_MIN = "payments.min";
     public static final String PROPERTY_PAYMENTS_MAX = "payments.max";
     public static final String PROPERTY_INGEST_PAYMENTS = "ingest.payments";
+    public static final String PROPERTY_CONVERSATIONS_MIN = "conversations.min";
+    public static final String PROPERTY_CONVERSATIONS_MAX = "conversations.max";
+    public static final String PROPERTY_INGEST_CONVERSATIONS = "ingest.conversations";
 }

@@ -30,5 +30,6 @@ public class Runner {
         bankSetup.setupBankNotifications();
         usersSetup.setupContactsPerUser();
         usersSetup.setupPaymentsPerUser();
+        usersSetup.setupConversationsPerUser();
     }
 }

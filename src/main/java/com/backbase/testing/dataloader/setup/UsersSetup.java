@@ -8,6 +8,7 @@ import com.backbase.testing.dataloader.clients.user.UserPresentationRestClient;
 import com.backbase.testing.dataloader.configurators.AccessGroupsConfigurator;
 import com.backbase.testing.dataloader.configurators.ContactsConfigurator;
 import com.backbase.testing.dataloader.configurators.LegalEntitiesAndUsersConfigurator;
+import com.backbase.testing.dataloader.configurators.MessagesConfigurator;
 import com.backbase.testing.dataloader.configurators.PaymentsConfigurator;
 import com.backbase.testing.dataloader.configurators.PermissionsConfigurator;
 import com.backbase.testing.dataloader.configurators.ProductSummaryConfigurator;
@@ -27,6 +28,7 @@ import java.util.Set;
 
 import static com.backbase.testing.dataloader.data.CommonConstants.EXTERNAL_ROOT_LEGAL_ENTITY_ID;
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_INGEST_CONTACTS;
+import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_INGEST_CONVERSATIONS;
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_INGEST_ENTITLEMENTS;
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_INGEST_PAYMENTS;
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_INGEST_TRANSACTIONS;
@@ -49,6 +51,7 @@ public class UsersSetup {
     private LegalEntitiesAndUsersConfigurator legalEntitiesAndUsersConfigurator = new LegalEntitiesAndUsersConfigurator();
     private ContactsConfigurator contactsConfigurator = new ContactsConfigurator();
     private PaymentsConfigurator paymentsConfigurator = new PaymentsConfigurator();
+    private MessagesConfigurator messagesConfigurator = new MessagesConfigurator();
     private List<HashMap<String, List<String>>> userLists = ParserUtil.convertJsonToObject(globalProperties.getString(PROPERTY_USERS_JSON_LOCATION), new TypeReference<List<HashMap<String, List<String>>>>() {
     });
 
@@ -95,6 +98,16 @@ public class UsersSetup {
                 List<String> externalUserIds = userList.get(USERS_JSON_EXTERNAL_USER_IDS_FIELD);
 
                 externalUserIds.forEach(externalUserId -> paymentsConfigurator.ingestPaymentOrders(externalUserId));
+            }
+        }
+    }
+
+    public void setupConversationsPerUser() {
+        if (globalProperties.getBoolean(PROPERTY_INGEST_CONVERSATIONS)) {
+            for (Map<String, List<String>> userList : userLists) {
+                List<String> externalUserIds = userList.get(USERS_JSON_EXTERNAL_USER_IDS_FIELD);
+
+                externalUserIds.forEach(externalUserId -> messagesConfigurator.ingestConversations(externalUserId));
             }
         }
     }

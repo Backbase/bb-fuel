@@ -30,7 +30,7 @@
         <legalentity-presentation-spec.version>1.10.8</legalentity-presentation-spec.version>
         <notifications-presentation-spec.version>1.8.5</notifications-presentation-spec.version>
         <contact-presentation-spec.version>3.1.3</contact-presentation-spec.version>
-        <payment-order-presentation-spec.version>1.9.2</payment-order-presentation-spec.version>
+        <payment-order-presentation-spec.version>1.10.3</payment-order-presentation-spec.version>
         <actionrecipes-presentation-spec.version>2.0.38</actionrecipes-presentation-spec.version>
         <messages-presentation-spec.version>9.0.1</messages-presentation-spec.version>
     </properties>

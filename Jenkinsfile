@@ -6,6 +6,7 @@ properties([
                 booleanParam(name: 'INGEST_CONTACTS', defaultValue: false, description: 'Ingest contacts per user'),
                 booleanParam(name: 'INGEST_NOTIFICATIONS', defaultValue: false, description: 'Ingest notifications on global target group'),
                 booleanParam(name: 'INGEST_PAYMENTS', defaultValue: false, description: 'Ingest payments per user'),
+                booleanParam(name: 'INGEST_CONVERSATIONS', defaultValue: false, description: 'Ingest conversations per user'),
                 choice(name: 'INFRA_BASE_URI', choices: 'infra.backbase.dev:8080\neditorial.backbase.dev:8080', description: '')
         ])
 ])
@@ -28,7 +29,9 @@ node {
                     "-Dingest.transactions=${params.INGEST_TRANSACTIONS} " +
                     "-Dingest.contacts=${params.INGEST_CONTACTS} " +
                     "-Dingest.notifications=${params.INGEST_NOTIFICATIONS} " +
-                    "-Dingest.payments=${params.INGEST_PAYMENTS} -jar target/dataloader-jar-with-dependencies.jar"
+                    "-Dingest.payments=${params.INGEST_PAYMENTS} +" +
+                    "-Dingest.conversations=${params.INGEST_CONVERSATIONS} " +
+                    "-jar target/dataloader-jar-with-dependencies.jar"
         }
     }
 }

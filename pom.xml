@@ -23,9 +23,9 @@
         <user-integration-spec.version>1.10.2</user-integration-spec.version>
         <accessgroup-presentation-spec.version>1.10.5</accessgroup-presentation-spec.version>
         <accessgroup-integration-spec.version>1.10.2</accessgroup-integration-spec.version>
-        <product-summary-presentation-spec.version>1.10.2</product-summary-presentation-spec.version>
+        <product-summary-presentation-spec.version>1.11.4</product-summary-presentation-spec.version>
         <product-integration-spec.version>1.8.0</product-integration-spec.version>
-        <arrangement-integration-spec.version>1.10.2</arrangement-integration-spec.version>
+        <arrangement-integration-spec.version>1.11.2</arrangement-integration-spec.version>
         <transaction-integration-external-inbound-spec.version>1.10.2</transaction-integration-external-inbound-spec.version>
         <legalentity-presentation-spec.version>1.10.8</legalentity-presentation-spec.version>
         <notifications-presentation-spec.version>1.8.5</notifications-presentation-spec.version>

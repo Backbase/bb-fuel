@@ -90,8 +90,10 @@ public class ProductSummaryDataGenerator {
                 .withAccountHolderName(faker.name().fullName())
                 .withAccountHolderAddressLine1(faker.address().streetAddress())
                 .withAccountHolderAddressLine2(faker.address().secondaryAddress())
-                .withAccountHolderAddressLine3(faker.address().cityName())
-                .withAccountHolderAddressLine4(faker.address().zipCode())
-                .withAccountHolderCountry(accountHolderCountries[CommonHelpers.generateRandomNumberInRange(0, accountHolderCountries.length - 1)]);
+                .withAccountHolderStreetName(faker.address().streetAddress())
+                .withPostCode(faker.address().zipCode())
+                .withTown(faker.address().city())
+                .withAccountHolderCountry(accountHolderCountries[CommonHelpers.generateRandomNumberInRange(0, accountHolderCountries.length - 1)])
+                .withCountrySubDivision(faker.address().state());
     }
 }

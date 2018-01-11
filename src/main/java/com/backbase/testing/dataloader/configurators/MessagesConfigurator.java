@@ -4,7 +4,6 @@ import com.backbase.dbs.messages.presentation.rest.spec.v3.messagecenter.users.C
 import com.backbase.dbs.messages.presentation.rest.spec.v3.messagecenter.users.ConversationsGetResponseBody;
 import com.backbase.dbs.messages.presentation.rest.spec.v3.messagecenter.users.DraftsPostRequestBody;
 import com.backbase.dbs.messages.presentation.rest.spec.v3.messagecenter.users.DraftsPostResponseBody;
-import com.backbase.testing.dataloader.clients.common.LoginRestClient;
 import com.backbase.testing.dataloader.clients.messagecenter.MessagesPresentationRestClient;
 import com.backbase.testing.dataloader.data.MessagesDataGenerator;
 import com.backbase.testing.dataloader.utils.CommonHelpers;
@@ -23,7 +22,6 @@ public class MessagesConfigurator {
     private static final Logger LOGGER = LoggerFactory.getLogger(MessagesConfigurator.class);
     private static GlobalProperties globalProperties = GlobalProperties.getInstance();
 
-    private LoginRestClient loginRestClient = new LoginRestClient();
     private MessagesPresentationRestClient messagesPresentationRestClient = new MessagesPresentationRestClient();
     private MessagesDataGenerator messagesDataGenerator = new MessagesDataGenerator();
 

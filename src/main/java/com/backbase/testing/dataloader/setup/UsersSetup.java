@@ -104,6 +104,9 @@ public class UsersSetup {
 
     public void setupConversationsPerUser() {
         if (globalProperties.getBoolean(PROPERTY_INGEST_CONVERSATIONS)) {
+            loginRestClient.login(USER_ADMIN, USER_ADMIN);
+            accessGroupPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
+
             for (Map<String, List<String>> userList : userLists) {
                 List<String> externalUserIds = userList.get(USERS_JSON_EXTERNAL_USER_IDS_FIELD);
 

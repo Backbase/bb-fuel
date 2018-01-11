@@ -29,7 +29,7 @@ node {
                     "-Dingest.transactions=${params.INGEST_TRANSACTIONS} " +
                     "-Dingest.contacts=${params.INGEST_CONTACTS} " +
                     "-Dingest.notifications=${params.INGEST_NOTIFICATIONS} " +
-                    "-Dingest.payments=${params.INGEST_PAYMENTS} +" +
+                    "-Dingest.payments=${params.INGEST_PAYMENTS} " +
                     "-Dingest.conversations=${params.INGEST_CONVERSATIONS} " +
                     "-jar target/dataloader-jar-with-dependencies.jar"
         }

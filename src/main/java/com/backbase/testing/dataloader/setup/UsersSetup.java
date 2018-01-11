@@ -14,9 +14,9 @@ import com.backbase.testing.dataloader.configurators.PermissionsConfigurator;
 import com.backbase.testing.dataloader.configurators.ProductSummaryConfigurator;
 import com.backbase.testing.dataloader.configurators.TransactionsConfigurator;
 import com.backbase.testing.dataloader.dto.ArrangementId;
+import com.backbase.testing.dataloader.dto.UserList;
 import com.backbase.testing.dataloader.utils.GlobalProperties;
 import com.backbase.testing.dataloader.utils.ParserUtil;
-import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,7 +34,6 @@ import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_INGE
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_INGEST_TRANSACTIONS;
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_USERS_JSON_LOCATION;
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_USERS_WITHOUT_PERMISSIONS;
-import static com.backbase.testing.dataloader.data.CommonConstants.USERS_JSON_EXTERNAL_USER_IDS_FIELD;
 import static com.backbase.testing.dataloader.data.CommonConstants.USER_ADMIN;
 import static org.apache.http.HttpStatus.SC_OK;
 
@@ -52,26 +51,24 @@ public class UsersSetup {
     private ContactsConfigurator contactsConfigurator = new ContactsConfigurator();
     private PaymentsConfigurator paymentsConfigurator = new PaymentsConfigurator();
     private MessagesConfigurator messagesConfigurator = new MessagesConfigurator();
-    private List<HashMap<String, List<String>>> userLists = ParserUtil.convertJsonToObject(globalProperties.getString(PROPERTY_USERS_JSON_LOCATION), new TypeReference<List<HashMap<String, List<String>>>>() {
-    });
+    private UserList[] userLists = ParserUtil.convertJsonToObject(globalProperties.getString(PROPERTY_USERS_JSON_LOCATION), UserList[].class);
 
     public UsersSetup() throws IOException {
     }
 
     public void setupUsersWithAndWithoutFunctionDataGroupsPrivileges() throws IOException {
         if (globalProperties.getBoolean(PROPERTY_INGEST_ENTITLEMENTS)) {
-            List<HashMap<String, List<String>>> usersWithoutPermissionsLists = ParserUtil.convertJsonToObject(globalProperties.getString(PROPERTY_USERS_WITHOUT_PERMISSIONS), new TypeReference<List<HashMap<String, List<String>>>>() {
-            });
+            UserList[] usersWithoutPermissionsLists = ParserUtil.convertJsonToObject(globalProperties.getString(PROPERTY_USERS_WITHOUT_PERMISSIONS), UserList[].class);
 
-            for (Map<String, List<String>> userList : userLists) {
-                List<String> externalUserIds = userList.get(USERS_JSON_EXTERNAL_USER_IDS_FIELD);
+            for (UserList userList : userLists) {
+                List<String> externalUserIds = userList.getExternalUserIds();
 
                 legalEntitiesAndUsersConfigurator.ingestUsersUnderNewLegalEntity(externalUserIds, EXTERNAL_ROOT_LEGAL_ENTITY_ID);
                 setupUsersWithAllFunctionDataGroupsAndPrivilegesUnderNewLegalEntity(externalUserIds);
             }
 
-            for (Map<String, List<String>> usersWithoutPermissionsList : usersWithoutPermissionsLists) {
-                List<String> externalUserIds = usersWithoutPermissionsList.get(USERS_JSON_EXTERNAL_USER_IDS_FIELD);
+            for (UserList usersWithoutPermissionsList : usersWithoutPermissionsLists) {
+                List<String> externalUserIds = usersWithoutPermissionsList.getExternalUserIds();
 
                 legalEntitiesAndUsersConfigurator.ingestUsersUnderNewLegalEntity(externalUserIds, EXTERNAL_ROOT_LEGAL_ENTITY_ID);
             }
@@ -80,8 +77,8 @@ public class UsersSetup {
 
     public void setupContactsPerUser() {
         if (globalProperties.getBoolean(PROPERTY_INGEST_CONTACTS)) {
-            for (Map<String, List<String>> userList : userLists) {
-                List<String> externalUserIds = userList.get(USERS_JSON_EXTERNAL_USER_IDS_FIELD);
+            for (UserList userList : userLists) {
+                List<String> externalUserIds = userList.getExternalUserIds();
 
                 externalUserIds.forEach(externalUserId -> {
                     loginRestClient.login(externalUserId, externalUserId);
@@ -94,8 +91,8 @@ public class UsersSetup {
 
     public void setupPaymentsPerUser() {
         if (globalProperties.getBoolean(PROPERTY_INGEST_PAYMENTS)) {
-            for (Map<String, List<String>> userList : userLists) {
-                List<String> externalUserIds = userList.get(USERS_JSON_EXTERNAL_USER_IDS_FIELD);
+            for (UserList userList : userLists) {
+                List<String> externalUserIds = userList.getExternalUserIds();
 
                 externalUserIds.forEach(externalUserId -> paymentsConfigurator.ingestPaymentOrders(externalUserId));
             }
@@ -107,8 +104,8 @@ public class UsersSetup {
             loginRestClient.login(USER_ADMIN, USER_ADMIN);
             accessGroupPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
-            for (Map<String, List<String>> userList : userLists) {
-                List<String> externalUserIds = userList.get(USERS_JSON_EXTERNAL_USER_IDS_FIELD);
+            for (UserList userList : userLists) {
+                List<String> externalUserIds = userList.getExternalUserIds();
 
                 externalUserIds.forEach(externalUserId -> messagesConfigurator.ingestConversations(externalUserId));
             }

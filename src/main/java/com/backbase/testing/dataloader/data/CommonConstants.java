@@ -16,7 +16,6 @@ public final class CommonConstants {
 
     // Users
     public static final String USER_ADMIN = "admin";
-    public static final String USERS_JSON_EXTERNAL_USER_IDS_FIELD = "externalUserIds";
     public static final String PROPERTY_USERS_JSON_LOCATION = "users.json.location";
     public static final String PROPERTY_USERS_WITHOUT_PERMISSIONS = "users.without.permissions.json.location";
     public static final String PROPERTY_SERVICEAGREEMENTS_JSON_LOCATION = "serviceagreements.json.location";

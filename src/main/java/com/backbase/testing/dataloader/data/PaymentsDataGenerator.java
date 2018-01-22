@@ -13,7 +13,6 @@ import com.backbase.rest.spec.common.types.Currency;
 import com.backbase.testing.dataloader.utils.CommonHelpers;
 import com.github.javafaker.Faker;
 import org.apache.commons.lang.time.DateUtils;
-import org.bouncycastle.asn1.x509.qualified.Iso4217CurrencyCode;
 
 import java.text.SimpleDateFormat;
 import java.util.Collections;

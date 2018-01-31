@@ -3,7 +3,6 @@ package com.backbase.testing.dataloader.clients.accessgroup;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.config.functions.FunctionsGetResponseBody;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.data.DataAccessGroupsGetResponseBody;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.function.FunctionAccessGroupsGetResponseBody;
-import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.function.Privilege;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementGetResponseBody;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.usercontext.UserContextPostRequestBody;
 import com.backbase.presentation.legalentity.rest.spec.v2.legalentities.LegalEntitiesGetResponseBody;

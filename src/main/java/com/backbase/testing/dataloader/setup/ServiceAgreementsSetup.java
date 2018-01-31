@@ -44,7 +44,7 @@ public class ServiceAgreementsSetup {
                                 .as(LegalEntityByUserGetResponseBody.class)
                                 .getExternalId();
 
-                        permissionsConfigurator.assignAllFunctionDataGroupsOfLegalEntityToUserAndCustomServiceAgreement(externalLegalEntityId, externalUserId, serviceAgreementId);
+                        permissionsConfigurator.assignAllFunctionDataGroupsOfLegalEntityToUserAndServiceAgreement(externalLegalEntityId, externalUserId, serviceAgreementId);
                     }));
                 });
             }

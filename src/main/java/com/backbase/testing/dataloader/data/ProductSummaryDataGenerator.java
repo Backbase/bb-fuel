@@ -49,7 +49,7 @@ public class ProductSummaryDataGenerator {
         return ParserUtil.convertJsonToObject(globalProperties.getString(PROPERTY_PRODUCTS_JSON_LOCATION), ProductsPostRequestBody[].class);
     }
 
-    public ArrangementsPostRequestBody generateArrangementsPostRequestBody(String externalLegalEntityId) {
+    public ArrangementsPostRequestBody generateArrangementsPostRequestBody(String externalLegalEntityId, ArrangementsPostRequestBodyParent.Currency currency) {
         ArrangementsPostRequestBodyParent.AccountHolderCountry[] accountHolderCountries = ArrangementsPostRequestBodyParent.AccountHolderCountry.values();
         int productId = CommonHelpers.generateRandomNumberInRange(1, 7);
         boolean debitCreditAccountIndicator = false;
@@ -67,7 +67,7 @@ public class ProductSummaryDataGenerator {
             }
         }
 
-        return new ArrangementsPostRequestBody().withId(UUID.randomUUID().toString())
+        ArrangementsPostRequestBody arrangementsPostRequestBody = new ArrangementsPostRequestBody().withId(UUID.randomUUID().toString())
                 .withLegalEntityId(externalLegalEntityId)
                 .withProductId(String.format("%s", productId))
                 .withName(faker.lorem().sentence(3, 0).replace(".", ""))
@@ -75,9 +75,7 @@ public class ProductSummaryDataGenerator {
                 .withBookedBalance(CommonHelpers.generateRandomAmountInRange(10000L, 9999999L))
                 .withAvailableBalance(CommonHelpers.generateRandomAmountInRange(10000L, 9999999L))
                 .withCreditLimit(CommonHelpers.generateRandomAmountInRange(10000L, 999999L))
-                .withIBAN(generateRandomIban())
-                .withBBAN(faker.lorem().characters(20).toUpperCase())
-                .withCurrency(ArrangementsPostRequestBodyParent.Currency.EUR)
+                .withCurrency(currency)
                 .withExternalTransferAllowed(true)
                 .withUrgentTransferAllowed(true)
                 .withAccruedInterest(BigDecimal.valueOf(random.nextInt(10)))
@@ -95,5 +93,13 @@ public class ProductSummaryDataGenerator {
                 .withTown(faker.address().city())
                 .withAccountHolderCountry(accountHolderCountries[CommonHelpers.generateRandomNumberInRange(0, accountHolderCountries.length - 1)])
                 .withCountrySubDivision(faker.address().state());
+
+        if (currency.equals(ArrangementsPostRequestBodyParent.Currency.EUR)) {
+            arrangementsPostRequestBody.withIBAN(generateRandomIban());
+        } else {
+            arrangementsPostRequestBody.withBBAN(String.valueOf(CommonHelpers.generateRandomNumberInRange(0, 999999999)));
+        }
+
+        return arrangementsPostRequestBody;
     }
 }

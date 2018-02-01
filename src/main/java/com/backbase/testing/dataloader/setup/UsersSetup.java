@@ -39,7 +39,7 @@ import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_USER
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_USERS_WITHOUT_PERMISSIONS;
 import static com.backbase.testing.dataloader.data.CommonConstants.SEPA_CT_FUNCTION_NAME;
 import static com.backbase.testing.dataloader.data.CommonConstants.USER_ADMIN;
-import static com.backbase.testing.dataloader.data.CommonConstants.US_DOMESTIC_FOREIGN_FUNCTION_NAME;
+import static com.backbase.testing.dataloader.data.CommonConstants.US_FOREIGN_WIRE_FUNCTION_NAME;
 import static com.backbase.testing.dataloader.data.CommonConstants.US_DOMESTIC_WIRE_FUNCTION_NAME;
 import static org.apache.http.HttpStatus.SC_OK;
 
@@ -166,7 +166,7 @@ public class UsersSetup {
                     accessGroupsConfigurator.setupFunctionDataGroupAndAllPrivilegesAssignedToUserAndMasterServiceAgreement(externalLegalEntityId, externalUserId, functionName, eurCurrencyDataGroupId);
                     break;
                 case US_DOMESTIC_WIRE_FUNCTION_NAME:
-                case US_DOMESTIC_FOREIGN_FUNCTION_NAME:
+                case US_FOREIGN_WIRE_FUNCTION_NAME:
                     accessGroupsConfigurator.setupFunctionDataGroupAndAllPrivilegesAssignedToUserAndMasterServiceAgreement(externalLegalEntityId, externalUserId, functionName, usdCurrencyDataGroupId);
                     break;
                 default:

@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -154,7 +155,7 @@ public class UsersSetup {
         String eurCurrencyDataGroupId = accessGroupsConfigurator.ingestDataGroupForArrangements(legalEntity.getExternalId(), eurCurrencyInternalArrangementIds);
         String usdCurrencyDataGroupId = accessGroupsConfigurator.ingestDataGroupForArrangements(legalEntity.getExternalId(), usdCurrencyInternalArrangementIds);
 
-        for (FunctionsGetResponseBody function : functions) {
+        Arrays.stream(functions).parallel().forEach(function -> {
             String functionName = function.getName();
 
             loginRestClient.login(USER_ADMIN, USER_ADMIN);
@@ -171,7 +172,7 @@ public class UsersSetup {
                 default:
                     accessGroupsConfigurator.setupFunctionDataGroupAndAllPrivilegesAssignedToUserAndMasterServiceAgreement(legalEntity, externalUserId, functionName, randomCurrencyDataGroupId);
             }
-        }
+        });
 
         if (globalProperties.getBoolean(PROPERTY_INGEST_TRANSACTIONS)) {
             List<ArrangementId> arrangementIds = new ArrayList<>();
@@ -180,9 +181,7 @@ public class UsersSetup {
             arrangementIds.addAll(eurCurrencyArrangementIds);
             arrangementIds.addAll(usdCurrencyArrangementIds);
 
-            for (ArrangementId arrangementId : arrangementIds) {
-                transactionsConfigurator.ingestTransactionsByArrangement(arrangementId.getExternalArrangementId());
-            }
+            arrangementIds.parallelStream().forEach(arrangementId -> transactionsConfigurator.ingestTransactionsByArrangement(arrangementId.getExternalArrangementId()));
         }
     }
 }

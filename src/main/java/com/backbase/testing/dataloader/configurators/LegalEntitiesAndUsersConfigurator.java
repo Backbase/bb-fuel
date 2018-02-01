@@ -49,12 +49,12 @@ public class LegalEntitiesAndUsersConfigurator {
 
         LOGGER.info(String.format("Legal entity [%s] ingested under legal entity [%s]", externalLegalEntityId, externalParentLegalEntityId));
 
-        for (String externalUserId : externalUserIds) {
+        externalUserIds.parallelStream().forEach(externalUserId -> {
             userIntegrationRestClient.ingestUser(entitlementsDataGenerator.generateUsersPostRequestBody(externalUserId, externalLegalEntityId))
                     .then()
                     .statusCode(SC_CREATED);
 
             LOGGER.info(String.format("User [%s] ingested under legal entity [%s]", externalUserId, externalLegalEntityId));
-        }
+        });
     }
 }

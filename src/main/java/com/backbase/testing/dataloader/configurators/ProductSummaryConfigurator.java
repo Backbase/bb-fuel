@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
@@ -33,12 +34,13 @@ public class ProductSummaryConfigurator {
     public void ingestProducts() throws IOException {
         ProductsPostRequestBody[] products = productSummaryDataGenerator.generateProductsPostRequestBodies();
 
-        for (ProductsPostRequestBody product : products) {
+        Arrays.stream(products).parallel().forEach(product -> {
             arrangementsIntegrationRestClient.ingestProduct(product)
                     .then()
                     .statusCode(SC_CREATED);
+
             LOGGER.info(String.format("Product [%s] ingested", product.getProductKindName()));
-        }
+        });
     }
 
     public List<ArrangementId> ingestEurCurrencyArrangementsByLegalEntityAndReturnArrangementIds(String externalLegalEntityId) {

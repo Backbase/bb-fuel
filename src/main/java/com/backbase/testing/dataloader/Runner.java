@@ -42,6 +42,6 @@ public class Runner {
         Duration duration = Duration.between(start, end);
         long minutes = duration.getSeconds() / 60;
         long seconds = duration.getSeconds() % 60;
-        System.out.println("Time to ingest data was " + minutes + " minutes and " + seconds + "seconds");
+        System.out.println("Time to ingest data was " + minutes + " minutes and " + seconds + " seconds");
     }
 }

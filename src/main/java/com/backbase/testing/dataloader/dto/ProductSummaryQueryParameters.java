@@ -26,8 +26,6 @@ public class ProductSummaryQueryParameters {
 
     private String direction;
 
-    private String productKindName;
-
     private String searchTerm;
 
     public ProductSummaryQueryParameters() {
@@ -46,11 +44,6 @@ public class ProductSummaryQueryParameters {
 
     public ProductSummaryQueryParameters withSearchTerm(String searchTerm) {
         this.searchTerm = searchTerm;
-        return this;
-    }
-
-    public ProductSummaryQueryParameters withProductKindName(String productKindName) {
-        this.productKindName = productKindName;
         return this;
     }
 
@@ -147,10 +140,6 @@ public class ProductSummaryQueryParameters {
 
     public String getCursor() {
         return cursor;
-    }
-
-    public String getProductKindName() {
-        return productKindName;
     }
 
     public String getSearchTerm() {

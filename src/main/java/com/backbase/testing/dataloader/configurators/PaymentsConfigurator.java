@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_PAYMENTS_MAX;
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_PAYMENTS_MIN;
 import static org.apache.http.HttpStatus.SC_ACCEPTED;
+import static org.apache.http.HttpStatus.SC_OK;
 
 public class PaymentsConfigurator {
 
@@ -50,7 +51,7 @@ public class PaymentsConfigurator {
                     .then()
                     .statusCode(SC_ACCEPTED);
 
-            LOGGER.info(String.format("Payment order ingested for debtor account [%s]", initiatePaymentOrder.getDebtorAccount().getIdentification().getIdentification()));
+            LOGGER.info(String.format("Payment order ingested for debtor account [%s] for user [%s]", initiatePaymentOrder.getDebtorAccount().getIdentification().getIdentification(), externalUserId));
         }
     }
 
@@ -62,6 +63,7 @@ public class PaymentsConfigurator {
                 .withSize(999)
                 .withOrderBy("name"))
                 .then()
+                .statusCode(SC_OK)
                 .extract()
                 .as(ArrangementsByBusinessFunctionGetResponseBody[].class);
 

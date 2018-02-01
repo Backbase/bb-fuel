@@ -2,6 +2,8 @@ package com.backbase.testing.dataloader.setup;
 
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementPostRequestBody;
 import com.backbase.presentation.user.rest.spec.v2.users.LegalEntityByUserGetResponseBody;
+import com.backbase.testing.dataloader.clients.accessgroup.AccessGroupPresentationRestClient;
+import com.backbase.testing.dataloader.clients.common.LoginRestClient;
 import com.backbase.testing.dataloader.clients.user.UserPresentationRestClient;
 import com.backbase.testing.dataloader.configurators.PermissionsConfigurator;
 import com.backbase.testing.dataloader.configurators.ServiceAgreementsConfigurator;
@@ -13,11 +15,14 @@ import java.util.Set;
 
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_INGEST_ENTITLEMENTS;
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_SERVICEAGREEMENTS_JSON_LOCATION;
+import static com.backbase.testing.dataloader.data.CommonConstants.USER_ADMIN;
 import static org.apache.http.HttpStatus.SC_OK;
 
 public class ServiceAgreementsSetup {
 
     private GlobalProperties globalProperties = GlobalProperties.getInstance();
+    private LoginRestClient loginRestClient = new LoginRestClient();
+    private AccessGroupPresentationRestClient accessGroupPresentationRestClient = new AccessGroupPresentationRestClient();
     private ServiceAgreementsConfigurator serviceAgreementsConfigurator = new ServiceAgreementsConfigurator();
     private UserPresentationRestClient userPresentationRestClient = new UserPresentationRestClient();
     private PermissionsConfigurator permissionsConfigurator = new PermissionsConfigurator();
@@ -37,6 +42,8 @@ public class ServiceAgreementsSetup {
                                 .iterator()
                                 .next();
 
+                        loginRestClient.login(USER_ADMIN, USER_ADMIN);
+                        accessGroupPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
                         String externalLegalEntityId = userPresentationRestClient.retrieveLegalEntityByExternalUserId(externalConsumerAdminUserId)
                                 .then()
                                 .statusCode(SC_OK)
@@ -44,7 +51,7 @@ public class ServiceAgreementsSetup {
                                 .as(LegalEntityByUserGetResponseBody.class)
                                 .getExternalId();
 
-                        permissionsConfigurator.assignAllFunctionDataGroupsOfLegalEntityToUserAndCustomServiceAgreement(externalLegalEntityId, externalUserId, serviceAgreementId);
+                        permissionsConfigurator.assignAllFunctionDataGroupsOfLegalEntityToUserAndServiceAgreement(externalLegalEntityId, externalUserId, serviceAgreementId);
                     }));
                 });
             }

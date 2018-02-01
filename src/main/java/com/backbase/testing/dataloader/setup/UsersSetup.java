@@ -154,7 +154,7 @@ public class UsersSetup {
         loginRestClient.login(USER_ADMIN, USER_ADMIN);
         accessGroupPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
-        Arrays.stream(functions).parallel().forEach(function -> {
+        Arrays.stream(functions).forEach(function -> {
             String functionName = function.getName();
 
             switch (functionName) {

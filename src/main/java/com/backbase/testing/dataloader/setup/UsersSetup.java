@@ -121,56 +121,55 @@ public class UsersSetup {
     }
 
     private void setupUsersWithAllFunctionDataGroupsAndPrivilegesUnderNewLegalEntity(List<String> externalUserIds) {
-        Map<String, LegalEntityByUserGetResponseBody> userLegalEntities = new HashMap<>();
-        Set<LegalEntityByUserGetResponseBody> legalEntities = new HashSet<>();
-
         for (String externalUserId : externalUserIds) {
             loginRestClient.login(USER_ADMIN, USER_ADMIN);
             accessGroupPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
-            String externalLegalEntityId = userPresentationRestClient.retrieveLegalEntityByExternalUserId(externalUserId)
+            LegalEntityByUserGetResponseBody legalEntity = userPresentationRestClient.retrieveLegalEntityByExternalUserId(externalUserId)
                     .then()
                     .statusCode(SC_OK)
                     .extract()
-                    .as(LegalEntityByUserGetResponseBody.class)
-                    .getExternalId();
+                    .as(LegalEntityByUserGetResponseBody.class);
 
-            setupFunctionDataGroupAndPrivilegesUnderLegalEntity(externalLegalEntityId, externalUserId);
+            setupFunctionDataGroupAndPrivilegesUnderLegalEntity(legalEntity, externalUserId);
         }
     }
 
-    void setupFunctionDataGroupAndPrivilegesUnderLegalEntity(String externalLegalEntityId, String externalUserId) {
+    void setupFunctionDataGroupAndPrivilegesUnderLegalEntity(LegalEntityByUserGetResponseBody legalEntity, String externalUserId) {
         FunctionsGetResponseBody[] functions = accessGroupIntegrationRestClient.retrieveFunctions()
                 .then()
                 .statusCode(SC_OK)
                 .extract()
                 .as(FunctionsGetResponseBody[].class);
 
-        List<ArrangementId> randomCurrencyArrangementIds = new ArrayList<>(productSummaryConfigurator.ingestRandomCurrencyArrangementsByLegalEntityAndReturnArrangementIds(externalLegalEntityId));
-        List<ArrangementId> eurCurrencyArrangementIds = new ArrayList<>(productSummaryConfigurator.ingestEurCurrencyArrangementsByLegalEntityAndReturnArrangementIds(externalLegalEntityId));
-        List<ArrangementId> usdCurrencyArrangementIds = new ArrayList<>(productSummaryConfigurator.ingestUsdCurrencyArrangementsByLegalEntityAndReturnArrangementIds(externalLegalEntityId));
+        List<ArrangementId> randomCurrencyArrangementIds = new ArrayList<>(productSummaryConfigurator.ingestRandomCurrencyArrangementsByLegalEntityAndReturnArrangementIds(legalEntity.getExternalId()));
+        List<ArrangementId> eurCurrencyArrangementIds = new ArrayList<>(productSummaryConfigurator.ingestEurCurrencyArrangementsByLegalEntityAndReturnArrangementIds(legalEntity.getExternalId()));
+        List<ArrangementId> usdCurrencyArrangementIds = new ArrayList<>(productSummaryConfigurator.ingestUsdCurrencyArrangementsByLegalEntityAndReturnArrangementIds(legalEntity.getExternalId()));
 
         List<String> randomCurrencyInternalArrangementIds = randomCurrencyArrangementIds.stream().map(ArrangementId::getInternalArrangementId).collect(Collectors.toList());
         List<String> eurCurrencyInternalArrangementIds = eurCurrencyArrangementIds.stream().map(ArrangementId::getInternalArrangementId).collect(Collectors.toList());
         List<String> usdCurrencyInternalArrangementIds = usdCurrencyArrangementIds.stream().map(ArrangementId::getInternalArrangementId).collect(Collectors.toList());
 
-        String randomCurrencyDataGroupId = accessGroupsConfigurator.ingestDataGroupForArrangements(externalLegalEntityId, randomCurrencyInternalArrangementIds);
-        String eurCurrencyDataGroupId = accessGroupsConfigurator.ingestDataGroupForArrangements(externalLegalEntityId, eurCurrencyInternalArrangementIds);
-        String usdCurrencyDataGroupId = accessGroupsConfigurator.ingestDataGroupForArrangements(externalLegalEntityId, usdCurrencyInternalArrangementIds);
+        String randomCurrencyDataGroupId = accessGroupsConfigurator.ingestDataGroupForArrangements(legalEntity.getExternalId(), randomCurrencyInternalArrangementIds);
+        String eurCurrencyDataGroupId = accessGroupsConfigurator.ingestDataGroupForArrangements(legalEntity.getExternalId(), eurCurrencyInternalArrangementIds);
+        String usdCurrencyDataGroupId = accessGroupsConfigurator.ingestDataGroupForArrangements(legalEntity.getExternalId(), usdCurrencyInternalArrangementIds);
 
         for (FunctionsGetResponseBody function : functions) {
             String functionName = function.getName();
 
+            loginRestClient.login(USER_ADMIN, USER_ADMIN);
+            accessGroupPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
+
             switch (functionName) {
                 case SEPA_CT_FUNCTION_NAME:
-                    accessGroupsConfigurator.setupFunctionDataGroupAndAllPrivilegesAssignedToUserAndMasterServiceAgreement(externalLegalEntityId, externalUserId, functionName, eurCurrencyDataGroupId);
+                    accessGroupsConfigurator.setupFunctionDataGroupAndAllPrivilegesAssignedToUserAndMasterServiceAgreement(legalEntity, externalUserId, functionName, eurCurrencyDataGroupId);
                     break;
                 case US_DOMESTIC_WIRE_FUNCTION_NAME:
                 case US_FOREIGN_WIRE_FUNCTION_NAME:
-                    accessGroupsConfigurator.setupFunctionDataGroupAndAllPrivilegesAssignedToUserAndMasterServiceAgreement(externalLegalEntityId, externalUserId, functionName, usdCurrencyDataGroupId);
+                    accessGroupsConfigurator.setupFunctionDataGroupAndAllPrivilegesAssignedToUserAndMasterServiceAgreement(legalEntity, externalUserId, functionName, usdCurrencyDataGroupId);
                     break;
                 default:
-                    accessGroupsConfigurator.setupFunctionDataGroupAndAllPrivilegesAssignedToUserAndMasterServiceAgreement(externalLegalEntityId, externalUserId, functionName, randomCurrencyDataGroupId);
+                    accessGroupsConfigurator.setupFunctionDataGroupAndAllPrivilegesAssignedToUserAndMasterServiceAgreement(legalEntity, externalUserId, functionName, randomCurrencyDataGroupId);
             }
         }
 

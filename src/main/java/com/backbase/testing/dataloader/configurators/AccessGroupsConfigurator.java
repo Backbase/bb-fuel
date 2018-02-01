@@ -6,9 +6,10 @@ import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.data.DataG
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.FunctionGroupsPostResponseBody;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.Privilege;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.users.permissions.AssignPermissionsPostRequestBody;
+import com.backbase.presentation.user.rest.spec.v2.users.LegalEntityByUserGetResponseBody;
 import com.backbase.testing.dataloader.clients.accessgroup.AccessGroupIntegrationRestClient;
+import com.backbase.testing.dataloader.clients.accessgroup.AccessGroupPresentationRestClient;
 import com.backbase.testing.dataloader.data.AccessGroupsDataGenerator;
-import com.backbase.testing.dataloader.dto.ArrangementId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,12 +25,18 @@ public class AccessGroupsConfigurator {
     private static final Logger LOGGER = LoggerFactory.getLogger(AccessGroupsConfigurator.class);
 
     private AccessGroupsDataGenerator accessGroupsDataGenerator = new AccessGroupsDataGenerator();
+    private AccessGroupPresentationRestClient accessGroupPresentationRestClient = new AccessGroupPresentationRestClient();
     private AccessGroupIntegrationRestClient accessGroupIntegrationRestClient = new AccessGroupIntegrationRestClient();
 
-    public void setupFunctionDataGroupAndAllPrivilegesAssignedToUserAndMasterServiceAgreement(String externalLegalEntityId, String externalUserId, String functionName, String dataGroupId) {
-        String functionGroupId = ingestFunctionGroupsWithAllPrivilegesByFunctionName(externalLegalEntityId, functionName);
+    public void setupFunctionDataGroupAndAllPrivilegesAssignedToUserAndMasterServiceAgreement(LegalEntityByUserGetResponseBody legalEntity, String externalUserId, String functionName, String dataGroupId) {
+        String functionGroupId = accessGroupPresentationRestClient.getFunctionGroupIdByLegalEntityIdAndFunctionName(legalEntity.getId(), functionName);
+
+        if (functionGroupId == null) {
+            functionGroupId = ingestFunctionGroupsWithAllPrivilegesByFunctionName(legalEntity.getExternalId(), functionName);
+        }
+
         accessGroupIntegrationRestClient.assignPermissions(new AssignPermissionsPostRequestBody()
-                .withExternalLegalEntityId(externalLegalEntityId)
+                .withExternalLegalEntityId(legalEntity.getExternalId())
                 .withExternalUserId(externalUserId)
                 .withServiceAgreementId(null)
                 .withFunctionGroupId(functionGroupId)
@@ -37,7 +44,7 @@ public class AccessGroupsConfigurator {
                 .then()
                 .statusCode(SC_OK);
 
-        LOGGER.info(String.format("Permission assigned for legal entity [%s], user [%s], service agreement [master], function group [%s], data group [%s]", externalLegalEntityId, externalUserId, functionGroupId, dataGroupId));
+        LOGGER.info(String.format("Permission assigned for legal entity [%s], user [%s], service agreement [master], function group [%s], data group [%s]", legalEntity.getExternalId(), externalUserId, functionGroupId, dataGroupId));
     }
 
     public void ingestFunctionGroupsWithAllPrivilegesForAllFunctions(String externalLegalEntityId) {

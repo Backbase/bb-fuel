@@ -28,9 +28,8 @@ public class PaymentsDataGenerator {
     private ProductSummaryDataGenerator productSummaryDataGenerator = new ProductSummaryDataGenerator();
     private List<String> branchCodes = Arrays.asList("114923756", "114910222", "124000054", "113011258", "113110586", "121002042", "122003396", "122232109", "122237625", "122237997", "122238572", "122105045", "122105171", "122105320", "122400779", "123006965", "125008013", "125108489", "226072870", "265270002", "253278058", "253271806", "242277675", "071993162", "091512251", "075911713", "071001122", "231278274", "272485673", "291479178", "255075576", "311376494", "241078875", "244183631", "244077129", "241076097", "244273826", "044204370", "243278534", "242086361", "241273188", "244077815", "241075153", "073911870", "303184610", "303986151", "263277887", "103101848", "103101013", "303986096");
 
-    public InitiatePaymentOrder generateInitiatePaymentOrder(String debtorArrangementId) {
+    public InitiatePaymentOrder generateInitiatePaymentOrder(String debtorArrangementId, IdentifiedPaymentOrder.PaymentType paymentType) {
         IdentifiedPaymentOrder.PaymentMode paymentMode = IdentifiedPaymentOrder.PaymentMode.values()[random.nextInt(IdentifiedPaymentOrder.PaymentMode.values().length)];
-        IdentifiedPaymentOrder.PaymentType paymentType = IdentifiedPaymentOrder.PaymentType.values()[random.nextInt(IdentifiedPaymentOrder.PaymentType.values().length)];
         Schedule schedule = null;
         Bank creditorBank = null;
         Bank correspondentBank = null;

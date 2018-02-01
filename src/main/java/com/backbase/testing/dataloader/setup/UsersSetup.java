@@ -82,7 +82,7 @@ public class UsersSetup {
 
     public void setupContactsPerUser() {
         if (globalProperties.getBoolean(PROPERTY_INGEST_CONTACTS)) {
-            Arrays.stream(userLists).parallel().forEach(userList -> {
+            Arrays.stream(userLists).forEach(userList -> {
                 List<String> externalUserIds = userList.getExternalUserIds();
 
                 externalUserIds.forEach(externalUserId -> {
@@ -96,7 +96,7 @@ public class UsersSetup {
 
     public void setupPaymentsPerUser() {
         if (globalProperties.getBoolean(PROPERTY_INGEST_PAYMENTS)) {
-            Arrays.stream(userLists).parallel().forEach(userList -> {
+            Arrays.stream(userLists).forEach(userList -> {
                 List<String> externalUserIds = userList.getExternalUserIds();
 
                 externalUserIds.forEach(externalUserId -> paymentsConfigurator.ingestPaymentOrders(externalUserId));
@@ -109,7 +109,7 @@ public class UsersSetup {
             loginRestClient.login(USER_ADMIN, USER_ADMIN);
             accessGroupPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
-            Arrays.stream(userLists).parallel().forEach(userList -> {
+            Arrays.stream(userLists).forEach(userList -> {
                 List<String> externalUserIds = userList.getExternalUserIds();
 
                 externalUserIds.forEach(externalUserId -> messagesConfigurator.ingestConversations(externalUserId));

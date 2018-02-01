@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
@@ -44,7 +45,7 @@ public class ProductSummaryConfigurator {
     }
 
     public List<ArrangementId> ingestEurCurrencyArrangementsByLegalEntityAndReturnArrangementIds(String externalLegalEntityId) {
-        List<ArrangementId> arrangementIds = new ArrayList<>();
+        List<ArrangementId> arrangementIds = Collections.synchronizedList(new ArrayList<>());
 
         int randomAmount = CommonHelpers.generateRandomNumberInRange(globalProperties.getInt(PROPERTY_ARRANGEMENTS_MIN), globalProperties.getInt(PROPERTY_ARRANGEMENTS_MAX));
         IntStream.range(0, randomAmount).parallel().forEach(randomNumber -> {
@@ -64,7 +65,7 @@ public class ProductSummaryConfigurator {
     }
 
     public List<ArrangementId> ingestUsdCurrencyArrangementsByLegalEntityAndReturnArrangementIds(String externalLegalEntityId) {
-        List<ArrangementId> arrangementIds = new ArrayList<>();
+        List<ArrangementId> arrangementIds = Collections.synchronizedList(new ArrayList<>());
 
         int randomAmount = CommonHelpers.generateRandomNumberInRange(globalProperties.getInt(PROPERTY_ARRANGEMENTS_MIN), globalProperties.getInt(PROPERTY_ARRANGEMENTS_MAX));
         IntStream.range(0, randomAmount).parallel().forEach(randomNumber -> {
@@ -84,7 +85,7 @@ public class ProductSummaryConfigurator {
     }
 
     public List<ArrangementId> ingestRandomCurrencyArrangementsByLegalEntityAndReturnArrangementIds(String externalLegalEntityId) {
-        List<ArrangementId> arrangementIds = new ArrayList<>();
+        List<ArrangementId> arrangementIds = Collections.synchronizedList(new ArrayList<>());
 
         int randomAmount = CommonHelpers.generateRandomNumberInRange(globalProperties.getInt(PROPERTY_ARRANGEMENTS_MIN), globalProperties.getInt(PROPERTY_ARRANGEMENTS_MAX));
         IntStream.range(0, randomAmount).parallel().forEach(randomNumber -> {

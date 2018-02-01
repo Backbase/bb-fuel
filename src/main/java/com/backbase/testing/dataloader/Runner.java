@@ -14,7 +14,9 @@ import java.time.Instant;
 public class Runner {
 
     public static void main(String[] args) throws IOException {
-        System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", "16");
+        System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", "8");
+
+        Instant start = Instant.now();
 
         BankSetup bankSetup = new BankSetup();
         UsersSetup usersSetup = new UsersSetup();
@@ -35,5 +37,11 @@ public class Runner {
         usersSetup.setupContactsPerUser();
         usersSetup.setupPaymentsPerUser();
         usersSetup.setupConversationsPerUser();
+
+        Instant end = Instant.now();
+        Duration duration = Duration.between(start, end);
+        long minutes = duration.getSeconds() / 60;
+        long seconds = duration.getSeconds() % 60;
+        System.out.println("Time to ingest data was " + minutes + " minutes and " + seconds + "seconds");
     }
 }

@@ -23,11 +23,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.backbase.testing.dataloader.data.CommonConstants.EXTERNAL_ROOT_LEGAL_ENTITY_ID;
@@ -40,8 +36,8 @@ import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_USER
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_USERS_WITHOUT_PERMISSIONS;
 import static com.backbase.testing.dataloader.data.CommonConstants.SEPA_CT_FUNCTION_NAME;
 import static com.backbase.testing.dataloader.data.CommonConstants.USER_ADMIN;
-import static com.backbase.testing.dataloader.data.CommonConstants.US_FOREIGN_WIRE_FUNCTION_NAME;
 import static com.backbase.testing.dataloader.data.CommonConstants.US_DOMESTIC_WIRE_FUNCTION_NAME;
+import static com.backbase.testing.dataloader.data.CommonConstants.US_FOREIGN_WIRE_FUNCTION_NAME;
 import static org.apache.http.HttpStatus.SC_OK;
 
 public class UsersSetup {
@@ -69,24 +65,24 @@ public class UsersSetup {
         if (globalProperties.getBoolean(PROPERTY_INGEST_ENTITLEMENTS)) {
             UserList[] usersWithoutPermissionsLists = ParserUtil.convertJsonToObject(globalProperties.getString(PROPERTY_USERS_WITHOUT_PERMISSIONS), UserList[].class);
 
-            for (UserList userList : userLists) {
+            Arrays.stream(userLists).parallel().forEach(userList -> {
                 List<String> externalUserIds = userList.getExternalUserIds();
 
                 legalEntitiesAndUsersConfigurator.ingestUsersUnderNewLegalEntity(externalUserIds, EXTERNAL_ROOT_LEGAL_ENTITY_ID);
                 setupUsersWithAllFunctionDataGroupsAndPrivilegesUnderNewLegalEntity(externalUserIds);
-            }
+            });
 
-            for (UserList usersWithoutPermissionsList : usersWithoutPermissionsLists) {
+            Arrays.stream(usersWithoutPermissionsLists).parallel().forEach(usersWithoutPermissionsList -> {
                 List<String> externalUserIds = usersWithoutPermissionsList.getExternalUserIds();
 
                 legalEntitiesAndUsersConfigurator.ingestUsersUnderNewLegalEntity(externalUserIds, EXTERNAL_ROOT_LEGAL_ENTITY_ID);
-            }
+            });
         }
     }
 
     public void setupContactsPerUser() {
         if (globalProperties.getBoolean(PROPERTY_INGEST_CONTACTS)) {
-            for (UserList userList : userLists) {
+            Arrays.stream(userLists).parallel().forEach(userList -> {
                 List<String> externalUserIds = userList.getExternalUserIds();
 
                 externalUserIds.forEach(externalUserId -> {
@@ -94,17 +90,17 @@ public class UsersSetup {
                     accessGroupPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
                     contactsConfigurator.ingestContacts();
                 });
-            }
+            });
         }
     }
 
     public void setupPaymentsPerUser() {
         if (globalProperties.getBoolean(PROPERTY_INGEST_PAYMENTS)) {
-            for (UserList userList : userLists) {
+            Arrays.stream(userLists).parallel().forEach(userList -> {
                 List<String> externalUserIds = userList.getExternalUserIds();
 
                 externalUserIds.forEach(externalUserId -> paymentsConfigurator.ingestPaymentOrders(externalUserId));
-            }
+            });
         }
     }
 
@@ -113,11 +109,11 @@ public class UsersSetup {
             loginRestClient.login(USER_ADMIN, USER_ADMIN);
             accessGroupPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
-            for (UserList userList : userLists) {
+            Arrays.stream(userLists).parallel().forEach(userList -> {
                 List<String> externalUserIds = userList.getExternalUserIds();
 
                 externalUserIds.forEach(externalUserId -> messagesConfigurator.ingestConversations(externalUserId));
-            }
+            });
         }
     }
 
@@ -155,11 +151,11 @@ public class UsersSetup {
         String eurCurrencyDataGroupId = accessGroupsConfigurator.ingestDataGroupForArrangements(legalEntity.getExternalId(), eurCurrencyInternalArrangementIds);
         String usdCurrencyDataGroupId = accessGroupsConfigurator.ingestDataGroupForArrangements(legalEntity.getExternalId(), usdCurrencyInternalArrangementIds);
 
+        loginRestClient.login(USER_ADMIN, USER_ADMIN);
+        accessGroupPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
+
         Arrays.stream(functions).parallel().forEach(function -> {
             String functionName = function.getName();
-
-            loginRestClient.login(USER_ADMIN, USER_ADMIN);
-            accessGroupPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
             switch (functionName) {
                 case SEPA_CT_FUNCTION_NAME:

@@ -32,6 +32,9 @@ public class ServiceAgreementsSetup {
         if (globalProperties.getBoolean(PROPERTY_INGEST_ENTITLEMENTS)) {
             ServiceAgreementPostRequestBody[] serviceAgreementPostRequestBodies = ParserUtil.convertJsonToObject(globalProperties.getString(PROPERTY_SERVICEAGREEMENTS_JSON_LOCATION), ServiceAgreementPostRequestBody[].class);
 
+            loginRestClient.login(USER_ADMIN, USER_ADMIN);
+            accessGroupPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
+
             Arrays.stream(serviceAgreementPostRequestBodies).parallel().forEach(serviceAgreementPostRequestBody -> {
                 String serviceAgreementId = serviceAgreementsConfigurator.ingestServiceAgreementWithProvidersAndConsumersWithAllFunctionDataGroups(serviceAgreementPostRequestBody.getProviders(), serviceAgreementPostRequestBody.getConsumers());
 
@@ -43,8 +46,6 @@ public class ServiceAgreementsSetup {
                                 .iterator()
                                 .next();
 
-                        loginRestClient.login(USER_ADMIN, USER_ADMIN);
-                        accessGroupPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
                         String externalLegalEntityId = userPresentationRestClient.retrieveLegalEntityByExternalUserId(externalConsumerAdminUserId)
                                 .then()
                                 .statusCode(SC_OK)

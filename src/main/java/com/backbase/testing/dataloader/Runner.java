@@ -6,6 +6,8 @@ import com.backbase.testing.dataloader.healthchecks.TransactionsHealthCheck;
 import com.backbase.testing.dataloader.setup.BankSetup;
 import com.backbase.testing.dataloader.setup.ServiceAgreementsSetup;
 import com.backbase.testing.dataloader.setup.UsersSetup;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -14,6 +16,8 @@ import java.time.Instant;
 public class Runner {
 
     public static void main(String[] args) throws IOException {
+        final Logger LOGGER = LoggerFactory.getLogger(Runner.class);
+
         System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", "8");
 
         Instant start = Instant.now();
@@ -42,6 +46,6 @@ public class Runner {
         Duration duration = Duration.between(start, end);
         long minutes = duration.getSeconds() / 60;
         long seconds = duration.getSeconds() % 60;
-        System.out.println("Time to ingest data was " + minutes + " minutes and " + seconds + " seconds");
+        LOGGER.info("Time to ingest data was " + minutes + " minutes and " + seconds + " seconds");
     }
 }

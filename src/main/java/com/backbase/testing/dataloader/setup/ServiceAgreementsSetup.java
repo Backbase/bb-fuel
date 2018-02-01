@@ -11,6 +11,7 @@ import com.backbase.testing.dataloader.utils.GlobalProperties;
 import com.backbase.testing.dataloader.utils.ParserUtil;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Set;
 
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_INGEST_ENTITLEMENTS;
@@ -31,19 +32,20 @@ public class ServiceAgreementsSetup {
         if (globalProperties.getBoolean(PROPERTY_INGEST_ENTITLEMENTS)) {
             ServiceAgreementPostRequestBody[] serviceAgreementPostRequestBodies = ParserUtil.convertJsonToObject(globalProperties.getString(PROPERTY_SERVICEAGREEMENTS_JSON_LOCATION), ServiceAgreementPostRequestBody[].class);
 
-            for (ServiceAgreementPostRequestBody serviceAgreementGetResponseBody : serviceAgreementPostRequestBodies) {
-                String serviceAgreementId = serviceAgreementsConfigurator.ingestServiceAgreementWithProvidersAndConsumersWithAllFunctionDataGroups(serviceAgreementGetResponseBody.getProviders(), serviceAgreementGetResponseBody.getConsumers());
+            loginRestClient.login(USER_ADMIN, USER_ADMIN);
+            accessGroupPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
-                serviceAgreementGetResponseBody.getProviders().forEach(provider -> {
+            Arrays.stream(serviceAgreementPostRequestBodies).parallel().forEach(serviceAgreementPostRequestBody -> {
+                String serviceAgreementId = serviceAgreementsConfigurator.ingestServiceAgreementWithProvidersAndConsumersWithAllFunctionDataGroups(serviceAgreementPostRequestBody.getProviders(), serviceAgreementPostRequestBody.getConsumers());
+
+                serviceAgreementPostRequestBody.getProviders().parallelStream().forEach(provider -> {
                     Set<String> externalUserIds = provider.getUsers();
 
-                    externalUserIds.forEach(externalUserId -> serviceAgreementGetResponseBody.getConsumers().forEach(consumer -> {
+                    externalUserIds.parallelStream().forEach(externalUserId -> serviceAgreementPostRequestBody.getConsumers().parallelStream().forEach(consumer -> {
                         String externalConsumerAdminUserId = consumer.getAdmins()
                                 .iterator()
                                 .next();
 
-                        loginRestClient.login(USER_ADMIN, USER_ADMIN);
-                        accessGroupPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
                         String externalLegalEntityId = userPresentationRestClient.retrieveLegalEntityByExternalUserId(externalConsumerAdminUserId)
                                 .then()
                                 .statusCode(SC_OK)
@@ -54,7 +56,7 @@ public class ServiceAgreementsSetup {
                         permissionsConfigurator.assignAllFunctionDataGroupsOfLegalEntityToUserAndServiceAgreement(externalLegalEntityId, externalUserId, serviceAgreementId);
                     }));
                 });
-            }
+            });
         }
     }
 }

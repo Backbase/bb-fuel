@@ -14,8 +14,11 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.IntStream;
 
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_ARRANGEMENTS_MAX;
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_ARRANGEMENTS_MIN;
@@ -32,18 +35,20 @@ public class ProductSummaryConfigurator {
     public void ingestProducts() throws IOException {
         ProductsPostRequestBody[] products = productSummaryDataGenerator.generateProductsPostRequestBodies();
 
-        for (ProductsPostRequestBody product : products) {
+        Arrays.stream(products).parallel().forEach(product -> {
             arrangementsIntegrationRestClient.ingestProduct(product)
                     .then()
                     .statusCode(SC_CREATED);
+
             LOGGER.info(String.format("Product [%s] ingested", product.getProductKindName()));
-        }
+        });
     }
 
     public List<ArrangementId> ingestEurCurrencyArrangementsByLegalEntityAndReturnArrangementIds(String externalLegalEntityId) {
-        List<ArrangementId> arrangementIds = new ArrayList<>();
+        List<ArrangementId> arrangementIds = Collections.synchronizedList(new ArrayList<>());
 
-        for (int i = 0; i < CommonHelpers.generateRandomNumberInRange(globalProperties.getInt(PROPERTY_ARRANGEMENTS_MIN), globalProperties.getInt(PROPERTY_ARRANGEMENTS_MAX)); i++) {
+        int randomAmount = CommonHelpers.generateRandomNumberInRange(globalProperties.getInt(PROPERTY_ARRANGEMENTS_MIN), globalProperties.getInt(PROPERTY_ARRANGEMENTS_MAX));
+        IntStream.range(0, randomAmount).parallel().forEach(randomNumber -> {
             ArrangementsPostRequestBody arrangement = productSummaryDataGenerator.generateArrangementsPostRequestBody(externalLegalEntityId, ArrangementsPostRequestBodyParent.Currency.EUR);
 
             ArrangementsPostResponseBody arrangementsPostResponseBody = arrangementsIntegrationRestClient.ingestArrangement(arrangement)
@@ -55,14 +60,15 @@ public class ProductSummaryConfigurator {
             arrangementIds.add(new ArrangementId(arrangementsPostResponseBody.getId(), arrangement.getId()));
 
             LOGGER.info(String.format("Arrangement [%s] with currency [EUR] ingested for product [%s] under legal entity [%s]", arrangement.getName(), arrangement.getProductId(), externalLegalEntityId));
-        }
+        });
         return arrangementIds;
     }
 
     public List<ArrangementId> ingestUsdCurrencyArrangementsByLegalEntityAndReturnArrangementIds(String externalLegalEntityId) {
-        List<ArrangementId> arrangementIds = new ArrayList<>();
+        List<ArrangementId> arrangementIds = Collections.synchronizedList(new ArrayList<>());
 
-        for (int i = 0; i < CommonHelpers.generateRandomNumberInRange(globalProperties.getInt(PROPERTY_ARRANGEMENTS_MIN), globalProperties.getInt(PROPERTY_ARRANGEMENTS_MAX)); i++) {
+        int randomAmount = CommonHelpers.generateRandomNumberInRange(globalProperties.getInt(PROPERTY_ARRANGEMENTS_MIN), globalProperties.getInt(PROPERTY_ARRANGEMENTS_MAX));
+        IntStream.range(0, randomAmount).parallel().forEach(randomNumber -> {
             ArrangementsPostRequestBody arrangement = productSummaryDataGenerator.generateArrangementsPostRequestBody(externalLegalEntityId, ArrangementsPostRequestBodyParent.Currency.USD);
 
             ArrangementsPostResponseBody arrangementsPostResponseBody = arrangementsIntegrationRestClient.ingestArrangement(arrangement)
@@ -74,14 +80,15 @@ public class ProductSummaryConfigurator {
             arrangementIds.add(new ArrangementId(arrangementsPostResponseBody.getId(), arrangement.getId()));
 
             LOGGER.info(String.format("Arrangement [%s] with currency [USD] ingested for product [%s] under legal entity [%s]", arrangement.getName(), arrangement.getProductId(), externalLegalEntityId));
-        }
+        });
         return arrangementIds;
     }
 
     public List<ArrangementId> ingestRandomCurrencyArrangementsByLegalEntityAndReturnArrangementIds(String externalLegalEntityId) {
-        List<ArrangementId> arrangementIds = new ArrayList<>();
+        List<ArrangementId> arrangementIds = Collections.synchronizedList(new ArrayList<>());
 
-        for (int i = 0; i < CommonHelpers.generateRandomNumberInRange(globalProperties.getInt(PROPERTY_ARRANGEMENTS_MIN), globalProperties.getInt(PROPERTY_ARRANGEMENTS_MAX)); i++) {
+        int randomAmount = CommonHelpers.generateRandomNumberInRange(globalProperties.getInt(PROPERTY_ARRANGEMENTS_MIN), globalProperties.getInt(PROPERTY_ARRANGEMENTS_MAX));
+        IntStream.range(0, randomAmount).parallel().forEach(randomNumber -> {
             ArrangementsPostRequestBodyParent.Currency currency = ArrangementsPostRequestBodyParent.Currency.values()[random.nextInt( ArrangementsPostRequestBodyParent.Currency.values().length)];
             ArrangementsPostRequestBody arrangement = productSummaryDataGenerator.generateArrangementsPostRequestBody(externalLegalEntityId, currency);
 
@@ -94,7 +101,7 @@ public class ProductSummaryConfigurator {
             arrangementIds.add(new ArrangementId(arrangementsPostResponseBody.getId(), arrangement.getId()));
 
             LOGGER.info(String.format("Arrangement [%s] with currency [%s] ingested for product [%s] under legal entity [%s]", arrangement.getName(), currency, arrangement.getProductId(), externalLegalEntityId));
-        }
+        });
         return arrangementIds;
     }
 }

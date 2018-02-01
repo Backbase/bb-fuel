@@ -8,6 +8,8 @@ import com.backbase.testing.dataloader.utils.GlobalProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.stream.IntStream;
+
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_CONTACTS_MAX;
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_CONTACTS_MIN;
 import static org.apache.http.HttpStatus.SC_CREATED;
@@ -21,13 +23,14 @@ public class ContactsConfigurator {
     private ContactsDataGenerator contactsDataGenerator = new ContactsDataGenerator();
 
     public void ingestContacts() {
-        for (int i = 0; i < CommonHelpers.generateRandomNumberInRange(globalProperties.getInt(PROPERTY_CONTACTS_MIN), globalProperties.getInt(PROPERTY_CONTACTS_MAX)); i++) {
+        int randomAmount = CommonHelpers.generateRandomNumberInRange(globalProperties.getInt(PROPERTY_CONTACTS_MIN), globalProperties.getInt(PROPERTY_CONTACTS_MAX));
+        IntStream.range(0, randomAmount).parallel().forEach(randomNumber -> {
             ContactsPostRequestBody contact = contactsDataGenerator.generateContactsPostRequestBody();
             contactPresentationRestClient.createContact(contact)
                     .then()
                     .statusCode(SC_CREATED);
 
             LOGGER.info(String.format("Contact ingested with name [%s]", contact.getName()));
-        }
+        });
     }
 }

@@ -8,6 +8,8 @@ import com.backbase.testing.dataloader.utils.GlobalProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.stream.IntStream;
+
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_TRANSACTIONS_MAX;
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_TRANSACTIONS_MIN;
 import static org.apache.http.HttpStatus.SC_CREATED;
@@ -21,12 +23,13 @@ public class TransactionsConfigurator {
     private TransactionsIntegrationRestClient transactionsIntegrationRestClient = new TransactionsIntegrationRestClient();
 
     public void ingestTransactionsByArrangement(String externalArrangementId) {
-        for (int i = 0; i < CommonHelpers.generateRandomNumberInRange(globalProperties.getInt(PROPERTY_TRANSACTIONS_MIN), globalProperties.getInt(PROPERTY_TRANSACTIONS_MAX)); i++) {
+        int randomAmount = CommonHelpers.generateRandomNumberInRange(globalProperties.getInt(PROPERTY_TRANSACTIONS_MIN), globalProperties.getInt(PROPERTY_TRANSACTIONS_MAX));
+        IntStream.range(0, randomAmount).parallel().forEach(randomNumber -> {
             TransactionsPostRequestBody transaction = transactionsDataGenerator.generateTransactionsPostRequestBody(externalArrangementId);
             transactionsIntegrationRestClient.ingestTransaction(transaction)
                     .then()
                     .statusCode(SC_CREATED);
             LOGGER.info(String.format("Transaction [%s] ingested for arrangement [%s]", transaction.getDescription(), externalArrangementId));
-        }
+        });
     }
 }

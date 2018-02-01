@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -54,14 +55,14 @@ public class AccessGroupsConfigurator {
                 .extract()
                 .as(FunctionsGetResponseBody[].class);
 
-        for (FunctionsGetResponseBody function : functions) {
+        Arrays.stream(functions).parallel().forEach(function -> {
             List<Privilege> functionPrivileges = function.getPrivileges();
             List<String> privileges = new ArrayList<>();
 
             functionPrivileges.forEach(fp -> privileges.add(fp.getPrivilege()));
 
             ingestFunctionGroupByFunctionName(externalLegalEntityId, function.getName(), privileges);
-        }
+        });
     }
 
     public String ingestFunctionGroupsWithAllPrivilegesByFunctionName(String externalLegalEntityId, String functionName) {

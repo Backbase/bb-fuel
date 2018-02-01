@@ -9,6 +9,7 @@ import com.backbase.testing.dataloader.clients.legalentity.LegalEntityPresentati
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.apache.http.HttpStatus.SC_OK;
@@ -37,17 +38,19 @@ public class PermissionsConfigurator {
 
         List<String> dataGroupIds = accessGroupPresentationRestClient.retrieveAllDataGroupIdsByLegalEntity(internalLegalEntityId);
 
-        for (FunctionAccessGroupsGetResponseBody functionGroup : functionGroups) {
-            accessGroupIntegrationRestClient.assignPermissions(new AssignPermissionsPostRequestBody()
-                    .withExternalLegalEntityId(null)
-                    .withExternalUserId(externalUserId)
-                    .withServiceAgreementId(internalServiceAgreementId)
-                    .withFunctionGroupId(functionGroup.getFunctionAccessGroupId())
-                    .withDataGroupIds(dataGroupIds))
-                    .then()
-                    .statusCode(SC_OK);
+        Arrays.stream(functionGroups)
+                .parallel()
+                .forEach(functionGroup -> {
+                    accessGroupIntegrationRestClient.assignPermissions(new AssignPermissionsPostRequestBody()
+                            .withExternalLegalEntityId(null)
+                            .withExternalUserId(externalUserId)
+                            .withServiceAgreementId(internalServiceAgreementId)
+                            .withFunctionGroupId(functionGroup.getFunctionAccessGroupId())
+                            .withDataGroupIds(dataGroupIds))
+                            .then()
+                            .statusCode(SC_OK);
 
-            LOGGER.info(String.format("Permission assigned for legal entity [%s], user [%s], service agreement [%s], function group [%s], data groups %s", externalLegalEntityId, externalUserId, internalServiceAgreementId, functionGroup.getFunctionAccessGroupId(), dataGroupIds));
-        }
+                    LOGGER.info(String.format("Permission assigned for legal entity [%s], user [%s], service agreement [%s], function group [%s], data groups %s", externalLegalEntityId, externalUserId, internalServiceAgreementId, functionGroup.getFunctionAccessGroupId(), dataGroupIds));
+                });
     }
 }

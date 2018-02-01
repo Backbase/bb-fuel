@@ -11,6 +11,8 @@ import com.backbase.testing.dataloader.utils.GlobalProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.stream.IntStream;
+
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_CONVERSATIONS_MAX;
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_CONVERSATIONS_MIN;
 import static com.backbase.testing.dataloader.data.CommonConstants.USER_ADMIN;
@@ -26,8 +28,8 @@ public class MessagesConfigurator {
     private MessagesDataGenerator messagesDataGenerator = new MessagesDataGenerator();
 
     public void ingestConversations(String externalUserId) {
-        for (int i = 0; i < CommonHelpers.generateRandomNumberInRange(globalProperties.getInt(PROPERTY_CONVERSATIONS_MIN), globalProperties.getInt(PROPERTY_CONVERSATIONS_MAX)); i++) {
-
+        int randomAmount = CommonHelpers.generateRandomNumberInRange(globalProperties.getInt(PROPERTY_CONVERSATIONS_MIN), globalProperties.getInt(PROPERTY_CONVERSATIONS_MAX));
+        IntStream.range(0, randomAmount).parallel().forEach(randomNumber -> {
             DraftsPostRequestBody draftsPostRequestBody = messagesDataGenerator.generateDraftsPostRequestBody();
             String draftId = messagesPresentationRestClient.postDraft(draftsPostRequestBody, externalUserId)
                     .then()
@@ -61,6 +63,6 @@ public class MessagesConfigurator {
                     .statusCode(SC_ACCEPTED);
 
             LOGGER.info(String.format("Conversation ingested with subject [%s] for user [%s]", draftsPostRequestBody.getSubject(), externalUserId));
-        }
+        });
     }
 }

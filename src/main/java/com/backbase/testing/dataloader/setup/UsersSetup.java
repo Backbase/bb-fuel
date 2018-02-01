@@ -1,7 +1,6 @@
 package com.backbase.testing.dataloader.setup;
 
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.config.functions.FunctionsGetResponseBody;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.users.permissions.AssignPermissionsPostRequestBody;
 import com.backbase.presentation.user.rest.spec.v2.users.LegalEntityByUserGetResponseBody;
 import com.backbase.testing.dataloader.clients.accessgroup.AccessGroupIntegrationRestClient;
 import com.backbase.testing.dataloader.clients.accessgroup.AccessGroupPresentationRestClient;
@@ -23,7 +22,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -157,16 +155,16 @@ public class UsersSetup {
 
             switch (functionName) {
                 case SEPA_CT_FUNCTION_NAME:
-                    setupFunctionDataGroupAndAllPrivilegesAssignedToUserAndMasterServiceAgreement(externalLegalEntityId, externalUserId, functionName, eurCurrencyArrangementIds);
+                    accessGroupsConfigurator.setupFunctionDataGroupAndAllPrivilegesAssignedToUserAndMasterServiceAgreement(externalLegalEntityId, externalUserId, functionName, eurCurrencyArrangementIds);
                     break;
 
                 case US_DOMESTIC_WIRE_FUNCTION_NAME:
                 case US_DOMESTIC_FOREIGN_FUNCTION_NAME:
-                    setupFunctionDataGroupAndAllPrivilegesAssignedToUserAndMasterServiceAgreement(externalLegalEntityId, externalUserId, functionName, usdCurrencyArrangementIds);
+                    accessGroupsConfigurator.setupFunctionDataGroupAndAllPrivilegesAssignedToUserAndMasterServiceAgreement(externalLegalEntityId, externalUserId, functionName, usdCurrencyArrangementIds);
                     break;
 
                 default:
-                    setupFunctionDataGroupAndAllPrivilegesAssignedToUserAndMasterServiceAgreement(externalLegalEntityId, externalUserId, functionName, randomCurrencyArrangementIds);
+                    accessGroupsConfigurator.setupFunctionDataGroupAndAllPrivilegesAssignedToUserAndMasterServiceAgreement(externalLegalEntityId, externalUserId, functionName, randomCurrencyArrangementIds);
             }
         }
 
@@ -181,24 +179,5 @@ public class UsersSetup {
                 transactionsConfigurator.ingestTransactionsByArrangement(arrangementId.getExternalArrangementId());
             }
         }
-    }
-
-    private void setupFunctionDataGroupAndAllPrivilegesAssignedToUserAndMasterServiceAgreement(String externalLegalEntityId, String externalUserId, String functionName, List<ArrangementId> arrangementIds) {
-        List<String> internalArrangementIds = new ArrayList<>();
-
-        arrangementIds.forEach(arrangementId -> internalArrangementIds.add(arrangementId.getInternalArrangementId()));
-
-        String functionGroupId = accessGroupsConfigurator.ingestFunctionGroupsWithAllPrivilegesByFunctionName(externalLegalEntityId, functionName);
-        String dataGroupId = accessGroupsConfigurator.ingestDataGroupForArrangements(externalLegalEntityId, internalArrangementIds);
-        accessGroupIntegrationRestClient.assignPermissions(new AssignPermissionsPostRequestBody()
-                .withExternalLegalEntityId(externalLegalEntityId)
-                .withExternalUserId(externalUserId)
-                .withServiceAgreementId(null)
-                .withFunctionGroupId(functionGroupId)
-                .withDataGroupIds(Collections.singletonList(dataGroupId)))
-                .then()
-                .statusCode(SC_OK);
-
-        LOGGER.info(String.format("Permission assigned for legal entity [%s], user [%s], service agreement [master], function group [%s], data group [%s]", externalLegalEntityId, externalUserId, functionGroupId, dataGroupId));
     }
 }

@@ -5,12 +5,15 @@ import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.data.DataG
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.data.DataGroupsPostResponseBody;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.FunctionGroupsPostResponseBody;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.Privilege;
+import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.users.permissions.AssignPermissionsPostRequestBody;
 import com.backbase.testing.dataloader.clients.accessgroup.AccessGroupIntegrationRestClient;
 import com.backbase.testing.dataloader.data.AccessGroupsDataGenerator;
+import com.backbase.testing.dataloader.dto.ArrangementId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.apache.http.HttpStatus.SC_CREATED;
@@ -22,6 +25,25 @@ public class AccessGroupsConfigurator {
 
     private AccessGroupsDataGenerator accessGroupsDataGenerator = new AccessGroupsDataGenerator();
     private AccessGroupIntegrationRestClient accessGroupIntegrationRestClient = new AccessGroupIntegrationRestClient();
+
+    public void setupFunctionDataGroupAndAllPrivilegesAssignedToUserAndMasterServiceAgreement(String externalLegalEntityId, String externalUserId, String functionName, List<ArrangementId> arrangementIds) {
+        List<String> internalArrangementIds = new ArrayList<>();
+
+        arrangementIds.forEach(arrangementId -> internalArrangementIds.add(arrangementId.getInternalArrangementId()));
+
+        String functionGroupId = ingestFunctionGroupsWithAllPrivilegesByFunctionName(externalLegalEntityId, functionName);
+        String dataGroupId = ingestDataGroupForArrangements(externalLegalEntityId, internalArrangementIds);
+        accessGroupIntegrationRestClient.assignPermissions(new AssignPermissionsPostRequestBody()
+                .withExternalLegalEntityId(externalLegalEntityId)
+                .withExternalUserId(externalUserId)
+                .withServiceAgreementId(null)
+                .withFunctionGroupId(functionGroupId)
+                .withDataGroupIds(Collections.singletonList(dataGroupId)))
+                .then()
+                .statusCode(SC_OK);
+
+        LOGGER.info(String.format("Permission assigned for legal entity [%s], user [%s], service agreement [master], function group [%s], data group [%s]", externalLegalEntityId, externalUserId, functionGroupId, dataGroupId));
+    }
 
     public void ingestFunctionGroupsWithAllPrivilegesForAllFunctions(String externalLegalEntityId) {
         FunctionsGetResponseBody[] functions = accessGroupIntegrationRestClient.retrieveFunctions()
@@ -66,7 +88,7 @@ public class AccessGroupsConfigurator {
         return id;
     }
 
-    public String ingestDataGroupForArrangements(String externalLegalEntityId, List<String> internalArrangementIds) {
+    private String ingestDataGroupForArrangements(String externalLegalEntityId, List<String> internalArrangementIds) {
         String id = accessGroupIntegrationRestClient.ingestDataGroup(accessGroupsDataGenerator.generateDataGroupsPostRequestBody(externalLegalEntityId, DataGroupsPostRequestBody.Type.ARRANGEMENTS, internalArrangementIds))
                 .then()
                 .statusCode(SC_CREATED)

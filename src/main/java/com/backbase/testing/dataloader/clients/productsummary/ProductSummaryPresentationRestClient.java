@@ -39,7 +39,6 @@ public class ProductSummaryPresentationRestClient extends RestClient {
                 .queryParam("size", queryParameters.getSize())
                 .queryParam("orderBy", queryParameters.getOrderBy())
                 .queryParam("direction", queryParameters.getDirection())
-                .queryParam("productKindName", queryParameters.getProductKindName())
                 .queryParam("searchTerm", queryParameters.getSearchTerm())
                 .get(getPath(ENDPOINT_CONTEXT_ARRANGEMENTS));
     }

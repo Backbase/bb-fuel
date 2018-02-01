@@ -51,7 +51,7 @@ public class PaymentsConfigurator {
                     .then()
                     .statusCode(SC_ACCEPTED);
 
-            LOGGER.info(String.format("Payment order ingested for debtor account [%s]", initiatePaymentOrder.getDebtorAccount().getIdentification().getIdentification()));
+            LOGGER.info(String.format("Payment order ingested for debtor account [%s] for user [%s]", initiatePaymentOrder.getDebtorAccount().getIdentification().getIdentification(), externalUserId));
         }
     }
 

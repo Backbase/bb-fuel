@@ -54,7 +54,7 @@ public class ProductSummaryConfigurator {
 
             arrangementIds.add(new ArrangementId(arrangementsPostResponseBody.getId(), arrangement.getId()));
 
-            LOGGER.info(String.format("Arrangement [%s] with currency EUR ingested for product [%s] under legal entity [%s]", arrangement.getName(), arrangement.getProductId(), externalLegalEntityId));
+            LOGGER.info(String.format("Arrangement [%s] with currency [EUR] ingested for product [%s] under legal entity [%s]", arrangement.getName(), arrangement.getProductId(), externalLegalEntityId));
         }
         return arrangementIds;
     }
@@ -73,7 +73,7 @@ public class ProductSummaryConfigurator {
 
             arrangementIds.add(new ArrangementId(arrangementsPostResponseBody.getId(), arrangement.getId()));
 
-            LOGGER.info(String.format("Arrangement [%s] with currency USD ingested for product [%s] under legal entity [%s]", arrangement.getName(), arrangement.getProductId(), externalLegalEntityId));
+            LOGGER.info(String.format("Arrangement [%s] with currency [USD] ingested for product [%s] under legal entity [%s]", arrangement.getName(), arrangement.getProductId(), externalLegalEntityId));
         }
         return arrangementIds;
     }
@@ -93,7 +93,7 @@ public class ProductSummaryConfigurator {
 
             arrangementIds.add(new ArrangementId(arrangementsPostResponseBody.getId(), arrangement.getId()));
 
-            LOGGER.info(String.format("Arrangement [%s] with currency USD ingested for product [%s] under legal entity [%s]", arrangement.getName(), arrangement.getProductId(), externalLegalEntityId));
+            LOGGER.info(String.format("Arrangement [%s] with currency [%s] ingested for product [%s] under legal entity [%s]", arrangement.getName(), currency, arrangement.getProductId(), externalLegalEntityId));
         }
         return arrangementIds;
     }

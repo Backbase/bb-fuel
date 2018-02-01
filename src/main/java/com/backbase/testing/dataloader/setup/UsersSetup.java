@@ -27,6 +27,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.backbase.testing.dataloader.data.CommonConstants.EXTERNAL_ROOT_LEGAL_ENTITY_ID;
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_INGEST_CONTACTS;
@@ -149,22 +150,27 @@ public class UsersSetup {
         List<ArrangementId> eurCurrencyArrangementIds = new ArrayList<>(productSummaryConfigurator.ingestEurCurrencyArrangementsByLegalEntityAndReturnArrangementIds(externalLegalEntityId));
         List<ArrangementId> usdCurrencyArrangementIds = new ArrayList<>(productSummaryConfigurator.ingestUsdCurrencyArrangementsByLegalEntityAndReturnArrangementIds(externalLegalEntityId));
 
+        List<String> randomCurrencyInternalArrangementIds = randomCurrencyArrangementIds.stream().map(ArrangementId::getInternalArrangementId).collect(Collectors.toList());
+        List<String> eurCurrencyInternalArrangementIds = eurCurrencyArrangementIds.stream().map(ArrangementId::getInternalArrangementId).collect(Collectors.toList());
+        List<String> usdCurrencyInternalArrangementIds = usdCurrencyArrangementIds.stream().map(ArrangementId::getInternalArrangementId).collect(Collectors.toList());
+
+        String randomCurrencyDataGroupId = accessGroupsConfigurator.ingestDataGroupForArrangements(externalLegalEntityId, randomCurrencyInternalArrangementIds);
+        String eurCurrencyDataGroupId = accessGroupsConfigurator.ingestDataGroupForArrangements(externalLegalEntityId, eurCurrencyInternalArrangementIds);
+        String usdCurrencyDataGroupId = accessGroupsConfigurator.ingestDataGroupForArrangements(externalLegalEntityId, usdCurrencyInternalArrangementIds);
 
         for (FunctionsGetResponseBody function : functions) {
             String functionName = function.getName();
 
             switch (functionName) {
                 case SEPA_CT_FUNCTION_NAME:
-                    accessGroupsConfigurator.setupFunctionDataGroupAndAllPrivilegesAssignedToUserAndMasterServiceAgreement(externalLegalEntityId, externalUserId, functionName, eurCurrencyArrangementIds);
+                    accessGroupsConfigurator.setupFunctionDataGroupAndAllPrivilegesAssignedToUserAndMasterServiceAgreement(externalLegalEntityId, externalUserId, functionName, eurCurrencyDataGroupId);
                     break;
-
                 case US_DOMESTIC_WIRE_FUNCTION_NAME:
                 case US_DOMESTIC_FOREIGN_FUNCTION_NAME:
-                    accessGroupsConfigurator.setupFunctionDataGroupAndAllPrivilegesAssignedToUserAndMasterServiceAgreement(externalLegalEntityId, externalUserId, functionName, usdCurrencyArrangementIds);
+                    accessGroupsConfigurator.setupFunctionDataGroupAndAllPrivilegesAssignedToUserAndMasterServiceAgreement(externalLegalEntityId, externalUserId, functionName, usdCurrencyDataGroupId);
                     break;
-
                 default:
-                    accessGroupsConfigurator.setupFunctionDataGroupAndAllPrivilegesAssignedToUserAndMasterServiceAgreement(externalLegalEntityId, externalUserId, functionName, randomCurrencyArrangementIds);
+                    accessGroupsConfigurator.setupFunctionDataGroupAndAllPrivilegesAssignedToUserAndMasterServiceAgreement(externalLegalEntityId, externalUserId, functionName, randomCurrencyDataGroupId);
             }
         }
 

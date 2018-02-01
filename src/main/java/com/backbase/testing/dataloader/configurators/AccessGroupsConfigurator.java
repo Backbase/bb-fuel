@@ -26,13 +26,8 @@ public class AccessGroupsConfigurator {
     private AccessGroupsDataGenerator accessGroupsDataGenerator = new AccessGroupsDataGenerator();
     private AccessGroupIntegrationRestClient accessGroupIntegrationRestClient = new AccessGroupIntegrationRestClient();
 
-    public void setupFunctionDataGroupAndAllPrivilegesAssignedToUserAndMasterServiceAgreement(String externalLegalEntityId, String externalUserId, String functionName, List<ArrangementId> arrangementIds) {
-        List<String> internalArrangementIds = new ArrayList<>();
-
-        arrangementIds.forEach(arrangementId -> internalArrangementIds.add(arrangementId.getInternalArrangementId()));
-
+    public void setupFunctionDataGroupAndAllPrivilegesAssignedToUserAndMasterServiceAgreement(String externalLegalEntityId, String externalUserId, String functionName, String dataGroupId) {
         String functionGroupId = ingestFunctionGroupsWithAllPrivilegesByFunctionName(externalLegalEntityId, functionName);
-        String dataGroupId = ingestDataGroupForArrangements(externalLegalEntityId, internalArrangementIds);
         accessGroupIntegrationRestClient.assignPermissions(new AssignPermissionsPostRequestBody()
                 .withExternalLegalEntityId(externalLegalEntityId)
                 .withExternalUserId(externalUserId)
@@ -88,7 +83,7 @@ public class AccessGroupsConfigurator {
         return id;
     }
 
-    private String ingestDataGroupForArrangements(String externalLegalEntityId, List<String> internalArrangementIds) {
+    public String ingestDataGroupForArrangements(String externalLegalEntityId, List<String> internalArrangementIds) {
         String id = accessGroupIntegrationRestClient.ingestDataGroup(accessGroupsDataGenerator.generateDataGroupsPostRequestBody(externalLegalEntityId, DataGroupsPostRequestBody.Type.ARRANGEMENTS, internalArrangementIds))
                 .then()
                 .statusCode(SC_CREATED)

@@ -8,10 +8,14 @@ import com.backbase.testing.dataloader.setup.ServiceAgreementsSetup;
 import com.backbase.testing.dataloader.setup.UsersSetup;
 
 import java.io.IOException;
+import java.time.Duration;
+import java.time.Instant;
 
 public class Runner {
 
     public static void main(String[] args) throws IOException {
+        System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", "16");
+
         BankSetup bankSetup = new BankSetup();
         UsersSetup usersSetup = new UsersSetup();
         ServiceAgreementsSetup serviceAgreementsSetup = new ServiceAgreementsSetup();

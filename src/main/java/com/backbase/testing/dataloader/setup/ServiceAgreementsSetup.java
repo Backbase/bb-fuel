@@ -35,13 +35,13 @@ public class ServiceAgreementsSetup {
             loginRestClient.login(USER_ADMIN, USER_ADMIN);
             accessGroupPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
-            Arrays.stream(serviceAgreementPostRequestBodies).parallel().forEach(serviceAgreementPostRequestBody -> {
+            Arrays.stream(serviceAgreementPostRequestBodies).forEach(serviceAgreementPostRequestBody -> {
                 String serviceAgreementId = serviceAgreementsConfigurator.ingestServiceAgreementWithProvidersAndConsumersWithAllFunctionDataGroups(serviceAgreementPostRequestBody.getProviders(), serviceAgreementPostRequestBody.getConsumers());
 
-                serviceAgreementPostRequestBody.getProviders().parallelStream().forEach(provider -> {
+                serviceAgreementPostRequestBody.getProviders().forEach(provider -> {
                     Set<String> externalUserIds = provider.getUsers();
 
-                    externalUserIds.parallelStream().forEach(externalUserId -> serviceAgreementPostRequestBody.getConsumers().parallelStream().forEach(consumer -> {
+                    externalUserIds.forEach(externalUserId -> serviceAgreementPostRequestBody.getConsumers().parallelStream().forEach(consumer -> {
                         String externalConsumerAdminUserId = consumer.getAdmins()
                                 .iterator()
                                 .next();

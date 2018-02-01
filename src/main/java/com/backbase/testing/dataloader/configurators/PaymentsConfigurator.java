@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_PAYMENTS_MAX;
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_PAYMENTS_MIN;
@@ -44,7 +45,8 @@ public class PaymentsConfigurator {
         accessGroupPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
         List<ArrangementsByBusinessFunctionGetResponseBody> sepaArrangements = getSepaArrangements();
 
-        for (int i = 0; i < CommonHelpers.generateRandomNumberInRange(globalProperties.getInt(PROPERTY_PAYMENTS_MIN), globalProperties.getInt(PROPERTY_PAYMENTS_MAX)); i++) {
+        int randomAmount = CommonHelpers.generateRandomNumberInRange(globalProperties.getInt(PROPERTY_PAYMENTS_MIN), globalProperties.getInt(PROPERTY_PAYMENTS_MAX));
+        IntStream.range(0, randomAmount).parallel().forEach(randomNumber -> {
             ArrangementsByBusinessFunctionGetResponseBody randomArrangement = sepaArrangements.get(random.nextInt(sepaArrangements.size()));
             InitiatePaymentOrder initiatePaymentOrder = paymentsDataGenerator.generateInitiatePaymentOrder(randomArrangement.getId());
             paymentOrderPresentationRestClient.initiatePaymentOrder(initiatePaymentOrder)
@@ -52,10 +54,10 @@ public class PaymentsConfigurator {
                     .statusCode(SC_ACCEPTED);
 
             LOGGER.info(String.format("Payment order ingested for debtor account [%s] for user [%s]", initiatePaymentOrder.getDebtorAccount().getIdentification().getIdentification(), externalUserId));
-        }
+        });
     }
 
-    public List<ArrangementsByBusinessFunctionGetResponseBody> getSepaArrangements() {
+    private List<ArrangementsByBusinessFunctionGetResponseBody> getSepaArrangements() {
         ArrangementsByBusinessFunctionGetResponseBody[] arrangements = productSummaryPresentationRestClient.getProductSummaryContextArrangements(new ProductSummaryQueryParameters()
                 .withBusinessFunction(ENTITLEMENTS_PAYMENTS_FUNCTION_NAME)
                 .withResourceName(ENTITLEMENTS_PAYMENTS_RESOURCE_NAME)

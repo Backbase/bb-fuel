@@ -8,6 +8,8 @@ import com.backbase.testing.dataloader.utils.GlobalProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.stream.IntStream;
+
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_NOTIFICATIONS_MAX;
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_NOTIFICATIONS_MIN;
 import static org.apache.http.HttpStatus.SC_CREATED;
@@ -21,13 +23,14 @@ public class NotificationsConfigurator {
     private NotificationsDataGenerator notificationsDataGenerator = new NotificationsDataGenerator();
 
     public void ingestNotifications() {
-        for (int i = 0; i < CommonHelpers.generateRandomNumberInRange(globalProperties.getInt(PROPERTY_NOTIFICATIONS_MIN), globalProperties.getInt(PROPERTY_NOTIFICATIONS_MAX)); i++) {
+        int randomAmount = CommonHelpers.generateRandomNumberInRange(globalProperties.getInt(PROPERTY_NOTIFICATIONS_MIN), globalProperties.getInt(PROPERTY_NOTIFICATIONS_MAX));
+        IntStream.range(0, randomAmount).parallel().forEach(randomNumber -> {
             NotificationsPostRequestBody notification = notificationsDataGenerator.generateNotificationsPostRequestBodyForGlobalTargetGroup();
             notificationsPresentationRestClient.createNotification(notification)
                     .then()
                     .statusCode(SC_CREATED);
 
             LOGGER.info(String.format("Notification ingested with title [%s] and target group [%s]", notification.getTitle(), notification.getTargetGroup()));
-        }
+        });
     }
 }

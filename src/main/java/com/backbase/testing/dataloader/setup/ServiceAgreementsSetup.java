@@ -46,14 +46,13 @@ public class ServiceAgreementsSetup {
                                 .iterator()
                                 .next();
 
-                        String externalLegalEntityId = userPresentationRestClient.retrieveLegalEntityByExternalUserId(externalConsumerAdminUserId)
+                        LegalEntityByUserGetResponseBody legalEntity = userPresentationRestClient.retrieveLegalEntityByExternalUserId(externalConsumerAdminUserId)
                                 .then()
                                 .statusCode(SC_OK)
                                 .extract()
-                                .as(LegalEntityByUserGetResponseBody.class)
-                                .getExternalId();
+                                .as(LegalEntityByUserGetResponseBody.class);
 
-                        permissionsConfigurator.assignAllFunctionDataGroupsOfLegalEntityToUserAndServiceAgreement(externalLegalEntityId, externalUserId, serviceAgreementId);
+                        permissionsConfigurator.assignAllFunctionDataGroupsOfLegalEntityToUserAndServiceAgreement(legalEntity, externalUserId, serviceAgreementId);
                     }));
                 });
             });

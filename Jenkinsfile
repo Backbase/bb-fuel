@@ -2,6 +2,7 @@ properties([
         parameters([
                 string(name: 'ENVIRONMENT_NAME', defaultValue: 'env-name-00', description: 'Autoconfig environment name, example: frosty-snow-99\nRead before running: https://stash.backbase.com/users/kwo/repos/dataloader/browse/README.md'),
                 booleanParam(name: 'INGEST_ENTITLEMENTS', defaultValue: true, description: 'Only works on clean environment'),
+                booleanParam(name: 'INGEST_CUSTOM_SERVICE_AGREEMENTS', defaultValue: false, description: ''),
                 booleanParam(name: 'INGEST_TRANSACTIONS', defaultValue: false, description: 'Only works on when INGEST_ENTITLEMENTS = true'),
                 booleanParam(name: 'INGEST_CONTACTS', defaultValue: false, description: 'Ingest contacts per user'),
                 booleanParam(name: 'INGEST_NOTIFICATIONS', defaultValue: false, description: 'Ingest notifications on global target group'),
@@ -26,6 +27,7 @@ node {
             sh "java -Denvironment.name=${params.ENVIRONMENT_NAME} " +
                     "-Dinfra.base.uri=http://${params.ENVIRONMENT_NAME}-${params.INFRA_BASE_URI} " +
                     "-Dingest.entitlements=${params.INGEST_ENTITLEMENTS} " +
+                    "-Dingest.custom.service.agreements=${params.INGEST_CUSTOM_SERVICE_AGREEMENTS} " +
                     "-Dingest.transactions=${params.INGEST_TRANSACTIONS} " +
                     "-Dingest.contacts=${params.INGEST_CONTACTS} " +
                     "-Dingest.notifications=${params.INGEST_NOTIFICATIONS} " +

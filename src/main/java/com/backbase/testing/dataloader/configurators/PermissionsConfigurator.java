@@ -38,9 +38,7 @@ public class PermissionsConfigurator {
 
         List<String> dataGroupIds = accessGroupPresentationRestClient.retrieveAllDataGroupIdsByLegalEntity(internalLegalEntityId);
 
-        Arrays.stream(functionGroups)
-                .parallel()
-                .forEach(functionGroup -> {
+        Arrays.stream(functionGroups).forEach(functionGroup -> {
                     accessGroupIntegrationRestClient.assignPermissions(new AssignPermissionsPostRequestBody()
                             .withExternalLegalEntityId(null)
                             .withExternalUserId(externalUserId)

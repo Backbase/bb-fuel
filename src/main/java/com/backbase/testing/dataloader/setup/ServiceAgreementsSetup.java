@@ -15,7 +15,6 @@ import java.util.Arrays;
 import java.util.Set;
 
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_INGEST_CUSTOM_SERVICE_AGREEMENTS;
-import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_INGEST_ENTITLEMENTS;
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_SERVICEAGREEMENTS_JSON_LOCATION;
 import static com.backbase.testing.dataloader.data.CommonConstants.USER_ADMIN;
 import static org.apache.http.HttpStatus.SC_OK;

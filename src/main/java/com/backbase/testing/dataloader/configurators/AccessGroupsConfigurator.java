@@ -88,7 +88,7 @@ public class AccessGroupsConfigurator {
                 .as(FunctionGroupsPostResponseBody.class)
                 .getId();
 
-        LOGGER.info(String.format("Function group ingested (legal entity [%s]) for function [%s] with privileges %s", externalLegalEntityId, functionName, privileges));
+        LOGGER.info(String.format("Function group [%s] ingested (legal entity [%s]) for function [%s] with privileges %s", id, externalLegalEntityId, functionName, privileges));
 
         return id;
     }
@@ -103,7 +103,7 @@ public class AccessGroupsConfigurator {
                 .as(DataGroupsPostResponseBody.class)
                 .getId();
 
-        LOGGER.info(String.format("Data group ingested (legal entity [%s]) for arrangements %s", externalLegalEntityId, internalArrangementIds));
+        LOGGER.info(String.format("Data group [%s] ingested (legal entity [%s]) for arrangements %s", id, externalLegalEntityId, internalArrangementIds));
 
         return id;
     }

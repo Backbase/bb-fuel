@@ -29,6 +29,7 @@ public final class CommonConstants {
     public static final String PAYMENTS_RESOURCE_NAME = "Payments";
     public static final String PRIVILEGE_CREATE = "create";
     public static final String PROPERTY_INGEST_ENTITLEMENTS = "ingest.entitlements";
+    public static final String PROPERTY_INGEST_CUSTOM_SERVICE_AGREEMENTS = "ingest.custom.service.agreements";
 
     // Products
     public static final String PROPERTY_PRODUCTS_JSON_LOCATION = "products.json.location";

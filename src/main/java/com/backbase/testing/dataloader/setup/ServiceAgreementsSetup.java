@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Set;
 
+import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_INGEST_CUSTOM_SERVICE_AGREEMENTS;
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_INGEST_ENTITLEMENTS;
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_SERVICEAGREEMENTS_JSON_LOCATION;
 import static com.backbase.testing.dataloader.data.CommonConstants.USER_ADMIN;
@@ -29,19 +30,19 @@ public class ServiceAgreementsSetup {
     private PermissionsConfigurator permissionsConfigurator = new PermissionsConfigurator();
 
     public void setupCustomServiceAgreements() throws IOException {
-        if (globalProperties.getBoolean(PROPERTY_INGEST_ENTITLEMENTS)) {
+        if (globalProperties.getBoolean(PROPERTY_INGEST_CUSTOM_SERVICE_AGREEMENTS)) {
             ServiceAgreementPostRequestBody[] serviceAgreementPostRequestBodies = ParserUtil.convertJsonToObject(globalProperties.getString(PROPERTY_SERVICEAGREEMENTS_JSON_LOCATION), ServiceAgreementPostRequestBody[].class);
 
             loginRestClient.login(USER_ADMIN, USER_ADMIN);
             accessGroupPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
-            Arrays.stream(serviceAgreementPostRequestBodies).parallel().forEach(serviceAgreementPostRequestBody -> {
+            Arrays.stream(serviceAgreementPostRequestBodies).forEach(serviceAgreementPostRequestBody -> {
                 String serviceAgreementId = serviceAgreementsConfigurator.ingestServiceAgreementWithProvidersAndConsumersWithAllFunctionDataGroups(serviceAgreementPostRequestBody.getProviders(), serviceAgreementPostRequestBody.getConsumers());
 
-                serviceAgreementPostRequestBody.getProviders().parallelStream().forEach(provider -> {
+                serviceAgreementPostRequestBody.getProviders().forEach(provider -> {
                     Set<String> externalUserIds = provider.getUsers();
 
-                    externalUserIds.parallelStream().forEach(externalUserId -> serviceAgreementPostRequestBody.getConsumers().parallelStream().forEach(consumer -> {
+                    externalUserIds.forEach(externalUserId -> serviceAgreementPostRequestBody.getConsumers().parallelStream().forEach(consumer -> {
                         String externalConsumerAdminUserId = consumer.getAdmins()
                                 .iterator()
                                 .next();

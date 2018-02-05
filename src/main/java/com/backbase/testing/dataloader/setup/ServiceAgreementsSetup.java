@@ -42,7 +42,7 @@ public class ServiceAgreementsSetup {
                 serviceAgreementPostRequestBody.getProviders().forEach(provider -> {
                     Set<String> externalUserIds = provider.getUsers();
 
-                    externalUserIds.forEach(externalUserId -> serviceAgreementPostRequestBody.getConsumers().parallelStream().forEach(consumer -> {
+                    externalUserIds.forEach(externalUserId -> serviceAgreementPostRequestBody.getConsumers().forEach(consumer -> {
                         String externalConsumerAdminUserId = consumer.getAdmins()
                                 .iterator()
                                 .next();

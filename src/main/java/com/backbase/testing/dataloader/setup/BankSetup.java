@@ -10,6 +10,7 @@ import com.backbase.testing.dataloader.configurators.ProductSummaryConfigurator;
 import com.backbase.testing.dataloader.utils.GlobalProperties;
 
 import java.io.IOException;
+import java.util.Collections;
 
 import static com.backbase.testing.dataloader.data.CommonConstants.EXTERNAL_ROOT_LEGAL_ENTITY_ID;
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_INGEST_ENTITLEMENTS;
@@ -38,13 +39,7 @@ public class BankSetup {
 
             loginRestClient.login(USER_ADMIN, USER_ADMIN);
             accessGroupPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
-            LegalEntityByUserGetResponseBody legalEntity = userPresentationRestClient.retrieveLegalEntityByExternalUserId(USER_ADMIN)
-                    .then()
-                    .statusCode(SC_OK)
-                    .extract()
-                    .as(LegalEntityByUserGetResponseBody.class);
-
-            usersSetup.setupFunctionDataGroupAndPrivilegesUnderLegalEntity(legalEntity, USER_ADMIN);
+            usersSetup.setupUsersWithAllFunctionDataGroupsAndPrivilegesUnderNewLegalEntity(Collections.singletonList(USER_ADMIN));
         }
     }
 

@@ -4,7 +4,7 @@ import java.util.List;
 
 public class UserList {
 
-    List<String> externalUserIds;
+    private List<String> externalUserIds;
 
     public UserList() {
     }

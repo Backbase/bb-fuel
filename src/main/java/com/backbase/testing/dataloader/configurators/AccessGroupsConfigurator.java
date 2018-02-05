@@ -10,6 +10,7 @@ import com.backbase.presentation.user.rest.spec.v2.users.LegalEntityByUserGetRes
 import com.backbase.testing.dataloader.clients.accessgroup.AccessGroupIntegrationRestClient;
 import com.backbase.testing.dataloader.clients.accessgroup.AccessGroupPresentationRestClient;
 import com.backbase.testing.dataloader.data.AccessGroupsDataGenerator;
+import com.backbase.testing.dataloader.dto.ArrangementId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.apache.http.HttpStatus.SC_CREATED;
 import static org.apache.http.HttpStatus.SC_OK;
@@ -65,7 +67,7 @@ public class AccessGroupsConfigurator {
         });
     }
 
-    public String ingestFunctionGroupsWithAllPrivilegesByFunctionName(String externalLegalEntityId, String functionName) {
+    private String ingestFunctionGroupsWithAllPrivilegesByFunctionName(String externalLegalEntityId, String functionName) {
         List<String> privileges = new ArrayList<>();
         FunctionsGetResponseBody function = accessGroupIntegrationRestClient.retrieveFunctionByName(functionName);
         List<Privilege> functionPrivileges = function.getPrivileges();
@@ -91,7 +93,9 @@ public class AccessGroupsConfigurator {
         return id;
     }
 
-    public String ingestDataGroupForArrangements(String externalLegalEntityId, List<String> internalArrangementIds) {
+    public String ingestDataGroupForArrangements(String externalLegalEntityId, List<ArrangementId> arrangementIds) {
+        List<String> internalArrangementIds = arrangementIds.stream().map(ArrangementId::getInternalArrangementId).collect(Collectors.toList());
+
         String id = accessGroupIntegrationRestClient.ingestDataGroup(accessGroupsDataGenerator.generateDataGroupsPostRequestBody(externalLegalEntityId, DataGroupsPostRequestBody.Type.ARRANGEMENTS, internalArrangementIds))
                 .then()
                 .statusCode(SC_CREATED)

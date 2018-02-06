@@ -31,7 +31,7 @@ public class AccessGroupsConfigurator {
     private AccessGroupPresentationRestClient accessGroupPresentationRestClient = new AccessGroupPresentationRestClient();
     private AccessGroupIntegrationRestClient accessGroupIntegrationRestClient = new AccessGroupIntegrationRestClient();
 
-    public void setupFunctionDataGroupAndAllPrivilegesAssignedToUserAndMasterServiceAgreement(LegalEntityByUserGetResponseBody legalEntity, String externalUserId, String functionName, String dataGroupId) {
+    public void setupFunctionDataGroupAndAllPrivilegesAssignedToUserAndMasterServiceAgreement(LegalEntityByUserGetResponseBody legalEntity, String externalUserId, String functionName, List<String> dataGroupIds) {
         String functionGroupId = accessGroupPresentationRestClient.getFunctionGroupIdByLegalEntityIdAndFunctionName(legalEntity.getId(), functionName);
 
         if (functionGroupId == null) {
@@ -43,11 +43,11 @@ public class AccessGroupsConfigurator {
                 .withExternalUserId(externalUserId)
                 .withServiceAgreementId(null)
                 .withFunctionGroupId(functionGroupId)
-                .withDataGroupIds(Collections.singletonList(dataGroupId)))
+                .withDataGroupIds(dataGroupIds))
                 .then()
                 .statusCode(SC_OK);
 
-        LOGGER.info(String.format("Permission assigned for legal entity [%s], user [%s], service agreement [master], function group [%s], data group [%s]", legalEntity.getExternalId(), externalUserId, functionGroupId, dataGroupId));
+        LOGGER.info(String.format("Permission assigned for legal entity [%s], user [%s], service agreement [master], function group [%s], data groups %s", legalEntity.getExternalId(), externalUserId, functionGroupId, dataGroupIds));
     }
 
     public void ingestFunctionGroupsWithAllPrivilegesForAllFunctions(String externalLegalEntityId) {

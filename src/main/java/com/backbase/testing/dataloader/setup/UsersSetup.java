@@ -23,6 +23,7 @@ import com.backbase.testing.dataloader.utils.ParserUtil;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -160,14 +161,14 @@ public class UsersSetup {
 
             switch (functionName) {
                 case SEPA_CT_FUNCTION_NAME:
-                    accessGroupsConfigurator.setupFunctionDataGroupAndAllPrivilegesAssignedToUserAndMasterServiceAgreement(legalEntity, externalUserId, functionName, currencyDataGroup.getInternalEurCurrencyDataGroupId());
+                    accessGroupsConfigurator.setupFunctionDataGroupAndAllPrivilegesAssignedToUserAndMasterServiceAgreement(legalEntity, externalUserId, functionName, Collections.singletonList(currencyDataGroup.getInternalEurCurrencyDataGroupId()));
                     break;
                 case US_DOMESTIC_WIRE_FUNCTION_NAME:
                 case US_FOREIGN_WIRE_FUNCTION_NAME:
-                    accessGroupsConfigurator.setupFunctionDataGroupAndAllPrivilegesAssignedToUserAndMasterServiceAgreement(legalEntity, externalUserId, functionName, currencyDataGroup.getInternalUsdCurrencyDataGroupId());
+                    accessGroupsConfigurator.setupFunctionDataGroupAndAllPrivilegesAssignedToUserAndMasterServiceAgreement(legalEntity, externalUserId, functionName, Collections.singletonList(currencyDataGroup.getInternalUsdCurrencyDataGroupId()));
                     break;
                 default:
-                    accessGroupsConfigurator.setupFunctionDataGroupAndAllPrivilegesAssignedToUserAndMasterServiceAgreement(legalEntity, externalUserId, functionName, currencyDataGroup.getInternalRandomCurrencyDataGroupId());
+                    accessGroupsConfigurator.setupFunctionDataGroupAndAllPrivilegesAssignedToUserAndMasterServiceAgreement(legalEntity, externalUserId, functionName, Arrays.asList(currencyDataGroup.getInternalRandomCurrencyDataGroupId(), currencyDataGroup.getInternalEurCurrencyDataGroupId(), currencyDataGroup.getInternalUsdCurrencyDataGroupId()));
             }
         });
     }

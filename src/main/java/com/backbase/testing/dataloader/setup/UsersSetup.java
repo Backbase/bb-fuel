@@ -6,8 +6,8 @@ import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.serviceag
 import com.backbase.presentation.user.rest.spec.v2.users.LegalEntityByUserGetResponseBody;
 import com.backbase.presentation.user.rest.spec.v2.users.UserGetResponseBody;
 import com.backbase.testing.dataloader.clients.accessgroup.AccessGroupIntegrationRestClient;
-import com.backbase.testing.dataloader.clients.accessgroup.AccessGroupPresentationRestClient;
 import com.backbase.testing.dataloader.clients.accessgroup.ServiceAgreementsPresentationRestClient;
+import com.backbase.testing.dataloader.clients.accessgroup.UserContextPresentationRestClient;
 import com.backbase.testing.dataloader.clients.common.LoginRestClient;
 import com.backbase.testing.dataloader.clients.legalentity.LegalEntityPresentationRestClient;
 import com.backbase.testing.dataloader.clients.user.UserPresentationRestClient;
@@ -58,7 +58,7 @@ public class UsersSetup {
     private LoginRestClient loginRestClient = new LoginRestClient();
     private UserPresentationRestClient userPresentationRestClient = new UserPresentationRestClient();
     private ProductSummaryConfigurator productSummaryConfigurator = new ProductSummaryConfigurator();
-    private AccessGroupPresentationRestClient accessGroupPresentationRestClient = new AccessGroupPresentationRestClient();
+    private UserContextPresentationRestClient userContextPresentationRestClient = new UserContextPresentationRestClient();
     private AccessGroupIntegrationRestClient accessGroupIntegrationRestClient = new AccessGroupIntegrationRestClient();
     private AccessGroupsConfigurator accessGroupsConfigurator = new AccessGroupsConfigurator();
     private PermissionsConfigurator permissionsConfigurator = new PermissionsConfigurator();
@@ -102,7 +102,7 @@ public class UsersSetup {
 
                 externalUserIds.forEach(externalUserId -> {
                     loginRestClient.login(externalUserId, externalUserId);
-                    accessGroupPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
+                    userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
                     contactsConfigurator.ingestContacts();
                 });
             });
@@ -122,7 +122,7 @@ public class UsersSetup {
     public void setupConversationsPerUser() {
         if (globalProperties.getBoolean(PROPERTY_INGEST_CONVERSATIONS)) {
             loginRestClient.login(USER_ADMIN, USER_ADMIN);
-            accessGroupPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
+            userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
             Arrays.stream(userLists).forEach(userList -> {
                 List<String> externalUserIds = userList.getExternalUserIds();
@@ -140,7 +140,7 @@ public class UsersSetup {
 
         for (String externalUserId : externalUserIds) {
             loginRestClient.login(USER_ADMIN, USER_ADMIN);
-            accessGroupPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
+            userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
             internalLegalEntityIds.add(userPresentationRestClient.retrieveLegalEntityByExternalUserId(externalUserId)
                 .then()
@@ -182,7 +182,7 @@ public class UsersSetup {
                 .as(FunctionsGetResponseBody[].class);
 
         loginRestClient.login(USER_ADMIN, USER_ADMIN);
-        accessGroupPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
+        userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
         Arrays.stream(functions).forEach(function -> {
             String functionName = function.getName();
@@ -233,9 +233,9 @@ public class UsersSetup {
                 .withInternalUsdCurrencyDataGroupId(usdCurrencyDataGroupId);
     }
 
-    UserContext getUserContextBasedOnMasterServiceAgreement(String externalUserId) {
+    private UserContext getUserContextBasedOnMasterServiceAgreement(String externalUserId) {
         loginRestClient.login(USER_ADMIN, USER_ADMIN);
-        accessGroupPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
+        userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
         String internalUserId = userPresentationRestClient.getUserByExternalId(externalUserId)
             .then()
@@ -256,39 +256,6 @@ public class UsersSetup {
             .extract()
             .as(ServiceAgreementGetResponseBody.class)
             .getId();
-
-        String externalServiceAgreementId = serviceAgreementsPresentationRestClient.retrieveServiceAgreement(internalServiceAgreementId)
-            .then()
-            .statusCode(SC_OK)
-            .extract()
-            .as(ServiceAgreementGetResponseBody.class)
-            .getExternalId();
-
-        return new UserContext()
-            .withInternalUserId(internalUserId)
-            .withExternalUserId(externalUserId)
-            .withInternalServiceAgreementId(internalServiceAgreementId)
-            .withExternalServiceAgreementId(externalServiceAgreementId)
-            .withInternalLegalEntityId(legalEntity.getId())
-            .withExternalLegalEntityId(legalEntity.getExternalId());
-    }
-
-    UserContext getUserContextBasedOnServiceAgreement(String externalUserId, String internalServiceAgreementId) {
-        loginRestClient.login(USER_ADMIN, USER_ADMIN);
-        accessGroupPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
-
-        String internalUserId = userPresentationRestClient.getUserByExternalId(externalUserId)
-            .then()
-            .statusCode(SC_OK)
-            .extract()
-            .as(UserGetResponseBody.class)
-            .getId();
-
-        LegalEntityByUserGetResponseBody legalEntity = userPresentationRestClient.retrieveLegalEntityByExternalUserId(externalUserId)
-            .then()
-            .statusCode(SC_OK)
-            .extract()
-            .as(LegalEntityByUserGetResponseBody.class);
 
         String externalServiceAgreementId = serviceAgreementsPresentationRestClient.retrieveServiceAgreement(internalServiceAgreementId)
             .then()

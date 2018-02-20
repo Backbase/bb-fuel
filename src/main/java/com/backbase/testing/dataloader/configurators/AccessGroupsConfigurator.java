@@ -20,6 +20,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.backbase.testing.dataloader.data.AccessGroupsDataGenerator.generateDataGroupPostRequestBody;
+import static com.backbase.testing.dataloader.data.AccessGroupsDataGenerator.generateFunctionGroupPostRequestBody;
 import static org.apache.http.HttpStatus.SC_CREATED;
 import static org.apache.http.HttpStatus.SC_OK;
 
@@ -27,10 +29,8 @@ public class AccessGroupsConfigurator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AccessGroupsConfigurator.class);
 
-    private AccessGroupsDataGenerator accessGroupsDataGenerator = new AccessGroupsDataGenerator();
     private AccessGroupPresentationRestClient accessGroupPresentationRestClient = new AccessGroupPresentationRestClient();
     private AccessGroupIntegrationRestClient accessGroupIntegrationRestClient = new AccessGroupIntegrationRestClient();
-    private ServiceAgreementsPresentationRestClient serviceAgreementsPresentationRestClient = new ServiceAgreementsPresentationRestClient();
 
     public String setupFunctionGroupWithAllPrivilegesByFunctionName(String internalServiceAgreementId, String externalServiceAgreementId, String functionName) {
         String functionGroupId = accessGroupPresentationRestClient.getFunctionGroupIdByServiceAgreementIdAndFunctionName(internalServiceAgreementId, functionName);
@@ -56,7 +56,7 @@ public class AccessGroupsConfigurator {
         String functionId = accessGroupIntegrationRestClient.retrieveFunctionByName(functionName)
                 .getFunctionId();
 
-        String id = accessGroupIntegrationRestClient.ingestFunctionGroup(accessGroupsDataGenerator.generateFunctionGroupPostRequestBody(externalServiceAgreementId, functionId, privileges))
+        String id = accessGroupIntegrationRestClient.ingestFunctionGroup(generateFunctionGroupPostRequestBody(externalServiceAgreementId, functionId, privileges))
                 .then()
                 .statusCode(SC_CREATED)
                 .extract()
@@ -71,7 +71,7 @@ public class AccessGroupsConfigurator {
     public String ingestDataGroupForArrangements(String externalServiceAgreementId, List<ArrangementId> arrangementIds) {
         List<String> internalArrangementIds = arrangementIds.stream().map(ArrangementId::getInternalArrangementId).collect(Collectors.toList());
 
-        String id = accessGroupIntegrationRestClient.ingestDataGroup(accessGroupsDataGenerator.generateDataGroupPostRequestBody(externalServiceAgreementId, DataGroupPostRequestBody.Type.ARRANGEMENTS, internalArrangementIds))
+        String id = accessGroupIntegrationRestClient.ingestDataGroup(generateDataGroupPostRequestBody(externalServiceAgreementId, DataGroupPostRequestBody.Type.ARRANGEMENTS, internalArrangementIds))
                 .then()
                 .statusCode(SC_CREATED)
                 .extract()

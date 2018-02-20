@@ -11,9 +11,9 @@ import java.util.UUID;
 
 public class ServiceAgreementsDataGenerator {
 
-    private Faker faker = new Faker();
+    private static Faker faker = new Faker();
 
-    public ServiceAgreementPostRequestBody generateServiceAgreementPostRequestBody(Set<Provider> providers, Set<Consumer> consumers) {
+    public static ServiceAgreementPostRequestBody generateServiceAgreementPostRequestBody(Set<Provider> providers, Set<Consumer> consumers) {
         return new ServiceAgreementPostRequestBody()
                 .withName(faker.lorem().sentence(3, 0).replace(".", ""))
                 .withDescription(faker.lorem().sentence(3, 0).replace(".", ""))
@@ -22,7 +22,7 @@ public class ServiceAgreementsDataGenerator {
                 .withConsumers(consumers);
     }
 
-    public ServiceAgreementPutRequestBody generateServiceAgreementPutRequestBody() {
+    public static ServiceAgreementPutRequestBody generateServiceAgreementPutRequestBody() {
         return new ServiceAgreementPutRequestBody()
             .withExternalId(UUID.randomUUID().toString());
     }

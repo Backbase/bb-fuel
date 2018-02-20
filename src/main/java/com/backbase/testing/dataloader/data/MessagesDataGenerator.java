@@ -11,10 +11,10 @@ import java.util.Random;
 
 public class MessagesDataGenerator {
 
-    private Faker faker = new Faker();
-    private Random random = new Random();
+    private static Faker faker = new Faker();
+    private static Random random = new Random();
 
-    public DraftsPostRequestBody generateDraftsPostRequestBody() {
+    public static DraftsPostRequestBody generateDraftsPostRequestBody() {
         List<String> categories = Arrays.asList("ma", "ln", "pym");
 
         return new DraftsPostRequestBody()
@@ -24,12 +24,12 @@ public class MessagesDataGenerator {
                 .withImportant(true);
     }
 
-    public ConversationDraftsPostRequestBody generateConversationDraftsPostRequestBody() {
+    public static ConversationDraftsPostRequestBody generateConversationDraftsPostRequestBody() {
         return new ConversationDraftsPostRequestBody()
                 .withBody(encodeString(faker.lorem().paragraph()));
     }
 
-    private String encodeString(String value) {
+    private static String encodeString(String value) {
         byte[] bodyEncoded = Base64.encodeBase64(value.getBytes());
 
         return new String(bodyEncoded);

@@ -10,13 +10,13 @@ import static com.backbase.testing.dataloader.data.CommonConstants.EXTERNAL_LEGA
 
 public class LegalEntitiesAndUsersDataGenerator {
 
-    private Faker faker = new Faker();
+    private static Faker faker = new Faker();
 
-    public String generateExternalLegalEntityId() {
+    public static String generateExternalLegalEntityId() {
         return EXTERNAL_LEGAL_ENTITY_ID_PREFIX + RandomStringUtils.randomNumeric(8);
     }
 
-    public LegalEntitiesPostRequestBody generateRootLegalEntitiesPostRequestBody(String externalLegalEntityId) {
+    public static LegalEntitiesPostRequestBody generateRootLegalEntitiesPostRequestBody(String externalLegalEntityId) {
         return new LegalEntitiesPostRequestBody()
                 .withExternalId(externalLegalEntityId)
                 .withName(faker.company().name() + faker.lorem().characters(8))
@@ -24,7 +24,7 @@ public class LegalEntitiesAndUsersDataGenerator {
                 .withType(LegalEntityType.BANK);
     }
 
-    public LegalEntitiesPostRequestBody generateLegalEntitiesPostRequestBody(String externalLegalEntityId, String externalParentLegalEntityId) {
+    public static LegalEntitiesPostRequestBody generateLegalEntitiesPostRequestBody(String externalLegalEntityId, String externalParentLegalEntityId) {
         return new LegalEntitiesPostRequestBody()
                 .withExternalId(externalLegalEntityId)
                 .withName(faker.company().name() + faker.lorem().characters(8))
@@ -32,7 +32,7 @@ public class LegalEntitiesAndUsersDataGenerator {
                 .withType(LegalEntityType.CUSTOMER);
     }
 
-    public UsersPostRequestBody generateUsersPostRequestBody(String externalUserId, String externalLegalEntityId) {
+    public static UsersPostRequestBody generateUsersPostRequestBody(String externalUserId, String externalLegalEntityId) {
         return new UsersPostRequestBody()
                 .withExternalId(externalUserId)
                 .withLegalEntityExternalId(externalLegalEntityId)

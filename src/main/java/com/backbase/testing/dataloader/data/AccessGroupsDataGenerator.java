@@ -13,9 +13,9 @@ import java.util.stream.Collectors;
 
 public class AccessGroupsDataGenerator {
 
-    private Faker faker = new Faker();
+    private static Faker faker = new Faker();
 
-    public FunctionGroupPostRequestBody generateFunctionGroupPostRequestBody(String externalServiceAgreementId, String functionId, List<String> privileges) {
+    public static FunctionGroupPostRequestBody generateFunctionGroupPostRequestBody(String externalServiceAgreementId, String functionId, List<String> privileges) {
         return new FunctionGroupPostRequestBody()
                 .withName(faker.lorem().characters(8))
                 .withDescription(faker.lorem().characters(8))
@@ -23,7 +23,7 @@ public class AccessGroupsDataGenerator {
                 .withPermissions(setPermissions(functionId, privileges));
     }
 
-    public DataGroupPostRequestBody generateDataGroupPostRequestBody(String externalServiceAgreementId, DataGroupPostRequestBody.Type type, List<String> items) {
+    public static DataGroupPostRequestBody generateDataGroupPostRequestBody(String externalServiceAgreementId, DataGroupPostRequestBody.Type type, List<String> items) {
         return new DataGroupPostRequestBody()
                 .withName(faker.lorem().characters(8))
                 .withDescription(faker.lorem().characters(8))
@@ -32,11 +32,11 @@ public class AccessGroupsDataGenerator {
                 .withItems(items);
     }
 
-    private List<Permission> setPermissions(String function, List<String> privileges) {
+    private static List<Permission> setPermissions(String function, List<String> privileges) {
         return Collections.singletonList(createPermission(function, privileges.toArray(new String[privileges.size()])));
     }
 
-    private Permission createPermission(String function, String... privileges) {
+    private static Permission createPermission(String function, String... privileges) {
         return new Permission()
                 .withFunctionId(function)
                 .withAssignedPrivileges(Arrays.stream(privileges)

@@ -5,6 +5,7 @@ import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.serviceag
 import com.backbase.presentation.user.rest.spec.v2.users.LegalEntityByUserGetResponseBody;
 import com.backbase.testing.dataloader.clients.accessgroup.AccessGroupPresentationRestClient;
 import com.backbase.testing.dataloader.clients.accessgroup.ServiceAgreementsPresentationRestClient;
+import com.backbase.testing.dataloader.clients.accessgroup.UserContextPresentationRestClient;
 import com.backbase.testing.dataloader.clients.common.LoginRestClient;
 import com.backbase.testing.dataloader.clients.user.UserPresentationRestClient;
 import com.backbase.testing.dataloader.configurators.PermissionsConfigurator;
@@ -27,7 +28,7 @@ public class ServiceAgreementsSetup {
 
     private GlobalProperties globalProperties = GlobalProperties.getInstance();
     private LoginRestClient loginRestClient = new LoginRestClient();
-    private AccessGroupPresentationRestClient accessGroupPresentationRestClient = new AccessGroupPresentationRestClient();
+    private UserContextPresentationRestClient userContextPresentationRestClient = new UserContextPresentationRestClient();
     private ServiceAgreementsConfigurator serviceAgreementsConfigurator = new ServiceAgreementsConfigurator();
     private ServiceAgreementsPresentationRestClient serviceAgreementsPresentationRestClient = new ServiceAgreementsPresentationRestClient();
     private UserPresentationRestClient userPresentationRestClient = new UserPresentationRestClient();
@@ -41,7 +42,7 @@ public class ServiceAgreementsSetup {
             ServiceAgreementPostRequestBody[] serviceAgreementPostRequestBodies = ParserUtil.convertJsonToObject(globalProperties.getString(PROPERTY_SERVICEAGREEMENTS_JSON_LOCATION), ServiceAgreementPostRequestBody[].class);
 
             loginRestClient.login(USER_ADMIN, USER_ADMIN);
-            accessGroupPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
+            userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
             Arrays.stream(serviceAgreementPostRequestBodies).forEach(serviceAgreementPostRequestBody -> {
                 String internalServiceAgreementId = serviceAgreementsConfigurator.ingestServiceAgreementWithProvidersAndConsumers(serviceAgreementPostRequestBody.getProviders(), serviceAgreementPostRequestBody.getConsumers());

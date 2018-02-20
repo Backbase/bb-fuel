@@ -8,6 +8,7 @@ import com.backbase.presentation.user.rest.spec.v2.users.LegalEntityByUserGetRes
 import com.backbase.testing.dataloader.clients.accessgroup.AccessGroupPresentationRestClient;
 import com.backbase.testing.dataloader.clients.accessgroup.ServiceAgreementsIntegrationRestClient;
 import com.backbase.testing.dataloader.clients.accessgroup.ServiceAgreementsPresentationRestClient;
+import com.backbase.testing.dataloader.clients.accessgroup.UserContextPresentationRestClient;
 import com.backbase.testing.dataloader.clients.common.LoginRestClient;
 import com.backbase.testing.dataloader.clients.legalentity.LegalEntityPresentationRestClient;
 import com.backbase.testing.dataloader.clients.user.UserPresentationRestClient;
@@ -19,6 +20,8 @@ import java.util.Arrays;
 import java.util.Set;
 
 import static com.backbase.testing.dataloader.data.CommonConstants.USER_ADMIN;
+import static com.backbase.testing.dataloader.data.ServiceAgreementsDataGenerator.generateServiceAgreementPostRequestBody;
+import static com.backbase.testing.dataloader.data.ServiceAgreementsDataGenerator.generateServiceAgreementPutRequestBody;
 import static org.apache.http.HttpStatus.SC_CREATED;
 import static org.apache.http.HttpStatus.SC_OK;
 
@@ -30,16 +33,15 @@ public class ServiceAgreementsConfigurator {
     private UserPresentationRestClient userPresentationRestClient = new UserPresentationRestClient();
     private LegalEntityPresentationRestClient legalEntityPresentationRestClient = new LegalEntityPresentationRestClient();
     private ServiceAgreementsIntegrationRestClient serviceAgreementsIntegrationRestClient = new ServiceAgreementsIntegrationRestClient();
-    private ServiceAgreementsDataGenerator serviceAgreementsDataGenerator = new ServiceAgreementsDataGenerator();
-    private AccessGroupPresentationRestClient accessGroupPresentationRestClient = new AccessGroupPresentationRestClient();
+    private UserContextPresentationRestClient userContextPresentationRestClient = new UserContextPresentationRestClient();
 
     public String ingestServiceAgreementWithProvidersAndConsumers(Set<Provider> providers, Set<Consumer> consumers) {
         loginRestClient.login(USER_ADMIN, USER_ADMIN);
-        accessGroupPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
+        userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
         enrichConsumersWithId(consumers);
         enrichProvidersWithId(providers);
 
-        String serviceAgreementId = serviceAgreementsIntegrationRestClient.ingestServiceAgreement(serviceAgreementsDataGenerator.generateServiceAgreementPostRequestBody(providers, consumers))
+        String serviceAgreementId = serviceAgreementsIntegrationRestClient.ingestServiceAgreement(generateServiceAgreementPostRequestBody(providers, consumers))
                 .then()
                 .statusCode(SC_CREATED)
                 .extract()
@@ -53,7 +55,7 @@ public class ServiceAgreementsConfigurator {
 
     public void updateMasterServiceAgreementWithExternalIdByLegalEntity(String internalLegalEntityId) {
         loginRestClient.login(USER_ADMIN, USER_ADMIN);
-        accessGroupPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
+        userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
         String internalServiceAgreementId = legalEntityPresentationRestClient.getMasterServiceAgreementOfLegalEntity(internalLegalEntityId)
             .then()
@@ -62,7 +64,7 @@ public class ServiceAgreementsConfigurator {
             .as(ServiceAgreementGetResponseBody.class)
             .getId();
 
-        serviceAgreementsIntegrationRestClient.updateServiceAgreement(internalServiceAgreementId, serviceAgreementsDataGenerator.generateServiceAgreementPutRequestBody())
+        serviceAgreementsIntegrationRestClient.updateServiceAgreement(internalServiceAgreementId, generateServiceAgreementPutRequestBody())
             .then()
             .statusCode(SC_OK);
 

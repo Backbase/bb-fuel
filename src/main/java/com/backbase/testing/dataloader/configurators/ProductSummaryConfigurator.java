@@ -22,6 +22,8 @@ import java.util.stream.IntStream;
 
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_ARRANGEMENTS_MAX;
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_ARRANGEMENTS_MIN;
+import static com.backbase.testing.dataloader.data.ProductSummaryDataGenerator.generateArrangementsPostRequestBody;
+import static com.backbase.testing.dataloader.data.ProductSummaryDataGenerator.generateProductsPostRequestBodies;
 import static org.apache.http.HttpStatus.SC_CREATED;
 
 public class ProductSummaryConfigurator {
@@ -29,11 +31,10 @@ public class ProductSummaryConfigurator {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductSummaryConfigurator.class);
     private static GlobalProperties globalProperties = GlobalProperties.getInstance();
     private Random random = new Random();
-    private ProductSummaryDataGenerator productSummaryDataGenerator = new ProductSummaryDataGenerator();
     private ArrangementsIntegrationRestClient arrangementsIntegrationRestClient = new ArrangementsIntegrationRestClient();
 
     public void ingestProducts() throws IOException {
-        ProductsPostRequestBody[] products = productSummaryDataGenerator.generateProductsPostRequestBodies();
+        ProductsPostRequestBody[] products = generateProductsPostRequestBodies();
 
         Arrays.stream(products).parallel().forEach(product -> {
             arrangementsIntegrationRestClient.ingestProduct(product)
@@ -49,7 +50,7 @@ public class ProductSummaryConfigurator {
 
         int randomAmount = CommonHelpers.generateRandomNumberInRange(globalProperties.getInt(PROPERTY_ARRANGEMENTS_MIN), globalProperties.getInt(PROPERTY_ARRANGEMENTS_MAX));
         IntStream.range(0, randomAmount).parallel().forEach(randomNumber -> {
-            ArrangementsPostRequestBody arrangement = productSummaryDataGenerator.generateArrangementsPostRequestBody(externalLegalEntityId, currency);
+            ArrangementsPostRequestBody arrangement = generateArrangementsPostRequestBody(externalLegalEntityId, currency);
 
             ArrangementsPostResponseBody arrangementsPostResponseBody = arrangementsIntegrationRestClient.ingestArrangement(arrangement)
                     .then()
@@ -70,7 +71,7 @@ public class ProductSummaryConfigurator {
         int randomAmount = CommonHelpers.generateRandomNumberInRange(globalProperties.getInt(PROPERTY_ARRANGEMENTS_MIN), globalProperties.getInt(PROPERTY_ARRANGEMENTS_MAX));
         IntStream.range(0, randomAmount).parallel().forEach(randomNumber -> {
             ArrangementsPostRequestBodyParent.Currency currency = ArrangementsPostRequestBodyParent.Currency.values()[random.nextInt(ArrangementsPostRequestBodyParent.Currency.values().length)];
-            ArrangementsPostRequestBody arrangement = productSummaryDataGenerator.generateArrangementsPostRequestBody(externalLegalEntityId, currency);
+            ArrangementsPostRequestBody arrangement = generateArrangementsPostRequestBody(externalLegalEntityId, currency);
 
             ArrangementsPostResponseBody arrangementsPostResponseBody = arrangementsIntegrationRestClient.ingestArrangement(arrangement)
                     .then()

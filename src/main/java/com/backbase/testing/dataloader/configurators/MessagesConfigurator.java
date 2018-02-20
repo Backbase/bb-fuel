@@ -17,6 +17,8 @@ import java.util.stream.IntStream;
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_CONVERSATIONS_MAX;
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_CONVERSATIONS_MIN;
 import static com.backbase.testing.dataloader.data.CommonConstants.USER_ADMIN;
+import static com.backbase.testing.dataloader.data.MessagesDataGenerator.generateConversationDraftsPostRequestBody;
+import static com.backbase.testing.dataloader.data.MessagesDataGenerator.generateDraftsPostRequestBody;
 import static org.apache.http.HttpStatus.SC_ACCEPTED;
 import static org.apache.http.HttpStatus.SC_OK;
 
@@ -27,14 +29,13 @@ public class MessagesConfigurator {
 
     private LoginRestClient loginRestClient = new LoginRestClient();
     private MessagesPresentationRestClient messagesPresentationRestClient = new MessagesPresentationRestClient();
-    private MessagesDataGenerator messagesDataGenerator = new MessagesDataGenerator();
 
     public void ingestConversations(String externalUserId) {
         int randomAmount = CommonHelpers.generateRandomNumberInRange(globalProperties.getInt(PROPERTY_CONVERSATIONS_MIN), globalProperties.getInt(PROPERTY_CONVERSATIONS_MAX));
         IntStream.range(0, randomAmount).forEach(randomNumber -> {
 
             loginRestClient.login(externalUserId, externalUserId);
-            DraftsPostRequestBody draftsPostRequestBody = messagesDataGenerator.generateDraftsPostRequestBody();
+            DraftsPostRequestBody draftsPostRequestBody = generateDraftsPostRequestBody();
             String draftId = messagesPresentationRestClient.postDraft(draftsPostRequestBody)
                     .then()
                     .statusCode(SC_ACCEPTED)
@@ -56,7 +57,7 @@ public class MessagesConfigurator {
                     .get(0)
                     .getId();
 
-            String conversationDraftId = messagesPresentationRestClient.postConversationDraft(messagesDataGenerator.generateConversationDraftsPostRequestBody(), conversationId)
+            String conversationDraftId = messagesPresentationRestClient.postConversationDraft(generateConversationDraftsPostRequestBody(), conversationId)
                     .then()
                     .statusCode(SC_ACCEPTED)
                     .extract()

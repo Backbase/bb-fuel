@@ -7,7 +7,6 @@ import com.backbase.presentation.user.rest.spec.v2.users.LegalEntityByUserGetRes
 import com.backbase.presentation.user.rest.spec.v2.users.UserGetResponseBody;
 import com.backbase.testing.dataloader.clients.accessgroup.AccessGroupIntegrationRestClient;
 import com.backbase.testing.dataloader.clients.accessgroup.AccessGroupPresentationRestClient;
-import com.backbase.testing.dataloader.clients.accessgroup.ServiceAgreementsIntegrationRestClient;
 import com.backbase.testing.dataloader.clients.accessgroup.ServiceAgreementsPresentationRestClient;
 import com.backbase.testing.dataloader.clients.common.LoginRestClient;
 import com.backbase.testing.dataloader.clients.legalentity.LegalEntityPresentationRestClient;
@@ -20,7 +19,6 @@ import com.backbase.testing.dataloader.configurators.PaymentsConfigurator;
 import com.backbase.testing.dataloader.configurators.ProductSummaryConfigurator;
 import com.backbase.testing.dataloader.configurators.ServiceAgreementsConfigurator;
 import com.backbase.testing.dataloader.configurators.TransactionsConfigurator;
-import com.backbase.testing.dataloader.data.ServiceAgreementsDataGenerator;
 import com.backbase.testing.dataloader.dto.ArrangementId;
 import com.backbase.testing.dataloader.dto.CurrencyDataGroup;
 import com.backbase.testing.dataloader.dto.UserContext;
@@ -33,8 +31,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static com.backbase.testing.dataloader.data.CommonConstants.EXTERNAL_ROOT_LEGAL_ENTITY_ID;
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_INGEST_CONTACTS;
@@ -130,23 +130,36 @@ public class UsersSetup {
     }
 
     public void setupUsersWithAllFunctionDataGroupsAndPrivilegesUnderNewLegalEntity(List<String> externalUserIds) {
+        Set<String> internalLegalEntityIds = new HashSet<>();
         List<UserContext> userContextList = new ArrayList<>();
-        Map<String, String> legalEntityServiceAgreementIds = new HashMap<>();
+        Map<String, String> serviceAgreementLegalEntityIds = new HashMap<>();
         Map<String, CurrencyDataGroup> serviceAgreementDataGroupIds = new HashMap<>();
 
         for (String externalUserId : externalUserIds) {
-            serviceAgreementsConfigurator.updateMasterServiceAgreementWithExternalIdByUser(externalUserId);
+            loginRestClient.login(USER_ADMIN, USER_ADMIN);
+            accessGroupPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
+            internalLegalEntityIds.add(userPresentationRestClient.retrieveLegalEntityByExternalUserId(externalUserId)
+                .then()
+                .statusCode(SC_OK)
+                .extract()
+                .as(LegalEntityByUserGetResponseBody.class)
+                .getId());
+        }
+
+        internalLegalEntityIds.forEach(internalLegalEntityId -> serviceAgreementsConfigurator.updateMasterServiceAgreementWithExternalIdByLegalEntity(internalLegalEntityId));
+
+        for (String externalUserId : externalUserIds) {
             UserContext userContext = getUserContextBasedOnMasterServiceAgreement(externalUserId);
 
             userContextList.add(userContext);
 
-            legalEntityServiceAgreementIds.put(userContext.getExternalLegalEntityId(), userContext.getExternalServiceAgreementId());
+            serviceAgreementLegalEntityIds.put(userContext.getExternalServiceAgreementId(), userContext.getExternalLegalEntityId());
         }
 
-        for (Map.Entry<String, String> entry : legalEntityServiceAgreementIds.entrySet()) {
-            String externalLegalEntityId = entry.getKey();
-            String externalServiceAgreementId =  entry.getValue();
+        for (Map.Entry<String, String> entry : serviceAgreementLegalEntityIds.entrySet()) {
+            String externalServiceAgreementId = entry.getKey();
+            String externalLegalEntityId =  entry.getValue();
 
             CurrencyDataGroup currencyDataGroup = setupArrangementsPerDataGroupForLegalEntity(externalServiceAgreementId, externalLegalEntityId);
 
@@ -212,6 +225,7 @@ public class UsersSetup {
 
     private UserContext getUserContextBasedOnMasterServiceAgreement(String externalUserId) {
         loginRestClient.login(USER_ADMIN, USER_ADMIN);
+        accessGroupPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
         String internalUserId = userPresentationRestClient.getUserByExternalId(externalUserId)
             .then()

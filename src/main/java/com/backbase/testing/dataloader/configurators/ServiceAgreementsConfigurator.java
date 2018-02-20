@@ -51,15 +51,9 @@ public class ServiceAgreementsConfigurator {
         return serviceAgreementId;
     }
 
-    public void updateMasterServiceAgreementWithExternalIdByUser(String externalUserId) {
+    public void updateMasterServiceAgreementWithExternalIdByLegalEntity(String internalLegalEntityId) {
         loginRestClient.login(USER_ADMIN, USER_ADMIN);
-
-        String internalLegalEntityId = userPresentationRestClient.retrieveLegalEntityByExternalUserId(externalUserId)
-            .then()
-            .statusCode(SC_OK)
-            .extract()
-            .as(LegalEntityByUserGetResponseBody.class)
-            .getId();
+        accessGroupPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
         String internalServiceAgreementId = legalEntityPresentationRestClient.getMasterServiceAgreementOfLegalEntity(internalLegalEntityId)
             .then()

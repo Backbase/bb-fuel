@@ -33,7 +33,7 @@ public class ServiceAgreementsConfigurator {
     private ServiceAgreementsDataGenerator serviceAgreementsDataGenerator = new ServiceAgreementsDataGenerator();
     private AccessGroupPresentationRestClient accessGroupPresentationRestClient = new AccessGroupPresentationRestClient();
 
-    public String ingestServiceAgreementWithProvidersAndConsumersWithAllFunctionDataGroups(Set<Provider> providers, Set<Consumer> consumers) {
+    public String ingestServiceAgreementWithProvidersAndConsumers(Set<Provider> providers, Set<Consumer> consumers) {
         loginRestClient.login(USER_ADMIN, USER_ADMIN);
         accessGroupPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
         enrichConsumersWithId(consumers);
@@ -46,7 +46,7 @@ public class ServiceAgreementsConfigurator {
                 .as(ServiceAgreementPostResponseBody.class)
                 .getId();
 
-        LOGGER.info(String.format("Service agreement ingested for provider legal entities - admins/users %s, consumer legal entities - admins with all function groups and data groups exposed %s", Arrays.toString(providers.toArray()), Arrays.toString(consumers.toArray())));
+        LOGGER.info(String.format("Service agreement ingested for provider legal entities - admins/users %s, consumer legal entities - admins %s", Arrays.toString(providers.toArray()), Arrays.toString(consumers.toArray())));
 
         return serviceAgreementId;
     }

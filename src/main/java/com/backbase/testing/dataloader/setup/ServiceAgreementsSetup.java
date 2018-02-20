@@ -36,7 +36,7 @@ public class ServiceAgreementsSetup {
             accessGroupPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
             Arrays.stream(serviceAgreementPostRequestBodies).forEach(serviceAgreementPostRequestBody -> {
-                String serviceAgreementId = serviceAgreementsConfigurator.ingestServiceAgreementWithProvidersAndConsumersWithAllFunctionDataGroups(serviceAgreementPostRequestBody.getProviders(), serviceAgreementPostRequestBody.getConsumers());
+                String internalServiceAgreementId = serviceAgreementsConfigurator.ingestServiceAgreementWithProvidersAndConsumers(serviceAgreementPostRequestBody.getProviders(), serviceAgreementPostRequestBody.getConsumers());
 
                 serviceAgreementPostRequestBody.getProviders().forEach(provider -> {
                     Set<String> externalUserIds = provider.getUsers();
@@ -46,13 +46,14 @@ public class ServiceAgreementsSetup {
                                 .iterator()
                                 .next();
 
-                        LegalEntityByUserGetResponseBody legalEntity = userPresentationRestClient.retrieveLegalEntityByExternalUserId(externalConsumerAdminUserId)
-                                .then()
-                                .statusCode(SC_OK)
-                                .extract()
-                                .as(LegalEntityByUserGetResponseBody.class);
+                        String internalLegalEntityId = userPresentationRestClient.retrieveLegalEntityByExternalUserId(externalConsumerAdminUserId)
+                            .then()
+                            .statusCode(SC_OK)
+                            .extract()
+                            .as(LegalEntityByUserGetResponseBody.class)
+                            .getId();
 
-                        permissionsConfigurator.assignAllFunctionDataGroupsOfLegalEntityToUserAndServiceAgreement(legalEntity, externalUserId, serviceAgreementId);
+                        permissionsConfigurator.assignAllFunctionDataGroupsToUserAndServiceAgreement(externalUserId, internalServiceAgreementId, internalLegalEntityId);
                     }));
                 });
             });

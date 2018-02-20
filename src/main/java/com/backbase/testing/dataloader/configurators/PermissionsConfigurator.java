@@ -2,11 +2,9 @@ package com.backbase.testing.dataloader.configurators;
 
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.users.permissions.AssignPermissionsPostRequestBody;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.function.FunctionAccessGroupsGetResponseBody;
-import com.backbase.presentation.legalentity.rest.spec.v2.legalentities.LegalEntityByExternalIdGetResponseBody;
 import com.backbase.presentation.user.rest.spec.v2.users.LegalEntityByUserGetResponseBody;
 import com.backbase.testing.dataloader.clients.accessgroup.AccessGroupIntegrationRestClient;
 import com.backbase.testing.dataloader.clients.accessgroup.AccessGroupPresentationRestClient;
-import com.backbase.testing.dataloader.clients.legalentity.LegalEntityPresentationRestClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,14 +20,14 @@ public class PermissionsConfigurator {
     private AccessGroupIntegrationRestClient accessGroupIntegrationRestClient = new AccessGroupIntegrationRestClient();
     private AccessGroupPresentationRestClient accessGroupPresentationRestClient = new AccessGroupPresentationRestClient();
 
-    public void assignAllFunctionDataGroupsOfLegalEntityToUserAndServiceAgreement(LegalEntityByUserGetResponseBody legalEntity, String externalUserId, String internalServiceAgreementId) {
-        FunctionAccessGroupsGetResponseBody[] functionGroups = accessGroupPresentationRestClient.retrieveFunctionGroupsByLegalEntity(legalEntity.getId())
+    public void assignAllFunctionDataGroupsToUserAndServiceAgreement(String externalUserId, String internalServiceAgreementId, String internalLegalEntityId) {
+        FunctionAccessGroupsGetResponseBody[] functionGroups = accessGroupPresentationRestClient.retrieveFunctionGroupsByLegalEntity(internalLegalEntityId)
                 .then()
                 .statusCode(SC_OK)
                 .extract()
                 .as(FunctionAccessGroupsGetResponseBody[].class);
 
-        List<String> dataGroupIds = accessGroupPresentationRestClient.retrieveAllDataGroupIdsByLegalEntity(legalEntity.getId());
+        List<String> dataGroupIds = accessGroupPresentationRestClient.retrieveAllDataGroupIdsByLegalEntity(internalLegalEntityId);
 
         Arrays.stream(functionGroups).forEach(functionGroup -> {
                     accessGroupIntegrationRestClient.assignPermissions(new AssignPermissionsPostRequestBody()
@@ -41,7 +39,7 @@ public class PermissionsConfigurator {
                             .then()
                             .statusCode(SC_OK);
 
-                    LOGGER.info(String.format("Permission assigned for legal entity [%s], user [%s], service agreement [%s], function group [%s], data groups %s", legalEntity.getExternalId(), externalUserId, internalServiceAgreementId, functionGroup.getFunctionAccessGroupId(), dataGroupIds));
+                    LOGGER.info(String.format("Permission assigned for service agreement [%s], user [%s], function group [%s], data groups %s", internalServiceAgreementId, externalUserId, functionGroup.getFunctionAccessGroupId(), dataGroupIds));
                 });
     }
 }

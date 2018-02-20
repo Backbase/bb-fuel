@@ -33,7 +33,7 @@ public class AccessGroupPresentationRestClient extends RestClient {
     private static final String ENDPOINT_CONFIG_FUNCTIONS = ENDPOINT_ACCESSGROUPS + "/config/functions";
     private static final String ENDPOINT_FUNCTION_BY_LEGAL_ENTITY_ID = ENDPOINT_ACCESSGROUPS + "/function?legalEntityId=%s";
     private static final String ENDPOINT_FUNCTION_BY_SERVICE_AGREEMENT_ID = ENDPOINT_ACCESSGROUPS + "/function-groups?serviceAgreementId=%s";
-    private static final String ENDPOINT_DATA_BY_LEGAL_ENTITY_ID_AND_TYPE = ENDPOINT_ACCESSGROUPS + "/data-groups?legalEntityId=%s&type=%s";
+    private static final String ENDPOINT_DATA_BY_LEGAL_ENTITY_ID_AND_TYPE = ENDPOINT_ACCESSGROUPS + "/data?legalEntityId=%s&type=%s";
     private static final String ENDPOINT_PRIVILEGES_ARRANGEMENTS_BY_FUNCTIONS = ENDPOINT_ACCESSGROUPS + "/users/privileges/arrangements?userId=%s&functionName=%s&resourceName=%s&privilegeName=%s";
     private static final String ENDPOINT_USER_CONTEXT = ENDPOINT_ACCESSGROUPS + "/usercontext";
     private static final String ENDPOINT_USER_CONTEXT_SERVICE_AGREEMENTS = ENDPOINT_USER_CONTEXT + "/serviceagreements";

@@ -33,7 +33,7 @@ public class BankSetup {
             legalEntitiesAndUsersConfigurator.ingestRootLegalEntityAndEntitlementsAdmin(EXTERNAL_ROOT_LEGAL_ENTITY_ID, USER_ADMIN);
             productSummaryConfigurator.ingestProducts();
 
-            usersSetup.setupUsersWithAllFunctionDataGroupsAndPrivilegesUnderNewLegalEntity(Collections.singletonList(USER_ADMIN));
+            usersSetup.setupUsersWithAllFunctionDataGroupsAndPrivileges(Collections.singletonList(USER_ADMIN));
         }
     }
 

@@ -84,7 +84,7 @@ public class UsersSetup {
 
                 legalEntitiesAndUsersConfigurator.ingestUsersUnderNewLegalEntity(externalUserIds, EXTERNAL_ROOT_LEGAL_ENTITY_ID);
 
-                setupUsersWithAllFunctionDataGroupsAndPrivilegesUnderNewLegalEntity(externalUserIds);
+                setupUsersWithAllFunctionDataGroupsAndPrivileges(externalUserIds);
             });
 
             Arrays.stream(usersWithoutPermissionsLists).parallel().forEach(usersWithoutPermissionsList -> {
@@ -132,7 +132,7 @@ public class UsersSetup {
         }
     }
 
-    public void setupUsersWithAllFunctionDataGroupsAndPrivilegesUnderNewLegalEntity(List<String> externalUserIds) {
+    public void setupUsersWithAllFunctionDataGroupsAndPrivileges(List<String> externalUserIds) {
         Set<String> internalLegalEntityIds = new HashSet<>();
         List<UserContext> userContextList = new ArrayList<>();
         Map<String, String> serviceAgreementLegalEntityIds = new HashMap<>();

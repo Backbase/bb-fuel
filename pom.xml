@@ -19,15 +19,16 @@
         <iban4j.version>3.2.1</iban4j.version>
         <junit.version>4.12</junit.version>
         <maven-assembly-plugin.version>2.4.1</maven-assembly-plugin.version>
-        <user-presentation-spec.version>1.10.3</user-presentation-spec.version>
-        <user-integration-spec.version>1.10.2</user-integration-spec.version>
-        <accessgroup-presentation-spec.version>1.10.5</accessgroup-presentation-spec.version>
-        <accessgroup-integration-spec.version>1.10.2</accessgroup-integration-spec.version>
+        <user-presentation-spec.version>1.13.2</user-presentation-spec.version>
+        <user-integration-spec.version>1.13.1</user-integration-spec.version>
+        <accessgroup-presentation-spec.version>1.13.21</accessgroup-presentation-spec.version>
+        <accessgroup-integration-spec.version>1.13.4</accessgroup-integration-spec.version>
+        <legalentity-presentation-spec.version>1.13.1</legalentity-presentation-spec.version>
+        <legalentity-integration-spec.version>1.13.1</legalentity-integration-spec.version>
         <product-summary-presentation-spec.version>1.11.4</product-summary-presentation-spec.version>
         <product-integration-spec.version>1.8.0</product-integration-spec.version>
         <arrangement-integration-spec.version>1.11.2</arrangement-integration-spec.version>
         <transaction-integration-external-inbound-spec.version>1.10.2</transaction-integration-external-inbound-spec.version>
-        <legalentity-presentation-spec.version>1.10.8</legalentity-presentation-spec.version>
         <notifications-presentation-spec.version>1.8.5</notifications-presentation-spec.version>
         <contact-presentation-spec.version>3.1.3</contact-presentation-spec.version>
         <payment-order-presentation-spec.version>1.11.4</payment-order-presentation-spec.version>
@@ -101,7 +102,7 @@
         <dependency>
             <groupId>com.backbase.dbs.legalentity</groupId>
             <artifactId>legalentity-integration-spec</artifactId>
-            <version>${accessgroup-presentation-spec.version}</version>
+            <version>${legalentity-integration-spec.version}</version>
         </dependency>
         <!-- productsummary specs -->
         <dependency>

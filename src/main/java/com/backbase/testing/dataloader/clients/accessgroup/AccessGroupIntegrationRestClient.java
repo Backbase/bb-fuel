@@ -1,8 +1,8 @@
 package com.backbase.testing.dataloader.clients.accessgroup;
 
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.config.functions.FunctionsGetResponseBody;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.data.DataGroupsPostRequestBody;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.FunctionGroupsPostRequestBody;
+import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.datagroups.DataGroupPostRequestBody;
+import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.functiongroups.FunctionGroupPostRequestBody;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.users.permissions.AssignPermissionsPostRequestBody;
 import com.backbase.testing.dataloader.clients.common.RestClient;
 import com.backbase.testing.dataloader.utils.GlobalProperties;
@@ -18,23 +18,23 @@ public class AccessGroupIntegrationRestClient extends RestClient {
     private static final String ACCESSGROUP_INTEGRATION_SERVICE = "accessgroup-integration-service";
     private static final String ENDPOINT_ACCESSGROUPS = "/accessgroups";
     private static final String ENDPOINT_CONFIG_FUNCTIONS = ENDPOINT_ACCESSGROUPS + "/config/functions";
-    private static final String ENDPOINT_FUNCTION = ENDPOINT_ACCESSGROUPS + "/function";
+    private static final String ENDPOINT_FUNCTION = ENDPOINT_ACCESSGROUPS + "/function-groups";
     private static final String ENDPOINT_USERS_PERMISSIONS = ENDPOINT_ACCESSGROUPS + "/users/permissions";
-    private static final String ENDPOINT_DATA = ENDPOINT_ACCESSGROUPS + "/data";
+    private static final String ENDPOINT_DATA = ENDPOINT_ACCESSGROUPS + "/data-groups";
 
     public AccessGroupIntegrationRestClient() {
         super(globalProperties.getString(PROPERTY_ENTITLEMENTS_BASE_URI), SERVICE_VERSION);
         setInitialPath(ACCESSGROUP_INTEGRATION_SERVICE);
     }
 
-    public Response ingestFunctionGroup(FunctionGroupsPostRequestBody body) {
+    public Response ingestFunctionGroup(FunctionGroupPostRequestBody body) {
         return requestSpec()
                 .contentType(ContentType.JSON)
                 .body(body)
                 .post(getPath(ENDPOINT_FUNCTION));
     }
 
-    public Response ingestDataGroup(DataGroupsPostRequestBody body) {
+    public Response ingestDataGroup(DataGroupPostRequestBody body) {
         return requestSpec()
                 .contentType(ContentType.JSON)
                 .body(body)

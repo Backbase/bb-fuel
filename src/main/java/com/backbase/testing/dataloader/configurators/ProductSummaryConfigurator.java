@@ -69,7 +69,7 @@ public class ProductSummaryConfigurator {
 
         int randomAmount = CommonHelpers.generateRandomNumberInRange(globalProperties.getInt(PROPERTY_ARRANGEMENTS_MIN), globalProperties.getInt(PROPERTY_ARRANGEMENTS_MAX));
         IntStream.range(0, randomAmount).parallel().forEach(randomNumber -> {
-            ArrangementsPostRequestBodyParent.Currency currency = ArrangementsPostRequestBodyParent.Currency.values()[random.nextInt( ArrangementsPostRequestBodyParent.Currency.values().length)];
+            ArrangementsPostRequestBodyParent.Currency currency = ArrangementsPostRequestBodyParent.Currency.values()[random.nextInt(ArrangementsPostRequestBodyParent.Currency.values().length)];
             ArrangementsPostRequestBody arrangement = productSummaryDataGenerator.generateArrangementsPostRequestBody(externalLegalEntityId, currency);
 
             ArrangementsPostResponseBody arrangementsPostResponseBody = arrangementsIntegrationRestClient.ingestArrangement(arrangement)

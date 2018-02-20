@@ -3,6 +3,7 @@ package com.backbase.testing.dataloader.data;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.Consumer;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.Provider;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementPostRequestBody;
+import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementPutRequestBody;
 import com.github.javafaker.Faker;
 
 import java.util.Set;
@@ -19,5 +20,10 @@ public class ServiceAgreementsDataGenerator {
                 .withExternalId(UUID.randomUUID().toString())
                 .withProviders(providers)
                 .withConsumers(consumers);
+    }
+
+    public ServiceAgreementPutRequestBody generateServiceAgreementPutRequestBody() {
+        return new ServiceAgreementPutRequestBody()
+            .withExternalId(UUID.randomUUID().toString());
     }
 }

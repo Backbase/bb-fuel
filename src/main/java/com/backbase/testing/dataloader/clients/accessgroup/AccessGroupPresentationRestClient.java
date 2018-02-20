@@ -1,12 +1,13 @@
 package com.backbase.testing.dataloader.clients.accessgroup;
 
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.config.functions.FunctionsGetResponseBody;
-import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.data.DataAccessGroupsGetResponseBody;
-import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.function.FunctionAccessGroupsGetResponseBody;
+import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.datagroups.DataGroupsGetResponseBody;
+import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.functiongroups.FunctionGroupsGetResponseBody;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementGetResponseBody;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.usercontext.UserContextPostRequestBody;
 import com.backbase.presentation.legalentity.rest.spec.v2.legalentities.LegalEntitiesGetResponseBody;
 import com.backbase.testing.dataloader.clients.common.RestClient;
+import com.backbase.testing.dataloader.dto.UserContext;
 import com.backbase.testing.dataloader.utils.GlobalProperties;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
@@ -31,7 +32,8 @@ public class AccessGroupPresentationRestClient extends RestClient {
     private static final String ENDPOINT_ACCESSGROUPS = "/accessgroups";
     private static final String ENDPOINT_CONFIG_FUNCTIONS = ENDPOINT_ACCESSGROUPS + "/config/functions";
     private static final String ENDPOINT_FUNCTION_BY_LEGAL_ENTITY_ID = ENDPOINT_ACCESSGROUPS + "/function?legalEntityId=%s";
-    private static final String ENDPOINT_DATA_BY_LEGAL_ENTITY_ID_AND_TYPE = ENDPOINT_ACCESSGROUPS + "/data?legalEntityId=%s&type=%s";
+    private static final String ENDPOINT_FUNCTION_BY_SERVICE_AGREEMENT_ID = ENDPOINT_ACCESSGROUPS + "/function-groups?serviceAgreementId=%s";
+    private static final String ENDPOINT_DATA_BY_LEGAL_ENTITY_ID_AND_TYPE = ENDPOINT_ACCESSGROUPS + "/data-groups?legalEntityId=%s&type=%s";
     private static final String ENDPOINT_PRIVILEGES_ARRANGEMENTS_BY_FUNCTIONS = ENDPOINT_ACCESSGROUPS + "/users/privileges/arrangements?userId=%s&functionName=%s&resourceName=%s&privilegeName=%s";
     private static final String ENDPOINT_USER_CONTEXT = ENDPOINT_ACCESSGROUPS + "/usercontext";
     private static final String ENDPOINT_USER_CONTEXT_SERVICE_AGREEMENTS = ENDPOINT_USER_CONTEXT + "/serviceagreements";
@@ -47,6 +49,11 @@ public class AccessGroupPresentationRestClient extends RestClient {
                 .get(String.format(getPath(ENDPOINT_FUNCTION_BY_LEGAL_ENTITY_ID), internalLegalEntityId));
     }
 
+    public Response retrieveFunctionGroupsByServiceAgreement(String internalServiceAgreementId) {
+        return requestSpec()
+            .get(String.format(getPath(ENDPOINT_FUNCTION_BY_SERVICE_AGREEMENT_ID), internalServiceAgreementId));
+    }
+
     public String getFunctionGroupIdByLegalEntityIdAndFunctionName(String internalLegalEntityId, String functionName) {
         String functionId = getFunctionIdForFunctionName(retrieveFunctions()
                 .then()
@@ -54,13 +61,13 @@ public class AccessGroupPresentationRestClient extends RestClient {
                 .extract()
                 .as(FunctionsGetResponseBody[].class), functionName);
 
-        FunctionAccessGroupsGetResponseBody[] functionGroups = retrieveFunctionGroupsByLegalEntity(internalLegalEntityId)
+        FunctionGroupsGetResponseBody[] functionGroups = retrieveFunctionGroupsByLegalEntity(internalLegalEntityId)
                 .then()
                 .statusCode(SC_OK)
                 .extract()
-                .as(FunctionAccessGroupsGetResponseBody[].class);
+                .as(FunctionGroupsGetResponseBody[].class);
 
-        FunctionAccessGroupsGetResponseBody functionGroup = Arrays.stream(functionGroups)
+        FunctionGroupsGetResponseBody functionGroup = Arrays.stream(functionGroups)
                 .filter(fg -> fg.getPermissions()
                         .get(0)
                         .getFunctionId()
@@ -71,7 +78,35 @@ public class AccessGroupPresentationRestClient extends RestClient {
         if (functionGroup == null) {
             return null;
         } else {
-            return functionGroup.getFunctionAccessGroupId();
+            return functionGroup.getId();
+        }
+    }
+
+    public String getFunctionGroupIdByServiceAgreementIdAndFunctionName(String internalServiceAgreementId, String functionName) {
+        String functionId = getFunctionIdForFunctionName(retrieveFunctions()
+            .then()
+            .statusCode(SC_OK)
+            .extract()
+            .as(FunctionsGetResponseBody[].class), functionName);
+
+        FunctionGroupsGetResponseBody[] functionGroups = retrieveFunctionGroupsByServiceAgreement(internalServiceAgreementId)
+            .then()
+            .statusCode(SC_OK)
+            .extract()
+            .as(FunctionGroupsGetResponseBody[].class);
+
+        FunctionGroupsGetResponseBody functionGroup = Arrays.stream(functionGroups)
+            .filter(fg -> fg.getPermissions()
+                .get(0)
+                .getFunctionId()
+                .equals(functionId))
+            .findFirst()
+            .orElse(null);
+
+        if (functionGroup == null) {
+            return null;
+        } else {
+            return functionGroup.getId();
         }
     }
 
@@ -81,15 +116,15 @@ public class AccessGroupPresentationRestClient extends RestClient {
     }
 
     public List<String> retrieveAllDataGroupIdsByLegalEntity(String internalLegalEntityId) {
-        DataAccessGroupsGetResponseBody[] dataGroups = retrieveDataGroupsByLegalEntityAndType(internalLegalEntityId, "arrangements")
+        DataGroupsGetResponseBody[] dataGroups = retrieveDataGroupsByLegalEntityAndType(internalLegalEntityId, "ARRANGEMENTS")
                 .then()
                 .statusCode(SC_OK)
                 .extract()
-                .as(DataAccessGroupsGetResponseBody[].class);
+                .as(DataGroupsGetResponseBody[].class);
 
         List<String> dataGroupIds = new ArrayList<>();
         Arrays.stream(dataGroups)
-                .forEach(dg -> dataGroupIds.add(dg.getDataAccessGroupId()));
+                .forEach(dg -> dataGroupIds.add(dg.getId()));
 
         return dataGroupIds;
     }
@@ -125,23 +160,41 @@ public class AccessGroupPresentationRestClient extends RestClient {
                 .get(String.format(getPath(ENDPOINT_USER_CONTEXT_LEGAL_ENTITIES_BY_SERVICE_AGREEMENT_ID), serviceAgreementId));
     }
 
-    public void selectContextBasedOnMasterServiceAgreement() {
-        String serviceAgreementId = null;
-
+    public ServiceAgreementGetResponseBody getMasterServiceAgreementForUserContext() {
         ServiceAgreementGetResponseBody[] serviceAgreementGetResponseBodies = getServiceAgreementsForUserContext()
-                .then()
-                .statusCode(SC_OK)
-                .extract()
-                .as(ServiceAgreementGetResponseBody[].class);
+            .then()
+            .statusCode(SC_OK)
+            .extract()
+            .as(ServiceAgreementGetResponseBody[].class);
 
-        ServiceAgreementGetResponseBody masterServiceAgreement = Arrays.stream(serviceAgreementGetResponseBodies)
-                .filter(ServiceAgreementGetResponseBody::getIsMaster)
-                .findFirst()
-                .orElse(null);
+        return Arrays.stream(serviceAgreementGetResponseBodies)
+            .filter(ServiceAgreementGetResponseBody::getIsMaster)
+            .findFirst()
+            .orElse(null);
+    }
 
-        if (masterServiceAgreement != null) {
-            serviceAgreementId = serviceAgreementGetResponseBodies[0].getId();
-        }
+    public UserContext getUserContextBasedOnMasterServiceAgreement() {
+        ServiceAgreementGetResponseBody masterServiceAgreement = getMasterServiceAgreementForUserContext();
+
+        String internalServiceAgreementId = masterServiceAgreement != null ? masterServiceAgreement.getId() : null;
+        String externalServiceAgreementId = masterServiceAgreement != null ? masterServiceAgreement.getExternalId() : null;
+
+        LegalEntitiesGetResponseBody legalEntity = getLegalEntitiesForServiceAgreements(internalServiceAgreementId)
+            .then()
+            .statusCode(SC_OK)
+            .extract()
+            .as(LegalEntitiesGetResponseBody[].class)[0];
+
+        return new UserContext()
+            .withInternalServiceAgreementId(internalServiceAgreementId)
+            .withExternalServiceAgreementId(externalServiceAgreementId)
+            .withInternalLegalEntityId(legalEntity.getId())
+            .withExternalLegalEntityId(legalEntity.getExternalId());
+    }
+
+    public void selectContextBasedOnMasterServiceAgreement() {
+        ServiceAgreementGetResponseBody masterServiceAgreement = getMasterServiceAgreementForUserContext();
+        String serviceAgreementId = masterServiceAgreement != null ? masterServiceAgreement.getId() : null;
 
         String legalEntityId = getLegalEntitiesForServiceAgreements(serviceAgreementId)
                 .then()

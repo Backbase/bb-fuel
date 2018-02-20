@@ -16,10 +16,17 @@ public class ServiceAgreementsPresentationRestClient extends RestClient {
     private static final String ENDPOINT_ACCESSGROUPS = "/accessgroups";
     private static final String ENDPOINT_SERVICEAGREEMENTS = ENDPOINT_ACCESSGROUPS + "/serviceagreements";
     private static final String ENDPOINT_SERVICEAGREEMENTS_BY_ID = ENDPOINT_SERVICEAGREEMENTS + "/%s";
+    private static final String ENDPOINT_SERVICEAGREEMENTS_BY_CREATOR_ID = ENDPOINT_SERVICEAGREEMENTS + "?creatorId=%s";
 
     public ServiceAgreementsPresentationRestClient() {
         super(globalProperties.getString(PROPERTY_INFRA_BASE_URI), SERVICE_VERSION);
         setInitialPath(globalProperties.getString(PROPERTY_GATEWAY_PATH) + "/" + ACCESSGROUP_PRESENTATION_SERVICE);
+    }
+
+    public Response retrieveServiceAgreementByCreatorLegalEntityId(String internalCreatorLegalEntityId) {
+        return requestSpec()
+            .contentType(ContentType.JSON)
+            .get(getPath(String.format(ENDPOINT_SERVICEAGREEMENTS_BY_CREATOR_ID, internalCreatorLegalEntityId)));
     }
 
     public Response retrieveServiceAgreement(String internalServiceAgreementId) {

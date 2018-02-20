@@ -14,6 +14,8 @@ public class LegalEntityPresentationRestClient extends RestClient {
     private static final String LEGALENTITY_PRESENTATION_SERVICE = "legalentity-presentation-service";
     private static final String ENDPOINT_LEGALENTITIES = "/legalentities";
     private static final String ENDPOINT_EXTERNAL = ENDPOINT_LEGALENTITIES + "/external/%s";
+    private static final String ENDPOINT_SERVICEAGREEMENTS_MASTER = ENDPOINT_LEGALENTITIES + "/%s/serviceagreements/master";
+
 
     public LegalEntityPresentationRestClient() {
         super(globalProperties.getString(PROPERTY_INFRA_BASE_URI), SERVICE_VERSION);
@@ -23,5 +25,10 @@ public class LegalEntityPresentationRestClient extends RestClient {
     public Response retrieveLegalEntityByExternalId(String externalLegalEntityId) {
         return requestSpec()
                 .get(String.format(getPath(ENDPOINT_EXTERNAL), externalLegalEntityId));
+    }
+
+    public Response getMasterServiceAgreementOfLegalEntity(String internalLegalEntityId) {
+        return requestSpec()
+            .get(String.format(getPath(ENDPOINT_SERVICEAGREEMENTS_MASTER), internalLegalEntityId));
     }
 }

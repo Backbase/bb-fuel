@@ -3,10 +3,13 @@ package com.backbase.testing.dataloader.configurators;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.Consumer;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.Provider;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementPostResponseBody;
+import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementGetResponseBody;
 import com.backbase.presentation.user.rest.spec.v2.users.LegalEntityByUserGetResponseBody;
 import com.backbase.testing.dataloader.clients.accessgroup.AccessGroupPresentationRestClient;
 import com.backbase.testing.dataloader.clients.accessgroup.ServiceAgreementsIntegrationRestClient;
+import com.backbase.testing.dataloader.clients.accessgroup.ServiceAgreementsPresentationRestClient;
 import com.backbase.testing.dataloader.clients.common.LoginRestClient;
+import com.backbase.testing.dataloader.clients.legalentity.LegalEntityPresentationRestClient;
 import com.backbase.testing.dataloader.clients.user.UserPresentationRestClient;
 import com.backbase.testing.dataloader.data.ServiceAgreementsDataGenerator;
 import org.slf4j.Logger;
@@ -25,6 +28,7 @@ public class ServiceAgreementsConfigurator {
 
     private LoginRestClient loginRestClient = new LoginRestClient();
     private UserPresentationRestClient userPresentationRestClient = new UserPresentationRestClient();
+    private LegalEntityPresentationRestClient legalEntityPresentationRestClient = new LegalEntityPresentationRestClient();
     private ServiceAgreementsIntegrationRestClient serviceAgreementsIntegrationRestClient = new ServiceAgreementsIntegrationRestClient();
     private ServiceAgreementsDataGenerator serviceAgreementsDataGenerator = new ServiceAgreementsDataGenerator();
     private AccessGroupPresentationRestClient accessGroupPresentationRestClient = new AccessGroupPresentationRestClient();
@@ -48,8 +52,21 @@ public class ServiceAgreementsConfigurator {
     }
 
     public void updateMasterServiceAgreementWithExternalIdByUser(String externalUserId) {
-        loginRestClient.login(externalUserId, externalUserId);
-        String internalServiceAgreementId = accessGroupPresentationRestClient.getMasterServiceAgreementForUserContext().getId();
+        loginRestClient.login(USER_ADMIN, USER_ADMIN);
+
+        String internalLegalEntityId = userPresentationRestClient.retrieveLegalEntityByExternalUserId(externalUserId)
+            .then()
+            .statusCode(SC_OK)
+            .extract()
+            .as(LegalEntityByUserGetResponseBody.class)
+            .getId();
+
+        String internalServiceAgreementId = legalEntityPresentationRestClient.getMasterServiceAgreementOfLegalEntity(internalLegalEntityId)
+            .then()
+            .statusCode(SC_OK)
+            .extract()
+            .as(ServiceAgreementGetResponseBody.class)
+            .getId();
 
         serviceAgreementsIntegrationRestClient.updateServiceAgreement(internalServiceAgreementId, serviceAgreementsDataGenerator.generateServiceAgreementPutRequestBody())
             .then()

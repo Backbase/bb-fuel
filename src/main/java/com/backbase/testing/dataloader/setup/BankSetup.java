@@ -35,8 +35,6 @@ public class BankSetup {
             legalEntitiesAndUsersConfigurator.ingestRootLegalEntityAndEntitlementsAdmin(EXTERNAL_ROOT_LEGAL_ENTITY_ID, USER_ADMIN);
             productSummaryConfigurator.ingestProducts();
 
-            serviceAgreementsConfigurator.updateMasterServiceAgreementWithExternalIdByUser(USER_ADMIN);
-
             usersSetup.setupUsersWithAllFunctionDataGroupsAndPrivilegesUnderNewLegalEntity(Collections.singletonList(USER_ADMIN));
         }
     }

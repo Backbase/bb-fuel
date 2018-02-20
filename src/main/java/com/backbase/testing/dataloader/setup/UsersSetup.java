@@ -223,7 +223,7 @@ public class UsersSetup {
                 .withInternalUsdCurrencyDataGroupId(usdCurrencyDataGroupId);
     }
 
-    private UserContext getUserContextBasedOnMasterServiceAgreement(String externalUserId) {
+    UserContext getUserContextBasedOnMasterServiceAgreement(String externalUserId) {
         loginRestClient.login(USER_ADMIN, USER_ADMIN);
         accessGroupPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 

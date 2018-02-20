@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_GATEWAY_PATH;
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_INFRA_BASE_URI;
@@ -33,7 +34,7 @@ public class AccessGroupPresentationRestClient extends RestClient {
     private static final String ENDPOINT_CONFIG_FUNCTIONS = ENDPOINT_ACCESSGROUPS + "/config/functions";
     private static final String ENDPOINT_FUNCTION_BY_LEGAL_ENTITY_ID = ENDPOINT_ACCESSGROUPS + "/function?legalEntityId=%s";
     private static final String ENDPOINT_FUNCTION_BY_SERVICE_AGREEMENT_ID = ENDPOINT_ACCESSGROUPS + "/function-groups?serviceAgreementId=%s";
-    private static final String ENDPOINT_DATA_BY_LEGAL_ENTITY_ID_AND_TYPE = ENDPOINT_ACCESSGROUPS + "/data?legalEntityId=%s&type=%s";
+    private static final String ENDPOINT_DATA_BY_SERVICE_AGREEMENT_ID_AND_TYPE = ENDPOINT_ACCESSGROUPS + "/data-groups?serviceAgreementId=%s&type=%s";
     private static final String ENDPOINT_PRIVILEGES_ARRANGEMENTS_BY_FUNCTIONS = ENDPOINT_ACCESSGROUPS + "/users/privileges/arrangements?userId=%s&functionName=%s&resourceName=%s&privilegeName=%s";
     private static final String ENDPOINT_USER_CONTEXT = ENDPOINT_ACCESSGROUPS + "/usercontext";
     private static final String ENDPOINT_USER_CONTEXT_SERVICE_AGREEMENTS = ENDPOINT_USER_CONTEXT + "/serviceagreements";
@@ -52,6 +53,18 @@ public class AccessGroupPresentationRestClient extends RestClient {
     public Response retrieveFunctionGroupsByServiceAgreement(String internalServiceAgreementId) {
         return requestSpec()
             .get(String.format(getPath(ENDPOINT_FUNCTION_BY_SERVICE_AGREEMENT_ID), internalServiceAgreementId));
+    }
+
+    public List<String> retrieveFunctionGroupIdsByServiceAgreement(String internalServiceAgreement) {
+        FunctionGroupsGetResponseBody[] functionGroups = retrieveFunctionGroupsByServiceAgreement(internalServiceAgreement)
+            .then()
+            .statusCode(SC_OK)
+            .extract()
+            .as(FunctionGroupsGetResponseBody[].class);
+
+        return Arrays.stream(functionGroups)
+            .map(FunctionGroupsGetResponseBody::getId)
+            .collect(Collectors.toList());
     }
 
     public String getFunctionGroupIdByLegalEntityIdAndFunctionName(String internalLegalEntityId, String functionName) {
@@ -110,23 +123,21 @@ public class AccessGroupPresentationRestClient extends RestClient {
         }
     }
 
-    public Response retrieveDataGroupsByLegalEntityAndType(String internalLegalEntityId, String type) {
+    public Response retrieveDataGroupsByServiceAgreementAndType(String internalServiceAgreement, String type) {
         return requestSpec()
-                .get(String.format(getPath(ENDPOINT_DATA_BY_LEGAL_ENTITY_ID_AND_TYPE), internalLegalEntityId, type));
+                .get(String.format(getPath(ENDPOINT_DATA_BY_SERVICE_AGREEMENT_ID_AND_TYPE), internalServiceAgreement, type));
     }
 
-    public List<String> retrieveAllDataGroupIdsByLegalEntity(String internalLegalEntityId) {
-        DataGroupsGetResponseBody[] dataGroups = retrieveDataGroupsByLegalEntityAndType(internalLegalEntityId, "ARRANGEMENTS")
+    public List<String> retrieveDataGroupIdsByServiceAgreement(String internalServiceAgreement) {
+        DataGroupsGetResponseBody[] dataGroups = retrieveDataGroupsByServiceAgreementAndType(internalServiceAgreement, "ARRANGEMENTS")
                 .then()
                 .statusCode(SC_OK)
                 .extract()
                 .as(DataGroupsGetResponseBody[].class);
 
-        List<String> dataGroupIds = new ArrayList<>();
-        Arrays.stream(dataGroups)
-                .forEach(dg -> dataGroupIds.add(dg.getId()));
-
-        return dataGroupIds;
+        return Arrays.stream(dataGroups)
+            .map(DataGroupsGetResponseBody::getId)
+            .collect(Collectors.toList());
     }
 
     public Response getListOfArrangementsWithPrivilegesForUser(String internalUserId, String functionName, String resourceName, String privilege) {

@@ -17,21 +17,34 @@ public class PermissionsConfigurator {
     private AccessGroupIntegrationRestClient accessGroupIntegrationRestClient = new AccessGroupIntegrationRestClient();
     private AccessGroupPresentationRestClient accessGroupPresentationRestClient = new AccessGroupPresentationRestClient();
 
-    public void assignAllFunctionDataGroupsToUserAndServiceAgreement(String internalServiceAgreementIdForFunctionDataGroups, String externalUserId, String internalServiceAgreementId) {
-        List<String> functionGroupIds = accessGroupPresentationRestClient.retrieveFunctionGroupIdsByServiceAgreement(internalServiceAgreementIdForFunctionDataGroups);
-        List<String> dataGroupIds = accessGroupPresentationRestClient.retrieveDataGroupIdsByServiceAgreement(internalServiceAgreementIdForFunctionDataGroups);
+    public void assignAllFunctionDataGroupsToUserAndServiceAgreement(String externalUserId, String internalServiceAgreementId) {
+        List<String> functionGroupIds = accessGroupPresentationRestClient.retrieveFunctionGroupIdsByServiceAgreement(internalServiceAgreementId);
+        List<String> dataGroupIds = accessGroupPresentationRestClient.retrieveDataGroupIdsByServiceAgreement(internalServiceAgreementId);
 
         functionGroupIds.forEach(functionGroupId -> {
-                    accessGroupIntegrationRestClient.assignPermissions(new AssignPermissionsPostRequestBody()
-                            .withExternalLegalEntityId(null)
-                            .withExternalUserId(externalUserId)
-                            .withServiceAgreementId(internalServiceAgreementId)
-                            .withFunctionGroupId(functionGroupId)
-                            .withDataGroupIds(dataGroupIds))
-                            .then()
-                            .statusCode(SC_OK);
+            accessGroupIntegrationRestClient.assignPermissions(new AssignPermissionsPostRequestBody()
+                .withExternalLegalEntityId(null)
+                .withExternalUserId(externalUserId)
+                .withServiceAgreementId(internalServiceAgreementId)
+                .withFunctionGroupId(functionGroupId)
+                .withDataGroupIds(dataGroupIds))
+                .then()
+                .statusCode(SC_OK);
 
-                    LOGGER.info(String.format("Permission assigned for service agreement [%s], user [%s], function group [%s], data groups %s", internalServiceAgreementId, externalUserId, functionGroupId, dataGroupIds));
-                });
+            LOGGER.info(String.format("Permission assigned for service agreement [%s], user [%s], function group [%s], data groups %s", internalServiceAgreementId, externalUserId, functionGroupId, dataGroupIds));
+        });
+    }
+
+    public void assignPermissions(String externalUserId, String internalServiceAgreementId, String functionGroupId, List<String> dataGroupIds) {
+        accessGroupIntegrationRestClient.assignPermissions(new AssignPermissionsPostRequestBody()
+            .withExternalLegalEntityId(null)
+            .withExternalUserId(externalUserId)
+            .withServiceAgreementId(internalServiceAgreementId)
+            .withFunctionGroupId(functionGroupId)
+            .withDataGroupIds(dataGroupIds))
+            .then()
+            .statusCode(SC_OK);
+
+        LOGGER.info(String.format("Permission assigned for service agreement [%s], user [%s], function group [%s], data groups %s", internalServiceAgreementId, externalUserId, functionGroupId, dataGroupIds));
     }
 }

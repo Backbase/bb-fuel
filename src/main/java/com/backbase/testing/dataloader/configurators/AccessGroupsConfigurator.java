@@ -1,19 +1,17 @@
 package com.backbase.testing.dataloader.configurators;
 
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.config.functions.FunctionsGetResponseBody;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.data.DataGroupsPostRequestBody;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.data.DataGroupsPostResponseBody;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.datagroups.DataGroupPostRequestBody;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.FunctionGroupsPostResponseBody;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.Privilege;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.users.permissions.AssignPermissionsPostRequestBody;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementGetResponseBody;
-import com.backbase.presentation.user.rest.spec.v2.users.LegalEntityByUserGetResponseBody;
 import com.backbase.testing.dataloader.clients.accessgroup.AccessGroupIntegrationRestClient;
 import com.backbase.testing.dataloader.clients.accessgroup.AccessGroupPresentationRestClient;
+import com.backbase.testing.dataloader.clients.accessgroup.ServiceAgreementsPresentationRestClient;
 import com.backbase.testing.dataloader.data.AccessGroupsDataGenerator;
 import com.backbase.testing.dataloader.dto.ArrangementId;
-import com.backbase.testing.dataloader.dto.UserContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,44 +30,19 @@ public class AccessGroupsConfigurator {
     private AccessGroupsDataGenerator accessGroupsDataGenerator = new AccessGroupsDataGenerator();
     private AccessGroupPresentationRestClient accessGroupPresentationRestClient = new AccessGroupPresentationRestClient();
     private AccessGroupIntegrationRestClient accessGroupIntegrationRestClient = new AccessGroupIntegrationRestClient();
+    private ServiceAgreementsPresentationRestClient serviceAgreementsPresentationRestClient = new ServiceAgreementsPresentationRestClient();
 
-    public void setupFunctionDataGroupAndAllPrivilegesAssignedToUserAndServiceAgreement(UserContext userContext, String functionName, List<String> dataGroupIds) {
-        String functionGroupId = accessGroupPresentationRestClient.getFunctionGroupIdByServiceAgreementIdAndFunctionName(userContext.getInternalServiceAgreementId(), functionName);
+    public String setupFunctionGroupWithAllPrivilegesByFunctionName(String internalServiceAgreementId, String externalServiceAgreementId, String functionName) {
+        String functionGroupId = accessGroupPresentationRestClient.getFunctionGroupIdByServiceAgreementIdAndFunctionName(internalServiceAgreementId, functionName);
 
         if (functionGroupId == null) {
-            functionGroupId = ingestFunctionGroupsWithAllPrivilegesByFunctionName(userContext.getExternalServiceAgreementId(), functionName);
+            functionGroupId = ingestFunctionGroupWithAllPrivilegesByFunctionName(externalServiceAgreementId, functionName);
         }
 
-        accessGroupIntegrationRestClient.assignPermissions(new AssignPermissionsPostRequestBody()
-                .withExternalLegalEntityId(null)
-                .withExternalUserId(userContext.getExternalUserId())
-                .withServiceAgreementId(userContext.getInternalServiceAgreementId())
-                .withFunctionGroupId(functionGroupId)
-                .withDataGroupIds(dataGroupIds))
-                .then()
-                .statusCode(SC_OK);
-
-        LOGGER.info(String.format("Permission assigned for legal entity [%s], user [%s], service agreement [%s], function group [%s], data groups %s", userContext.getExternalLegalEntityId(), userContext.getExternalUserId(), userContext.getExternalServiceAgreementId(), functionGroupId, dataGroupIds));
+        return functionGroupId;
     }
 
-    public void ingestFunctionGroupsWithAllPrivilegesForAllFunctions(String externalServiceAgreementId) {
-        FunctionsGetResponseBody[] functions = accessGroupIntegrationRestClient.retrieveFunctions()
-                .then()
-                .statusCode(SC_OK)
-                .extract()
-                .as(FunctionsGetResponseBody[].class);
-
-        Arrays.stream(functions).parallel().forEach(function -> {
-            List<Privilege> functionPrivileges = function.getPrivileges();
-            List<String> privileges = new ArrayList<>();
-
-            functionPrivileges.forEach(fp -> privileges.add(fp.getPrivilege()));
-
-            ingestFunctionGroupByFunctionName(externalServiceAgreementId, function.getName(), privileges);
-        });
-    }
-
-    private String ingestFunctionGroupsWithAllPrivilegesByFunctionName(String externalServiceAgreementId, String functionName) {
+    public String ingestFunctionGroupWithAllPrivilegesByFunctionName(String externalServiceAgreementId, String functionName) {
         List<String> privileges = new ArrayList<>();
         FunctionsGetResponseBody function = accessGroupIntegrationRestClient.retrieveFunctionByName(functionName);
         List<Privilege> functionPrivileges = function.getPrivileges();

@@ -16,6 +16,7 @@ import com.backbase.testing.dataloader.configurators.ContactsConfigurator;
 import com.backbase.testing.dataloader.configurators.LegalEntitiesAndUsersConfigurator;
 import com.backbase.testing.dataloader.configurators.MessagesConfigurator;
 import com.backbase.testing.dataloader.configurators.PaymentsConfigurator;
+import com.backbase.testing.dataloader.configurators.PermissionsConfigurator;
 import com.backbase.testing.dataloader.configurators.ProductSummaryConfigurator;
 import com.backbase.testing.dataloader.configurators.ServiceAgreementsConfigurator;
 import com.backbase.testing.dataloader.configurators.TransactionsConfigurator;
@@ -29,7 +30,6 @@ import com.backbase.testing.dataloader.utils.ParserUtil;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -48,6 +48,8 @@ import static com.backbase.testing.dataloader.data.CommonConstants.SEPA_CT_FUNCT
 import static com.backbase.testing.dataloader.data.CommonConstants.USER_ADMIN;
 import static com.backbase.testing.dataloader.data.CommonConstants.US_DOMESTIC_WIRE_FUNCTION_NAME;
 import static com.backbase.testing.dataloader.data.CommonConstants.US_FOREIGN_WIRE_FUNCTION_NAME;
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 import static org.apache.http.HttpStatus.SC_OK;
 
 public class UsersSetup {
@@ -59,6 +61,7 @@ public class UsersSetup {
     private AccessGroupPresentationRestClient accessGroupPresentationRestClient = new AccessGroupPresentationRestClient();
     private AccessGroupIntegrationRestClient accessGroupIntegrationRestClient = new AccessGroupIntegrationRestClient();
     private AccessGroupsConfigurator accessGroupsConfigurator = new AccessGroupsConfigurator();
+    private PermissionsConfigurator permissionsConfigurator = new PermissionsConfigurator();
     private ServiceAgreementsConfigurator serviceAgreementsConfigurator = new ServiceAgreementsConfigurator();
     private ServiceAgreementsPresentationRestClient serviceAgreementsPresentationRestClient = new ServiceAgreementsPresentationRestClient();
     private LegalEntityPresentationRestClient legalEntityPresentationRestClient = new LegalEntityPresentationRestClient();
@@ -161,17 +164,17 @@ public class UsersSetup {
             String externalServiceAgreementId = entry.getKey();
             String externalLegalEntityId =  entry.getValue();
 
-            CurrencyDataGroup currencyDataGroup = setupArrangementsPerDataGroupForLegalEntity(externalServiceAgreementId, externalLegalEntityId);
+            CurrencyDataGroup currencyDataGroup = setupArrangementsPerDataGroupForServiceAgreement(externalServiceAgreementId, externalLegalEntityId);
 
             serviceAgreementDataGroupIds.put(externalServiceAgreementId, currencyDataGroup);
         }
 
         for (UserContext userContext : userContextList) {
-            setupFunctionDataGroupAndPrivilegesUnderLegalEntity(userContext, serviceAgreementDataGroupIds.get(userContext.getExternalServiceAgreementId()));
+            setupFunctionGroupsAndAssignPermissions(userContext.getExternalUserId(), userContext.getInternalServiceAgreementId(), userContext.getExternalServiceAgreementId(), serviceAgreementDataGroupIds.get(userContext.getExternalServiceAgreementId()), true);
         }
     }
 
-    private void setupFunctionDataGroupAndPrivilegesUnderLegalEntity(UserContext userContext, CurrencyDataGroup currencyDataGroup) {
+    void setupFunctionGroupsAndAssignPermissions(String externalUserId, String internalServiceAgreementId, String externalServiceAgreementId, CurrencyDataGroup currencyDataGroup, boolean masterServiceAgreement) {
         FunctionsGetResponseBody[] functions = accessGroupIntegrationRestClient.retrieveFunctions()
                 .then()
                 .statusCode(SC_OK)
@@ -183,22 +186,29 @@ public class UsersSetup {
 
         Arrays.stream(functions).forEach(function -> {
             String functionName = function.getName();
+            String functionGroupId;
+
+            if (masterServiceAgreement) {
+                functionGroupId = accessGroupsConfigurator.setupFunctionGroupWithAllPrivilegesByFunctionName(internalServiceAgreementId, externalServiceAgreementId, functionName);
+            } else {
+                functionGroupId = accessGroupsConfigurator.ingestFunctionGroupWithAllPrivilegesByFunctionName(externalServiceAgreementId, functionName);
+            }
 
             switch (functionName) {
                 case SEPA_CT_FUNCTION_NAME:
-                    accessGroupsConfigurator.setupFunctionDataGroupAndAllPrivilegesAssignedToUserAndServiceAgreement(userContext, functionName, Collections.singletonList(currencyDataGroup.getInternalEurCurrencyDataGroupId()));
+                    permissionsConfigurator.assignPermissions(externalUserId, internalServiceAgreementId, functionGroupId, singletonList(currencyDataGroup.getInternalEurCurrencyDataGroupId()));
                     break;
                 case US_DOMESTIC_WIRE_FUNCTION_NAME:
                 case US_FOREIGN_WIRE_FUNCTION_NAME:
-                    accessGroupsConfigurator.setupFunctionDataGroupAndAllPrivilegesAssignedToUserAndServiceAgreement(userContext, functionName, Collections.singletonList(currencyDataGroup.getInternalUsdCurrencyDataGroupId()));
+                    permissionsConfigurator.assignPermissions(externalUserId, internalServiceAgreementId, functionGroupId, singletonList(currencyDataGroup.getInternalUsdCurrencyDataGroupId()));
                     break;
                 default:
-                    accessGroupsConfigurator.setupFunctionDataGroupAndAllPrivilegesAssignedToUserAndServiceAgreement(userContext, functionName, Arrays.asList(currencyDataGroup.getInternalRandomCurrencyDataGroupId(), currencyDataGroup.getInternalEurCurrencyDataGroupId(), currencyDataGroup.getInternalUsdCurrencyDataGroupId()));
+                    permissionsConfigurator.assignPermissions(externalUserId, internalServiceAgreementId, functionGroupId, asList(currencyDataGroup.getInternalRandomCurrencyDataGroupId(), currencyDataGroup.getInternalEurCurrencyDataGroupId(), currencyDataGroup.getInternalUsdCurrencyDataGroupId()));
             }
         });
     }
 
-    private CurrencyDataGroup setupArrangementsPerDataGroupForLegalEntity(String externalServiceAgreementId, String externalLegalEntityId) {
+    CurrencyDataGroup setupArrangementsPerDataGroupForServiceAgreement(String externalServiceAgreementId, String externalLegalEntityId) {
         List<ArrangementId> randomCurrencyArrangementIds = new ArrayList<>(productSummaryConfigurator.ingestRandomCurrencyArrangementsByLegalEntityAndReturnArrangementIds(externalLegalEntityId));
         List<ArrangementId> eurCurrencyArrangementIds = new ArrayList<>(productSummaryConfigurator.ingestSpecificCurrencyArrangementsByLegalEntityAndReturnArrangementIds(externalLegalEntityId, ArrangementsPostRequestBodyParent.Currency.EUR));
         List<ArrangementId> usdCurrencyArrangementIds = new ArrayList<>(productSummaryConfigurator.ingestSpecificCurrencyArrangementsByLegalEntityAndReturnArrangementIds(externalLegalEntityId, ArrangementsPostRequestBodyParent.Currency.USD));
@@ -246,6 +256,39 @@ public class UsersSetup {
             .extract()
             .as(ServiceAgreementGetResponseBody.class)
             .getId();
+
+        String externalServiceAgreementId = serviceAgreementsPresentationRestClient.retrieveServiceAgreement(internalServiceAgreementId)
+            .then()
+            .statusCode(SC_OK)
+            .extract()
+            .as(ServiceAgreementGetResponseBody.class)
+            .getExternalId();
+
+        return new UserContext()
+            .withInternalUserId(internalUserId)
+            .withExternalUserId(externalUserId)
+            .withInternalServiceAgreementId(internalServiceAgreementId)
+            .withExternalServiceAgreementId(externalServiceAgreementId)
+            .withInternalLegalEntityId(legalEntity.getId())
+            .withExternalLegalEntityId(legalEntity.getExternalId());
+    }
+
+    UserContext getUserContextBasedOnServiceAgreement(String externalUserId, String internalServiceAgreementId) {
+        loginRestClient.login(USER_ADMIN, USER_ADMIN);
+        accessGroupPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
+
+        String internalUserId = userPresentationRestClient.getUserByExternalId(externalUserId)
+            .then()
+            .statusCode(SC_OK)
+            .extract()
+            .as(UserGetResponseBody.class)
+            .getId();
+
+        LegalEntityByUserGetResponseBody legalEntity = userPresentationRestClient.retrieveLegalEntityByExternalUserId(externalUserId)
+            .then()
+            .statusCode(SC_OK)
+            .extract()
+            .as(LegalEntityByUserGetResponseBody.class);
 
         String externalServiceAgreementId = serviceAgreementsPresentationRestClient.retrieveServiceAgreement(internalServiceAgreementId)
             .then()

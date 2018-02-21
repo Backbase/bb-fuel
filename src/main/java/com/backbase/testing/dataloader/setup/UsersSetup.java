@@ -195,17 +195,7 @@ public class UsersSetup {
                 functionGroupId = accessGroupsConfigurator.ingestFunctionGroupWithAllPrivilegesByFunctionName(externalServiceAgreementId, functionName);
             }
 
-            switch (functionName) {
-                case SEPA_CT_FUNCTION_NAME:
-                    permissionsConfigurator.assignPermissions(externalUserId, internalServiceAgreementId, functionGroupId, singletonList(currencyDataGroup.getInternalEurCurrencyDataGroupId()));
-                    break;
-                case US_DOMESTIC_WIRE_FUNCTION_NAME:
-                case US_FOREIGN_WIRE_FUNCTION_NAME:
-                    permissionsConfigurator.assignPermissions(externalUserId, internalServiceAgreementId, functionGroupId, singletonList(currencyDataGroup.getInternalUsdCurrencyDataGroupId()));
-                    break;
-                default:
-                    permissionsConfigurator.assignPermissions(externalUserId, internalServiceAgreementId, functionGroupId, asList(currencyDataGroup.getInternalRandomCurrencyDataGroupId(), currencyDataGroup.getInternalEurCurrencyDataGroupId(), currencyDataGroup.getInternalUsdCurrencyDataGroupId()));
-            }
+            permissionsConfigurator.assignPermissions(externalUserId, internalServiceAgreementId, functionName, functionGroupId, currencyDataGroup);
         });
     }
 

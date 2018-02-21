@@ -80,7 +80,7 @@ public class UsersSetup {
         if (globalProperties.getBoolean(PROPERTY_INGEST_ENTITLEMENTS)) {
             UserList[] usersWithoutPermissionsLists = ParserUtil.convertJsonToObject(globalProperties.getString(PROPERTY_USERS_WITHOUT_PERMISSIONS), UserList[].class);
 
-            Arrays.stream(userLists).forEach(userList -> {
+            Arrays.stream(userLists).parallel().forEach(userList -> {
                 List<String> externalUserIds = userList.getExternalUserIds();
 
                 legalEntitiesAndUsersConfigurator.ingestUsersUnderNewLegalEntity(externalUserIds, EXTERNAL_ROOT_LEGAL_ENTITY_ID);
@@ -185,7 +185,7 @@ public class UsersSetup {
         loginRestClient.login(USER_ADMIN, USER_ADMIN);
         userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
-        Arrays.stream(functions).parallel().forEach(function -> {
+        Arrays.stream(functions).forEach(function -> {
             String functionName = function.getName();
             String functionGroupId;
 

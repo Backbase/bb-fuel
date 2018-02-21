@@ -44,7 +44,7 @@ public class ServiceAgreementsSetup {
             loginRestClient.login(USER_ADMIN, USER_ADMIN);
             userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
-            Arrays.stream(serviceAgreementPostRequestBodies).forEach(serviceAgreementPostRequestBody -> {
+            Arrays.stream(serviceAgreementPostRequestBodies).parallel().forEach(serviceAgreementPostRequestBody -> {
                 LOGGER.info("ingesting serviceAgreementPostRequestBody with name [{}]", serviceAgreementPostRequestBody.getName());
                 String internalServiceAgreementId = serviceAgreementsConfigurator.ingestServiceAgreementWithProvidersAndConsumers(serviceAgreementPostRequestBody.getProviders(), serviceAgreementPostRequestBody.getConsumers());
 

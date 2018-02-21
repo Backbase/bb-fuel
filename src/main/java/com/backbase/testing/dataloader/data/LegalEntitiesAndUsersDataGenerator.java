@@ -19,7 +19,7 @@ public class LegalEntitiesAndUsersDataGenerator {
     public static LegalEntitiesPostRequestBody generateRootLegalEntitiesPostRequestBody(String externalLegalEntityId) {
         return new LegalEntitiesPostRequestBody()
                 .withExternalId(externalLegalEntityId)
-                .withName(faker.company().name() + faker.lorem().characters(8))
+                .withName(faker.lorem().sentence(3, 0).replace(".", ""))
                 .withParentExternalId(null)
                 .withType(LegalEntityType.BANK);
     }
@@ -27,7 +27,7 @@ public class LegalEntitiesAndUsersDataGenerator {
     public static LegalEntitiesPostRequestBody generateLegalEntitiesPostRequestBody(String externalLegalEntityId, String externalParentLegalEntityId) {
         return new LegalEntitiesPostRequestBody()
                 .withExternalId(externalLegalEntityId)
-                .withName(faker.company().name() + faker.lorem().characters(8))
+                .withName(faker.lorem().sentence(3, 0).replace(".", ""))
                 .withParentExternalId(externalParentLegalEntityId)
                 .withType(LegalEntityType.CUSTOMER);
     }
@@ -36,6 +36,6 @@ public class LegalEntitiesAndUsersDataGenerator {
         return new UsersPostRequestBody()
                 .withExternalId(externalUserId)
                 .withLegalEntityExternalId(externalLegalEntityId)
-                .withFullName(faker.name().fullName());
+                .withFullName(faker.name().firstName() + " " + faker.name().lastName());
     }
 }

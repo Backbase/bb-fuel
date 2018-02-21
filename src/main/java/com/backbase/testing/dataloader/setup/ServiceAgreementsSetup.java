@@ -44,7 +44,7 @@ public class ServiceAgreementsSetup {
     private UserPresentationRestClient userPresentationRestClient = new UserPresentationRestClient();
     private UsersSetup usersSetup = new UsersSetup();
     private Map<String, String> functionGroupFunctionNames = new HashMap<>();
-    private List<CurrencyDataGroup> currencyDataGroups = new ArrayList<>();
+    private CurrencyDataGroup currencyDataGroup = null;
     private FunctionsGetResponseBody[] functions;
 
     public ServiceAgreementsSetup() throws IOException {
@@ -92,7 +92,7 @@ public class ServiceAgreementsSetup {
                 .as(ServiceAgreementGetResponseBody.class)
                 .getExternalId();
 
-            currencyDataGroups.add(usersSetup.setupArrangementsPerDataGroupForServiceAgreement(externalServiceAgreementId, externalLegalEntityId));
+            currencyDataGroup = usersSetup.setupArrangementsPerDataGroupForServiceAgreement(externalServiceAgreementId, externalLegalEntityId);
 
             for (FunctionsGetResponseBody function : functions) {
                 String functionName = function.getName();
@@ -113,9 +113,7 @@ public class ServiceAgreementsSetup {
                     String functionGroupId = entry.getKey();
                     String functionName = entry.getValue();
 
-                    for (CurrencyDataGroup currencyDataGroup : currencyDataGroups) {
-                        permissionsConfigurator.assignPermissions(externalUserId, internalServiceAgreementId, functionName, functionGroupId, currencyDataGroup);
-                    }
+                    permissionsConfigurator.assignPermissions(externalUserId, internalServiceAgreementId, functionName, functionGroupId, currencyDataGroup);
                 }
             }
         }

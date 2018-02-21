@@ -11,10 +11,10 @@ import java.util.UUID;
 
 public class TransactionsDataGenerator {
 
-    private Faker faker = new Faker();
-    private Random random = new Random();
+    private static Faker faker = new Faker();
+    private static Random random = new Random();
 
-    public TransactionsPostRequestBody generateTransactionsPostRequestBody(String externalArrangementId) {
+    public static TransactionsPostRequestBody generateTransactionsPostRequestBody(String externalArrangementId) {
 
         return new TransactionsPostRequestBody().withId(UUID.randomUUID().toString())
                 .withArrangementId(externalArrangementId)

@@ -8,10 +8,10 @@ import java.util.Random;
 
 public class NotificationsDataGenerator {
 
-    private Faker faker = new Faker();
-    private Random random = new Random();
+    private static Faker faker = new Faker();
+    private static Random random = new Random();
 
-    public NotificationsPostRequestBody generateNotificationsPostRequestBodyForGlobalTargetGroup() {
+    public static NotificationsPostRequestBody generateNotificationsPostRequestBodyForGlobalTargetGroup() {
         return new NotificationsPostRequestBody().withLevel(SeverityLevel.values()[random.nextInt(SeverityLevel.values().length)])
                 .withMessage(faker.lorem().paragraph() + " {{link}}")
                 .withOrigin(faker.lorem().characters(10))

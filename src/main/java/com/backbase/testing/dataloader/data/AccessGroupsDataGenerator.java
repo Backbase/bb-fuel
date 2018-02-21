@@ -1,9 +1,9 @@
 package com.backbase.testing.dataloader.data;
 
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.data.DataGroupsPostRequestBody;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.FunctionGroupsPostRequestBody;
+import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.datagroups.DataGroupPostRequestBody;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.Permission;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.Privilege;
+import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.functiongroups.FunctionGroupPostRequestBody;
 import com.github.javafaker.Faker;
 
 import java.util.Arrays;
@@ -13,30 +13,30 @@ import java.util.stream.Collectors;
 
 public class AccessGroupsDataGenerator {
 
-    private Faker faker = new Faker();
+    private static Faker faker = new Faker();
 
-    public FunctionGroupsPostRequestBody generateFunctionGroupsPostRequestBody(String externalLegalEntityId, String functionId, List<String> privileges) {
-        return new FunctionGroupsPostRequestBody()
+    public static FunctionGroupPostRequestBody generateFunctionGroupPostRequestBody(String externalServiceAgreementId, String functionId, List<String> privileges) {
+        return new FunctionGroupPostRequestBody()
                 .withName(faker.lorem().characters(8))
                 .withDescription(faker.lorem().characters(8))
-                .withExternalLegalEntityId(externalLegalEntityId)
+                .withExternalServiceAgreementId(externalServiceAgreementId)
                 .withPermissions(setPermissions(functionId, privileges));
     }
 
-    public DataGroupsPostRequestBody generateDataGroupsPostRequestBody(String externalLegalEntityId, DataGroupsPostRequestBody.Type type, List<String> items) {
-        return new DataGroupsPostRequestBody()
+    public static DataGroupPostRequestBody generateDataGroupPostRequestBody(String externalServiceAgreementId, DataGroupPostRequestBody.Type type, List<String> items) {
+        return new DataGroupPostRequestBody()
                 .withName(faker.lorem().characters(8))
                 .withDescription(faker.lorem().characters(8))
-                .withExternalLegalEntityId(externalLegalEntityId)
+                .withExternalServiceAgreementId(externalServiceAgreementId)
                 .withType(type)
                 .withItems(items);
     }
 
-    private List<Permission> setPermissions(String function, List<String> privileges) {
+    private static List<Permission> setPermissions(String function, List<String> privileges) {
         return Collections.singletonList(createPermission(function, privileges.toArray(new String[privileges.size()])));
     }
 
-    private Permission createPermission(String function, String... privileges) {
+    private static Permission createPermission(String function, String... privileges) {
         return new Permission()
                 .withFunctionId(function)
                 .withAssignedPrivileges(Arrays.stream(privileges)

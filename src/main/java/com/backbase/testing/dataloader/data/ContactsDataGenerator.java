@@ -11,19 +11,19 @@ import java.util.List;
 
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_CONTACT_ACCOUNTS_MAX;
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_CONTACT_ACCOUNTS_MIN;
+import static com.backbase.testing.dataloader.data.ProductSummaryDataGenerator.generateRandomIban;
 
 public class ContactsDataGenerator {
 
     private static GlobalProperties globalProperties = GlobalProperties.getInstance();
-    private Faker faker = new Faker();
-    private ProductSummaryDataGenerator productSummaryDataGenerator = new ProductSummaryDataGenerator();
+    private static Faker faker = new Faker();
 
-    public ContactsPostRequestBody generateContactsPostRequestBody() {
+    public static ContactsPostRequestBody generateContactsPostRequestBody() {
         List<AccountInformation> accounts = new ArrayList<>();
 
         for (int i = 0; i < CommonHelpers.generateRandomNumberInRange(globalProperties.getInt(PROPERTY_CONTACT_ACCOUNTS_MIN), globalProperties.getInt(PROPERTY_CONTACT_ACCOUNTS_MAX)); i++) {
             accounts.add(new AccountInformation().withName(faker.lorem().sentence(3, 0).replace(".", ""))
-                    .withIBAN(productSummaryDataGenerator.generateRandomIban())
+                    .withIBAN(generateRandomIban())
                     .withAccountNumber(faker.finance().iban())
                     .withAlias(faker.lorem().characters(10))
                     .withAccountHolderAddressLine1(faker.address().streetAddress())

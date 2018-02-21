@@ -12,6 +12,7 @@ import java.util.stream.IntStream;
 
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_NOTIFICATIONS_MAX;
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_NOTIFICATIONS_MIN;
+import static com.backbase.testing.dataloader.data.NotificationsDataGenerator.generateNotificationsPostRequestBodyForGlobalTargetGroup;
 import static org.apache.http.HttpStatus.SC_CREATED;
 
 public class NotificationsConfigurator {
@@ -20,12 +21,11 @@ public class NotificationsConfigurator {
     private static GlobalProperties globalProperties = GlobalProperties.getInstance();
 
     private NotificationsPresentationRestClient notificationsPresentationRestClient = new NotificationsPresentationRestClient();
-    private NotificationsDataGenerator notificationsDataGenerator = new NotificationsDataGenerator();
 
     public void ingestNotifications() {
         int randomAmount = CommonHelpers.generateRandomNumberInRange(globalProperties.getInt(PROPERTY_NOTIFICATIONS_MIN), globalProperties.getInt(PROPERTY_NOTIFICATIONS_MAX));
         IntStream.range(0, randomAmount).parallel().forEach(randomNumber -> {
-            NotificationsPostRequestBody notification = notificationsDataGenerator.generateNotificationsPostRequestBodyForGlobalTargetGroup();
+            NotificationsPostRequestBody notification = generateNotificationsPostRequestBodyForGlobalTargetGroup();
             notificationsPresentationRestClient.createNotification(notification)
                     .then()
                     .statusCode(SC_CREATED);

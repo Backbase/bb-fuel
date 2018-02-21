@@ -27,8 +27,8 @@ import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_PROD
 public class ProductSummaryDataGenerator {
 
     private static GlobalProperties globalProperties = GlobalProperties.getInstance();
-    private Faker faker = new Faker();
-    private Random random = new Random();
+    private static Faker faker = new Faker();
+    private static Random random = new Random();
     private static final List<CountryCode> COUNTRY_CODES;
     static {
         List<String> allowed = Arrays.asList("AT", "BE", "BG", "CH", "CY", "CZ", "DE", "DK", "EE", "ES", "FI", "FR", "GB", "GI", "GR", "HR", "HU", "IE", "IS", "IT", "LI", "LT", "LU", "LV", "MC", "MT", "NL", "PL", "PT", "RO", "SE", "SI", "SK", "SM");
@@ -41,15 +41,15 @@ public class ProductSummaryDataGenerator {
         }
     }
 
-    public String generateRandomIban() {
+    public static String generateRandomIban() {
         return Iban.random(COUNTRY_CODES.get(random.nextInt(COUNTRY_CODES.size()))).toString();
     }
 
-    public ProductsPostRequestBody[] generateProductsPostRequestBodies() throws IOException {
+    public static ProductsPostRequestBody[] generateProductsPostRequestBodies() throws IOException {
         return ParserUtil.convertJsonToObject(globalProperties.getString(PROPERTY_PRODUCTS_JSON_LOCATION), ProductsPostRequestBody[].class);
     }
 
-    public ArrangementsPostRequestBody generateArrangementsPostRequestBody(String externalLegalEntityId, ArrangementsPostRequestBodyParent.Currency currency) {
+    public static ArrangementsPostRequestBody generateArrangementsPostRequestBody(String externalLegalEntityId, ArrangementsPostRequestBodyParent.Currency currency) {
         ArrangementsPostRequestBodyParent.AccountHolderCountry[] accountHolderCountries = ArrangementsPostRequestBodyParent.AccountHolderCountry.values();
         int productId = CommonHelpers.generateRandomNumberInRange(1, 7);
         boolean debitCreditAccountIndicator = false;

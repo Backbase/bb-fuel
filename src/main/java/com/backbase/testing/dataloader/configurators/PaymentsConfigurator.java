@@ -5,6 +5,7 @@ import com.backbase.dbs.presentation.paymentorder.rest.spec.v2.paymentorders.Ini
 import com.backbase.dbs.presentation.paymentorder.rest.spec.v2.paymentorders.ValidatedPaymentOrder;
 import com.backbase.presentation.productsummary.rest.spec.v2.productsummary.ArrangementsByBusinessFunctionGetResponseBody;
 import com.backbase.testing.dataloader.clients.accessgroup.AccessGroupPresentationRestClient;
+import com.backbase.testing.dataloader.clients.accessgroup.UserContextPresentationRestClient;
 import com.backbase.testing.dataloader.clients.common.LoginRestClient;
 import com.backbase.testing.dataloader.clients.payment.PaymentOrderPresentationRestClient;
 import com.backbase.testing.dataloader.clients.productsummary.ProductSummaryPresentationRestClient;
@@ -25,6 +26,7 @@ import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_PAYM
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_PAYMENTS_MIN;
 import static com.backbase.testing.dataloader.data.CommonConstants.SEPA_CT_FUNCTION_NAME;
 import static com.backbase.testing.dataloader.data.CommonConstants.US_DOMESTIC_WIRE_FUNCTION_NAME;
+import static com.backbase.testing.dataloader.data.PaymentsDataGenerator.generateInitiatePaymentOrder;
 import static org.apache.http.HttpStatus.SC_ACCEPTED;
 import static org.apache.http.HttpStatus.SC_OK;
 
@@ -37,14 +39,13 @@ public class PaymentsConfigurator {
     private PaymentOrderPresentationRestClient paymentOrderPresentationRestClient = new PaymentOrderPresentationRestClient();
     private LoginRestClient loginRestClient = new LoginRestClient();
     private ProductSummaryPresentationRestClient productSummaryPresentationRestClient = new ProductSummaryPresentationRestClient();
-    private AccessGroupPresentationRestClient accessGroupPresentationRestClient = new AccessGroupPresentationRestClient();
-    private PaymentsDataGenerator paymentsDataGenerator = new PaymentsDataGenerator();
+    private UserContextPresentationRestClient userContextPresentationRestClient = new UserContextPresentationRestClient();
 
     public void ingestPaymentOrders(String externalUserId) {
         IdentifiedPaymentOrder.PaymentType paymentType = IdentifiedPaymentOrder.PaymentType.values()[random.nextInt(IdentifiedPaymentOrder.PaymentType.values().length)];
 
         loginRestClient.login(externalUserId, externalUserId);
-        accessGroupPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
+        userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
         List<ArrangementsByBusinessFunctionGetResponseBody> sepaCtArrangements = productSummaryPresentationRestClient.getSepaCtArrangements();
         List<ArrangementsByBusinessFunctionGetResponseBody> usDomesticWireArrangements = productSummaryPresentationRestClient.getUsDomesticWireArrangements();
 
@@ -58,7 +59,7 @@ public class PaymentsConfigurator {
                 randomArrangement = usDomesticWireArrangements.get(random.nextInt(usDomesticWireArrangements.size()));
             }
 
-            InitiatePaymentOrder initiatePaymentOrder = paymentsDataGenerator.generateInitiatePaymentOrder(randomArrangement.getId(), paymentType);
+            InitiatePaymentOrder initiatePaymentOrder = generateInitiatePaymentOrder(randomArrangement.getId(), paymentType);
             paymentOrderPresentationRestClient.initiatePaymentOrder(initiatePaymentOrder)
                     .then()
                     .statusCode(SC_ACCEPTED);

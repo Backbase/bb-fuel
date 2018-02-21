@@ -19,10 +19,8 @@ import com.backbase.testing.dataloader.utils.GlobalProperties;
 import com.backbase.testing.dataloader.utils.ParserUtil;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -66,45 +64,45 @@ public class ServiceAgreementsSetup {
                 .forEach(serviceAgreementPostRequestBody -> {
                     String internalServiceAgreementId = serviceAgreementsConfigurator.ingestServiceAgreementWithProvidersAndConsumers(serviceAgreementPostRequestBody.getProviders(), serviceAgreementPostRequestBody.getConsumers());
 
-                    setupConsumers(internalServiceAgreementId, serviceAgreementPostRequestBody.getConsumers());
-                    setupProviders(internalServiceAgreementId, serviceAgreementPostRequestBody.getProviders());
+                    setupFunctionDataGroups(internalServiceAgreementId, serviceAgreementPostRequestBody.getConsumers());
+                    setupPermissions(internalServiceAgreementId, serviceAgreementPostRequestBody.getProviders());
+
+                    functionGroupFunctionNames.clear();
                 });
         }
     }
 
-    private void setupConsumers(String internalServiceAgreementId, Set<Consumer> consumers) {
-        for (Consumer consumer : consumers) {
-            String externalConsumerAdminUserId = consumer.getAdmins()
-                .iterator()
-                .next();
+    private void setupFunctionDataGroups(String internalServiceAgreementId, Set<Consumer> consumers) {
+        String externalConsumerAdminUserId = consumers.iterator().next().getAdmins()
+            .iterator()
+            .next();
 
-            String externalLegalEntityId = userPresentationRestClient.retrieveLegalEntityByExternalUserId(externalConsumerAdminUserId)
-                .then()
-                .statusCode(SC_OK)
-                .extract()
-                .as(LegalEntityByUserGetResponseBody.class)
-                .getExternalId();
+        String externalLegalEntityId = userPresentationRestClient.retrieveLegalEntityByExternalUserId(externalConsumerAdminUserId)
+            .then()
+            .statusCode(SC_OK)
+            .extract()
+            .as(LegalEntityByUserGetResponseBody.class)
+            .getExternalId();
 
-            String externalServiceAgreementId = serviceAgreementsPresentationRestClient.retrieveServiceAgreement(internalServiceAgreementId)
-                .then()
-                .statusCode(SC_OK)
-                .extract()
-                .as(ServiceAgreementGetResponseBody.class)
-                .getExternalId();
+        String externalServiceAgreementId = serviceAgreementsPresentationRestClient.retrieveServiceAgreement(internalServiceAgreementId)
+            .then()
+            .statusCode(SC_OK)
+            .extract()
+            .as(ServiceAgreementGetResponseBody.class)
+            .getExternalId();
 
-            currencyDataGroup = usersSetup.setupArrangementsPerDataGroupForServiceAgreement(externalServiceAgreementId, externalLegalEntityId);
+        currencyDataGroup = usersSetup.setupArrangementsPerDataGroupForServiceAgreement(externalServiceAgreementId, externalLegalEntityId);
 
-            for (FunctionsGetResponseBody function : functions) {
-                String functionName = function.getName();
+        for (FunctionsGetResponseBody function : functions) {
+            String functionName = function.getName();
 
-                String functionGroupId = accessGroupsConfigurator.ingestFunctionGroupWithAllPrivilegesByFunctionName(externalServiceAgreementId, functionName);
+            String functionGroupId = accessGroupsConfigurator.ingestFunctionGroupWithAllPrivilegesByFunctionName(externalServiceAgreementId, functionName);
 
-                functionGroupFunctionNames.put(functionGroupId, functionName);
-            }
+            functionGroupFunctionNames.put(functionGroupId, functionName);
         }
     }
 
-    private void setupProviders(String internalServiceAgreementId, Set<Provider> providers) {
+    private void setupPermissions(String internalServiceAgreementId, Set<Provider> providers) {
         for (Provider provider : providers) {
             Set<String> externalUserIds = provider.getUsers();
 

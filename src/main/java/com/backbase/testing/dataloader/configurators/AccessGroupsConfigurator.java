@@ -48,7 +48,7 @@ public class AccessGroupsConfigurator {
         return functionGroupId;
     }
 
-    public String ingestFunctionGroupWithAllPrivilegesByFunctionName(String externalServiceAgreementId, String functionName) {
+    public synchronized String ingestFunctionGroupWithAllPrivilegesByFunctionName(String externalServiceAgreementId, String functionName) {
         String cacheKey = String.format("%s-%s", externalServiceAgreementId, functionName);
 
         if (functionGroupsAllPrivilegesCache.containsKey(cacheKey)) {

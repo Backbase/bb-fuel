@@ -35,6 +35,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Callable;
 
 import static com.backbase.testing.dataloader.data.CommonConstants.EXTERNAL_ROOT_LEGAL_ENTITY_ID;
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_INGEST_CONTACTS;
@@ -143,11 +144,11 @@ public class UsersSetup {
             userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
             internalLegalEntityIds.add(userPresentationRestClient.retrieveLegalEntityByExternalUserId(externalUserId)
-                .then()
-                .statusCode(SC_OK)
-                .extract()
-                .as(LegalEntityByUserGetResponseBody.class)
-                .getId());
+                    .then()
+                    .statusCode(SC_OK)
+                    .extract()
+                    .as(LegalEntityByUserGetResponseBody.class)
+                    .getId());
         }
 
         internalLegalEntityIds.forEach(internalLegalEntityId -> serviceAgreementsConfigurator.updateMasterServiceAgreementWithExternalIdByLegalEntity(internalLegalEntityId));
@@ -162,7 +163,7 @@ public class UsersSetup {
 
         for (Map.Entry<String, String> entry : serviceAgreementLegalEntityIds.entrySet()) {
             String externalServiceAgreementId = entry.getKey();
-            String externalLegalEntityId =  entry.getValue();
+            String externalLegalEntityId = entry.getValue();
 
             CurrencyDataGroup currencyDataGroup = setupArrangementsPerDataGroupForServiceAgreement(externalServiceAgreementId, externalLegalEntityId);
 
@@ -184,7 +185,7 @@ public class UsersSetup {
         loginRestClient.login(USER_ADMIN, USER_ADMIN);
         userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
-        Arrays.stream(functions).forEach(function -> {
+        Arrays.stream(functions).parallel().forEach(function -> {
             String functionName = function.getName();
             String functionGroupId;
 
@@ -208,68 +209,91 @@ public class UsersSetup {
         });
     }
 
+
     CurrencyDataGroup setupArrangementsPerDataGroupForServiceAgreement(String externalServiceAgreementId, String externalLegalEntityId) {
-        List<ArrangementId> randomCurrencyArrangementIds = new ArrayList<>(productSummaryConfigurator.ingestRandomCurrencyArrangementsByLegalEntityAndReturnArrangementIds(externalLegalEntityId));
-        List<ArrangementId> eurCurrencyArrangementIds = new ArrayList<>(productSummaryConfigurator.ingestSpecificCurrencyArrangementsByLegalEntityAndReturnArrangementIds(externalLegalEntityId, ArrangementsPostRequestBodyParent.Currency.EUR));
-        List<ArrangementId> usdCurrencyArrangementIds = new ArrayList<>(productSummaryConfigurator.ingestSpecificCurrencyArrangementsByLegalEntityAndReturnArrangementIds(externalLegalEntityId, ArrangementsPostRequestBodyParent.Currency.USD));
+        final CurrencyDataGroup group = new CurrencyDataGroup();
+        List<Callable<Void>> taskList = new ArrayList<>();
 
-        String randomCurrencyDataGroupId = accessGroupsConfigurator.ingestDataGroupForArrangements(externalServiceAgreementId, randomCurrencyArrangementIds);
-        String eurCurrencyDataGroupId = accessGroupsConfigurator.ingestDataGroupForArrangements(externalServiceAgreementId, eurCurrencyArrangementIds);
-        String usdCurrencyDataGroupId = accessGroupsConfigurator.ingestDataGroupForArrangements(externalServiceAgreementId, usdCurrencyArrangementIds);
+        taskList.add(() -> {
+            List<ArrangementId> randomCurrencyArrangementIds = new ArrayList<>(productSummaryConfigurator.ingestRandomCurrencyArrangementsByLegalEntityAndReturnArrangementIds(externalLegalEntityId));
+            String randomCurrencyDataGroupId = accessGroupsConfigurator.ingestDataGroupForArrangements(externalServiceAgreementId, randomCurrencyArrangementIds);
+            if (globalProperties.getBoolean(PROPERTY_INGEST_TRANSACTIONS)) {
+                randomCurrencyArrangementIds.parallelStream().forEach(arrangementId -> transactionsConfigurator.ingestTransactionsByArrangement(arrangementId.getExternalArrangementId()));
+            }
+            group.withInternalRandomCurrencyDataGroupId(randomCurrencyDataGroupId);
+            return null;
+        });
 
-        if (globalProperties.getBoolean(PROPERTY_INGEST_TRANSACTIONS)) {
-            List<ArrangementId> arrangementIds = new ArrayList<>();
+        taskList.add(() -> {
+            List<ArrangementId> eurCurrencyArrangementIds = new ArrayList<>(productSummaryConfigurator.ingestSpecificCurrencyArrangementsByLegalEntityAndReturnArrangementIds(externalLegalEntityId, ArrangementsPostRequestBodyParent.Currency.EUR));
+            String eurCurrencyDataGroupId = accessGroupsConfigurator.ingestDataGroupForArrangements(externalServiceAgreementId, eurCurrencyArrangementIds);
+            if (globalProperties.getBoolean(PROPERTY_INGEST_TRANSACTIONS)) {
+                eurCurrencyArrangementIds.parallelStream().forEach(arrangementId -> transactionsConfigurator.ingestTransactionsByArrangement(arrangementId.getExternalArrangementId()));
+            }
+            group.withInternalEurCurrencyDataGroupId(eurCurrencyDataGroupId);
+            return null;
+        });
 
-            arrangementIds.addAll(randomCurrencyArrangementIds);
-            arrangementIds.addAll(eurCurrencyArrangementIds);
-            arrangementIds.addAll(usdCurrencyArrangementIds);
+        taskList.add(() -> {
+            List<ArrangementId> usdCurrencyArrangementIds = new ArrayList<>(productSummaryConfigurator.ingestSpecificCurrencyArrangementsByLegalEntityAndReturnArrangementIds(externalLegalEntityId, ArrangementsPostRequestBodyParent.Currency.USD));
+            String usdCurrencyDataGroupId = accessGroupsConfigurator.ingestDataGroupForArrangements(externalServiceAgreementId, usdCurrencyArrangementIds);
+            if (globalProperties.getBoolean(PROPERTY_INGEST_TRANSACTIONS)) {
+                usdCurrencyArrangementIds.parallelStream().forEach(arrangementId -> transactionsConfigurator.ingestTransactionsByArrangement(arrangementId.getExternalArrangementId()));
+            }
+            group.withInternalUsdCurrencyDataGroupId(usdCurrencyDataGroupId);
+            return null;
+        });
 
-            arrangementIds.parallelStream().forEach(arrangementId -> transactionsConfigurator.ingestTransactionsByArrangement(arrangementId.getExternalArrangementId()));
-        }
 
-        return new CurrencyDataGroup()
-                .withInternalRandomCurrencyDataGroupId(randomCurrencyDataGroupId)
-                .withInternalEurCurrencyDataGroupId(eurCurrencyDataGroupId)
-                .withInternalUsdCurrencyDataGroupId(usdCurrencyDataGroupId);
+        taskList.parallelStream().forEach(voidCallable -> {
+            try {
+                voidCallable.call();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        return group;
     }
+
 
     private UserContext getUserContextBasedOnMasterServiceAgreement(String externalUserId) {
         loginRestClient.login(USER_ADMIN, USER_ADMIN);
         userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
         String internalUserId = userPresentationRestClient.getUserByExternalId(externalUserId)
-            .then()
-            .statusCode(SC_OK)
-            .extract()
-            .as(UserGetResponseBody.class)
-            .getId();
+                .then()
+                .statusCode(SC_OK)
+                .extract()
+                .as(UserGetResponseBody.class)
+                .getId();
 
         LegalEntityByUserGetResponseBody legalEntity = userPresentationRestClient.retrieveLegalEntityByExternalUserId(externalUserId)
-            .then()
-            .statusCode(SC_OK)
-            .extract()
-            .as(LegalEntityByUserGetResponseBody.class);
+                .then()
+                .statusCode(SC_OK)
+                .extract()
+                .as(LegalEntityByUserGetResponseBody.class);
 
-         String internalServiceAgreementId = legalEntityPresentationRestClient.getMasterServiceAgreementOfLegalEntity(legalEntity.getId())
-            .then()
-            .statusCode(SC_OK)
-            .extract()
-            .as(ServiceAgreementGetResponseBody.class)
-            .getId();
+        String internalServiceAgreementId = legalEntityPresentationRestClient.getMasterServiceAgreementOfLegalEntity(legalEntity.getId())
+                .then()
+                .statusCode(SC_OK)
+                .extract()
+                .as(ServiceAgreementGetResponseBody.class)
+                .getId();
 
         String externalServiceAgreementId = serviceAgreementsPresentationRestClient.retrieveServiceAgreement(internalServiceAgreementId)
-            .then()
-            .statusCode(SC_OK)
-            .extract()
-            .as(ServiceAgreementGetResponseBody.class)
-            .getExternalId();
+                .then()
+                .statusCode(SC_OK)
+                .extract()
+                .as(ServiceAgreementGetResponseBody.class)
+                .getExternalId();
 
         return new UserContext()
-            .withInternalUserId(internalUserId)
-            .withExternalUserId(externalUserId)
-            .withInternalServiceAgreementId(internalServiceAgreementId)
-            .withExternalServiceAgreementId(externalServiceAgreementId)
-            .withInternalLegalEntityId(legalEntity.getId())
-            .withExternalLegalEntityId(legalEntity.getExternalId());
+                .withInternalUserId(internalUserId)
+                .withExternalUserId(externalUserId)
+                .withInternalServiceAgreementId(internalServiceAgreementId)
+                .withExternalServiceAgreementId(externalServiceAgreementId)
+                .withInternalLegalEntityId(legalEntity.getId())
+                .withExternalLegalEntityId(legalEntity.getExternalId());
     }
 }

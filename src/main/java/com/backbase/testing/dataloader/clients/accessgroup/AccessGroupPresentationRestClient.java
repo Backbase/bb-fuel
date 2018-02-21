@@ -10,6 +10,7 @@ import com.backbase.testing.dataloader.clients.common.RestClient;
 import com.backbase.testing.dataloader.utils.GlobalProperties;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import org.springframework.cache.annotation.Cacheable;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -55,6 +56,7 @@ public class AccessGroupPresentationRestClient extends RestClient {
             .collect(Collectors.toList());
     }
 
+    @Cacheable
     public String getFunctionGroupIdByServiceAgreementIdAndFunctionName(String internalServiceAgreementId, String functionName) {
         String functionId = getFunctionIdForFunctionName(retrieveFunctions()
             .then()

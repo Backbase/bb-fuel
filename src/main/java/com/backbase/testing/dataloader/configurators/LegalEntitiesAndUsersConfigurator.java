@@ -18,8 +18,6 @@ import static org.apache.http.HttpStatus.SC_OK;
 
 public class LegalEntitiesAndUsersConfigurator {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(LegalEntitiesAndUsersConfigurator.class);
-
     private LegalEntityIntegrationRestClient legalEntityIntegrationRestClient = new LegalEntityIntegrationRestClient();
     private UserIntegrationRestClient userIntegrationRestClient = new UserIntegrationRestClient();
 

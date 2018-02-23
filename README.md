@@ -75,6 +75,7 @@ java -Denvironment.name=your-env-00 -jar dataloader-jar-with-dependencies.jar
 - When an existing function group is found, be aware that the privileges of the existing function group will remain in tact
 - In case of custom service agreements, function groups are not re-used (new ones will be created)
 - All other items will be added on top of the existing data
+- However, if the external id of the existing root legal entity is not equal to `C000000`, this will fail the ingestion
 
 ## Custom configuration
 

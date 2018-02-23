@@ -16,37 +16,37 @@ Data loader ingests the following:
 - Notifications
 - Conversations
 
-## Access control setup
+### Access control setup
 - Root legal entity with user `admin` as entitlements admin
-- Legal entity (under the root legal entity) per user array in the files [users.json](src/main/resources/data/users.json) and [users-without-permissions.json](src/main/resources/data/users-without-permissions.json) - configurable, see section *Custom data*
+- Legal entity (under the root legal entity `C000000`) per user array in the files [users.json](src/main/resources/data/users.json) and [users-without-permissions.json](src/main/resources/data/users-without-permissions.json) - configurable, see section *Custom data*
 
 For users in the file [users.json](src/main/resources/data/users.json):
 - Function groups for every business function with all privileges per legal entity
 - Data group consisting of arrangements per legal entity
 - All function groups and data groups are assigned to the user via master service agreement of the legal entity.
 
-## Product summary setup
+### Product summary setup
 - Default products: [products.json](src/main/resources/data/products.json)
 - Random arrangements (by default: between 10 and 30) per legal entity of these users: [users.json](src/main/resources/data/users.json)
 - In case of current account arrangements random debit cards (by default: between 3 and 10) are associated
 
-## Transactions setup
+### Transactions setup
 - By default ingesting transactions is disabled - configurable via property
 - If enabled, random transactions (by default: between 10 and 50) per arrangement per today's date
 
-## Service agreements setup
+### Service agreements setup
 Default service agreements (each object represents one service agreement): [serviceagreements.json](src/main/resources/data/serviceagreements.json)
 - Legal entity ids will be retrieved via the external user ids given in the json file to set up the service agreements.
 - All function groups and data groups related to the legal entities of the consumers will be exposed to the service agreements.
 
-## Users setup
+### Users setup
 By default only the following users are covered:
 - Users with permissions as described under *Entitlements setup* and *Product summary setup*: [users.json](src/main/resources/data/users.json)
 - Users without permissions under its own legal entity (no master service agreement, function and data groups associated): [users-without-permissions.json](src/main/resources/data/users-without-permissions.json)
 
 If more/other users are required, you can provide your own `json` files, see *Custom data*.
 
-## Extra data setup
+### Extra data setup
 - The following is available for ingestion, but by default disabled - configurable via property:
 - Contacts with multiple accounts per user
 - Payments per user
@@ -56,15 +56,25 @@ If more/other users are required, you can provide your own `json` files, see *Cu
 Note: This can be rerun on an existing environment which already contains data by setting the property `ingest.entitlements` to `false`
 
 ## How to run data loader
-1. Provision an [Autoconfig](https://backbase.atlassian.net/wiki/x/94BtC) environment based on `dbs` or `dbs-microservices` stack with **at least** the following capabilities:
+1. Provision an [Autoconfig](https://backbase.atlassian.net/wiki/x/94BtC) environment based on `dbs` or `dbs-microservices` stack with **at least** the following capabilities (based on default configuration:
 ```
-capabilities="Entitlements,ProductSummary,Transactions"
+capabilities="Entitlements,ProductSummary"
 ```
 2. Run the data loader as follows:
 ```
 java -Denvironment.name=your-env-00 -jar dataloader-jar-with-dependencies.jar
 ```
-Note: It only works on a *clean* environment, in other words: an environment without any data ingested before.
+
+### Note when running on environments with existing data
+- No data will be removed from the environment
+- It will check whether the following already exist, and if so, it will skip ingesting the existing item
+    - Legal entities
+    - Users
+    - Products
+- In case of existing users and master service agreements: it will try to re-use function groups based on business function
+- When an existing function group is found, be aware that the privileges of the existing function group will remain in tact
+- In case of custom service agreements, function groups are not re-used (new ones will be created)
+- All other items will be added on top of the existing data
 
 ## Custom configuration
 
@@ -126,5 +136,4 @@ You are welcome to provide bug fixes and new features in the form of pull reques
 - All changes should be tested on an Autoconfig environment based on the latest versions.
 - Please make one change per pull request.
 - Use descriptive commit messages which will be used for release notes.
-- If the new feature is significantly large/complex/breaks existing behavior, please first post a summary of your idea to Kwo Ding, so a discussion can be held. This will avoid significant amounts of coding time spent on changes that ultimately get rejected.
 - Try to avoid reformats of files that change the indentation, tabs to spaces etc., as this makes reviewing diffs much more difficult.

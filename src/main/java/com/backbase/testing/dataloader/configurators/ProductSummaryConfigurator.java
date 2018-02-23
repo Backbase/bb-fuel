@@ -37,11 +37,7 @@ public class ProductSummaryConfigurator {
         ProductsPostRequestBody[] products = generateProductsPostRequestBodies();
 
         Arrays.stream(products).parallel().forEach(product -> {
-            arrangementsIntegrationRestClient.ingestProduct(product)
-                    .then()
-                    .statusCode(SC_CREATED);
-
-            LOGGER.info(String.format("Product [%s] ingested", product.getProductKindName()));
+            arrangementsIntegrationRestClient.ingestProductSkipIfAlreadyExists(product);
         });
     }
 

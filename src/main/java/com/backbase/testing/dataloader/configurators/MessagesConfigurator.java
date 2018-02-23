@@ -1,12 +1,11 @@
 package com.backbase.testing.dataloader.configurators;
 
-import com.backbase.dbs.messages.presentation.rest.spec.v3.messagecenter.users.ConversationDraftsPostResponseBody;
-import com.backbase.dbs.messages.presentation.rest.spec.v3.messagecenter.users.ConversationsGetResponseBody;
-import com.backbase.dbs.messages.presentation.rest.spec.v3.messagecenter.users.DraftsPostRequestBody;
-import com.backbase.dbs.messages.presentation.rest.spec.v3.messagecenter.users.DraftsPostResponseBody;
+import com.backbase.dbs.messages.presentation.rest.spec.v4.messagecenter.ConversationDraftsPostResponseBody;
+import com.backbase.dbs.messages.presentation.rest.spec.v4.messagecenter.ConversationsGetResponseBody;
+import com.backbase.dbs.messages.presentation.rest.spec.v4.messagecenter.DraftsPostRequestBody;
+import com.backbase.dbs.messages.presentation.rest.spec.v4.messagecenter.DraftsPostResponseBody;
 import com.backbase.testing.dataloader.clients.common.LoginRestClient;
 import com.backbase.testing.dataloader.clients.messagecenter.MessagesPresentationRestClient;
-import com.backbase.testing.dataloader.data.MessagesDataGenerator;
 import com.backbase.testing.dataloader.utils.CommonHelpers;
 import com.backbase.testing.dataloader.utils.GlobalProperties;
 import org.slf4j.Logger;
@@ -53,8 +52,6 @@ public class MessagesConfigurator {
                     .statusCode(SC_OK)
                     .extract()
                     .as(ConversationsGetResponseBody.class)
-                    .getConversations()
-                    .get(0)
                     .getId();
 
             String conversationDraftId = messagesPresentationRestClient.postConversationDraft(generateConversationDraftsPostRequestBody(), conversationId)

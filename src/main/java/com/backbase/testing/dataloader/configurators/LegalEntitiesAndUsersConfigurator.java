@@ -24,40 +24,20 @@ public class LegalEntitiesAndUsersConfigurator {
     private UserIntegrationRestClient userIntegrationRestClient = new UserIntegrationRestClient();
 
     public void ingestRootLegalEntityAndEntitlementsAdmin(String rootLegalEntityId, String externalEntitlementsAdminUserId) {
-        legalEntityIntegrationRestClient.ingestLegalEntity(generateRootLegalEntitiesPostRequestBody(EXTERNAL_ROOT_LEGAL_ENTITY_ID))
-                .then()
-                .statusCode(SC_CREATED);
+        legalEntityIntegrationRestClient.ingestLegalEntitySkipIfAlreadyExists(generateRootLegalEntitiesPostRequestBody(EXTERNAL_ROOT_LEGAL_ENTITY_ID));
 
-        LOGGER.info(String.format("Root legal entity [%s] ingested", EXTERNAL_ROOT_LEGAL_ENTITY_ID));
+        userIntegrationRestClient.ingestUserSkipIfAlreadyExists(generateUsersPostRequestBody(externalEntitlementsAdminUserId, rootLegalEntityId));
 
-        userIntegrationRestClient.ingestUser(generateUsersPostRequestBody(externalEntitlementsAdminUserId, rootLegalEntityId))
-                .then()
-                .statusCode(SC_CREATED);
-
-        LOGGER.info(String.format("User [%s] ingested under legal entity [%s]", externalEntitlementsAdminUserId, EXTERNAL_ROOT_LEGAL_ENTITY_ID));
-
-        userIntegrationRestClient.ingestEntitlementsAdminUnderLE(externalEntitlementsAdminUserId, rootLegalEntityId)
-                .then()
-                .statusCode(SC_OK);
-
-        LOGGER.info(String.format("Entitlements admin [%s] ingested under legal entity [%s]", externalEntitlementsAdminUserId, EXTERNAL_ROOT_LEGAL_ENTITY_ID));
+        userIntegrationRestClient.ingestEntitlementsAdminUnderLESkipIfAlreadyExists(externalEntitlementsAdminUserId, rootLegalEntityId);
     }
 
     public void ingestUsersUnderNewLegalEntity(List<String> externalUserIds, String externalParentLegalEntityId) {
         String externalLegalEntityId = generateExternalLegalEntityId();
 
-        legalEntityIntegrationRestClient.ingestLegalEntity(generateLegalEntitiesPostRequestBody(externalLegalEntityId, externalParentLegalEntityId))
-                .then()
-                .statusCode(SC_CREATED);
-
-        LOGGER.info(String.format("Legal entity [%s] ingested under legal entity [%s]", externalLegalEntityId, externalParentLegalEntityId));
+        legalEntityIntegrationRestClient.ingestLegalEntitySkipIfAlreadyExists(generateLegalEntitiesPostRequestBody(externalLegalEntityId, externalParentLegalEntityId));
 
         externalUserIds.parallelStream().forEach(externalUserId -> {
-            userIntegrationRestClient.ingestUser(generateUsersPostRequestBody(externalUserId, externalLegalEntityId))
-                    .then()
-                    .statusCode(SC_CREATED);
-
-            LOGGER.info(String.format("User [%s] ingested under legal entity [%s]", externalUserId, externalLegalEntityId));
+            userIntegrationRestClient.ingestUserSkipIfAlreadyExists(generateUsersPostRequestBody(externalUserId, externalLegalEntityId));
         });
     }
 }

@@ -12,28 +12,28 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <slf4j-simple.version>1.7.25</slf4j-simple.version>
-        <rest-assured.version>3.0.3</rest-assured.version>
+        <rest-assured.version>3.0.7</rest-assured.version>
         <jackson-databind.version>2.9.0</jackson-databind.version>
         <commons-configuration.version>1.10</commons-configuration.version>
         <javafaker.version>0.13</javafaker.version>
         <iban4j.version>3.2.1</iban4j.version>
         <junit.version>4.12</junit.version>
         <maven-assembly-plugin.version>2.4.1</maven-assembly-plugin.version>
-        <user-presentation-spec.version>1.13.2</user-presentation-spec.version>
-        <user-integration-spec.version>1.13.1</user-integration-spec.version>
-        <accessgroup-presentation-spec.version>1.13.21</accessgroup-presentation-spec.version>
-        <accessgroup-integration-spec.version>1.13.4</accessgroup-integration-spec.version>
-        <legalentity-presentation-spec.version>1.13.1</legalentity-presentation-spec.version>
-        <legalentity-integration-spec.version>1.13.1</legalentity-integration-spec.version>
-        <product-summary-presentation-spec.version>1.11.4</product-summary-presentation-spec.version>
+        <user-presentation-spec.version>1.13.4</user-presentation-spec.version>
+        <user-integration-spec.version>1.13.3</user-integration-spec.version>
+        <accessgroup-presentation-spec.version>1.13.23</accessgroup-presentation-spec.version>
+        <accessgroup-integration-spec.version>1.13.6</accessgroup-integration-spec.version>
+        <legalentity-presentation-spec.version>1.13.3</legalentity-presentation-spec.version>
+        <legalentity-integration-spec.version>1.13.3</legalentity-integration-spec.version>
+        <product-summary-presentation-spec.version>1.12.4</product-summary-presentation-spec.version>
         <product-integration-spec.version>1.8.0</product-integration-spec.version>
-        <arrangement-integration-spec.version>1.11.2</arrangement-integration-spec.version>
-        <transaction-integration-external-inbound-spec.version>1.10.2</transaction-integration-external-inbound-spec.version>
-        <notifications-presentation-spec.version>1.8.5</notifications-presentation-spec.version>
-        <contact-presentation-spec.version>3.1.3</contact-presentation-spec.version>
-        <payment-order-presentation-spec.version>1.11.4</payment-order-presentation-spec.version>
-        <actionrecipes-presentation-spec.version>2.0.38</actionrecipes-presentation-spec.version>
-        <messages-presentation-spec.version>9.0.1</messages-presentation-spec.version>
+        <arrangement-integration-spec.version>1.12.3</arrangement-integration-spec.version>
+        <transaction-integration-external-inbound-spec.version>1.12.3</transaction-integration-external-inbound-spec.version>
+        <notifications-presentation-spec.version>1.8.18</notifications-presentation-spec.version>
+        <contact-presentation-spec.version>3.1.6</contact-presentation-spec.version>
+        <payment-order-presentation-spec.version>1.11.12</payment-order-presentation-spec.version>
+        <actionrecipes-presentation-spec.version>2.0.49</actionrecipes-presentation-spec.version>
+        <messages-presentation-spec.version>11.0.0</messages-presentation-spec.version>
     </properties>
 
     <dependencies>

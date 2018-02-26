@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_ENTITLEMENTS_BASE_URI;
 import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 import static org.apache.http.HttpStatus.SC_CREATED;
+import static org.apache.http.HttpStatus.SC_OK;
 
 public class UserIntegrationRestClient extends RestClient {
 
@@ -38,7 +39,7 @@ public class UserIntegrationRestClient extends RestClient {
                 .post(getPath(ENDPOINT_ENTITLEMENTS_ADMIN));
     }
 
-    public void ingestEntitlementsAdminUnderLESkipIfAlreadyExists(String externalUserId, String externalLegalEntityId) {
+    public void ingestEntitlementsAdminUnderLEAndLogResponse(String externalUserId, String externalLegalEntityId) {
         Response response = ingestEntitlementsAdminUnderLE(externalUserId, externalLegalEntityId);
 
         if (response.statusCode() == SC_BAD_REQUEST &&
@@ -48,10 +49,10 @@ public class UserIntegrationRestClient extends RestClient {
                 .getErrorCode()
                 .equals("user.access.fetch.data.error.message.USER_ALREADY_ENTITLEMENTS_ADMIN")) {
             LOGGER.warn(String.format("Entitlements admin [%s] already exists under legal entity [%s], skipped ingesting this entitlements admin", externalUserId, externalLegalEntityId));
-        } else if (response.statusCode() == SC_CREATED) {
+        } else if (response.statusCode() == SC_OK) {
             LOGGER.info(String.format("Entitlements admin [%s] ingested under legal entity [%s]", externalUserId, externalLegalEntityId));
         } else {
-            response.then().statusCode(SC_CREATED);
+            response.then().statusCode(SC_OK);
         }
     }
 

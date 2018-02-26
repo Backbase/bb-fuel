@@ -21,7 +21,7 @@ public class LegalEntitiesAndUsersConfigurator {
 
         userIntegrationRestClient.ingestUserAndLogResponse(generateUsersPostRequestBody(externalEntitlementsAdminUserId, rootLegalEntityId));
 
-        userIntegrationRestClient.ingestEntitlementsAdminUnderLESkipIfAlreadyExists(externalEntitlementsAdminUserId, rootLegalEntityId);
+        userIntegrationRestClient.ingestEntitlementsAdminUnderLEAndLogResponse(externalEntitlementsAdminUserId, rootLegalEntityId);
     }
 
     public void ingestUsersUnderNewLegalEntity(List<String> externalUserIds, String externalParentLegalEntityId) {

@@ -1,7 +1,7 @@
 package com.backbase.testing.dataloader.data;
 
-import com.backbase.dbs.messages.presentation.rest.spec.v3.messagecenter.users.ConversationDraftsPostRequestBody;
-import com.backbase.dbs.messages.presentation.rest.spec.v3.messagecenter.users.DraftsPostRequestBody;
+import com.backbase.dbs.messages.presentation.rest.spec.v4.messagecenter.ConversationDraftsPostRequestBody;
+import com.backbase.dbs.messages.presentation.rest.spec.v4.messagecenter.DraftsPostRequestBody;
 import com.github.javafaker.Faker;
 import org.apache.commons.codec.binary.Base64;
 

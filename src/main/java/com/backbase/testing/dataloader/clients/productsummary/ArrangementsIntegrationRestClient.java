@@ -43,7 +43,7 @@ public class ArrangementsIntegrationRestClient extends RestClient {
             .post(getPath(ENDPOINT_PRODUCTS));
     }
 
-    public void ingestProductSkipIfAlreadyExists(ProductsPostRequestBody product) {
+    public void ingestProductAndLogResponse(ProductsPostRequestBody product) {
         Response response = ingestProduct(product);
 
         if (response.statusCode() == SC_BAD_REQUEST &&
@@ -54,7 +54,7 @@ public class ArrangementsIntegrationRestClient extends RestClient {
                 .get(0)
                 .getKey()
                 .equals("account.api.product.alreadyExists")) {
-            LOGGER.warn(String.format("Product [%s] already exists, skipped ingesting this product", product.getProductKindName()));
+            LOGGER.info(String.format("Product [%s] already exists, skipped ingesting this product", product.getProductKindName()));
         } else if (response.statusCode() == SC_CREATED) {
             LOGGER.info(String.format("Product [%s] ingested", product.getProductKindName()));
         } else {

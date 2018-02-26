@@ -5,7 +5,6 @@ import com.backbase.integration.arrangement.rest.spec.v2.arrangements.Arrangemen
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostResponseBody;
 import com.backbase.integration.product.rest.spec.v2.products.ProductsPostRequestBody;
 import com.backbase.testing.dataloader.clients.productsummary.ArrangementsIntegrationRestClient;
-import com.backbase.testing.dataloader.data.ProductSummaryDataGenerator;
 import com.backbase.testing.dataloader.dto.ArrangementId;
 import com.backbase.testing.dataloader.utils.CommonHelpers;
 import com.backbase.testing.dataloader.utils.GlobalProperties;
@@ -37,7 +36,7 @@ public class ProductSummaryConfigurator {
         ProductsPostRequestBody[] products = generateProductsPostRequestBodies();
 
         Arrays.stream(products).parallel().forEach(product -> {
-            arrangementsIntegrationRestClient.ingestProductSkipIfAlreadyExists(product);
+            arrangementsIntegrationRestClient.ingestProductAndLogResponse(product);
         });
     }
 

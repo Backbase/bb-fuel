@@ -34,7 +34,7 @@ public class LegalEntityIntegrationRestClient extends RestClient {
                 .post(getPath(ENDPOINT_LEGALENTITIES));
     }
 
-    public void ingestLegalEntitySkipIfAlreadyExists(LegalEntitiesPostRequestBody legalEntity) {
+    public void ingestLegalEntityAndLogResponse(LegalEntitiesPostRequestBody legalEntity) {
         Response response = ingestLegalEntity(legalEntity);
 
         if (response.statusCode() == SC_BAD_REQUEST &&
@@ -44,7 +44,7 @@ public class LegalEntityIntegrationRestClient extends RestClient {
                 .getErrorCode()
                 .equals("legalEntity.save.error.message.E_EX_ID_ALREADY_EXISTS")) {
 
-            LOGGER.warn(String.format("Legal entity [%s] already exists, skipped ingesting this legal entity", legalEntity.getExternalId()));
+            LOGGER.info(String.format("Legal entity [%s] already exists, skipped ingesting this legal entity", legalEntity.getExternalId()));
         } else if (response.statusCode() == SC_CREATED) {
             if (legalEntity.getParentExternalId() == null) {
                 LOGGER.info(String.format("Root legal entity [%s] ingested", legalEntity.getExternalId()));

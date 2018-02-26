@@ -62,7 +62,7 @@ public class UserIntegrationRestClient extends RestClient {
                 .post(getPath(ENDPOINT_USERS));
     }
 
-    public void ingestUserSkipIfAlreadyExists(UsersPostRequestBody user) {
+    public void ingestUserAndLogResponse(UsersPostRequestBody user) {
         Response response = ingestUser(user);
 
         if (response.statusCode() == SC_BAD_REQUEST &&
@@ -71,7 +71,7 @@ public class UserIntegrationRestClient extends RestClient {
                 .as(BadRequestException.class)
                 .getMessage()
                 .equals("User already exists")) {
-            LOGGER.warn(String.format("User [%s] already exists, skipped ingesting this user", user.getExternalId()));
+            LOGGER.info(String.format("User [%s] already exists, skipped ingesting this user", user.getExternalId()));
         } else if (response.statusCode() == SC_CREATED) {
             LOGGER.info(String.format("User [%s] ingested under legal entity [%s]", user.getExternalId(), user.getLegalEntityExternalId()));
         } else {

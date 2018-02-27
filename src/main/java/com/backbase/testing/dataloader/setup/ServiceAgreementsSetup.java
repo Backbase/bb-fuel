@@ -20,7 +20,6 @@ import com.backbase.testing.dataloader.utils.ParserUtil;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -42,6 +41,7 @@ public class ServiceAgreementsSetup {
     private PermissionsConfigurator permissionsConfigurator = new PermissionsConfigurator();
     private UserPresentationRestClient userPresentationRestClient = new UserPresentationRestClient();
     private UsersSetup usersSetup = new UsersSetup();
+    private Map<String, String> functionGroupFunctionNames = new HashMap<>();
     private CurrencyDataGroup currencyDataGroup = null;
     private FunctionsGetResponseBody[] functions;
 
@@ -63,14 +63,16 @@ public class ServiceAgreementsSetup {
             Arrays.stream(serviceAgreementPostRequestBodies)
                     .forEach(serviceAgreementPostRequestBody -> {
                         String internalServiceAgreementId = serviceAgreementsConfigurator.ingestServiceAgreementWithProvidersAndConsumers(serviceAgreementPostRequestBody.getProviders(), serviceAgreementPostRequestBody.getConsumers());
-                        Map<String, String> functionGroupFunctionNames = setupFunctionDataGroups(internalServiceAgreementId, serviceAgreementPostRequestBody.getConsumers());
-                        setupPermissions(functionGroupFunctionNames, internalServiceAgreementId, serviceAgreementPostRequestBody.getProviders());
+
+                        setupFunctionDataGroups(internalServiceAgreementId, serviceAgreementPostRequestBody.getConsumers());
+                        setupPermissions(internalServiceAgreementId, serviceAgreementPostRequestBody.getProviders());
+
+                        functionGroupFunctionNames.clear();
                     });
         }
     }
 
-    private Map<String, String> setupFunctionDataGroups(String internalServiceAgreementId, Set<Consumer> consumers) {
-
+    private void setupFunctionDataGroups(String internalServiceAgreementId, Set<Consumer> consumers) {
         String externalConsumerAdminUserId = consumers.iterator().next().getAdmins()
                 .iterator()
                 .next();
@@ -90,24 +92,27 @@ public class ServiceAgreementsSetup {
                 .getExternalId();
 
         currencyDataGroup = usersSetup.setupArrangementsPerDataGroupForServiceAgreement(externalServiceAgreementId, externalLegalEntityId);
-        Map<String, String> functionGroupFunctionNames = Collections.synchronizedMap(new HashMap<>());
-        Arrays.stream(functions).parallel().map(FunctionsGetResponseBody::getName).forEach(functionName -> {
+
+        for (FunctionsGetResponseBody function : functions) {
+            String functionName = function.getName();
+
             String functionGroupId = accessGroupsConfigurator.ingestFunctionGroupWithAllPrivilegesByFunctionName(externalServiceAgreementId, functionName);
+
             functionGroupFunctionNames.put(functionGroupId, functionName);
-        });
-        return functionGroupFunctionNames;
+        }
     }
 
-    private void setupPermissions(Map<String, String> functionGroupFunctionNames, String internalServiceAgreementId, Set<Provider> providers) {
+    private void setupPermissions(String internalServiceAgreementId, Set<Provider> providers) {
         for (Provider provider : providers) {
             Set<String> externalUserIds = provider.getUsers();
 
             for (String externalUserId : externalUserIds) {
-                functionGroupFunctionNames.entrySet().parallelStream().forEach(entry -> {
+                for (Map.Entry<String, String> entry : functionGroupFunctionNames.entrySet()) {
                     String functionGroupId = entry.getKey();
                     String functionName = entry.getValue();
+
                     permissionsConfigurator.assignPermissions(externalUserId, internalServiceAgreementId, functionName, functionGroupId, currencyDataGroup);
-                });
+                }
             }
         }
     }

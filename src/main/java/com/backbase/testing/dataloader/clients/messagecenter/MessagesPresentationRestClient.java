@@ -1,8 +1,7 @@
 package com.backbase.testing.dataloader.clients.messagecenter;
 
-import com.backbase.dbs.messages.presentation.rest.spec.v3.messagecenter.users.ConversationDraftsPostRequestBody;
-import com.backbase.dbs.messages.presentation.rest.spec.v3.messagecenter.users.ConversationDraftsPostResponseBody;
-import com.backbase.dbs.messages.presentation.rest.spec.v3.messagecenter.users.DraftsPostRequestBody;
+import com.backbase.dbs.messages.presentation.rest.spec.v4.messagecenter.ConversationDraftsPostRequestBody;
+import com.backbase.dbs.messages.presentation.rest.spec.v4.messagecenter.DraftsPostRequestBody;
 import com.backbase.testing.dataloader.clients.common.RestClient;
 import com.backbase.testing.dataloader.utils.GlobalProperties;
 import io.restassured.http.ContentType;

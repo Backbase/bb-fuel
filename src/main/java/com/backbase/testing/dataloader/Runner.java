@@ -20,8 +20,6 @@ public class Runner {
 
         System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", "8");
 
-        Instant start = Instant.now();
-
         BankSetup bankSetup = new BankSetup();
         UsersSetup usersSetup = new UsersSetup();
         ServiceAgreementsSetup serviceAgreementsSetup = new ServiceAgreementsSetup();
@@ -32,6 +30,8 @@ public class Runner {
         entitlementsHealthCheck.checkEntitlementsServicesHealth();
         productSummaryHealthCheck.checkProductSummaryServicesHealth();
         transactionsHealthCheck.checkTransactionsServicesHealth();
+
+        Instant start = Instant.now();
 
         bankSetup.setupBankWithEntitlementsAdminAndProducts();
         usersSetup.setupUsersWithAndWithoutFunctionDataGroupsPrivileges();

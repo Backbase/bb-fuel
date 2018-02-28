@@ -3,25 +3,17 @@ package com.backbase.testing.dataloader.clients.accessgroup;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.config.functions.FunctionsGetResponseBody;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.datagroups.DataGroupsGetResponseBody;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.functiongroups.FunctionGroupsGetResponseBody;
-import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementGetResponseBody;
-import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.usercontext.UserContextPostRequestBody;
-import com.backbase.presentation.legalentity.rest.spec.v2.legalentities.LegalEntitiesGetResponseBody;
 import com.backbase.testing.dataloader.clients.common.RestClient;
 import com.backbase.testing.dataloader.utils.GlobalProperties;
-import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import org.springframework.cache.annotation.Cacheable;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_GATEWAY_PATH;
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_INFRA_BASE_URI;
-import static org.apache.http.HttpStatus.SC_NO_CONTENT;
 import static org.apache.http.HttpStatus.SC_OK;
 
 public class AccessGroupPresentationRestClient extends RestClient {
@@ -56,7 +48,6 @@ public class AccessGroupPresentationRestClient extends RestClient {
             .collect(Collectors.toList());
     }
 
-    @Cacheable
     public String getFunctionGroupIdByServiceAgreementIdAndFunctionName(String internalServiceAgreementId, String functionName) {
         String functionId = getFunctionIdForFunctionName(retrieveFunctions()
             .then()

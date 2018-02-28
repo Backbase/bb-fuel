@@ -1,7 +1,7 @@
 properties([
         parameters([
                 string(name: 'ENVIRONMENT_NAME', defaultValue: 'env-name-00', description: 'Autoconfig environment name, example: frosty-snow-99\nRead before running: https://stash.backbase.com/users/kwo/repos/dataloader/browse/README.md'),
-                booleanParam(name: 'INGEST_ENTITLEMENTS', defaultValue: true, description: 'Only works on clean environment'),
+                booleanParam(name: 'INGEST_ENTITLEMENTS', defaultValue: true, description: 'Ingest entitlements setup'),
                 booleanParam(name: 'INGEST_CUSTOM_SERVICE_AGREEMENTS', defaultValue: false, description: 'Ingest custom service agreements'),
                 booleanParam(name: 'INGEST_TRANSACTIONS', defaultValue: false, description: 'Ingest transactions per arrangement (only applicable when INGEST_ENTITLEMENTS = true)'),
                 booleanParam(name: 'INGEST_CONTACTS', defaultValue: false, description: 'Ingest contacts per user'),

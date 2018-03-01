@@ -19,21 +19,19 @@
         <iban4j.version>3.2.1</iban4j.version>
         <junit.version>4.12</junit.version>
         <maven-assembly-plugin.version>2.4.1</maven-assembly-plugin.version>
-        <user-presentation-spec.version>1.13.4</user-presentation-spec.version>
-        <user-integration-spec.version>1.13.3</user-integration-spec.version>
-        <accessgroup-presentation-spec.version>1.13.23</accessgroup-presentation-spec.version>
-        <accessgroup-integration-spec.version>1.13.6</accessgroup-integration-spec.version>
-        <legalentity-presentation-spec.version>1.13.3</legalentity-presentation-spec.version>
-        <legalentity-integration-spec.version>1.13.3</legalentity-integration-spec.version>
-        <product-summary-presentation-spec.version>1.12.4</product-summary-presentation-spec.version>
-        <arrangement-integration-spec.version>1.12.3</arrangement-integration-spec.version>
-        <transaction-integration-external-inbound-spec.version>1.12.3</transaction-integration-external-inbound-spec.version>
-        <notifications-presentation-spec.version>1.8.18</notifications-presentation-spec.version>
-        <contact-presentation-spec.version>3.1.6</contact-presentation-spec.version>
-        <payment-order-presentation-spec.version>1.11.12</payment-order-presentation-spec.version>
-        <actionrecipes-presentation-spec.version>2.0.49</actionrecipes-presentation-spec.version>
-        <messages-presentation-spec.version>11.0.0</messages-presentation-spec.version>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.backbase.dbs</groupId>
+                <artifactId>banking-services-bom</artifactId>
+                <version>2.10.4-cr.270</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <dependency>
@@ -76,73 +74,60 @@
         <dependency>
             <groupId>com.backbase.dbs.user</groupId>
             <artifactId>user-presentation-spec</artifactId>
-            <version>${user-presentation-spec.version}</version>
         </dependency>
         <dependency>
             <groupId>com.backbase.dbs.user</groupId>
             <artifactId>user-integration-spec</artifactId>
-            <version>${user-integration-spec.version}</version>
         </dependency>
         <dependency>
             <groupId>com.backbase.dbs.accessgroup</groupId>
             <artifactId>accessgroup-presentation-spec</artifactId>
-            <version>${accessgroup-presentation-spec.version}</version>
         </dependency>
         <dependency>
             <groupId>com.backbase.dbs.accessgroup</groupId>
             <artifactId>accessgroup-integration-spec</artifactId>
-            <version>${accessgroup-integration-spec.version}</version>
         </dependency>
         <dependency>
             <groupId>com.backbase.dbs.legalentity</groupId>
             <artifactId>legalentity-presentation-spec</artifactId>
-            <version>${legalentity-presentation-spec.version}</version>
         </dependency>
         <dependency>
             <groupId>com.backbase.dbs.legalentity</groupId>
             <artifactId>legalentity-integration-spec</artifactId>
-            <version>${legalentity-integration-spec.version}</version>
         </dependency>
         <!-- productsummary specs -->
         <dependency>
             <groupId>com.backbase.dbs.productsummary</groupId>
             <artifactId>product-summary-presentation-spec</artifactId>
-            <version>${product-summary-presentation-spec.version}</version>
         </dependency>
         <dependency>
             <groupId>com.backbase.dbs.arrangement</groupId>
             <artifactId>arrangement-integration-spec</artifactId>
-            <version>${arrangement-integration-spec.version}</version>
         </dependency>
         <!-- transactions specs -->
         <dependency>
             <groupId>com.backbase.dbs.transaction</groupId>
             <artifactId>transaction-integration-external-inbound-spec</artifactId>
-            <version>${transaction-integration-external-inbound-spec.version}</version>
         </dependency>
         <!-- notifications specs -->
         <dependency>
             <groupId>com.backbase.dbs.notifications</groupId>
             <artifactId>notifications-presentation-spec</artifactId>
-            <version>${notifications-presentation-spec.version}</version>
         </dependency>
         <!-- contact specs -->
         <dependency>
             <groupId>com.backbase.dbs.contact</groupId>
             <artifactId>contact-presentation-spec</artifactId>
-            <version>${contact-presentation-spec.version}</version>
         </dependency>
         <!-- payment specs -->
         <dependency>
             <groupId>com.backbase.dbs.paymentorder</groupId>
             <artifactId>payment-order-presentation-spec</artifactId>
-            <version>${payment-order-presentation-spec.version}</version>
         </dependency>
         <!-- messages specs -->
         <dependency>
             <groupId>com.backbase.dbs.messages</groupId>
             <artifactId>messages-presentation-spec</artifactId>
-            <version>${messages-presentation-spec.version}</version>
         </dependency>
     </dependencies>
 

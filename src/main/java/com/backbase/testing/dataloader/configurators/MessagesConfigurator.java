@@ -52,6 +52,8 @@ public class MessagesConfigurator {
                     .statusCode(SC_OK)
                     .extract()
                     .as(ConversationsGetResponseBody.class)
+                    .getConversations()
+                    .get(0)
                     .getId();
 
             String conversationDraftId = messagesPresentationRestClient.postConversationDraft(generateConversationDraftsPostRequestBody(), conversationId)

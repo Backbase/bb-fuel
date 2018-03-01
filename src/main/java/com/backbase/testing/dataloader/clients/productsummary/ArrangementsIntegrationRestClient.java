@@ -2,13 +2,15 @@ package com.backbase.testing.dataloader.clients.productsummary;
 
 import com.backbase.buildingblocks.presentation.errors.BadRequestException;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBody;
-import com.backbase.integration.product.rest.spec.v2.products.ProductsPostRequestBody;
+import com.backbase.integration.arrangement.rest.spec.v2.products.ProductsPostRequestBody;
 import com.backbase.testing.dataloader.clients.common.RestClient;
 import com.backbase.testing.dataloader.utils.GlobalProperties;
-import io.restassured.http.ContentType;
-import io.restassured.response.Response;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import io.restassured.http.ContentType;
+import io.restassured.response.Response;
 
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_PRODUCTSUMMARY_BASE_URI;
 import static org.apache.http.HttpStatus.SC_BAD_REQUEST;

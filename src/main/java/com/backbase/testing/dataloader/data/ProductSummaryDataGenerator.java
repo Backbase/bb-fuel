@@ -3,7 +3,7 @@ package com.backbase.testing.dataloader.data;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBody;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.DebitCard;
-import com.backbase.integration.product.rest.spec.v2.products.ProductsPostRequestBody;
+import com.backbase.integration.arrangement.rest.spec.v2.products.ProductsPostRequestBody;
 import com.backbase.testing.dataloader.utils.CommonHelpers;
 import com.backbase.testing.dataloader.utils.GlobalProperties;
 import com.backbase.testing.dataloader.utils.ParserUtil;

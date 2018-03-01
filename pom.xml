@@ -26,7 +26,6 @@
         <legalentity-presentation-spec.version>1.13.3</legalentity-presentation-spec.version>
         <legalentity-integration-spec.version>1.13.3</legalentity-integration-spec.version>
         <product-summary-presentation-spec.version>1.12.4</product-summary-presentation-spec.version>
-        <product-integration-spec.version>1.8.0</product-integration-spec.version>
         <arrangement-integration-spec.version>1.12.3</arrangement-integration-spec.version>
         <transaction-integration-external-inbound-spec.version>1.12.3</transaction-integration-external-inbound-spec.version>
         <notifications-presentation-spec.version>1.8.18</notifications-presentation-spec.version>
@@ -109,11 +108,6 @@
             <groupId>com.backbase.dbs.productsummary</groupId>
             <artifactId>product-summary-presentation-spec</artifactId>
             <version>${product-summary-presentation-spec.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.backbase.dbs.product</groupId>
-            <artifactId>product-integration-spec</artifactId>
-            <version>${product-integration-spec.version}</version>
         </dependency>
         <dependency>
             <groupId>com.backbase.dbs.arrangement</groupId>

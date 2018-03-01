@@ -3,7 +3,7 @@ package com.backbase.testing.dataloader.configurators;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBody;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostResponseBody;
-import com.backbase.integration.product.rest.spec.v2.products.ProductsPostRequestBody;
+import com.backbase.integration.arrangement.rest.spec.v2.products.ProductsPostRequestBody;
 import com.backbase.testing.dataloader.clients.productsummary.ArrangementsIntegrationRestClient;
 import com.backbase.testing.dataloader.dto.ArrangementId;
 import com.backbase.testing.dataloader.utils.CommonHelpers;

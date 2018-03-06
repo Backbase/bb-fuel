@@ -8,7 +8,7 @@ properties([
                 booleanParam(name: 'INGEST_NOTIFICATIONS', defaultValue: false, description: 'Ingest notifications on global target group'),
                 booleanParam(name: 'INGEST_PAYMENTS', defaultValue: false, description: 'Ingest payments per user'),
                 booleanParam(name: 'INGEST_CONVERSATIONS', defaultValue: false, description: 'Ingest conversations per user'),
-                choice(name: 'INFRA_BASE_URI', choices: 'infra.backbase.dev:8080\neditorial.backbase.dev:8080', description: '')
+                choice(name: 'INFRA_BASE_URI', choices: 'infra.backbase.test:8080\neditorial.backbase.test:8080', description: '')
         ])
 ])
 

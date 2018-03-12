@@ -1,19 +1,18 @@
 package com.backbase.testing.dataloader.setup;
 
+import static com.backbase.testing.dataloader.data.CommonConstants.EXTERNAL_ROOT_LEGAL_ENTITY_ID;
+import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_INGEST_ENTITLEMENTS;
+import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_INGEST_NOTIFICATIONS;
+import static com.backbase.testing.dataloader.data.CommonConstants.USER_ADMIN;
+
 import com.backbase.testing.dataloader.clients.accessgroup.UserContextPresentationRestClient;
 import com.backbase.testing.dataloader.clients.common.LoginRestClient;
 import com.backbase.testing.dataloader.configurators.LegalEntitiesAndUsersConfigurator;
 import com.backbase.testing.dataloader.configurators.NotificationsConfigurator;
 import com.backbase.testing.dataloader.configurators.ProductSummaryConfigurator;
 import com.backbase.testing.dataloader.utils.GlobalProperties;
-
 import java.io.IOException;
 import java.util.Collections;
-
-import static com.backbase.testing.dataloader.data.CommonConstants.EXTERNAL_ROOT_LEGAL_ENTITY_ID;
-import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_INGEST_ENTITLEMENTS;
-import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_INGEST_NOTIFICATIONS;
-import static com.backbase.testing.dataloader.data.CommonConstants.USER_ADMIN;
 
 public class BankSetup {
 
@@ -23,25 +22,24 @@ public class BankSetup {
     private UserContextPresentationRestClient userContextPresentationRestClient = new UserContextPresentationRestClient();
     private LoginRestClient loginRestClient = new LoginRestClient();
     private NotificationsConfigurator notificationsConfigurator = new NotificationsConfigurator();
-    private UsersSetup usersSetup = new UsersSetup();
+    private LegalEntitiesWithUsersAssembler legalEntitiesWithUsersAssembler = new LegalEntitiesWithUsersAssembler();
 
     public BankSetup() throws IOException {
     }
 
     public void setupBankWithEntitlementsAdminAndProducts() throws IOException {
-        if (globalProperties.getBoolean(PROPERTY_INGEST_ENTITLEMENTS)) {
-            legalEntitiesAndUsersConfigurator.ingestRootLegalEntityAndEntitlementsAdmin(EXTERNAL_ROOT_LEGAL_ENTITY_ID, USER_ADMIN);
-            productSummaryConfigurator.ingestProducts();
-
-            usersSetup.setupUsersWithAllFunctionDataGroupsAndPrivileges(Collections.singletonList(USER_ADMIN));
+        if (this.globalProperties.getBoolean(PROPERTY_INGEST_ENTITLEMENTS)) {
+            this.legalEntitiesAndUsersConfigurator.ingestRootLegalEntityAndEntitlementsAdmin(EXTERNAL_ROOT_LEGAL_ENTITY_ID, USER_ADMIN);
+            this.productSummaryConfigurator.ingestProducts();
+            this.legalEntitiesWithUsersAssembler.assembleUsersPrivilegesAndDataGroups(Collections.singletonList(USER_ADMIN));
         }
     }
 
     public void setupBankNotifications() {
-        if (globalProperties.getBoolean(PROPERTY_INGEST_NOTIFICATIONS)) {
-            loginRestClient.login(USER_ADMIN, USER_ADMIN);
-            userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
-            notificationsConfigurator.ingestNotifications();
+        if (this.globalProperties.getBoolean(PROPERTY_INGEST_NOTIFICATIONS)) {
+            this.loginRestClient.login(USER_ADMIN, USER_ADMIN);
+            this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
+            this.notificationsConfigurator.ingestNotifications();
         }
     }
 }

@@ -5,6 +5,9 @@ public final class CommonConstants {
     private CommonConstants() {
     }
 
+    // Switch flags
+    public static final String PROPERTY_CONFIGURATION_SWITCHER = "use.local.configurations";
+
     // Environment
     public static final String PROPERTIES_FILE_NAME = "environment.properties";
     public static final String PROPERTY_INFRA_BASE_URI = "infra.base.uri";
@@ -14,10 +17,20 @@ public final class CommonConstants {
     public static final String PROPERTY_TRANSACTIONS_BASE_URI = "transactions.base.uri";
     public static final String PROPERTY_HEALTHCHECK_TIMEOUT_IN_MINUTES = "healthcheck.timeout.in.minutes";
 
+    // Local environment
+    public static final String PROPERTY_LOCAL_INFRA_BASE_URI = "local.infra.base.uri";
+    public static final String PROPERTY_LOCAL_GATEWAY_PATH = "local.gateway.path";
+    public static final String PROPERTY_LOCAL_ENTITLEMENTS_BASE_URI = "local.entitlements.base.uri";
+    public static final String PROPERTY_LOCAL_PRODUCTSUMMARY_BASE_URI = "local.productsummary.base.uri";
+    public static final String PROPERTY_LOCAL_TRANSACTIONS_BASE_URI = "local.transactions.base.uri";
+    public static final String PROPERTY_LOCAL_HEALTHCHECK_TIMEOUT_IN_MINUTES = "local.healthcheck.timeout.in.minutes";
+
     // Users
     public static final String USER_ADMIN = "admin";
     public static final String PROPERTY_USERS_JSON_LOCATION = "users.json.location";
     public static final String PROPERTY_USERS_WITHOUT_PERMISSIONS = "users.without.permissions.json.location";
+    public static final String PROPERTY_LEGAL_ENTITIES_WITH_USERS_JSON_LOCATION = "legal.entities.with.users.json.location";
+    public static final String PROPERTY_LEGAL_ENTITIES_WITH_USERS_WITHOUT_PERMISSION_JSON_LOCATION = "legal.entities.with.users.without.permissions.json.location";
     public static final String PROPERTY_SERVICEAGREEMENTS_JSON_LOCATION = "serviceagreements.json.location";
 
     // Entitlements

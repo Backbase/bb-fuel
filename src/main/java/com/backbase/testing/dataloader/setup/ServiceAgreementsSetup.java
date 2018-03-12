@@ -1,5 +1,10 @@
 package com.backbase.testing.dataloader.setup;
 
+import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_INGEST_CUSTOM_SERVICE_AGREEMENTS;
+import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_SERVICEAGREEMENTS_JSON_LOCATION;
+import static com.backbase.testing.dataloader.data.CommonConstants.USER_ADMIN;
+import static org.apache.http.HttpStatus.SC_OK;
+
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.config.functions.FunctionsGetResponseBody;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.Consumer;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.Provider;
@@ -17,17 +22,11 @@ import com.backbase.testing.dataloader.configurators.ServiceAgreementsConfigurat
 import com.backbase.testing.dataloader.dto.CurrencyDataGroup;
 import com.backbase.testing.dataloader.utils.GlobalProperties;
 import com.backbase.testing.dataloader.utils.ParserUtil;
-
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-
-import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_INGEST_CUSTOM_SERVICE_AGREEMENTS;
-import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_SERVICEAGREEMENTS_JSON_LOCATION;
-import static com.backbase.testing.dataloader.data.CommonConstants.USER_ADMIN;
-import static org.apache.http.HttpStatus.SC_OK;
 
 public class ServiceAgreementsSetup {
 
@@ -40,65 +39,69 @@ public class ServiceAgreementsSetup {
     private AccessGroupsConfigurator accessGroupsConfigurator = new AccessGroupsConfigurator();
     private PermissionsConfigurator permissionsConfigurator = new PermissionsConfigurator();
     private UserPresentationRestClient userPresentationRestClient = new UserPresentationRestClient();
-    private UsersSetup usersSetup = new UsersSetup();
     private Map<String, String> functionGroupFunctionNames = new HashMap<>();
     private CurrencyDataGroup currencyDataGroup = null;
     private FunctionsGetResponseBody[] functions;
+    private LegalEntitiesWithUsersAssembler legalEntitiesWithUsersAssembler = new LegalEntitiesWithUsersAssembler();
 
     public ServiceAgreementsSetup() throws IOException {
     }
 
     public void setupCustomServiceAgreements() throws IOException {
-        if (globalProperties.getBoolean(PROPERTY_INGEST_CUSTOM_SERVICE_AGREEMENTS)) {
-            ServiceAgreementPostRequestBody[] serviceAgreementPostRequestBodies = ParserUtil.convertJsonToObject(globalProperties.getString(PROPERTY_SERVICEAGREEMENTS_JSON_LOCATION), ServiceAgreementPostRequestBody[].class);
-            functions = accessGroupIntegrationRestClient.retrieveFunctions()
-                    .then()
-                    .statusCode(SC_OK)
-                    .extract()
-                    .as(FunctionsGetResponseBody[].class);
+        if (this.globalProperties.getBoolean(PROPERTY_INGEST_CUSTOM_SERVICE_AGREEMENTS)) {
+            ServiceAgreementPostRequestBody[] serviceAgreementPostRequestBodies = ParserUtil
+                .convertJsonToObject(this.globalProperties.getString(PROPERTY_SERVICEAGREEMENTS_JSON_LOCATION), ServiceAgreementPostRequestBody[].class);
+            this.functions = this.accessGroupIntegrationRestClient.retrieveFunctions()
+                .then()
+                .statusCode(SC_OK)
+                .extract()
+                .as(FunctionsGetResponseBody[].class);
 
-            loginRestClient.login(USER_ADMIN, USER_ADMIN);
-            userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
+            this.loginRestClient.login(USER_ADMIN, USER_ADMIN);
+            this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
             Arrays.stream(serviceAgreementPostRequestBodies)
-                    .forEach(serviceAgreementPostRequestBody -> {
-                        String internalServiceAgreementId = serviceAgreementsConfigurator.ingestServiceAgreementWithProvidersAndConsumers(serviceAgreementPostRequestBody.getProviders(), serviceAgreementPostRequestBody.getConsumers());
+                .forEach(serviceAgreementPostRequestBody -> {
+                    String internalServiceAgreementId = this.serviceAgreementsConfigurator
+                        .ingestServiceAgreementWithProvidersAndConsumers(serviceAgreementPostRequestBody.getProviders(),
+                            serviceAgreementPostRequestBody.getConsumers());
 
-                        setupFunctionDataGroups(internalServiceAgreementId, serviceAgreementPostRequestBody.getConsumers());
-                        setupPermissions(internalServiceAgreementId, serviceAgreementPostRequestBody.getProviders());
+                    setupFunctionDataGroups(internalServiceAgreementId, serviceAgreementPostRequestBody.getConsumers());
+                    setupPermissions(internalServiceAgreementId, serviceAgreementPostRequestBody.getProviders());
 
-                        functionGroupFunctionNames.clear();
-                    });
+                    this.functionGroupFunctionNames.clear();
+                });
         }
     }
 
     private void setupFunctionDataGroups(String internalServiceAgreementId, Set<Consumer> consumers) {
         String externalConsumerAdminUserId = consumers.iterator().next().getAdmins()
-                .iterator()
-                .next();
+            .iterator()
+            .next();
 
-        String externalLegalEntityId = userPresentationRestClient.retrieveLegalEntityByExternalUserId(externalConsumerAdminUserId)
-                .then()
-                .statusCode(SC_OK)
-                .extract()
-                .as(LegalEntityByUserGetResponseBody.class)
-                .getExternalId();
+        String externalLegalEntityId = this.userPresentationRestClient.retrieveLegalEntityByExternalUserId(externalConsumerAdminUserId)
+            .then()
+            .statusCode(SC_OK)
+            .extract()
+            .as(LegalEntityByUserGetResponseBody.class)
+            .getExternalId();
 
-        String externalServiceAgreementId = serviceAgreementsPresentationRestClient.retrieveServiceAgreement(internalServiceAgreementId)
-                .then()
-                .statusCode(SC_OK)
-                .extract()
-                .as(ServiceAgreementGetResponseBody.class)
-                .getExternalId();
+        String externalServiceAgreementId = this.serviceAgreementsPresentationRestClient.retrieveServiceAgreement(internalServiceAgreementId)
+            .then()
+            .statusCode(SC_OK)
+            .extract()
+            .as(ServiceAgreementGetResponseBody.class)
+            .getExternalId();
 
-        currencyDataGroup = usersSetup.setupArrangementsPerDataGroupForServiceAgreement(externalServiceAgreementId, externalLegalEntityId);
+        this.currencyDataGroup = this.legalEntitiesWithUsersAssembler
+            .getDataGroupArrangementsForServiceAgreement(externalServiceAgreementId, externalLegalEntityId);
 
-        for (FunctionsGetResponseBody function : functions) {
+        for (FunctionsGetResponseBody function : this.functions) {
             String functionName = function.getName();
 
-            String functionGroupId = accessGroupsConfigurator.ingestFunctionGroupWithAllPrivilegesByFunctionName(externalServiceAgreementId, functionName);
+            String functionGroupId = this.accessGroupsConfigurator.ingestFunctionGroupWithAllPrivilegesByFunctionName(externalServiceAgreementId, functionName);
 
-            functionGroupFunctionNames.put(functionGroupId, functionName);
+            this.functionGroupFunctionNames.put(functionGroupId, functionName);
         }
     }
 
@@ -107,11 +110,12 @@ public class ServiceAgreementsSetup {
             Set<String> externalUserIds = provider.getUsers();
 
             for (String externalUserId : externalUserIds) {
-                for (Map.Entry<String, String> entry : functionGroupFunctionNames.entrySet()) {
+                for (Map.Entry<String, String> entry : this.functionGroupFunctionNames.entrySet()) {
                     String functionGroupId = entry.getKey();
                     String functionName = entry.getValue();
 
-                    permissionsConfigurator.assignPermissions(externalUserId, internalServiceAgreementId, functionName, functionGroupId, currencyDataGroup);
+                    this.permissionsConfigurator
+                        .assignPermissions(externalUserId, internalServiceAgreementId, functionName, functionGroupId, this.currencyDataGroup);
                 }
             }
         }

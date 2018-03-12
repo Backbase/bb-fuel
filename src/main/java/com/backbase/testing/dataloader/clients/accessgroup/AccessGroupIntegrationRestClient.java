@@ -15,16 +15,16 @@ public class AccessGroupIntegrationRestClient extends RestClient {
 
     private static GlobalProperties globalProperties = GlobalProperties.getInstance();
     private static final String SERVICE_VERSION = "v2";
-    private static final String ACCESSGROUP_INTEGRATION_SERVICE = "accessgroup-integration-service";
-    private static final String ENDPOINT_ACCESSGROUPS = "/accessgroups";
-    private static final String ENDPOINT_CONFIG_FUNCTIONS = ENDPOINT_ACCESSGROUPS + "/config/functions";
-    private static final String ENDPOINT_FUNCTION = ENDPOINT_ACCESSGROUPS + "/function-groups";
-    private static final String ENDPOINT_USERS_PERMISSIONS = ENDPOINT_ACCESSGROUPS + "/users/permissions";
-    private static final String ENDPOINT_DATA = ENDPOINT_ACCESSGROUPS + "/data-groups";
+    private static final String ACCESS_GROUP_INTEGRATION_SERVICE = "accessgroup-integration-service";
+    private static final String ENDPOINT_ACCESS_GROUPS = "/accessgroups";
+    private static final String ENDPOINT_CONFIG_FUNCTIONS = ENDPOINT_ACCESS_GROUPS + "/config/functions";
+    private static final String ENDPOINT_FUNCTION = ENDPOINT_ACCESS_GROUPS + "/function-groups";
+    private static final String ENDPOINT_USERS_PERMISSIONS = ENDPOINT_ACCESS_GROUPS + "/users/permissions";
+    private static final String ENDPOINT_DATA = ENDPOINT_ACCESS_GROUPS + "/data-groups";
 
     public AccessGroupIntegrationRestClient() {
         super(globalProperties.getString(PROPERTY_ENTITLEMENTS_BASE_URI), SERVICE_VERSION);
-        setInitialPath(ACCESSGROUP_INTEGRATION_SERVICE);
+        setInitialPath(ACCESS_GROUP_INTEGRATION_SERVICE);
     }
 
     public Response ingestFunctionGroup(FunctionGroupPostRequestBody body) {

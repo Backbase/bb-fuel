@@ -18,16 +18,16 @@ Data loader ingests the following:
 
 ### Access control setup
 - Root legal entity with user `admin` as entitlements admin
-- Legal entity (under the root legal entity `C000000`) per user array in the files [users.json](src/main/resources/data/users.json) and [users-without-permissions.json](src/main/resources/data/users-without-permissions.json) - configurable, see section *Custom data*
+- Legal entities (under the root legal entity `C000000` - generated first time) per legal entity entry with user array in the files [legal-entities-with-users.json](src/main/resources/data/legal-entities-with-users.json) and [legal-entities-with-users-without-permissions.json](src/main/resources/data/legal-entities-with-users-without-permissions.json) - configurable, see section *Custom data*
 
-For users in the file [users.json](src/main/resources/data/users.json):
-- Function groups for every business function with all privileges per legal entity
-- Data group consisting of arrangements per legal entity
-- All function groups and data groups are assigned to the user via master service agreement of the legal entity.
+For legal entities and users in the file [legal-entities-with-users.json](src/main/resources/data/legal-entities-with-users.json):
+- Function groups for every business function with all privileges per legal entity from the input file
+- Data group consisting of arrangements per legal entity from the input file
+- All function groups and data groups are assigned to the users via master service agreement of the legal entities from the input file.
 
 ### Product summary setup
 - Default products: [products.json](src/main/resources/data/products.json)
-- Random arrangements (by default: between 10 and 30) per legal entity of these users: [users.json](src/main/resources/data/users.json)
+- Random arrangements (by default: between 10 and 30) per legal entities and users under: [legal-entities-with-users.json](src/main/resources/data/legal-entities-with-users.json)
 - In case of current account arrangements random debit cards (by default: between 3 and 10) are associated
 
 ### Transactions setup
@@ -41,8 +41,8 @@ Default service agreements (each object represents one service agreement): [serv
 
 ### Users setup
 By default only the following users are covered:
-- Users with permissions as described under *Entitlements setup* and *Product summary setup*: [users.json](src/main/resources/data/users.json)
-- Users without permissions under its own legal entity (no master service agreement, function and data groups associated): [users-without-permissions.json](src/main/resources/data/users-without-permissions.json)
+- Users with permissions as described under *Entitlements setup* and *Product summary setup*: [legal-entities-with-users.json](src/main/resources/data/legal-entities-with-users.json)
+- Users without permissions under its own legal entity (no master service agreement, function and data groups associated): [legal-entities-with-users-without-permissions.json](src/main/resources/data/legal-entities-with-users-without-permissions.json)
 
 If more/other users are required, you can provide your own `json` files, see *Custom data*.
 
@@ -97,36 +97,30 @@ java -Denvironment.name=your-env-00 -cp /path/to/custom/resources/folder/:datalo
 ### How to create custom data
 Example for the `users.json` (other files are: `users-without-permissions.json`, `serviceagreements.json` and `products.json`):
 
-1. Create json file named `users.json` custom user list conforming existing format (in this case conforming: [users.json](src/main/resources/data/users.json))
+1. Create json file named `legal-entities-with-users.json` with custom legal entities and assigned custom user list conforming existing format (in this case conforming: [legal-entities-with-users.json ](src/main/resources/data/legal-entities-with-users.json ))
 
-Each `externalUserIds` array consists of the users which will be ingested under one legal entity.
+Each `userExternalIds` array consists of the users which will be ingested under the above legal entity.
 
 Example:
 ```javascript
 [
   {
-    "externalUserIds": [
-      "U99990001"
-    ]
-  },
-  {
-    "externalUserIds": [
-      "U99990002",
-      "U99990003"
-    ]
-  },
-  {
-    "externalUserIds": [
-      "U99990004",
-      "U99990005",
-      "U99990006"
+    "legalEntityExternalId": "LE000002",
+    "parentLegalEntityExternalId": "C000000",
+    "legalEntityName": "Hong Kong Legal Entity",
+    "userExternalIds": [
+      "U0091011",
+      "U0091012",
+      "U0091013",
+      "U0091014",
+      "U0091015"
     ]
   }
 ]
 ```
-2. Place `users.json` in a folder named `data`
+2. Place `legal-entities-with-users.json` in a folder named `data`
 
-Note: it is also possible to name/place the json file differently with the specific properties: `users.json.location`, `users.without.permissions.json.location` and `serviceagreements.json.location`
+Note: it is also possible to name/place the json file differently with the specific properties: `legal.entities.with.users.json.location`, `legal.entities.with.users.without.permissions.json.location` and `serviceagreements.json.location`
 
 ## Questions and issues
 If you have a question about the Data loader, or are experiencing a problem please contact the author, Kwo Ding via Hipchat or [e-mail](mailto:kwo@backbase.com)

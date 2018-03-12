@@ -21,15 +21,15 @@ public class UserContextPresentationRestClient extends RestClient {
 
     private static GlobalProperties globalProperties = GlobalProperties.getInstance();
     private static final String SERVICE_VERSION = "v2";
-    private static final String ACCESSGROUP_PRESENTATION_SERVICE = "accessgroup-presentation-service";
-    private static final String ENDPOINT_ACCESSGROUPS = "/accessgroups";
-    private static final String ENDPOINT_USER_CONTEXT = ENDPOINT_ACCESSGROUPS + "/usercontext";
+    private static final String ACCESS_GROUP_PRESENTATION_SERVICE = "accessgroup-presentation-service";
+    private static final String ENDPOINT_ACCESS_GROUPS = "/accessgroups";
+    private static final String ENDPOINT_USER_CONTEXT = ENDPOINT_ACCESS_GROUPS + "/usercontext";
     private static final String ENDPOINT_USER_CONTEXT_SERVICE_AGREEMENTS = ENDPOINT_USER_CONTEXT + "/serviceagreements";
     private static final String ENDPOINT_USER_CONTEXT_LEGAL_ENTITIES_BY_SERVICE_AGREEMENT_ID = ENDPOINT_USER_CONTEXT_SERVICE_AGREEMENTS + "/%s/legalentities";
 
     public UserContextPresentationRestClient() {
         super(globalProperties.getString(PROPERTY_INFRA_BASE_URI), SERVICE_VERSION);
-        setInitialPath(globalProperties.getString(PROPERTY_GATEWAY_PATH) + "/" + ACCESSGROUP_PRESENTATION_SERVICE);
+        setInitialPath(globalProperties.getString(PROPERTY_GATEWAY_PATH) + "/" + ACCESS_GROUP_PRESENTATION_SERVICE);
     }
 
     public Response postUserContext(UserContextPostRequestBody userContextPostRequestBody) {

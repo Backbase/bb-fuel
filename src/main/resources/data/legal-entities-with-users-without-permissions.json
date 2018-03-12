@@ -1,0 +1,31 @@
+[
+  {
+    "legalEntityExternalId": "LEW00001",
+    "parentLegalEntityExternalId": "C000000",
+    "legalEntityName": "United Kingdom Legal Entity Without Permissions",
+    "userExternalIds": [
+      "U0091021",
+      "U0091022",
+      "U0091023",
+      "U0091024",
+      "U0091025",
+      "U0091026",
+      "U0091027",
+      "U0091028",
+      "U0091029",
+      "U0091030"
+    ]
+  },
+  {
+    "legalEntityExternalId": "LEW00002",
+    "parentLegalEntityExternalId": "C000000",
+    "legalEntityName": "Hong Kong Legal Entity Without Permissions",
+    "userExternalIds": [
+      "U0091111",
+      "U0091112",
+      "U0091113",
+      "U0091114",
+      "U0091115"
+    ]
+  }
+]

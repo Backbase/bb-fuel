@@ -2,6 +2,7 @@ package com.backbase.testing.dataloader.dto;
 
 import java.util.List;
 
+@Deprecated
 public class UserList {
 
     private List<String> externalUserIds;

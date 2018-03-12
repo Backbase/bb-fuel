@@ -20,15 +20,15 @@ public class AccessGroupPresentationRestClient extends RestClient {
 
     private static GlobalProperties globalProperties = GlobalProperties.getInstance();
     private static final String SERVICE_VERSION = "v2";
-    private static final String ACCESSGROUP_PRESENTATION_SERVICE = "accessgroup-presentation-service";
-    private static final String ENDPOINT_ACCESSGROUPS = "/accessgroups";
-    private static final String ENDPOINT_CONFIG_FUNCTIONS = ENDPOINT_ACCESSGROUPS + "/config/functions";
-    private static final String ENDPOINT_FUNCTION_BY_SERVICE_AGREEMENT_ID = ENDPOINT_ACCESSGROUPS + "/function-groups?serviceAgreementId=%s";
-    private static final String ENDPOINT_DATA_BY_SERVICE_AGREEMENT_ID_AND_TYPE = ENDPOINT_ACCESSGROUPS + "/data-groups?serviceAgreementId=%s&type=%s";
+    private static final String ACCESS_GROUP_PRESENTATION_SERVICE = "accessgroup-presentation-service";
+    private static final String ENDPOINT_ACCESS_GROUPS = "/accessgroups";
+    private static final String ENDPOINT_CONFIG_FUNCTIONS = ENDPOINT_ACCESS_GROUPS + "/config/functions";
+    private static final String ENDPOINT_FUNCTION_BY_SERVICE_AGREEMENT_ID = ENDPOINT_ACCESS_GROUPS + "/function-groups?serviceAgreementId=%s";
+    private static final String ENDPOINT_DATA_BY_SERVICE_AGREEMENT_ID_AND_TYPE = ENDPOINT_ACCESS_GROUPS + "/data-groups?serviceAgreementId=%s&type=%s";
 
     public AccessGroupPresentationRestClient() {
         super(globalProperties.getString(PROPERTY_INFRA_BASE_URI), SERVICE_VERSION);
-        setInitialPath(globalProperties.getString(PROPERTY_GATEWAY_PATH) + "/" + ACCESSGROUP_PRESENTATION_SERVICE);
+        setInitialPath(globalProperties.getString(PROPERTY_GATEWAY_PATH) + "/" + ACCESS_GROUP_PRESENTATION_SERVICE);
     }
 
     public Response retrieveFunctionGroupsByServiceAgreement(String internalServiceAgreementId) {

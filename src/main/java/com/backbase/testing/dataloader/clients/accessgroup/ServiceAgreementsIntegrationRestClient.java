@@ -13,27 +13,27 @@ public class ServiceAgreementsIntegrationRestClient extends RestClient {
 
     private static GlobalProperties globalProperties = GlobalProperties.getInstance();
     private static final String SERVICE_VERSION = "v2";
-    private static final String ACCESSGROUP_INTEGRATION_SERVICE = "accessgroup-integration-service";
-    private static final String ENDPOINT_ACCESSGROUPS = "/accessgroups";
-    private static final String ENDPOINT_SERVICEAGREEMENTS = ENDPOINT_ACCESSGROUPS + "/serviceagreements";
-    private static final String ENDPOINT_SERVICEAGREEMENTS_BY_ID = ENDPOINT_SERVICEAGREEMENTS + "/%s";
+    private static final String ACCESS_GROUP_INTEGRATION_SERVICE = "accessgroup-integration-service";
+    private static final String ENDPOINT_ACCESS_GROUPS = "/accessgroups";
+    private static final String ENDPOINT_SERVICE_AGREEMENTS = ENDPOINT_ACCESS_GROUPS + "/serviceagreements";
+    private static final String ENDPOINT_SERVICE_AGREEMENTS_BY_ID = ENDPOINT_SERVICE_AGREEMENTS + "/%s";
 
     public ServiceAgreementsIntegrationRestClient() {
         super(globalProperties.getString(PROPERTY_ENTITLEMENTS_BASE_URI), SERVICE_VERSION);
-        setInitialPath(ACCESSGROUP_INTEGRATION_SERVICE);
+        setInitialPath(ACCESS_GROUP_INTEGRATION_SERVICE);
     }
 
     public Response ingestServiceAgreement(ServiceAgreementPostRequestBody body) {
         return requestSpec()
                 .contentType(ContentType.JSON)
                 .body(body)
-                .post(getPath(ENDPOINT_SERVICEAGREEMENTS));
+                .post(getPath(ENDPOINT_SERVICE_AGREEMENTS));
     }
 
     public Response updateServiceAgreement(String internalServiceAgreementId, ServiceAgreementPutRequestBody body) {
         return requestSpec()
             .contentType(ContentType.JSON)
             .body(body)
-            .put(getPath(String.format(ENDPOINT_SERVICEAGREEMENTS_BY_ID, internalServiceAgreementId)));
+            .put(getPath(String.format(ENDPOINT_SERVICE_AGREEMENTS_BY_ID, internalServiceAgreementId)));
     }
 }

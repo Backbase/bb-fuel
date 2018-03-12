@@ -4,14 +4,13 @@ import com.backbase.testing.dataloader.healthchecks.EntitlementsHealthCheck;
 import com.backbase.testing.dataloader.healthchecks.ProductSummaryHealthCheck;
 import com.backbase.testing.dataloader.healthchecks.TransactionsHealthCheck;
 import com.backbase.testing.dataloader.setup.BankSetup;
+import com.backbase.testing.dataloader.setup.LegalEntitiesWithUsersAssembler;
 import com.backbase.testing.dataloader.setup.ServiceAgreementsSetup;
-import com.backbase.testing.dataloader.setup.UsersSetup;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Runner {
 
@@ -21,7 +20,7 @@ public class Runner {
         System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", "8");
 
         BankSetup bankSetup = new BankSetup();
-        UsersSetup usersSetup = new UsersSetup();
+        LegalEntitiesWithUsersAssembler legalEntitiesWithUsersAssembler = new LegalEntitiesWithUsersAssembler();
         ServiceAgreementsSetup serviceAgreementsSetup = new ServiceAgreementsSetup();
         EntitlementsHealthCheck entitlementsHealthCheck = new EntitlementsHealthCheck();
         ProductSummaryHealthCheck productSummaryHealthCheck = new ProductSummaryHealthCheck();
@@ -34,13 +33,14 @@ public class Runner {
         Instant start = Instant.now();
 
         bankSetup.setupBankWithEntitlementsAdminAndProducts();
-        usersSetup.setupUsersWithAndWithoutFunctionDataGroupsPrivileges();
+        legalEntitiesWithUsersAssembler.assembleUsersWithAndWithoutFunctionDataGroupsPrivileges();
         serviceAgreementsSetup.setupCustomServiceAgreements();
 
         bankSetup.setupBankNotifications();
-        usersSetup.setupContactsPerUser();
-        usersSetup.setupPaymentsPerUser();
-        usersSetup.setupConversationsPerUser();
+
+        legalEntitiesWithUsersAssembler.assembleContactsPerUser();
+        legalEntitiesWithUsersAssembler.assemblePaymentsPerUser();
+        legalEntitiesWithUsersAssembler.assembleConversationsPerUser();
 
         Instant end = Instant.now();
         Duration duration = Duration.between(start, end);

@@ -10,8 +10,9 @@ public class LoginRestClient extends AbstractRestClient {
 
     public LoginRestClient() {
         super();
-        //TODO: Check configuration
-        setInitialPath(/*getGatewayURI() +*/ globalProperties.getString(PROPERTY_LOGIN_PATH));
+        //TODO: Check configuration. 403 returned accessing through Gateway.
+        //setInitialPath(getGatewayURI() + globalProperties.getString(PROPERTY_LOGIN_PATH));
+        setInitialPath(globalProperties.getString(PROPERTY_LOGIN_PATH));
     }
 
     public void login(String username, String password) {

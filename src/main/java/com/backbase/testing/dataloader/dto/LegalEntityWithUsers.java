@@ -7,6 +7,7 @@ public class LegalEntityWithUsers {
     private String legalEntityExternalId;
     private String parentLegalEntityExternalId;
     private String legalEntityName;
+    private String legalEntityType;
     private List<String> userExternalIds;
 
     public LegalEntityWithUsers() {
@@ -34,6 +35,14 @@ public class LegalEntityWithUsers {
 
     public void setLegalEntityName(String legalEntityName) {
         this.legalEntityName = legalEntityName;
+    }
+
+    public String getLegalEntityType() {
+        return legalEntityType;
+    }
+
+    public void setLegalEntityType(String legalEntityType) {
+        this.legalEntityType = legalEntityType;
     }
 
     public String getParentLegalEntityExternalId() {

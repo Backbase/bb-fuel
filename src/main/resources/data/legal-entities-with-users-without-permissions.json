@@ -3,6 +3,7 @@
     "legalEntityExternalId": "LEW00001",
     "parentLegalEntityExternalId": "C000000",
     "legalEntityName": "United Kingdom Legal Entity Without Permissions",
+    "legalEntityType": "CUSTOMER",
     "userExternalIds": [
       "U0091021",
       "U0091022",
@@ -20,6 +21,7 @@
     "legalEntityExternalId": "LEW00002",
     "parentLegalEntityExternalId": "C000000",
     "legalEntityName": "Hong Kong Legal Entity Without Permissions",
+    "legalEntityType": "CUSTOMER",
     "userExternalIds": [
       "U0091111",
       "U0091112",

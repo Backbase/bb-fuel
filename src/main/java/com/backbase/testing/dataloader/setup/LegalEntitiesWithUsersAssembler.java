@@ -77,12 +77,12 @@ public class LegalEntitiesWithUsersAssembler {
         Arrays.stream(this.entities).forEach(entity -> {
             this.legalEntitiesAndUsersConfigurator
                 .ingestUsersUnderComposedLegalEntity(entity.getUserExternalIds(), entity.getParentLegalEntityExternalId(), entity.getLegalEntityExternalId(),
-                    entity.getLegalEntityName());
+                    entity.getLegalEntityName(), entity.getLegalEntityType());
             assembleUsersPrivilegesAndDataGroups(entity.getUserExternalIds());
         });
         Arrays.stream(entitiesWithoutPermissions).forEach(entity -> this.legalEntitiesAndUsersConfigurator
             .ingestUsersUnderComposedLegalEntity(entity.getUserExternalIds(), entity.getParentLegalEntityExternalId(), entity.getLegalEntityExternalId(),
-                entity.getLegalEntityName()));
+                entity.getLegalEntityName(), entity.getLegalEntityType()));
     }
 
     public void assembleContactsPerUser() {

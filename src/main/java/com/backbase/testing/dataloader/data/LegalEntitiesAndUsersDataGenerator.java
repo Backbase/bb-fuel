@@ -41,11 +41,11 @@ public class LegalEntitiesAndUsersDataGenerator {
     }
 
     public static LegalEntitiesPostRequestBody composeLegalEntitiesPostRequestBody(String legalEntityExternalId, String legalEntityName,
-        String parentLegalEntityExternalId) {
+        String parentLegalEntityExternalId, String type) {
         return new LegalEntitiesPostRequestBody()
             .withExternalId(legalEntityExternalId)
             .withName(legalEntityName)
             .withParentExternalId(parentLegalEntityExternalId)
-            .withType(LegalEntityType.CUSTOMER);
+            .withType(LegalEntityType.fromValue(type));
     }
 }

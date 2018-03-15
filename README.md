@@ -108,6 +108,7 @@ Example:
     "legalEntityExternalId": "LE000002",
     "parentLegalEntityExternalId": "C000000",
     "legalEntityName": "Hong Kong Legal Entity",
+    "legalEntityType": "CUSTOMER",
     "userExternalIds": [
       "U0091011",
       "U0091012",

@@ -13,7 +13,7 @@ public class PaymentOrderPresentationRestClient extends AbstractRestClient {
 
     public PaymentOrderPresentationRestClient() {
         super(SERVICE_VERSION);
-        setInitialPath(USE_LOCAL ? LOCAL_GATEWAY : GATEWAY + "/" + PAYMENT_ORDER_PRESENTATION_SERVICE);
+        setInitialPath(getGatewayURI() + "/" + PAYMENT_ORDER_PRESENTATION_SERVICE);
     }
 
     public Response initiatePaymentOrder(InitiatePaymentOrder body) {

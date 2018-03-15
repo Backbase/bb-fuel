@@ -13,7 +13,7 @@ public class UserPresentationRestClient extends AbstractRestClient {
 
     public UserPresentationRestClient() {
         super(SERVICE_VERSION);
-        setInitialPath(USE_LOCAL ? LOCAL_GATEWAY : GATEWAY + "/" + USER_PRESENTATION_SERVICE);
+        setInitialPath(getGatewayURI() + "/" + USER_PRESENTATION_SERVICE);
     }
 
     public Response retrieveLegalEntityByExternalUserId(String externalUserId) {

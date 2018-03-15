@@ -14,7 +14,7 @@ public class LegalEntityPresentationRestClient extends AbstractRestClient {
 
     public LegalEntityPresentationRestClient() {
         super(SERVICE_VERSION);
-        setInitialPath(USE_LOCAL ? LOCAL_GATEWAY : GATEWAY + "/" + LEGAL_ENTITY_PRESENTATION_SERVICE);
+        setInitialPath(getGatewayURI() + "/" + LEGAL_ENTITY_PRESENTATION_SERVICE);
     }
 
     public Response retrieveLegalEntityByExternalId(String externalLegalEntityId) {

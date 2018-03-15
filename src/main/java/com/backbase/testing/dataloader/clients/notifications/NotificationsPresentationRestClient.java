@@ -13,7 +13,7 @@ public class NotificationsPresentationRestClient extends AbstractRestClient {
 
     public NotificationsPresentationRestClient() {
         super(SERVICE_VERSION);
-        setInitialPath(USE_LOCAL ? LOCAL_GATEWAY : GATEWAY + "/" + NOTIFICATIONS_PRESENTATION_SERVICE);
+        setInitialPath(getGatewayURI() + "/" + NOTIFICATIONS_PRESENTATION_SERVICE);
     }
 
     public Response createNotification(NotificationsPostRequestBody body) {

@@ -18,7 +18,7 @@ public class MessagesPresentationRestClient extends AbstractRestClient {
 
     public MessagesPresentationRestClient() {
         super(SERVICE_VERSION);
-        setInitialPath(USE_LOCAL ? LOCAL_GATEWAY : GATEWAY + "/" + MESSAGES_PRESENTATION_SERVICE);
+        setInitialPath(getGatewayURI() + "/" + MESSAGES_PRESENTATION_SERVICE);
     }
 
     public Response postDraft(DraftsPostRequestBody body) {

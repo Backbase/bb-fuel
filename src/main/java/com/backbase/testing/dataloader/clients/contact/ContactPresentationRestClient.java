@@ -13,7 +13,7 @@ public class ContactPresentationRestClient extends AbstractRestClient {
 
     public ContactPresentationRestClient() {
         super(SERVICE_VERSION);
-        setInitialPath(USE_LOCAL ? LOCAL_GATEWAY : GATEWAY + "/" + CONTACT_PRESENTATION_SERVICE);
+        setInitialPath(getGatewayURI() + "/" + CONTACT_PRESENTATION_SERVICE);
     }
 
     public Response createContact(ContactsPostRequestBody body) {

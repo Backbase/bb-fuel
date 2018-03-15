@@ -17,14 +17,14 @@ import java.util.stream.Collectors;
 public class ProductSummaryPresentationRestClient extends AbstractRestClient {
 
     private static final String SERVICE_VERSION = "v2";
-    private static final String PRODUCTSUMMARY_PRESENTATION_SERVICE = "product-summary-presentation-service";
-    private static final String ENDPOINT_PRODUCTSUMMARY = "/productsummary";
-    private static final String ENDPOINT_ARRANGEMENTS = ENDPOINT_PRODUCTSUMMARY + "/arrangements";
-    private static final String ENDPOINT_CONTEXT_ARRANGEMENTS = ENDPOINT_PRODUCTSUMMARY + "/context/arrangements";
+    private static final String PRODUCT_SUMMARY_PRESENTATION_SERVICE = "product-summary-presentation-service";
+    private static final String ENDPOINT_PRODUCT_SUMMARY = "/productsummary";
+    private static final String ENDPOINT_ARRANGEMENTS = ENDPOINT_PRODUCT_SUMMARY + "/arrangements";
+    private static final String ENDPOINT_CONTEXT_ARRANGEMENTS = ENDPOINT_PRODUCT_SUMMARY + "/context/arrangements";
 
     public ProductSummaryPresentationRestClient() {
         super(SERVICE_VERSION);
-        setInitialPath(USE_LOCAL ? LOCAL_GATEWAY : GATEWAY + "/" + PRODUCTSUMMARY_PRESENTATION_SERVICE);
+        setInitialPath(getGatewayURI() + "/" + PRODUCT_SUMMARY_PRESENTATION_SERVICE);
     }
 
     public Response getProductSummaryArrangements() {

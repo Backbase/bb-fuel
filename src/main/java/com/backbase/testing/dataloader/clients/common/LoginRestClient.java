@@ -10,7 +10,8 @@ public class LoginRestClient extends AbstractRestClient {
 
     public LoginRestClient() {
         super();
-        setInitialPath(USE_LOCAL ? LOCAL_GATEWAY : GATEWAY + globalProperties.getString(PROPERTY_LOGIN_PATH));
+        //TODO: Check configuration
+        setInitialPath(/*getGatewayURI() +*/ globalProperties.getString(PROPERTY_LOGIN_PATH));
     }
 
     public void login(String username, String password) {

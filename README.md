@@ -18,7 +18,7 @@ Data loader ingests the following:
 
 ### Access control setup
 - Root legal entity with user `admin` as entitlements admin
-- Legal entities (under the root legal entity `C000000` - generated first time) per legal entity entry with user array in the files [legal-entities-with-users.json](src/main/resources/data/legal-entities-with-users.json) and [legal-entities-with-users-without-permissions.json](src/main/resources/data/legal-entities-with-users-without-permissions.json) - configurable, see section *Custom data*
+- Legal entities (under the root legal entity `C000000` - generated first time) per legal entity entry with users array in the files [legal-entities-with-users.json](src/main/resources/data/legal-entities-with-users.json) and [legal-entities-with-users-without-permissions.json](src/main/resources/data/legal-entities-with-users-without-permissions.json) - configurable, see section *Custom data*
 
 For legal entities and users in the file [legal-entities-with-users.json](src/main/resources/data/legal-entities-with-users.json):
 - Function groups for every business function with all privileges per legal entity from the input file
@@ -64,6 +64,11 @@ capabilities="Entitlements,ProductSummary"
 ```
 java -Denvironment.name=your-env-00 -jar dataloader-jar-with-dependencies.jar
 ```
+or, provided by default values, declared in the properties file.
+For local environment:
+```
+java -Duse.local.configurations=false -jar dataloader-jar-with-dependencies.jar
+```
 
 ### Note when running on environments with existing data
 - No data will be removed from the environment
@@ -95,15 +100,17 @@ java -Denvironment.name=your-env-00 -cp /path/to/custom/resources/folder/:datalo
 `/path/to/custom/resources/folder/` must contain the custom `json` files
 
 ### How to create custom data
-Example for the `users.json` (other files are: `users-without-permissions.json`, `serviceagreements.json` and `products.json`):
+Example for the `legal-entities-with-users.json` (other files are: `legal-entities-with-users-without-permissions.json`, `serviceagreements.json` and `products.json`):
 
 1. Create json file named `legal-entities-with-users.json` with custom legal entities and assigned custom user list conforming existing format (in this case conforming: [legal-entities-with-users.json ](src/main/resources/data/legal-entities-with-users.json ))
+
 By default if customizable fields have not been provided, system will generate randomized values for it.
 Optional fields in the data structure:
 - `legalEntityExternalId`
 - `parentLegalEntityExternalId`
 - `legalEntityName`
 - `legalEntityType`
+
 Mandatory fields:
 - `userExternalIds` - array of Strings, representing User ids.
 

@@ -23,12 +23,7 @@ public class AccessGroupPresentationRestClient extends AbstractRestClient {
 
     public AccessGroupPresentationRestClient() {
         super(SERVICE_VERSION);
-        setInitialPath(getGatewayURI() + "/" + ACCESS_GROUP_PRESENTATION_SERVICE);
-    }
-
-    public Response retrieveFunctionGroupsByServiceAgreement(String internalServiceAgreementId) {
-        return requestSpec()
-            .get(String.format(getPath(ENDPOINT_FUNCTION_BY_SERVICE_AGREEMENT_ID), internalServiceAgreementId));
+        setInitialPath(composeInitialPath());
     }
 
     public List<String> retrieveFunctionGroupIdsByServiceAgreement(String internalServiceAgreement) {
@@ -71,11 +66,6 @@ public class AccessGroupPresentationRestClient extends AbstractRestClient {
         }
     }
 
-    public Response retrieveDataGroupsByServiceAgreementAndType(String internalServiceAgreement, String type) {
-        return requestSpec()
-            .get(String.format(getPath(ENDPOINT_DATA_BY_SERVICE_AGREEMENT_ID_AND_TYPE), internalServiceAgreement, type));
-    }
-
     public List<String> retrieveDataGroupIdsByServiceAgreement(String internalServiceAgreement) {
         DataGroupsGetResponseBody[] dataGroups = retrieveDataGroupsByServiceAgreementAndType(internalServiceAgreement, "ARRANGEMENTS")
             .then()
@@ -86,6 +76,16 @@ public class AccessGroupPresentationRestClient extends AbstractRestClient {
         return Arrays.stream(dataGroups)
             .map(DataGroupsGetResponseBody::getId)
             .collect(Collectors.toList());
+    }
+
+    @Override
+    protected String composeInitialPath() {
+        return getGatewayURI() + SLASH + ACCESS_GROUP_PRESENTATION_SERVICE;
+    }
+
+    private Response retrieveFunctionGroupsByServiceAgreement(String internalServiceAgreementId) {
+        return requestSpec()
+            .get(String.format(getPath(ENDPOINT_FUNCTION_BY_SERVICE_AGREEMENT_ID), internalServiceAgreementId));
     }
 
     private Response retrieveFunctions() {
@@ -101,4 +101,10 @@ public class AccessGroupPresentationRestClient extends AbstractRestClient {
             .findFirst();
         return functionId.orElse(null);
     }
+
+    private Response retrieveDataGroupsByServiceAgreementAndType(String internalServiceAgreement, String type) {
+        return requestSpec()
+            .get(String.format(getPath(ENDPOINT_DATA_BY_SERVICE_AGREEMENT_ID_AND_TYPE), internalServiceAgreement, type));
+    }
+
 }

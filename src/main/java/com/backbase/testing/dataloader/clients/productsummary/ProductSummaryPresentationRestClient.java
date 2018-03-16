@@ -24,28 +24,12 @@ public class ProductSummaryPresentationRestClient extends AbstractRestClient {
 
     public ProductSummaryPresentationRestClient() {
         super(SERVICE_VERSION);
-        setInitialPath(getGatewayURI() + "/" + PRODUCT_SUMMARY_PRESENTATION_SERVICE);
+        setInitialPath(composeInitialPath());
     }
 
     public Response getProductSummaryArrangements() {
         return requestSpec()
             .get(getPath(ENDPOINT_ARRANGEMENTS));
-    }
-
-    public Response getProductSummaryContextArrangements(ProductSummaryQueryParameters queryParameters) {
-        return requestSpec()
-            .queryParam("businessFunction", queryParameters.getBusinessFunction())
-            .queryParam("resourceName", queryParameters.getResourceName())
-            .queryParam("privilege", queryParameters.getPrivilege())
-            .queryParam("externalTransferAllowed", queryParameters.getExternalTransferAllowed())
-            .queryParam("creditAccount", queryParameters.getCreditAccount())
-            .queryParam("debitAccount", queryParameters.getDebitAccount())
-            .queryParam("from", queryParameters.getFrom())
-            .queryParam("size", queryParameters.getSize())
-            .queryParam("orderBy", queryParameters.getOrderBy())
-            .queryParam("direction", queryParameters.getDirection())
-            .queryParam("searchTerm", queryParameters.getSearchTerm())
-            .get(getPath(ENDPOINT_CONTEXT_ARRANGEMENTS));
     }
 
     public List<ArrangementsByBusinessFunctionGetResponseBody> getSepaCtArrangements() {
@@ -79,4 +63,26 @@ public class ProductSummaryPresentationRestClient extends AbstractRestClient {
             .extract()
             .as(ArrangementsByBusinessFunctionGetResponseBody[].class));
     }
+
+    @Override
+    protected String composeInitialPath() {
+        return getGatewayURI() + SLASH + PRODUCT_SUMMARY_PRESENTATION_SERVICE;
+    }
+
+    private Response getProductSummaryContextArrangements(ProductSummaryQueryParameters queryParameters) {
+        return requestSpec()
+            .queryParam("businessFunction", queryParameters.getBusinessFunction())
+            .queryParam("resourceName", queryParameters.getResourceName())
+            .queryParam("privilege", queryParameters.getPrivilege())
+            .queryParam("externalTransferAllowed", queryParameters.getExternalTransferAllowed())
+            .queryParam("creditAccount", queryParameters.getCreditAccount())
+            .queryParam("debitAccount", queryParameters.getDebitAccount())
+            .queryParam("from", queryParameters.getFrom())
+            .queryParam("size", queryParameters.getSize())
+            .queryParam("orderBy", queryParameters.getOrderBy())
+            .queryParam("direction", queryParameters.getDirection())
+            .queryParam("searchTerm", queryParameters.getSearchTerm())
+            .get(getPath(ENDPOINT_CONTEXT_ARRANGEMENTS));
+    }
+
 }

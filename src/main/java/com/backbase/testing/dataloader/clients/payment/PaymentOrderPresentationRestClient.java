@@ -13,7 +13,7 @@ public class PaymentOrderPresentationRestClient extends AbstractRestClient {
 
     public PaymentOrderPresentationRestClient() {
         super(SERVICE_VERSION);
-        setInitialPath(getGatewayURI() + "/" + PAYMENT_ORDER_PRESENTATION_SERVICE);
+        setInitialPath(composeInitialPath());
     }
 
     public Response initiatePaymentOrder(InitiatePaymentOrder body) {
@@ -22,4 +22,10 @@ public class PaymentOrderPresentationRestClient extends AbstractRestClient {
             .body(body)
             .post(getPath(ENDPOINT_PAYMENT_ORDERS));
     }
+
+    @Override
+    protected String composeInitialPath() {
+        return getGatewayURI() + SLASH + PAYMENT_ORDER_PRESENTATION_SERVICE;
+    }
+
 }

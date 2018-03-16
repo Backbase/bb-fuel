@@ -42,7 +42,7 @@ public class ServiceAgreementsSetup {
     private Map<String, String> functionGroupFunctionNames = new HashMap<>();
     private CurrencyDataGroup currencyDataGroup = null;
     private FunctionsGetResponseBody[] functions;
-    private LegalEntitiesWithUsersAssembler legalEntitiesWithUsersAssembler = new LegalEntitiesWithUsersAssembler();
+    private LegalEntitiesWithUsersSetup legalEntitiesWithUsersSetup = new LegalEntitiesWithUsersSetup();
 
     public ServiceAgreementsSetup() throws IOException {
     }
@@ -93,7 +93,7 @@ public class ServiceAgreementsSetup {
             .as(ServiceAgreementGetResponseBody.class)
             .getExternalId();
 
-        this.currencyDataGroup = this.legalEntitiesWithUsersAssembler
+        this.currencyDataGroup = this.legalEntitiesWithUsersSetup
             .getDataGroupArrangementsForServiceAgreement(externalServiceAgreementId, externalLegalEntityId);
 
         for (FunctionsGetResponseBody function : this.functions) {

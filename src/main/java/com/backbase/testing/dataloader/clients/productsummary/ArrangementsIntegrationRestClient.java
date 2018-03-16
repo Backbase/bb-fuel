@@ -28,7 +28,7 @@ public class ArrangementsIntegrationRestClient extends AbstractRestClient {
 
     public ArrangementsIntegrationRestClient() {
         super(USE_LOCAL ? LOCAL_PRODUCT_SUMMARY : PRODUCT_SUMMARY, SERVICE_VERSION);
-        setInitialPath(ARRANGEMENTS_INTEGRATION_SERVICE);
+        setInitialPath(composeInitialPath());
     }
 
     public Response ingestArrangement(ArrangementsPostRequestBody body) {
@@ -36,13 +36,6 @@ public class ArrangementsIntegrationRestClient extends AbstractRestClient {
             .contentType(ContentType.JSON)
             .body(body)
             .post(getPath(ENDPOINT_ARRANGEMENTS));
-    }
-
-    public Response ingestProduct(ProductsPostRequestBody body) {
-        return requestSpec()
-            .contentType(ContentType.JSON)
-            .body(body)
-            .post(getPath(ENDPOINT_PRODUCTS));
     }
 
     public void ingestProductAndLogResponse(ProductsPostRequestBody product) {
@@ -64,4 +57,17 @@ public class ArrangementsIntegrationRestClient extends AbstractRestClient {
                 .statusCode(SC_CREATED);
         }
     }
+
+    @Override
+    protected String composeInitialPath() {
+        return ARRANGEMENTS_INTEGRATION_SERVICE;
+    }
+
+    private Response ingestProduct(ProductsPostRequestBody body) {
+        return requestSpec()
+            .contentType(ContentType.JSON)
+            .body(body)
+            .post(getPath(ENDPOINT_PRODUCTS));
+    }
+
 }

@@ -18,7 +18,7 @@ public class TransactionsIntegrationRestClient extends AbstractRestClient {
 
     public TransactionsIntegrationRestClient() {
         super(USE_LOCAL ? LOCAL_TRANSACTIONS : TRANSACTIONS, SERVICE_VERSION);
-        setInitialPath(TRANSACTION_INTEGRATION_SERVICE);
+        setInitialPath(composeInitialPath());
     }
 
     public Response ingestTransaction(TransactionsPostRequestBody body) {
@@ -27,4 +27,10 @@ public class TransactionsIntegrationRestClient extends AbstractRestClient {
             .body(body)
             .post(getPath(ENDPOINT_TRANSACTIONS));
     }
+
+    @Override
+    protected String composeInitialPath() {
+        return TRANSACTION_INTEGRATION_SERVICE;
+    }
+
 }

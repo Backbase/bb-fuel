@@ -6,15 +6,12 @@ import com.backbase.integration.legalentity.rest.spec.v2.legalentities.LegalEnti
 import com.backbase.integration.legalentity.rest.spec.v2.legalentities.enumeration.LegalEntityType;
 import com.backbase.integration.user.rest.spec.v2.users.UsersPostRequestBody;
 import com.github.javafaker.Faker;
+import java.util.Optional;
 import org.apache.commons.lang.RandomStringUtils;
 
 public class LegalEntitiesAndUsersDataGenerator {
 
     private static Faker faker = new Faker();
-
-    public static String generateExternalLegalEntityId() {
-        return EXTERNAL_LEGAL_ENTITY_ID_PREFIX + RandomStringUtils.randomNumeric(8);
-    }
 
     public static LegalEntitiesPostRequestBody generateRootLegalEntitiesPostRequestBody(String externalLegalEntityId) {
         return new LegalEntitiesPostRequestBody()
@@ -24,13 +21,14 @@ public class LegalEntitiesAndUsersDataGenerator {
             .withType(LegalEntityType.BANK);
     }
 
-    @Deprecated
-    public static LegalEntitiesPostRequestBody generateLegalEntitiesPostRequestBody(String externalLegalEntityId, String externalParentLegalEntityId) {
+    public static LegalEntitiesPostRequestBody composeLegalEntitiesPostRequestBody(String legalEntityExternalId, String legalEntityName,
+        String parentLegalEntityExternalId, String type) {
         return new LegalEntitiesPostRequestBody()
-            .withExternalId(externalLegalEntityId)
-            .withName(faker.lorem().sentence(3, 0).replace(".", ""))
-            .withParentExternalId(externalParentLegalEntityId)
-            .withType(LegalEntityType.CUSTOMER);
+            .withExternalId(Optional.ofNullable(legalEntityExternalId).orElse(generateExternalLegalEntityId()))
+            .withName(Optional.ofNullable(legalEntityName).orElse(faker.lorem().sentence(3, 0)
+                .replace(".", "")))
+            .withParentExternalId(parentLegalEntityExternalId)
+            .withType(Optional.ofNullable(LegalEntityType.fromValue(type)).orElse(LegalEntityType.CUSTOMER));
     }
 
     public static UsersPostRequestBody generateUsersPostRequestBody(String userId, String legalEntityId) {
@@ -40,12 +38,7 @@ public class LegalEntitiesAndUsersDataGenerator {
             .withFullName(faker.name().firstName() + " " + faker.name().lastName());
     }
 
-    public static LegalEntitiesPostRequestBody composeLegalEntitiesPostRequestBody(String legalEntityExternalId, String legalEntityName,
-        String parentLegalEntityExternalId, String type) {
-        return new LegalEntitiesPostRequestBody()
-            .withExternalId(legalEntityExternalId)
-            .withName(legalEntityName)
-            .withParentExternalId(parentLegalEntityExternalId)
-            .withType(LegalEntityType.fromValue(type));
+    private static String generateExternalLegalEntityId() {
+        return EXTERNAL_LEGAL_ENTITY_ID_PREFIX + RandomStringUtils.randomNumeric(8);
     }
 }

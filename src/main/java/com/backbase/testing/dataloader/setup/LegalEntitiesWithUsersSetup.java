@@ -46,7 +46,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-public class LegalEntitiesWithUsersAssembler {
+public class LegalEntitiesWithUsersSetup {
 
     private GlobalProperties globalProperties = GlobalProperties.getInstance();
     private LoginRestClient loginRestClient = new LoginRestClient();
@@ -67,7 +67,7 @@ public class LegalEntitiesWithUsersAssembler {
     private LegalEntityWithUsers[] entities = ParserUtil
         .convertJsonToObject(this.globalProperties.getString(PROPERTY_LEGAL_ENTITIES_WITH_USERS_JSON_LOCATION), LegalEntityWithUsers[].class);
 
-    public LegalEntitiesWithUsersAssembler() throws IOException {
+    public LegalEntitiesWithUsersSetup() throws IOException {
     }
 
     public void assembleUsersWithAndWithoutFunctionDataGroupsPrivileges() throws IOException {

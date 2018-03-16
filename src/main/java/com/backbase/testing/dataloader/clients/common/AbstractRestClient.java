@@ -8,10 +8,11 @@ import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_LOCA
 
 import com.backbase.testing.dataloader.utils.GlobalProperties;
 
-public class AbstractRestClient extends RestClient {
+public abstract class AbstractRestClient extends RestClient {
 
     protected static GlobalProperties globalProperties = GlobalProperties.getInstance();
     protected static final Boolean USE_LOCAL = globalProperties.getBoolean(PROPERTY_CONFIGURATION_SWITCHER);
+    protected static final String SLASH = "/";
 
     private static final String LOCAL_GATEWAY = globalProperties.getString(PROPERTY_LOCAL_GATEWAY_PATH);
     private static final String GATEWAY = globalProperties.getString(PROPERTY_GATEWAY_PATH);
@@ -33,5 +34,7 @@ public class AbstractRestClient extends RestClient {
     protected final String getGatewayURI() {
         return USE_LOCAL ? LOCAL_GATEWAY : GATEWAY;
     }
+
+    protected abstract String composeInitialPath();
 
 }

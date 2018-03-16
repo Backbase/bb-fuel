@@ -98,6 +98,14 @@ java -Denvironment.name=your-env-00 -cp /path/to/custom/resources/folder/:datalo
 Example for the `users.json` (other files are: `users-without-permissions.json`, `serviceagreements.json` and `products.json`):
 
 1. Create json file named `legal-entities-with-users.json` with custom legal entities and assigned custom user list conforming existing format (in this case conforming: [legal-entities-with-users.json ](src/main/resources/data/legal-entities-with-users.json ))
+By default if customizable fields have not been provided, system will generate randomized values for it.
+Optional fields in the data structure:
+- `legalEntityExternalId`
+- `parentLegalEntityExternalId`
+- `legalEntityName`
+- `legalEntityType`
+Mandatory fields:
+- `userExternalIds` - array of Strings, representing User ids.
 
 Each `userExternalIds` array consists of the users which will be ingested under the above legal entity.
 

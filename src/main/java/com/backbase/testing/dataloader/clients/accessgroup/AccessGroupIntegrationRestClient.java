@@ -25,7 +25,7 @@ public class AccessGroupIntegrationRestClient extends AbstractRestClient {
 
     public AccessGroupIntegrationRestClient() {
         super(USE_LOCAL ? LOCAL_ENTITLEMENTS : ENTITLEMENTS, SERVICE_VERSION);
-        setInitialPath(ACCESS_GROUP_INTEGRATION_SERVICE);
+        setInitialPath(composeInitialPath());
     }
 
     public Response ingestFunctionGroup(FunctionGroupPostRequestBody body) {
@@ -68,4 +68,10 @@ public class AccessGroupIntegrationRestClient extends AbstractRestClient {
             .body(body)
             .post(getPath(ENDPOINT_USERS_PERMISSIONS));
     }
+
+    @Override
+    protected String composeInitialPath() {
+        return ACCESS_GROUP_INTEGRATION_SERVICE;
+    }
+
 }

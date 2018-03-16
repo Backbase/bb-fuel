@@ -25,14 +25,7 @@ public class LegalEntityIntegrationRestClient extends AbstractRestClient {
 
     public LegalEntityIntegrationRestClient() {
         super(USE_LOCAL ? LOCAL_ENTITLEMENTS : ENTITLEMENTS, SERVICE_VERSION);
-        setInitialPath(LEGAL_ENTITY_INTEGRATION_SERVICE);
-    }
-
-    public Response ingestLegalEntity(LegalEntitiesPostRequestBody body) {
-        return requestSpec()
-            .contentType(ContentType.JSON)
-            .body(body)
-            .post(getPath(ENDPOINT_LEGAL_ENTITIES));
+        setInitialPath(composeInitialPath());
     }
 
     public void ingestLegalEntityAndLogResponse(LegalEntitiesPostRequestBody legalEntity) {
@@ -57,4 +50,17 @@ public class LegalEntityIntegrationRestClient extends AbstractRestClient {
             response.then().statusCode(SC_CREATED);
         }
     }
+
+    @Override
+    protected String composeInitialPath() {
+        return LEGAL_ENTITY_INTEGRATION_SERVICE;
+    }
+
+    private Response ingestLegalEntity(LegalEntitiesPostRequestBody body) {
+        return requestSpec()
+            .contentType(ContentType.JSON)
+            .body(body)
+            .post(getPath(ENDPOINT_LEGAL_ENTITIES));
+    }
+
 }

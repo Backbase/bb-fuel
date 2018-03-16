@@ -14,7 +14,7 @@ public class LegalEntityPresentationRestClient extends AbstractRestClient {
 
     public LegalEntityPresentationRestClient() {
         super(SERVICE_VERSION);
-        setInitialPath(getGatewayURI() + "/" + LEGAL_ENTITY_PRESENTATION_SERVICE);
+        setInitialPath(composeInitialPath());
     }
 
     public Response retrieveLegalEntityByExternalId(String externalLegalEntityId) {
@@ -26,4 +26,10 @@ public class LegalEntityPresentationRestClient extends AbstractRestClient {
         return requestSpec()
             .get(String.format(getPath(ENDPOINT_SERVICE_AGREEMENTS_MASTER), internalLegalEntityId));
     }
+
+    @Override
+    protected String composeInitialPath() {
+        return getGatewayURI() + SLASH + LEGAL_ENTITY_PRESENTATION_SERVICE;
+    }
+
 }

@@ -13,7 +13,7 @@ public class ContactPresentationRestClient extends AbstractRestClient {
 
     public ContactPresentationRestClient() {
         super(SERVICE_VERSION);
-        setInitialPath(getGatewayURI() + "/" + CONTACT_PRESENTATION_SERVICE);
+        setInitialPath(composeInitialPath());
     }
 
     public Response createContact(ContactsPostRequestBody body) {
@@ -22,4 +22,10 @@ public class ContactPresentationRestClient extends AbstractRestClient {
             .body(body)
             .post(getPath(ENDPOINT_CONTACTS));
     }
+
+    @Override
+    protected String composeInitialPath() {
+        return getGatewayURI() + SLASH + CONTACT_PRESENTATION_SERVICE;
+    }
+
 }

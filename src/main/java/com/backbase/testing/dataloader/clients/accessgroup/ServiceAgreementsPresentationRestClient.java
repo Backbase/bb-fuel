@@ -1,7 +1,6 @@
 package com.backbase.testing.dataloader.clients.accessgroup;
 
 import com.backbase.testing.dataloader.clients.common.AbstractRestClient;
-import com.backbase.testing.dataloader.utils.GlobalProperties;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 
@@ -16,7 +15,7 @@ public class ServiceAgreementsPresentationRestClient extends AbstractRestClient 
 
     public ServiceAgreementsPresentationRestClient() {
         super(SERVICE_VERSION);
-        setInitialPath(getGatewayURI() + "/" + ACCESS_GROUP_PRESENTATION_SERVICE);
+        setInitialPath(composeInitialPath());
     }
 
     public Response retrieveServiceAgreementByCreatorLegalEntityId(String internalCreatorLegalEntityId) {
@@ -30,4 +29,10 @@ public class ServiceAgreementsPresentationRestClient extends AbstractRestClient 
             .contentType(ContentType.JSON)
             .get(getPath(String.format(ENDPOINT_SERVICE_AGREEMENTS_BY_ID, internalServiceAgreementId)));
     }
+
+    @Override
+    protected String composeInitialPath() {
+        return getGatewayURI() + SLASH + ACCESS_GROUP_PRESENTATION_SERVICE;
+    }
+
 }

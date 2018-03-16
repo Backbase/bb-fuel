@@ -13,7 +13,7 @@ public class NotificationsPresentationRestClient extends AbstractRestClient {
 
     public NotificationsPresentationRestClient() {
         super(SERVICE_VERSION);
-        setInitialPath(getGatewayURI() + "/" + NOTIFICATIONS_PRESENTATION_SERVICE);
+        setInitialPath(composeInitialPath());
     }
 
     public Response createNotification(NotificationsPostRequestBody body) {
@@ -22,4 +22,10 @@ public class NotificationsPresentationRestClient extends AbstractRestClient {
             .body(body)
             .post(getPath(ENDPOINT_NOTIFICATIONS));
     }
+
+    @Override
+    protected String composeInitialPath() {
+        return getGatewayURI() + SLASH + NOTIFICATIONS_PRESENTATION_SERVICE;
+    }
+
 }

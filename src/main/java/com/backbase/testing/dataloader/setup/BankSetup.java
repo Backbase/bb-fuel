@@ -22,7 +22,7 @@ public class BankSetup {
     private UserContextPresentationRestClient userContextPresentationRestClient = new UserContextPresentationRestClient();
     private LoginRestClient loginRestClient = new LoginRestClient();
     private NotificationsConfigurator notificationsConfigurator = new NotificationsConfigurator();
-    private LegalEntitiesWithUsersAssembler legalEntitiesWithUsersAssembler = new LegalEntitiesWithUsersAssembler();
+    private LegalEntitiesWithUsersSetup legalEntitiesWithUsersSetup = new LegalEntitiesWithUsersSetup();
 
     public BankSetup() throws IOException {
     }
@@ -31,7 +31,7 @@ public class BankSetup {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_ENTITLEMENTS)) {
             this.legalEntitiesAndUsersConfigurator.ingestRootLegalEntityAndEntitlementsAdmin(EXTERNAL_ROOT_LEGAL_ENTITY_ID, USER_ADMIN);
             this.productSummaryConfigurator.ingestProducts();
-            this.legalEntitiesWithUsersAssembler.assembleUsersPrivilegesAndDataGroups(Collections.singletonList(USER_ADMIN));
+            this.legalEntitiesWithUsersSetup.assembleUsersPrivilegesAndDataGroups(Collections.singletonList(USER_ADMIN));
         }
     }
 

@@ -13,7 +13,7 @@ public class UserPresentationRestClient extends AbstractRestClient {
 
     public UserPresentationRestClient() {
         super(SERVICE_VERSION);
-        setInitialPath(getGatewayURI() + "/" + USER_PRESENTATION_SERVICE);
+        setInitialPath(composeInitialPath());
     }
 
     public Response retrieveLegalEntityByExternalUserId(String externalUserId) {
@@ -25,4 +25,10 @@ public class UserPresentationRestClient extends AbstractRestClient {
         return requestSpec()
             .get(String.format(getPath(ENDPOINT_USER_BY_EXTERNAL_ID), userExternalId));
     }
+
+    @Override
+    protected String composeInitialPath() {
+        return getGatewayURI() + SLASH + USER_PRESENTATION_SERVICE;
+    }
+
 }

@@ -24,33 +24,7 @@ public class UserContextPresentationRestClient extends AbstractRestClient {
 
     public UserContextPresentationRestClient() {
         super(SERVICE_VERSION);
-        setInitialPath(getGatewayURI() + "/" + ACCESS_GROUP_PRESENTATION_SERVICE);
-    }
-
-    public Response postUserContext(UserContextPostRequestBody userContextPostRequestBody) {
-        Response response = requestSpec()
-            .contentType(ContentType.JSON)
-            .body(userContextPostRequestBody)
-            .post(getPath(ENDPOINT_USER_CONTEXT));
-
-        Map<String, String> cookies = new HashMap<>(response.then()
-            .extract()
-            .cookies());
-        setUpCookies(cookies);
-
-        return response;
-    }
-
-    public Response getServiceAgreementsForUserContext() {
-        return requestSpec()
-            .contentType(ContentType.JSON)
-            .get(getPath(ENDPOINT_USER_CONTEXT_SERVICE_AGREEMENTS));
-    }
-
-    public Response getLegalEntitiesForServiceAgreements(String serviceAgreementId) {
-        return requestSpec()
-            .contentType(ContentType.JSON)
-            .get(String.format(getPath(ENDPOINT_USER_CONTEXT_LEGAL_ENTITIES_BY_SERVICE_AGREEMENT_ID), serviceAgreementId));
+        setInitialPath(composeInitialPath());
     }
 
     public void selectContextBasedOnMasterServiceAgreement() {
@@ -70,6 +44,37 @@ public class UserContextPresentationRestClient extends AbstractRestClient {
             .statusCode(SC_NO_CONTENT);
     }
 
+    @Override
+    protected String composeInitialPath() {
+        return getGatewayURI() + SLASH + ACCESS_GROUP_PRESENTATION_SERVICE;
+    }
+
+    private Response postUserContext(UserContextPostRequestBody userContextPostRequestBody) {
+        Response response = requestSpec()
+            .contentType(ContentType.JSON)
+            .body(userContextPostRequestBody)
+            .post(getPath(ENDPOINT_USER_CONTEXT));
+
+        Map<String, String> cookies = new HashMap<>(response.then()
+            .extract()
+            .cookies());
+        setUpCookies(cookies);
+
+        return response;
+    }
+
+    private Response getServiceAgreementsForUserContext() {
+        return requestSpec()
+            .contentType(ContentType.JSON)
+            .get(getPath(ENDPOINT_USER_CONTEXT_SERVICE_AGREEMENTS));
+    }
+
+    private Response getLegalEntitiesForServiceAgreements(String serviceAgreementId) {
+        return requestSpec()
+            .contentType(ContentType.JSON)
+            .get(String.format(getPath(ENDPOINT_USER_CONTEXT_LEGAL_ENTITIES_BY_SERVICE_AGREEMENT_ID), serviceAgreementId));
+    }
+
     private ServiceAgreementGetResponseBody getMasterServiceAgreementForUserContext() {
         ServiceAgreementGetResponseBody[] serviceAgreementGetResponseBodies = getServiceAgreementsForUserContext()
             .then()
@@ -82,4 +87,5 @@ public class UserContextPresentationRestClient extends AbstractRestClient {
             .findFirst()
             .orElse(null);
     }
+
 }

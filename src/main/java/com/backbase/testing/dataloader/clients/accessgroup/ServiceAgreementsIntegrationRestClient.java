@@ -21,7 +21,7 @@ public class ServiceAgreementsIntegrationRestClient extends AbstractRestClient {
 
     public ServiceAgreementsIntegrationRestClient() {
         super(USE_LOCAL ? LOCAL_ENTITLEMENTS : ENTITLEMENTS, SERVICE_VERSION);
-        setInitialPath(ACCESS_GROUP_INTEGRATION_SERVICE);
+        setInitialPath(composeInitialPath());
     }
 
     public Response ingestServiceAgreement(ServiceAgreementPostRequestBody body) {
@@ -37,4 +37,10 @@ public class ServiceAgreementsIntegrationRestClient extends AbstractRestClient {
             .body(body)
             .put(getPath(String.format(ENDPOINT_SERVICE_AGREEMENTS_BY_ID, internalServiceAgreementId)));
     }
+
+    @Override
+    protected String composeInitialPath() {
+        return ACCESS_GROUP_INTEGRATION_SERVICE;
+    }
+
 }

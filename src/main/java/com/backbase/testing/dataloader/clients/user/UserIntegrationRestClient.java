@@ -28,16 +28,7 @@ public class UserIntegrationRestClient extends AbstractRestClient {
 
     public UserIntegrationRestClient() {
         super(USE_LOCAL ? LOCAL_ENTITLEMENTS : ENTITLEMENTS, SERVICE_VERSION);
-        setInitialPath(USER_INTEGRATION_SERVICE);
-    }
-
-    public Response ingestEntitlementsAdminUnderLE(String externalUserId, String externalLegalEntityId) {
-        return requestSpec()
-            .contentType(ContentType.JSON)
-            .body(new EntitlementsAdminPostRequestBody()
-                .withExternalId(externalUserId)
-                .withLegalEntityExternalId(externalLegalEntityId))
-            .post(getPath(ENDPOINT_ENTITLEMENTS_ADMIN));
+        setInitialPath(composeInitialPath());
     }
 
     public void ingestEntitlementsAdminUnderLEAndLogResponse(String externalUserId, String externalLegalEntityId) {
@@ -59,13 +50,6 @@ public class UserIntegrationRestClient extends AbstractRestClient {
         }
     }
 
-    public Response ingestUser(UsersPostRequestBody body) {
-        return requestSpec()
-            .contentType(ContentType.JSON)
-            .body(body)
-            .post(getPath(ENDPOINT_USERS));
-    }
-
     public void ingestUserAndLogResponse(UsersPostRequestBody user) {
         Response response = ingestUser(user);
 
@@ -82,4 +66,26 @@ public class UserIntegrationRestClient extends AbstractRestClient {
             response.then().statusCode(SC_CREATED);
         }
     }
+
+    @Override
+    protected String composeInitialPath() {
+        return USER_INTEGRATION_SERVICE;
+    }
+
+    private Response ingestEntitlementsAdminUnderLE(String externalUserId, String externalLegalEntityId) {
+        return requestSpec()
+            .contentType(ContentType.JSON)
+            .body(new EntitlementsAdminPostRequestBody()
+                .withExternalId(externalUserId)
+                .withLegalEntityExternalId(externalLegalEntityId))
+            .post(getPath(ENDPOINT_ENTITLEMENTS_ADMIN));
+    }
+
+    private Response ingestUser(UsersPostRequestBody body) {
+        return requestSpec()
+            .contentType(ContentType.JSON)
+            .body(body)
+            .post(getPath(ENDPOINT_USERS));
+    }
+
 }

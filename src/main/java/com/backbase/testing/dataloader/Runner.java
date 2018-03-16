@@ -4,7 +4,7 @@ import com.backbase.testing.dataloader.healthchecks.EntitlementsHealthCheck;
 import com.backbase.testing.dataloader.healthchecks.ProductSummaryHealthCheck;
 import com.backbase.testing.dataloader.healthchecks.TransactionsHealthCheck;
 import com.backbase.testing.dataloader.setup.BankSetup;
-import com.backbase.testing.dataloader.setup.LegalEntitiesWithUsersAssembler;
+import com.backbase.testing.dataloader.setup.LegalEntitiesWithUsersSetup;
 import com.backbase.testing.dataloader.setup.ServiceAgreementsSetup;
 import java.io.IOException;
 import java.time.Duration;
@@ -20,7 +20,7 @@ public class Runner {
         System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", "8");
 
         BankSetup bankSetup = new BankSetup();
-        LegalEntitiesWithUsersAssembler legalEntitiesWithUsersAssembler = new LegalEntitiesWithUsersAssembler();
+        LegalEntitiesWithUsersSetup legalEntitiesWithUsersSetup = new LegalEntitiesWithUsersSetup();
         ServiceAgreementsSetup serviceAgreementsSetup = new ServiceAgreementsSetup();
         EntitlementsHealthCheck entitlementsHealthCheck = new EntitlementsHealthCheck();
         ProductSummaryHealthCheck productSummaryHealthCheck = new ProductSummaryHealthCheck();
@@ -33,14 +33,14 @@ public class Runner {
         Instant start = Instant.now();
 
         bankSetup.setupBankWithEntitlementsAdminAndProducts();
-        legalEntitiesWithUsersAssembler.assembleUsersWithAndWithoutFunctionDataGroupsPrivileges();
+        legalEntitiesWithUsersSetup.assembleUsersWithAndWithoutFunctionDataGroupsPrivileges();
         serviceAgreementsSetup.setupCustomServiceAgreements();
 
         bankSetup.setupBankNotifications();
 
-        legalEntitiesWithUsersAssembler.assembleContactsPerUser();
-        legalEntitiesWithUsersAssembler.assemblePaymentsPerUser();
-        legalEntitiesWithUsersAssembler.assembleConversationsPerUser();
+        legalEntitiesWithUsersSetup.assembleContactsPerUser();
+        legalEntitiesWithUsersSetup.assemblePaymentsPerUser();
+        legalEntitiesWithUsersSetup.assembleConversationsPerUser();
 
         Instant end = Instant.now();
         Duration duration = Duration.between(start, end);

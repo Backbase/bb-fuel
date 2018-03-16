@@ -18,7 +18,7 @@ public class MessagesPresentationRestClient extends AbstractRestClient {
 
     public MessagesPresentationRestClient() {
         super(SERVICE_VERSION);
-        setInitialPath(getGatewayURI() + "/" + MESSAGES_PRESENTATION_SERVICE);
+        setInitialPath(composeInitialPath());
     }
 
     public Response postDraft(DraftsPostRequestBody body) {
@@ -47,4 +47,10 @@ public class MessagesPresentationRestClient extends AbstractRestClient {
             .contentType(ContentType.JSON)
             .get(getPath(ENDPOINT_CONVERSATIONS));
     }
+
+    @Override
+    protected String composeInitialPath() {
+        return getGatewayURI() + SLASH + MESSAGES_PRESENTATION_SERVICE;
+    }
+
 }

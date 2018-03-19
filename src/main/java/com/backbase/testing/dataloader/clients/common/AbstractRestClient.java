@@ -14,8 +14,8 @@ public abstract class AbstractRestClient extends RestClient {
     protected static final Boolean USE_LOCAL = globalProperties.getBoolean(PROPERTY_CONFIGURATION_SWITCHER);
     protected static final String SLASH = "/";
 
-    private static final String LOCAL_GATEWAY = globalProperties.getString(PROPERTY_LOCAL_GATEWAY_PATH);
     private static final String GATEWAY = globalProperties.getString(PROPERTY_GATEWAY_PATH);
+    private static final String LOCAL_GATEWAY = globalProperties.getString(PROPERTY_LOCAL_GATEWAY_PATH);
     private static final String LOCAL_INFRA = globalProperties.getString(PROPERTY_LOCAL_INFRA_BASE_URI);
     private static final String INFRA = globalProperties.getString(PROPERTY_INFRA_BASE_URI);
 

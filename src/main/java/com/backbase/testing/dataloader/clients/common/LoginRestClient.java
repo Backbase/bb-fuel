@@ -32,7 +32,7 @@ public class LoginRestClient extends AbstractRestClient {
 
     @Override
     protected String composeInitialPath() {
-        return USE_LOCAL ? LOCAL_LOGIN : LOGIN;
+        return USE_LOCAL ? LOCAL_LOGIN : getGatewayURI() + LOGIN;
     }
 
 }

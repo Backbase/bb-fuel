@@ -6,6 +6,7 @@ import com.backbase.integration.legalentity.rest.spec.v2.legalentities.LegalEnti
 import com.backbase.integration.legalentity.rest.spec.v2.legalentities.enumeration.LegalEntityType;
 import com.backbase.integration.user.rest.spec.v2.users.UsersPostRequestBody;
 import com.github.javafaker.Faker;
+import com.google.common.base.Strings;
 import java.util.Optional;
 import org.apache.commons.lang.RandomStringUtils;
 
@@ -23,12 +24,18 @@ public class LegalEntitiesAndUsersDataGenerator {
 
     public static LegalEntitiesPostRequestBody composeLegalEntitiesPostRequestBody(String legalEntityExternalId, String legalEntityName,
         String parentLegalEntityExternalId, String type) {
-        return new LegalEntitiesPostRequestBody()
+
+        LegalEntitiesPostRequestBody requestBody = new LegalEntitiesPostRequestBody()
             .withExternalId(Optional.ofNullable(legalEntityExternalId).orElse(generateExternalLegalEntityId()))
             .withName(Optional.ofNullable(legalEntityName).orElse(faker.lorem().sentence(3, 0)
                 .replace(".", "")))
-            .withParentExternalId(parentLegalEntityExternalId)
-            .withType(Optional.ofNullable(LegalEntityType.fromValue(type)).orElse(LegalEntityType.CUSTOMER));
+            .withParentExternalId(parentLegalEntityExternalId);
+        if (!Strings.isNullOrEmpty(type)) {
+            requestBody.withType(LegalEntityType.fromValue(type));
+            return requestBody;
+        }
+        requestBody.withType(LegalEntityType.CUSTOMER);
+        return requestBody;
     }
 
     public static UsersPostRequestBody generateUsersPostRequestBody(String userId, String legalEntityId) {

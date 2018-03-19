@@ -69,39 +69,18 @@ public class RestClient {
     private static Map<String, String> cookiesJar = new LinkedHashMap<>();
     private final ResponseParserRegistrar responseParserRegistrar = new ResponseParserRegistrar();
 
-    public RestClient(String baseUri) {
+    RestClient(String baseUri) {
         setBaseUri(baseUri);
     }
 
-    public RestClient(String baseUri, String version) {
+    RestClient(String baseUri, String version) {
         setBaseUri(baseUri);
         this.version = version;
-    }
-
-    private void setBaseUri(String baseUri) {
-        try {
-            this.baseURI = new URI(baseUri);
-        } catch (URISyntaxException e) {
-            throw new RuntimeException("An error occurred while creating RestClient, 'baseUri' is incorrect", e);
-        }
-    }
-
-    public Map<String, String> getCookies() {
-        return cookiesJar;
     }
 
     public RestClient setInitialPath(String initialPath) {
         this.initialPath = initialPath;
         return this;
-    }
-
-    public static void setUpCookies(Map<String, String> cookies) {
-        cookiesJar.putAll(cookies);
-    }
-
-
-    public URI getBaseURI() {
-        return baseURI;
     }
 
     public RestAssuredConfig getRestAssuredConfig() {
@@ -129,6 +108,17 @@ public class RestClient {
         return baseAPI;
     }
 
+    /**
+     * Returns true when the health endpoint of the server returns 200 and status: "UP".
+     *
+     * @return Whether the service is up.
+     */
+    public boolean isUp() {
+        Response health = getHealth();
+        return health.statusCode() == SC_OK &&
+            health.getBody().jsonPath().getString("status").equals(SERVER_STATUS_UP);
+    }
+
     public RequestSpecification requestSpec() {
         LogRepository logRepository = new LogRepository();
         restAssuredConfig = RestAssuredConfig.config().objectMapperConfig(new ObjectMapperConfig().jackson2ObjectMapperFactory(
@@ -153,24 +143,33 @@ public class RestClient {
         return requestSpec;
     }
 
+    protected static void setUpCookies(Map<String, String> cookies) {
+        cookiesJar.putAll(cookies);
+    }
+
+    private void setBaseUri(String baseUri) {
+        try {
+            this.baseURI = new URI(baseUri);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException("An error occurred while creating RestClient, 'baseUri' is incorrect", e);
+        }
+    }
+
+    private Map<String, String> getCookies() {
+        return cookiesJar;
+    }
+
+    private URI getBaseURI() {
+        return baseURI;
+    }
+
     /**
      * @return DbsResponse containing information about the health of this service:
      * https://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-endpoints.html
      */
-    public Response getHealth() {
+    private Response getHealth() {
         return requestSpec()
                 .contentType(ContentType.JSON)
                 .get(DEFAULT_HEALTH_PATH);
-    }
-
-    /**
-     * Returns true when the health endpoint of the server returns 200 and status: "UP".
-     *
-     * @return Whether the service is up.
-     */
-    public boolean isUp() {
-        Response health = getHealth();
-        return health.statusCode() == SC_OK &&
-                health.getBody().jsonPath().getString("status").equals(SERVER_STATUS_UP);
     }
 }

@@ -149,7 +149,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>com.backbase.testing.dataloader.Runner</mainClass>
+                            <mainClass>com.backbase.ct.dataloader.Runner</mainClass>
                         </manifest>
                     </archive>
 

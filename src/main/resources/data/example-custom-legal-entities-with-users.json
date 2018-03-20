@@ -1,0 +1,41 @@
+[
+  {
+    "legalEntityExternalId": "LE000001",
+    "parentLegalEntityExternalId": "C000000",
+    "legalEntityName": "United Kingdom Legal Entity",
+    "legalEntityType": "CUSTOMER",
+    "userExternalIds": [
+      "U0091001",
+      "U0091002",
+      "U0091003",
+      "U0091004",
+      "U0091005"
+    ]
+  },
+  {
+    "legalEntityExternalId": "LE000002",
+    "parentLegalEntityExternalId": "C000000",
+    "legalEntityName": "Hong Kong Legal Entity",
+    "legalEntityType": "CUSTOMER",
+    "userExternalIds": [
+      "U0091011",
+      "U0091012",
+      "U0091013",
+      "U0091014",
+      "U0091015"
+    ]
+  },
+  {
+    "legalEntityExternalId": "LE000003",
+    "parentLegalEntityExternalId": "C000000",
+    "legalEntityName": "Custom Test Legal Entity",
+    "legalEntityType": "CUSTOMER",
+    "userExternalIds": [
+      "U1999011",
+      "U1999012",
+      "U1999013",
+      "U1999014",
+      "U1999015"
+    ]
+  }
+]

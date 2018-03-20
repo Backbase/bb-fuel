@@ -1,39 +1,29 @@
 package com.backbase.testing.dataloader.clients.accessgroup;
 
+import static org.apache.http.HttpStatus.SC_OK;
+
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.config.functions.FunctionsGetResponseBody;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.datagroups.DataGroupsGetResponseBody;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.functiongroups.FunctionGroupsGetResponseBody;
-import com.backbase.testing.dataloader.clients.common.RestClient;
-import com.backbase.testing.dataloader.utils.GlobalProperties;
+import com.backbase.testing.dataloader.clients.common.AbstractRestClient;
 import io.restassured.response.Response;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_GATEWAY_PATH;
-import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_INFRA_BASE_URI;
-import static org.apache.http.HttpStatus.SC_OK;
+public class AccessGroupPresentationRestClient extends AbstractRestClient {
 
-public class AccessGroupPresentationRestClient extends RestClient {
-
-    private static GlobalProperties globalProperties = GlobalProperties.getInstance();
     private static final String SERVICE_VERSION = "v2";
-    private static final String ACCESSGROUP_PRESENTATION_SERVICE = "accessgroup-presentation-service";
-    private static final String ENDPOINT_ACCESSGROUPS = "/accessgroups";
-    private static final String ENDPOINT_CONFIG_FUNCTIONS = ENDPOINT_ACCESSGROUPS + "/config/functions";
-    private static final String ENDPOINT_FUNCTION_BY_SERVICE_AGREEMENT_ID = ENDPOINT_ACCESSGROUPS + "/function-groups?serviceAgreementId=%s";
-    private static final String ENDPOINT_DATA_BY_SERVICE_AGREEMENT_ID_AND_TYPE = ENDPOINT_ACCESSGROUPS + "/data-groups?serviceAgreementId=%s&type=%s";
+    private static final String ACCESS_GROUP_PRESENTATION_SERVICE = "accessgroup-presentation-service";
+    private static final String ENDPOINT_ACCESS_GROUPS = "/accessgroups";
+    private static final String ENDPOINT_CONFIG_FUNCTIONS = ENDPOINT_ACCESS_GROUPS + "/config/functions";
+    private static final String ENDPOINT_FUNCTION_BY_SERVICE_AGREEMENT_ID = ENDPOINT_ACCESS_GROUPS + "/function-groups?serviceAgreementId=%s";
+    private static final String ENDPOINT_DATA_BY_SERVICE_AGREEMENT_ID_AND_TYPE = ENDPOINT_ACCESS_GROUPS + "/data-groups?serviceAgreementId=%s&type=%s";
 
     public AccessGroupPresentationRestClient() {
-        super(globalProperties.getString(PROPERTY_INFRA_BASE_URI), SERVICE_VERSION);
-        setInitialPath(globalProperties.getString(PROPERTY_GATEWAY_PATH) + "/" + ACCESSGROUP_PRESENTATION_SERVICE);
-    }
-
-    public Response retrieveFunctionGroupsByServiceAgreement(String internalServiceAgreementId) {
-        return requestSpec()
-            .get(String.format(getPath(ENDPOINT_FUNCTION_BY_SERVICE_AGREEMENT_ID), internalServiceAgreementId));
+        super(SERVICE_VERSION);
+        setInitialPath(composeInitialPath());
     }
 
     public List<String> retrieveFunctionGroupIdsByServiceAgreement(String internalServiceAgreement) {
@@ -76,34 +66,45 @@ public class AccessGroupPresentationRestClient extends RestClient {
         }
     }
 
-    public Response retrieveDataGroupsByServiceAgreementAndType(String internalServiceAgreement, String type) {
-        return requestSpec()
-                .get(String.format(getPath(ENDPOINT_DATA_BY_SERVICE_AGREEMENT_ID_AND_TYPE), internalServiceAgreement, type));
-    }
-
     public List<String> retrieveDataGroupIdsByServiceAgreement(String internalServiceAgreement) {
         DataGroupsGetResponseBody[] dataGroups = retrieveDataGroupsByServiceAgreementAndType(internalServiceAgreement, "ARRANGEMENTS")
-                .then()
-                .statusCode(SC_OK)
-                .extract()
-                .as(DataGroupsGetResponseBody[].class);
+            .then()
+            .statusCode(SC_OK)
+            .extract()
+            .as(DataGroupsGetResponseBody[].class);
 
         return Arrays.stream(dataGroups)
             .map(DataGroupsGetResponseBody::getId)
             .collect(Collectors.toList());
     }
 
+    @Override
+    protected String composeInitialPath() {
+        return getGatewayURI() + SLASH + ACCESS_GROUP_PRESENTATION_SERVICE;
+    }
+
+    private Response retrieveFunctionGroupsByServiceAgreement(String internalServiceAgreementId) {
+        return requestSpec()
+            .get(String.format(getPath(ENDPOINT_FUNCTION_BY_SERVICE_AGREEMENT_ID), internalServiceAgreementId));
+    }
+
     private Response retrieveFunctions() {
         return requestSpec()
-                .get(getPath(ENDPOINT_CONFIG_FUNCTIONS));
+            .get(getPath(ENDPOINT_CONFIG_FUNCTIONS));
     }
 
     private String getFunctionIdForFunctionName(FunctionsGetResponseBody[] functions, String functionName) {
         Optional<String> functionId = Arrays.stream(functions)
-                .filter(e -> e.getName()
-                        .equals(functionName))
-                .map(FunctionsGetResponseBody::getFunctionId)
-                .findFirst();
+            .filter(e -> e.getName()
+                .equals(functionName))
+            .map(FunctionsGetResponseBody::getFunctionId)
+            .findFirst();
         return functionId.orElse(null);
     }
+
+    private Response retrieveDataGroupsByServiceAgreementAndType(String internalServiceAgreement, String type) {
+        return requestSpec()
+            .get(String.format(getPath(ENDPOINT_DATA_BY_SERVICE_AGREEMENT_ID_AND_TYPE), internalServiceAgreement, type));
+    }
+
 }

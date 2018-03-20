@@ -5,23 +5,29 @@ public final class CommonConstants {
     private CommonConstants() {
     }
 
+    // Switch flags
+    public static final String PROPERTY_CONFIGURATION_SWITCHER = "use.local.configurations";
+
     // Environment
+    public static final String PROPERTY_LOGIN_PATH = "login.path";
     public static final String PROPERTIES_FILE_NAME = "environment.properties";
+    public static final String GLOBAL_PROPERTIES_FILE_NAME = "global.properties";
+    public static final String LOCAL_PROPERTIES_FILE_NAME = "local.properties";
     public static final String PROPERTY_INFRA_BASE_URI = "infra.base.uri";
     public static final String PROPERTY_GATEWAY_PATH = "gateway.path";
     public static final String PROPERTY_ENTITLEMENTS_BASE_URI = "entitlements.base.uri";
-    public static final String PROPERTY_PRODUCTSUMMARY_BASE_URI = "productsummary.base.uri";
+    public static final String PROPERTY_PRODUCT_SUMMARY_BASE_URI = "productsummary.base.uri";
     public static final String PROPERTY_TRANSACTIONS_BASE_URI = "transactions.base.uri";
-    public static final String PROPERTY_HEALTHCHECK_TIMEOUT_IN_MINUTES = "healthcheck.timeout.in.minutes";
+    public static final String PROPERTY_HEALTH_CHECK_TIMEOUT_IN_MINUTES = "healthcheck.timeout.in.minutes";
 
     // Users
     public static final String USER_ADMIN = "admin";
-    public static final String PROPERTY_USERS_JSON_LOCATION = "users.json.location";
-    public static final String PROPERTY_USERS_WITHOUT_PERMISSIONS = "users.without.permissions.json.location";
-    public static final String PROPERTY_SERVICEAGREEMENTS_JSON_LOCATION = "serviceagreements.json.location";
+    public static final String PROPERTY_LEGAL_ENTITIES_WITH_USERS_JSON_LOCATION = "legal.entities.with.users.json.location";
+    public static final String PROPERTY_LEGAL_ENTITIES_WITH_USERS_WITHOUT_PERMISSION_JSON_LOCATION = "legal.entities.with.users.without.permissions.json.location";
+    public static final String PROPERTY_SERVICE_AGREEMENTS_JSON_LOCATION = "serviceagreements.json.location";
 
     // Entitlements
-    public static final String EXTERNAL_LEGAL_ENTITY_ID_PREFIX = "C00000";
+    static final String EXTERNAL_LEGAL_ENTITY_ID_PREFIX = "C00000";
     public static final String EXTERNAL_ROOT_LEGAL_ENTITY_ID = EXTERNAL_LEGAL_ENTITY_ID_PREFIX + "0";
     public static final String SEPA_CT_FUNCTION_NAME = "SEPA CT";
     public static final String US_DOMESTIC_WIRE_FUNCTION_NAME = "US Domestic Wire";
@@ -32,13 +38,16 @@ public final class CommonConstants {
     public static final String PROPERTY_INGEST_CUSTOM_SERVICE_AGREEMENTS = "ingest.custom.service.agreements";
 
     // Products
-    public static final String PROPERTY_PRODUCTS_JSON_LOCATION = "products.json.location";
+    static final String PROPERTY_PRODUCTS_JSON_LOCATION = "products.json.location";
 
     // User data
+    static final String PROPERTY_DEBIT_CARDS_MIN = "debit.cards.min";
+    static final String PROPERTY_DEBIT_CARDS_MAX = "debit.cards.max";
+    static final String PROPERTY_CONTACT_ACCOUNTS_MIN = "contact.accounts.min";
+    static final String PROPERTY_CONTACT_ACCOUNTS_MAX = "contact.accounts.max";
+
     public static final String PROPERTY_ARRANGEMENTS_MIN = "arrangements.min";
     public static final String PROPERTY_ARRANGEMENTS_MAX = "arrangements.max";
-    public static final String PROPERTY_DEBIT_CARDS_MIN = "debit.cards.min";
-    public static final String PROPERTY_DEBIT_CARDS_MAX = "debit.cards.max";
     public static final String PROPERTY_TRANSACTIONS_MIN = "transactions.min";
     public static final String PROPERTY_TRANSACTIONS_MAX = "transactions.max";
     public static final String PROPERTY_INGEST_TRANSACTIONS = "ingest.transactions";
@@ -47,8 +56,6 @@ public final class CommonConstants {
     public static final String PROPERTY_INGEST_NOTIFICATIONS = "ingest.notifications";
     public static final String PROPERTY_CONTACTS_MIN = "contacts.min";
     public static final String PROPERTY_CONTACTS_MAX = "contacts.max";
-    public static final String PROPERTY_CONTACT_ACCOUNTS_MIN = "contact.accounts.min";
-    public static final String PROPERTY_CONTACT_ACCOUNTS_MAX = "contact.accounts.max";
     public static final String PROPERTY_INGEST_CONTACTS = "ingest.contacts";
     public static final String PROPERTY_PAYMENTS_MIN = "payments.min";
     public static final String PROPERTY_PAYMENTS_MAX = "payments.max";

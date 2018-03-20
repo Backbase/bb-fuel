@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_HEALTHCHECK_TIMEOUT_IN_MINUTES;
+import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_HEALTH_CHECK_TIMEOUT_IN_MINUTES;
 import static com.backbase.testing.dataloader.utils.CommonHelpers.convertMinutesToMillis;
 
 public class HealthCheck {
@@ -16,7 +16,7 @@ public class HealthCheck {
     private GlobalProperties globalProperties = GlobalProperties.getInstance();
 
     public void checkServicesHealth(List<RestClient> restClients) {
-        long healthCheckTimeOutInMinutes = globalProperties.getLong(PROPERTY_HEALTHCHECK_TIMEOUT_IN_MINUTES);
+        long healthCheckTimeOutInMinutes = globalProperties.getLong(PROPERTY_HEALTH_CHECK_TIMEOUT_IN_MINUTES);
         long timeOutInMillis = convertMinutesToMillis(healthCheckTimeOutInMinutes);
 
         restClients.parallelStream()

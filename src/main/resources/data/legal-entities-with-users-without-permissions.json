@@ -1,6 +1,6 @@
 [
   {
-    "externalUserIds": [
+    "userExternalIds": [
       "U0000120",
       "U0000160",
       "U0000140",
@@ -9,7 +9,7 @@
     ]
   },
   {
-    "externalUserIds": [
+    "userExternalIds": [
       "U0004610",
       "U0004620",
       "U0004630",
@@ -23,7 +23,7 @@
     ]
   },
   {
-    "externalUserIds": [
+    "userExternalIds": [
       "U0004710",
       "U0004720",
       "U0004730",
@@ -37,7 +37,7 @@
     ]
   },
   {
-    "externalUserIds": [
+    "userExternalIds": [
       "U0004810",
       "U0004820",
       "U0004830",
@@ -51,7 +51,7 @@
     ]
   },
   {
-    "externalUserIds": [
+    "userExternalIds": [
       "U0004910"
     ]
   }

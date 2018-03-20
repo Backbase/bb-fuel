@@ -1,27 +1,27 @@
 [
   {
-    "externalUserIds": [
+    "userExternalIds": [
       "user"
     ]
   },
   {
-    "externalUserIds": [
+    "userExternalIds": [
       "designer"
     ]
   },
   {
-    "externalUserIds": [
+    "userExternalIds": [
       "manager"
     ]
   },
   {
-    "externalUserIds": [
+    "userExternalIds": [
       "U0000010",
       "U0000011"
     ]
   },
   {
-    "externalUserIds": [
+    "userExternalIds": [
       "U0001001",
       "U0001002",
       "U0001003",
@@ -30,7 +30,7 @@
     ]
   },
   {
-    "externalUserIds": [
+    "userExternalIds": [
       "U0001011",
       "U0001012",
       "U0001013",
@@ -39,7 +39,7 @@
     ]
   },
   {
-    "externalUserIds": [
+    "userExternalIds": [
       "U0001021",
       "U0001022",
       "U0001023",
@@ -53,7 +53,7 @@
     ]
   },
   {
-    "externalUserIds": [
+    "userExternalIds": [
       "U0001111",
       "U0001112",
       "U0001113",

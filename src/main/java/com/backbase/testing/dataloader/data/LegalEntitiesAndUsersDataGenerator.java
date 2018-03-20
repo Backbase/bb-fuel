@@ -1,41 +1,46 @@
 package com.backbase.testing.dataloader.data;
 
+import static com.backbase.testing.dataloader.data.CommonConstants.EXTERNAL_LEGAL_ENTITY_ID_PREFIX;
+import static com.backbase.testing.dataloader.data.CommonConstants.EXTERNAL_ROOT_LEGAL_ENTITY_ID;
+
 import com.backbase.integration.legalentity.rest.spec.v2.legalentities.LegalEntitiesPostRequestBody;
 import com.backbase.integration.legalentity.rest.spec.v2.legalentities.enumeration.LegalEntityType;
 import com.backbase.integration.user.rest.spec.v2.users.UsersPostRequestBody;
 import com.github.javafaker.Faker;
+import com.google.common.base.Strings;
+import java.util.Optional;
 import org.apache.commons.lang.RandomStringUtils;
-
-import static com.backbase.testing.dataloader.data.CommonConstants.EXTERNAL_LEGAL_ENTITY_ID_PREFIX;
 
 public class LegalEntitiesAndUsersDataGenerator {
 
     private static Faker faker = new Faker();
 
-    public static String generateExternalLegalEntityId() {
-        return EXTERNAL_LEGAL_ENTITY_ID_PREFIX + RandomStringUtils.randomNumeric(8);
-    }
-
     public static LegalEntitiesPostRequestBody generateRootLegalEntitiesPostRequestBody(String externalLegalEntityId) {
         return new LegalEntitiesPostRequestBody()
-                .withExternalId(externalLegalEntityId)
-                .withName(faker.lorem().sentence(3, 0).replace(".", ""))
-                .withParentExternalId(null)
-                .withType(LegalEntityType.BANK);
+            .withExternalId(externalLegalEntityId)
+            .withName(faker.lorem().sentence(3, 0).replace(".", ""))
+            .withParentExternalId(null)
+            .withType(LegalEntityType.BANK);
     }
 
-    public static LegalEntitiesPostRequestBody generateLegalEntitiesPostRequestBody(String externalLegalEntityId, String externalParentLegalEntityId) {
+    public static LegalEntitiesPostRequestBody composeLegalEntitiesPostRequestBody(String legalEntityExternalId, String legalEntityName,
+        String parentLegalEntityExternalId, String type) {
         return new LegalEntitiesPostRequestBody()
-                .withExternalId(externalLegalEntityId)
-                .withName(faker.lorem().sentence(3, 0).replace(".", ""))
-                .withParentExternalId(externalParentLegalEntityId)
-                .withType(LegalEntityType.CUSTOMER);
+            .withExternalId(Optional.ofNullable(legalEntityExternalId).orElse(generateExternalLegalEntityId()))
+            .withName(Optional.ofNullable(legalEntityName).orElse(faker.lorem().sentence(3, 0)
+                .replace(".", "")))
+            .withParentExternalId(Optional.ofNullable(parentLegalEntityExternalId).orElse(EXTERNAL_ROOT_LEGAL_ENTITY_ID))
+            .withType((!Strings.isNullOrEmpty(type)) ? LegalEntityType.fromValue(type) : LegalEntityType.CUSTOMER);
     }
 
-    public static UsersPostRequestBody generateUsersPostRequestBody(String externalUserId, String externalLegalEntityId) {
+    public static UsersPostRequestBody generateUsersPostRequestBody(String userId, String legalEntityId) {
         return new UsersPostRequestBody()
-                .withExternalId(externalUserId)
-                .withLegalEntityExternalId(externalLegalEntityId)
-                .withFullName(faker.name().firstName() + " " + faker.name().lastName());
+            .withExternalId(userId)
+            .withLegalEntityExternalId(legalEntityId)
+            .withFullName(faker.name().firstName() + " " + faker.name().lastName());
+    }
+
+    private static String generateExternalLegalEntityId() {
+        return EXTERNAL_LEGAL_ENTITY_ID_PREFIX + RandomStringUtils.randomNumeric(8);
     }
 }

@@ -5,6 +5,7 @@ import static com.backbase.testing.dataloader.data.LegalEntitiesAndUsersDataGene
 import static com.backbase.testing.dataloader.data.LegalEntitiesAndUsersDataGenerator.generateRootLegalEntitiesPostRequestBody;
 import static com.backbase.testing.dataloader.data.LegalEntitiesAndUsersDataGenerator.generateUsersPostRequestBody;
 
+import com.backbase.integration.legalentity.rest.spec.v2.legalentities.LegalEntitiesPostRequestBody;
 import com.backbase.testing.dataloader.clients.legalentity.LegalEntityIntegrationRestClient;
 import com.backbase.testing.dataloader.clients.user.UserIntegrationRestClient;
 import java.util.List;
@@ -22,10 +23,13 @@ public class LegalEntitiesAndUsersConfigurator {
 
     public void ingestUsersUnderComposedLegalEntity(List<String> externalUserIds, String parentLegalEntityExternalId, String legalEntityExternalId,
         String legalEntityName, String type) {
+        final LegalEntitiesPostRequestBody requestBody = composeLegalEntitiesPostRequestBody(legalEntityExternalId, legalEntityName,
+            parentLegalEntityExternalId, type);
         this.legalEntityIntegrationRestClient
-            .ingestLegalEntityAndLogResponse(composeLegalEntitiesPostRequestBody(legalEntityExternalId, legalEntityName, parentLegalEntityExternalId, type));
+            .ingestLegalEntityAndLogResponse(requestBody);
         externalUserIds.parallelStream()
             .forEach(
-                externalUserId -> this.userIntegrationRestClient.ingestUserAndLogResponse(generateUsersPostRequestBody(externalUserId, legalEntityExternalId)));
+                externalUserId -> this.userIntegrationRestClient
+                    .ingestUserAndLogResponse(generateUsersPostRequestBody(externalUserId, requestBody.getExternalId())));
     }
 }

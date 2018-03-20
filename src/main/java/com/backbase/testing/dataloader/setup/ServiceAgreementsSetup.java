@@ -1,7 +1,7 @@
 package com.backbase.testing.dataloader.setup;
 
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_INGEST_CUSTOM_SERVICE_AGREEMENTS;
-import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_SERVICEAGREEMENTS_JSON_LOCATION;
+import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_SERVICE_AGREEMENTS_JSON_LOCATION;
 import static com.backbase.testing.dataloader.data.CommonConstants.USER_ADMIN;
 import static org.apache.http.HttpStatus.SC_OK;
 
@@ -50,7 +50,7 @@ public class ServiceAgreementsSetup {
     public void setupCustomServiceAgreements() throws IOException {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_CUSTOM_SERVICE_AGREEMENTS)) {
             ServiceAgreementPostRequestBody[] serviceAgreementPostRequestBodies = ParserUtil
-                .convertJsonToObject(this.globalProperties.getString(PROPERTY_SERVICEAGREEMENTS_JSON_LOCATION), ServiceAgreementPostRequestBody[].class);
+                .convertJsonToObject(this.globalProperties.getString(PROPERTY_SERVICE_AGREEMENTS_JSON_LOCATION), ServiceAgreementPostRequestBody[].class);
             this.functions = this.accessGroupIntegrationRestClient.retrieveFunctions()
                 .then()
                 .statusCode(SC_OK)

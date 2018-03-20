@@ -24,18 +24,12 @@ public class LegalEntitiesAndUsersDataGenerator {
 
     public static LegalEntitiesPostRequestBody composeLegalEntitiesPostRequestBody(String legalEntityExternalId, String legalEntityName,
         String parentLegalEntityExternalId, String type) {
-
-        LegalEntitiesPostRequestBody requestBody = new LegalEntitiesPostRequestBody()
+        return new LegalEntitiesPostRequestBody()
             .withExternalId(Optional.ofNullable(legalEntityExternalId).orElse(generateExternalLegalEntityId()))
             .withName(Optional.ofNullable(legalEntityName).orElse(faker.lorem().sentence(3, 0)
                 .replace(".", "")))
-            .withParentExternalId(parentLegalEntityExternalId);
-        if (!Strings.isNullOrEmpty(type)) {
-            requestBody.withType(LegalEntityType.fromValue(type));
-            return requestBody;
-        }
-        requestBody.withType(LegalEntityType.CUSTOMER);
-        return requestBody;
+            .withParentExternalId(parentLegalEntityExternalId)
+            .withType((!Strings.isNullOrEmpty(type)) ? LegalEntityType.fromValue(type) : LegalEntityType.CUSTOMER);
     }
 
     public static UsersPostRequestBody generateUsersPostRequestBody(String userId, String legalEntityId) {

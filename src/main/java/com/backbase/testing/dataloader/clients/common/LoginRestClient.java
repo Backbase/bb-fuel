@@ -1,20 +1,17 @@
 package com.backbase.testing.dataloader.clients.common;
 
+import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_LOGIN_PATH;
+
 import io.restassured.response.ValidatableResponse;
 import java.util.HashMap;
 import java.util.Map;
 
 public class LoginRestClient extends AbstractRestClient {
 
-    private static final String PROPERTY_LOGIN_PATH = "login.path";
-    private static final String PROPERTY_LOCAL_LOGIN_PATH = "local.login.path";
     private static final String LOGIN = globalProperties.getString(PROPERTY_LOGIN_PATH);
-    private static final String LOCAL_LOGIN = globalProperties.getString(PROPERTY_LOCAL_LOGIN_PATH);
 
     public LoginRestClient() {
         super();
-        //TODO: Check configuration. 403 returned accessing through Gateway.
-        //setInitialPath(getGatewayURI() + composeInitialPath());
         setInitialPath(composeInitialPath());
     }
 
@@ -32,7 +29,7 @@ public class LoginRestClient extends AbstractRestClient {
 
     @Override
     protected String composeInitialPath() {
-        return USE_LOCAL ? LOCAL_LOGIN : getGatewayURI() + LOGIN;
+        return USE_LOCAL ? LOGIN : getGatewayURI() + LOGIN;
     }
 
 }

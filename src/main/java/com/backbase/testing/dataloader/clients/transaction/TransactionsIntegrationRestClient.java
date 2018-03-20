@@ -1,6 +1,5 @@
 package com.backbase.testing.dataloader.clients.transaction;
 
-import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_LOCAL_TRANSACTIONS_BASE_URI;
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_TRANSACTIONS_BASE_URI;
 
 import com.backbase.integration.transaction.external.rest.spec.v2.transactions.TransactionsPostRequestBody;
@@ -11,13 +10,12 @@ import io.restassured.response.Response;
 public class TransactionsIntegrationRestClient extends AbstractRestClient {
 
     private static final String TRANSACTIONS = globalProperties.getString(PROPERTY_TRANSACTIONS_BASE_URI);
-    private static final String LOCAL_TRANSACTIONS = globalProperties.getString(PROPERTY_LOCAL_TRANSACTIONS_BASE_URI);
     private static final String SERVICE_VERSION = "v2";
     private static final String TRANSACTION_INTEGRATION_SERVICE = "transaction-integration-service";
     private static final String ENDPOINT_TRANSACTIONS = "/transactions";
 
     public TransactionsIntegrationRestClient() {
-        super(USE_LOCAL ? LOCAL_TRANSACTIONS : TRANSACTIONS, SERVICE_VERSION);
+        super(TRANSACTIONS, SERVICE_VERSION);
         setInitialPath(composeInitialPath());
     }
 

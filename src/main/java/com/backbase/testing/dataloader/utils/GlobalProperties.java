@@ -70,4 +70,9 @@ public class GlobalProperties {
     public synchronized String syncGet(String key) {
         return configuration.getString(key);
     }
+
+    public <T> void setProperty(String key, T value) {
+        this.configuration.setProperty(key, value);
+    }
+
 }

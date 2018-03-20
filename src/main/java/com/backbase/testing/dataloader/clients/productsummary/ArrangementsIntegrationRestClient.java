@@ -1,7 +1,6 @@
 package com.backbase.testing.dataloader.clients.productsummary;
 
-import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_LOCAL_PRODUCTSUMMARY_BASE_URI;
-import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_PRODUCTSUMMARY_BASE_URI;
+import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_PRODUCT_SUMMARY_BASE_URI;
 import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 import static org.apache.http.HttpStatus.SC_CREATED;
 
@@ -18,8 +17,7 @@ public class ArrangementsIntegrationRestClient extends AbstractRestClient {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ArrangementsIntegrationRestClient.class);
 
-    private static final String PRODUCT_SUMMARY = globalProperties.getString(PROPERTY_PRODUCTSUMMARY_BASE_URI);
-    private static final String LOCAL_PRODUCT_SUMMARY = globalProperties.getString(PROPERTY_LOCAL_PRODUCTSUMMARY_BASE_URI);
+    private static final String PRODUCT_SUMMARY = globalProperties.getString(PROPERTY_PRODUCT_SUMMARY_BASE_URI);
 
     private static final String SERVICE_VERSION = "v2";
     private static final String ARRANGEMENTS_INTEGRATION_SERVICE = "arrangements-integration-service";
@@ -27,7 +25,7 @@ public class ArrangementsIntegrationRestClient extends AbstractRestClient {
     private static final String ENDPOINT_PRODUCTS = "/products";
 
     public ArrangementsIntegrationRestClient() {
-        super(USE_LOCAL ? LOCAL_PRODUCT_SUMMARY : PRODUCT_SUMMARY, SERVICE_VERSION);
+        super(PRODUCT_SUMMARY, SERVICE_VERSION);
         setInitialPath(composeInitialPath());
     }
 

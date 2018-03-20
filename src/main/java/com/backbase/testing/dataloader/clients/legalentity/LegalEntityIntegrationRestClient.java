@@ -1,7 +1,6 @@
 package com.backbase.testing.dataloader.clients.legalentity;
 
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_ENTITLEMENTS_BASE_URI;
-import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_LOCAL_ENTITLEMENTS_BASE_URI;
 import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 import static org.apache.http.HttpStatus.SC_CREATED;
 
@@ -18,13 +17,12 @@ public class LegalEntityIntegrationRestClient extends AbstractRestClient {
     private static final Logger LOGGER = LoggerFactory.getLogger(LegalEntityIntegrationRestClient.class);
 
     private static final String ENTITLEMENTS = globalProperties.getString(PROPERTY_ENTITLEMENTS_BASE_URI);
-    private static final String LOCAL_ENTITLEMENTS = globalProperties.getString(PROPERTY_LOCAL_ENTITLEMENTS_BASE_URI);
     private static final String SERVICE_VERSION = "v2";
     private static final String LEGAL_ENTITY_INTEGRATION_SERVICE = "legalentity-integration-service";
     private static final String ENDPOINT_LEGAL_ENTITIES = "/legalentities";
 
     public LegalEntityIntegrationRestClient() {
-        super(USE_LOCAL ? LOCAL_ENTITLEMENTS : ENTITLEMENTS, SERVICE_VERSION);
+        super(ENTITLEMENTS, SERVICE_VERSION);
         setInitialPath(composeInitialPath());
     }
 

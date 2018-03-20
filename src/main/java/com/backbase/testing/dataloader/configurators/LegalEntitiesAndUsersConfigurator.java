@@ -22,6 +22,8 @@ public class LegalEntitiesAndUsersConfigurator {
 
     public void ingestUsersUnderComposedLegalEntity(List<String> externalUserIds, String parentLegalEntityExternalId, String legalEntityExternalId,
         String legalEntityName, String type) {
+        //FIXME: Check!!!!
+//        this.legalEntityIntegrationRestClient.ingestLegalEntityAndLogResponse(generateRootLegalEntitiesPostRequestBody(EXTERNAL_ROOT_LEGAL_ENTITY_ID));
         this.legalEntityIntegrationRestClient
             .ingestLegalEntityAndLogResponse(composeLegalEntitiesPostRequestBody(legalEntityExternalId, legalEntityName, parentLegalEntityExternalId, type));
         externalUserIds.parallelStream()

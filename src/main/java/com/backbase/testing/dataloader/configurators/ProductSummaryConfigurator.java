@@ -34,10 +34,7 @@ public class ProductSummaryConfigurator {
 
     public void ingestProducts() throws IOException {
         ProductsPostRequestBody[] products = generateProductsPostRequestBodies();
-
-        Arrays.stream(products).parallel().forEach(product -> {
-            arrangementsIntegrationRestClient.ingestProductAndLogResponse(product);
-        });
+        Arrays.stream(products).parallel().forEach(product -> arrangementsIntegrationRestClient.ingestProductAndLogResponse(product));
     }
 
     public List<ArrangementId> ingestSpecificCurrencyArrangementsByLegalEntityAndReturnArrangementIds(String externalLegalEntityId, ArrangementsPostRequestBodyParent.Currency currency) {

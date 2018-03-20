@@ -11,20 +11,14 @@ public final class CommonConstants {
     // Environment
     public static final String PROPERTY_LOGIN_PATH = "login.path";
     public static final String PROPERTIES_FILE_NAME = "environment.properties";
+    public static final String GLOBAL_PROPERTIES_FILE_NAME = "global.properties";
+    public static final String LOCAL_PROPERTIES_FILE_NAME = "local.properties";
     public static final String PROPERTY_INFRA_BASE_URI = "infra.base.uri";
     public static final String PROPERTY_GATEWAY_PATH = "gateway.path";
     public static final String PROPERTY_ENTITLEMENTS_BASE_URI = "entitlements.base.uri";
     public static final String PROPERTY_PRODUCT_SUMMARY_BASE_URI = "productsummary.base.uri";
     public static final String PROPERTY_TRANSACTIONS_BASE_URI = "transactions.base.uri";
     public static final String PROPERTY_HEALTH_CHECK_TIMEOUT_IN_MINUTES = "healthcheck.timeout.in.minutes";
-
-    // Local default environment values
-    public static final String LOCAL_LOGIN_PATH = "/authentication-ldap/login";
-    public static final String LOCAL_INFRA_BASE_URI = "http://localhost:8080";
-    public static final String LOCAL_GATEWAY_PATH = "/gateway/api";
-    public static final String LOCAL_ENTITLEMENTS_BASE_URI = "http://localhost:8087";
-    public static final String LOCAL_PRODUCT_SUMMARY_BASE_URI = "http://localhost:8083";
-    public static final String LOCAL_TRANSACTIONS_BASE_URI = "http://localhost:8084";
 
     // Users
     public static final String USER_ADMIN = "admin";

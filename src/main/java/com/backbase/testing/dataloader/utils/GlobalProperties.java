@@ -1,7 +1,11 @@
 package com.backbase.testing.dataloader.utils;
 
 
-import com.backbase.testing.dataloader.data.CommonConstants;
+import static com.backbase.testing.dataloader.data.CommonConstants.GLOBAL_PROPERTIES_FILE_NAME;
+import static com.backbase.testing.dataloader.data.CommonConstants.LOCAL_PROPERTIES_FILE_NAME;
+import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTIES_FILE_NAME;
+import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_CONFIGURATION_SWITCHER;
+
 import org.apache.commons.configuration.CompositeConfiguration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.EnvironmentConfiguration;
@@ -35,7 +39,12 @@ public class GlobalProperties {
         configuration.addConfiguration(new SystemConfiguration());
         configuration.addConfiguration(new EnvironmentConfiguration());
         try {
-            configuration.addConfiguration(new PropertiesConfiguration(CommonConstants.PROPERTIES_FILE_NAME));
+            configuration.addConfiguration(new PropertiesConfiguration(PROPERTIES_FILE_NAME));
+            if (getBoolean(PROPERTY_CONFIGURATION_SWITCHER)) {
+                configuration.addConfiguration(new PropertiesConfiguration(LOCAL_PROPERTIES_FILE_NAME));
+                return;
+            }
+            configuration.addConfiguration(new PropertiesConfiguration(GLOBAL_PROPERTIES_FILE_NAME));
         } catch (ConfigurationException ignored) {
         }
     }
@@ -72,7 +81,7 @@ public class GlobalProperties {
     }
 
     public <T> void setProperty(String key, T value) {
-        this.configuration.setProperty(key, value);
+        configuration.setProperty(key, value);
     }
 
 }

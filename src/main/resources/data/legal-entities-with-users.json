@@ -1,41 +1,64 @@
 [
   {
-    "legalEntityExternalId": "LE000001",
-    "parentLegalEntityExternalId": "C000000",
-    "legalEntityName": "United Kingdom Legal Entity",
-    "legalEntityType": "CUSTOMER",
     "userExternalIds": [
-      "U0091001",
-      "U0091002",
-      "U0091003",
-      "U0091004",
-      "U0091005"
+      "user"
     ]
   },
   {
-    "legalEntityExternalId": "LE000002",
-    "parentLegalEntityExternalId": "C000000",
-    "legalEntityName": "Hong Kong Legal Entity",
-    "legalEntityType": "CUSTOMER",
     "userExternalIds": [
-      "U0091011",
-      "U0091012",
-      "U0091013",
-      "U0091014",
-      "U0091015"
+      "designer"
     ]
   },
   {
-    "legalEntityExternalId": "LE000003",
-    "parentLegalEntityExternalId": "C000000",
-    "legalEntityName": "Custom Test Legal Entity",
-    "legalEntityType": "CUSTOMER",
     "userExternalIds": [
-      "U1999011",
-      "U1999012",
-      "U1999013",
-      "U1999014",
-      "U1999015"
+      "manager"
+    ]
+  },
+  {
+    "userExternalIds": [
+      "U0000010",
+      "U0000011"
+    ]
+  },
+  {
+    "userExternalIds": [
+      "U0001001",
+      "U0001002",
+      "U0001003",
+      "U0001004",
+      "U0001005"
+    ]
+  },
+  {
+    "userExternalIds": [
+      "U0001011",
+      "U0001012",
+      "U0001013",
+      "U0001014",
+      "U0001015"
+    ]
+  },
+  {
+    "userExternalIds": [
+      "U0001021",
+      "U0001022",
+      "U0001023",
+      "U0001024",
+      "U0001025",
+      "U0001026",
+      "U0001027",
+      "U0001028",
+      "U0001029",
+      "U0001030"
+    ]
+  },
+  {
+    "userExternalIds": [
+      "U0001111",
+      "U0001112",
+      "U0001113",
+      "U0001114",
+      "U0001115"
     ]
   }
 ]

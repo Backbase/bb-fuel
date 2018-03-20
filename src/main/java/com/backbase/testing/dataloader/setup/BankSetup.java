@@ -1,6 +1,5 @@
 package com.backbase.testing.dataloader.setup;
 
-import static com.backbase.testing.dataloader.data.CommonConstants.EXTERNAL_ROOT_LEGAL_ENTITY_ID;
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_INGEST_ENTITLEMENTS;
 import static com.backbase.testing.dataloader.data.CommonConstants.PROPERTY_INGEST_NOTIFICATIONS;
 import static com.backbase.testing.dataloader.data.CommonConstants.USER_ADMIN;
@@ -29,7 +28,7 @@ public class BankSetup {
 
     public void setupBankWithEntitlementsAdminAndProducts() throws IOException {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_ENTITLEMENTS)) {
-            this.legalEntitiesAndUsersConfigurator.ingestRootLegalEntityAndEntitlementsAdmin(EXTERNAL_ROOT_LEGAL_ENTITY_ID, USER_ADMIN);
+            this.legalEntitiesAndUsersConfigurator.ingestRootLegalEntityAndEntitlementsAdmin(USER_ADMIN);
             this.productSummaryConfigurator.ingestProducts();
             this.legalEntitiesWithUsersSetup.assembleUsersPrivilegesAndDataGroups(Collections.singletonList(USER_ADMIN));
         }

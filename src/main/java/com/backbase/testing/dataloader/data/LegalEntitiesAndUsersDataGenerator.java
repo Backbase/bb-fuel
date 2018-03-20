@@ -1,6 +1,7 @@
 package com.backbase.testing.dataloader.data;
 
 import static com.backbase.testing.dataloader.data.CommonConstants.EXTERNAL_LEGAL_ENTITY_ID_PREFIX;
+import static com.backbase.testing.dataloader.data.CommonConstants.EXTERNAL_ROOT_LEGAL_ENTITY_ID;
 
 import com.backbase.integration.legalentity.rest.spec.v2.legalentities.LegalEntitiesPostRequestBody;
 import com.backbase.integration.legalentity.rest.spec.v2.legalentities.enumeration.LegalEntityType;
@@ -28,7 +29,7 @@ public class LegalEntitiesAndUsersDataGenerator {
             .withExternalId(Optional.ofNullable(legalEntityExternalId).orElse(generateExternalLegalEntityId()))
             .withName(Optional.ofNullable(legalEntityName).orElse(faker.lorem().sentence(3, 0)
                 .replace(".", "")))
-            .withParentExternalId(parentLegalEntityExternalId)
+            .withParentExternalId(Optional.ofNullable(parentLegalEntityExternalId).orElse(EXTERNAL_ROOT_LEGAL_ENTITY_ID))
             .withType((!Strings.isNullOrEmpty(type)) ? LegalEntityType.fromValue(type) : LegalEntityType.CUSTOMER);
     }
 

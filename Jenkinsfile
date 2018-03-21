@@ -1,6 +1,6 @@
 properties([
         parameters([
-                string(name: 'ENVIRONMENT_NAME', defaultValue: 'env-name-00', description: 'Autoconfig environment name, example: frosty-snow-99\nRead before running: https://stash.backbase.com/users/kwo/repos/dataloader/browse/README.md'),
+                string(name: 'ENVIRONMENT_NAME', defaultValue: 'env-name-00', description: 'Autoconfig environment name, example: frosty-snow-99\nRead before running: https://stash.backbase.com/projects/CT/repos/dataloader/browse/README.md'),
                 booleanParam(name: 'INGEST_ENTITLEMENTS', defaultValue: true, description: 'Ingest entitlements setup'),
                 booleanParam(name: 'INGEST_CUSTOM_SERVICE_AGREEMENTS', defaultValue: false, description: 'Ingest custom service agreements'),
                 booleanParam(name: 'INGEST_TRANSACTIONS', defaultValue: false, description: 'Ingest transactions per arrangement (only applicable when INGEST_ENTITLEMENTS = true)'),
@@ -15,7 +15,7 @@ properties([
 node {
     stage('Load data') {
         cleanWs()
-        git([credentialsId: 'e7e47e6e-8b7e-41f3-a854-b223f2985c96', url: 'ssh://git@stash.backbase.com:7999/~kwo/dataloader.git', branch: 'master'])
+        git([credentialsId: 'e7e47e6e-8b7e-41f3-a854-b223f2985c96', url: 'ssh://git@stash.backbase.com:7999/ct/dataloader.git', branch: 'master'])
 
         withEnv(["JAVA_HOME=${tool name: 'jdk-8u152'}", "PATH+MAVEN=${tool name: 'maven-352'}/bin:${env.JAVA_HOME}/bin"]) {
 
@@ -33,7 +33,7 @@ node {
                     "-Dingest.notifications=${params.INGEST_NOTIFICATIONS} " +
                     "-Dingest.payments=${params.INGEST_PAYMENTS} " +
                     "-Dingest.conversations=${params.INGEST_CONVERSATIONS} " +
-                    "-jar target/dataloader-jar-with-dependencies.jar"
+                    "-jar target/dataloader-jar-with-dependencies*.jar"
         }
     }
 }

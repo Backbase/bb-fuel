@@ -142,7 +142,6 @@
     </dependencies>
 
     <build>
-        <finalName>dataloader</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

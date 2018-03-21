@@ -1,6 +1,5 @@
 package com.backbase.ct.dataloader.utils;
 
-
 import com.backbase.ct.dataloader.data.CommonConstants;
 import org.apache.commons.configuration.CompositeConfiguration;
 import org.apache.commons.configuration.ConfigurationException;
@@ -10,20 +9,19 @@ import org.apache.commons.configuration.SystemConfiguration;
 
 /**
  * This is the single thread-safe source of retrieving properties.
- * <p>
+ *
  * Usage example:
  * <pre>
  * GlobalProperties globalProperties = GlobalProperties.getInstance();
  * String aUrl = globalProperties.getString("url");
  * </pre>
- * </p>
+ *
  * note: GlobalProperties is a thread-safe singleton - it maintains a single instance within execution
- * <p>
+ *
  * You can also use it as a property of a class;
  * <pre>
  *  private GlobalProperties globalProperties = GlobalProperties.getInstance();
  * </pre>
- * </p>
  */
 public class GlobalProperties {
 

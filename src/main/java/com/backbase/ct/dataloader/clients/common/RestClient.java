@@ -27,17 +27,14 @@ import static io.restassured.config.HttpClientConfig.httpClientConfig;
 import static org.apache.http.HttpStatus.SC_OK;
 
 /**
- * <p>
  * Usage example:
- * <pre>
+ *
  * RestClient restClient = new RestClient(globalProperties.getString("url"))
  *                          .setInitialPath(globalProperties.getString("path"))
  *                          .setUpCookies(setUpCookies);
  * and now all requests made with this rest com.backbase.environment.clients will be made to the specified url, initial path and given setUpCookies.
  * RequestSpecification requestSpec = restClient.requestSpec();
- * </pre>
- * </p>
- * <p>
+ *
  * You can also extend the RestClient to have a rest com.backbase.environment.clients class per capability:
  * <pre>
  *  class CapabilityRestClient extends RestClient {
@@ -51,7 +48,6 @@ import static org.apache.http.HttpStatus.SC_OK;
  *  CapabilityRestClient capabilityRestClient = new CapabilityRestClient();
  *  capabilityRestClient.requestSpec();
  * </pre>
- * </p>
  */
 public class RestClient {
 

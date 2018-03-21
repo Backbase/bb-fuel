@@ -8,6 +8,11 @@
     <artifactId>dataloader</artifactId>
     <version>1.0.0</version>
 
+    <scm>
+        <developerConnection>scm:git:ssh://git@stash.backbase.com:7999/ct/dataloader.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -137,7 +142,6 @@
     </dependencies>
 
     <build>
-        <finalName>dataloader</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -149,7 +153,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>com.backbase.testing.dataloader.Runner</mainClass>
+                            <mainClass>com.backbase.ct.dataloader.Runner</mainClass>
                         </manifest>
                     </archive>
 

@@ -65,18 +65,22 @@ public class LegalEntitiesWithUsersSetup {
     }
 
     public void assembleUsersWithAndWithoutFunctionDataGroupsPrivileges() throws IOException {
-        final LegalEntityWithUsers[] entitiesWithoutPermissions = ParserUtil
-            .convertJsonToObject(this.globalProperties.getString(CommonConstants.PROPERTY_LEGAL_ENTITIES_WITH_USERS_WITHOUT_PERMISSION_JSON_LOCATION),
-                LegalEntityWithUsers[].class);
-        Arrays.stream(this.entities).forEach(entity -> {
-            this.legalEntitiesAndUsersConfigurator
-                .ingestUsersUnderComposedLegalEntity(entity.getUserExternalIds(), entity.getParentLegalEntityExternalId(), entity.getLegalEntityExternalId(),
-                    entity.getLegalEntityName(), entity.getLegalEntityType());
-            assembleUsersPrivilegesAndDataGroups(entity.getUserExternalIds());
-        });
-        Arrays.stream(entitiesWithoutPermissions).forEach(entity -> this.legalEntitiesAndUsersConfigurator
-            .ingestUsersUnderComposedLegalEntity(entity.getUserExternalIds(), entity.getParentLegalEntityExternalId(), entity.getLegalEntityExternalId(),
-                entity.getLegalEntityName(), entity.getLegalEntityType()));
+        if (this.globalProperties.getBoolean(CommonConstants.PROPERTY_INGEST_ENTITLEMENTS)) {
+            final LegalEntityWithUsers[] entitiesWithoutPermissions = ParserUtil
+                .convertJsonToObject(this.globalProperties.getString(CommonConstants.PROPERTY_LEGAL_ENTITIES_WITH_USERS_WITHOUT_PERMISSION_JSON_LOCATION),
+                    LegalEntityWithUsers[].class);
+            Arrays.stream(this.entities)
+                .forEach(entity -> {
+                    this.legalEntitiesAndUsersConfigurator
+                        .ingestUsersUnderComposedLegalEntity(entity.getUserExternalIds(), entity.getParentLegalEntityExternalId(), entity.getLegalEntityExternalId(),
+                            entity.getLegalEntityName(), entity.getLegalEntityType());
+                    assembleUsersPrivilegesAndDataGroups(entity.getUserExternalIds());
+                });
+            Arrays.stream(entitiesWithoutPermissions)
+                .forEach(entity -> this.legalEntitiesAndUsersConfigurator
+                    .ingestUsersUnderComposedLegalEntity(entity.getUserExternalIds(), entity.getParentLegalEntityExternalId(), entity.getLegalEntityExternalId(),
+                        entity.getLegalEntityName(), entity.getLegalEntityType()));
+        }
     }
 
     public void assembleContactsPerUser() {

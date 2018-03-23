@@ -2,11 +2,25 @@ package com.backbase.ct.dataloader.setup;
 
 import static org.apache.http.HttpStatus.SC_OK;
 
+import com.backbase.ct.dataloader.clients.accessgroup.AccessGroupIntegrationRestClient;
+import com.backbase.ct.dataloader.clients.accessgroup.ServiceAgreementsPresentationRestClient;
+import com.backbase.ct.dataloader.clients.accessgroup.UserContextPresentationRestClient;
+import com.backbase.ct.dataloader.clients.common.LoginRestClient;
+import com.backbase.ct.dataloader.clients.legalentity.LegalEntityPresentationRestClient;
+import com.backbase.ct.dataloader.clients.user.UserPresentationRestClient;
 import com.backbase.ct.dataloader.configurators.AccessGroupsConfigurator;
+import com.backbase.ct.dataloader.configurators.ContactsConfigurator;
+import com.backbase.ct.dataloader.configurators.LegalEntitiesAndUsersConfigurator;
+import com.backbase.ct.dataloader.configurators.MessagesConfigurator;
+import com.backbase.ct.dataloader.configurators.PaymentsConfigurator;
+import com.backbase.ct.dataloader.configurators.PermissionsConfigurator;
+import com.backbase.ct.dataloader.configurators.ProductSummaryConfigurator;
 import com.backbase.ct.dataloader.configurators.ServiceAgreementsConfigurator;
+import com.backbase.ct.dataloader.configurators.TransactionsConfigurator;
 import com.backbase.ct.dataloader.data.CommonConstants;
 import com.backbase.ct.dataloader.dto.ArrangementId;
 import com.backbase.ct.dataloader.dto.CurrencyDataGroup;
+import com.backbase.ct.dataloader.dto.LegalEntityContext;
 import com.backbase.ct.dataloader.dto.LegalEntityWithUsers;
 import com.backbase.ct.dataloader.dto.UserContext;
 import com.backbase.ct.dataloader.utils.GlobalProperties;
@@ -16,19 +30,6 @@ import com.backbase.integration.arrangement.rest.spec.v2.arrangements.Arrangemen
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementGetResponseBody;
 import com.backbase.presentation.user.rest.spec.v2.users.LegalEntityByUserGetResponseBody;
 import com.backbase.presentation.user.rest.spec.v2.users.UserGetResponseBody;
-import com.backbase.ct.dataloader.clients.accessgroup.AccessGroupIntegrationRestClient;
-import com.backbase.ct.dataloader.clients.accessgroup.ServiceAgreementsPresentationRestClient;
-import com.backbase.ct.dataloader.clients.accessgroup.UserContextPresentationRestClient;
-import com.backbase.ct.dataloader.clients.common.LoginRestClient;
-import com.backbase.ct.dataloader.clients.legalentity.LegalEntityPresentationRestClient;
-import com.backbase.ct.dataloader.clients.user.UserPresentationRestClient;
-import com.backbase.ct.dataloader.configurators.ContactsConfigurator;
-import com.backbase.ct.dataloader.configurators.LegalEntitiesAndUsersConfigurator;
-import com.backbase.ct.dataloader.configurators.MessagesConfigurator;
-import com.backbase.ct.dataloader.configurators.PaymentsConfigurator;
-import com.backbase.ct.dataloader.configurators.PermissionsConfigurator;
-import com.backbase.ct.dataloader.configurators.ProductSummaryConfigurator;
-import com.backbase.ct.dataloader.configurators.TransactionsConfigurator;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import java.io.IOException;
@@ -65,22 +66,18 @@ public class LegalEntitiesWithUsersSetup {
     }
 
     public void assembleUsersWithAndWithoutFunctionDataGroupsPrivileges() throws IOException {
-        if (this.globalProperties.getBoolean(CommonConstants.PROPERTY_INGEST_ENTITLEMENTS)) {
-            final LegalEntityWithUsers[] entitiesWithoutPermissions = ParserUtil
-                .convertJsonToObject(this.globalProperties.getString(CommonConstants.PROPERTY_LEGAL_ENTITIES_WITH_USERS_WITHOUT_PERMISSION_JSON_LOCATION),
-                    LegalEntityWithUsers[].class);
-            Arrays.stream(this.entities)
-                .forEach(entity -> {
-                    this.legalEntitiesAndUsersConfigurator
-                        .ingestUsersUnderComposedLegalEntity(entity.getUserExternalIds(), entity.getParentLegalEntityExternalId(), entity.getLegalEntityExternalId(),
-                            entity.getLegalEntityName(), entity.getLegalEntityType());
-                    assembleUsersPrivilegesAndDataGroups(entity.getUserExternalIds());
-                });
-            Arrays.stream(entitiesWithoutPermissions)
-                .forEach(entity -> this.legalEntitiesAndUsersConfigurator
-                    .ingestUsersUnderComposedLegalEntity(entity.getUserExternalIds(), entity.getParentLegalEntityExternalId(), entity.getLegalEntityExternalId(),
-                        entity.getLegalEntityName(), entity.getLegalEntityType()));
-        }
+        final LegalEntityWithUsers[] entitiesWithoutPermissions = ParserUtil
+            .convertJsonToObject(this.globalProperties.getString(CommonConstants.PROPERTY_LEGAL_ENTITIES_WITH_USERS_WITHOUT_PERMISSION_JSON_LOCATION),
+                LegalEntityWithUsers[].class);
+        Arrays.stream(this.entities).forEach(entity -> {
+            this.legalEntitiesAndUsersConfigurator
+                .ingestUsersUnderComposedLegalEntity(entity.getUserExternalIds(), entity.getParentLegalEntityExternalId(), entity.getLegalEntityExternalId(),
+                    entity.getLegalEntityName(), entity.getLegalEntityType());
+            assembleUsersPrivilegesAndDataGroups(entity.getUserExternalIds());
+        });
+        Arrays.stream(entitiesWithoutPermissions).forEach(entity -> this.legalEntitiesAndUsersConfigurator
+            .ingestUsersUnderComposedLegalEntity(entity.getUserExternalIds(), entity.getParentLegalEntityExternalId(), entity.getLegalEntityExternalId(),
+                entity.getLegalEntityName(), entity.getLegalEntityType()));
     }
 
     public void assembleContactsPerUser() {
@@ -110,6 +107,7 @@ public class LegalEntitiesWithUsersSetup {
 
     protected void assembleUsersPrivilegesAndDataGroups(List<String> userExternalIds) {
         Multimap<String, UserContext> legalEntitiesUserContextMap = ArrayListMultimap.create();
+        final LegalEntityContext legalEntityContext = new LegalEntityContext();
         this.loginRestClient.login(CommonConstants.USER_ADMIN, CommonConstants.USER_ADMIN);
         this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
         userExternalIds.forEach(id -> {
@@ -121,11 +119,15 @@ public class LegalEntitiesWithUsersSetup {
             }
             UserContext userContext = getUserContextByExternalId(id);
             legalEntitiesUserContextMap.put(userContext.getInternalLegalEntityId(), userContext);
+            if (legalEntityContext.getCurrencyDataGroup() == null) {
+                legalEntityContext.setCurrencyDataGroup(getDataGroupArrangementsForServiceAgreement(userContext.getExternalServiceAgreementId(),
+                    userContext.getExternalLegalEntityId()));
+            }
         });
         legalEntitiesUserContextMap.values()
             .forEach(userContext -> assembleFunctionGroupsAndAssignPermissions(userContext.getExternalUserId(), userContext.getInternalServiceAgreementId(),
                 userContext.getExternalServiceAgreementId(),
-                getDataGroupArrangementsForServiceAgreement(userContext.getExternalServiceAgreementId(), userContext.getExternalLegalEntityId()), true));
+                legalEntityContext.getCurrencyDataGroup(), true));
     }
 
     protected CurrencyDataGroup getDataGroupArrangementsForServiceAgreement(String externalServiceAgreementId, String externalLegalEntityId) {
@@ -153,7 +155,7 @@ public class LegalEntitiesWithUsersSetup {
     }
 
     private void assembleFunctionGroupsAndAssignPermissions(String externalUserId, String internalServiceAgreementId, String externalServiceAgreementId,
-        CurrencyDataGroup currencyDataGroup, boolean masterServiceAgreement) {
+                                                            CurrencyDataGroup currencyDataGroup, boolean masterServiceAgreement) {
         FunctionsGetResponseBody[] functions = this.accessGroupIntegrationRestClient.retrieveFunctions()
             .then()
             .statusCode(SC_OK)

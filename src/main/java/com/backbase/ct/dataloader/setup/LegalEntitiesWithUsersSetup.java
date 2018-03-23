@@ -32,6 +32,7 @@ import com.backbase.presentation.user.rest.spec.v2.users.LegalEntityByUserGetRes
 import com.backbase.presentation.user.rest.spec.v2.users.UserGetResponseBody;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -66,32 +67,42 @@ public class LegalEntitiesWithUsersSetup {
     }
 
     public void assembleUsersWithAndWithoutFunctionDataGroupsPrivileges() throws IOException {
-        final LegalEntityWithUsers[] entitiesWithoutPermissions = ParserUtil
-            .convertJsonToObject(this.globalProperties.getString(CommonConstants.PROPERTY_LEGAL_ENTITIES_WITH_USERS_WITHOUT_PERMISSION_JSON_LOCATION),
-                LegalEntityWithUsers[].class);
-        Arrays.stream(this.entities).forEach(entity -> {
-            this.legalEntitiesAndUsersConfigurator
-                .ingestUsersUnderComposedLegalEntity(entity.getUserExternalIds(), entity.getParentLegalEntityExternalId(), entity.getLegalEntityExternalId(),
-                    entity.getLegalEntityName(), entity.getLegalEntityType());
-            assembleUsersPrivilegesAndDataGroups(entity.getUserExternalIds());
-        });
-        Arrays.stream(entitiesWithoutPermissions).forEach(entity -> this.legalEntitiesAndUsersConfigurator
-            .ingestUsersUnderComposedLegalEntity(entity.getUserExternalIds(), entity.getParentLegalEntityExternalId(), entity.getLegalEntityExternalId(),
-                entity.getLegalEntityName(), entity.getLegalEntityType()));
+        if (this.globalProperties.getBoolean(CommonConstants.PROPERTY_INGEST_ENTITLEMENTS)) {
+            final LegalEntityWithUsers[] entitiesWithoutPermissions = ParserUtil
+                .convertJsonToObject(this.globalProperties.getString(CommonConstants.PROPERTY_LEGAL_ENTITIES_WITH_USERS_WITHOUT_PERMISSION_JSON_LOCATION),
+                    LegalEntityWithUsers[].class);
+            Arrays.stream(this.entities)
+                .forEach(entity -> {
+                    this.legalEntitiesAndUsersConfigurator
+                        .ingestUsersUnderComposedLegalEntity(entity.getUserExternalIds(), entity.getParentLegalEntityExternalId(), entity.getLegalEntityExternalId(),
+                            entity.getLegalEntityName(), entity.getLegalEntityType());
+                    assembleUsersPrivilegesAndDataGroups(entity.getUserExternalIds());
+                });
+            Arrays.stream(entitiesWithoutPermissions)
+                .forEach(entity -> this.legalEntitiesAndUsersConfigurator
+                    .ingestUsersUnderComposedLegalEntity(entity.getUserExternalIds(), entity.getParentLegalEntityExternalId(), entity.getLegalEntityExternalId(),
+                        entity.getLegalEntityName(), entity.getLegalEntityType()));
+        }
     }
 
     public void assembleContactsPerUser() {
         if (this.globalProperties.getBoolean(CommonConstants.PROPERTY_INGEST_CONTACTS)) {
             this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
             this.contactsConfigurator.ingestContacts();
-            Arrays.stream(this.entities).map(LegalEntityWithUsers::getUserExternalIds).flatMap(List::stream).collect(Collectors.toList())
+            Arrays.stream(this.entities)
+                .map(LegalEntityWithUsers::getUserExternalIds)
+                .flatMap(List::stream)
+                .collect(Collectors.toList())
                 .forEach(userId -> this.loginRestClient.login(userId, userId));
         }
     }
 
     public void assemblePaymentsPerUser() {
         if (this.globalProperties.getBoolean(CommonConstants.PROPERTY_INGEST_PAYMENTS)) {
-            Arrays.stream(this.entities).map(LegalEntityWithUsers::getUserExternalIds).flatMap(List::stream).collect(Collectors.toList())
+            Arrays.stream(this.entities)
+                .map(LegalEntityWithUsers::getUserExternalIds)
+                .flatMap(List::stream)
+                .collect(Collectors.toList())
                 .forEach(userId -> this.paymentsConfigurator.ingestPaymentOrders(userId));
         }
     }
@@ -100,7 +111,10 @@ public class LegalEntitiesWithUsersSetup {
         if (this.globalProperties.getBoolean(CommonConstants.PROPERTY_INGEST_CONVERSATIONS)) {
             this.loginRestClient.login(CommonConstants.USER_ADMIN, CommonConstants.USER_ADMIN);
             this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
-            Arrays.stream(this.entities).map(LegalEntityWithUsers::getUserExternalIds).flatMap(List::stream).collect(Collectors.toList())
+            Arrays.stream(this.entities)
+                .map(LegalEntityWithUsers::getUserExternalIds)
+                .flatMap(List::stream)
+                .collect(Collectors.toList())
                 .forEach(userId -> this.messagesConfigurator.ingestConversations(userId));
         }
     }
@@ -111,9 +125,12 @@ public class LegalEntitiesWithUsersSetup {
         this.loginRestClient.login(CommonConstants.USER_ADMIN, CommonConstants.USER_ADMIN);
         this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
         userExternalIds.forEach(id -> {
-            final String legalEntityInternalId = this.userPresentationRestClient.retrieveLegalEntityByExternalUserId(id).then().statusCode(SC_OK)
+            final String legalEntityInternalId = this.userPresentationRestClient.retrieveLegalEntityByExternalUserId(id)
+                .then()
+                .statusCode(SC_OK)
                 .extract()
-                .as(LegalEntityByUserGetResponseBody.class).getId();
+                .as(LegalEntityByUserGetResponseBody.class)
+                .getId();
             if (!legalEntitiesUserContextMap.containsKey(legalEntityInternalId)) {
                 this.serviceAgreementsConfigurator.updateMasterServiceAgreementWithExternalIdByLegalEntity(legalEntityInternalId);
             }
@@ -144,13 +161,14 @@ public class LegalEntitiesWithUsersSetup {
             .add(() -> generateTask(externalServiceAgreementId, () -> this.productSummaryConfigurator
                     .ingestSpecificCurrencyArrangementsByLegalEntityAndReturnArrangementIds(externalLegalEntityId, ArrangementsPostRequestBodyParent.Currency.USD),
                 group::withInternalUsdCurrencyDataGroupId));
-        taskList.parallelStream().forEach(voidCallable -> {
-            try {
-                voidCallable.call();
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        });
+        taskList.parallelStream()
+            .forEach(voidCallable -> {
+                try {
+                    voidCallable.call();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
         return group;
     }
 
@@ -163,16 +181,18 @@ public class LegalEntitiesWithUsersSetup {
             .as(FunctionsGetResponseBody[].class);
         this.loginRestClient.login(CommonConstants.USER_ADMIN, CommonConstants.USER_ADMIN);
         this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
-        Arrays.stream(functions).map(FunctionsGetResponseBody::getName).forEach(functionName -> {
-            if (masterServiceAgreement) {
-                this.permissionsConfigurator.assignPermissions(externalUserId, internalServiceAgreementId, functionName, this.accessGroupsConfigurator
-                        .setupFunctionGroupWithAllPrivilegesByFunctionName(internalServiceAgreementId, externalServiceAgreementId, functionName),
-                    currencyDataGroup);
-                return;
-            }
-            this.permissionsConfigurator.assignPermissions(externalUserId, internalServiceAgreementId, functionName,
-                this.accessGroupsConfigurator.ingestFunctionGroupWithAllPrivilegesByFunctionName(externalServiceAgreementId, functionName), currencyDataGroup);
-        });
+        Arrays.stream(functions)
+            .map(FunctionsGetResponseBody::getName)
+            .forEach(functionName -> {
+                if (masterServiceAgreement) {
+                    this.permissionsConfigurator.assignPermissions(externalUserId, internalServiceAgreementId, functionName, this.accessGroupsConfigurator
+                            .setupFunctionGroupWithAllPrivilegesByFunctionName(internalServiceAgreementId, externalServiceAgreementId, functionName),
+                        currencyDataGroup);
+                    return;
+                }
+                this.permissionsConfigurator.assignPermissions(externalUserId, internalServiceAgreementId, functionName,
+                    this.accessGroupsConfigurator.ingestFunctionGroupWithAllPrivilegesByFunctionName(externalServiceAgreementId, functionName), currencyDataGroup);
+            });
     }
 
     private UserContext getUserContextByExternalId(String externalUserId) {

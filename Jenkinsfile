@@ -27,7 +27,6 @@ def getDataloaderVersion() {
         withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'f8ae341b-af40-4178-844d-b90dd3a977f4',
                           usernameVariable: 'AR_USERNAME', passwordVariable: 'AR_PASSWORD']]) {
             version = sh(returnStdout: true, script: '''curl -X GET -s -k -u ${AR_USERNAME}:${AR_PASSWORD} https://artifacts.backbase.com/backbase-development-builds/com/backbase/ct/dataloader/ | grep href | grep -v maven | cut -d'"' -f2 | cut -d'/' -f1 | sort --version-sort | tail -n 1''').toString().trim()
-        print(version)
         }
     } else {
         version = "${params.DATALOADER_VERSION}"

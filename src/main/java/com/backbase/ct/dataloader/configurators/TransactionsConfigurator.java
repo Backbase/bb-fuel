@@ -27,7 +27,7 @@ public class TransactionsConfigurator {
             transactionsIntegrationRestClient.ingestTransaction(transaction)
                     .then()
                     .statusCode(SC_CREATED);
-            LOGGER.info(String.format("Transaction [%s] ingested for arrangement [%s]", transaction.getDescription(), externalArrangementId));
+            LOGGER.info("Transaction [{}] ingested for arrangement [{}]", transaction.getDescription(), externalArrangementId);
         });
     }
 }

@@ -1,6 +1,7 @@
 package com.backbase.ct.dataloader.configurators;
 
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.config.functions.FunctionsGetResponseBody;
+import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.data.DataGroupsPostRequestBody;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.data.DataGroupsPostResponseBody;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.datagroups.DataGroupPostRequestBody;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.FunctionGroupsPostResponseBody;
@@ -27,11 +28,14 @@ public class AccessGroupsConfigurator {
     private static final Logger LOGGER = LoggerFactory.getLogger(AccessGroupsConfigurator.class);
 
     private AccessGroupPresentationRestClient accessGroupPresentationRestClient = new AccessGroupPresentationRestClient();
+
     private AccessGroupIntegrationRestClient accessGroupIntegrationRestClient = new AccessGroupIntegrationRestClient();
 
     private Map<String, String> allPrivilegesCache = Collections.synchronizedMap(new HashMap<>());
 
     private Map<String, String> functionGroupsAllPrivilegesCache = Collections.synchronizedMap(new HashMap<>());
+
+    private static final String ARRANGEMENTS = "ARRANGEMENTS";
 
     public String setupFunctionGroupWithAllPrivilegesByFunctionName(String internalServiceAgreementId, String externalServiceAgreementId, String functionName) {
 
@@ -77,7 +81,7 @@ public class AccessGroupsConfigurator {
                 .as(FunctionGroupsPostResponseBody.class)
                 .getId();
 
-        LOGGER.info(String.format("Function group [%s] ingested (service agreement [%s]) for function [%s] with privileges %s", id, externalServiceAgreementId, functionName, privileges));
+        LOGGER.info("Function group [{}] ingested (service agreement [{}]) for function [{}] with privileges {}", id, externalServiceAgreementId, functionName, privileges);
 
         return id;
     }
@@ -85,14 +89,14 @@ public class AccessGroupsConfigurator {
     public String ingestDataGroupForArrangements(String externalServiceAgreementId, List<ArrangementId> arrangementIds) {
         List<String> internalArrangementIds = arrangementIds.stream().map(ArrangementId::getInternalArrangementId).collect(Collectors.toList());
 
-        String id = accessGroupIntegrationRestClient.ingestDataGroup(generateDataGroupPostRequestBody(externalServiceAgreementId, DataGroupPostRequestBody.Type.ARRANGEMENTS, internalArrangementIds))
+        String id = accessGroupIntegrationRestClient.ingestDataGroup(generateDataGroupPostRequestBody(externalServiceAgreementId, ARRANGEMENTS, internalArrangementIds))
                 .then()
                 .statusCode(SC_CREATED)
                 .extract()
                 .as(DataGroupsPostResponseBody.class)
                 .getId();
 
-        LOGGER.info(String.format("Data group [%s] ingested (service agreement [%s]) for arrangements %s", id, externalServiceAgreementId, internalArrangementIds));
+        LOGGER.info("Data group [{}] ingested (service agreement [{}]) for arrangements {}", id, externalServiceAgreementId, internalArrangementIds);
 
         return id;
     }

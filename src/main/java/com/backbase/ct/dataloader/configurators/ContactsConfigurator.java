@@ -28,7 +28,7 @@ public class ContactsConfigurator {
                     .then()
                     .statusCode(SC_CREATED);
 
-            LOGGER.info(String.format("Contact ingested with name [%s]", contact.getName()));
+            LOGGER.info("Contact ingested with name [{}]", contact.getName());
         });
     }
 }

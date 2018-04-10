@@ -50,7 +50,7 @@ public class ProductSummaryConfigurator {
 
             arrangementIds.add(new ArrangementId(arrangementsPostResponseBody.getId(), arrangement.getId()));
 
-            LOGGER.info(String.format("Arrangement [%s] with currency [%s] ingested for product [%s] under legal entity [%s]", arrangement.getName(), currency, arrangement.getProductId(), externalLegalEntityId));
+            LOGGER.info("Arrangement [{}] with currency [{}] ingested for product [{}] under legal entity [{}]", arrangement.getName(), currency, arrangement.getProductId(), externalLegalEntityId);
         });
         return arrangementIds;
     }
@@ -71,7 +71,7 @@ public class ProductSummaryConfigurator {
 
             arrangementIds.add(new ArrangementId(arrangementsPostResponseBody.getId(), arrangement.getId()));
 
-            LOGGER.info(String.format("Arrangement [%s] with currency [%s] ingested for product [%s] under legal entity [%s]", arrangement.getName(), currency, arrangement.getProductId(), externalLegalEntityId));
+            LOGGER.info("Arrangement [{}] with currency [{}] ingested for product [{}] under legal entity [{}]", arrangement.getName(), currency, arrangement.getProductId(), externalLegalEntityId);
         });
         return arrangementIds;
     }

@@ -48,7 +48,9 @@ public class MessagesConfigurator {
                     .then()
                     .statusCode(SC_OK)
                     .extract()
-                    .as(ConversationsGetResponseBody[].class)[0]
+                    .as(ConversationsGetResponseBody.class)
+                    .getConversations()
+                    .get(0)
                     .getId();
 
             String conversationDraftId = messagesPresentationRestClient.postConversationDraft(MessagesDataGenerator.generateConversationDraftsPostRequestBody(), conversationId)
@@ -62,7 +64,7 @@ public class MessagesConfigurator {
                     .then()
                     .statusCode(SC_ACCEPTED);
 
-            LOGGER.info(String.format("Conversation ingested with subject [%s] for user [%s]", draftsPostRequestBody.getSubject(), externalUserId));
+            LOGGER.info("Conversation ingested with subject [{}] for user [{}]", draftsPostRequestBody.getSubject(), externalUserId);
         });
     }
 }

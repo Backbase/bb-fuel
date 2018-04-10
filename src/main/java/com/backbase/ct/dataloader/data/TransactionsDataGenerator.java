@@ -9,27 +9,30 @@ import java.util.Date;
 import java.util.Random;
 import java.util.UUID;
 
+import static com.backbase.ct.dataloader.data.CommonConstants.TRANSACTION_TYPES;
+import static com.backbase.ct.dataloader.data.CommonConstants.TRANSACTION_TYPE_GROUPS;
+
 public class TransactionsDataGenerator {
 
     private static Faker faker = new Faker();
     private static Random random = new Random();
+    private static final String EUR_CURRENCY = "EUR";
 
     public static TransactionsPostRequestBody generateTransactionsPostRequestBody(String externalArrangementId) {
-
         return new TransactionsPostRequestBody().withId(UUID.randomUUID().toString())
                 .withArrangementId(externalArrangementId)
                 .withReference(faker.lorem().characters(10))
                 .withDescription(faker.lorem().sentence().replace(".", ""))
-                .withTypeGroup(TransactionsPostRequestBody.TypeGroup.values()[random.nextInt(TransactionsPostRequestBody.TypeGroup.values().length)])
-                .withType(TransactionsPostRequestBody.Type.values()[random.nextInt(TransactionsPostRequestBody.Type.values().length)])
+                .withTypeGroup(TRANSACTION_TYPE_GROUPS.get(random.nextInt(TRANSACTION_TYPE_GROUPS.size())))
+                .withType(TRANSACTION_TYPES.get(random.nextInt(TRANSACTION_TYPES.size())))
                 .withCategory(faker.company().industry())
                 .withBookingDate(new Date())
                 .withValueDate(new Date())
                 .withAmount(CommonHelpers.generateRandomAmountInRange(100L, 9999L))
-                .withCurrency(TransactionsPostRequestBody.Currency.EUR)
+                .withCurrency(EUR_CURRENCY)
                 .withCreditDebitIndicator(TransactionsPostRequestBody.CreditDebitIndicator.values()[random.nextInt(TransactionsPostRequestBody.CreditDebitIndicator.values().length)])
                 .withInstructedAmount(CommonHelpers.generateRandomAmountInRange(100L, 9999L))
-                .withInstructedCurrency(TransactionsPostRequestBody.Currency.EUR)
+                .withInstructedCurrency(EUR_CURRENCY)
                 .withCurrencyExchangeRate(CommonHelpers.generateRandomAmountInRange(1L, 2L))
                 .withCounterPartyName(faker.name().fullName())
                 .withCounterPartyAccountNumber(Iban.random().toString())

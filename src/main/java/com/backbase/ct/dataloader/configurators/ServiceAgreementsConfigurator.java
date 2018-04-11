@@ -1,15 +1,14 @@
 package com.backbase.ct.dataloader.configurators;
 
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.Consumer;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.Provider;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementPostResponseBody;
-import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementGetResponseBody;
-import com.backbase.presentation.user.rest.spec.v2.users.LegalEntityByUserGetResponseBody;
 import com.backbase.ct.dataloader.clients.accessgroup.ServiceAgreementsIntegrationRestClient;
 import com.backbase.ct.dataloader.clients.accessgroup.UserContextPresentationRestClient;
 import com.backbase.ct.dataloader.clients.common.LoginRestClient;
 import com.backbase.ct.dataloader.clients.legalentity.LegalEntityPresentationRestClient;
 import com.backbase.ct.dataloader.clients.user.UserPresentationRestClient;
+import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.Participant;
+import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementPostResponseBody;
+import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementGetResponseBody;
+import com.backbase.presentation.user.rest.spec.v2.users.LegalEntityByUserGetResponseBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,20 +31,19 @@ public class ServiceAgreementsConfigurator {
     private ServiceAgreementsIntegrationRestClient serviceAgreementsIntegrationRestClient = new ServiceAgreementsIntegrationRestClient();
     private UserContextPresentationRestClient userContextPresentationRestClient = new UserContextPresentationRestClient();
 
-    public String ingestServiceAgreementWithProvidersAndConsumers(Set<Provider> providers, Set<Consumer> consumers) {
+    public String ingestServiceAgreementWithProvidersAndConsumers(Set<Participant> participants) {
         loginRestClient.login(USER_ADMIN, USER_ADMIN);
         userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
-        enrichConsumersWithId(consumers);
-        enrichProvidersWithId(providers);
+        enrichParticipantsWithExternalId(participants);
 
-        String serviceAgreementId = serviceAgreementsIntegrationRestClient.ingestServiceAgreement(generateServiceAgreementPostRequestBody(providers, consumers))
+        String serviceAgreementId = serviceAgreementsIntegrationRestClient.ingestServiceAgreement(generateServiceAgreementPostRequestBody(participants))
                 .then()
                 .statusCode(SC_CREATED)
                 .extract()
                 .as(ServiceAgreementPostResponseBody.class)
                 .getId();
 
-        LOGGER.info(String.format("Service agreement ingested for provider legal entities - admins/users %s, consumer legal entities - admins %s", Arrays.toString(providers.toArray()), Arrays.toString(consumers.toArray())));
+        LOGGER.info("Service agreement ingested for participants {}", Arrays.toString(participants.toArray()));
 
         return serviceAgreementId;
     }
@@ -65,40 +63,23 @@ public class ServiceAgreementsConfigurator {
             .then()
             .statusCode(SC_OK);
 
-        LOGGER.info(String.format("Service agreement [%s] updated with external id", internalServiceAgreementId));
+        LOGGER.info("Service agreement [{}] updated with external id", internalServiceAgreementId);
     }
 
-    private void enrichConsumersWithId(Set<Consumer> consumers) {
-        for (Consumer consumer : consumers) {
-            String externalConsumerAdminUserId = consumer.getAdmins()
+    private void enrichParticipantsWithExternalId(Set<Participant> participants) {
+        for (Participant participant : participants) {
+            String externalAdminUserId = participant.getAdmins()
                     .iterator()
                     .next();
 
-            String externalConsumerLegalEntityId = userPresentationRestClient.retrieveLegalEntityByExternalUserId(externalConsumerAdminUserId)
+            String externalLegalEntityId = userPresentationRestClient.retrieveLegalEntityByExternalUserId(externalAdminUserId)
                     .then()
                     .statusCode(SC_OK)
                     .extract()
                     .as(LegalEntityByUserGetResponseBody.class)
                 .getExternalId();
 
-            consumer.setId(externalConsumerLegalEntityId);
-        }
-    }
-
-    private void enrichProvidersWithId(Set<Provider> providers) {
-        for (Provider provider : providers) {
-            String externalProviderAdminUserId = provider.getAdmins()
-                    .iterator()
-                    .next();
-
-            String externalProviderLegalEntityId = userPresentationRestClient.retrieveLegalEntityByExternalUserId(externalProviderAdminUserId)
-                    .then()
-                    .statusCode(SC_OK)
-                    .extract()
-                    .as(LegalEntityByUserGetResponseBody.class)
-                    .getExternalId();
-
-            provider.setId(externalProviderLegalEntityId);
+            participant.setExternalId(externalLegalEntityId);
         }
     }
 }

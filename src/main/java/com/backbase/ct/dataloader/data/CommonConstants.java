@@ -1,5 +1,9 @@
 package com.backbase.ct.dataloader.data;
 
+import java.util.List;
+
+import static java.util.Arrays.asList;
+
 public final class CommonConstants {
 
     private CommonConstants() {
@@ -63,4 +67,27 @@ public final class CommonConstants {
     public static final String PROPERTY_CONVERSATIONS_MIN = "conversations.min";
     public static final String PROPERTY_CONVERSATIONS_MAX = "conversations.max";
     public static final String PROPERTY_INGEST_CONVERSATIONS = "ingest.conversations";
+
+    // Payments
+    public static final String PAYMENT_TYPE_SEPA_CREDIT_TRANSFER = "SEPA_CT";
+    public static final String PAYMENT_TYPE_US_DOMESTIC_WIRE = "US_DOMESTIC_WIRE";
+
+    // Transactions
+    public static final List<String> TRANSACTION_TYPE_GROUPS = asList(
+        "Payment",
+        "Withdrawal",
+        "Loans",
+        "Fees"
+    );
+
+    public static final List<String> TRANSACTION_TYPES = asList(
+        "SEPA CT",
+        "SEPA DD",
+        "BACS (UK)",
+        "Faster payment (UK)",
+        "CHAPS (UK)",
+        "International payment",
+        "Loan redemption",
+        "Interest settlement"
+    );
 }

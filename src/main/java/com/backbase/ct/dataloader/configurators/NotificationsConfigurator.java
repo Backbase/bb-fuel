@@ -28,7 +28,7 @@ public class NotificationsConfigurator {
                     .then()
                     .statusCode(SC_CREATED);
 
-            LOGGER.info(String.format("Notification ingested with title [%s] and target group [%s]", notification.getTitle(), notification.getTargetGroup()));
+            LOGGER.info("Notification ingested with title [{}] and target group [{}]", notification.getTitle(), notification.getTargetGroup());
         });
     }
 }

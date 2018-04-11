@@ -35,7 +35,7 @@ public class PermissionsConfigurator {
                 .then()
                 .statusCode(SC_OK);
 
-            LOGGER.info(String.format("Permission assigned for service agreement [%s], user [%s], function group [%s], data groups %s", internalServiceAgreementId, externalUserId, functionGroupId, dataGroupIds));
+            LOGGER.info("Permission assigned for service agreement [{}], user [{}], function group [{}], data groups {}", internalServiceAgreementId, externalUserId, functionGroupId, dataGroupIds);
         });
     }
 
@@ -49,7 +49,7 @@ public class PermissionsConfigurator {
             .then()
             .statusCode(SC_OK);
 
-        LOGGER.info(String.format("Permission assigned for service agreement [%s], user [%s], function group [%s], data groups %s", internalServiceAgreementId, externalUserId, functionGroupId, dataGroupIds));
+        LOGGER.info("Permission assigned for service agreement [{}], user [{}], function group [{}], data groups {}", internalServiceAgreementId, externalUserId, functionGroupId, dataGroupIds);
     }
 
     public void assignPermissions(String externalUserId, String internalServiceAgreementId, String functionName, String functionGroupId, CurrencyDataGroup currencyDataGroup) {

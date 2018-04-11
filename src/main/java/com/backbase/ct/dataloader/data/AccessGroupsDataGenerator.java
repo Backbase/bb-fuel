@@ -23,7 +23,7 @@ public class AccessGroupsDataGenerator {
                 .withPermissions(setPermissions(functionId, privileges));
     }
 
-    public static DataGroupPostRequestBody generateDataGroupPostRequestBody(String externalServiceAgreementId, DataGroupPostRequestBody.Type type, List<String> items) {
+    public static DataGroupPostRequestBody generateDataGroupPostRequestBody(String externalServiceAgreementId, String type, List<String> items) {
         return new DataGroupPostRequestBody()
                 .withName(faker.lorem().characters(8))
                 .withDescription(faker.lorem().characters(8))

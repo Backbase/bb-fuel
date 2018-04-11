@@ -1,31 +1,31 @@
 package com.backbase.ct.dataloader.setup;
 
-import static org.apache.http.HttpStatus.SC_OK;
-
+import com.backbase.ct.dataloader.clients.accessgroup.AccessGroupIntegrationRestClient;
+import com.backbase.ct.dataloader.clients.accessgroup.ServiceAgreementsPresentationRestClient;
+import com.backbase.ct.dataloader.clients.accessgroup.UserContextPresentationRestClient;
+import com.backbase.ct.dataloader.clients.common.LoginRestClient;
+import com.backbase.ct.dataloader.clients.user.UserPresentationRestClient;
 import com.backbase.ct.dataloader.configurators.AccessGroupsConfigurator;
+import com.backbase.ct.dataloader.configurators.PermissionsConfigurator;
 import com.backbase.ct.dataloader.configurators.ServiceAgreementsConfigurator;
 import com.backbase.ct.dataloader.data.CommonConstants;
 import com.backbase.ct.dataloader.dto.CurrencyDataGroup;
 import com.backbase.ct.dataloader.utils.GlobalProperties;
 import com.backbase.ct.dataloader.utils.ParserUtil;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.config.functions.FunctionsGetResponseBody;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.Consumer;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.Provider;
+import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.Participant;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementPostRequestBody;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementGetResponseBody;
 import com.backbase.presentation.user.rest.spec.v2.users.LegalEntityByUserGetResponseBody;
-import com.backbase.ct.dataloader.clients.accessgroup.AccessGroupIntegrationRestClient;
-import com.backbase.ct.dataloader.clients.accessgroup.ServiceAgreementsPresentationRestClient;
-import com.backbase.ct.dataloader.clients.accessgroup.UserContextPresentationRestClient;
-import com.backbase.ct.dataloader.clients.common.LoginRestClient;
-import com.backbase.ct.dataloader.clients.user.UserPresentationRestClient;
-import com.backbase.ct.dataloader.configurators.PermissionsConfigurator;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
+
+import static org.apache.http.HttpStatus.SC_OK;
 
 public class ServiceAgreementsSetup {
 
@@ -62,23 +62,26 @@ public class ServiceAgreementsSetup {
             Arrays.stream(serviceAgreementPostRequestBodies)
                 .forEach(serviceAgreementPostRequestBody -> {
                     String internalServiceAgreementId = this.serviceAgreementsConfigurator
-                        .ingestServiceAgreementWithProvidersAndConsumers(serviceAgreementPostRequestBody.getProviders(),
-                            serviceAgreementPostRequestBody.getConsumers());
+                        .ingestServiceAgreementWithProvidersAndConsumers(serviceAgreementPostRequestBody.getParticipants());
 
-                    setupFunctionDataGroups(internalServiceAgreementId, serviceAgreementPostRequestBody.getConsumers());
-                    setupPermissions(internalServiceAgreementId, serviceAgreementPostRequestBody.getProviders());
+                    setupFunctionDataGroups(internalServiceAgreementId, serviceAgreementPostRequestBody.getParticipants());
+                    setupPermissions(internalServiceAgreementId, serviceAgreementPostRequestBody.getParticipants());
 
                     this.functionGroupFunctionNames.clear();
                 });
         }
     }
 
-    private void setupFunctionDataGroups(String internalServiceAgreementId, Set<Consumer> consumers) {
-        String externalConsumerAdminUserId = consumers.iterator().next().getAdmins()
+    private void setupFunctionDataGroups(String internalServiceAgreementId, Set<Participant> participants) {
+        Set<Participant> participantsSharingAccounts = participants.stream()
+            .filter(Participant::getSharingAccounts)
+            .collect(Collectors.toSet());
+
+        String externalAdminUserId = participantsSharingAccounts.iterator().next().getAdmins()
             .iterator()
             .next();
 
-        String externalLegalEntityId = this.userPresentationRestClient.retrieveLegalEntityByExternalUserId(externalConsumerAdminUserId)
+        String externalLegalEntityId = this.userPresentationRestClient.retrieveLegalEntityByExternalUserId(externalAdminUserId)
             .then()
             .statusCode(SC_OK)
             .extract()
@@ -104,9 +107,9 @@ public class ServiceAgreementsSetup {
         }
     }
 
-    private void setupPermissions(String internalServiceAgreementId, Set<Provider> providers) {
-        for (Provider provider : providers) {
-            Set<String> externalUserIds = provider.getUsers();
+    private void setupPermissions(String internalServiceAgreementId, Set<Participant> participants) {
+        for (Participant participant : participants) {
+            Set<String> externalUserIds = participant.getUsers();
 
             for (String externalUserId : externalUserIds) {
                 for (Map.Entry<String, String> entry : this.functionGroupFunctionNames.entrySet()) {

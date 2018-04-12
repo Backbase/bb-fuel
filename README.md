@@ -32,6 +32,7 @@ For legal entities and users in the file [legal-entities-with-users.json](src/ma
 
 ### Transactions setup
 - By default ingesting transactions is disabled - configurable via property
+- Only works if property `ingest.entitlements` is set to true
 - If enabled, random transactions (by default: between 10 and 50) per arrangement per today's date
 
 ### Service agreements setup
@@ -46,7 +47,7 @@ By default only the following users are covered:
 
 If more/other users are required, you can provide your own `json` files, see *Custom data*.
 
-### Extra data setup
+### Capability data setup
 - The following is available for ingestion, but by default disabled - configurable via property:
 - Contacts with multiple accounts per user
 - Payments per user
@@ -81,6 +82,21 @@ Example:
 ```
 java -Denvironment.name=your-env-00 -Darrangements.max=20 -Ddebit.cards.min=10 -Ddebit.cards.max=30 -Dtransactions-max=50 -jar dataloader-jar-with-dependencies.jar
 ```
+
+### Health check
+Note: By default disabled
+There is a built-in health check available to check whether services are up and running before ingesting. Available for:
+- Entitlements
+- Product summary
+- Transactions
+
+Set the value of the following property greater than 0 and it will check for that amount of minutes max.
+
+Example:
+```
+healthcheck.timeout.in.minutes=10
+```
+
 ### Note when running on environments with existing data
 - No data will be removed from the environment
 - It will check whether the following already exist, and if so, it will skip ingesting the existing item

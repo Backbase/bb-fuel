@@ -30,9 +30,14 @@ public class HealthCheck {
                             } else {
                                 LOGGER.info("[" + restClient.getInitialPath() + "] not available");
                             }
-                            Thread.sleep(10000);
                         } catch (Exception ex) {
                             LOGGER.info("[" + restClient.getInitialPath() + "] not available");
+                        }
+
+                        try {
+                            Thread.sleep(10000);
+                        } catch (InterruptedException e) {
+                            LOGGER.info("Sleep cancelled", e);
                         }
                     }
                     throw new IllegalStateException("[" + restClient.getInitialPath() + "] timed out");

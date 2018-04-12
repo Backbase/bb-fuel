@@ -87,13 +87,15 @@ public class LegalEntitiesWithUsersSetup {
 
     public void assembleContactsPerUser() {
         if (this.globalProperties.getBoolean(CommonConstants.PROPERTY_INGEST_CONTACTS)) {
-            this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
             this.contactsConfigurator.ingestContacts();
             Arrays.stream(this.entities)
                 .map(LegalEntityWithUsers::getUserExternalIds)
                 .flatMap(List::stream)
                 .collect(Collectors.toList())
-                .forEach(userId -> this.loginRestClient.login(userId, userId));
+                .forEach(userId -> {
+                    this.loginRestClient.login(userId, userId);
+                    this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
+                });
         }
     }
 

@@ -24,7 +24,6 @@ public class HealthCheck {
                     while (System.currentTimeMillis() - startTime < timeOutInMillis) {
                         try {
                             // Wait between retries to avoid network storm.
-                            Thread.sleep(10000);
                             if (restClient.isUp()) {
                                 LOGGER.info("[" + restClient.getInitialPath() + "] online after " + (System.currentTimeMillis() - startTime) + " milliseconds");
                                 return;
@@ -33,6 +32,12 @@ public class HealthCheck {
                             }
                         } catch (Exception ex) {
                             LOGGER.info("[" + restClient.getInitialPath() + "] not available");
+                        }
+
+                        try {
+                            Thread.sleep(10000);
+                        } catch (InterruptedException e) {
+                            LOGGER.info("Sleep cancelled", e);
                         }
                     }
                     throw new IllegalStateException("[" + restClient.getInitialPath() + "] timed out");

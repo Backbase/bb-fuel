@@ -128,7 +128,7 @@ public class AccessControlSetup {
         });
 
         legalEntitiesUserContextMap.values()
-            .forEach(userContext -> assembleFunctionGroupsAndAssignPermissions(userContext.getExternalUserId(), userContext.getInternalServiceAgreementId(),
+            .forEach(userContext -> ingestFunctionGroupsAndAssignPermissions(userContext.getExternalUserId(), userContext.getInternalServiceAgreementId(),
                 userContext.getExternalServiceAgreementId(),
                 legalEntityContext.getCurrencyDataGroup()));
     }
@@ -161,8 +161,8 @@ public class AccessControlSetup {
         return currencyDataGroup;
     }
 
-    private void assembleFunctionGroupsAndAssignPermissions(String externalUserId, String internalServiceAgreementId, String externalServiceAgreementId,
-                                                            CurrencyDataGroup currencyDataGroup) {
+    private void ingestFunctionGroupsAndAssignPermissions(String externalUserId, String internalServiceAgreementId, String externalServiceAgreementId,
+                                                          CurrencyDataGroup currencyDataGroup) {
         String sepaFunctionGroupId = this.accessGroupsConfigurator.ingestFunctionGroupsWithAllPrivilegesByFunctionNames(
             externalServiceAgreementId,
             singletonList(SEPA_CT_FUNCTION_NAME));

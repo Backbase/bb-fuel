@@ -61,15 +61,26 @@ Note: This can be rerun on an existing environment which already contains data b
 capabilities="Entitlements,ProductSummary"
 ```
 2. Run the data loader as follows:
+
+- For Autoconfig environments:
 ```
 java -Denvironment.name=your-env-00 -jar dataloader-jar-with-dependencies.jar
 ```
-or, provided by default values, declared in the properties file.
-For local environment:
-```
-java -Duse.local.configurations=false -jar dataloader-jar-with-dependencies.jar
-```
+- Or alter the [environment.properties](src/main/resources/environment.properties) accordingly
 
+- For local Blade environment:
+```
+java -Duse.local.configurations=true -jar dataloader-jar-with-dependencies.jar
+```
+- See [local.properties](src/main/resources/local.properties) for this local configuration
+
+## Properties for ingesting data
+The following properties can be set to custom values for different purposes: [data.properties](src/main/resources/data.properties)
+
+Example:
+```
+java -Denvironment.name=your-env-00 -Darrangements.max=20 -Ddebit.cards.min=10 -Ddebit.cards.max=30 -Dtransactions-max=50 -jar dataloader-jar-with-dependencies.jar
+```
 ### Note when running on environments with existing data
 - No data will be removed from the environment
 - It will check whether the following already exist, and if so, it will skip ingesting the existing item
@@ -82,61 +93,8 @@ java -Duse.local.configurations=false -jar dataloader-jar-with-dependencies.jar
 - All other items will be added on top of the existing data
 - However, if the external id of the existing root legal entity is not equal to `C000000`, this will fail the ingestion
 
-## Custom configuration
-
-The following properties can be set to custom values for different purposes: [environment.properties](src/main/resources/environment.properties)
-
-Example:
-```
-java -Denvironment.name=your-env-00 -Darrangements.max=20 -Ddebit.cards.min=10 -Ddebit.cards.max=30 -Dtransactions-max=50 -jar dataloader-jar-with-dependencies.jar
-```
-
 ## Custom data
-
-### Run with custom data
-```
-java -Denvironment.name=your-env-00 -cp /path/to/custom/resources/folder/:dataloader-jar-with-dependencies.jar com.backbase.testing.dataloader.Runner
-```
-`/path/to/custom/resources/folder/` must contain the custom `json` files
-
-### How to create custom data
-Example for the `legal-entities-with-users.json` (other files are: `legal-entities-with-users-without-permissions.json`, `serviceagreements.json` and `products.json`):
-
-1. Create json file named `legal-entities-with-users.json` with custom legal entities and assigned custom user list conforming existing format (in this case conforming: [legal-entities-with-users.json ](src/main/resources/data/legal-entities-with-users.json ))
-
-By default if customizable fields have not been provided, system will generate randomized values for it.
-Optional fields in the data structure:
-- `legalEntityExternalId`
-- `parentLegalEntityExternalId`
-- `legalEntityName`
-- `legalEntityType`
-
-Mandatory fields:
-- `userExternalIds` - array of Strings, representing User ids.
-
-Each `userExternalIds` array consists of the users which will be ingested under the above legal entity.
-
-Example:
-```javascript
-[
-  {
-    "legalEntityExternalId": "LE000002",
-    "parentLegalEntityExternalId": "C000000",
-    "legalEntityName": "Hong Kong Legal Entity",
-    "legalEntityType": "CUSTOMER",
-    "userExternalIds": [
-      "U0091011",
-      "U0091012",
-      "U0091013",
-      "U0091014",
-      "U0091015"
-    ]
-  }
-]
-```
-2. Place `legal-entities-with-users.json` in a folder named `data`
-
-Note: it is also possible to name/place the json file differently with the specific properties: `legal.entities.with.users.json.location`, `legal.entities.with.users.without.permissions.json.location` and `serviceagreements.json.location`
+See [Custom data](docs/CUSTOM_DATA.md)
 
 ## Questions and issues
 If you have a question about the Data loader, or are experiencing a problem please contact the author, Kwo Ding via Hipchat or [e-mail](mailto:kwo@backbase.com)

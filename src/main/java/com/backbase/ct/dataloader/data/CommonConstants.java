@@ -14,8 +14,8 @@ public final class CommonConstants {
 
     // Environment
     public static final String PROPERTY_LOGIN_PATH = "login.path";
-    public static final String PROPERTIES_FILE_NAME = "environment.properties";
-    public static final String GLOBAL_PROPERTIES_FILE_NAME = "global.properties";
+    public static final String PROPERTIES_FILE_NAME = "data.properties";
+    public static final String ENVIRONMENT_PROPERTIES_FILE_NAME = "environment.properties";
     public static final String LOCAL_PROPERTIES_FILE_NAME = "local.properties";
     public static final String PROPERTY_INFRA_BASE_URI = "infra.base.uri";
     public static final String PROPERTY_GATEWAY_PATH = "gateway.path";

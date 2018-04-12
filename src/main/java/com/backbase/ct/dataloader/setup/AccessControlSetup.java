@@ -11,7 +11,6 @@ import com.backbase.ct.dataloader.configurators.PermissionsConfigurator;
 import com.backbase.ct.dataloader.configurators.ProductSummaryConfigurator;
 import com.backbase.ct.dataloader.configurators.ServiceAgreementsConfigurator;
 import com.backbase.ct.dataloader.configurators.TransactionsConfigurator;
-import com.backbase.ct.dataloader.data.CommonConstants;
 import com.backbase.ct.dataloader.dto.ArrangementId;
 import com.backbase.ct.dataloader.dto.CurrencyDataGroup;
 import com.backbase.ct.dataloader.dto.LegalEntityContext;
@@ -28,14 +27,17 @@ import com.google.common.collect.Multimap;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import static com.backbase.ct.dataloader.data.CommonConstants.*;
+import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_ENTITLEMENTS;
+import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_TRANSACTIONS;
+import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_LEGAL_ENTITIES_WITH_USERS_JSON_LOCATION;
+import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_LEGAL_ENTITIES_WITH_USERS_WITHOUT_PERMISSION_JSON_LOCATION;
 import static com.backbase.ct.dataloader.data.CommonConstants.SEPA_CT_FUNCTION_NAME;
+import static com.backbase.ct.dataloader.data.CommonConstants.USER_ADMIN;
 import static com.backbase.ct.dataloader.data.CommonConstants.US_DOMESTIC_WIRE_FUNCTION_NAME;
 import static com.backbase.ct.dataloader.data.CommonConstants.US_FOREIGN_WIRE_FUNCTION_NAME;
 import static com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.Currency;
@@ -73,28 +75,36 @@ public class AccessControlSetup {
 
     public void setupAccessControlForUsers() throws IOException {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_ENTITLEMENTS)) {
-            final LegalEntityWithUsers[] entitiesWithoutPermissions = ParserUtil
-                .convertJsonToObject(this.globalProperties.getString(PROPERTY_LEGAL_ENTITIES_WITH_USERS_WITHOUT_PERMISSION_JSON_LOCATION),
-                    LegalEntityWithUsers[].class);
+            final LegalEntityWithUsers[] entitiesWithoutPermissions = ParserUtil.convertJsonToObject(this.globalProperties.getString(PROPERTY_LEGAL_ENTITIES_WITH_USERS_WITHOUT_PERMISSION_JSON_LOCATION), LegalEntityWithUsers[].class);
+
             Arrays.stream(this.entities)
                 .forEach(entity -> {
-                    this.legalEntitiesAndUsersConfigurator
-                        .ingestUsersUnderComposedLegalEntity(entity.getUserExternalIds(), entity.getParentLegalEntityExternalId(), entity.getLegalEntityExternalId(),
-                            entity.getLegalEntityName(), entity.getLegalEntityType());
+                    this.legalEntitiesAndUsersConfigurator.ingestUsersUnderLegalEntity(
+                        entity.getUserExternalIds(),
+                        entity.getParentLegalEntityExternalId(),
+                        entity.getLegalEntityExternalId(),
+                        entity.getLegalEntityName(),
+                        entity.getLegalEntityType());
+
                     assembleFunctionDataGroupsAndPermissions(entity.getUserExternalIds());
                 });
+
             Arrays.stream(entitiesWithoutPermissions)
-                .forEach(entity -> this.legalEntitiesAndUsersConfigurator
-                    .ingestUsersUnderComposedLegalEntity(entity.getUserExternalIds(), entity.getParentLegalEntityExternalId(), entity.getLegalEntityExternalId(),
-                        entity.getLegalEntityName(), entity.getLegalEntityType()));
+                .forEach(entity -> this.legalEntitiesAndUsersConfigurator.ingestUsersUnderLegalEntity(
+                    entity.getUserExternalIds(),
+                    entity.getParentLegalEntityExternalId(),
+                    entity.getLegalEntityExternalId(),
+                    entity.getLegalEntityName(),
+                    entity.getLegalEntityType()));
         }
     }
 
-    protected void assembleFunctionDataGroupsAndPermissions(List<String> userExternalIds) {
+    private void assembleFunctionDataGroupsAndPermissions(List<String> userExternalIds) {
         Multimap<String, UserContext> legalEntitiesUserContextMap = ArrayListMultimap.create();
         final LegalEntityContext legalEntityContext = new LegalEntityContext();
         this.loginRestClient.login(USER_ADMIN, USER_ADMIN);
         this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
+
         userExternalIds.forEach(userExternalId -> {
             final String legalEntityInternalId = this.userPresentationRestClient.retrieveLegalEntityByExternalUserId(userExternalId)
                 .then()
@@ -102,16 +112,21 @@ public class AccessControlSetup {
                 .extract()
                 .as(LegalEntityByUserGetResponseBody.class)
                 .getId();
+
             if (!legalEntitiesUserContextMap.containsKey(legalEntityInternalId)) {
                 this.serviceAgreementsConfigurator.updateMasterServiceAgreementWithExternalIdByLegalEntity(legalEntityInternalId);
             }
+
             UserContext userContext = getUserContextByExternalId(userExternalId);
             legalEntitiesUserContextMap.put(userContext.getInternalLegalEntityId(), userContext);
+
             if (legalEntityContext.getCurrencyDataGroup() == null) {
                 legalEntityContext.setCurrencyDataGroup(ingestDataGroupArrangementsForServiceAgreement(userContext.getExternalServiceAgreementId(),
                     userContext.getExternalLegalEntityId()));
             }
+
         });
+
         legalEntitiesUserContextMap.values()
             .forEach(userContext -> assembleFunctionGroupsAndAssignPermissions(userContext.getExternalUserId(), userContext.getInternalServiceAgreementId(),
                 userContext.getExternalServiceAgreementId(),
@@ -121,17 +136,19 @@ public class AccessControlSetup {
     protected CurrencyDataGroup ingestDataGroupArrangementsForServiceAgreement(String externalServiceAgreementId, String externalLegalEntityId) {
         final CurrencyDataGroup currencyDataGroup = new CurrencyDataGroup();
         List<Callable<Void>> taskList = new ArrayList<>();
+
         taskList.add(() -> generateTask(externalServiceAgreementId,
             () -> this.productSummaryConfigurator.ingestRandomCurrencyArrangementsByLegalEntity(externalLegalEntityId),
             currencyDataGroup::withInternalRandomCurrencyDataGroupId));
-        taskList
-            .add(() -> generateTask(externalServiceAgreementId, () -> this.productSummaryConfigurator
-                    .ingestSpecificCurrencyArrangementsByLegalEntity(externalLegalEntityId, Currency.EUR),
-                currencyDataGroup::withInternalEurCurrencyDataGroupId));
-        taskList
-            .add(() -> generateTask(externalServiceAgreementId, () -> this.productSummaryConfigurator
-                    .ingestSpecificCurrencyArrangementsByLegalEntity(externalLegalEntityId, Currency.USD),
-                currencyDataGroup::withInternalUsdCurrencyDataGroupId));
+
+        taskList.add(() -> generateTask(externalServiceAgreementId, () -> this.productSummaryConfigurator
+                .ingestSpecificCurrencyArrangementsByLegalEntity(externalLegalEntityId, Currency.EUR),
+            currencyDataGroup::withInternalEurCurrencyDataGroupId));
+
+        taskList.add(() -> generateTask(externalServiceAgreementId, () -> this.productSummaryConfigurator
+                .ingestSpecificCurrencyArrangementsByLegalEntity(externalLegalEntityId, Currency.USD),
+            currencyDataGroup::withInternalUsdCurrencyDataGroupId));
+
         taskList.parallelStream()
             .forEach(voidCallable -> {
                 try {
@@ -140,6 +157,7 @@ public class AccessControlSetup {
                     throw new RuntimeException(e);
                 }
             });
+
         return currencyDataGroup;
     }
 

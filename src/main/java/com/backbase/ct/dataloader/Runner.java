@@ -3,8 +3,8 @@ package com.backbase.ct.dataloader;
 import com.backbase.ct.dataloader.healthchecks.EntitlementsHealthCheck;
 import com.backbase.ct.dataloader.healthchecks.ProductSummaryHealthCheck;
 import com.backbase.ct.dataloader.healthchecks.TransactionsHealthCheck;
-import com.backbase.ct.dataloader.setup.BankSetup;
-import com.backbase.ct.dataloader.setup.LegalEntitiesWithUsersSetup;
+import com.backbase.ct.dataloader.setup.AccessControlSetup;
+import com.backbase.ct.dataloader.setup.CapabilitiesDataSetup;
 import com.backbase.ct.dataloader.setup.ServiceAgreementsSetup;
 import java.io.IOException;
 import java.time.Duration;
@@ -19,9 +19,9 @@ public class Runner {
 
         System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", "8");
 
-        BankSetup bankSetup = new BankSetup();
-        LegalEntitiesWithUsersSetup legalEntitiesWithUsersSetup = new LegalEntitiesWithUsersSetup();
+        AccessControlSetup accessControlSetup = new AccessControlSetup();
         ServiceAgreementsSetup serviceAgreementsSetup = new ServiceAgreementsSetup();
+        CapabilitiesDataSetup capabilitiesDataSetup = new CapabilitiesDataSetup();
         EntitlementsHealthCheck entitlementsHealthCheck = new EntitlementsHealthCheck();
         ProductSummaryHealthCheck productSummaryHealthCheck = new ProductSummaryHealthCheck();
         TransactionsHealthCheck transactionsHealthCheck = new TransactionsHealthCheck();
@@ -32,15 +32,14 @@ public class Runner {
 
         Instant start = Instant.now();
 
-        bankSetup.setupBankWithEntitlementsAdminAndProducts();
-        legalEntitiesWithUsersSetup.assembleUsersWithAndWithoutFunctionDataGroupsPrivileges();
+        accessControlSetup.setupBankWithEntitlementsAdminAndProducts();
+        accessControlSetup.setupAccessControlForUsers();
         serviceAgreementsSetup.setupCustomServiceAgreements();
 
-        bankSetup.setupBankNotifications();
-
-        legalEntitiesWithUsersSetup.assembleContactsPerUser();
-        legalEntitiesWithUsersSetup.assemblePaymentsPerUser();
-        legalEntitiesWithUsersSetup.assembleConversationsPerUser();
+        capabilitiesDataSetup.ingestBankNotifications();
+        capabilitiesDataSetup.ingestContactsPerUser();
+        capabilitiesDataSetup.ingestPaymentsPerUser();
+        capabilitiesDataSetup.ingestConversationsPerUser();
 
         Instant end = Instant.now();
         Duration duration = Duration.between(start, end);

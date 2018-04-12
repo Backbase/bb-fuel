@@ -1,23 +1,21 @@
 package com.backbase.ct.dataloader.clients.accessgroup;
 
-import static org.apache.http.HttpStatus.SC_OK;
-
 import com.backbase.ct.dataloader.clients.common.AbstractRestClient;
-import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.config.functions.FunctionsGetResponseBody;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.datagroups.DataGroupsGetResponseBody;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.functiongroups.FunctionGroupsGetResponseBody;
 import io.restassured.response.Response;
+
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static org.apache.http.HttpStatus.SC_OK;
 
 public class AccessGroupPresentationRestClient extends AbstractRestClient {
 
     private static final String SERVICE_VERSION = "v2";
     private static final String ACCESS_GROUP_PRESENTATION_SERVICE = "accessgroup-presentation-service";
     private static final String ENDPOINT_ACCESS_GROUPS = "/accessgroups";
-    private static final String ENDPOINT_CONFIG_FUNCTIONS = ENDPOINT_ACCESS_GROUPS + "/config/functions";
     private static final String ENDPOINT_FUNCTION_BY_SERVICE_AGREEMENT_ID = ENDPOINT_ACCESS_GROUPS + "/function-groups?serviceAgreementId=%s";
     private static final String ENDPOINT_DATA_BY_SERVICE_AGREEMENT_ID_AND_TYPE = ENDPOINT_ACCESS_GROUPS + "/data-groups?serviceAgreementId=%s&type=%s";
 
@@ -36,34 +34,6 @@ public class AccessGroupPresentationRestClient extends AbstractRestClient {
         return Arrays.stream(functionGroups)
             .map(FunctionGroupsGetResponseBody::getId)
             .collect(Collectors.toList());
-    }
-
-    public String getFunctionGroupIdByServiceAgreementIdAndFunctionName(String internalServiceAgreementId, String functionName) {
-        String functionId = getFunctionIdForFunctionName(retrieveFunctions()
-            .then()
-            .statusCode(SC_OK)
-            .extract()
-            .as(FunctionsGetResponseBody[].class), functionName);
-
-        FunctionGroupsGetResponseBody[] functionGroups = retrieveFunctionGroupsByServiceAgreement(internalServiceAgreementId)
-            .then()
-            .statusCode(SC_OK)
-            .extract()
-            .as(FunctionGroupsGetResponseBody[].class);
-
-        FunctionGroupsGetResponseBody functionGroup = Arrays.stream(functionGroups)
-            .filter(fg -> fg.getPermissions()
-                .get(0)
-                .getFunctionId()
-                .equals(functionId))
-            .findFirst()
-            .orElse(null);
-
-        if (functionGroup == null) {
-            return null;
-        } else {
-            return functionGroup.getId();
-        }
     }
 
     public List<String> retrieveDataGroupIdsByServiceAgreement(String internalServiceAgreement) {
@@ -86,20 +56,6 @@ public class AccessGroupPresentationRestClient extends AbstractRestClient {
     private Response retrieveFunctionGroupsByServiceAgreement(String internalServiceAgreementId) {
         return requestSpec()
             .get(String.format(getPath(ENDPOINT_FUNCTION_BY_SERVICE_AGREEMENT_ID), internalServiceAgreementId));
-    }
-
-    private Response retrieveFunctions() {
-        return requestSpec()
-            .get(getPath(ENDPOINT_CONFIG_FUNCTIONS));
-    }
-
-    private String getFunctionIdForFunctionName(FunctionsGetResponseBody[] functions, String functionName) {
-        Optional<String> functionId = Arrays.stream(functions)
-            .filter(e -> e.getName()
-                .equals(functionName))
-            .map(FunctionsGetResponseBody::getFunctionId)
-            .findFirst();
-        return functionId.orElse(null);
     }
 
     private Response retrieveDataGroupsByServiceAgreementAndType(String internalServiceAgreement, String type) {

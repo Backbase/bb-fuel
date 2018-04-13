@@ -51,18 +51,4 @@ public class PermissionsConfigurator {
 
         LOGGER.info("Permission assigned for service agreement [{}], user [{}], function group [{}], data groups {}", internalServiceAgreementId, externalUserId, functionGroupId, dataGroupIds);
     }
-
-    public void assignPermissions(String externalUserId, String internalServiceAgreementId, String functionName, String functionGroupId, CurrencyDataGroup currencyDataGroup) {
-        switch (functionName) {
-            case CommonConstants.SEPA_CT_FUNCTION_NAME:
-                assignPermissions(externalUserId, internalServiceAgreementId, functionGroupId, singletonList(currencyDataGroup.getInternalEurCurrencyDataGroupId()));
-                break;
-            case CommonConstants.US_DOMESTIC_WIRE_FUNCTION_NAME:
-            case CommonConstants.US_FOREIGN_WIRE_FUNCTION_NAME:
-                assignPermissions(externalUserId, internalServiceAgreementId, functionGroupId, singletonList(currencyDataGroup.getInternalUsdCurrencyDataGroupId()));
-                break;
-            default:
-                assignPermissions(externalUserId, internalServiceAgreementId, functionGroupId, asList(currencyDataGroup.getInternalRandomCurrencyDataGroupId(), currencyDataGroup.getInternalEurCurrencyDataGroupId(), currencyDataGroup.getInternalUsdCurrencyDataGroupId()));
-        }
-    }
 }

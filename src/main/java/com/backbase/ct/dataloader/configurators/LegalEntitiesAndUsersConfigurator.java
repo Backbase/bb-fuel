@@ -19,12 +19,13 @@ public class LegalEntitiesAndUsersConfigurator {
         this.userIntegrationRestClient.ingestEntitlementsAdminUnderLEAndLogResponse(externalEntitlementsAdminUserId, CommonConstants.EXTERNAL_ROOT_LEGAL_ENTITY_ID);
     }
 
-    public void ingestUsersUnderComposedLegalEntity(List<String> externalUserIds, String parentLegalEntityExternalId, String legalEntityExternalId,
-        String legalEntityName, String type) {
+    public void ingestUsersUnderLegalEntity(List<String> externalUserIds, String parentLegalEntityExternalId, String legalEntityExternalId,
+                                            String legalEntityName, String type) {
         final LegalEntitiesPostRequestBody requestBody = LegalEntitiesAndUsersDataGenerator.composeLegalEntitiesPostRequestBody(legalEntityExternalId, legalEntityName,
             parentLegalEntityExternalId, type);
-        this.legalEntityIntegrationRestClient
-            .ingestLegalEntityAndLogResponse(requestBody);
+
+        this.legalEntityIntegrationRestClient.ingestLegalEntityAndLogResponse(requestBody);
+
         externalUserIds.parallelStream()
             .forEach(
                 externalUserId -> this.userIntegrationRestClient

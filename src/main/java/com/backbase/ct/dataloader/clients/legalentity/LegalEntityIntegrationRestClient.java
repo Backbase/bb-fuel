@@ -42,7 +42,7 @@ public class LegalEntityIntegrationRestClient extends AbstractRestClient {
                 LOGGER.info(String.format("Root legal entity [%s] ingested", legalEntity.getExternalId()));
             } else {
                 LOGGER
-                    .info(String.format("Legal entity [%s] ingested under legal entity [%s]", legalEntity.getExternalId(), legalEntity.getParentExternalId()));
+                    .info(String.format("Legal entity [%s] ingested under parent legal entity [%s]", legalEntity.getExternalId(), legalEntity.getParentExternalId()));
             }
         } else {
             response.then().statusCode(SC_CREATED);

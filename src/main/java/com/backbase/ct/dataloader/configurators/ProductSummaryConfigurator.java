@@ -35,7 +35,7 @@ public class ProductSummaryConfigurator {
         Arrays.stream(products).parallel().forEach(product -> arrangementsIntegrationRestClient.ingestProductAndLogResponse(product));
     }
 
-    public List<ArrangementId> ingestSpecificCurrencyArrangementsByLegalEntityAndReturnArrangementIds(String externalLegalEntityId, ArrangementsPostRequestBodyParent.Currency currency) {
+    public List<ArrangementId> ingestSpecificCurrencyArrangementsByLegalEntity(String externalLegalEntityId, ArrangementsPostRequestBodyParent.Currency currency) {
         List<ArrangementId> arrangementIds = Collections.synchronizedList(new ArrayList<>());
 
         int randomAmount = CommonHelpers.generateRandomNumberInRange(globalProperties.getInt(CommonConstants.PROPERTY_ARRANGEMENTS_MIN), globalProperties.getInt(CommonConstants.PROPERTY_ARRANGEMENTS_MAX));
@@ -55,7 +55,7 @@ public class ProductSummaryConfigurator {
         return arrangementIds;
     }
 
-    public List<ArrangementId> ingestRandomCurrencyArrangementsByLegalEntityAndReturnArrangementIds(String externalLegalEntityId) {
+    public List<ArrangementId> ingestRandomCurrencyArrangementsByLegalEntity(String externalLegalEntityId) {
         List<ArrangementId> arrangementIds = Collections.synchronizedList(new ArrayList<>());
 
         int randomAmount = CommonHelpers.generateRandomNumberInRange(globalProperties.getInt(CommonConstants.PROPERTY_ARRANGEMENTS_MIN), globalProperties.getInt(CommonConstants.PROPERTY_ARRANGEMENTS_MAX));

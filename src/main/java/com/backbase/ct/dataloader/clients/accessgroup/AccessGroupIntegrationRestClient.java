@@ -9,6 +9,12 @@ import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.users.perm
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.apache.http.HttpStatus.SC_OK;
+
 public class AccessGroupIntegrationRestClient extends AbstractRestClient {
 
     private static final String ENTITLEMENTS = globalProperties.getString(CommonConstants.PROPERTY_ENTITLEMENTS_BASE_URI);
@@ -45,18 +51,28 @@ public class AccessGroupIntegrationRestClient extends AbstractRestClient {
             .get(getPath(ENDPOINT_CONFIG_FUNCTIONS));
     }
 
-    public FunctionsGetResponseBody retrieveFunctionByName(String functionName) {
-        FunctionsGetResponseBody[] allFunctions = retrieveFunctions()
-            .thenReturn()
-            .getBody()
+    public List<FunctionsGetResponseBody> retrieveFunctions(List<String> functionNames) {
+        FunctionsGetResponseBody[] functions = retrieveFunctions()
+            .then()
+            .statusCode(SC_OK)
+            .extract()
             .as(FunctionsGetResponseBody[].class);
 
-        for (FunctionsGetResponseBody function : allFunctions) {
-            if (function.getName().equals(functionName)) {
-                return function;
-            }
-        }
-        return null;
+        return Arrays.stream(functions)
+            .filter(function -> functionNames.contains(function.getName()))
+            .collect(Collectors.toList());
+    }
+
+    public List<FunctionsGetResponseBody> retrieveFunctionsNotContainingProvidedFunctionNames(List<String> functionNames) {
+        FunctionsGetResponseBody[] functions = retrieveFunctions()
+            .then()
+            .statusCode(SC_OK)
+            .extract()
+            .as(FunctionsGetResponseBody[].class);
+
+        return Arrays.stream(functions)
+            .filter(function -> !functionNames.contains(function.getName()))
+            .collect(Collectors.toList());
     }
 
     public Response assignPermissions(AssignPermissionsPostRequestBody body) {

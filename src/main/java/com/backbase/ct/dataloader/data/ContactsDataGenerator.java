@@ -1,6 +1,5 @@
 package com.backbase.ct.dataloader.data;
 
-import com.backbase.ct.dataloader.utils.GlobalProperties;
 import com.backbase.presentation.contact.rest.spec.v2.contacts.ContactsBulkIngestionPostRequestBody;
 import com.backbase.presentation.contact.rest.spec.v2.contacts.ExternalAccessContext;
 import com.backbase.presentation.contact.rest.spec.v2.contacts.ExternalAccountInformation;

@@ -8,8 +8,6 @@ import com.backbase.presentation.contact.rest.spec.v2.contacts.ContactsBulkInges
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.stream.IntStream;
-
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_CONTACTS_MAX;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_CONTACTS_MIN;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_CONTACT_ACCOUNTS_MAX;

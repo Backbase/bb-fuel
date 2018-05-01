@@ -4,7 +4,7 @@ import com.backbase.ct.dataloader.clients.accessgroup.UserContextPresentationRes
 import com.backbase.ct.dataloader.clients.common.LoginRestClient;
 import com.backbase.ct.dataloader.clients.contact.ContactIntegrationRestClient;
 import com.backbase.ct.dataloader.utils.GlobalProperties;
-import com.backbase.presentation.contact.rest.spec.v2.contacts.ContactsBulkIngestionPostRequestBody;
+import com.backbase.dbs.integration.external.inbound.contact.rest.spec.v2.contacts.bulk.ContactsBulkIngestionPostRequestBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

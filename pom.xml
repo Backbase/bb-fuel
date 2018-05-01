@@ -133,7 +133,7 @@
         <!-- contact specs -->
         <dependency>
             <groupId>com.backbase.dbs.contact</groupId>
-            <artifactId>contact-presentation-spec</artifactId>
+            <artifactId>contact-integration-external-inbound-spec</artifactId>
         </dependency>
         <!-- payment specs -->
         <dependency>

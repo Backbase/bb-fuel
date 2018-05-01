@@ -2,7 +2,7 @@ package com.backbase.ct.dataloader.clients.contact;
 
 import com.backbase.ct.dataloader.clients.common.AbstractRestClient;
 import com.backbase.ct.dataloader.data.CommonConstants;
-import com.backbase.presentation.contact.rest.spec.v2.contacts.ContactsBulkIngestionPostRequestBody;
+import com.backbase.dbs.integration.external.inbound.contact.rest.spec.v2.contacts.bulk.ContactsBulkIngestionPostRequestBody;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 

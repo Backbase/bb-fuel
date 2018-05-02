@@ -22,6 +22,7 @@ public final class CommonConstants {
     public static final String PROPERTY_ENTITLEMENTS_BASE_URI = "entitlements.base.uri";
     public static final String PROPERTY_PRODUCT_SUMMARY_BASE_URI = "productsummary.base.uri";
     public static final String PROPERTY_TRANSACTIONS_BASE_URI = "transactions.base.uri";
+    public static final String PROPERTY_CONTACT_MANAGER_BASE_URI = "contactmanager.base.uri";
     public static final String PROPERTY_HEALTH_CHECK_TIMEOUT_IN_MINUTES = "healthcheck.timeout.in.minutes";
 
     // Users
@@ -47,8 +48,8 @@ public final class CommonConstants {
     // User data
     static final String PROPERTY_DEBIT_CARDS_MIN = "debit.cards.min";
     static final String PROPERTY_DEBIT_CARDS_MAX = "debit.cards.max";
-    static final String PROPERTY_CONTACT_ACCOUNTS_MIN = "contact.accounts.min";
-    static final String PROPERTY_CONTACT_ACCOUNTS_MAX = "contact.accounts.max";
+    public static final String PROPERTY_CONTACT_ACCOUNTS_MIN = "contact.accounts.min";
+    public static final String PROPERTY_CONTACT_ACCOUNTS_MAX = "contact.accounts.max";
 
     public static final String PROPERTY_ARRANGEMENTS_MIN = "arrangements.min";
     public static final String PROPERTY_ARRANGEMENTS_MAX = "arrangements.max";

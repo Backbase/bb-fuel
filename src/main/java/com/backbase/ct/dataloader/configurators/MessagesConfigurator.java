@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.stream.IntStream;
 
+import static com.backbase.ct.dataloader.data.CommonConstants.*;
 import static org.apache.http.HttpStatus.SC_ACCEPTED;
 import static org.apache.http.HttpStatus.SC_OK;
 
@@ -27,7 +28,7 @@ public class MessagesConfigurator {
     private MessagesPresentationRestClient messagesPresentationRestClient = new MessagesPresentationRestClient();
 
     public void ingestConversations(String externalUserId) {
-        int randomAmount = CommonHelpers.generateRandomNumberInRange(globalProperties.getInt(CommonConstants.PROPERTY_CONVERSATIONS_MIN), globalProperties.getInt(CommonConstants.PROPERTY_CONVERSATIONS_MAX));
+        int randomAmount = CommonHelpers.generateRandomNumberInRange(globalProperties.getInt(PROPERTY_CONVERSATIONS_MIN), globalProperties.getInt(PROPERTY_CONVERSATIONS_MAX));
         IntStream.range(0, randomAmount).forEach(randomNumber -> {
 
             loginRestClient.login(externalUserId, externalUserId);
@@ -43,14 +44,12 @@ public class MessagesConfigurator {
                     .then()
                     .statusCode(SC_ACCEPTED);
 
-            loginRestClient.login(CommonConstants.USER_ADMIN, CommonConstants.USER_ADMIN);
+            loginRestClient.login(USER_ADMIN, USER_ADMIN);
             String conversationId = messagesPresentationRestClient.getConversations()
                     .then()
                     .statusCode(SC_OK)
                     .extract()
-                    .as(ConversationsGetResponseBody.class)
-                    .getConversations()
-                    .get(0)
+                    .as(ConversationsGetResponseBody[].class)[0]
                     .getId();
 
             String conversationDraftId = messagesPresentationRestClient.postConversationDraft(MessagesDataGenerator.generateConversationDraftsPostRequestBody(), conversationId)

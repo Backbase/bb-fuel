@@ -47,11 +47,7 @@ public class CapabilitiesDataSetup {
                 .map(LegalEntityWithUsers::getUserExternalIds)
                 .flatMap(List::stream)
                 .collect(Collectors.toList())
-                .forEach(userId -> {
-                    this.loginRestClient.login(userId, userId);
-                    this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
-                    this.contactsConfigurator.ingestContacts();
-                });
+                .forEach(userId -> this.contactsConfigurator.ingestContacts(userId));
         }
     }
 

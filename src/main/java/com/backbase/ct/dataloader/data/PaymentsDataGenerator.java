@@ -22,7 +22,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
-import static com.backbase.ct.dataloader.data.CommonConstants.PAYMENT_TYPE_US_DOMESTIC_WIRE;
+import static com.backbase.ct.dataloader.data.CommonConstants.PAYMENT_TYPE_SEPA_CREDIT_TRANSFER;
 
 public class PaymentsDataGenerator {
 
@@ -35,7 +35,7 @@ public class PaymentsDataGenerator {
         Schedule schedule = null;
         Bank creditorBank = null;
         Bank correspondentBank = null;
-        Currency currency;
+        Currency currency = new Currency().withAmount(CommonHelpers.generateRandomAmountInRange(1000L, 99999L));
         Identification identification;
 
         if (paymentMode.equals(IdentifiedPaymentOrder.PaymentMode.RECURRING)) {
@@ -48,38 +48,14 @@ public class PaymentsDataGenerator {
                     .withEndDate(new SimpleDateFormat("yyyy-MM-dd").format(DateUtils.addYears(new Date(), 1)));
         }
 
-        if (PAYMENT_TYPE_US_DOMESTIC_WIRE.equals(paymentType)) {
-            creditorBank = new Bank()
-                    .withBankBranchCode(branchCodes.get(random.nextInt(branchCodes.size())))
-                    .withName(faker.name().fullName())
-                    .withPostalAddress(new PostalAddress()
-                            .withAddressLine1(faker.address().streetAddress())
-                            .withAddressLine2(faker.address().secondaryAddress())
-                            .withStreetName(faker.address().streetAddress())
-                            .withPostCode(faker.address().zipCode())
-                            .withTown(faker.address().city())
-                            .withCountry(faker.address().countryCode())
-                            .withCountrySubDivision(faker.address().state()));
-
-            correspondentBank = new Bank()
-                    .withBankBranchCode(branchCodes.get(random.nextInt(branchCodes.size())))
-                    .withName(faker.name().fullName());
-
-            currency = new Currency()
-                    .withCurrencyCode("USD")
-                    .withAmount(CommonHelpers.generateRandomAmountInRange(1000L, 99999L));
-
-            identification = new Identification()
-                    .withSchemeName(Identification.SchemeName.BBAN)
-                    .withIdentification(String.valueOf(CommonHelpers.generateRandomNumberInRange(0, 999999999)));
+        if (PAYMENT_TYPE_SEPA_CREDIT_TRANSFER.equals(paymentType)) {
+            currency.setCurrencyCode("EUR");
+            identification = generateIbanIdentification();
         } else {
-            currency = new Currency()
-                    .withCurrencyCode("EUR")
-                    .withAmount(CommonHelpers.generateRandomAmountInRange(1000L, 99999L));
-
-            identification = new Identification()
-                    .withSchemeName(Identification.SchemeName.IBAN)
-                    .withIdentification(ProductSummaryDataGenerator.generateRandomIban());
+            creditorBank = generateCreditorBank();
+            correspondentBank = generateCorrespondentBank();
+            currency.setCurrencyCode("USD");
+            identification = generateBbanIdentification();
         }
 
         return new InitiatePaymentOrder()
@@ -111,5 +87,37 @@ public class PaymentsDataGenerator {
                                         .withCountrySubDivision(faker.address().state())))
                         .withCreditorBank(creditorBank)
                         .withCorrespondentBank(correspondentBank)));
+    }
+
+    private static Identification generateIbanIdentification() {
+        return new Identification()
+            .withSchemeName(Identification.SchemeName.IBAN)
+            .withIdentification(ProductSummaryDataGenerator.generateRandomIban());
+    }
+
+    private static Identification generateBbanIdentification() {
+        return new Identification()
+                .withSchemeName(Identification.SchemeName.BBAN)
+                .withIdentification(String.valueOf(CommonHelpers.generateRandomNumberInRange(0, 999999999)));
+    }
+
+    private static Bank generateCorrespondentBank() {
+        return new Bank()
+                .withBankBranchCode(branchCodes.get(random.nextInt(branchCodes.size())))
+                .withName(faker.name().fullName());
+    }
+
+    private static Bank generateCreditorBank() {
+        return new Bank()
+                .withBankBranchCode(branchCodes.get(random.nextInt(branchCodes.size())))
+                .withName(faker.name().fullName())
+                .withPostalAddress(new PostalAddress()
+                        .withAddressLine1(faker.address().streetAddress())
+                        .withAddressLine2(faker.address().secondaryAddress())
+                        .withStreetName(faker.address().streetAddress())
+                        .withPostCode(faker.address().zipCode())
+                        .withTown(faker.address().city())
+                        .withCountry(faker.address().countryCode())
+                        .withCountrySubDivision(faker.address().state()));
     }
 }

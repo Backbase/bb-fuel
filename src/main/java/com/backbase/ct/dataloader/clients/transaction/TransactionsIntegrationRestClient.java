@@ -14,25 +14,17 @@ public class TransactionsIntegrationRestClient extends AbstractRestClient {
     private static final String SERVICE_VERSION = "v2";
     private static final String TRANSACTION_INTEGRATION_SERVICE = "transaction-integration-service";
     private static final String ENDPOINT_TRANSACTIONS = "/transactions";
-    private static final String ENDPOINT_TRANSACTIONS_MULTIPLE = ENDPOINT_TRANSACTIONS + "/multiple";
 
     public TransactionsIntegrationRestClient() {
         super(TRANSACTIONS, SERVICE_VERSION);
         setInitialPath(composeInitialPath());
     }
 
-    public Response ingestTransaction(TransactionsPostRequestBody body) {
-        return requestSpec()
-            .contentType(ContentType.JSON)
-            .body(body)
-            .post(getPath(ENDPOINT_TRANSACTIONS));
-    }
-
     public Response ingestTransactions(List<TransactionsPostRequestBody> transactionsPostRequestBodies) {
         return requestSpec()
             .contentType(ContentType.JSON)
             .body(transactionsPostRequestBodies)
-            .post(getPath(ENDPOINT_TRANSACTIONS_MULTIPLE));
+            .post(getPath(ENDPOINT_TRANSACTIONS));
     }
 
     @Override

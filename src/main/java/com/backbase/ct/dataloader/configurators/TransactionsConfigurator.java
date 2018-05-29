@@ -1,5 +1,7 @@
 package com.backbase.ct.dataloader.configurators;
 
+import com.backbase.ct.dataloader.clients.accessgroup.UserContextPresentationRestClient;
+import com.backbase.ct.dataloader.clients.common.LoginRestClient;
 import com.backbase.ct.dataloader.clients.transaction.TransactionsIntegrationRestClient;
 import com.backbase.ct.dataloader.clients.turnovers.CategoriesPresentationRestClient;
 import com.backbase.ct.dataloader.data.CommonConstants;
@@ -17,6 +19,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static com.backbase.ct.dataloader.data.CommonConstants.USER_ADMIN;
 import static org.apache.http.HttpStatus.SC_CREATED;
 
 public class TransactionsConfigurator {
@@ -26,10 +29,15 @@ public class TransactionsConfigurator {
 
     private TransactionsIntegrationRestClient transactionsIntegrationRestClient = new TransactionsIntegrationRestClient();
     private CategoriesPresentationRestClient categoriesPresentationRestClient = new CategoriesPresentationRestClient();
+    private LoginRestClient loginRestClient = new LoginRestClient();
+    private UserContextPresentationRestClient userContextPresentationRestClient = new UserContextPresentationRestClient();
     private Random random = new Random();
 
     public void ingestTransactionsByArrangement(String externalArrangementId) {
         List<TransactionsPostRequestBody> transactions = new ArrayList<>();
+
+        loginRestClient.login(USER_ADMIN, USER_ADMIN);
+        userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
         List<String> categoryNames = categoriesPresentationRestClient.retrieveCategories()
             .stream()
             .map(CategoryGetResponseBody::getCategoryName)

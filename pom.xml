@@ -145,6 +145,11 @@
             <groupId>com.backbase.dbs.messages</groupId>
             <artifactId>messages-presentation-spec</artifactId>
         </dependency>
+        <!-- turnovers specs -->
+        <dependency>
+            <groupId>com.backbase.dbs.pfm</groupId>
+            <artifactId>categories-management-presentation-spec</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

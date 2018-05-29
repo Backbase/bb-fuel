@@ -1,16 +1,20 @@
 package com.backbase.ct.dataloader.configurators;
 
 import com.backbase.ct.dataloader.clients.transaction.TransactionsIntegrationRestClient;
+import com.backbase.ct.dataloader.clients.turnovers.CategoriesPresentationRestClient;
 import com.backbase.ct.dataloader.data.CommonConstants;
 import com.backbase.ct.dataloader.data.TransactionsDataGenerator;
 import com.backbase.ct.dataloader.utils.CommonHelpers;
 import com.backbase.ct.dataloader.utils.GlobalProperties;
 import com.backbase.integration.transaction.external.rest.spec.v2.transactions.TransactionsPostRequestBody;
+import com.backbase.presentation.categories.management.rest.spec.v2.categories.id.CategoryGetResponseBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.apache.http.HttpStatus.SC_CREATED;
@@ -21,14 +25,20 @@ public class TransactionsConfigurator {
     private static GlobalProperties globalProperties = GlobalProperties.getInstance();
 
     private TransactionsIntegrationRestClient transactionsIntegrationRestClient = new TransactionsIntegrationRestClient();
+    private CategoriesPresentationRestClient categoriesPresentationRestClient = new CategoriesPresentationRestClient();
+    private Random random = new Random();
 
     public void ingestTransactionsByArrangement(String externalArrangementId) {
         List<TransactionsPostRequestBody> transactions = new ArrayList<>();
+        List<String> categoryNames = categoriesPresentationRestClient.retrieveCategories()
+            .stream()
+            .map(CategoryGetResponseBody::getCategoryName)
+            .collect(Collectors.toList());
 
         int randomAmount = CommonHelpers.generateRandomNumberInRange(globalProperties.getInt(CommonConstants.PROPERTY_TRANSACTIONS_MIN), globalProperties.getInt(CommonConstants.PROPERTY_TRANSACTIONS_MAX));
-        IntStream.range(0, randomAmount).parallel().forEach(randomNumber -> {
-            transactions.add(TransactionsDataGenerator.generateTransactionsPostRequestBody(externalArrangementId));
-        });
+
+        IntStream.range(0, randomAmount).parallel()
+            .forEach(randomNumber -> transactions.add(TransactionsDataGenerator.generateTransactionsPostRequestBody(externalArrangementId, categoryNames.get(random.nextInt(categoryNames.size())))));
 
         transactionsIntegrationRestClient.ingestTransactions(transactions)
             .then()

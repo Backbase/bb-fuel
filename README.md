@@ -32,8 +32,9 @@ For legal entities and users in the file [legal-entities-with-users.json](src/ma
 
 ### Transactions setup
 - By default ingesting transactions is disabled - configurable via property
-- Only works if property `ingest.entitlements` is set to true due to the required external arrangement id when ingesting transactions. This external arrangement id is only returned when creating an arrangement (part of the entitlements setup). The external arrangement id is currently not retrievable via any REST endpoint.
+- Only works if property `ingest.entitlements` is set to `true` due to the required external arrangement id when ingesting transactions. This external arrangement id is only available when creating an arrangement (part of the entitlements setup). The external arrangement id is currently not retrievable via any REST endpoint.
 - If enabled, random transactions (by default: between 10 and 50) per arrangement per today's date
+- Possible to use the PFM categories by setting the property `use.pfm.categories.for.transactions` to `true`
 
 ### Service agreements setup
 Default service agreements (each object represents one service agreement): [serviceagreements.json](src/main/resources/data/serviceagreements.json)

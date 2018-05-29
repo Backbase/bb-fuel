@@ -19,6 +19,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_USE_PFM_CATEGORIES_FOR_TRANSACTIONS;
 import static com.backbase.ct.dataloader.data.CommonConstants.USER_ADMIN;
 import static org.apache.http.HttpStatus.SC_CREATED;
 
@@ -35,18 +36,29 @@ public class TransactionsConfigurator {
 
     public void ingestTransactionsByArrangement(String externalArrangementId) {
         List<TransactionsPostRequestBody> transactions = new ArrayList<>();
+        List<String> categoryNames = new ArrayList<>();
 
-        loginRestClient.login(USER_ADMIN, USER_ADMIN);
-        userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
-        List<String> categoryNames = categoriesPresentationRestClient.retrieveCategories()
-            .stream()
-            .map(CategoryGetResponseBody::getCategoryName)
-            .collect(Collectors.toList());
+        if (globalProperties.getBoolean(PROPERTY_USE_PFM_CATEGORIES_FOR_TRANSACTIONS)) {
+            loginRestClient.login(USER_ADMIN, USER_ADMIN);
+            userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
+            categoryNames = categoriesPresentationRestClient.retrieveCategories()
+                .stream()
+                .map(CategoryGetResponseBody::getCategoryName)
+                .collect(Collectors.toList());
+        }
 
         int randomAmount = CommonHelpers.generateRandomNumberInRange(globalProperties.getInt(CommonConstants.PROPERTY_TRANSACTIONS_MIN), globalProperties.getInt(CommonConstants.PROPERTY_TRANSACTIONS_MAX));
+        List<String> finalCategoryNames = categoryNames;
 
         IntStream.range(0, randomAmount).parallel()
-            .forEach(randomNumber -> transactions.add(TransactionsDataGenerator.generateTransactionsPostRequestBody(externalArrangementId, categoryNames.get(random.nextInt(categoryNames.size())))));
+            .forEach(randomNumber -> {
+                String categoryName = null;
+                if (globalProperties.getBoolean(PROPERTY_USE_PFM_CATEGORIES_FOR_TRANSACTIONS)) {
+                    categoryName = finalCategoryNames.get(random.nextInt(finalCategoryNames.size()));
+                }
+
+                transactions.add(TransactionsDataGenerator.generateTransactionsPostRequestBody(externalArrangementId, categoryName));
+            });
 
         transactionsIntegrationRestClient.ingestTransactions(transactions)
             .then()

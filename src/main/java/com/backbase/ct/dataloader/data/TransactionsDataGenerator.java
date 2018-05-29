@@ -27,7 +27,7 @@ public class TransactionsDataGenerator {
                 .withDescription(faker.lorem().sentence().replace(".", ""))
                 .withTypeGroup(TRANSACTION_TYPE_GROUPS.get(random.nextInt(TRANSACTION_TYPE_GROUPS.size())))
                 .withType(TRANSACTION_TYPES.get(random.nextInt(TRANSACTION_TYPES.size())))
-                .withCategory(category)
+                .withCategory(category != null ? category : faker.company().industry())
                 .withBookingDate(DateUtils.addDays(new Date(), generateRandomNumberInRange(-365, 0)))
                 .withValueDate(DateUtils.addDays(new Date(), generateRandomNumberInRange(-365, 0)))
                 .withAmount(CommonHelpers.generateRandomAmountInRange(100L, 9999L))

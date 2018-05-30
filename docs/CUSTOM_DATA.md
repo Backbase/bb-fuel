@@ -6,6 +6,11 @@ java -Denvironment.name=your-env-00 -cp /path/to/custom/resources/folder/:datalo
 ```
 `/path/to/custom/resources/folder/` must contain the custom `json` files
 
+Example performance test data setup for [gatling-performance-simulations](https://stash.backbase.com/projects/CT/repos/gatling-performance-simulations/browse):
+```
+java -Denvironment.name=your-env-00 -Dlegal.entities.with.users.json.location=data/example-performance-test-users.json dataloader-jar-with-dependencies.jar
+```
+
 ## How to create custom data
 Example for the `legal-entities-with-users.json` (other files are: `legal-entities-with-users-without-permissions.json`, `serviceagreements.json` and `products.json`):
 

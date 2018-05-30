@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -35,7 +36,7 @@ public class TransactionsConfigurator {
     private Random random = new Random();
 
     public void ingestTransactionsByArrangement(String externalArrangementId) {
-        List<TransactionsPostRequestBody> transactions = new ArrayList<>();
+        List<TransactionsPostRequestBody> transactions = Collections.synchronizedList(new ArrayList<>());
         List<String> categoryNames = new ArrayList<>();
 
         if (globalProperties.getBoolean(PROPERTY_USE_PFM_CATEGORIES_FOR_TRANSACTIONS)) {

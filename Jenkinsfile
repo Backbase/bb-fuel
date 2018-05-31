@@ -4,6 +4,7 @@ properties([
                 booleanParam(name: 'INGEST_ENTITLEMENTS', defaultValue: true, description: 'Ingest entitlements setup'),
                 booleanParam(name: 'INGEST_CUSTOM_SERVICE_AGREEMENTS', defaultValue: false, description: 'Ingest custom service agreements'),
                 booleanParam(name: 'INGEST_TRANSACTIONS', defaultValue: false, description: 'Ingest transactions per arrangement (only applicable when INGEST_ENTITLEMENTS = true)'),
+                booleanParam(name: 'USE_PFM_CATEGORIES_FOR_TRANSACTIONS', defaultValue: false, description: 'Use PFM categories for transactions (only applicable when INGEST_TRANSACTIONS = true)'),
                 booleanParam(name: 'INGEST_CONTACTS', defaultValue: false, description: 'Ingest contacts per user'),
                 booleanParam(name: 'INGEST_NOTIFICATIONS', defaultValue: false, description: 'Ingest notifications on global target group'),
                 booleanParam(name: 'INGEST_PAYMENTS', defaultValue: false, description: 'Ingest payments per user'),
@@ -49,6 +50,7 @@ node {
                     "-Dingest.entitlements=${params.INGEST_ENTITLEMENTS} " +
                     "-Dingest.custom.service.agreements=${params.INGEST_CUSTOM_SERVICE_AGREEMENTS} " +
                     "-Dingest.transactions=${params.INGEST_TRANSACTIONS} " +
+                    "-Duse.pfm.categories.for.transactions=${params.USE_PFM_CATEGORIES_FOR_TRANSACTIONS} " +
                     "-Dingest.contacts=${params.INGEST_CONTACTS} " +
                     "-Dingest.notifications=${params.INGEST_NOTIFICATIONS} " +
                     "-Dingest.payments=${params.INGEST_PAYMENTS} " +

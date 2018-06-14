@@ -35,7 +35,6 @@ public class PaymentsConfigurator {
 
     public void ingestPaymentOrders(String externalUserId) {
         final List<String> PAYMENT_TYPES = Arrays.asList(PAYMENT_TYPE_SEPA_CREDIT_TRANSFER, PAYMENT_TYPE_US_DOMESTIC_WIRE);
-        String paymentType = PAYMENT_TYPES.get(random.nextInt(PAYMENT_TYPES.size()));
 
         loginRestClient.login(externalUserId, externalUserId);
         userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
@@ -44,6 +43,7 @@ public class PaymentsConfigurator {
 
         int randomAmount = CommonHelpers.generateRandomNumberInRange(globalProperties.getInt(CommonConstants.PROPERTY_PAYMENTS_MIN), globalProperties.getInt(CommonConstants.PROPERTY_PAYMENTS_MAX));
         IntStream.range(0, randomAmount).parallel().forEach(randomNumber -> {
+            String paymentType = PAYMENT_TYPES.get(random.nextInt(PAYMENT_TYPES.size()));
             ArrangementsByBusinessFunctionGetResponseBody randomArrangement;
 
             if (PAYMENT_TYPE_SEPA_CREDIT_TRANSFER.equals(paymentType)) {

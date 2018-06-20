@@ -1,13 +1,15 @@
 package com.backbase.ct.dataloader.data;
 
-import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBody;
-import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent;
-import com.backbase.integration.arrangement.rest.spec.v2.arrangements.DebitCard;
-import com.backbase.integration.arrangement.rest.spec.v2.products.ProductsPostRequestBody;
 import com.backbase.ct.dataloader.utils.CommonHelpers;
 import com.backbase.ct.dataloader.utils.GlobalProperties;
 import com.backbase.ct.dataloader.utils.ParserUtil;
+import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBody;
+import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent;
+import com.backbase.integration.arrangement.rest.spec.v2.arrangements.DebitCard;
+import com.backbase.integration.arrangement.rest.spec.v2.balancehistory.BalanceHistoryPostRequestBody;
+import com.backbase.integration.arrangement.rest.spec.v2.products.ProductsPostRequestBody;
 import com.github.javafaker.Faker;
+import org.apache.commons.lang.time.DateUtils;
 import org.iban4j.CountryCode;
 import org.iban4j.Iban;
 
@@ -15,10 +17,14 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+
+import static com.backbase.ct.dataloader.utils.CommonHelpers.generateRandomAmountInRange;
+import static com.backbase.ct.dataloader.utils.CommonHelpers.generateRandomNumberInRange;
 
 public class ProductSummaryDataGenerator {
 
@@ -68,16 +74,16 @@ public class ProductSummaryDataGenerator {
                 .withProductId(String.format("%s", productId))
                 .withName(faker.lorem().sentence(3, 0).replace(".", ""))
                 .withAlias(faker.lorem().characters(10))
-                .withBookedBalance(CommonHelpers.generateRandomAmountInRange(10000L, 9999999L))
-                .withAvailableBalance(CommonHelpers.generateRandomAmountInRange(10000L, 9999999L))
-                .withCreditLimit(CommonHelpers.generateRandomAmountInRange(10000L, 999999L))
+                .withBookedBalance(generateRandomAmountInRange(10000L, 9999999L))
+                .withAvailableBalance(generateRandomAmountInRange(10000L, 9999999L))
+                .withCreditLimit(generateRandomAmountInRange(10000L, 999999L))
                 .withCurrency(currency)
                 .withExternalTransferAllowed(true)
                 .withUrgentTransferAllowed(true)
                 .withAccruedInterest(BigDecimal.valueOf(random.nextInt(10)))
                 .withNumber(String.format("%s", random.nextInt(9999)))
-                .withPrincipalAmount(CommonHelpers.generateRandomAmountInRange(10000L, 999999L))
-                .withCurrentInvestmentValue(CommonHelpers.generateRandomAmountInRange(10000L, 999999L))
+                .withPrincipalAmount(generateRandomAmountInRange(10000L, 999999L))
+                .withCurrentInvestmentValue(generateRandomAmountInRange(10000L, 999999L))
                 .withDebitAccount(debitCreditAccountIndicator)
                 .withCreditAccount(debitCreditAccountIndicator)
                 .withDebitCards(debitCards)
@@ -97,5 +103,23 @@ public class ProductSummaryDataGenerator {
         }
 
         return arrangementsPostRequestBody;
+    }
+
+    public static List<BalanceHistoryPostRequestBody> generatebalanceHistoryPostRequestBodies(String externalArrangementId) {
+        List<BalanceHistoryPostRequestBody> balanceHistoryPostRequestBodies = new ArrayList<>();
+
+        for (int i = -1; i >= -365; i--) {
+            balanceHistoryPostRequestBodies.add(generatebalanceHistoryPostRequestBody(
+                externalArrangementId, DateUtils.addDays(new Date(), generateRandomNumberInRange(i, 0))));
+        }
+
+        return balanceHistoryPostRequestBodies;
+    }
+
+    private static BalanceHistoryPostRequestBody generatebalanceHistoryPostRequestBody(String externalArrangementId, Date updatedDate) {
+        return new BalanceHistoryPostRequestBody()
+            .withArrangementId(externalArrangementId)
+            .withBalance(generateRandomAmountInRange(1000000L, 1999999L))
+            .withUpdatedDate(updatedDate);
     }
 }

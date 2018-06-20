@@ -18,28 +18,42 @@ Data loader ingests the following:
 
 ### Access control setup
 - Root legal entity with user `admin` as entitlements admin
-- Legal entities (under the root legal entity `C000000` - generated first time) per legal entity entry with users array in the files [legal-entities-with-users.json](src/main/resources/data/legal-entities-with-users.json) and [legal-entities-with-users-without-permissions.json](src/main/resources/data/legal-entities-with-users-without-permissions.json) - configurable, see section *Custom data*
+- Legal entities (under the root legal entity `C000000`) per legal entity entry with users array in the files [legal-entities-with-users.json](src/main/resources/data/legal-entities-with-users.json) and [legal-entities-with-users-without-permissions.json](src/main/resources/data/legal-entities-with-users-without-permissions.json) - configurable, see section *Custom data*
 
 For legal entities and users in the file [legal-entities-with-users.json](src/main/resources/data/legal-entities-with-users.json):
-- Function groups for every business function with all privileges per legal entity from the input file
-- Data group consisting of arrangements per legal entity from the input file
+- 3 function groups for all business functions with all privileges per service agreement of the legal entity from the input file:
+    1. One function group for business function "SEPA CT"
+    2. One function group for business functions "US Domestic Wire" and "US Foreign Wire"
+    3. One function group with all other business functions
+- 3 data groups:
+    1. EUR currency arrangements for function group for business function "SEPA CT"
+    2. USD currency arrangements for function group for business functions "US Domestic Wire" and "US Foreign Wire"
+    3. Random currency arrangements for the other function group
+
 - All function groups and data groups are assigned to the users via master service agreement of the legal entities from the input file.
 
 ### Product summary setup
 - Default products: [products.json](src/main/resources/data/products.json)
-- Random arrangements (by default: between 10 and 30) per legal entities and users under: [legal-entities-with-users.json](src/main/resources/data/legal-entities-with-users.json)
+- 3 sets of random arrangements (by default: between 10 and 30) each set for each data group: [legal-entities-with-users.json](src/main/resources/data/legal-entities-with-users.json)
 - In case of current account arrangements random debit cards (by default: between 3 and 10) are associated
+- Additionally (by default disabled) possible to ingest balance history based on a daily balance history items for the past year
+    - Only works if property `ingest.access.control` is set to `true` due to the required external arrangement id when ingesting balance history items.
+    - This external arrangement id is only available when creating an arrangement (part of the access control setup). The external arrangement id is currently not retrievable via any REST endpoint.
 
 ### Transactions setup
 - By default ingesting transactions is disabled - configurable via property
-- Only works if property `ingest.entitlements` is set to `true` due to the required external arrangement id when ingesting transactions. This external arrangement id is only available when creating an arrangement (part of the entitlements setup). The external arrangement id is currently not retrievable via any REST endpoint.
+    - Only works if property `ingest.access.control` is set to `true` due to the required external arrangement id when ingesting transactions.
+    - This external arrangement id is only available when creating an arrangement (part of the access control setup). The external arrangement id is currently not retrievable via any REST endpoint.
 - If enabled, random transactions (by default: between 10 and 50) per arrangement per today's date
 - Possible to use the PFM categories by setting the property `use.pfm.categories.for.transactions` to `true`
 
 ### Service agreements setup
 Default service agreements (each object represents one service agreement): [serviceagreements.json](src/main/resources/data/serviceagreements.json)
 - Legal entity ids will be retrieved via the external user ids given in the json file to set up the service agreements.
-- All function groups and data groups related to the legal entities of the consumers will be exposed to the service agreements.
+- Same access control setup for function/data groups and permissions for each service agreement, taking into account:
+- For each participant that shares accounts, arrangements are ingested under its legal entity
+- Function/data groups will be ingested under each service agreement
+- Each participant that shares users are assigned permissions
 
 ### Users setup
 By default only the following users are covered:
@@ -55,7 +69,7 @@ If more/other users are required, you can provide your own `json` files, see *Cu
 - Notifications on global target group
 - Conversations per user
 
-Note: This can be rerun on an existing environment which already contains data by setting the property `ingest.entitlements` to `false`
+Note: This can be rerun on an existing environment which already contains data by setting the property `ingest.access.control` to `false`
 
 ## How to run data loader
 1. Provision an [Autoconfig](https://backbase.atlassian.net/wiki/x/94BtC) environment based on `dbs` or `dbs-microservices` stack with **at least** the following capabilities (based on default configuration:

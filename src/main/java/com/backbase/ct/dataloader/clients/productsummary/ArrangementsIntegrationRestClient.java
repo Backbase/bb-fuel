@@ -1,17 +1,18 @@
 package com.backbase.ct.dataloader.clients.productsummary;
 
-import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
-import static org.apache.http.HttpStatus.SC_CREATED;
-
 import com.backbase.buildingblocks.presentation.errors.BadRequestException;
 import com.backbase.ct.dataloader.clients.common.AbstractRestClient;
 import com.backbase.ct.dataloader.data.CommonConstants;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBody;
+import com.backbase.integration.arrangement.rest.spec.v2.balancehistory.BalanceHistoryPostRequestBody;
 import com.backbase.integration.arrangement.rest.spec.v2.products.ProductsPostRequestBody;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
+import static org.apache.http.HttpStatus.SC_CREATED;
 
 public class ArrangementsIntegrationRestClient extends AbstractRestClient {
 
@@ -23,6 +24,7 @@ public class ArrangementsIntegrationRestClient extends AbstractRestClient {
     private static final String ARRANGEMENTS_INTEGRATION_SERVICE = "arrangements-integration-service";
     private static final String ENDPOINT_ARRANGEMENTS = "/arrangements";
     private static final String ENDPOINT_PRODUCTS = "/products";
+    private static final String ENDPOINT_BALANCE_HISTORY = "/balance-history";
 
     public ArrangementsIntegrationRestClient() {
         super(PRODUCT_SUMMARY, SERVICE_VERSION);
@@ -54,6 +56,13 @@ public class ArrangementsIntegrationRestClient extends AbstractRestClient {
             response.then()
                 .statusCode(SC_CREATED);
         }
+    }
+
+    public Response ingestBalance(BalanceHistoryPostRequestBody balanceHistoryPostRequestBody) {
+        return requestSpec()
+            .contentType(ContentType.JSON)
+            .body(balanceHistoryPostRequestBody)
+            .post(getPath(ENDPOINT_BALANCE_HISTORY));
     }
 
     @Override

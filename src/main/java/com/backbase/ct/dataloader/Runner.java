@@ -1,16 +1,17 @@
 package com.backbase.ct.dataloader;
 
-import com.backbase.ct.dataloader.healthchecks.EntitlementsHealthCheck;
+import com.backbase.ct.dataloader.healthchecks.AccessControlHealthCheck;
 import com.backbase.ct.dataloader.healthchecks.ProductSummaryHealthCheck;
 import com.backbase.ct.dataloader.healthchecks.TransactionsHealthCheck;
 import com.backbase.ct.dataloader.setup.AccessControlSetup;
 import com.backbase.ct.dataloader.setup.CapabilitiesDataSetup;
 import com.backbase.ct.dataloader.setup.ServiceAgreementsSetup;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class Runner {
 
@@ -22,11 +23,11 @@ public class Runner {
         AccessControlSetup accessControlSetup = new AccessControlSetup();
         ServiceAgreementsSetup serviceAgreementsSetup = new ServiceAgreementsSetup();
         CapabilitiesDataSetup capabilitiesDataSetup = new CapabilitiesDataSetup();
-        EntitlementsHealthCheck entitlementsHealthCheck = new EntitlementsHealthCheck();
+        AccessControlHealthCheck accessControlHealthCheck = new AccessControlHealthCheck();
         ProductSummaryHealthCheck productSummaryHealthCheck = new ProductSummaryHealthCheck();
         TransactionsHealthCheck transactionsHealthCheck = new TransactionsHealthCheck();
 
-        entitlementsHealthCheck.checkEntitlementsServicesHealth();
+        accessControlHealthCheck.checkAccessControlServicesHealth();
         productSummaryHealthCheck.checkProductSummaryServicesHealth();
         transactionsHealthCheck.checkTransactionsServicesHealth();
 

@@ -86,7 +86,7 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
-        <!-- entitlements specs -->
+        <!-- access control specs -->
         <dependency>
             <groupId>com.backbase.dbs.user</groupId>
             <artifactId>user-presentation-spec</artifactId>

@@ -16,7 +16,7 @@ public class LegalEntityIntegrationRestClient extends AbstractRestClient {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LegalEntityIntegrationRestClient.class);
 
-    private static final String ENTITLEMENTS = globalProperties.getString(CommonConstants.PROPERTY_ENTITLEMENTS_BASE_URI);
+    private static final String ENTITLEMENTS = globalProperties.getString(CommonConstants.PROPERTY_ACCESSCONTROL_BASE_URI);
     private static final String SERVICE_VERSION = "v2";
     private static final String LEGAL_ENTITY_INTEGRATION_SERVICE = "legalentity-integration-service";
     private static final String ENDPOINT_LEGAL_ENTITIES = "/legalentities";

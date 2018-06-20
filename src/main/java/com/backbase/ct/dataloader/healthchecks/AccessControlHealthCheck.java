@@ -14,11 +14,11 @@ import com.backbase.ct.dataloader.utils.GlobalProperties;
 import java.util.Arrays;
 import java.util.List;
 
-public class EntitlementsHealthCheck {
+public class AccessControlHealthCheck {
 
     private GlobalProperties globalProperties = GlobalProperties.getInstance();
 
-    public void checkEntitlementsServicesHealth() {
+    public void checkAccessControlServicesHealth() {
         HealthCheck healthCheck = new HealthCheck();
         long healthCheckTimeOutInMinutes = globalProperties.getLong(CommonConstants.PROPERTY_HEALTH_CHECK_TIMEOUT_IN_MINUTES);
 

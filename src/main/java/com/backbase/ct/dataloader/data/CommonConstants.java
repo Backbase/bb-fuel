@@ -19,7 +19,7 @@ public final class CommonConstants {
     public static final String LOCAL_PROPERTIES_FILE_NAME = "local.properties";
     public static final String PROPERTY_INFRA_BASE_URI = "infra.base.uri";
     public static final String PROPERTY_GATEWAY_PATH = "gateway.path";
-    public static final String PROPERTY_ENTITLEMENTS_BASE_URI = "entitlements.base.uri";
+    public static final String PROPERTY_ACCESSCONTROL_BASE_URI = "accesscontrol.base.uri";
     public static final String PROPERTY_PRODUCT_SUMMARY_BASE_URI = "productsummary.base.uri";
     public static final String PROPERTY_TRANSACTIONS_BASE_URI = "transactions.base.uri";
     public static final String PROPERTY_CONTACT_MANAGER_BASE_URI = "contactmanager.base.uri";
@@ -39,7 +39,7 @@ public final class CommonConstants {
     public static final String US_FOREIGN_WIRE_FUNCTION_NAME = "US Foreign Wire";
     public static final String PAYMENTS_RESOURCE_NAME = "Payments";
     public static final String PRIVILEGE_CREATE = "create";
-    public static final String PROPERTY_INGEST_ENTITLEMENTS = "ingest.entitlements";
+    public static final String PROPERTY_INGEST_ACCESS_CONTROL = "ingest.access.control";
     public static final String PROPERTY_INGEST_CUSTOM_SERVICE_AGREEMENTS = "ingest.custom.service.agreements";
 
     // Products
@@ -53,6 +53,7 @@ public final class CommonConstants {
 
     public static final String PROPERTY_ARRANGEMENTS_MIN = "arrangements.min";
     public static final String PROPERTY_ARRANGEMENTS_MAX = "arrangements.max";
+    public static final String PROPERTY_INGEST_BALANCE_HISTORY = "ingest.balance.history";
     public static final String PROPERTY_TRANSACTIONS_MIN = "transactions.min";
     public static final String PROPERTY_TRANSACTIONS_MAX = "transactions.max";
     public static final String PROPERTY_INGEST_TRANSACTIONS = "ingest.transactions";

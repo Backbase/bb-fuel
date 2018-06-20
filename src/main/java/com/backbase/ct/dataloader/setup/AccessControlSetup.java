@@ -32,7 +32,8 @@ import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_ENTITLEMENTS;
+import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_ACCESS_CONTROL;
+import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_BALANCE_HISTORY;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_TRANSACTIONS;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_LEGAL_ENTITIES_WITH_USERS_JSON_LOCATION;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_LEGAL_ENTITIES_WITH_USERS_WITHOUT_PERMISSION_JSON_LOCATION;
@@ -66,7 +67,7 @@ public class AccessControlSetup {
     }
 
     public void setupBankWithEntitlementsAdminAndProducts() throws IOException {
-        if (this.globalProperties.getBoolean(PROPERTY_INGEST_ENTITLEMENTS)) {
+        if (this.globalProperties.getBoolean(PROPERTY_INGEST_ACCESS_CONTROL)) {
             this.legalEntitiesAndUsersConfigurator.ingestRootLegalEntityAndEntitlementsAdmin(USER_ADMIN);
             this.productSummaryConfigurator.ingestProducts();
             assembleFunctionDataGroupsAndPermissions(singletonList(USER_ADMIN));
@@ -74,7 +75,7 @@ public class AccessControlSetup {
     }
 
     public void setupAccessControlForUsers() throws IOException {
-        if (this.globalProperties.getBoolean(PROPERTY_INGEST_ENTITLEMENTS)) {
+        if (this.globalProperties.getBoolean(PROPERTY_INGEST_ACCESS_CONTROL)) {
             final LegalEntityWithUsers[] entitiesWithoutPermissions = ParserUtil.convertJsonToObject(this.globalProperties.getString(PROPERTY_LEGAL_ENTITIES_WITH_USERS_WITHOUT_PERMISSION_JSON_LOCATION), LegalEntityWithUsers[].class);
 
             Arrays.stream(this.entities)
@@ -244,10 +245,17 @@ public class AccessControlSetup {
         List<ArrangementId> ids = new ArrayList<>(supplier.get());
         String currencyDataGroupId = this.accessGroupsConfigurator
             .ingestDataGroupForArrangements(externalServiceAgreementId, ids);
+
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_TRANSACTIONS)) {
             ids.parallelStream()
                 .forEach(arrangementId -> this.transactionsConfigurator.ingestTransactionsByArrangement(arrangementId.getExternalArrangementId()));
         }
+
+        if (this.globalProperties.getBoolean(PROPERTY_INGEST_BALANCE_HISTORY)) {
+            ids.parallelStream()
+                .forEach(arrangementId -> this.productSummaryConfigurator.ingestBalanceHistory(arrangementId.getExternalArrangementId()));
+        }
+
         consumer.accept(currencyDataGroupId);
         return null;
     }

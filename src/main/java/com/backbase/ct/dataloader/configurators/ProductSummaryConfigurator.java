@@ -9,6 +9,7 @@ import com.backbase.ct.dataloader.utils.GlobalProperties;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBody;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostResponseBody;
+import com.backbase.integration.arrangement.rest.spec.v2.balancehistory.BalanceHistoryPostRequestBody;
 import com.backbase.integration.arrangement.rest.spec.v2.products.ProductsPostRequestBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
 
+import static com.backbase.ct.dataloader.data.ProductSummaryDataGenerator.generatebalanceHistoryPostRequestBodies;
 import static org.apache.http.HttpStatus.SC_CREATED;
 
 public class ProductSummaryConfigurator {
@@ -74,5 +76,20 @@ public class ProductSummaryConfigurator {
             LOGGER.info("Arrangement [{}] with currency [{}] ingested for product [{}] under legal entity [{}]", arrangement.getName(), currency, arrangement.getProductId(), externalLegalEntityId);
         });
         return arrangementIds;
+    }
+
+    public void ingestBalanceHistory(String externalArrangementId) {
+        List<BalanceHistoryPostRequestBody> balanceHistoryPostRequestBodies = generatebalanceHistoryPostRequestBodies(externalArrangementId);
+
+        balanceHistoryPostRequestBodies.parallelStream()
+            .forEach(balanceHistoryPostRequestBody -> {
+                arrangementsIntegrationRestClient.ingestBalance(balanceHistoryPostRequestBody)
+                    .then()
+                    .statusCode(SC_CREATED);
+
+                LOGGER.info("Balance history item ingested for arrangement [{}] with updated date [{}]", externalArrangementId, balanceHistoryPostRequestBody.getUpdatedDate());
+
+            });
+
     }
 }

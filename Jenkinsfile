@@ -1,9 +1,10 @@
 properties([
         parameters([
                 string(name: 'ENVIRONMENT_NAME', defaultValue: 'env-name-00', description: 'Autoconfig environment name, example: frosty-snow-99\nRead before running: https://stash.backbase.com/projects/CT/repos/dataloader/browse/README.md'),
-                booleanParam(name: 'INGEST_ENTITLEMENTS', defaultValue: true, description: 'Ingest entitlements setup'),
+                booleanParam(name: 'INGEST_ACCESS_CONTROL', defaultValue: true, description: 'Ingest access control setup'),
                 booleanParam(name: 'INGEST_CUSTOM_SERVICE_AGREEMENTS', defaultValue: false, description: 'Ingest custom service agreements'),
-                booleanParam(name: 'INGEST_TRANSACTIONS', defaultValue: false, description: 'Ingest transactions per arrangement (only applicable when INGEST_ENTITLEMENTS = true)'),
+                booleanParam(name: 'INGEST_BALANCE_HISTORY', defaultValue: false, description: 'Ingest balance history per arrangement (only applicable when INGEST_ACCESS_CONTROL = true)'),
+                booleanParam(name: 'INGEST_TRANSACTIONS', defaultValue: false, description: 'Ingest transactions per arrangement (only applicable when INGEST_ACCESS_CONTROL = true)'),
                 booleanParam(name: 'USE_PFM_CATEGORIES_FOR_TRANSACTIONS', defaultValue: false, description: 'Use PFM categories for transactions (only applicable when INGEST_TRANSACTIONS = true)'),
                 booleanParam(name: 'INGEST_CONTACTS', defaultValue: false, description: 'Ingest contacts per user'),
                 booleanParam(name: 'INGEST_NOTIFICATIONS', defaultValue: false, description: 'Ingest notifications on global target group'),
@@ -47,8 +48,9 @@ node {
 
             sh "java -Denvironment.name=${params.ENVIRONMENT_NAME} " +
                     "-Dinfra.base.uri=http://${params.ENVIRONMENT_NAME}-${params.INFRA_BASE_URI} " +
-                    "-Dingest.entitlements=${params.INGEST_ENTITLEMENTS} " +
+                    "-Dingest.access.control=${params.INGEST_ACCESS_CONTROL} " +
                     "-Dingest.custom.service.agreements=${params.INGEST_CUSTOM_SERVICE_AGREEMENTS} " +
+                    "-Dingest.balance.history=${params.INGEST_BALANCE_HISTORY} " +
                     "-Dingest.transactions=${params.INGEST_TRANSACTIONS} " +
                     "-Duse.pfm.categories.for.transactions=${params.USE_PFM_CATEGORIES_FOR_TRANSACTIONS} " +
                     "-Dingest.contacts=${params.INGEST_CONTACTS} " +

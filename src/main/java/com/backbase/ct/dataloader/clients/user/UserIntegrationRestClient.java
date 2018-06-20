@@ -1,9 +1,5 @@
 package com.backbase.ct.dataloader.clients.user;
 
-import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
-import static org.apache.http.HttpStatus.SC_CREATED;
-import static org.apache.http.HttpStatus.SC_OK;
-
 import com.backbase.ct.dataloader.clients.common.AbstractRestClient;
 import com.backbase.ct.dataloader.data.CommonConstants;
 import com.backbase.integration.user.rest.spec.v2.users.BadRequestException;
@@ -14,11 +10,15 @@ import io.restassured.response.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
+import static org.apache.http.HttpStatus.SC_CREATED;
+import static org.apache.http.HttpStatus.SC_OK;
+
 public class UserIntegrationRestClient extends AbstractRestClient {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserIntegrationRestClient.class);
 
-    private static final String ENTITLEMENTS = globalProperties.getString(CommonConstants.PROPERTY_ENTITLEMENTS_BASE_URI);
+    private static final String ENTITLEMENTS = globalProperties.getString(CommonConstants.PROPERTY_ACCESSCONTROL_BASE_URI);
     private static final String SERVICE_VERSION = "v2";
     private static final String USER_INTEGRATION_SERVICE = "user-integration-service";
     private static final String ENDPOINT_USERS = "/users";

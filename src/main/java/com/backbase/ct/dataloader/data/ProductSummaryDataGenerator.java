@@ -32,6 +32,7 @@ public class ProductSummaryDataGenerator {
     private static Faker faker = new Faker();
     private static Random random = new Random();
     private static final List<CountryCode> COUNTRY_CODES;
+    private static final int WEEKS_IN_A_YEAR = 52;
     static {
         List<String> allowed = Arrays.asList("AT", "BE", "BG", "CH", "CY", "CZ", "DE", "DK", "EE", "ES", "FI", "FR", "GB", "GI", "GR", "HR", "HU", "IE", "IS", "IT", "LI", "LT", "LU", "LV", "MC", "MT", "NL", "PL", "PT", "RO", "SE", "SI", "SK", "SM");
         COUNTRY_CODES = new ArrayList<>();
@@ -108,7 +109,7 @@ public class ProductSummaryDataGenerator {
     public static List<BalanceHistoryPostRequestBody> generateBalanceHistoryPostRequestBodies(String externalArrangementId) {
         List<BalanceHistoryPostRequestBody> balanceHistoryPostRequestBodies = new ArrayList<>();
 
-        for (int i = -1; i >= -52; i--) {
+        for (int i = -1; i >= -WEEKS_IN_A_YEAR; i--) {
             balanceHistoryPostRequestBodies.add(generateBalanceHistoryPostRequestBody(
                 externalArrangementId, DateUtils.addWeeks(new Date(), generateRandomNumberInRange(i, 0))));
         }

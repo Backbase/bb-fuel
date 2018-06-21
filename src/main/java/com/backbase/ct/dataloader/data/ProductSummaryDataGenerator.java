@@ -1,7 +1,6 @@
 package com.backbase.ct.dataloader.data;
 
 import static com.backbase.ct.dataloader.utils.CommonHelpers.generateRandomAmountInRange;
-import static com.backbase.ct.dataloader.utils.CommonHelpers.generateRandomNumberInRange;
 
 import com.backbase.ct.dataloader.utils.CommonHelpers;
 import com.backbase.ct.dataloader.utils.GlobalProperties;
@@ -125,7 +124,7 @@ public class ProductSummaryDataGenerator {
 
         for (int i = -1; i >= -WEEKS_IN_A_YEAR; i--) {
             balanceHistoryPostRequestBodies.add(generateBalanceHistoryPostRequestBody(
-                externalArrangementId, DateUtils.addWeeks(new Date(), generateRandomNumberInRange(i, 0))));
+                externalArrangementId, DateUtils.addWeeks(new Date(), i)));
         }
 
         return balanceHistoryPostRequestBodies;

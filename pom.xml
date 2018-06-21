@@ -111,7 +111,7 @@
       <groupId>com.backbase.dbs.legalentity</groupId>
       <artifactId>legalentity-integration-spec</artifactId>
     </dependency>
-    <!-- productsummary specs -->
+    <!-- product summary specs -->
     <dependency>
       <groupId>com.backbase.dbs.productsummary</groupId>
       <artifactId>product-summary-presentation-spec</artifactId>
@@ -144,6 +144,11 @@
     <dependency>
       <groupId>com.backbase.dbs.messages</groupId>
       <artifactId>messages-presentation-spec</artifactId>
+    </dependency>
+    <!-- actions specs -->
+    <dependency>
+      <groupId>com.backbase.dbs.actions</groupId>
+      <artifactId>actionrecipes-presentation-spec</artifactId>
     </dependency>
     <!-- turnovers specs -->
     <dependency>

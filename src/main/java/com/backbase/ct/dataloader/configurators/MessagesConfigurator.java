@@ -1,7 +1,7 @@
 package com.backbase.ct.dataloader.configurators;
 
-import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_CONVERSATIONS_MAX;
-import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_CONVERSATIONS_MIN;
+import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_MESSAGES_MAX;
+import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_MESSAGES_MIN;
 import static com.backbase.ct.dataloader.data.CommonConstants.USER_ADMIN;
 import static org.apache.http.HttpStatus.SC_ACCEPTED;
 import static org.apache.http.HttpStatus.SC_OK;
@@ -29,8 +29,8 @@ public class MessagesConfigurator {
 
     public void ingestConversations(String externalUserId) {
         int randomAmount = CommonHelpers
-            .generateRandomNumberInRange(globalProperties.getInt(PROPERTY_CONVERSATIONS_MIN),
-                globalProperties.getInt(PROPERTY_CONVERSATIONS_MAX));
+            .generateRandomNumberInRange(globalProperties.getInt(PROPERTY_MESSAGES_MIN),
+                globalProperties.getInt(PROPERTY_MESSAGES_MAX));
         IntStream.range(0, randomAmount).forEach(randomNumber -> {
 
             loginRestClient.login(externalUserId, externalUserId);

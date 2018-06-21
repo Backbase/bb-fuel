@@ -50,7 +50,6 @@ public final class CommonConstants {
     static final String PROPERTY_DEBIT_CARDS_MAX = "debit.cards.max";
     public static final String PROPERTY_CONTACT_ACCOUNTS_MIN = "contact.accounts.min";
     public static final String PROPERTY_CONTACT_ACCOUNTS_MAX = "contact.accounts.max";
-
     public static final String PROPERTY_ARRANGEMENTS_MIN = "arrangements.min";
     public static final String PROPERTY_ARRANGEMENTS_MAX = "arrangements.max";
     public static final String PROPERTY_INGEST_BALANCE_HISTORY = "ingest.balance.history";
@@ -67,9 +66,12 @@ public final class CommonConstants {
     public static final String PROPERTY_PAYMENTS_MIN = "payments.min";
     public static final String PROPERTY_PAYMENTS_MAX = "payments.max";
     public static final String PROPERTY_INGEST_PAYMENTS = "ingest.payments";
-    public static final String PROPERTY_CONVERSATIONS_MIN = "conversations.min";
-    public static final String PROPERTY_CONVERSATIONS_MAX = "conversations.max";
-    public static final String PROPERTY_INGEST_CONVERSATIONS = "ingest.conversations";
+    public static final String PROPERTY_MESSAGES_MIN = "messages.min";
+    public static final String PROPERTY_MESSAGES_MAX = "messages.max";
+    public static final String PROPERTY_INGEST_MESSAGES = "ingest.messages";
+    public static final String PROPERTY_ACTIONS_MIN = "actions.min";
+    public static final String PROPERTY_ACTIONS_MAX = "actions.max";
+    public static final String PROPERTY_INGEST_ACTIONS = "ingest.actions";
 
     // Payments
     public static final String PAYMENT_TYPE_SEPA_CREDIT_TRANSFER = "SEPA_CREDIT_TRANSFER";

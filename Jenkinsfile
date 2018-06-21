@@ -9,7 +9,8 @@ properties([
                 booleanParam(name: 'INGEST_CONTACTS', defaultValue: false, description: 'Ingest contacts per user'),
                 booleanParam(name: 'INGEST_NOTIFICATIONS', defaultValue: false, description: 'Ingest notifications on global target group'),
                 booleanParam(name: 'INGEST_PAYMENTS', defaultValue: false, description: 'Ingest payments per user'),
-                booleanParam(name: 'INGEST_CONVERSATIONS', defaultValue: false, description: 'Ingest conversations per user'),
+                booleanParam(name: 'INGEST_MESSAGES', defaultValue: false, description: 'Ingest messages per user'),
+                booleanParam(name: 'INGEST_ACTIONS', defaultValue: false, description: 'Ingest actions per user'),
                 choice(name: 'INFRA_BASE_URI', choices: 'infra.backbase.test:8080\neditorial.backbase.test:8080', description: ''),
                 string(name: 'DATALOADER_VERSION', defaultValue: 'LATEST', description: '')
         ])
@@ -56,7 +57,8 @@ node {
                     "-Dingest.contacts=${params.INGEST_CONTACTS} " +
                     "-Dingest.notifications=${params.INGEST_NOTIFICATIONS} " +
                     "-Dingest.payments=${params.INGEST_PAYMENTS} " +
-                    "-Dingest.conversations=${params.INGEST_CONVERSATIONS} " +
+                    "-Dingest.messages=${params.INGEST_MESSAGES} " +
+                    "-Dingest.actions=${params.INGEST_ACTIONS} " +
                     "-jar dataloader-${dataloaderVersion}-jar-with-dependencies.jar"
         }
     }

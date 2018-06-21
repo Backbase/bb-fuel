@@ -14,7 +14,8 @@ Data loader ingests the following:
 - Contacts
 - Payments
 - Notifications
-- Conversations
+- Messages
+- Actions
 
 ### Access control setup
 - Root legal entity with user `admin` as entitlements admin
@@ -67,7 +68,8 @@ If more/other users are required, you can provide your own `json` files, see *Cu
 - Contacts with multiple accounts per user
 - Payments per user
 - Notifications on global target group
-- Conversations per user
+- Messages per user
+- Actions per user for SEPA CT and/or US Wire arrangements
 
 Note: This can be rerun on an existing environment which already contains data by setting the property `ingest.access.control` to `false`
 

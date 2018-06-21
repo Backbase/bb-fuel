@@ -105,18 +105,18 @@ public class ProductSummaryDataGenerator {
         return arrangementsPostRequestBody;
     }
 
-    public static List<BalanceHistoryPostRequestBody> generatebalanceHistoryPostRequestBodies(String externalArrangementId) {
+    public static List<BalanceHistoryPostRequestBody> generateBalanceHistoryPostRequestBodies(String externalArrangementId) {
         List<BalanceHistoryPostRequestBody> balanceHistoryPostRequestBodies = new ArrayList<>();
 
-        for (int i = -1; i >= -365; i--) {
-            balanceHistoryPostRequestBodies.add(generatebalanceHistoryPostRequestBody(
-                externalArrangementId, DateUtils.addDays(new Date(), generateRandomNumberInRange(i, 0))));
+        for (int i = -1; i >= -52; i--) {
+            balanceHistoryPostRequestBodies.add(generateBalanceHistoryPostRequestBody(
+                externalArrangementId, DateUtils.addWeeks(new Date(), generateRandomNumberInRange(i, 0))));
         }
 
         return balanceHistoryPostRequestBodies;
     }
 
-    private static BalanceHistoryPostRequestBody generatebalanceHistoryPostRequestBody(String externalArrangementId, Date updatedDate) {
+    private static BalanceHistoryPostRequestBody generateBalanceHistoryPostRequestBody(String externalArrangementId, Date updatedDate) {
         return new BalanceHistoryPostRequestBody()
             .withArrangementId(externalArrangementId)
             .withBalance(generateRandomAmountInRange(1000000L, 1999999L))

@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
 
-import static com.backbase.ct.dataloader.data.ProductSummaryDataGenerator.generatebalanceHistoryPostRequestBodies;
+import static com.backbase.ct.dataloader.data.ProductSummaryDataGenerator.generateBalanceHistoryPostRequestBodies;
 import static org.apache.http.HttpStatus.SC_CREATED;
 
 public class ProductSummaryConfigurator {
@@ -79,7 +79,7 @@ public class ProductSummaryConfigurator {
     }
 
     public void ingestBalanceHistory(String externalArrangementId) {
-        List<BalanceHistoryPostRequestBody> balanceHistoryPostRequestBodies = generatebalanceHistoryPostRequestBodies(externalArrangementId);
+        List<BalanceHistoryPostRequestBody> balanceHistoryPostRequestBodies = generateBalanceHistoryPostRequestBodies(externalArrangementId);
 
         balanceHistoryPostRequestBodies.parallelStream()
             .forEach(balanceHistoryPostRequestBody -> {
@@ -88,8 +88,6 @@ public class ProductSummaryConfigurator {
                     .statusCode(SC_CREATED);
 
                 LOGGER.info("Balance history item ingested for arrangement [{}] with updated date [{}]", externalArrangementId, balanceHistoryPostRequestBody.getUpdatedDate());
-
             });
-
     }
 }

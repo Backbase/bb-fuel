@@ -11,7 +11,8 @@ public class ServiceAgreementsPresentationRestClient extends AbstractRestClient 
     private static final String ENDPOINT_ACCESS_GROUPS = "/accessgroups";
     private static final String ENDPOINT_SERVICE_AGREEMENTS = ENDPOINT_ACCESS_GROUPS + "/serviceagreements";
     private static final String ENDPOINT_SERVICE_AGREEMENTS_BY_ID = ENDPOINT_SERVICE_AGREEMENTS + "/%s";
-    private static final String ENDPOINT_SERVICE_AGREEMENTS_BY_CREATOR_ID = ENDPOINT_SERVICE_AGREEMENTS + "?creatorId=%s";
+    private static final String ENDPOINT_SERVICE_AGREEMENTS_BY_CREATOR_ID =
+        ENDPOINT_SERVICE_AGREEMENTS + "?creatorId=%s";
 
     public ServiceAgreementsPresentationRestClient() {
         super(SERVICE_VERSION);

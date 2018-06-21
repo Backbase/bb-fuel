@@ -7,6 +7,7 @@ import com.backbase.buildingblocks.presentation.errors.BadRequestException;
 import com.backbase.ct.dataloader.clients.common.AbstractRestClient;
 import com.backbase.ct.dataloader.data.CommonConstants;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBody;
+import com.backbase.integration.arrangement.rest.spec.v2.balancehistory.BalanceHistoryPostRequestBody;
 import com.backbase.integration.arrangement.rest.spec.v2.products.ProductsPostRequestBody;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
@@ -17,12 +18,14 @@ public class ArrangementsIntegrationRestClient extends AbstractRestClient {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ArrangementsIntegrationRestClient.class);
 
-    private static final String PRODUCT_SUMMARY = globalProperties.getString(CommonConstants.PROPERTY_PRODUCT_SUMMARY_BASE_URI);
+    private static final String PRODUCT_SUMMARY = globalProperties
+        .getString(CommonConstants.PROPERTY_PRODUCT_SUMMARY_BASE_URI);
 
     private static final String SERVICE_VERSION = "v2";
     private static final String ARRANGEMENTS_INTEGRATION_SERVICE = "arrangements-integration-service";
     private static final String ENDPOINT_ARRANGEMENTS = "/arrangements";
     private static final String ENDPOINT_PRODUCTS = "/products";
+    private static final String ENDPOINT_BALANCE_HISTORY = "/balance-history";
 
     public ArrangementsIntegrationRestClient() {
         super(PRODUCT_SUMMARY, SERVICE_VERSION);
@@ -47,13 +50,21 @@ public class ArrangementsIntegrationRestClient extends AbstractRestClient {
                 .get(0)
                 .getKey()
                 .equals("account.api.product.alreadyExists")) {
-            LOGGER.info(String.format("Product [%s] already exists, skipped ingesting this product", product.getProductKindName()));
+            LOGGER.info(String
+                .format("Product [%s] already exists, skipped ingesting this product", product.getProductKindName()));
         } else if (response.statusCode() == SC_CREATED) {
             LOGGER.info(String.format("Product [%s] ingested", product.getProductKindName()));
         } else {
             response.then()
                 .statusCode(SC_CREATED);
         }
+    }
+
+    public Response ingestBalance(BalanceHistoryPostRequestBody balanceHistoryPostRequestBody) {
+        return requestSpec()
+            .contentType(ContentType.JSON)
+            .body(balanceHistoryPostRequestBody)
+            .post(getPath(ENDPOINT_BALANCE_HISTORY));
     }
 
     @Override

@@ -20,7 +20,8 @@ public class UserContextPresentationRestClient extends AbstractRestClient {
     private static final String ENDPOINT_ACCESS_GROUPS = "/accessgroups";
     private static final String ENDPOINT_USER_CONTEXT = ENDPOINT_ACCESS_GROUPS + "/usercontext";
     private static final String ENDPOINT_USER_CONTEXT_SERVICE_AGREEMENTS = ENDPOINT_USER_CONTEXT + "/serviceagreements";
-    private static final String ENDPOINT_USER_CONTEXT_LEGAL_ENTITIES_BY_SERVICE_AGREEMENT_ID = ENDPOINT_USER_CONTEXT_SERVICE_AGREEMENTS + "/%s/legalentities";
+    private static final String ENDPOINT_USER_CONTEXT_LEGAL_ENTITIES_BY_SERVICE_AGREEMENT_ID =
+        ENDPOINT_USER_CONTEXT_SERVICE_AGREEMENTS + "/%s/legalentities";
 
     public UserContextPresentationRestClient() {
         super(SERVICE_VERSION);
@@ -72,7 +73,8 @@ public class UserContextPresentationRestClient extends AbstractRestClient {
     private Response getLegalEntitiesForServiceAgreements(String serviceAgreementId) {
         return requestSpec()
             .contentType(ContentType.JSON)
-            .get(String.format(getPath(ENDPOINT_USER_CONTEXT_LEGAL_ENTITIES_BY_SERVICE_AGREEMENT_ID), serviceAgreementId));
+            .get(String
+                .format(getPath(ENDPOINT_USER_CONTEXT_LEGAL_ENTITIES_BY_SERVICE_AGREEMENT_ID), serviceAgreementId));
     }
 
     private ServiceAgreementGetResponseBody getMasterServiceAgreementForUserContext() {

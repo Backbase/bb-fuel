@@ -1,5 +1,8 @@
 package com.backbase.ct.dataloader.clients.common;
 
+import static io.restassured.config.HttpClientConfig.httpClientConfig;
+import static org.apache.http.HttpStatus.SC_OK;
+
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -15,16 +18,12 @@ import io.restassured.internal.TestSpecificationImpl;
 import io.restassured.internal.log.LogRepository;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-import org.apache.http.client.utils.URIBuilder;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import static io.restassured.config.HttpClientConfig.httpClientConfig;
-import static org.apache.http.HttpStatus.SC_OK;
+import org.apache.http.client.utils.URIBuilder;
 
 /**
  * Usage example:
@@ -32,7 +31,8 @@ import static org.apache.http.HttpStatus.SC_OK;
  * RestClient restClient = new RestClient(globalProperties.getString("url"))
  *                          .setInitialPath(globalProperties.getString("path"))
  *                          .setUpCookies(setUpCookies);
- * and now all requests made with this rest com.backbase.environment.clients will be made to the specified url, initial path and given setUpCookies.
+ * and now all requests made with this rest com.backbase.environment.clients will be made to the specified url, initial
+ * path and given setUpCookies.
  * RequestSpecification requestSpec = restClient.requestSpec();
  * </pre>
  * You can also extend the RestClient to have a rest com.backbase.environment.clients class per capability:
@@ -116,21 +116,21 @@ public class RestClient {
 
     public RequestSpecification requestSpec() {
         LogRepository logRepository = new LogRepository();
-        restAssuredConfig = RestAssuredConfig.config().objectMapperConfig(new ObjectMapperConfig().jackson2ObjectMapperFactory(
+        restAssuredConfig = RestAssuredConfig.config()
+            .objectMapperConfig(new ObjectMapperConfig().jackson2ObjectMapperFactory(
                 (aClass, s) -> new ObjectMapper().configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
-                        .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-        ))
-                .logConfig(LogConfig.logConfig().enableLoggingOfRequestAndResponseIfValidationFails())
-                .httpClient(httpClientConfig().setParam(PARAMETER_NAME, TIMEOUT_VALUE));
-
+                    .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+            ))
+            .logConfig(LogConfig.logConfig().enableLoggingOfRequestAndResponseIfValidationFails())
+            .httpClient(httpClientConfig().setParam(PARAMETER_NAME, TIMEOUT_VALUE));
 
         RequestSpecification requestSpec = new TestSpecificationImpl(
-                new RequestSpecificationImpl(getBaseURI().toString(),
-                        getBaseURI().getPort(), getInitialPath(), RestAssured.DEFAULT_AUTH, Collections.emptyList(), null,
-                        RestAssured.DEFAULT_URL_ENCODING_ENABLED, restAssuredConfig, logRepository, null),
-                new ResponseSpecificationImpl(RestAssured.DEFAULT_BODY_ROOT_PATH, null, this.responseParserRegistrar,
-                        restAssuredConfig, logRepository)).
-                getRequestSpecification();
+            new RequestSpecificationImpl(getBaseURI().toString(),
+                getBaseURI().getPort(), getInitialPath(), RestAssured.DEFAULT_AUTH, Collections.emptyList(), null,
+                RestAssured.DEFAULT_URL_ENCODING_ENABLED, restAssuredConfig, logRepository, null),
+            new ResponseSpecificationImpl(RestAssured.DEFAULT_BODY_ROOT_PATH, null, this.responseParserRegistrar,
+                restAssuredConfig, logRepository)).
+            getRequestSpecification();
         requestSpec.queryParam("_csrf", getCookies().get("XSRF-TOKEN"));
 
         requestSpec.cookies(getCookies());
@@ -159,12 +159,11 @@ public class RestClient {
     }
 
     /**
-     * @return DbsResponse containing information about the health of this service:
-     * https://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-endpoints.html
+     * @return DbsResponse containing information about the health of this service: https://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-endpoints.html
      */
     private Response getHealth() {
         return requestSpec()
-                .contentType(ContentType.JSON)
-                .get(DEFAULT_HEALTH_PATH);
+            .contentType(ContentType.JSON)
+            .get(DEFAULT_HEALTH_PATH);
     }
 }

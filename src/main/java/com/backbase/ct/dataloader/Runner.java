@@ -1,6 +1,6 @@
 package com.backbase.ct.dataloader;
 
-import com.backbase.ct.dataloader.healthchecks.EntitlementsHealthCheck;
+import com.backbase.ct.dataloader.healthchecks.AccessControlHealthCheck;
 import com.backbase.ct.dataloader.healthchecks.ProductSummaryHealthCheck;
 import com.backbase.ct.dataloader.healthchecks.TransactionsHealthCheck;
 import com.backbase.ct.dataloader.setup.AccessControlSetup;
@@ -22,11 +22,11 @@ public class Runner {
         AccessControlSetup accessControlSetup = new AccessControlSetup();
         ServiceAgreementsSetup serviceAgreementsSetup = new ServiceAgreementsSetup();
         CapabilitiesDataSetup capabilitiesDataSetup = new CapabilitiesDataSetup();
-        EntitlementsHealthCheck entitlementsHealthCheck = new EntitlementsHealthCheck();
+        AccessControlHealthCheck accessControlHealthCheck = new AccessControlHealthCheck();
         ProductSummaryHealthCheck productSummaryHealthCheck = new ProductSummaryHealthCheck();
         TransactionsHealthCheck transactionsHealthCheck = new TransactionsHealthCheck();
 
-        entitlementsHealthCheck.checkEntitlementsServicesHealth();
+        accessControlHealthCheck.checkAccessControlServicesHealth();
         productSummaryHealthCheck.checkProductSummaryServicesHealth();
         transactionsHealthCheck.checkTransactionsServicesHealth();
 

@@ -10,27 +10,27 @@ import com.backbase.ct.dataloader.clients.user.UserIntegrationRestClient;
 import com.backbase.ct.dataloader.clients.user.UserPresentationRestClient;
 import com.backbase.ct.dataloader.data.CommonConstants;
 import com.backbase.ct.dataloader.utils.GlobalProperties;
-
 import java.util.Arrays;
 import java.util.List;
 
-public class EntitlementsHealthCheck {
+public class AccessControlHealthCheck {
 
     private GlobalProperties globalProperties = GlobalProperties.getInstance();
 
-    public void checkEntitlementsServicesHealth() {
+    public void checkAccessControlServicesHealth() {
         HealthCheck healthCheck = new HealthCheck();
-        long healthCheckTimeOutInMinutes = globalProperties.getLong(CommonConstants.PROPERTY_HEALTH_CHECK_TIMEOUT_IN_MINUTES);
+        long healthCheckTimeOutInMinutes = globalProperties
+            .getLong(CommonConstants.PROPERTY_HEALTH_CHECK_TIMEOUT_IN_MINUTES);
 
         if (healthCheckTimeOutInMinutes > 0) {
             List<RestClient> restClients = Arrays.asList(
-                    new AccessGroupIntegrationRestClient(),
-                    new AccessGroupPresentationRestClient(),
-                    new ServiceAgreementsIntegrationRestClient(),
-                    new LegalEntityIntegrationRestClient(),
-                    new LegalEntityPresentationRestClient(),
-                    new UserIntegrationRestClient(),
-                    new UserPresentationRestClient());
+                new AccessGroupIntegrationRestClient(),
+                new AccessGroupPresentationRestClient(),
+                new ServiceAgreementsIntegrationRestClient(),
+                new LegalEntityIntegrationRestClient(),
+                new LegalEntityPresentationRestClient(),
+                new UserIntegrationRestClient(),
+                new UserPresentationRestClient());
 
             healthCheck.checkServicesHealth(restClients);
         }

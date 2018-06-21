@@ -30,12 +30,13 @@ public class ProductSummaryPresentationRestClient extends AbstractRestClient {
     }
 
     public List<ArrangementsByBusinessFunctionGetResponseBody> getSepaCtArrangements() {
-        ArrangementsByBusinessFunctionGetResponseBody[] arrangements = getProductSummaryContextArrangements(new ProductSummaryQueryParameters()
-            .withBusinessFunction(CommonConstants.SEPA_CT_FUNCTION_NAME)
-            .withResourceName(CommonConstants.PAYMENTS_RESOURCE_NAME)
-            .withPrivilege(CommonConstants.PRIVILEGE_CREATE)
-            .withSize(999)
-            .withOrderBy("name"))
+        ArrangementsByBusinessFunctionGetResponseBody[] arrangements = getProductSummaryContextArrangements(
+            new ProductSummaryQueryParameters()
+                .withBusinessFunction(CommonConstants.SEPA_CT_FUNCTION_NAME)
+                .withResourceName(CommonConstants.PAYMENTS_RESOURCE_NAME)
+                .withPrivilege(CommonConstants.PRIVILEGE_CREATE)
+                .withSize(999)
+                .withOrderBy("name"))
             .then()
             .statusCode(SC_OK)
             .extract()
@@ -44,7 +45,8 @@ public class ProductSummaryPresentationRestClient extends AbstractRestClient {
         // Make sure the Regex is in sync with payment-order-presentation-service/src/main/resources/application.yml (property: sepacountries)
         return Arrays.stream(arrangements)
             .filter(arrangement -> arrangement.getIBAN()
-                .matches("^(AT|BE|BG|CH|CY|CZ|DE|DK|EE|ES|FI|FR|GB|GI|GR|HR|HU|IE|IS|IT|LI|LT|LU|LV|MC|MT|NL|NO|PL|PT|RO|SE|SI|SK|SM)[a-zA-Z0-9_.-]*"))
+                .matches(
+                    "^(AT|BE|BG|CH|CY|CZ|DE|DK|EE|ES|FI|FR|GB|GI|GR|HR|HU|IE|IS|IT|LI|LT|LU|LV|MC|MT|NL|NO|PL|PT|RO|SE|SI|SK|SM)[a-zA-Z0-9_.-]*"))
             .collect(Collectors.toList());
     }
 

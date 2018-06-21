@@ -1,13 +1,5 @@
 package com.backbase.ct.dataloader.configurators;
 
-import com.backbase.ct.dataloader.clients.accessgroup.UserContextPresentationRestClient;
-import com.backbase.ct.dataloader.clients.common.LoginRestClient;
-import com.backbase.ct.dataloader.clients.contact.ContactIntegrationRestClient;
-import com.backbase.ct.dataloader.utils.GlobalProperties;
-import com.backbase.dbs.integration.external.inbound.contact.rest.spec.v2.contacts.bulk.ContactsBulkIngestionPostRequestBody;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_CONTACTS_MAX;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_CONTACTS_MIN;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_CONTACT_ACCOUNTS_MAX;
@@ -15,6 +7,14 @@ import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_CONTACT_A
 import static com.backbase.ct.dataloader.data.ContactsDataGenerator.generateContactsBulkIngestionPostRequestBody;
 import static com.backbase.ct.dataloader.utils.CommonHelpers.generateRandomNumberInRange;
 import static org.apache.http.HttpStatus.SC_CREATED;
+
+import com.backbase.ct.dataloader.clients.accessgroup.UserContextPresentationRestClient;
+import com.backbase.ct.dataloader.clients.common.LoginRestClient;
+import com.backbase.ct.dataloader.clients.contact.ContactIntegrationRestClient;
+import com.backbase.ct.dataloader.utils.GlobalProperties;
+import com.backbase.dbs.integration.external.inbound.contact.rest.spec.v2.contacts.bulk.ContactsBulkIngestionPostRequestBody;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ContactsConfigurator {
 
@@ -25,10 +25,14 @@ public class ContactsConfigurator {
     private ContactIntegrationRestClient contactIntegrationRestClient = new ContactIntegrationRestClient();
 
     public void ingestContacts(String externalUserId) {
-        int numberOfContacts = generateRandomNumberInRange(globalProperties.getInt(PROPERTY_CONTACTS_MIN), globalProperties.getInt(PROPERTY_CONTACTS_MAX));
-        int numberOfAccountsPerContact = generateRandomNumberInRange(globalProperties.getInt(PROPERTY_CONTACT_ACCOUNTS_MIN), globalProperties.getInt(PROPERTY_CONTACT_ACCOUNTS_MAX));
+        int numberOfContacts = generateRandomNumberInRange(globalProperties.getInt(PROPERTY_CONTACTS_MIN),
+            globalProperties.getInt(PROPERTY_CONTACTS_MAX));
+        int numberOfAccountsPerContact = generateRandomNumberInRange(
+            globalProperties.getInt(PROPERTY_CONTACT_ACCOUNTS_MIN),
+            globalProperties.getInt(PROPERTY_CONTACT_ACCOUNTS_MAX));
 
-        ContactsBulkIngestionPostRequestBody contactsBulkIngestionPostRequestBody = generateContactsBulkIngestionPostRequestBody(externalUserId, numberOfContacts, numberOfAccountsPerContact);
+        ContactsBulkIngestionPostRequestBody contactsBulkIngestionPostRequestBody = generateContactsBulkIngestionPostRequestBody(
+            externalUserId, numberOfContacts, numberOfAccountsPerContact);
 
         loginRestClient.login(externalUserId, externalUserId);
         userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();

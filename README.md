@@ -37,7 +37,7 @@ For legal entities and users in the file [legal-entities-with-users.json](src/ma
 - Default products: [products.json](src/main/resources/data/products.json)
 - 3 sets of random arrangements (by default: between 10 and 30) each set for each data group: [legal-entities-with-users.json](src/main/resources/data/legal-entities-with-users.json)
 - In case of current account arrangements random debit cards (by default: between 3 and 10) are associated
-- Additionally (by default disabled) possible to ingest balance history based on a weekly balance history items for the past year
+- Additionally (by default disabled) possible to ingest balance history based on a weekly balance history items for the past 6 months
     - Only works if property `ingest.access.control` is set to `true` due to the required external arrangement id when ingesting balance history items.
     - This external arrangement id is only available when creating an arrangement (part of the access control setup). The external arrangement id is currently not retrievable via any REST endpoint.
 

@@ -20,13 +20,15 @@ public class LegalEntitiesAndUsersDataGenerator {
             .withType(LegalEntityType.BANK);
     }
 
-    public static LegalEntitiesPostRequestBody composeLegalEntitiesPostRequestBody(String legalEntityExternalId, String legalEntityName,
+    public static LegalEntitiesPostRequestBody composeLegalEntitiesPostRequestBody(String legalEntityExternalId,
+        String legalEntityName,
         String parentLegalEntityExternalId, String type) {
         return new LegalEntitiesPostRequestBody()
             .withExternalId(Optional.ofNullable(legalEntityExternalId).orElse(generateExternalLegalEntityId()))
             .withName(Optional.ofNullable(legalEntityName).orElse(faker.lorem().sentence(3, 0)
                 .replace(".", "")))
-            .withParentExternalId(Optional.ofNullable(parentLegalEntityExternalId).orElse(CommonConstants.EXTERNAL_ROOT_LEGAL_ENTITY_ID))
+            .withParentExternalId(
+                Optional.ofNullable(parentLegalEntityExternalId).orElse(CommonConstants.EXTERNAL_ROOT_LEGAL_ENTITY_ID))
             .withType((!Strings.isNullOrEmpty(type)) ? LegalEntityType.fromValue(type) : LegalEntityType.CUSTOMER);
     }
 

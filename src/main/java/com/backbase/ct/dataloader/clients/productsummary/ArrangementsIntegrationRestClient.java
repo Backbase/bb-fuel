@@ -1,5 +1,8 @@
 package com.backbase.ct.dataloader.clients.productsummary;
 
+import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
+import static org.apache.http.HttpStatus.SC_CREATED;
+
 import com.backbase.buildingblocks.presentation.errors.BadRequestException;
 import com.backbase.ct.dataloader.clients.common.AbstractRestClient;
 import com.backbase.ct.dataloader.data.CommonConstants;
@@ -11,14 +14,12 @@ import io.restassured.response.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
-import static org.apache.http.HttpStatus.SC_CREATED;
-
 public class ArrangementsIntegrationRestClient extends AbstractRestClient {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ArrangementsIntegrationRestClient.class);
 
-    private static final String PRODUCT_SUMMARY = globalProperties.getString(CommonConstants.PROPERTY_PRODUCT_SUMMARY_BASE_URI);
+    private static final String PRODUCT_SUMMARY = globalProperties
+        .getString(CommonConstants.PROPERTY_PRODUCT_SUMMARY_BASE_URI);
 
     private static final String SERVICE_VERSION = "v2";
     private static final String ARRANGEMENTS_INTEGRATION_SERVICE = "arrangements-integration-service";
@@ -49,7 +50,8 @@ public class ArrangementsIntegrationRestClient extends AbstractRestClient {
                 .get(0)
                 .getKey()
                 .equals("account.api.product.alreadyExists")) {
-            LOGGER.info(String.format("Product [%s] already exists, skipped ingesting this product", product.getProductKindName()));
+            LOGGER.info(String
+                .format("Product [%s] already exists, skipped ingesting this product", product.getProductKindName()));
         } else if (response.statusCode() == SC_CREATED) {
             LOGGER.info(String.format("Product [%s] ingested", product.getProductKindName()));
         } else {

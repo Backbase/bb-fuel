@@ -16,7 +16,7 @@ properties([
 ])
 
 def downloadArtifact = { version ->
-    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'f8ae341b-af40-4178-844d-b90dd3a977f4',
+    withCredentials([[$class          : 'UsernamePasswordMultiBinding', credentialsId: 'f8ae341b-af40-4178-844d-b90dd3a977f4',
                       usernameVariable: 'AR_USERNAME', passwordVariable: 'AR_PASSWORD']]) {
         sh "curl -X GET -k -u ${AR_USERNAME}:${AR_PASSWORD} https://artifacts.backbase.com/backbase-development-builds/com/backbase/ct/dataloader/${version}/dataloader-${version}-jar-with-dependencies.jar -O -J -L"
     }
@@ -26,7 +26,7 @@ def getDataloaderVersion() {
     def version
 
     if ("${params.DATALOADER_VERSION}" == 'LATEST') {
-        withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'f8ae341b-af40-4178-844d-b90dd3a977f4',
+        withCredentials([[$class          : 'UsernamePasswordMultiBinding', credentialsId: 'f8ae341b-af40-4178-844d-b90dd3a977f4',
                           usernameVariable: 'AR_USERNAME', passwordVariable: 'AR_PASSWORD']]) {
             version = sh(returnStdout: true, script: '''curl -X GET -s -k -u ${AR_USERNAME}:${AR_PASSWORD} https://artifacts.backbase.com/backbase-development-builds/com/backbase/ct/dataloader/ | grep href | grep -v maven | cut -d'"' -f2 | cut -d'/' -f1 | sort --version-sort | tail -n 1''').toString().trim()
         }

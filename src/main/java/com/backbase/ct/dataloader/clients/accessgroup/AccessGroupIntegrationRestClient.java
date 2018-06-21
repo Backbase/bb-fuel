@@ -1,5 +1,7 @@
 package com.backbase.ct.dataloader.clients.accessgroup;
 
+import static org.apache.http.HttpStatus.SC_OK;
+
 import com.backbase.ct.dataloader.clients.common.AbstractRestClient;
 import com.backbase.ct.dataloader.data.CommonConstants;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.config.functions.FunctionsGetResponseBody;
@@ -8,16 +10,14 @@ import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.functiongr
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.users.permissions.AssignPermissionsPostRequestBody;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.apache.http.HttpStatus.SC_OK;
-
 public class AccessGroupIntegrationRestClient extends AbstractRestClient {
 
-    private static final String ENTITLEMENTS = globalProperties.getString(CommonConstants.PROPERTY_ACCESSCONTROL_BASE_URI);
+    private static final String ENTITLEMENTS = globalProperties
+        .getString(CommonConstants.PROPERTY_ACCESS_CONTROL_BASE_URI);
     private static final String SERVICE_VERSION = "v2";
     private static final String ACCESS_GROUP_INTEGRATION_SERVICE = "accessgroup-integration-service";
     private static final String ENDPOINT_ACCESS_GROUPS = "/accessgroups";
@@ -63,7 +63,8 @@ public class AccessGroupIntegrationRestClient extends AbstractRestClient {
             .collect(Collectors.toList());
     }
 
-    public List<FunctionsGetResponseBody> retrieveFunctionsNotContainingProvidedFunctionNames(List<String> functionNames) {
+    public List<FunctionsGetResponseBody> retrieveFunctionsNotContainingProvidedFunctionNames(
+        List<String> functionNames) {
         FunctionsGetResponseBody[] functions = retrieveFunctions()
             .then()
             .statusCode(SC_OK)

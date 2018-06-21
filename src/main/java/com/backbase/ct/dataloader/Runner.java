@@ -6,12 +6,11 @@ import com.backbase.ct.dataloader.healthchecks.TransactionsHealthCheck;
 import com.backbase.ct.dataloader.setup.AccessControlSetup;
 import com.backbase.ct.dataloader.setup.CapabilitiesDataSetup;
 import com.backbase.ct.dataloader.setup.ServiceAgreementsSetup;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Runner {
 

@@ -1,5 +1,12 @@
 package com.backbase.ct.dataloader.setup;
 
+import static com.backbase.ct.dataloader.data.CommonConstants.SEPA_CT_FUNCTION_NAME;
+import static com.backbase.ct.dataloader.data.CommonConstants.US_DOMESTIC_WIRE_FUNCTION_NAME;
+import static com.backbase.ct.dataloader.data.CommonConstants.US_FOREIGN_WIRE_FUNCTION_NAME;
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
+import static org.apache.http.HttpStatus.SC_OK;
+
 import com.backbase.ct.dataloader.clients.accessgroup.ServiceAgreementsPresentationRestClient;
 import com.backbase.ct.dataloader.clients.accessgroup.UserContextPresentationRestClient;
 import com.backbase.ct.dataloader.clients.common.LoginRestClient;
@@ -15,18 +22,10 @@ import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagr
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementPostRequestBody;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementGetResponseBody;
 import com.backbase.presentation.user.rest.spec.v2.users.LegalEntityByUserGetResponseBody;
-
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import static com.backbase.ct.dataloader.data.CommonConstants.SEPA_CT_FUNCTION_NAME;
-import static com.backbase.ct.dataloader.data.CommonConstants.US_DOMESTIC_WIRE_FUNCTION_NAME;
-import static com.backbase.ct.dataloader.data.CommonConstants.US_FOREIGN_WIRE_FUNCTION_NAME;
-import static java.util.Arrays.asList;
-import static java.util.Collections.singletonList;
-import static org.apache.http.HttpStatus.SC_OK;
 
 public class ServiceAgreementsSetup {
 
@@ -50,16 +49,21 @@ public class ServiceAgreementsSetup {
     public void setupCustomServiceAgreements() throws IOException {
         if (this.globalProperties.getBoolean(CommonConstants.PROPERTY_INGEST_CUSTOM_SERVICE_AGREEMENTS)) {
             ServiceAgreementPostRequestBody[] serviceAgreementPostRequestBodies = ParserUtil
-                .convertJsonToObject(this.globalProperties.getString(CommonConstants.PROPERTY_SERVICE_AGREEMENTS_JSON_LOCATION), ServiceAgreementPostRequestBody[].class);
+                .convertJsonToObject(
+                    this.globalProperties.getString(CommonConstants.PROPERTY_SERVICE_AGREEMENTS_JSON_LOCATION),
+                    ServiceAgreementPostRequestBody[].class);
 
             this.loginRestClient.login(CommonConstants.USER_ADMIN, CommonConstants.USER_ADMIN);
             this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
             Arrays.stream(serviceAgreementPostRequestBodies)
                 .forEach(serviceAgreementPostRequestBody -> {
-                    String internalServiceAgreementId = this.serviceAgreementsConfigurator.ingestServiceAgreementWithProvidersAndConsumers(serviceAgreementPostRequestBody.getParticipants());
+                    String internalServiceAgreementId = this.serviceAgreementsConfigurator
+                        .ingestServiceAgreementWithProvidersAndConsumers(
+                            serviceAgreementPostRequestBody.getParticipants());
 
-                    setupFunctionDataGroups(internalServiceAgreementId, serviceAgreementPostRequestBody.getParticipants());
+                    setupFunctionDataGroups(internalServiceAgreementId,
+                        serviceAgreementPostRequestBody.getParticipants());
                     setupPermissions(internalServiceAgreementId, serviceAgreementPostRequestBody.getParticipants());
                 });
         }
@@ -76,21 +80,24 @@ public class ServiceAgreementsSetup {
             .iterator()
             .next();
 
-        String externalLegalEntityId = this.userPresentationRestClient.retrieveLegalEntityByExternalUserId(externalAdminUserId)
+        String externalLegalEntityId = this.userPresentationRestClient
+            .retrieveLegalEntityByExternalUserId(externalAdminUserId)
             .then()
             .statusCode(SC_OK)
             .extract()
             .as(LegalEntityByUserGetResponseBody.class)
             .getExternalId();
 
-        String externalServiceAgreementId = this.serviceAgreementsPresentationRestClient.retrieveServiceAgreement(internalServiceAgreementId)
+        String externalServiceAgreementId = this.serviceAgreementsPresentationRestClient
+            .retrieveServiceAgreement(internalServiceAgreementId)
             .then()
             .statusCode(SC_OK)
             .extract()
             .as(ServiceAgreementGetResponseBody.class)
             .getExternalId();
 
-        this.currencyDataGroup = this.accessControlSetup.ingestDataGroupArrangementsForServiceAgreement(externalServiceAgreementId, externalLegalEntityId);
+        this.currencyDataGroup = this.accessControlSetup
+            .ingestDataGroupArrangementsForServiceAgreement(externalServiceAgreementId, externalLegalEntityId);
 
         sepaFunctionGroupId = this.accessGroupsConfigurator.ingestFunctionGroupsWithAllPrivilegesByFunctionNames(
             externalServiceAgreementId,
@@ -100,12 +107,13 @@ public class ServiceAgreementsSetup {
             externalServiceAgreementId,
             asList(US_DOMESTIC_WIRE_FUNCTION_NAME, US_FOREIGN_WIRE_FUNCTION_NAME));
 
-        noSepaAndUsWireFunctionGroupId = this.accessGroupsConfigurator.ingestFunctionGroupsWithAllPrivilegesNotContainingProvidedFunctionNames(
-            externalServiceAgreementId,
-            asList(
-                SEPA_CT_FUNCTION_NAME,
-                US_DOMESTIC_WIRE_FUNCTION_NAME,
-                US_FOREIGN_WIRE_FUNCTION_NAME));
+        noSepaAndUsWireFunctionGroupId = this.accessGroupsConfigurator
+            .ingestFunctionGroupsWithAllPrivilegesNotContainingProvidedFunctionNames(
+                externalServiceAgreementId,
+                asList(
+                    SEPA_CT_FUNCTION_NAME,
+                    US_DOMESTIC_WIRE_FUNCTION_NAME,
+                    US_FOREIGN_WIRE_FUNCTION_NAME));
     }
 
     private void setupPermissions(String internalServiceAgreementId, Set<Participant> participants) {

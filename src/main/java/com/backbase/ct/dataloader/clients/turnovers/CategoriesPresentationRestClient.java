@@ -1,13 +1,11 @@
 package com.backbase.ct.dataloader.clients.turnovers;
 
-import com.backbase.ct.dataloader.clients.common.AbstractRestClient;
-import com.backbase.presentation.categories.management.rest.spec.v2.categories.id.CategoryGetResponseBody;
-import io.restassured.response.Response;
-
-import java.util.List;
-
 import static java.util.Arrays.asList;
 import static org.apache.http.HttpStatus.SC_OK;
+
+import com.backbase.ct.dataloader.clients.common.AbstractRestClient;
+import com.backbase.presentation.categories.management.rest.spec.v2.categories.id.CategoryGetResponseBody;
+import java.util.List;
 
 public class CategoriesPresentationRestClient extends AbstractRestClient {
 

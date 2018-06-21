@@ -1,8 +1,8 @@
 package com.backbase.ct.dataloader.data;
 
-import java.util.List;
-
 import static java.util.Arrays.asList;
+
+import java.util.List;
 
 public final class CommonConstants {
 
@@ -19,17 +19,17 @@ public final class CommonConstants {
     public static final String LOCAL_PROPERTIES_FILE_NAME = "local.properties";
     public static final String PROPERTY_INFRA_BASE_URI = "infra.base.uri";
     public static final String PROPERTY_GATEWAY_PATH = "gateway.path";
-    public static final String PROPERTY_ACCESSCONTROL_BASE_URI = "accesscontrol.base.uri";
-    public static final String PROPERTY_PRODUCT_SUMMARY_BASE_URI = "productsummary.base.uri";
+    public static final String PROPERTY_ACCESS_CONTROL_BASE_URI = "access.control.base.uri";
+    public static final String PROPERTY_PRODUCT_SUMMARY_BASE_URI = "product.summary.base.uri";
     public static final String PROPERTY_TRANSACTIONS_BASE_URI = "transactions.base.uri";
-    public static final String PROPERTY_CONTACT_MANAGER_BASE_URI = "contactmanager.base.uri";
+    public static final String PROPERTY_CONTACT_MANAGER_BASE_URI = "contact.manager.base.uri";
     public static final String PROPERTY_HEALTH_CHECK_TIMEOUT_IN_MINUTES = "healthcheck.timeout.in.minutes";
 
     // Users
     public static final String USER_ADMIN = "admin";
     public static final String PROPERTY_LEGAL_ENTITIES_WITH_USERS_JSON_LOCATION = "legal.entities.with.users.json.location";
     public static final String PROPERTY_LEGAL_ENTITIES_WITH_USERS_WITHOUT_PERMISSION_JSON_LOCATION = "legal.entities.with.users.without.permissions.json.location";
-    public static final String PROPERTY_SERVICE_AGREEMENTS_JSON_LOCATION = "serviceagreements.json.location";
+    public static final String PROPERTY_SERVICE_AGREEMENTS_JSON_LOCATION = "service.agreements.json.location";
 
     // Entitlements
     static final String EXTERNAL_LEGAL_ENTITY_ID_PREFIX = "C00000";

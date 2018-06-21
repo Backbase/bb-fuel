@@ -5,7 +5,6 @@ import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagr
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementPostRequestBody;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementPutRequestBody;
 import com.github.javafaker.Faker;
-
 import java.util.Set;
 import java.util.UUID;
 
@@ -13,7 +12,8 @@ public class ServiceAgreementsDataGenerator {
 
     private static Faker faker = new Faker();
 
-    public static ServiceAgreementPostRequestBody generateServiceAgreementPostRequestBody(Set<Participant> participants) {
+    public static ServiceAgreementPostRequestBody generateServiceAgreementPostRequestBody(
+        Set<Participant> participants) {
         return new ServiceAgreementPostRequestBody()
             .withName(faker.lorem().sentence(3, 0).replace(".", ""))
             .withDescription(faker.lorem().sentence(3, 0).replace(".", ""))

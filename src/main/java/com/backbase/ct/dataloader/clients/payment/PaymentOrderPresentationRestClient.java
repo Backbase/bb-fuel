@@ -1,7 +1,7 @@
 package com.backbase.ct.dataloader.clients.payment;
 
-import com.backbase.dbs.presentation.paymentorder.rest.spec.v2.paymentorders.InitiatePaymentOrder;
 import com.backbase.ct.dataloader.clients.common.AbstractRestClient;
+import com.backbase.dbs.presentation.paymentorder.rest.spec.v2.paymentorders.InitiatePaymentOrder;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 

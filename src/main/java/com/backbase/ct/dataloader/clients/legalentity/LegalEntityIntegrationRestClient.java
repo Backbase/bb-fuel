@@ -16,7 +16,8 @@ public class LegalEntityIntegrationRestClient extends AbstractRestClient {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LegalEntityIntegrationRestClient.class);
 
-    private static final String ENTITLEMENTS = globalProperties.getString(CommonConstants.PROPERTY_ACCESSCONTROL_BASE_URI);
+    private static final String ENTITLEMENTS = globalProperties
+        .getString(CommonConstants.PROPERTY_ACCESS_CONTROL_BASE_URI);
     private static final String SERVICE_VERSION = "v2";
     private static final String LEGAL_ENTITY_INTEGRATION_SERVICE = "legalentity-integration-service";
     private static final String ENDPOINT_LEGAL_ENTITIES = "/legalentities";
@@ -36,13 +37,15 @@ public class LegalEntityIntegrationRestClient extends AbstractRestClient {
                 .getErrorCode()
                 .equals("legalEntity.save.error.message.E_EX_ID_ALREADY_EXISTS")) {
 
-            LOGGER.info(String.format("Legal entity [%s] already exists, skipped ingesting this legal entity", legalEntity.getExternalId()));
+            LOGGER.info(String.format("Legal entity [%s] already exists, skipped ingesting this legal entity",
+                legalEntity.getExternalId()));
         } else if (response.statusCode() == SC_CREATED) {
             if (legalEntity.getParentExternalId() == null) {
                 LOGGER.info(String.format("Root legal entity [%s] ingested", legalEntity.getExternalId()));
             } else {
                 LOGGER
-                    .info(String.format("Legal entity [%s] ingested under parent legal entity [%s]", legalEntity.getExternalId(), legalEntity.getParentExternalId()));
+                    .info(String.format("Legal entity [%s] ingested under parent legal entity [%s]",
+                        legalEntity.getExternalId(), legalEntity.getParentExternalId()));
             }
         } else {
             response.then().statusCode(SC_CREATED);

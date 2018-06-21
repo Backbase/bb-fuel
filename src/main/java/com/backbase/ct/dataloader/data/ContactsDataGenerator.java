@@ -1,23 +1,23 @@
 package com.backbase.ct.dataloader.data;
 
+import static com.backbase.ct.dataloader.data.ProductSummaryDataGenerator.generateRandomIban;
+
 import com.backbase.dbs.integration.external.inbound.contact.rest.spec.v2.contacts.bulk.AccessContext;
 import com.backbase.dbs.integration.external.inbound.contact.rest.spec.v2.contacts.bulk.Account;
 import com.backbase.dbs.integration.external.inbound.contact.rest.spec.v2.contacts.bulk.Address;
 import com.backbase.dbs.integration.external.inbound.contact.rest.spec.v2.contacts.bulk.Contact;
 import com.backbase.dbs.integration.external.inbound.contact.rest.spec.v2.contacts.bulk.ContactsBulkIngestionPostRequestBody;
 import com.github.javafaker.Faker;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
-import static com.backbase.ct.dataloader.data.ProductSummaryDataGenerator.generateRandomIban;
 
 public class ContactsDataGenerator {
 
     private static Faker faker = new Faker();
 
-    public static ContactsBulkIngestionPostRequestBody generateContactsBulkIngestionPostRequestBody(String externalUserId, int numberOfContacts, int numberOfAccountsPerContact) {
+    public static ContactsBulkIngestionPostRequestBody generateContactsBulkIngestionPostRequestBody(
+        String externalUserId, int numberOfContacts, int numberOfAccountsPerContact) {
         return new ContactsBulkIngestionPostRequestBody()
             .withAccessContext(new AccessContext()
                 .withExternalServiceAgreementId(null)

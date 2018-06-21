@@ -1,5 +1,9 @@
 package com.backbase.ct.dataloader.clients.user;
 
+import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
+import static org.apache.http.HttpStatus.SC_CREATED;
+import static org.apache.http.HttpStatus.SC_OK;
+
 import com.backbase.ct.dataloader.clients.common.AbstractRestClient;
 import com.backbase.ct.dataloader.data.CommonConstants;
 import com.backbase.integration.user.rest.spec.v2.users.BadRequestException;
@@ -10,15 +14,12 @@ import io.restassured.response.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
-import static org.apache.http.HttpStatus.SC_CREATED;
-import static org.apache.http.HttpStatus.SC_OK;
-
 public class UserIntegrationRestClient extends AbstractRestClient {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserIntegrationRestClient.class);
 
-    private static final String ENTITLEMENTS = globalProperties.getString(CommonConstants.PROPERTY_ACCESSCONTROL_BASE_URI);
+    private static final String ENTITLEMENTS = globalProperties
+        .getString(CommonConstants.PROPERTY_ACCESS_CONTROL_BASE_URI);
     private static final String SERVICE_VERSION = "v2";
     private static final String USER_INTEGRATION_SERVICE = "user-integration-service";
     private static final String ENDPOINT_USERS = "/users";
@@ -39,12 +40,16 @@ public class UserIntegrationRestClient extends AbstractRestClient {
                 .getErrorCode()
                 .equals("user.access.fetch.data.error.message.USER_ALREADY_ENTITLEMENTS_ADMIN")) {
             LOGGER.warn(String
-                .format("Entitlements admin [%s] already exists under legal entity [%s], skipped ingesting this entitlements admin", externalUserId,
+                .format(
+                    "Entitlements admin [%s] already exists under legal entity [%s], skipped ingesting this entitlements admin",
+                    externalUserId,
                     externalLegalEntityId));
         } else if (response.statusCode() == SC_OK) {
-            LOGGER.info(String.format("Entitlements admin [%s] ingested under legal entity [%s]", externalUserId, externalLegalEntityId));
+            LOGGER.info(String.format("Entitlements admin [%s] ingested under legal entity [%s]", externalUserId,
+                externalLegalEntityId));
         } else {
-            response.then().statusCode(SC_OK);
+            response.then()
+                .statusCode(SC_OK);
         }
     }
 
@@ -59,9 +64,11 @@ public class UserIntegrationRestClient extends AbstractRestClient {
                 .equals("User already exists")) {
             LOGGER.info(String.format("User [%s] already exists, skipped ingesting this user", user.getExternalId()));
         } else if (response.statusCode() == SC_CREATED) {
-            LOGGER.info(String.format("User [%s] ingested under legal entity [%s]", user.getExternalId(), user.getLegalEntityExternalId()));
+            LOGGER.info(String.format("User [%s] ingested under legal entity [%s]", user.getExternalId(),
+                user.getLegalEntityExternalId()));
         } else {
-            response.then().statusCode(SC_CREATED);
+            response.then()
+                .statusCode(SC_CREATED);
         }
     }
 

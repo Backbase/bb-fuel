@@ -8,7 +8,8 @@ import io.restassured.response.Response;
 
 public class ContactIntegrationRestClient extends AbstractRestClient {
 
-    private static final String CONTACT_MANAGER = globalProperties.getString(CommonConstants.PROPERTY_CONTACT_MANAGER_BASE_URI);
+    private static final String CONTACT_MANAGER = globalProperties
+        .getString(CommonConstants.PROPERTY_CONTACT_MANAGER_BASE_URI);
     private static final String SERVICE_VERSION = "v2";
     private static final String CONTACT_INTEGRATION_SERVICE = "contact-integration-service";
     private static final String ENDPOINT_CONTACTS = "/contacts/bulk";

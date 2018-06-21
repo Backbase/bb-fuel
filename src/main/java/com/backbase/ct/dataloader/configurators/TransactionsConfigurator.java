@@ -1,5 +1,9 @@
 package com.backbase.ct.dataloader.configurators;
 
+import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_USE_PFM_CATEGORIES_FOR_TRANSACTIONS;
+import static com.backbase.ct.dataloader.data.CommonConstants.USER_ADMIN;
+import static org.apache.http.HttpStatus.SC_CREATED;
+
 import com.backbase.ct.dataloader.clients.accessgroup.UserContextPresentationRestClient;
 import com.backbase.ct.dataloader.clients.common.LoginRestClient;
 import com.backbase.ct.dataloader.clients.transaction.TransactionsIntegrationRestClient;
@@ -10,19 +14,14 @@ import com.backbase.ct.dataloader.utils.CommonHelpers;
 import com.backbase.ct.dataloader.utils.GlobalProperties;
 import com.backbase.integration.transaction.external.rest.spec.v2.transactions.TransactionsPostRequestBody;
 import com.backbase.presentation.categories.management.rest.spec.v2.categories.id.CategoryGetResponseBody;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
-import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_USE_PFM_CATEGORIES_FOR_TRANSACTIONS;
-import static com.backbase.ct.dataloader.data.CommonConstants.USER_ADMIN;
-import static org.apache.http.HttpStatus.SC_CREATED;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TransactionsConfigurator {
 
@@ -48,7 +47,9 @@ public class TransactionsConfigurator {
                 .collect(Collectors.toList());
         }
 
-        int randomAmount = CommonHelpers.generateRandomNumberInRange(globalProperties.getInt(CommonConstants.PROPERTY_TRANSACTIONS_MIN), globalProperties.getInt(CommonConstants.PROPERTY_TRANSACTIONS_MAX));
+        int randomAmount = CommonHelpers
+            .generateRandomNumberInRange(globalProperties.getInt(CommonConstants.PROPERTY_TRANSACTIONS_MIN),
+                globalProperties.getInt(CommonConstants.PROPERTY_TRANSACTIONS_MAX));
         List<String> finalCategoryNames = categoryNames;
 
         IntStream.range(0, randomAmount).parallel()
@@ -58,7 +59,8 @@ public class TransactionsConfigurator {
                     categoryName = finalCategoryNames.get(random.nextInt(finalCategoryNames.size()));
                 }
 
-                transactions.add(TransactionsDataGenerator.generateTransactionsPostRequestBody(externalArrangementId, categoryName));
+                transactions.add(
+                    TransactionsDataGenerator.generateTransactionsPostRequestBody(externalArrangementId, categoryName));
             });
 
         transactionsIntegrationRestClient.ingestTransactions(transactions)

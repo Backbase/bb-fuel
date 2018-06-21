@@ -38,7 +38,8 @@ public class GlobalProperties {
                 configuration.addConfiguration(new PropertiesConfiguration(CommonConstants.LOCAL_PROPERTIES_FILE_NAME));
                 return;
             }
-            configuration.addConfiguration(new PropertiesConfiguration(CommonConstants.ENVIRONMENT_PROPERTIES_FILE_NAME));
+            configuration
+                .addConfiguration(new PropertiesConfiguration(CommonConstants.ENVIRONMENT_PROPERTIES_FILE_NAME));
         } catch (ConfigurationException ignored) {
         }
     }

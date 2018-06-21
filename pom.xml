@@ -1,185 +1,186 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.backbase.ct</groupId>
-    <artifactId>dataloader</artifactId>
-    <version>1.2.8-SNAPSHOT</version>
+  <groupId>com.backbase.ct</groupId>
+  <artifactId>dataloader</artifactId>
+  <version>1.2.8-SNAPSHOT</version>
 
-    <scm>
-        <developerConnection>scm:git:ssh://git@stash.backbase.com:7999/ct/dataloader.git</developerConnection>
-        <tag>HEAD</tag>
-    </scm>
+  <scm>
+    <developerConnection>scm:git:ssh://git@stash.backbase.com:7999/ct/dataloader.git</developerConnection>
+    <tag>HEAD</tag>
+  </scm>
 
-    <distributionManagement>
-        <repository>
-            <id>Backbase Artifact Builds Repository</id>
-            <name>artifacts.backbase.com-builds</name>
-            <url>https://artifacts.backbase.com/backbase-development-builds</url>
-        </repository>
-    </distributionManagement>
+  <distributionManagement>
+    <repository>
+      <id>Backbase Artifact Builds Repository</id>
+      <name>artifacts.backbase.com-builds</name>
+      <url>https://artifacts.backbase.com/backbase-development-builds</url>
+    </repository>
+  </distributionManagement>
 
-    <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <slf4j-simple.version>1.7.25</slf4j-simple.version>
-        <rest-assured.version>3.0.7</rest-assured.version>
-        <jackson-databind.version>2.9.0</jackson-databind.version>
-        <commons-configuration.version>1.10</commons-configuration.version>
-        <javafaker.version>0.13</javafaker.version>
-        <iban4j.version>3.2.1</iban4j.version>
-        <junit.version>4.12</junit.version>
-        <maven-assembly-plugin.version>2.4.1</maven-assembly-plugin.version>
-    </properties>
+  <properties>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <slf4j-simple.version>1.7.25</slf4j-simple.version>
+    <rest-assured.version>3.0.7</rest-assured.version>
+    <jackson-databind.version>2.9.0</jackson-databind.version>
+    <commons-configuration.version>1.10</commons-configuration.version>
+    <javafaker.version>0.13</javafaker.version>
+    <iban4j.version>3.2.1</iban4j.version>
+    <junit.version>4.12</junit.version>
+    <maven-assembly-plugin.version>2.4.1</maven-assembly-plugin.version>
+  </properties>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>com.backbase.dbs</groupId>
-                <artifactId>banking-services-bom</artifactId>
-                <version>2.11.2</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
+  <dependencyManagement>
     <dependencies>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>24.0-jre</version>
-        </dependency>
-        <dependency>
-            <groupId>io.rest-assured</groupId>
-            <artifactId>rest-assured</artifactId>
-            <version>${rest-assured.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${jackson-databind.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-configuration</groupId>
-            <artifactId>commons-configuration</artifactId>
-            <version>${commons-configuration.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <version>${slf4j-simple.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.javafaker</groupId>
-            <artifactId>javafaker</artifactId>
-            <version>${javafaker.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.iban4j</groupId>
-            <artifactId>iban4j</artifactId>
-            <version>${iban4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <!-- access control specs -->
-        <dependency>
-            <groupId>com.backbase.dbs.user</groupId>
-            <artifactId>user-presentation-spec</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.backbase.dbs.user</groupId>
-            <artifactId>user-integration-spec</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.backbase.dbs.accessgroup</groupId>
-            <artifactId>accessgroup-presentation-spec</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.backbase.dbs.accessgroup</groupId>
-            <artifactId>accessgroup-integration-spec</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.backbase.dbs.legalentity</groupId>
-            <artifactId>legalentity-presentation-spec</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.backbase.dbs.legalentity</groupId>
-            <artifactId>legalentity-integration-spec</artifactId>
-        </dependency>
-        <!-- productsummary specs -->
-        <dependency>
-            <groupId>com.backbase.dbs.productsummary</groupId>
-            <artifactId>product-summary-presentation-spec</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.backbase.dbs.arrangement</groupId>
-            <artifactId>arrangement-integration-spec</artifactId>
-        </dependency>
-        <!-- transactions specs -->
-        <dependency>
-            <groupId>com.backbase.dbs.transaction</groupId>
-            <artifactId>transaction-integration-external-inbound-spec</artifactId>
-        </dependency>
-        <!-- notifications specs -->
-        <dependency>
-            <groupId>com.backbase.dbs.notifications</groupId>
-            <artifactId>notifications-presentation-spec</artifactId>
-        </dependency>
-        <!-- contact specs -->
-        <dependency>
-            <groupId>com.backbase.dbs.contact</groupId>
-            <artifactId>contact-integration-external-inbound-spec</artifactId>
-        </dependency>
-        <!-- payment specs -->
-        <dependency>
-            <groupId>com.backbase.dbs.paymentorder</groupId>
-            <artifactId>payment-order-presentation-spec</artifactId>
-        </dependency>
-        <!-- messages specs -->
-        <dependency>
-            <groupId>com.backbase.dbs.messages</groupId>
-            <artifactId>messages-presentation-spec</artifactId>
-        </dependency>
-        <!-- turnovers specs -->
-        <dependency>
-            <groupId>com.backbase.dbs.pfm</groupId>
-            <artifactId>categories-management-presentation-spec</artifactId>
-        </dependency>
+      <dependency>
+        <groupId>com.backbase.dbs</groupId>
+        <artifactId>banking-services-bom</artifactId>
+        <version>2.11.2</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
     </dependencies>
+  </dependencyManagement>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>${maven-assembly-plugin.version}</version>
-                <configuration>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                    <archive>
-                        <manifest>
-                            <mainClass>com.backbase.ct.dataloader.Runner</mainClass>
-                        </manifest>
-                    </archive>
+  <dependencies>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>24.0-jre</version>
+    </dependency>
+    <dependency>
+      <groupId>io.rest-assured</groupId>
+      <artifactId>rest-assured</artifactId>
+      <version>${rest-assured.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>${jackson-databind.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-configuration</groupId>
+      <artifactId>commons-configuration</artifactId>
+      <version>${commons-configuration.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <version>${slf4j-simple.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.github.javafaker</groupId>
+      <artifactId>javafaker</artifactId>
+      <version>${javafaker.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.iban4j</groupId>
+      <artifactId>iban4j</artifactId>
+      <version>${iban4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <!-- access control specs -->
+    <dependency>
+      <groupId>com.backbase.dbs.user</groupId>
+      <artifactId>user-presentation-spec</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.backbase.dbs.user</groupId>
+      <artifactId>user-integration-spec</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.backbase.dbs.accessgroup</groupId>
+      <artifactId>accessgroup-presentation-spec</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.backbase.dbs.accessgroup</groupId>
+      <artifactId>accessgroup-integration-spec</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.backbase.dbs.legalentity</groupId>
+      <artifactId>legalentity-presentation-spec</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.backbase.dbs.legalentity</groupId>
+      <artifactId>legalentity-integration-spec</artifactId>
+    </dependency>
+    <!-- productsummary specs -->
+    <dependency>
+      <groupId>com.backbase.dbs.productsummary</groupId>
+      <artifactId>product-summary-presentation-spec</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.backbase.dbs.arrangement</groupId>
+      <artifactId>arrangement-integration-spec</artifactId>
+    </dependency>
+    <!-- transactions specs -->
+    <dependency>
+      <groupId>com.backbase.dbs.transaction</groupId>
+      <artifactId>transaction-integration-external-inbound-spec</artifactId>
+    </dependency>
+    <!-- notifications specs -->
+    <dependency>
+      <groupId>com.backbase.dbs.notifications</groupId>
+      <artifactId>notifications-presentation-spec</artifactId>
+    </dependency>
+    <!-- contact specs -->
+    <dependency>
+      <groupId>com.backbase.dbs.contact</groupId>
+      <artifactId>contact-integration-external-inbound-spec</artifactId>
+    </dependency>
+    <!-- payment specs -->
+    <dependency>
+      <groupId>com.backbase.dbs.paymentorder</groupId>
+      <artifactId>payment-order-presentation-spec</artifactId>
+    </dependency>
+    <!-- messages specs -->
+    <dependency>
+      <groupId>com.backbase.dbs.messages</groupId>
+      <artifactId>messages-presentation-spec</artifactId>
+    </dependency>
+    <!-- turnovers specs -->
+    <dependency>
+      <groupId>com.backbase.dbs.pfm</groupId>
+      <artifactId>categories-management-presentation-spec</artifactId>
+    </dependency>
+  </dependencies>
 
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>make-assembly</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>${maven-assembly-plugin.version}</version>
+        <configuration>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+          <archive>
+            <manifest>
+              <mainClass>com.backbase.ct.dataloader.Runner</mainClass>
+            </manifest>
+          </archive>
+
+        </configuration>
+        <executions>
+          <execution>
+            <id>make-assembly</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>

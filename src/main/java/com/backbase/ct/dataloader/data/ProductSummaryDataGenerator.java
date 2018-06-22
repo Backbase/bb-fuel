@@ -122,7 +122,7 @@ public class ProductSummaryDataGenerator {
         String externalArrangementId) {
         List<BalanceHistoryPostRequestBody> balanceHistoryPostRequestBodies = new ArrayList<>();
 
-        for (int i = -1; i >= -WEEKS_IN_6_MONTHS; i--) {
+        for (int i = 0; i >= -WEEKS_IN_6_MONTHS; i--) {
             balanceHistoryPostRequestBodies.add(generateBalanceHistoryPostRequestBody(
                 externalArrangementId, DateUtils.addWeeks(new Date(), i)));
         }

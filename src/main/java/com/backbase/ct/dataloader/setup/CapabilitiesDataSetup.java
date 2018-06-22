@@ -5,7 +5,7 @@ import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_CO
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_MESSAGES;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_NOTIFICATIONS;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_PAYMENTS;
-import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_LEGAL_ENTITIES_WITH_USERS_JSON_LOCATION;
+import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_LEGAL_ENTITIES_WITH_USERS_JSON;
 import static com.backbase.ct.dataloader.data.CommonConstants.USER_ADMIN;
 
 import com.backbase.ct.dataloader.clients.accessgroup.UserContextPresentationRestClient;
@@ -34,7 +34,7 @@ public class CapabilitiesDataSetup {
     private MessagesConfigurator messagesConfigurator = new MessagesConfigurator();
     private ActionsConfigurator actionsConfigurator = new ActionsConfigurator();
     private LegalEntityWithUsers[] entities = ParserUtil
-        .convertJsonToObject(this.globalProperties.getString(PROPERTY_LEGAL_ENTITIES_WITH_USERS_JSON_LOCATION),
+        .convertJsonToObject(this.globalProperties.getString(PROPERTY_LEGAL_ENTITIES_WITH_USERS_JSON),
             LegalEntityWithUsers[].class);
 
     public CapabilitiesDataSetup() throws IOException {

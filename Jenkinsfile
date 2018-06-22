@@ -11,6 +11,7 @@ properties([
                 booleanParam(name: 'INGEST_PAYMENTS', defaultValue: false, description: 'Ingest payments per user'),
                 booleanParam(name: 'INGEST_MESSAGES', defaultValue: false, description: 'Ingest messages per user'),
                 booleanParam(name: 'INGEST_ACTIONS', defaultValue: false, description: 'Ingest actions per user'),
+                booleanParam(name: 'USE_PERFORMANCE_TEST_DATA_SETUP', defaultValue: false, description: 'Use performance test data setup'),
                 choice(name: 'INFRA_BASE_URI', choices: 'infra.backbase.test:8080\neditorial.backbase.test:8080', description: ''),
                 string(name: 'DATALOADER_VERSION', defaultValue: 'LATEST', description: '')
         ])
@@ -47,6 +48,12 @@ node {
 
         withEnv(["JAVA_HOME=${tool name: 'jdk-8u152'}", "PATH+MAVEN=${tool name: 'maven-352'}/bin:${env.JAVA_HOME}/bin"]) {
 
+            def usePerformanceTestLegalEntitiesWithUsersJson = ""
+
+            if ("${params.USE_PERFORMANCE_TEST_DATA_SETUP}".toBoolean()) {
+                usePerformanceTestLegalEntitiesWithUsersJson = "-Dlegal.entities.with.users.json.location=data/performance-test-legal-entities-with-users.json"
+            }
+
             sh "java -Denvironment.name=${params.ENVIRONMENT_NAME} " +
                     "-Dinfra.base.uri=http://${params.ENVIRONMENT_NAME}-${params.INFRA_BASE_URI} " +
                     "-Dingest.access.control=${params.INGEST_ACCESS_CONTROL} " +
@@ -59,6 +66,7 @@ node {
                     "-Dingest.payments=${params.INGEST_PAYMENTS} " +
                     "-Dingest.messages=${params.INGEST_MESSAGES} " +
                     "-Dingest.actions=${params.INGEST_ACTIONS} " +
+                    usePerformanceTestLegalEntitiesWithUsersJson +
                     "-jar dataloader-${dataloaderVersion}-jar-with-dependencies.jar"
         }
     }

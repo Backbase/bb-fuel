@@ -27,9 +27,9 @@ public final class CommonConstants {
 
     // Users
     public static final String USER_ADMIN = "admin";
-    public static final String PROPERTY_LEGAL_ENTITIES_WITH_USERS_JSON_LOCATION = "legal.entities.with.users.json.location";
-    public static final String PROPERTY_LEGAL_ENTITIES_WITH_USERS_WITHOUT_PERMISSION_JSON_LOCATION = "legal.entities.with.users.without.permissions.json.location";
-    public static final String PROPERTY_SERVICE_AGREEMENTS_JSON_LOCATION = "service.agreements.json.location";
+    public static final String PROPERTY_LEGAL_ENTITIES_WITH_USERS_JSON = "legal.entities.with.users.json";
+    public static final String PROPERTY_LEGAL_ENTITIES_WITH_USERS_WITHOUT_PERMISSION_JSON = "legal.entities.with.users.without.permissions.json";
+    public static final String PROPERTY_SERVICE_AGREEMENTS_JSON = "service.agreements.json";
 
     // Entitlements
     static final String EXTERNAL_LEGAL_ENTITY_ID_PREFIX = "C00000";
@@ -43,7 +43,7 @@ public final class CommonConstants {
     public static final String PROPERTY_INGEST_CUSTOM_SERVICE_AGREEMENTS = "ingest.custom.service.agreements";
 
     // Products
-    static final String PROPERTY_PRODUCTS_JSON_LOCATION = "products.json.location";
+    static final String PROPERTY_PRODUCTS_JSON_LOCATION = "products.json";
 
     // User data
     static final String PROPERTY_DEBIT_CARDS_MIN = "debit.cards.min";

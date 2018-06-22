@@ -30,7 +30,7 @@ public class ProductSummaryDataGenerator {
     private static Faker faker = new Faker();
     private static Random random = new Random();
     private static final List<CountryCode> COUNTRY_CODES;
-    private static final int WEEKS_IN_6_MONTHS = 26;
+    private static final int WEEKS_IN_A_QUARTER = 13;
 
     static {
         List<String> allowed = Arrays
@@ -122,7 +122,7 @@ public class ProductSummaryDataGenerator {
         String externalArrangementId) {
         List<BalanceHistoryPostRequestBody> balanceHistoryPostRequestBodies = new ArrayList<>();
 
-        for (int i = 0; i >= -WEEKS_IN_6_MONTHS; i--) {
+        for (int i = 0; i >= -WEEKS_IN_A_QUARTER; i--) {
             balanceHistoryPostRequestBodies.add(generateBalanceHistoryPostRequestBody(
                 externalArrangementId, DateUtils.addWeeks(new Date(), i)));
         }

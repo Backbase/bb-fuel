@@ -3,8 +3,8 @@ package com.backbase.ct.dataloader.setup;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_ACCESS_CONTROL;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_BALANCE_HISTORY;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_TRANSACTIONS;
-import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_LEGAL_ENTITIES_WITH_USERS_JSON_LOCATION;
-import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_LEGAL_ENTITIES_WITH_USERS_WITHOUT_PERMISSION_JSON_LOCATION;
+import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_LEGAL_ENTITIES_WITH_USERS_JSON;
+import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_LEGAL_ENTITIES_WITH_USERS_WITHOUT_PERMISSION_JSON;
 import static com.backbase.ct.dataloader.data.CommonConstants.SEPA_CT_FUNCTION_NAME;
 import static com.backbase.ct.dataloader.data.CommonConstants.USER_ADMIN;
 import static com.backbase.ct.dataloader.data.CommonConstants.US_DOMESTIC_WIRE_FUNCTION_NAME;
@@ -60,7 +60,7 @@ public class AccessControlSetup {
     private LegalEntityPresentationRestClient legalEntityPresentationRestClient = new LegalEntityPresentationRestClient();
     private TransactionsConfigurator transactionsConfigurator = new TransactionsConfigurator();
     private LegalEntityWithUsers[] entities = ParserUtil
-        .convertJsonToObject(this.globalProperties.getString(PROPERTY_LEGAL_ENTITIES_WITH_USERS_JSON_LOCATION),
+        .convertJsonToObject(this.globalProperties.getString(PROPERTY_LEGAL_ENTITIES_WITH_USERS_JSON),
             LegalEntityWithUsers[].class);
 
     public AccessControlSetup() throws IOException {
@@ -77,7 +77,7 @@ public class AccessControlSetup {
     public void setupAccessControlForUsers() throws IOException {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_ACCESS_CONTROL)) {
             final LegalEntityWithUsers[] entitiesWithoutPermissions = ParserUtil.convertJsonToObject(
-                this.globalProperties.getString(PROPERTY_LEGAL_ENTITIES_WITH_USERS_WITHOUT_PERMISSION_JSON_LOCATION),
+                this.globalProperties.getString(PROPERTY_LEGAL_ENTITIES_WITH_USERS_WITHOUT_PERMISSION_JSON),
                 LegalEntityWithUsers[].class);
 
             Arrays.stream(this.entities)

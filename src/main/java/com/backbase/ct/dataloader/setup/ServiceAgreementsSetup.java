@@ -50,7 +50,7 @@ public class ServiceAgreementsSetup {
         if (this.globalProperties.getBoolean(CommonConstants.PROPERTY_INGEST_CUSTOM_SERVICE_AGREEMENTS)) {
             ServiceAgreementPostRequestBody[] serviceAgreementPostRequestBodies = ParserUtil
                 .convertJsonToObject(
-                    this.globalProperties.getString(CommonConstants.PROPERTY_SERVICE_AGREEMENTS_JSON_LOCATION),
+                    this.globalProperties.getString(CommonConstants.PROPERTY_SERVICE_AGREEMENTS_JSON),
                     ServiceAgreementPostRequestBody[].class);
 
             this.loginRestClient.login(CommonConstants.USER_ADMIN, CommonConstants.USER_ADMIN);

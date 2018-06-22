@@ -51,7 +51,7 @@ node {
             def usePerformanceTestLegalEntitiesWithUsersJson = ""
 
             if ("${params.USE_PERFORMANCE_TEST_DATA_SETUP}".toBoolean()) {
-                usePerformanceTestLegalEntitiesWithUsersJson = "-Dlegal.entities.with.users.json.location=data/performance-test-legal-entities-with-users.json"
+                usePerformanceTestLegalEntitiesWithUsersJson = "-Dlegal.entities.with.users.json.location=data/performance-test-legal-entities-with-users.json "
             }
 
             sh "java -Denvironment.name=${params.ENVIRONMENT_NAME} " +

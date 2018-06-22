@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 
 public class Runner {
 
-    public static void main(String[] args) throws IOException {
+    public static void doit(String[] args) throws IOException {
         final Logger LOGGER = LoggerFactory.getLogger(Runner.class);
 
         System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", "8");

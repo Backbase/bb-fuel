@@ -1,7 +1,8 @@
 package com.backbase.ct.dataloader.setup;
 
+import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_ACTIONS;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_CONTACTS;
-import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_CONVERSATIONS;
+import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_MESSAGES;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_NOTIFICATIONS;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_PAYMENTS;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_LEGAL_ENTITIES_WITH_USERS_JSON_LOCATION;
@@ -9,6 +10,7 @@ import static com.backbase.ct.dataloader.data.CommonConstants.USER_ADMIN;
 
 import com.backbase.ct.dataloader.clients.accessgroup.UserContextPresentationRestClient;
 import com.backbase.ct.dataloader.clients.common.LoginRestClient;
+import com.backbase.ct.dataloader.configurators.ActionsConfigurator;
 import com.backbase.ct.dataloader.configurators.ContactsConfigurator;
 import com.backbase.ct.dataloader.configurators.MessagesConfigurator;
 import com.backbase.ct.dataloader.configurators.NotificationsConfigurator;
@@ -30,6 +32,7 @@ public class CapabilitiesDataSetup {
     private ContactsConfigurator contactsConfigurator = new ContactsConfigurator();
     private PaymentsConfigurator paymentsConfigurator = new PaymentsConfigurator();
     private MessagesConfigurator messagesConfigurator = new MessagesConfigurator();
+    private ActionsConfigurator actionsConfigurator = new ActionsConfigurator();
     private LegalEntityWithUsers[] entities = ParserUtil
         .convertJsonToObject(this.globalProperties.getString(PROPERTY_LEGAL_ENTITIES_WITH_USERS_JSON_LOCATION),
             LegalEntityWithUsers[].class);
@@ -66,7 +69,7 @@ public class CapabilitiesDataSetup {
     }
 
     public void ingestConversationsPerUser() {
-        if (this.globalProperties.getBoolean(PROPERTY_INGEST_CONVERSATIONS)) {
+        if (this.globalProperties.getBoolean(PROPERTY_INGEST_MESSAGES)) {
             this.loginRestClient.login(USER_ADMIN, USER_ADMIN);
             this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
             Arrays.stream(this.entities)
@@ -74,6 +77,16 @@ public class CapabilitiesDataSetup {
                 .flatMap(List::stream)
                 .collect(Collectors.toList())
                 .forEach(userId -> this.messagesConfigurator.ingestConversations(userId));
+        }
+    }
+
+    public void ingestActionsPerUser() {
+        if (this.globalProperties.getBoolean(PROPERTY_INGEST_ACTIONS)) {
+            Arrays.stream(this.entities)
+                .map(LegalEntityWithUsers::getUserExternalIds)
+                .flatMap(List::stream)
+                .collect(Collectors.toList())
+                .forEach(userId -> this.actionsConfigurator.ingestActions(userId));
         }
     }
 }

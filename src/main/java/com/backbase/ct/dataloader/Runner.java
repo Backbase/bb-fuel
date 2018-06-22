@@ -40,6 +40,7 @@ public class Runner {
         capabilitiesDataSetup.ingestContactsPerUser();
         capabilitiesDataSetup.ingestPaymentsPerUser();
         capabilitiesDataSetup.ingestConversationsPerUser();
+        capabilitiesDataSetup.ingestActionsPerUser();
 
         Instant end = Instant.now();
         Duration duration = Duration.between(start, end);

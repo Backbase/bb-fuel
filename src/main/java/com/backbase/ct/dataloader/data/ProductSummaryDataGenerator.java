@@ -1,7 +1,6 @@
 package com.backbase.ct.dataloader.data;
 
 import static com.backbase.ct.dataloader.utils.CommonHelpers.generateRandomAmountInRange;
-import static com.backbase.ct.dataloader.utils.CommonHelpers.generateRandomNumberInRange;
 
 import com.backbase.ct.dataloader.utils.CommonHelpers;
 import com.backbase.ct.dataloader.utils.GlobalProperties;
@@ -31,7 +30,7 @@ public class ProductSummaryDataGenerator {
     private static Faker faker = new Faker();
     private static Random random = new Random();
     private static final List<CountryCode> COUNTRY_CODES;
-    private static final int WEEKS_IN_A_YEAR = 52;
+    private static final int WEEKS_IN_6_MONTHS = 26;
 
     static {
         List<String> allowed = Arrays
@@ -123,9 +122,9 @@ public class ProductSummaryDataGenerator {
         String externalArrangementId) {
         List<BalanceHistoryPostRequestBody> balanceHistoryPostRequestBodies = new ArrayList<>();
 
-        for (int i = -1; i >= -WEEKS_IN_A_YEAR; i--) {
+        for (int i = -1; i >= -WEEKS_IN_6_MONTHS; i--) {
             balanceHistoryPostRequestBodies.add(generateBalanceHistoryPostRequestBody(
-                externalArrangementId, DateUtils.addWeeks(new Date(), generateRandomNumberInRange(i, 0))));
+                externalArrangementId, DateUtils.addWeeks(new Date(), i)));
         }
 
         return balanceHistoryPostRequestBodies;

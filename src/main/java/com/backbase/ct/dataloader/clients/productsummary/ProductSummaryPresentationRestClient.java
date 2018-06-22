@@ -1,9 +1,12 @@
 package com.backbase.ct.dataloader.clients.productsummary;
 
+import static com.backbase.ct.dataloader.data.CommonConstants.PAYMENTS_RESOURCE_NAME;
+import static com.backbase.ct.dataloader.data.CommonConstants.PRIVILEGE_CREATE;
+import static com.backbase.ct.dataloader.data.CommonConstants.SEPA_CT_FUNCTION_NAME;
+import static com.backbase.ct.dataloader.data.CommonConstants.US_DOMESTIC_WIRE_FUNCTION_NAME;
 import static org.apache.http.HttpStatus.SC_OK;
 
 import com.backbase.ct.dataloader.clients.common.AbstractRestClient;
-import com.backbase.ct.dataloader.data.CommonConstants;
 import com.backbase.ct.dataloader.dto.ProductSummaryQueryParameters;
 import com.backbase.presentation.productsummary.rest.spec.v2.productsummary.ArrangementsByBusinessFunctionGetResponseBody;
 import io.restassured.response.Response;
@@ -32,9 +35,11 @@ public class ProductSummaryPresentationRestClient extends AbstractRestClient {
     public List<ArrangementsByBusinessFunctionGetResponseBody> getSepaCtArrangements() {
         ArrangementsByBusinessFunctionGetResponseBody[] arrangements = getProductSummaryContextArrangements(
             new ProductSummaryQueryParameters()
-                .withBusinessFunction(CommonConstants.SEPA_CT_FUNCTION_NAME)
-                .withResourceName(CommonConstants.PAYMENTS_RESOURCE_NAME)
-                .withPrivilege(CommonConstants.PRIVILEGE_CREATE)
+                .withBusinessFunction(SEPA_CT_FUNCTION_NAME)
+                .withResourceName(PAYMENTS_RESOURCE_NAME)
+                .withPrivilege(PRIVILEGE_CREATE)
+                .withDebitAccount(true)
+                .withCreditAccount(true)
                 .withSize(999)
                 .withOrderBy("name"))
             .then()
@@ -52,9 +57,11 @@ public class ProductSummaryPresentationRestClient extends AbstractRestClient {
 
     public List<ArrangementsByBusinessFunctionGetResponseBody> getUsDomesticWireArrangements() {
         return Arrays.asList(getProductSummaryContextArrangements(new ProductSummaryQueryParameters()
-            .withBusinessFunction(CommonConstants.US_DOMESTIC_WIRE_FUNCTION_NAME)
-            .withResourceName(CommonConstants.PAYMENTS_RESOURCE_NAME)
-            .withPrivilege(CommonConstants.PRIVILEGE_CREATE)
+            .withBusinessFunction(US_DOMESTIC_WIRE_FUNCTION_NAME)
+            .withResourceName(PAYMENTS_RESOURCE_NAME)
+            .withPrivilege(PRIVILEGE_CREATE)
+            .withDebitAccount(true)
+            .withCreditAccount(true)
             .withSize(999)
             .withOrderBy("name"))
             .then()

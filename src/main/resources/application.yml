@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: data-loader
+  activemq:
+    broker-url: ${activemq.url:tcp://${environment.name}-infra.backbase.test:51616}
+
+logging:
+  secured:
+    enabled: false
+  level:
+    com.backbase: WARN
+    org.springframework: WARN
+    com.backbase.ct.dataloader: DEBUG
+
+sso:
+  jwt:
+    internal:
+      signature:
+        key:
+          type: ENV
+          value: SIG_SECRET_KEY
+
+security:
+  basic:
+    enabled: false

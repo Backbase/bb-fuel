@@ -9,7 +9,7 @@
 
     <groupId>com.backbase.ct</groupId>
     <artifactId>dataloader</artifactId>
-    <version>1.2.11-SNAPSHOT</version>
+    <version>1.2.14-SNAPSHOT</version>
     <name>Backbase :: Testing :: Dataloader</name>
 
     <scm>
@@ -98,11 +98,6 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
         </dependency>
-        <!-- dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${jackson-databind.version}</version>
-        </dependency -->
         <dependency>
             <groupId>com.github.javafaker</groupId>
             <artifactId>javafaker</artifactId>
@@ -145,11 +140,6 @@
             <artifactId>rest-assured</artifactId>
             <version>${rest-assured.version}</version>
         </dependency>
-        <!-- dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <version>${slf4j-simple.version}</version>
-        </dependency -->
         <!-- transactions specs -->
         <dependency>
             <groupId>com.backbase.dbs.transaction</groupId>

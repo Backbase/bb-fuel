@@ -40,7 +40,7 @@ For legal entities and users in the file [legal-entities-with-users.json](src/ma
     2. USD currency arrangements
     3. Random currency arrangements
 - In case of current account arrangements random debit cards (by default: between 3 and 10) are associated
-- Additionally (by default disabled) possible to ingest balance history based on a weekly balance history items for the past 6 months
+- Additionally (by default disabled) possible to ingest balance history based on a weekly balance history items for the past quarter
     - Only works if property `ingest.access.control` is set to `true` due to the required external arrangement id when ingesting balance history items.
     - This external arrangement id is only available when creating an arrangement (part of the access control setup). The external arrangement id is currently not retrievable via any REST endpoint.
 

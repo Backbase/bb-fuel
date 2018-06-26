@@ -26,7 +26,7 @@ import org.apache.commons.configuration.SystemConfiguration;
 public class GlobalProperties {
 
     private static GlobalProperties instance;
-    private static CompositeConfiguration configuration;
+    private CompositeConfiguration configuration;
 
     private GlobalProperties() {
         configuration = new CompositeConfiguration();
@@ -44,13 +44,9 @@ public class GlobalProperties {
         }
     }
 
-    public static GlobalProperties getInstance() {
+    public synchronized static GlobalProperties getInstance() {
         if (instance == null) {
-            synchronized (GlobalProperties.class) {
-                if (instance == null) {
-                    instance = new GlobalProperties();
-                }
-            }
+            instance = new GlobalProperties();
         }
         return instance;
     }

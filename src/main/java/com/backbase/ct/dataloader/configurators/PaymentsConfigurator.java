@@ -18,19 +18,23 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
+@Component
+@RequiredArgsConstructor
 public class PaymentsConfigurator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PaymentsConfigurator.class);
     private static GlobalProperties globalProperties = GlobalProperties.getInstance();
 
     private Random random = new Random();
-    private PaymentOrderPresentationRestClient paymentOrderPresentationRestClient = new PaymentOrderPresentationRestClient();
-    private LoginRestClient loginRestClient = new LoginRestClient();
-    private ProductSummaryPresentationRestClient productSummaryPresentationRestClient = new ProductSummaryPresentationRestClient();
-    private UserContextPresentationRestClient userContextPresentationRestClient = new UserContextPresentationRestClient();
+    private final PaymentOrderPresentationRestClient paymentOrderPresentationRestClient;
+    private final LoginRestClient loginRestClient;
+    private final ProductSummaryPresentationRestClient productSummaryPresentationRestClient;
+    private final UserContextPresentationRestClient userContextPresentationRestClient;
 
     public void ingestPaymentOrders(String externalUserId) {
         final List<String> PAYMENT_TYPES = Arrays

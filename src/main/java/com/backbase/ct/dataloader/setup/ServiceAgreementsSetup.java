@@ -26,25 +26,27 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
+@Component
+@RequiredArgsConstructor
 public class ServiceAgreementsSetup {
 
     private GlobalProperties globalProperties = GlobalProperties.getInstance();
     private LoginRestClient loginRestClient = new LoginRestClient();
-    private UserContextPresentationRestClient userContextPresentationRestClient = new UserContextPresentationRestClient();
-    private ServiceAgreementsConfigurator serviceAgreementsConfigurator = new ServiceAgreementsConfigurator();
-    private ServiceAgreementsPresentationRestClient serviceAgreementsPresentationRestClient = new ServiceAgreementsPresentationRestClient();
-    private AccessGroupsConfigurator accessGroupsConfigurator = new AccessGroupsConfigurator();
-    private PermissionsConfigurator permissionsConfigurator = new PermissionsConfigurator();
-    private UserPresentationRestClient userPresentationRestClient = new UserPresentationRestClient();
+    private final UserContextPresentationRestClient userContextPresentationRestClient;
+    private final ServiceAgreementsConfigurator serviceAgreementsConfigurator;
+    private final ServiceAgreementsPresentationRestClient serviceAgreementsPresentationRestClient;
+    private final AccessGroupsConfigurator accessGroupsConfigurator;
+    private final PermissionsConfigurator permissionsConfigurator;
+    private final UserPresentationRestClient userPresentationRestClient;
+    private final AccessControlSetup accessControlSetup;
     private String sepaFunctionGroupId;
     private String usWireFunctionGroupId;
     private String noSepaAndUsWireFunctionGroupId;
     private CurrencyDataGroup currencyDataGroup = null;
-    private AccessControlSetup accessControlSetup = new AccessControlSetup();
 
-    public ServiceAgreementsSetup() throws IOException {
-    }
 
     public void setupCustomServiceAgreements() throws IOException {
         if (this.globalProperties.getBoolean(CommonConstants.PROPERTY_INGEST_CUSTOM_SERVICE_AGREEMENTS)) {

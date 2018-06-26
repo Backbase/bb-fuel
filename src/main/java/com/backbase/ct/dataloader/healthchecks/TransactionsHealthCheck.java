@@ -6,7 +6,9 @@ import com.backbase.ct.dataloader.data.CommonConstants;
 import com.backbase.ct.dataloader.utils.GlobalProperties;
 import java.util.Collections;
 import java.util.List;
+import org.springframework.stereotype.Component;
 
+@Component
 public class TransactionsHealthCheck {
 
     private GlobalProperties globalProperties = GlobalProperties.getInstance();

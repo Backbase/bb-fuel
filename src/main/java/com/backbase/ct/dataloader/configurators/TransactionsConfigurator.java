@@ -20,18 +20,22 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
+@Component
+@RequiredArgsConstructor
 public class TransactionsConfigurator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TransactionsConfigurator.class);
     private static GlobalProperties globalProperties = GlobalProperties.getInstance();
 
-    private TransactionsIntegrationRestClient transactionsIntegrationRestClient = new TransactionsIntegrationRestClient();
-    private CategoriesPresentationRestClient categoriesPresentationRestClient = new CategoriesPresentationRestClient();
-    private LoginRestClient loginRestClient = new LoginRestClient();
-    private UserContextPresentationRestClient userContextPresentationRestClient = new UserContextPresentationRestClient();
+    private final TransactionsIntegrationRestClient transactionsIntegrationRestClient;
+    private final CategoriesPresentationRestClient categoriesPresentationRestClient;
+    private final LoginRestClient loginRestClient;
+    private final UserContextPresentationRestClient userContextPresentationRestClient;
     private Random random = new Random();
 
     public void ingestTransactionsByArrangement(String externalArrangementId) {

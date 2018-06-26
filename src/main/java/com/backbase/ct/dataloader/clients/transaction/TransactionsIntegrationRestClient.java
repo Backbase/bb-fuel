@@ -6,7 +6,9 @@ import com.backbase.integration.transaction.external.rest.spec.v2.transactions.T
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import java.util.List;
+import org.springframework.stereotype.Service;
 
+@Service
 public class TransactionsIntegrationRestClient extends AbstractRestClient {
 
     private static final String TRANSACTIONS = globalProperties

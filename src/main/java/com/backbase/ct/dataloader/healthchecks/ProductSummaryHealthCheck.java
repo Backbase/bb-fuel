@@ -7,7 +7,9 @@ import com.backbase.ct.dataloader.data.CommonConstants;
 import com.backbase.ct.dataloader.utils.GlobalProperties;
 import java.util.Arrays;
 import java.util.List;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ProductSummaryHealthCheck {
 
     private GlobalProperties globalProperties = GlobalProperties.getInstance();

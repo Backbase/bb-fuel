@@ -17,18 +17,22 @@ import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.serviceag
 import com.backbase.presentation.user.rest.spec.v2.users.LegalEntityByUserGetResponseBody;
 import java.util.Arrays;
 import java.util.Set;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
+@Component
+@RequiredArgsConstructor
 public class ServiceAgreementsConfigurator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceAgreementsConfigurator.class);
 
-    private LoginRestClient loginRestClient = new LoginRestClient();
-    private UserPresentationRestClient userPresentationRestClient = new UserPresentationRestClient();
-    private LegalEntityPresentationRestClient legalEntityPresentationRestClient = new LegalEntityPresentationRestClient();
-    private ServiceAgreementsIntegrationRestClient serviceAgreementsIntegrationRestClient = new ServiceAgreementsIntegrationRestClient();
-    private UserContextPresentationRestClient userContextPresentationRestClient = new UserContextPresentationRestClient();
+    private final LoginRestClient loginRestClient;
+    private final UserPresentationRestClient userPresentationRestClient;
+    private final LegalEntityPresentationRestClient legalEntityPresentationRestClient;
+    private final ServiceAgreementsIntegrationRestClient serviceAgreementsIntegrationRestClient;
+    private final UserContextPresentationRestClient userContextPresentationRestClient;
 
     public String ingestServiceAgreementWithProvidersAndConsumers(Set<Participant> participants) {
         loginRestClient.login(USER_ADMIN, USER_ADMIN);

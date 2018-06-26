@@ -7,7 +7,9 @@ import com.backbase.ct.dataloader.utils.GlobalProperties;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
+@Component
 public class HealthCheck {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HealthCheck.class);

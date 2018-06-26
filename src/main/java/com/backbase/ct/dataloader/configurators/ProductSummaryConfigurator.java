@@ -21,15 +21,19 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
+@Component
+@RequiredArgsConstructor
 public class ProductSummaryConfigurator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductSummaryConfigurator.class);
     private static GlobalProperties globalProperties = GlobalProperties.getInstance();
     private Random random = new Random();
-    private ArrangementsIntegrationRestClient arrangementsIntegrationRestClient = new ArrangementsIntegrationRestClient();
+    private final ArrangementsIntegrationRestClient arrangementsIntegrationRestClient;
 
     public void ingestProducts() throws IOException {
         ProductsPostRequestBody[] products = ProductSummaryDataGenerator.generateProductsPostRequestBodies();

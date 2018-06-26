@@ -6,7 +6,9 @@ import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagr
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementPutRequestBody;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ServiceAgreementsIntegrationRestClient extends AbstractRestClient {
 
     private static final String ENTITLEMENTS = globalProperties

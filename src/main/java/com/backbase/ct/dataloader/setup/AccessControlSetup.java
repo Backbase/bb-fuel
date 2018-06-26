@@ -44,26 +44,42 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
+@Component
+@RequiredArgsConstructor
 public class AccessControlSetup {
+    private final static Logger LOGGER = LoggerFactory.getLogger(CapabilitiesDataSetup.class);
 
     private GlobalProperties globalProperties = GlobalProperties.getInstance();
-    private LoginRestClient loginRestClient = new LoginRestClient();
-    private UserContextPresentationRestClient userContextPresentationRestClient = new UserContextPresentationRestClient();
-    private LegalEntitiesAndUsersConfigurator legalEntitiesAndUsersConfigurator = new LegalEntitiesAndUsersConfigurator();
-    private UserPresentationRestClient userPresentationRestClient = new UserPresentationRestClient();
-    private ProductSummaryConfigurator productSummaryConfigurator = new ProductSummaryConfigurator();
-    private AccessGroupsConfigurator accessGroupsConfigurator = new AccessGroupsConfigurator();
-    private PermissionsConfigurator permissionsConfigurator = new PermissionsConfigurator();
-    private ServiceAgreementsConfigurator serviceAgreementsConfigurator = new ServiceAgreementsConfigurator();
-    private ServiceAgreementsPresentationRestClient serviceAgreementsPresentationRestClient = new ServiceAgreementsPresentationRestClient();
-    private LegalEntityPresentationRestClient legalEntityPresentationRestClient = new LegalEntityPresentationRestClient();
-    private TransactionsConfigurator transactionsConfigurator = new TransactionsConfigurator();
-    private LegalEntityWithUsers[] entities = ParserUtil
-        .convertJsonToObject(this.globalProperties.getString(PROPERTY_LEGAL_ENTITIES_WITH_USERS_JSON),
-            LegalEntityWithUsers[].class);
+    private final LoginRestClient loginRestClient;
+    private final UserContextPresentationRestClient userContextPresentationRestClient;
+    private final LegalEntitiesAndUsersConfigurator legalEntitiesAndUsersConfigurator;
+    private final UserPresentationRestClient userPresentationRestClient;
+    private final ProductSummaryConfigurator productSummaryConfigurator;
+    private final AccessGroupsConfigurator accessGroupsConfigurator;
+    private final PermissionsConfigurator permissionsConfigurator;
+    private final ServiceAgreementsConfigurator serviceAgreementsConfigurator;
+    private final ServiceAgreementsPresentationRestClient serviceAgreementsPresentationRestClient;
+    private final LegalEntityPresentationRestClient legalEntityPresentationRestClient;
+    private final TransactionsConfigurator transactionsConfigurator;
+    // TODO refactor to have it parsed once (duplicated in CapabilitiesDataSetup)
+    private LegalEntityWithUsers[] entities = initialiseLegalEntityWithUsers();
+    public LegalEntityWithUsers[] initialiseLegalEntityWithUsers() {
+        LegalEntityWithUsers[] entities = null;
+        try {
+            entities = ParserUtil.convertJsonToObject(this.globalProperties.getString(
+                PROPERTY_LEGAL_ENTITIES_WITH_USERS_JSON),
+                LegalEntityWithUsers[].class);
 
-    public AccessControlSetup() throws IOException {
+        } catch (IOException e) {
+            LOGGER.error("Failed parsing file with entities", e);
+            throw new RuntimeException(e.getMessage());
+        }
+        return entities;
     }
 
     public void setupBankWithEntitlementsAdminAndProducts() throws IOException {

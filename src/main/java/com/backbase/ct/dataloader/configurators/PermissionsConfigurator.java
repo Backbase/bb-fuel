@@ -6,15 +6,19 @@ import com.backbase.ct.dataloader.clients.accessgroup.AccessGroupIntegrationRest
 import com.backbase.ct.dataloader.clients.accessgroup.AccessGroupPresentationRestClient;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.users.permissions.AssignPermissionsPostRequestBody;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
+@Component
+@RequiredArgsConstructor
 public class PermissionsConfigurator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PermissionsConfigurator.class);
 
-    private AccessGroupIntegrationRestClient accessGroupIntegrationRestClient = new AccessGroupIntegrationRestClient();
-    private AccessGroupPresentationRestClient accessGroupPresentationRestClient = new AccessGroupPresentationRestClient();
+    private final AccessGroupIntegrationRestClient accessGroupIntegrationRestClient;
+    private final AccessGroupPresentationRestClient accessGroupPresentationRestClient;
 
     public void assignAllFunctionDataGroupsToUserAndServiceAgreement(String externalUserId,
         String internalServiceAgreementId) {

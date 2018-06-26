@@ -5,7 +5,9 @@ import com.backbase.dbs.messages.presentation.rest.spec.v4.messagecenter.Convers
 import com.backbase.dbs.messages.presentation.rest.spec.v4.messagecenter.DraftsPostRequestBody;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import org.springframework.stereotype.Component;
 
+@Component
 public class MessagesPresentationRestClient extends AbstractRestClient {
 
     private static final String SERVICE_VERSION = "v4";

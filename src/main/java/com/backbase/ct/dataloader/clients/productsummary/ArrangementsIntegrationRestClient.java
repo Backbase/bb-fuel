@@ -13,7 +13,9 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ArrangementsIntegrationRestClient extends AbstractRestClient {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ArrangementsIntegrationRestClient.class);

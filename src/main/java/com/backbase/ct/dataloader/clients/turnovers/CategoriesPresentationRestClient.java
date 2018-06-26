@@ -6,7 +6,9 @@ import static org.apache.http.HttpStatus.SC_OK;
 import com.backbase.ct.dataloader.clients.common.AbstractRestClient;
 import com.backbase.presentation.categories.management.rest.spec.v2.categories.id.CategoryGetResponseBody;
 import java.util.List;
+import org.springframework.stereotype.Component;
 
+@Component
 public class CategoriesPresentationRestClient extends AbstractRestClient {
 
     private static final String SERVICE_VERSION = "v2";

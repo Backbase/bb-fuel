@@ -16,16 +16,20 @@ import com.backbase.dbs.messages.presentation.rest.spec.v4.messagecenter.Convers
 import com.backbase.dbs.messages.presentation.rest.spec.v4.messagecenter.DraftsPostRequestBody;
 import com.backbase.dbs.messages.presentation.rest.spec.v4.messagecenter.DraftsPostResponseBody;
 import java.util.stream.IntStream;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
+@Service
+@RequiredArgsConstructor
 public class MessagesConfigurator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MessagesConfigurator.class);
     private static GlobalProperties globalProperties = GlobalProperties.getInstance();
 
-    private LoginRestClient loginRestClient = new LoginRestClient();
-    private MessagesPresentationRestClient messagesPresentationRestClient = new MessagesPresentationRestClient();
+    private final LoginRestClient loginRestClient;
+    private final MessagesPresentationRestClient messagesPresentationRestClient;
 
     public void ingestConversations(String externalUserId) {
         int randomAmount = CommonHelpers

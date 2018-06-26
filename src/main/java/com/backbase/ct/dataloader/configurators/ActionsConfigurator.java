@@ -17,18 +17,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
+@Service
+@RequiredArgsConstructor
 public class ActionsConfigurator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ActionsConfigurator.class);
     private static GlobalProperties globalProperties = GlobalProperties.getInstance();
 
     private LoginRestClient loginRestClient = new LoginRestClient();
-    private UserContextPresentationRestClient userContextPresentationRestClient = new UserContextPresentationRestClient();
-    private ProductSummaryPresentationRestClient productSummaryPresentationRestClient = new ProductSummaryPresentationRestClient();
-    private ActionRecipesPresentationRestClient actionRecipesPresentationRestClient = new ActionRecipesPresentationRestClient();
+    private final UserContextPresentationRestClient userContextPresentationRestClient;
+    private final ProductSummaryPresentationRestClient productSummaryPresentationRestClient;
+    private final ActionRecipesPresentationRestClient actionRecipesPresentationRestClient ;
     private Random random = new Random();
 
     public void ingestActions(String externalUserId) {

@@ -9,15 +9,19 @@ import com.backbase.ct.dataloader.utils.CommonHelpers;
 import com.backbase.ct.dataloader.utils.GlobalProperties;
 import com.backbase.dbs.presentation.notifications.rest.spec.v2.notifications.NotificationsPostRequestBody;
 import java.util.stream.IntStream;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
+@Service
+@RequiredArgsConstructor
 public class NotificationsConfigurator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NotificationsConfigurator.class);
     private static GlobalProperties globalProperties = GlobalProperties.getInstance();
 
-    private NotificationsPresentationRestClient notificationsPresentationRestClient = new NotificationsPresentationRestClient();
+    private final NotificationsPresentationRestClient notificationsPresentationRestClient;
 
     public void ingestNotifications() {
         int randomAmount = CommonHelpers

@@ -16,14 +16,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
+@Service
+@RequiredArgsConstructor
 public class AccessGroupsConfigurator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AccessGroupsConfigurator.class);
 
-    private AccessGroupIntegrationRestClient accessGroupIntegrationRestClient = new AccessGroupIntegrationRestClient();
+    private final AccessGroupIntegrationRestClient accessGroupIntegrationRestClient;
 
     private Map<String, String> functionGroupsAllPrivilegesCache = Collections.synchronizedMap(new HashMap<>());
 

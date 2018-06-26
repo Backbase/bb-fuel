@@ -85,13 +85,13 @@ capabilities="Entitlements,ProductSummary"
 
 - For Autoconfig environments:
 ```
-java -Denvironment.name=your-env-00 -jar dataloader-jar-with-dependencies.jar
+java -Denvironment.name=your-env-00 -jar dataloader-{version}-boot.jar
 ```
 - Or alter the [environment.properties](src/main/resources/environment.properties) accordingly
 
 - For local Blade environment:
 ```
-java -Duse.local.configurations=true -jar dataloader-jar-with-dependencies.jar
+java -Duse.local.configurations=true -jar dataloader-{version}-boot.jar
 ```
 - See [local.properties](src/main/resources/local.properties) for this local configuration
 
@@ -100,7 +100,7 @@ The following properties can be set to custom values for different purposes: [da
 
 Example:
 ```
-java -Denvironment.name=your-env-00 -Darrangements.max=20 -Ddebit.cards.min=10 -Ddebit.cards.max=30 -Dtransactions-max=50 -jar dataloader-jar-with-dependencies.jar
+java -Denvironment.name=your-env-00 -Darrangements.max=20 -Ddebit.cards.min=10 -Ddebit.cards.max=30 -Dtransactions-max=50 -jar dataloader-{version}-boot.jar
 ```
 
 ### Health check

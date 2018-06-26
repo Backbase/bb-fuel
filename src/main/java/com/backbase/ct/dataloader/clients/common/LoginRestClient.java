@@ -4,7 +4,9 @@ import com.backbase.ct.dataloader.data.CommonConstants;
 import io.restassured.response.ValidatableResponse;
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.stereotype.Component;
 
+@Component
 public class LoginRestClient extends AbstractRestClient {
 
     private static final String LOGIN = globalProperties.getString(CommonConstants.PROPERTY_LOGIN_PATH);

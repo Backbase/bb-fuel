@@ -18,27 +18,47 @@ import com.backbase.ct.dataloader.configurators.PaymentsConfigurator;
 import com.backbase.ct.dataloader.dto.LegalEntityWithUsers;
 import com.backbase.ct.dataloader.utils.GlobalProperties;
 import com.backbase.ct.dataloader.utils.ParserUtil;
+import com.backbase.presentation.accessgroup.listener.client.v2.accessgroups.users.PresentationAccessgroupUsersClient;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
+@Component
+@RequiredArgsConstructor
 public class CapabilitiesDataSetup {
+    private final static Logger LOGGER = LoggerFactory.getLogger(CapabilitiesDataSetup.class);
 
     private GlobalProperties globalProperties = GlobalProperties.getInstance();
-    private LoginRestClient loginRestClient = new LoginRestClient();
-    private UserContextPresentationRestClient userContextPresentationRestClient = new UserContextPresentationRestClient();
-    private NotificationsConfigurator notificationsConfigurator = new NotificationsConfigurator();
-    private ContactsConfigurator contactsConfigurator = new ContactsConfigurator();
-    private PaymentsConfigurator paymentsConfigurator = new PaymentsConfigurator();
-    private MessagesConfigurator messagesConfigurator = new MessagesConfigurator();
-    private ActionsConfigurator actionsConfigurator = new ActionsConfigurator();
-    private LegalEntityWithUsers[] entities = ParserUtil
-        .convertJsonToObject(this.globalProperties.getString(PROPERTY_LEGAL_ENTITIES_WITH_USERS_JSON),
-            LegalEntityWithUsers[].class);
+    private final LoginRestClient loginRestClient;
 
-    public CapabilitiesDataSetup() throws IOException {
+    private final PresentationAccessgroupUsersClient presentationAccessgroupUsersClient;
+    private final UserContextPresentationRestClient userContextPresentationRestClient;
+    private final NotificationsConfigurator notificationsConfigurator;
+    private final ContactsConfigurator contactsConfigurator;
+    private final PaymentsConfigurator paymentsConfigurator;
+    private final MessagesConfigurator messagesConfigurator;
+    private final ActionsConfigurator actionsConfigurator;
+    private LegalEntityWithUsers[] entities = initialiseLegalEntityWithUsers();
+
+    public LegalEntityWithUsers[] initialiseLegalEntityWithUsers() {
+        LegalEntityWithUsers[] entities = null;
+        try {
+            entities = ParserUtil.convertJsonToObject(this.globalProperties.getString(
+                PROPERTY_LEGAL_ENTITIES_WITH_USERS_JSON),
+                    LegalEntityWithUsers[].class);
+
+        } catch (IOException e) {
+            LOGGER.error("Failed parsing file with entities", e);
+            throw new RuntimeException(e.getMessage());
+        }
+        return entities;
     }
+
 
     public void ingestBankNotifications() {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_NOTIFICATIONS)) {

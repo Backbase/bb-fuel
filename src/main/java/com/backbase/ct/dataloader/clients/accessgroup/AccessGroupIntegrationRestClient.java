@@ -13,7 +13,9 @@ import io.restassured.response.Response;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.stereotype.Component;
 
+@Component
 public class AccessGroupIntegrationRestClient extends AbstractRestClient {
 
     private static final String ENTITLEMENTS = globalProperties

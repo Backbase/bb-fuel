@@ -13,16 +13,20 @@ import com.backbase.ct.dataloader.clients.common.LoginRestClient;
 import com.backbase.ct.dataloader.clients.contact.ContactIntegrationRestClient;
 import com.backbase.ct.dataloader.utils.GlobalProperties;
 import com.backbase.dbs.integration.external.inbound.contact.rest.spec.v2.contacts.bulk.ContactsBulkIngestionPostRequestBody;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
+@Service
+@RequiredArgsConstructor
 public class ContactsConfigurator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ContactsConfigurator.class);
     private static GlobalProperties globalProperties = GlobalProperties.getInstance();
-    private LoginRestClient loginRestClient = new LoginRestClient();
-    private UserContextPresentationRestClient userContextPresentationRestClient = new UserContextPresentationRestClient();
-    private ContactIntegrationRestClient contactIntegrationRestClient = new ContactIntegrationRestClient();
+    private final LoginRestClient loginRestClient;
+    private final UserContextPresentationRestClient userContextPresentationRestClient;
+    private final ContactIntegrationRestClient contactIntegrationRestClient;
 
     public void ingestContacts(String externalUserId) {
         int numberOfContacts = generateRandomNumberInRange(globalProperties.getInt(PROPERTY_CONTACTS_MIN),

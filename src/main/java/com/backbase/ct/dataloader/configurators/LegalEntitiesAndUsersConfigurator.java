@@ -6,11 +6,15 @@ import com.backbase.ct.dataloader.data.CommonConstants;
 import com.backbase.ct.dataloader.data.LegalEntitiesAndUsersDataGenerator;
 import com.backbase.integration.legalentity.rest.spec.v2.legalentities.LegalEntitiesPostRequestBody;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
+@Service
+@RequiredArgsConstructor
 public class LegalEntitiesAndUsersConfigurator {
 
-    private LegalEntityIntegrationRestClient legalEntityIntegrationRestClient = new LegalEntityIntegrationRestClient();
-    private UserIntegrationRestClient userIntegrationRestClient = new UserIntegrationRestClient();
+    private final LegalEntityIntegrationRestClient legalEntityIntegrationRestClient;
+    private final UserIntegrationRestClient userIntegrationRestClient;
 
     public void ingestRootLegalEntityAndEntitlementsAdmin(String externalEntitlementsAdminUserId) {
         this.legalEntityIntegrationRestClient.ingestLegalEntityAndLogResponse(LegalEntitiesAndUsersDataGenerator

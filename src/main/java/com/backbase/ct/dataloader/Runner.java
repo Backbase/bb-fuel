@@ -42,7 +42,7 @@ public class Runner implements ApplicationRunner {
     /**
      * Sponsored runner.
      *
-     * @throws IOException when setupAccess throws it
+     * @throws IOException when setupAccessControl throws it
      */
     private void doIt() throws IOException {
         performHealthChecks();

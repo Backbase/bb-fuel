@@ -22,7 +22,7 @@ properties([
 def downloadArtifact = { version ->
     withCredentials([[$class          : 'UsernamePasswordMultiBinding', credentialsId: "${env.ARTIFACTS_CREDENTIALS_ID}",
                       usernameVariable: 'AR_USERNAME', passwordVariable: 'AR_PASSWORD']]) {
-        sh "curl -X GET -k -u ${AR_USERNAME}:${AR_PASSWORD} https://artifacts.backbase.com/backbase-development-builds/com/backbase/ct/dataloader/${version}/dataloader-${version}-jar-with-dependencies.jar -O -J -L"
+        sh "curl -X GET -k -u ${AR_USERNAME}:${AR_PASSWORD} https://artifacts.backbase.com/backbase-development-builds/com/backbase/ct/dataloader/${version}/dataloader-${version}-boot.jar -O -J -L"
     }
 }
 

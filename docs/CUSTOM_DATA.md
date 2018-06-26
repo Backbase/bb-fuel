@@ -8,7 +8,7 @@ java -Denvironment.name=your-env-00 -cp /path/to/custom/resources/folder/:datalo
 
 Run with performance test data setup for [gatling-performance-simulations](https://stash.backbase.com/projects/CT/repos/gatling-performance-simulations/browse):
 ```
-java -Denvironment.name=your-env-00 -Dlegal.entities.with.users.json.location=data/performance-test-legal-entities-with-users.json dataloader-jar-with-dependencies.jar
+java -Denvironment.name=your-env-00 -Dlegal.entities.with.users.json.location=data/performance-test-legal-entities-with-users.json dataloader-{version}-boot.jar
 ```
 
 ## How to create custom data

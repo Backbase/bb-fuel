@@ -51,7 +51,7 @@ node {
             def usePerformanceTestLegalEntitiesWithUsersJson = ""
 
             if ("${params.USE_PERFORMANCE_TEST_DATA_SETUP}".toBoolean()) {
-                usePerformanceTestLegalEntitiesWithUsersJson = "-Dlegal.entities.with.users.json.location=data/performance-test-legal-entities-with-users.json"
+                usePerformanceTestLegalEntitiesWithUsersJson = "-Dlegal.entities.with.users.json.location=data/performance-test-legal-entities-with-users.json "
             }
 
             sh "java -Denvironment.name=${params.ENVIRONMENT_NAME} " +
@@ -67,7 +67,8 @@ node {
                     "-Dingest.messages=${params.INGEST_MESSAGES} " +
                     "-Dingest.actions=${params.INGEST_ACTIONS} " +
                     usePerformanceTestLegalEntitiesWithUsersJson +
-                    "-jar dataloader-${dataloaderVersion}-jar-with-dependencies.jar"
+                    "-Dregistry.instance.enabled=false -Dregistry.client.enabled=false  -Deureka.client.enabled=false -Deureka.instance.enabled=false " +
+                    "-jar dataloader-${dataloaderVersion}-boot.jar"
         }
     }
 }

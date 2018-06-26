@@ -29,7 +29,7 @@ def downloadArtifact = { version ->
 def getDataloaderVersion() {
     def version = "${params.DATALOADER_VERSION}"
 
-    if ("${params.DATALOADER_VERSION}" == 'LATEST') {
+    if (version == 'LATEST') {
         withCredentials([[$class          : 'UsernamePasswordMultiBinding', credentialsId: "${env.ARTIFACTS_CREDENTIALS_ID}",
                           usernameVariable: 'AR_USERNAME', passwordVariable: 'AR_PASSWORD']]) {
             version = sh(returnStdout: true, script: '''curl -X GET -s -k -u ${AR_USERNAME}:${AR_PASSWORD} https://artifacts.backbase.com/backbase-development-builds/com/backbase/ct/dataloader/ | grep href | grep -v maven | cut -d'"' -f2 | cut -d'/' -f1 | sort --version-sort | tail -n 1''').toString().trim()

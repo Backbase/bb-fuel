@@ -1,8 +1,9 @@
 spring:
   application:
-    name: data-loader
-  activemq:
-    broker-url: ${activemq.url:tcp://${environment.name}-infra.backbase.test:51616}
+    name: dataloader
+    version: @project.version@
+#  activemq:
+#    broker-url: ${activemq.url:tcp://${environment.name}-infra.backbase.test:51616}
 
 logging:
   secured:

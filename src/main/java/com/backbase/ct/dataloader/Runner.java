@@ -49,8 +49,8 @@ public class Runner implements ApplicationRunner {
 
         Instant start = Instant.now();
 
-        setupAccess();
-        ingestData();
+        setupAccessControl();
+        ingestCapabilityData();
 
         logDuration(start);
     }
@@ -61,13 +61,13 @@ public class Runner implements ApplicationRunner {
         transactionsHealthCheck.checkTransactionsServicesHealth();
     }
 
-    private void setupAccess() throws IOException {
+    private void setupAccessControl() throws IOException {
         accessControlSetup.setupBankWithEntitlementsAdminAndProducts();
         accessControlSetup.setupAccessControlForUsers();
         serviceAgreementsSetup.setupCustomServiceAgreements();
     }
 
-    private void ingestData() {
+    private void ingestCapabilityData() {
         capabilitiesDataSetup.ingestBankNotifications();
         capabilitiesDataSetup.ingestContactsPerUser();
         capabilitiesDataSetup.ingestPaymentsPerUser();

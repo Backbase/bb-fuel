@@ -2,9 +2,9 @@ package com.backbase.ct.dataloader.clients.legalentity;
 
 import com.backbase.ct.dataloader.clients.common.AbstractRestClient;
 import io.restassured.response.Response;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 public class LegalEntityPresentationRestClient extends AbstractRestClient {
 
     private static final String SERVICE_VERSION = "v2";

@@ -5,9 +5,9 @@ import com.backbase.ct.dataloader.data.CommonConstants;
 import com.backbase.dbs.integration.external.inbound.contact.rest.spec.v2.contacts.bulk.ContactsBulkIngestionPostRequestBody;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 public class ContactIntegrationRestClient extends AbstractRestClient {
 
     private static final String CONTACT_MANAGER = globalProperties

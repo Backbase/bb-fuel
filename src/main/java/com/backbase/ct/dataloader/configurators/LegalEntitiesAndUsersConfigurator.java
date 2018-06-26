@@ -7,9 +7,9 @@ import com.backbase.ct.dataloader.data.LegalEntitiesAndUsersDataGenerator;
 import com.backbase.integration.legalentity.rest.spec.v2.legalentities.LegalEntitiesPostRequestBody;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class LegalEntitiesAndUsersConfigurator {
 

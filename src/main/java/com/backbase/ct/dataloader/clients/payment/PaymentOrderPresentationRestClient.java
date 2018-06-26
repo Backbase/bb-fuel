@@ -4,9 +4,9 @@ import com.backbase.ct.dataloader.clients.common.AbstractRestClient;
 import com.backbase.dbs.presentation.paymentorder.rest.spec.v2.paymentorders.InitiatePaymentOrder;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 public class PaymentOrderPresentationRestClient extends AbstractRestClient {
 
     private static final String SERVICE_VERSION = "v2";

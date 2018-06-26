@@ -12,9 +12,9 @@ import io.restassured.response.Response;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 public class UserContextPresentationRestClient extends AbstractRestClient {
 
     private static final String SERVICE_VERSION = "v2";

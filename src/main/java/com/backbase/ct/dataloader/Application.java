@@ -9,7 +9,6 @@ import org.springframework.context.annotation.ComponentScan;
 @EnableInternalJwtConsumer
 @ComponentScan(basePackages = {
     "com.backbase.ct.dataloader",
-    "com.backbase.buildingblocks.backend",
     "com.backbase.presentation",
     "com.backbase.integration"})
 public class Application {

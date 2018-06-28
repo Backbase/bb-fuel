@@ -1,12 +1,13 @@
 
- ________  ________  _________  ________  ___       ________  ________  ________  _______   ________
-|\   ___ \|\   __  \|\___   ___\\   __  \|\  \     |\   __  \|\   __  \|\   ___ \|\  ___ \ |\   __  \
-\ \  \_|\ \ \  \|\  \|___ \  \_\ \  \|\  \ \  \    \ \  \|\  \ \  \|\  \ \  \_|\ \ \   __/|\ \  \|\  \
- \ \  \ \\ \ \   __  \   \ \  \ \ \   __  \ \  \    \ \  \\\  \ \   __  \ \  \ \\ \ \  \_|/_\ \   _  _\
-  \ \  \_\\ \ \  \ \  \   \ \  \ \ \  \ \  \ \  \____\ \  \\\  \ \  \ \  \ \  \_\\ \ \  \_|\ \ \  \\  \|
-   \ \_______\ \__\ \__\   \ \__\ \ \__\ \__\ \_______\ \_______\ \__\ \__\ \_______\ \_______\ \__\\ _\
-    \|_______|\|__|\|__|    \|__|  \|__|\|__|\|_______|\|_______|\|__|\|__|\|_______|\|_______|\|__|\|__|
+
+                                     ,,                          ,,
+`7MM"""Yb.            mm           `7MM                        `7MM
+  MM    `Yb.          MM             MM                          MM
+  MM     `Mb  ,6"Yb.mmMMmm  ,6"Yb.   MM  ,pW"Wq.   ,6"Yb.   ,M""bMM  .gP"Ya `7Mb,od8
+  MM      MM 8)   MM  MM   8)   MM   MM 6W'   `Wb 8)   MM ,AP    MM ,M'   Yb  MM' "'
+  MM     ,MP  ,pm9MM  MM    ,pm9MM   MM 8M     M8  ,pm9MM 8MI    MM 8M""""""  MM
+  MM    ,dP' 8M   MM  MM   8M   MM   MM YA.   ,A9 8M   MM `Mb    MM YM.    ,  MM
+.JMMmmmdP'   `Moo9^Yo.`Mbmo`Moo9^Yo.JMML.`Ybmd9'  `Moo9^Yo.`Wbmd"MML.`Mbmmd'.JMML.
 
 
-Name   : ${spring.application.name}
-Version: ${spring.application.version}
+${spring.application.name} (${spring.application.version})

@@ -67,7 +67,6 @@ node {
                     "-Dingest.messages=${params.INGEST_MESSAGES} " +
                     "-Dingest.actions=${params.INGEST_ACTIONS} " +
                     usePerformanceTestLegalEntitiesWithUsersJson +
-                    "-Dregistry.instance.enabled=false -Dregistry.client.enabled=false  -Deureka.client.enabled=false -Deureka.instance.enabled=false " +
                     "-jar dataloader-${dataloaderVersion}-boot.jar"
         }
     }

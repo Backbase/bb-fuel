@@ -46,7 +46,7 @@ public class CapabilitiesDataSetup {
     private LegalEntityWithUsers[] entities = initialiseLegalEntityWithUsers();
 
     public LegalEntityWithUsers[] initialiseLegalEntityWithUsers() {
-        LegalEntityWithUsers[] entities = null;
+        LegalEntityWithUsers[] entities;
         try {
             entities = ParserUtil.convertJsonToObject(this.globalProperties.getString(
                 PROPERTY_LEGAL_ENTITIES_WITH_USERS_JSON),

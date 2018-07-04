@@ -8,9 +8,9 @@ import static org.apache.http.HttpStatus.SC_CREATED;
 import com.backbase.ct.dataloader.clients.accessgroup.AccessGroupIntegrationRestClient;
 import com.backbase.ct.dataloader.dto.ArrangementId;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.config.functions.FunctionsGetResponseBody;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.data.DataGroupsPostResponseBody;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.FunctionGroupsPostResponseBody;
+import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.datagroups.DataGroupPostResponseBody;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.Permission;
+import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.functiongroups.FunctionGroupPostResponseBody;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -71,7 +71,7 @@ public class AccessGroupsConfigurator {
             .then()
             .statusCode(SC_CREATED)
             .extract()
-            .as(FunctionGroupsPostResponseBody.class)
+            .as(FunctionGroupPostResponseBody.class)
             .getId();
 
         LOGGER.info("Function group [{}] ingested (service agreement [{}]) with permissions {}", functionGroupId,
@@ -91,7 +91,7 @@ public class AccessGroupsConfigurator {
             .then()
             .statusCode(SC_CREATED)
             .extract()
-            .as(DataGroupsPostResponseBody.class)
+            .as(DataGroupPostResponseBody.class)
             .getId();
 
         LOGGER.info("Data group [{}] ingested (service agreement [{}]) for arrangements {}", dataGroupId,

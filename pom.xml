@@ -60,7 +60,6 @@
             <groupId>com.backbase.dbs.accessgroup</groupId>
             <artifactId>accessgroup-presentation-spec</artifactId>
         </dependency>
-        <!-- actions specs -->
         <dependency>
             <groupId>com.backbase.dbs.actions</groupId>
             <artifactId>actionrecipes-presentation-spec</artifactId>
@@ -69,7 +68,6 @@
             <groupId>com.backbase.dbs.arrangement</groupId>
             <artifactId>arrangement-integration-spec</artifactId>
         </dependency>
-        <!-- turnovers specs -->
         <dependency>
             <groupId>com.backbase.dbs.pfm</groupId>
             <artifactId>categories-management-presentation-spec</artifactId>
@@ -79,7 +77,6 @@
             <artifactId>commons-configuration</artifactId>
             <version>${commons-configuration.version}</version>
         </dependency>
-        <!-- contact specs -->
         <dependency>
             <groupId>com.backbase.dbs.contact</groupId>
             <artifactId>contact-integration-external-inbound-spec</artifactId>
@@ -115,22 +112,18 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
-        <!-- messages specs -->
         <dependency>
             <groupId>com.backbase.dbs.messages</groupId>
             <artifactId>messages-presentation-spec</artifactId>
         </dependency>
-        <!-- notifications specs -->
         <dependency>
             <groupId>com.backbase.dbs.notifications</groupId>
             <artifactId>notifications-presentation-spec</artifactId>
         </dependency>
-        <!-- payment specs -->
         <dependency>
             <groupId>com.backbase.dbs.paymentorder</groupId>
             <artifactId>payment-order-presentation-spec</artifactId>
         </dependency>
-        <!-- product summary specs -->
         <dependency>
             <groupId>com.backbase.dbs.productsummary</groupId>
             <artifactId>product-summary-presentation-spec</artifactId>
@@ -140,7 +133,6 @@
             <artifactId>rest-assured</artifactId>
             <version>${rest-assured.version}</version>
         </dependency>
-        <!-- transactions specs -->
         <dependency>
             <groupId>com.backbase.dbs.transaction</groupId>
             <artifactId>transaction-integration-external-inbound-spec</artifactId>
@@ -149,7 +141,6 @@
             <groupId>com.backbase.dbs.user</groupId>
             <artifactId>user-integration-spec</artifactId>
         </dependency>
-        <!-- access control specs -->
         <dependency>
             <groupId>com.backbase.dbs.user</groupId>
             <artifactId>user-presentation-spec</artifactId>

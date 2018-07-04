@@ -8,10 +8,10 @@ properties([
                 booleanParam(name: 'INGEST_TRANSACTIONS', defaultValue: false, description: 'Ingest transactions per arrangement (only applicable when INGEST_ACCESS_CONTROL = true)'),
                 booleanParam(name: 'USE_PFM_CATEGORIES_FOR_TRANSACTIONS', defaultValue: false, description: 'Use PFM categories for transactions (only applicable when INGEST_TRANSACTIONS = true)'),
                 booleanParam(name: 'INGEST_CONTACTS', defaultValue: false, description: 'Ingest contacts per user'),
-                booleanParam(name: 'INGEST_NOTIFICATIONS', defaultValue: false, description: 'Ingest notifications on global target group'),
+                booleanParam(name: 'INGEST_NOTIFICATIONS', defaultValue: false, description: 'Ingest notification on global target group'),
                 booleanParam(name: 'INGEST_PAYMENTS', defaultValue: false, description: 'Ingest payments per user'),
                 booleanParam(name: 'INGEST_MESSAGES', defaultValue: false, description: 'Ingest messages per user'),
-                booleanParam(name: 'INGEST_ACTIONS', defaultValue: false, description: 'Ingest actions per user'),
+                booleanParam(name: 'INGEST_ACTIONS', defaultValue: false, description: 'Ingest action per user'),
                 booleanParam(name: 'USE_PERFORMANCE_TEST_DATA_SETUP', defaultValue: false, description: 'Use performance test data setup\n' +
                         'Only enable when strictly necessary (long running job)'),
                 choice(name: 'INFRA_BASE_URI', choices: 'infra.backbase.test:8080\neditorial.backbase.test:8080', description: ''),
@@ -62,10 +62,10 @@ node {
                     "-Dingest.transactions=${params.INGEST_TRANSACTIONS} " +
                     "-Duse.pfm.categories.for.transactions=${params.USE_PFM_CATEGORIES_FOR_TRANSACTIONS} " +
                     "-Dingest.contacts=${params.INGEST_CONTACTS} " +
-                    "-Dingest.notifications=${params.INGEST_NOTIFICATIONS} " +
+                    "-Dingest.notification=${params.INGEST_NOTIFICATIONS} " +
                     "-Dingest.payments=${params.INGEST_PAYMENTS} " +
                     "-Dingest.messages=${params.INGEST_MESSAGES} " +
-                    "-Dingest.actions=${params.INGEST_ACTIONS} " +
+                    "-Dingest.action=${params.INGEST_ACTIONS} " +
                     usePerformanceTestLegalEntitiesWithUsersJson +
                     "-jar dataloader-${dataloaderVersion}-boot.jar"
         }

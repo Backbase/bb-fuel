@@ -8,16 +8,16 @@ import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_PA
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_LEGAL_ENTITIES_WITH_USERS_JSON;
 import static com.backbase.ct.dataloader.data.CommonConstants.USER_ADMIN;
 
-import com.backbase.ct.dataloader.clients.accessgroup.UserContextPresentationRestClient;
-import com.backbase.ct.dataloader.clients.common.LoginRestClient;
-import com.backbase.ct.dataloader.configurators.ActionsConfigurator;
-import com.backbase.ct.dataloader.configurators.ContactsConfigurator;
-import com.backbase.ct.dataloader.configurators.MessagesConfigurator;
-import com.backbase.ct.dataloader.configurators.NotificationsConfigurator;
-import com.backbase.ct.dataloader.configurators.PaymentsConfigurator;
+import com.backbase.ct.dataloader.client.accessgroup.UserContextPresentationRestClient;
+import com.backbase.ct.dataloader.client.common.LoginRestClient;
+import com.backbase.ct.dataloader.configurator.ActionsConfigurator;
+import com.backbase.ct.dataloader.configurator.ContactsConfigurator;
+import com.backbase.ct.dataloader.configurator.MessagesConfigurator;
+import com.backbase.ct.dataloader.configurator.NotificationsConfigurator;
+import com.backbase.ct.dataloader.configurator.PaymentsConfigurator;
 import com.backbase.ct.dataloader.dto.LegalEntityWithUsers;
-import com.backbase.ct.dataloader.utils.GlobalProperties;
-import com.backbase.ct.dataloader.utils.ParserUtil;
+import com.backbase.ct.dataloader.util.GlobalProperties;
+import com.backbase.ct.dataloader.util.ParserUtil;
 import com.backbase.presentation.accessgroup.listener.client.v2.accessgroups.users.PresentationAccessgroupUsersClient;
 import java.io.IOException;
 import java.util.Arrays;

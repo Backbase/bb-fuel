@@ -2,7 +2,7 @@ package com.backbase.ct.dataloader.client.contact;
 
 import com.backbase.ct.dataloader.client.common.AbstractRestClient;
 import com.backbase.ct.dataloader.data.CommonConstants;
-import com.backbase.dbs.integration.external.inbound.contact.rest.spec.v2.contacts.bulk.ContactsBulkIngestionPostRequestBody;
+import com.backbase.dbs.integration.external.inbound.contact.rest.spec.v2.contacts.ContactsBulkIngestionPostRequestBody;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.springframework.stereotype.Component;

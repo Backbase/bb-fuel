@@ -1,6 +1,6 @@
 package com.backbase.ct.dataloader.data;
 
-import static com.backbase.ct.dataloader.utils.CommonHelpers.generateRandomAmountInRange;
+import static com.backbase.ct.dataloader.util.CommonHelpers.generateRandomAmountInRange;
 import static java.util.Arrays.asList;
 
 import com.backbase.dbs.actions.actionrecipes.presentation.rest.spec.v2.actionrecipes.ActionParent;

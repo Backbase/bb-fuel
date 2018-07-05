@@ -1,10 +1,10 @@
 package com.backbase.ct.dataloader.data;
 
-import static com.backbase.ct.dataloader.utils.CommonHelpers.generateRandomAmountInRange;
+import static com.backbase.ct.dataloader.util.CommonHelpers.generateRandomAmountInRange;
 
-import com.backbase.ct.dataloader.utils.CommonHelpers;
-import com.backbase.ct.dataloader.utils.GlobalProperties;
-import com.backbase.ct.dataloader.utils.ParserUtil;
+import com.backbase.ct.dataloader.util.CommonHelpers;
+import com.backbase.ct.dataloader.util.GlobalProperties;
+import com.backbase.ct.dataloader.util.ParserUtil;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBody;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.DebitCard;

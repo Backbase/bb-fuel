@@ -1,7 +1,7 @@
 # Data loader
 
 ## Description
-Data loader ingests the following:
+Data loader can ingest the following:
 - Legal entities
 - Service agreements
 - Users
@@ -16,6 +16,8 @@ Data loader ingests the following:
 - Notifications
 - Messages
 - Actions
+
+It is based on REST and relies on DBS service specs.
 
 ### Access control setup
 - Root legal entity with user `admin` as entitlements admin
@@ -77,6 +79,8 @@ If more/other users are required, you can provide your own `json` files, see *Cu
 Note: This can be rerun on an existing environment which already contains data by setting the property `ingest.access.control` to `false`
 
 ## How to run data loader
+All builds can be found [here](https://artifacts.backbase.com/backbase-development-builds/com/backbase/ct/dataloader)
+
 1. Provision an [Autoconfig](https://backbase.atlassian.net/wiki/x/94BtC) environment based on `dbs` or `dbs-microservices` stack with **at least** the following capabilities (based on default configuration:
 ```
 capabilities="Entitlements,ProductSummary"

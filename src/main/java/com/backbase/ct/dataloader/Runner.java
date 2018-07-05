@@ -1,8 +1,8 @@
 package com.backbase.ct.dataloader;
 
-import com.backbase.ct.dataloader.healthchecks.AccessControlHealthCheck;
-import com.backbase.ct.dataloader.healthchecks.ProductSummaryHealthCheck;
-import com.backbase.ct.dataloader.healthchecks.TransactionsHealthCheck;
+import com.backbase.ct.dataloader.healthcheck.AccessControlHealthCheck;
+import com.backbase.ct.dataloader.healthcheck.ProductSummaryHealthCheck;
+import com.backbase.ct.dataloader.healthcheck.TransactionsHealthCheck;
 import com.backbase.ct.dataloader.setup.AccessControlSetup;
 import com.backbase.ct.dataloader.setup.CapabilitiesDataSetup;
 import com.backbase.ct.dataloader.setup.ServiceAgreementsSetup;

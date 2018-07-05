@@ -2,9 +2,9 @@ package com.backbase.ct.dataloader.data;
 
 import static com.backbase.ct.dataloader.data.CommonConstants.TRANSACTION_TYPES;
 import static com.backbase.ct.dataloader.data.CommonConstants.TRANSACTION_TYPE_GROUPS;
-import static com.backbase.ct.dataloader.utils.CommonHelpers.generateRandomNumberInRange;
+import static com.backbase.ct.dataloader.util.CommonHelpers.generateRandomNumberInRange;
 
-import com.backbase.ct.dataloader.utils.CommonHelpers;
+import com.backbase.ct.dataloader.util.CommonHelpers;
 import com.backbase.integration.transaction.external.rest.spec.v2.transactions.TransactionsPostRequestBody;
 import com.github.javafaker.Faker;
 import java.util.Date;

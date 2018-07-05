@@ -2,7 +2,7 @@ package com.backbase.ct.dataloader.data;
 
 import static com.backbase.ct.dataloader.data.CommonConstants.PAYMENT_TYPE_SEPA_CREDIT_TRANSFER;
 
-import com.backbase.ct.dataloader.utils.CommonHelpers;
+import com.backbase.ct.dataloader.util.CommonHelpers;
 import com.backbase.dbs.presentation.paymentorder.rest.spec.v2.paymentorders.AccountIdentification;
 import com.backbase.dbs.presentation.paymentorder.rest.spec.v2.paymentorders.Bank;
 import com.backbase.dbs.presentation.paymentorder.rest.spec.v2.paymentorders.Identification;

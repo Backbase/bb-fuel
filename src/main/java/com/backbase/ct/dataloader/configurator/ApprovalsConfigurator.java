@@ -16,6 +16,7 @@ import static com.backbase.ct.dataloader.data.CommonConstants.US_FOREIGN_WIRE_FU
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
+import static java.util.Collections.sort;
 import static java.util.stream.Collectors.toList;
 
 import com.backbase.ct.dataloader.client.accessgroup.AccessGroupIntegrationRestClient;
@@ -67,8 +68,8 @@ public class ApprovalsConfigurator {
     private String approvalTypeCId;
     private String policyZeroId;
     private String policyAId;
-    private String policyBId;
-    private String policyCId;
+    private String policyABId;
+    private String policyABCId;
 
     public void setupApprovals(String externalServiceAgreementId, String externalLegalEntityId,
         List<String> externalUserIds) {
@@ -80,7 +81,7 @@ public class ApprovalsConfigurator {
 
         if (globalProperties.getBoolean(PROPERTY_INGEST_APPROVALS_FOR_PAYMENTS)) {
             setupAccessControlAndAssignApprovalTypesForPayments(externalServiceAgreementId, externalUserIds, PAYMENTS_FUNCTIONS);
-            assignPaymentsPolicies(externalServiceAgreementId, externalLegalEntityId, PAYMENTS_FUNCTIONS);
+            assignPaymentsPolicies(externalServiceAgreementId, externalLegalEntityId, PAYMENTS_FUNCTIONS, externalUserIds.size());
         }
 
         if (globalProperties.getBoolean(PROPERTY_INGEST_APPROVALS_FOR_CONTACTS)) {
@@ -109,26 +110,34 @@ public class ApprovalsConfigurator {
 
         LOGGER.info("Policy A [{}] created", policyAId);
 
-        policyBId = approvalIntegrationRestClient.createPolicy(
+        policyABId = approvalIntegrationRestClient.createPolicy(
             createPolicyItemDto(approvalTypeAId, 1),
             createPolicyItemDto(approvalTypeBId, 1));
 
-        LOGGER.info("Policy B [{}] created", policyBId);
+        LOGGER.info("Policy B [{}] created", policyABId);
 
-        policyCId = approvalIntegrationRestClient.createPolicy(
+        policyABCId = approvalIntegrationRestClient.createPolicy(
             createPolicyItemDto(approvalTypeAId, 1),
             createPolicyItemDto(approvalTypeBId, 1),
             createPolicyItemDto(approvalTypeCId, 1));
 
-        LOGGER.info("Policy C [{}] created", policyCId);
+        LOGGER.info("Policy C [{}] created", policyABCId);
     }
 
-    private void assignPaymentsPolicies(String externalServiceAgreementId, String externalLegalEntityId, List<String> functionNames) {
+    private void assignPaymentsPolicies(String externalServiceAgreementId, String externalLegalEntityId, List<String> functionNames, int numberOfUsers) {
         for (String functionName : functionNames) {
-            approvalIntegrationRestClient.assignPolicy(getPaymentsPolicyAssignments(
-                externalServiceAgreementId,
-                externalLegalEntityId,
-                functionName));
+
+            if (numberOfUsers < 3) {
+                approvalIntegrationRestClient.assignPolicy(getPaymentsPolicyAssignmentsBasedOnZeroApprovalPolicyOnly(
+                    externalServiceAgreementId,
+                    externalLegalEntityId,
+                    functionName));
+            } else {
+                approvalIntegrationRestClient.assignPolicy(getPaymentsPolicyAssignments(
+                    externalServiceAgreementId,
+                    externalLegalEntityId,
+                    functionName));
+            }
 
             LOGGER.info("Zero approval policy [{}] with upper bound [{}],"
                     + "policy A [{}] with upper bound [{}], "
@@ -136,8 +145,8 @@ public class ApprovalsConfigurator {
                     + "policy C [{}] unbounded assigned to business function [{}]",
                 policyZeroId, UPPER_BOUND_HUNDRED.toPlainString(),
                 policyAId, UPPER_BOUND_THOUSAND.toPlainString(),
-                policyBId, UPPER_BOUND_HUNDRED_THOUSAND.toPlainString(),
-                policyCId, functionName);
+                policyABId, UPPER_BOUND_HUNDRED_THOUSAND.toPlainString(),
+                policyABCId, functionName);
         }
     }
 
@@ -167,11 +176,11 @@ public class ApprovalsConfigurator {
             .withCurrencyCode(currencyCode)
             .withAmount(UPPER_BOUND_THOUSAND));
 
-        policyBoundMap.put(policyBId, new Currency()
+        policyBoundMap.put(policyABId, new Currency()
             .withCurrencyCode(currencyCode)
             .withAmount(UPPER_BOUND_HUNDRED_THOUSAND));
 
-        policyBoundMap.put(policyCId, null);
+        policyBoundMap.put(policyABCId, null);
 
         for (Map.Entry<String, Currency> entry : policyBoundMap.entrySet()) {
             String policyId = entry.getKey();
@@ -188,6 +197,19 @@ public class ApprovalsConfigurator {
         return policyAssignmentRequests;
     }
 
+    private List<IntegrationPolicyAssignmentRequest> getPaymentsPolicyAssignmentsBasedOnZeroApprovalPolicyOnly(
+        String externalServiceAgreementId,
+        String externalLegalEntityId,
+        String paymentsFunction) {
+        return singletonList(createPolicyAssignmentRequest(
+            externalServiceAgreementId,
+            externalLegalEntityId,
+            PAYMENTS_RESOURCE_NAME,
+            paymentsFunction,
+            createPolicyAssignmentRequestBounds(policyZeroId, null)));
+    }
+
+
     private List<IntegrationPolicyAssignmentRequest> getContactsPolicyAssignments(
         String externalServiceAgreementId,
         String externalLegalEntityId) {
@@ -203,6 +225,8 @@ public class ApprovalsConfigurator {
         String externalServiceAgreementId,
         List<String> externalUserIds,
         List<String> functionNames) {
+
+        sort(externalUserIds);
 
         String internalServiceAgreementId = serviceAgreementsIntegrationRestClient
             .retrieveServiceAgreementByExternalId(externalServiceAgreementId)

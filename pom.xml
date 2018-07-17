@@ -44,7 +44,7 @@
             <dependency>
                 <groupId>com.backbase.dbs</groupId>
                 <artifactId>banking-services-bom</artifactId>
-                <version>2.12.1-cr.180</version>
+                <version>2.12.1-cr.213</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -67,6 +67,21 @@
         <dependency>
             <groupId>com.backbase.dbs.approval</groupId>
             <artifactId>approval-integration-spec</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.backbase.dbs.approval</groupId>
+            <artifactId>approval-integration-spec</artifactId>
+            <version>RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>com.backbase.dbs.approval</groupId>
+            <artifactId>approval-integration-spec</artifactId>
+            <version>RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>com.backbase.dbs.approval</groupId>
+            <artifactId>approval-integration-spec</artifactId>
+            <version>RELEASE</version>
         </dependency>
         <dependency>
             <groupId>com.backbase.dbs.arrangement</groupId>
@@ -154,21 +169,6 @@
             <artifactId>junit</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.backbase.dbs.approval</groupId>
-            <artifactId>approval-integration-spec</artifactId>
-            <version>RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>com.backbase.dbs.approval</groupId>
-            <artifactId>approval-integration-spec</artifactId>
-            <version>RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>com.backbase.dbs.approval</groupId>
-            <artifactId>approval-integration-spec</artifactId>
-            <version>RELEASE</version>
         </dependency>
     </dependencies>
 

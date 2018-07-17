@@ -75,7 +75,6 @@ public class AccessGroupPresentationRestClient extends AbstractRestClient {
             .getDataAccessGroupIds();
     }
 
-
     public List<FunctionGroupsGetResponseBody> getFunctionGroupsByFunctionId(String internalServiceAgreementId, String functionId) {
         FunctionGroupsGetResponseBody[] functionGroups = retrieveFunctionGroupsByServiceAgreement(
             internalServiceAgreementId)
@@ -87,7 +86,7 @@ public class AccessGroupPresentationRestClient extends AbstractRestClient {
         return Arrays.stream(functionGroups)
             .filter(fg -> fg.getPermissions()
                 .stream()
-                .allMatch(permission -> functionId.equals(permission.getFunctionId())))
+                .anyMatch(permission -> functionId.equals(permission.getFunctionId())))
             .collect(Collectors.toList());
     }
 

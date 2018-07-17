@@ -69,6 +69,9 @@ public class CapabilitiesDataSetup {
             this.globalProperties.getBoolean(PROPERTY_INGEST_APPROVALS_FOR_CONTACTS)) {
             this.loginRestClient.login(USER_ADMIN, USER_ADMIN);
             this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
+
+            this.approvalsConfigurator.setupApprovalTypesAndPolicies();
+
             Arrays.stream(this.entities)
                 .forEach(legalEntityWithUsers -> {
                     List<String> externalUserIds = legalEntityWithUsers.getUserExternalIds();
@@ -77,7 +80,7 @@ public class CapabilitiesDataSetup {
                         .getUserContextBasedOnMSAByExternalUserId(
                             externalUserIds.get(random.nextInt(externalUserIds.size())));
 
-                    this.approvalsConfigurator.setupApprovals(
+                    this.approvalsConfigurator.setupAccessControlAndPerformApprovalAssignments(
                         userContext.getExternalServiceAgreementId(),
                         userContext.getExternalLegalEntityId(),
                         externalUserIds);
@@ -99,7 +102,7 @@ public class CapabilitiesDataSetup {
                 .map(LegalEntityWithUsers::getUserExternalIds)
                 .flatMap(List::stream)
                 .collect(Collectors.toList())
-                .forEach(userId -> this.contactsConfigurator.ingestContacts(userId));
+                .forEach(this.contactsConfigurator::ingestContacts);
         }
     }
 
@@ -109,7 +112,7 @@ public class CapabilitiesDataSetup {
                 .map(LegalEntityWithUsers::getUserExternalIds)
                 .flatMap(List::stream)
                 .collect(Collectors.toList())
-                .forEach(userId -> this.paymentsConfigurator.ingestPaymentOrders(userId));
+                .forEach(this.paymentsConfigurator::ingestPaymentOrders);
         }
     }
 
@@ -121,7 +124,7 @@ public class CapabilitiesDataSetup {
                 .map(LegalEntityWithUsers::getUserExternalIds)
                 .flatMap(List::stream)
                 .collect(Collectors.toList())
-                .forEach(userId -> this.messagesConfigurator.ingestConversations(userId));
+                .forEach(this.messagesConfigurator::ingestConversations);
         }
     }
 
@@ -131,7 +134,7 @@ public class CapabilitiesDataSetup {
                 .map(LegalEntityWithUsers::getUserExternalIds)
                 .flatMap(List::stream)
                 .collect(Collectors.toList())
-                .forEach(userId -> this.actionsConfigurator.ingestActions(userId));
+                .forEach(this.actionsConfigurator::ingestActions);
         }
     }
 }

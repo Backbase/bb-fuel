@@ -68,6 +68,7 @@ public class Runner implements ApplicationRunner {
     }
 
     private void ingestCapabilityData() {
+        capabilitiesDataSetup.ingestApprovals();
         capabilitiesDataSetup.ingestBankNotifications();
         capabilitiesDataSetup.ingestContactsPerUser();
         capabilitiesDataSetup.ingestPaymentsPerUser();

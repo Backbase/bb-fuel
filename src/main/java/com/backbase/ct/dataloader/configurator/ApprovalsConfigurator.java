@@ -80,12 +80,12 @@ public class ApprovalsConfigurator {
 
         if (globalProperties.getBoolean(PROPERTY_INGEST_APPROVALS_FOR_PAYMENTS)) {
             setupAccessControlAndAssignApprovalTypesForPayments(externalServiceAgreementId, externalUserIds, PAYMENTS_FUNCTIONS);
-            assignPaymentsPolicies(externalServiceAgreementId, externalLegalEntityId);
+            assignPaymentsPolicies(externalServiceAgreementId, externalLegalEntityId, PAYMENTS_FUNCTIONS);
         }
 
         if (globalProperties.getBoolean(PROPERTY_INGEST_APPROVALS_FOR_CONTACTS)) {
             setupAccessControlAndAssignApprovalTypesForContacts(externalServiceAgreementId, externalUserIds, singletonList(CONTACTS_FUNCTION_NAME));
-            assignContactsPolicies(externalServiceAgreementId, externalLegalEntityId);
+            assignContactsPolicies(externalServiceAgreementId, externalLegalEntityId, singletonList(CONTACTS_FUNCTION_NAME));
         }
 
     }
@@ -123,17 +123,12 @@ public class ApprovalsConfigurator {
         LOGGER.info("Policy C [{}] created", policyCId);
     }
 
-    private void assignPaymentsPolicies(String externalServiceAgreementId, String externalLegalEntityId) {
-        final List<String> PAYMENTS_FUNCTIONS = asList(
-            SEPA_CT_FUNCTION_NAME,
-            US_DOMESTIC_WIRE_FUNCTION_NAME,
-            US_FOREIGN_WIRE_FUNCTION_NAME);
-
-        for (String paymentsFunction : PAYMENTS_FUNCTIONS) {
+    private void assignPaymentsPolicies(String externalServiceAgreementId, String externalLegalEntityId, List<String> functionNames) {
+        for (String functionName : functionNames) {
             approvalIntegrationRestClient.assignPolicy(getPaymentsPolicyAssignments(
                 externalServiceAgreementId,
                 externalLegalEntityId,
-                paymentsFunction));
+                functionName));
 
             LOGGER.info("Zero approval policy [{}] with upper bound [{}],"
                     + "policy A [{}] with upper bound [{}], "
@@ -142,15 +137,17 @@ public class ApprovalsConfigurator {
                 policyZeroId, UPPER_BOUND_HUNDRED.toPlainString(),
                 policyAId, UPPER_BOUND_THOUSAND.toPlainString(),
                 policyBId, UPPER_BOUND_HUNDRED_THOUSAND.toPlainString(),
-                policyCId, paymentsFunction);
+                policyCId, functionName);
         }
     }
 
-    private void assignContactsPolicies(String externalServiceAgreementId, String externalLegalEntityId) {
-        approvalIntegrationRestClient
-            .assignPolicy(getContactsPolicyAssignments(externalServiceAgreementId, externalLegalEntityId));
+    private void assignContactsPolicies(String externalServiceAgreementId, String externalLegalEntityId, List<String> functionNames) {
+        for (String functionName : functionNames) {
+            approvalIntegrationRestClient
+                .assignPolicy(getContactsPolicyAssignments(externalServiceAgreementId, externalLegalEntityId));
 
-        LOGGER.info("Policy A [{}] assigned to business function [{}]", policyAId, CONTACTS_FUNCTION_NAME);
+            LOGGER.info("Policy A [{}] assigned to business function [{}]", policyAId, functionName);
+        }
     }
 
     private List<IntegrationPolicyAssignmentRequest> getPaymentsPolicyAssignments(

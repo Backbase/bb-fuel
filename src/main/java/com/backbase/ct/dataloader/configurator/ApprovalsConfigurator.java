@@ -21,14 +21,10 @@ import static java.util.stream.Collectors.toList;
 import com.backbase.ct.dataloader.client.accessgroup.AccessGroupIntegrationRestClient;
 import com.backbase.ct.dataloader.client.accessgroup.AccessGroupPresentationRestClient;
 import com.backbase.ct.dataloader.client.accessgroup.ServiceAgreementsIntegrationRestClient;
-import com.backbase.ct.dataloader.client.accessgroup.ServiceAgreementsPresentationRestClient;
 import com.backbase.ct.dataloader.client.accessgroup.UserContextPresentationRestClient;
 import com.backbase.ct.dataloader.client.approval.ApprovalIntegrationRestClient;
 import com.backbase.ct.dataloader.client.common.LoginRestClient;
-import com.backbase.ct.dataloader.client.legalentity.LegalEntityPresentationRestClient;
 import com.backbase.ct.dataloader.client.user.UserPresentationRestClient;
-import com.backbase.ct.dataloader.dto.UserContext;
-import com.backbase.ct.dataloader.setup.AccessControlSetup;
 import com.backbase.ct.dataloader.util.GlobalProperties;
 import com.backbase.dbs.approval.integration.spec.IntegrationPolicyAssignmentRequest;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.config.functions.FunctionsGetResponseBody;
@@ -189,7 +185,7 @@ public class ApprovalsConfigurator {
                 externalLegalEntityId,
                 PAYMENTS_RESOURCE_NAME,
                 paymentsFunction,
-                createPolicyAssignmentRequestBounds(policyId, upperBound);
+                createPolicyAssignmentRequestBounds(policyId, upperBound)));
         }
 
         return policyAssignmentRequests;
@@ -292,6 +288,6 @@ public class ApprovalsConfigurator {
         }
 
         approvalIntegrationRestClient.assignApprovalTypes(
-            createApprovalTypeAssignmentDto(approvalTypeAId, contactsFunctionGroupAId);
+            createApprovalTypeAssignmentDto(approvalTypeAId, contactsFunctionGroupAId));
     }
 }

@@ -1,6 +1,10 @@
 package com.backbase.ct.dataloader.client.legalentity;
 
+import static org.apache.http.HttpStatus.SC_OK;
+
 import com.backbase.ct.dataloader.client.common.AbstractRestClient;
+import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementGetResponseBody;
+import com.backbase.presentation.legalentity.rest.spec.v2.legalentities.LegalEntityByIdGetResponseBody;
 import io.restassured.response.Response;
 import org.springframework.stereotype.Component;
 
@@ -25,9 +29,22 @@ public class LegalEntityPresentationRestClient extends AbstractRestClient {
             .get(String.format(getPath(ENDPOINT_EXTERNAL), externalLegalEntityId));
     }
 
-    public Response getMasterServiceAgreementOfLegalEntity(String internalLegalEntityId) {
+    public LegalEntityByIdGetResponseBody retrieveLegalEntityByLegalEntityId(String internalLegalEntityId) {
         return requestSpec()
-            .get(String.format(getPath(ENDPOINT_SERVICE_AGREEMENTS_MASTER), internalLegalEntityId));
+            .get(getPath(ENDPOINT_LEGAL_ENTITIES + internalLegalEntityId))
+            .then()
+            .statusCode(SC_OK)
+            .extract()
+            .as(LegalEntityByIdGetResponseBody.class);
+    }
+
+    public ServiceAgreementGetResponseBody getMasterServiceAgreementOfLegalEntity(String internalLegalEntityId) {
+        return requestSpec()
+            .get(String.format(getPath(ENDPOINT_SERVICE_AGREEMENTS_MASTER), internalLegalEntityId))
+            .then()
+            .statusCode(SC_OK)
+            .extract()
+            .as(ServiceAgreementGetResponseBody.class);
     }
 
     @Override

@@ -1,6 +1,9 @@
 package com.backbase.ct.dataloader.client.accessgroup;
 
+import static org.apache.http.HttpStatus.SC_OK;
+
 import com.backbase.ct.dataloader.client.common.AbstractRestClient;
+import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementGetResponseBody;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.springframework.stereotype.Component;
@@ -27,10 +30,14 @@ public class ServiceAgreementsPresentationRestClient extends AbstractRestClient 
             .get(getPath(String.format(ENDPOINT_SERVICE_AGREEMENTS_BY_CREATOR_ID, internalCreatorLegalEntityId)));
     }
 
-    public Response retrieveServiceAgreement(String internalServiceAgreementId) {
+    public ServiceAgreementGetResponseBody retrieveServiceAgreement(String internalServiceAgreementId) {
         return requestSpec()
             .contentType(ContentType.JSON)
-            .get(getPath(String.format(ENDPOINT_SERVICE_AGREEMENTS_BY_ID, internalServiceAgreementId)));
+            .get(getPath(String.format(ENDPOINT_SERVICE_AGREEMENTS_BY_ID, internalServiceAgreementId)))
+            .then()
+            .statusCode(SC_OK)
+            .extract()
+            .as(ServiceAgreementGetResponseBody.class);
     }
 
     @Override

@@ -2,15 +2,12 @@ package com.backbase.ct.dataloader.configurator;
 
 import static com.backbase.ct.dataloader.data.AccessGroupsDataGenerator.createPermissionsWithAllPrivileges;
 import static com.backbase.ct.dataloader.data.AccessGroupsDataGenerator.generateDataGroupPostRequestBody;
-import static com.backbase.ct.dataloader.data.AccessGroupsDataGenerator.generateFunctionGroupPostRequestBody;
 import static org.apache.http.HttpStatus.SC_CREATED;
 
 import com.backbase.ct.dataloader.client.accessgroup.AccessGroupIntegrationRestClient;
 import com.backbase.ct.dataloader.dto.ArrangementId;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.config.functions.FunctionsGetResponseBody;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.datagroups.DataGroupPostResponseBody;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.Permission;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.functiongroups.FunctionGroupPostResponseBody;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -59,24 +56,13 @@ public class AccessGroupsConfigurator {
             return functionGroupsAllPrivilegesCache.get(cacheKey);
         }
 
-        String functionGroupId = ingestFunctionGroup(externalServiceAgreementId,
+        String functionGroupId = accessGroupIntegrationRestClient.ingestFunctionGroup(externalServiceAgreementId,
             createPermissionsWithAllPrivileges(functions));
+
+        LOGGER.info("Function group [{}] ingested (service agreement [{}]) all privileges", functionGroupId,
+            externalServiceAgreementId);
+
         functionGroupsAllPrivilegesCache.put(cacheKey, functionGroupId);
-        return functionGroupId;
-    }
-
-    private String ingestFunctionGroup(String externalServiceAgreementId, List<Permission> permissions) {
-        String functionGroupId = accessGroupIntegrationRestClient
-            .ingestFunctionGroup(generateFunctionGroupPostRequestBody(externalServiceAgreementId, permissions))
-            .then()
-            .statusCode(SC_CREATED)
-            .extract()
-            .as(FunctionGroupPostResponseBody.class)
-            .getId();
-
-        LOGGER.info("Function group [{}] ingested (service agreement [{}]) with permissions {}", functionGroupId,
-            externalServiceAgreementId, permissions);
-
         return functionGroupId;
     }
 

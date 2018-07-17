@@ -1,6 +1,8 @@
 package com.backbase.ct.dataloader.setup;
 
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_ACTIONS;
+import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_CONTACTS;
+import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_PAYMENTS;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_CONTACTS;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_MESSAGES;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_NOTIFICATIONS;
@@ -11,17 +13,19 @@ import static com.backbase.ct.dataloader.data.CommonConstants.USER_ADMIN;
 import com.backbase.ct.dataloader.client.accessgroup.UserContextPresentationRestClient;
 import com.backbase.ct.dataloader.client.common.LoginRestClient;
 import com.backbase.ct.dataloader.configurator.ActionsConfigurator;
+import com.backbase.ct.dataloader.configurator.ApprovalsConfigurator;
 import com.backbase.ct.dataloader.configurator.ContactsConfigurator;
 import com.backbase.ct.dataloader.configurator.MessagesConfigurator;
 import com.backbase.ct.dataloader.configurator.NotificationsConfigurator;
 import com.backbase.ct.dataloader.configurator.PaymentsConfigurator;
 import com.backbase.ct.dataloader.dto.LegalEntityWithUsers;
+import com.backbase.ct.dataloader.dto.UserContext;
 import com.backbase.ct.dataloader.util.GlobalProperties;
 import com.backbase.ct.dataloader.util.ParserUtil;
-import com.backbase.presentation.accessgroup.listener.client.v2.accessgroups.users.PresentationAccessgroupUsersClient;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -35,14 +39,15 @@ public class CapabilitiesDataSetup {
 
     private GlobalProperties globalProperties = GlobalProperties.getInstance();
     private final LoginRestClient loginRestClient;
-
-    private final PresentationAccessgroupUsersClient presentationAccessgroupUsersClient;
     private final UserContextPresentationRestClient userContextPresentationRestClient;
+    private final AccessControlSetup accessControlSetup;
+    private final ApprovalsConfigurator approvalsConfigurator;
     private final NotificationsConfigurator notificationsConfigurator;
     private final ContactsConfigurator contactsConfigurator;
     private final PaymentsConfigurator paymentsConfigurator;
     private final MessagesConfigurator messagesConfigurator;
     private final ActionsConfigurator actionsConfigurator;
+    private final Random random;
     private LegalEntityWithUsers[] entities = initialiseLegalEntityWithUsers();
 
     public LegalEntityWithUsers[] initialiseLegalEntityWithUsers() {
@@ -59,6 +64,26 @@ public class CapabilitiesDataSetup {
         return entities;
     }
 
+    public void ingestApprovals() {
+        if (this.globalProperties.getBoolean(PROPERTY_INGEST_APPROVALS_FOR_PAYMENTS) ||
+            this.globalProperties.getBoolean(PROPERTY_INGEST_APPROVALS_FOR_CONTACTS)) {
+            this.loginRestClient.login(USER_ADMIN, USER_ADMIN);
+            this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
+            Arrays.stream(this.entities)
+                .forEach(legalEntityWithUsers -> {
+                    List<String> externalUserIds = legalEntityWithUsers.getUserExternalIds();
+
+                    UserContext userContext = accessControlSetup
+                        .getUserContextBasedOnMSAByExternalUserId(
+                            externalUserIds.get(random.nextInt(externalUserIds.size())));
+
+                    this.approvalsConfigurator.setupApprovals(
+                        userContext.getExternalServiceAgreementId(),
+                        userContext.getExternalLegalEntityId(),
+                        externalUserIds);
+                });
+        }
+    }
 
     public void ingestBankNotifications() {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_NOTIFICATIONS)) {

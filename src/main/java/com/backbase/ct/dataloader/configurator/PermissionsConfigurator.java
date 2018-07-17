@@ -1,10 +1,7 @@
 package com.backbase.ct.dataloader.configurator;
 
-import static org.apache.http.HttpStatus.SC_OK;
-
 import com.backbase.ct.dataloader.client.accessgroup.AccessGroupIntegrationRestClient;
 import com.backbase.ct.dataloader.client.accessgroup.AccessGroupPresentationRestClient;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.users.permissions.AssignPermissionsPostRequestBody;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -28,14 +25,11 @@ public class PermissionsConfigurator {
             .retrieveDataGroupIdsByServiceAgreement(internalServiceAgreementId);
 
         functionGroupIds.forEach(functionGroupId -> {
-            accessGroupIntegrationRestClient.assignPermissions(new AssignPermissionsPostRequestBody()
-                .withExternalLegalEntityId(null)
-                .withExternalUserId(externalUserId)
-                .withServiceAgreementId(internalServiceAgreementId)
-                .withFunctionGroupId(functionGroupId)
-                .withDataGroupIds(dataGroupIds))
-                .then()
-                .statusCode(SC_OK);
+            accessGroupIntegrationRestClient.assignPermissions(
+                externalUserId,
+                internalServiceAgreementId,
+                functionGroupId,
+                dataGroupIds);
 
             LOGGER
                 .info("Permission assigned for service agreement [{}], user [{}], function group [{}], data groups {}",
@@ -45,14 +39,11 @@ public class PermissionsConfigurator {
 
     public void assignPermissions(String externalUserId, String internalServiceAgreementId, String functionGroupId,
         List<String> dataGroupIds) {
-        accessGroupIntegrationRestClient.assignPermissions(new AssignPermissionsPostRequestBody()
-            .withExternalLegalEntityId(null)
-            .withExternalUserId(externalUserId)
-            .withServiceAgreementId(internalServiceAgreementId)
-            .withFunctionGroupId(functionGroupId)
-            .withDataGroupIds(dataGroupIds))
-            .then()
-            .statusCode(SC_OK);
+        accessGroupIntegrationRestClient.assignPermissions(
+            externalUserId,
+            internalServiceAgreementId,
+            functionGroupId,
+            dataGroupIds);
 
         LOGGER.info("Permission assigned for service agreement [{}], user [{}], function group [{}], data groups {}",
             internalServiceAgreementId, externalUserId, functionGroupId, dataGroupIds);

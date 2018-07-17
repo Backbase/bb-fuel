@@ -13,8 +13,6 @@ import com.backbase.ct.dataloader.client.legalentity.LegalEntityPresentationRest
 import com.backbase.ct.dataloader.client.user.UserPresentationRestClient;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.Participant;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementPostResponseBody;
-import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementGetResponseBody;
-import com.backbase.presentation.user.rest.spec.v2.users.LegalEntityByUserGetResponseBody;
 import java.util.Arrays;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
@@ -58,10 +56,6 @@ public class ServiceAgreementsConfigurator {
 
         String internalServiceAgreementId = legalEntityPresentationRestClient
             .getMasterServiceAgreementOfLegalEntity(internalLegalEntityId)
-            .then()
-            .statusCode(SC_OK)
-            .extract()
-            .as(ServiceAgreementGetResponseBody.class)
             .getId();
 
         serviceAgreementsIntegrationRestClient
@@ -80,10 +74,6 @@ public class ServiceAgreementsConfigurator {
 
             String externalLegalEntityId = userPresentationRestClient
                 .retrieveLegalEntityByExternalUserId(externalAdminUserId)
-                .then()
-                .statusCode(SC_OK)
-                .extract()
-                .as(LegalEntityByUserGetResponseBody.class)
                 .getExternalId();
 
             participant.setExternalId(externalLegalEntityId);

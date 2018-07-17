@@ -23,6 +23,7 @@ public final class CommonConstants {
     public static final String PROPERTY_PRODUCT_SUMMARY_BASE_URI = "product.summary.base.uri";
     public static final String PROPERTY_TRANSACTIONS_BASE_URI = "transactions.base.uri";
     public static final String PROPERTY_CONTACT_MANAGER_BASE_URI = "contact.manager.base.uri";
+    public static final String PROPERTY_APPROVALS_BASE_URI = "approvals.base.uri";
     public static final String PROPERTY_HEALTH_CHECK_TIMEOUT_IN_MINUTES = "healthcheck.timeout.in.minutes";
 
     // Users
@@ -38,6 +39,8 @@ public final class CommonConstants {
     public static final String US_DOMESTIC_WIRE_FUNCTION_NAME = "US Domestic Wire";
     public static final String US_FOREIGN_WIRE_FUNCTION_NAME = "US Foreign Wire";
     public static final String PAYMENTS_RESOURCE_NAME = "Payments";
+    public static final String CONTACTS_RESOURCE_NAME = "Contacts";
+    public static final String CONTACTS_FUNCTION_NAME = "Contacts";
     public static final String PRIVILEGE_CREATE = "create";
     public static final String PROPERTY_INGEST_ACCESS_CONTROL = "ingest.access.control";
     public static final String PROPERTY_INGEST_CUSTOM_SERVICE_AGREEMENTS = "ingest.custom.service.agreements";
@@ -60,6 +63,8 @@ public final class CommonConstants {
     public static final String PROPERTY_NOTIFICATIONS_MIN = "notifications.min";
     public static final String PROPERTY_NOTIFICATIONS_MAX = "notifications.max";
     public static final String PROPERTY_INGEST_NOTIFICATIONS = "ingest.notifications";
+    public static final String PROPERTY_INGEST_APPROVALS_FOR_PAYMENTS = "ingest.approvals.for.payments";
+    public static final String PROPERTY_INGEST_APPROVALS_FOR_CONTACTS = "ingest.approvals.for.contacts";
     public static final String PROPERTY_CONTACTS_MIN = "contacts.min";
     public static final String PROPERTY_CONTACTS_MAX = "contacts.max";
     public static final String PROPERTY_INGEST_CONTACTS = "ingest.contacts";

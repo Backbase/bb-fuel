@@ -79,7 +79,7 @@ If more/other users are required, you can provide your own `json` files, see *Cu
 Note: This can be rerun on an existing environment which already contains data by setting the property `ingest.access.control` to `false`
 
 ### Approvals setup
-Approvals configuration can be ingested for payments and contacts.
+Approvals configuration can be ingested for payments and contacts based on master service agreements.
 
 #### Approval types
 - Approval type A with rank 1

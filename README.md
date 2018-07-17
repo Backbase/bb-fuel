@@ -79,7 +79,12 @@ If more/other users are required, you can provide your own `json` files, see *Cu
 Note: This can be rerun on an existing environment which already contains data by setting the property `ingest.access.control` to `false`
 
 ### Approvals setup
-Approvals configuration can be ingested for payments and contacts. The setup is as follows:
+Approvals configuration can be ingested for payments and contacts.
+
+#### Approval types
+- Approval type A with rank 1
+- Approval type B with rank 2
+- Approval type C with rank 3
 
 #### Payments
 - Zero approval policy with upper bound of 100
@@ -98,7 +103,7 @@ In case of less than 3 users under a legal entity as defined in [legal-entities-
 - User no. 2: approval type B
 - User no. 3: approval type C
 - User no. 4: approval types A, B, C
-etc.
+- etc.
 
 Example:
 - User no. 5: approval type A

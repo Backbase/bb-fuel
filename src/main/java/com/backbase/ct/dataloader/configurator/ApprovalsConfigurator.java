@@ -146,7 +146,7 @@ public class ApprovalsConfigurator {
                     functionName));
             }
 
-            LOGGER.info("Zero approval policy [{}] with upper bound [{}],"
+            LOGGER.info("Zero approval policy [{}] with upper bound [{}], "
                     + "policy A [{}] with upper bound [{}], "
                     + "policy B [{}] with upper bound [{}] and "
                     + "policy C [{}] unbounded assigned to business function [{}]",

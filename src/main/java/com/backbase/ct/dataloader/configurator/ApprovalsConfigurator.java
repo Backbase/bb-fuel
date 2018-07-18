@@ -132,38 +132,56 @@ public class ApprovalsConfigurator {
     }
 
     private void assignPaymentsPolicies(String externalServiceAgreementId, String externalLegalEntityId, List<String> functionNames, int numberOfUsers) {
+        List<IntegrationPolicyAssignmentRequest> listOfAssignments = new ArrayList<>();
+
         for (String functionName : functionNames) {
+            List<IntegrationPolicyAssignmentRequest> generatedItems;
 
             if (numberOfUsers < 3) {
-                approvalIntegrationRestClient.assignPolicies(getPaymentsPolicyAssignmentsBasedOnZeroApprovalPolicyOnly(
+                generatedItems = getPaymentsPolicyAssignmentsBasedOnZeroApprovalPolicyOnly(
                     externalServiceAgreementId,
                     externalLegalEntityId,
-                    functionName));
+                    functionName);
             } else {
-                approvalIntegrationRestClient.assignPolicies(getPaymentsPolicyAssignments(
+                generatedItems = getPaymentsPolicyAssignments(
                     externalServiceAgreementId,
                     externalLegalEntityId,
-                    functionName));
+                    functionName);
             }
 
+            listOfAssignments.addAll(generatedItems);
+        }
+
+        approvalIntegrationRestClient.assignPolicies(listOfAssignments);
+
+        if (numberOfUsers < 3) {
+            LOGGER.info("Zero approval policy unbounded assigned to business functions {}", functionNames);
+        } else {
             LOGGER.info("Zero approval policy [{}] with upper bound [{}], "
                     + "policy A [{}] with upper bound [{}], "
-                    + "policy B [{}] with upper bound [{}] and "
-                    + "policy C [{}] unbounded assigned to business function [{}]",
+                    + "policy A + B [{}] with upper bound [{}] and "
+                    + "policy A + B + C [{}] unbounded assigned to business functions {}",
                 policyZeroId, UPPER_BOUND_HUNDRED.toPlainString(),
                 policyAId, UPPER_BOUND_THOUSAND.toPlainString(),
                 policyABId, UPPER_BOUND_HUNDRED_THOUSAND.toPlainString(),
-                policyABCId, functionName);
+                policyABCId, functionNames);
         }
     }
 
     private void assignContactsPolicies(String externalServiceAgreementId, String externalLegalEntityId, List<String> functionNames) {
-        for (String functionName : functionNames) {
-            approvalIntegrationRestClient
-                .assignPolicies(getContactsPolicyAssignments(externalServiceAgreementId, externalLegalEntityId));
+        List<IntegrationPolicyAssignmentRequest> listOfAssignments = new ArrayList<>();
 
-            LOGGER.info("Policy A [{}] assigned to business function [{}]", policyAId, functionName);
+        for (String functionName : functionNames) {
+            List<IntegrationPolicyAssignmentRequest> generatedItems;
+
+            generatedItems = getContactsPolicyAssignments(externalServiceAgreementId, externalLegalEntityId, functionName);
+
+            listOfAssignments.addAll(generatedItems);
         }
+
+        approvalIntegrationRestClient.assignPolicies(listOfAssignments);
+
+        LOGGER.info("Policy A [{}] assigned to business functions {}", policyAId, functionNames);
     }
 
     private List<IntegrationPolicyAssignmentRequest> getPaymentsPolicyAssignments(
@@ -219,12 +237,13 @@ public class ApprovalsConfigurator {
 
     private List<IntegrationPolicyAssignmentRequest> getContactsPolicyAssignments(
         String externalServiceAgreementId,
-        String externalLegalEntityId) {
+        String externalLegalEntityId,
+        String contactsFunction) {
         return singletonList(createPolicyAssignmentRequest(
             externalServiceAgreementId,
             externalLegalEntityId,
             CONTACTS_RESOURCE_NAME,
-            CONTACTS_FUNCTION_NAME,
+            contactsFunction,
             createPolicyAssignmentRequestBounds(policyAId, null)));
     }
 

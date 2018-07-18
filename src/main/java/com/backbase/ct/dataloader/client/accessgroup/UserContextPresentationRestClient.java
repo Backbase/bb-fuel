@@ -34,12 +34,11 @@ public class UserContextPresentationRestClient extends AbstractRestClient {
 
     public void selectContextBasedOnMasterServiceAgreement() {
         ServiceAgreementGetResponseBody masterServiceAgreement = getMasterServiceAgreementForUserContext();
-        String serviceAgreementId = masterServiceAgreement != null ? masterServiceAgreement.getId() : null;
 
-        String legalEntityId = getLegalEntitiesForServiceAgreements(serviceAgreementId).get(0).getId();
+        String legalEntityId = getLegalEntitiesForServiceAgreements(masterServiceAgreement.getId()).get(0).getId();
 
         postUserContext(new UserContextPostRequestBody()
-            .withServiceAgreementId(serviceAgreementId)
+            .withServiceAgreementId(masterServiceAgreement.getId())
             .withLegalEntityId(legalEntityId))
             .then()
             .statusCode(SC_NO_CONTENT);
@@ -91,7 +90,7 @@ public class UserContextPresentationRestClient extends AbstractRestClient {
         return Arrays.stream(serviceAgreementGetResponseBodies)
             .filter(ServiceAgreementGetResponseBody::getIsMaster)
             .findFirst()
-            .orElse(null);
+            .orElseThrow(() -> new RuntimeException("No master service agreement found"));
     }
 
 }

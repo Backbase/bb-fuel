@@ -21,9 +21,9 @@ public class ApprovalsDataGenerator {
 
     private static Random random = new Random();
 
-    public static IntegrationPostApprovalTypeRequest createPostApprovalTypeRequest(Integer rank) {
+    public static IntegrationPostApprovalTypeRequest createPostApprovalTypeRequest(String name, Integer rank) {
         return new IntegrationPostApprovalTypeRequest()
-            .withName(randomAlphabetic(15))
+            .withName(name)
             .withDescription(randomAlphabetic(15))
             .withRank(rank);
     }

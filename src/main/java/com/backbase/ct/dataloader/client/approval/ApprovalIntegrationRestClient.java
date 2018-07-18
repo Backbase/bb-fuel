@@ -105,8 +105,8 @@ public class ApprovalIntegrationRestClient extends AbstractRestClient {
             .delete(getPath(POLICIES + "/" + policyId));
     }
 
-    public String createApprovalType(Integer rank) {
-        return createApprovalType(createPostApprovalTypeRequest(rank))
+    public String createApprovalType(String name, Integer rank) {
+        return createApprovalType(createPostApprovalTypeRequest(name, rank))
             .then()
             .statusCode(SC_CREATED)
             .extract()

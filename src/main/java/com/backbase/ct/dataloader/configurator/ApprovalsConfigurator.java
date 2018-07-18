@@ -99,14 +99,14 @@ public class ApprovalsConfigurator {
     }
 
     private void createApprovalTypes() {
-        approvalTypeAId = approvalIntegrationRestClient.createApprovalType(1);
-        LOGGER.info("Approval type A [{}] created", approvalTypeAId);
+        approvalTypeAId = approvalIntegrationRestClient.createApprovalType("A", 1);
+        LOGGER.info("Approval type A [{}] created with rank 1", approvalTypeAId);
 
-        approvalTypeBId = approvalIntegrationRestClient.createApprovalType(2);
-        LOGGER.info("Approval type B [{}] created", approvalTypeBId);
+        approvalTypeBId = approvalIntegrationRestClient.createApprovalType("B", 2);
+        LOGGER.info("Approval type B [{}] created with rank 2", approvalTypeBId);
 
-        approvalTypeCId = approvalIntegrationRestClient.createApprovalType(3);
-        LOGGER.info("Approval type C [{}] created", approvalTypeCId);
+        approvalTypeCId = approvalIntegrationRestClient.createApprovalType("C", 3);
+        LOGGER.info("Approval type C [{}] created with rank 3", approvalTypeCId);
     }
 
     private void createPolicies() {

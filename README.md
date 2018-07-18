@@ -11,6 +11,7 @@ Data loader can ingest the following:
 - Products
 - Arrangements
 - Transactions
+- Approvals
 - Contacts
 - Payments
 - Notifications

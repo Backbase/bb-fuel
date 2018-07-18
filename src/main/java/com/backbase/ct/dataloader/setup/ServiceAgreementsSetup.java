@@ -1,5 +1,6 @@
 package com.backbase.ct.dataloader.setup;
 
+import static com.backbase.ct.dataloader.data.CommonConstants.PRODUCT_SUMMARY_FUNCTION_NAME;
 import static com.backbase.ct.dataloader.data.CommonConstants.SEPA_CT_FUNCTION_NAME;
 import static com.backbase.ct.dataloader.data.CommonConstants.US_DOMESTIC_WIRE_FUNCTION_NAME;
 import static com.backbase.ct.dataloader.data.CommonConstants.US_FOREIGN_WIRE_FUNCTION_NAME;
@@ -90,16 +91,16 @@ public class ServiceAgreementsSetup {
         this.currencyDataGroup = this.accessControlSetup
             .ingestDataGroupArrangementsForServiceAgreement(externalServiceAgreementId, externalLegalEntityId);
 
-        sepaFunctionGroupId = this.accessGroupsConfigurator.ingestFunctionGroupsWithAllPrivilegesByFunctionNames(
+        sepaFunctionGroupId = this.accessGroupsConfigurator.ingestFunctionGroupWithAllPrivilegesByFunctionNames(
             externalServiceAgreementId,
-            singletonList(SEPA_CT_FUNCTION_NAME));
+            asList(SEPA_CT_FUNCTION_NAME, PRODUCT_SUMMARY_FUNCTION_NAME));
 
-        usWireFunctionGroupId = this.accessGroupsConfigurator.ingestFunctionGroupsWithAllPrivilegesByFunctionNames(
+        usWireFunctionGroupId = this.accessGroupsConfigurator.ingestFunctionGroupWithAllPrivilegesByFunctionNames(
             externalServiceAgreementId,
-            asList(US_DOMESTIC_WIRE_FUNCTION_NAME, US_FOREIGN_WIRE_FUNCTION_NAME));
+            asList(US_DOMESTIC_WIRE_FUNCTION_NAME, US_FOREIGN_WIRE_FUNCTION_NAME, PRODUCT_SUMMARY_FUNCTION_NAME));
 
         noSepaAndUsWireFunctionGroupId = this.accessGroupsConfigurator
-            .ingestFunctionGroupsWithAllPrivilegesNotContainingProvidedFunctionNames(
+            .ingestFunctionGroupWithAllPrivilegesNotContainingProvidedFunctionNames(
                 externalServiceAgreementId,
                 asList(
                     SEPA_CT_FUNCTION_NAME,

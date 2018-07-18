@@ -30,20 +30,20 @@ public class AccessGroupsConfigurator {
 
     private static final String ARRANGEMENTS = "ARRANGEMENTS";
 
-    public String ingestFunctionGroupsWithAllPrivilegesByFunctionNames(String externalServiceAgreementId,
+    public String ingestFunctionGroupWithAllPrivilegesByFunctionNames(String externalServiceAgreementId,
         List<String> functionNames) {
-        List<FunctionsGetResponseBody> sepaCtFunctions = this.accessGroupIntegrationRestClient
+        List<FunctionsGetResponseBody> functions = this.accessGroupIntegrationRestClient
             .retrieveFunctions(functionNames);
 
-        return ingestFunctionGroupWithAllPrivileges(externalServiceAgreementId, sepaCtFunctions);
+        return ingestFunctionGroupWithAllPrivileges(externalServiceAgreementId, functions);
     }
 
-    public String ingestFunctionGroupsWithAllPrivilegesNotContainingProvidedFunctionNames(
+    public String ingestFunctionGroupWithAllPrivilegesNotContainingProvidedFunctionNames(
         String externalServiceAgreementId, List<String> functionNames) {
-        List<FunctionsGetResponseBody> sepaCtFunctions = this.accessGroupIntegrationRestClient
+        List<FunctionsGetResponseBody> functions = this.accessGroupIntegrationRestClient
             .retrieveFunctionsNotContainingProvidedFunctionNames(functionNames);
 
-        return ingestFunctionGroupWithAllPrivileges(externalServiceAgreementId, sepaCtFunctions);
+        return ingestFunctionGroupWithAllPrivileges(externalServiceAgreementId, functions);
     }
 
     private synchronized String ingestFunctionGroupWithAllPrivileges(String externalServiceAgreementId,

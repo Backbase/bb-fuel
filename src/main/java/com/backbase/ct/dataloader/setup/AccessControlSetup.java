@@ -1,5 +1,6 @@
 package com.backbase.ct.dataloader.setup;
 
+import static com.backbase.ct.dataloader.data.CommonConstants.PRODUCT_SUMMARY_FUNCTION_NAME;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_ACCESS_CONTROL;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_BALANCE_HISTORY;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_TRANSACTIONS;
@@ -183,17 +184,17 @@ public class AccessControlSetup {
     private void ingestFunctionGroupsAndAssignPermissions(String externalUserId, String internalServiceAgreementId,
         String externalServiceAgreementId,
         CurrencyDataGroup currencyDataGroup) {
-        String sepaFunctionGroupId = this.accessGroupsConfigurator.ingestFunctionGroupsWithAllPrivilegesByFunctionNames(
+        String sepaFunctionGroupId = this.accessGroupsConfigurator.ingestFunctionGroupWithAllPrivilegesByFunctionNames(
             externalServiceAgreementId,
-            singletonList(SEPA_CT_FUNCTION_NAME));
+            asList(SEPA_CT_FUNCTION_NAME, PRODUCT_SUMMARY_FUNCTION_NAME));
 
         String usWireFunctionGroupId = this.accessGroupsConfigurator
-            .ingestFunctionGroupsWithAllPrivilegesByFunctionNames(
+            .ingestFunctionGroupWithAllPrivilegesByFunctionNames(
                 externalServiceAgreementId,
-                asList(US_DOMESTIC_WIRE_FUNCTION_NAME, US_FOREIGN_WIRE_FUNCTION_NAME));
+                asList(US_DOMESTIC_WIRE_FUNCTION_NAME, US_FOREIGN_WIRE_FUNCTION_NAME, PRODUCT_SUMMARY_FUNCTION_NAME));
 
         String noSepaAndUsWireFunctionGroupId = this.accessGroupsConfigurator
-            .ingestFunctionGroupsWithAllPrivilegesNotContainingProvidedFunctionNames(
+            .ingestFunctionGroupWithAllPrivilegesNotContainingProvidedFunctionNames(
                 externalServiceAgreementId,
                 asList(
                     SEPA_CT_FUNCTION_NAME,

@@ -41,6 +41,7 @@ public final class CommonConstants {
     public static final String PAYMENTS_RESOURCE_NAME = "Payments";
     public static final String CONTACTS_RESOURCE_NAME = "Contacts";
     public static final String CONTACTS_FUNCTION_NAME = "Contacts";
+    public static final String PRODUCT_SUMMARY_FUNCTION_NAME = "Product Summary";
     public static final String PRIVILEGE_CREATE = "create";
     public static final String PROPERTY_INGEST_ACCESS_CONTROL = "ingest.access.control";
     public static final String PROPERTY_INGEST_CUSTOM_SERVICE_AGREEMENTS = "ingest.custom.service.agreements";

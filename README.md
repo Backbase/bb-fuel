@@ -26,12 +26,12 @@ It is based on REST and relies on DBS service specs.
 
 For legal entities and users in the file [legal-entities-with-users.json](src/main/resources/data/legal-entities-with-users.json):
 - 3 function groups for all business functions with all privileges per service agreement of the legal entity from the input file:
-    1. One function group for business function "SEPA CT"
-    2. One function group for business functions "US Domestic Wire" and "US Foreign Wire"
+    1. One function group for business function "SEPA CT" and "Product Summary"
+    2. One function group for business functions "US Domestic Wire", "US Foreign Wire" and "Product Summary"
     3. One function group with all other business functions
 - 3 data groups:
-    1. EUR currency arrangements for function group for business function "SEPA CT"
-    2. USD currency arrangements for function group for business functions "US Domestic Wire" and "US Foreign Wire"
+    1. EUR currency arrangements for function group for business function "SEPA CT" and "Product Summary"
+    2. USD currency arrangements for function group for business functions "US Domestic Wire", "US Foreign Wire" and "Product Summary"
     3. Random currency arrangements for the other function group
 
 - All function groups and data groups are assigned to the users via master service agreement of the legal entities from the input file.

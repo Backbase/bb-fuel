@@ -322,7 +322,7 @@ public class ApprovalsConfigurator {
             .retrieveServiceAgreementByExternalId(externalServiceAgreementId)
             .getId();
 
-        String contactsFunctionGroupAId = accessGroupsConfigurator.ingestFunctionGroupsWithAllPrivilegesByFunctionNames(
+        String contactsFunctionGroupAId = accessGroupsConfigurator.ingestFunctionGroupWithAllPrivilegesByFunctionNames(
             externalServiceAgreementId,
             functionNames);
 

@@ -135,12 +135,12 @@ public class ApprovalsConfigurator {
         for (String functionName : functionNames) {
 
             if (numberOfUsers < 3) {
-                approvalIntegrationRestClient.assignPolicy(getPaymentsPolicyAssignmentsBasedOnZeroApprovalPolicyOnly(
+                approvalIntegrationRestClient.assignPolicies(getPaymentsPolicyAssignmentsBasedOnZeroApprovalPolicyOnly(
                     externalServiceAgreementId,
                     externalLegalEntityId,
                     functionName));
             } else {
-                approvalIntegrationRestClient.assignPolicy(getPaymentsPolicyAssignments(
+                approvalIntegrationRestClient.assignPolicies(getPaymentsPolicyAssignments(
                     externalServiceAgreementId,
                     externalLegalEntityId,
                     functionName));
@@ -160,7 +160,7 @@ public class ApprovalsConfigurator {
     private void assignContactsPolicies(String externalServiceAgreementId, String externalLegalEntityId, List<String> functionNames) {
         for (String functionName : functionNames) {
             approvalIntegrationRestClient
-                .assignPolicy(getContactsPolicyAssignments(externalServiceAgreementId, externalLegalEntityId));
+                .assignPolicies(getContactsPolicyAssignments(externalServiceAgreementId, externalLegalEntityId));
 
             LOGGER.info("Policy A [{}] assigned to business function [{}]", policyAId, functionName);
         }

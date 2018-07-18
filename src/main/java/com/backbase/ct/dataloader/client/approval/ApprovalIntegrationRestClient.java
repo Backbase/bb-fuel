@@ -85,7 +85,7 @@ public class ApprovalIntegrationRestClient extends AbstractRestClient {
             .post(getPath(POLICIES));
     }
 
-    public Response assignPolicy(IntegrationPostPolicyAssignmentBulkRequest body) {
+    public Response assignPolicies(IntegrationPostPolicyAssignmentBulkRequest body) {
         return requestSpec()
             .contentType(ContentType.JSON)
             .body(body)
@@ -144,8 +144,8 @@ public class ApprovalIntegrationRestClient extends AbstractRestClient {
             .getId();
     }
 
-    public void assignPolicy(List<IntegrationPolicyAssignmentRequest> policyAssignmentRequests) {
-        assignPolicy(createPostPolicyAssignmentBulkRequest(policyAssignmentRequests))
+    public void assignPolicies(List<IntegrationPolicyAssignmentRequest> policyAssignmentRequests) {
+        assignPolicies(createPostPolicyAssignmentBulkRequest(policyAssignmentRequests))
             .then()
             .statusCode(SC_NO_CONTENT);
     }

@@ -1,7 +1,10 @@
 package com.backbase.ct.dataloader.client.user;
 
+import static org.apache.http.HttpStatus.SC_OK;
+
 import com.backbase.ct.dataloader.client.common.AbstractRestClient;
-import io.restassured.response.Response;
+import com.backbase.presentation.user.rest.spec.v2.users.LegalEntityByUserGetResponseBody;
+import com.backbase.presentation.user.rest.spec.v2.users.UserGetResponseBody;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -18,14 +21,22 @@ public class UserPresentationRestClient extends AbstractRestClient {
         setInitialPath(composeInitialPath());
     }
 
-    public Response retrieveLegalEntityByExternalUserId(String externalUserId) {
+    public LegalEntityByUserGetResponseBody retrieveLegalEntityByExternalUserId(String externalUserId) {
         return requestSpec()
-            .get(String.format(getPath(ENDPOINT_EXTERNAL_ID_LEGAL_ENTITIES), externalUserId));
+            .get(String.format(getPath(ENDPOINT_EXTERNAL_ID_LEGAL_ENTITIES), externalUserId))
+            .then()
+            .statusCode(SC_OK)
+            .extract()
+            .as(LegalEntityByUserGetResponseBody.class);
     }
 
-    public Response getUserByExternalId(String userExternalId) {
+    public UserGetResponseBody getUserByExternalId(String userExternalId) {
         return requestSpec()
-            .get(String.format(getPath(ENDPOINT_USER_BY_EXTERNAL_ID), userExternalId));
+            .get(String.format(getPath(ENDPOINT_USER_BY_EXTERNAL_ID), userExternalId))
+            .then()
+            .statusCode(SC_OK)
+            .extract()
+            .as(UserGetResponseBody.class);
     }
 
     @Override

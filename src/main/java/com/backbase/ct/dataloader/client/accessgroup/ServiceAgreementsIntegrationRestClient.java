@@ -1,7 +1,10 @@
 package com.backbase.ct.dataloader.client.accessgroup;
 
+import static org.apache.http.HttpStatus.SC_OK;
+
 import com.backbase.ct.dataloader.client.common.AbstractRestClient;
 import com.backbase.ct.dataloader.data.CommonConstants;
+import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementGet;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementPostRequestBody;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementPutRequestBody;
 import io.restassured.http.ContentType;
@@ -36,6 +39,15 @@ public class ServiceAgreementsIntegrationRestClient extends AbstractRestClient {
             .contentType(ContentType.JSON)
             .body(body)
             .put(getPath(String.format(ENDPOINT_SERVICE_AGREEMENTS_BY_ID, internalServiceAgreementId)));
+    }
+
+    public ServiceAgreementGet retrieveServiceAgreementByExternalId(String externalServiceAgreementId) {
+        return requestSpec()
+            .get(getPath(String.format(ENDPOINT_SERVICE_AGREEMENTS_BY_ID, externalServiceAgreementId)))
+            .then()
+            .statusCode(SC_OK)
+            .extract()
+            .as(ServiceAgreementGet.class);
     }
 
     @Override

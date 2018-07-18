@@ -1,12 +1,16 @@
 package com.backbase.ct.dataloader.client.accessgroup;
 
+import static com.backbase.ct.dataloader.data.AccessGroupsDataGenerator.generateFunctionGroupPostRequestBody;
+import static org.apache.http.HttpStatus.SC_CREATED;
 import static org.apache.http.HttpStatus.SC_OK;
 
 import com.backbase.ct.dataloader.client.common.AbstractRestClient;
 import com.backbase.ct.dataloader.data.CommonConstants;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.config.functions.FunctionsGetResponseBody;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.datagroups.DataGroupPostRequestBody;
+import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.Permission;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.functiongroups.FunctionGroupPostRequestBody;
+import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.functiongroups.FunctionGroupPostResponseBody;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.users.permissions.AssignPermissionsPostRequestBody;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
@@ -38,6 +42,15 @@ public class AccessGroupIntegrationRestClient extends AbstractRestClient {
             .contentType(ContentType.JSON)
             .body(body)
             .post(getPath(ENDPOINT_FUNCTION));
+    }
+
+    public String ingestFunctionGroup(String externalServiceAgreementId, List<Permission> permissions) {
+        return ingestFunctionGroup(generateFunctionGroupPostRequestBody(externalServiceAgreementId, permissions))
+            .then()
+            .statusCode(SC_CREATED)
+            .extract()
+            .as(FunctionGroupPostResponseBody.class)
+            .getId();
     }
 
     public Response ingestDataGroup(DataGroupPostRequestBody body) {
@@ -83,6 +96,21 @@ public class AccessGroupIntegrationRestClient extends AbstractRestClient {
             .contentType(ContentType.JSON)
             .body(body)
             .post(getPath(ENDPOINT_USERS_PERMISSIONS));
+    }
+
+    public void assignPermissions(
+        String externalUserId,
+        String internalServiceAgreementId,
+        String functionGroupId,
+        List<String> dataGroupIds) {
+        assignPermissions(new AssignPermissionsPostRequestBody()
+            .withExternalLegalEntityId(null)
+            .withExternalUserId(externalUserId)
+            .withServiceAgreementId(internalServiceAgreementId)
+            .withFunctionGroupId(functionGroupId)
+            .withDataGroupIds(dataGroupIds))
+            .then()
+            .statusCode(SC_OK);
     }
 
     @Override

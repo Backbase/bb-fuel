@@ -1,5 +1,6 @@
 package com.backbase.ct.dataloader.client.accessgroup;
 
+import static java.util.Arrays.asList;
 import static org.apache.http.HttpStatus.SC_NO_CONTENT;
 import static org.apache.http.HttpStatus.SC_OK;
 
@@ -11,6 +12,7 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.springframework.stereotype.Component;
 
@@ -32,16 +34,11 @@ public class UserContextPresentationRestClient extends AbstractRestClient {
 
     public void selectContextBasedOnMasterServiceAgreement() {
         ServiceAgreementGetResponseBody masterServiceAgreement = getMasterServiceAgreementForUserContext();
-        String serviceAgreementId = masterServiceAgreement != null ? masterServiceAgreement.getId() : null;
 
-        String legalEntityId = getLegalEntitiesForServiceAgreements(serviceAgreementId)
-            .then()
-            .statusCode(SC_OK)
-            .extract()
-            .as(LegalEntitiesGetResponseBody[].class)[0].getId();
+        String legalEntityId = getLegalEntitiesForServiceAgreements(masterServiceAgreement.getId()).get(0).getId();
 
         postUserContext(new UserContextPostRequestBody()
-            .withServiceAgreementId(serviceAgreementId)
+            .withServiceAgreementId(masterServiceAgreement.getId())
             .withLegalEntityId(legalEntityId))
             .then()
             .statusCode(SC_NO_CONTENT);
@@ -72,14 +69,18 @@ public class UserContextPresentationRestClient extends AbstractRestClient {
             .get(getPath(ENDPOINT_USER_CONTEXT_SERVICE_AGREEMENTS));
     }
 
-    private Response getLegalEntitiesForServiceAgreements(String serviceAgreementId) {
-        return requestSpec()
+    public List<LegalEntitiesGetResponseBody> getLegalEntitiesForServiceAgreements(String serviceAgreementId) {
+        return asList(requestSpec()
             .contentType(ContentType.JSON)
             .get(String
-                .format(getPath(ENDPOINT_USER_CONTEXT_LEGAL_ENTITIES_BY_SERVICE_AGREEMENT_ID), serviceAgreementId));
+                .format(getPath(ENDPOINT_USER_CONTEXT_LEGAL_ENTITIES_BY_SERVICE_AGREEMENT_ID), serviceAgreementId))
+            .then()
+            .statusCode(SC_OK)
+            .extract()
+            .as(LegalEntitiesGetResponseBody[].class));
     }
 
-    private ServiceAgreementGetResponseBody getMasterServiceAgreementForUserContext() {
+    public ServiceAgreementGetResponseBody getMasterServiceAgreementForUserContext() {
         ServiceAgreementGetResponseBody[] serviceAgreementGetResponseBodies = getServiceAgreementsForUserContext()
             .then()
             .statusCode(SC_OK)
@@ -89,7 +90,7 @@ public class UserContextPresentationRestClient extends AbstractRestClient {
         return Arrays.stream(serviceAgreementGetResponseBodies)
             .filter(ServiceAgreementGetResponseBody::getIsMaster)
             .findFirst()
-            .orElse(null);
+            .orElseThrow(() -> new RuntimeException("No master service agreement found"));
     }
 
 }

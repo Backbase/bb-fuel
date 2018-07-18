@@ -159,7 +159,7 @@ public class RestClient {
     }
 
     /**
-     * @return DbsResponse containing information about the health of this service: https://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-endpoints.html
+     * @return Response containing information about the health of this service: https://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-endpoints.html
      */
     private Response getHealth() {
         return requestSpec()

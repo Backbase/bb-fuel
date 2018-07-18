@@ -5,7 +5,6 @@ import static com.backbase.ct.dataloader.data.CommonConstants.US_DOMESTIC_WIRE_F
 import static com.backbase.ct.dataloader.data.CommonConstants.US_FOREIGN_WIRE_FUNCTION_NAME;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
-import static org.apache.http.HttpStatus.SC_OK;
 
 import com.backbase.ct.dataloader.client.accessgroup.ServiceAgreementsPresentationRestClient;
 import com.backbase.ct.dataloader.client.accessgroup.UserContextPresentationRestClient;
@@ -20,8 +19,6 @@ import com.backbase.ct.dataloader.util.GlobalProperties;
 import com.backbase.ct.dataloader.util.ParserUtil;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.Participant;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementPostRequestBody;
-import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementGetResponseBody;
-import com.backbase.presentation.user.rest.spec.v2.users.LegalEntityByUserGetResponseBody;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Set;
@@ -84,18 +81,10 @@ public class ServiceAgreementsSetup {
 
         String externalLegalEntityId = this.userPresentationRestClient
             .retrieveLegalEntityByExternalUserId(externalAdminUserId)
-            .then()
-            .statusCode(SC_OK)
-            .extract()
-            .as(LegalEntityByUserGetResponseBody.class)
             .getExternalId();
 
         String externalServiceAgreementId = this.serviceAgreementsPresentationRestClient
             .retrieveServiceAgreement(internalServiceAgreementId)
-            .then()
-            .statusCode(SC_OK)
-            .extract()
-            .as(ServiceAgreementGetResponseBody.class)
             .getExternalId();
 
         this.currencyDataGroup = this.accessControlSetup

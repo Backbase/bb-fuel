@@ -12,8 +12,8 @@ import static com.backbase.ct.dataloader.data.CommonConstants.US_FOREIGN_WIRE_FU
 import static com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.Currency;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
-import static org.apache.http.HttpStatus.SC_OK;
 
+import com.backbase.ct.dataloader.client.accessgroup.AccessGroupIntegrationRestClient;
 import com.backbase.ct.dataloader.client.accessgroup.ServiceAgreementsPresentationRestClient;
 import com.backbase.ct.dataloader.client.accessgroup.UserContextPresentationRestClient;
 import com.backbase.ct.dataloader.client.common.LoginRestClient;
@@ -32,9 +32,7 @@ import com.backbase.ct.dataloader.dto.LegalEntityWithUsers;
 import com.backbase.ct.dataloader.dto.UserContext;
 import com.backbase.ct.dataloader.util.GlobalProperties;
 import com.backbase.ct.dataloader.util.ParserUtil;
-import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementGetResponseBody;
 import com.backbase.presentation.user.rest.spec.v2.users.LegalEntityByUserGetResponseBody;
-import com.backbase.presentation.user.rest.spec.v2.users.UserGetResponseBody;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import java.io.IOException;
@@ -63,6 +61,7 @@ public class AccessControlSetup {
     private final AccessGroupsConfigurator accessGroupsConfigurator;
     private final PermissionsConfigurator permissionsConfigurator;
     private final ServiceAgreementsConfigurator serviceAgreementsConfigurator;
+    private final AccessGroupIntegrationRestClient accessGroupIntegrationRestClient;
     private final ServiceAgreementsPresentationRestClient serviceAgreementsPresentationRestClient;
     private final LegalEntityPresentationRestClient legalEntityPresentationRestClient;
     private final TransactionsConfigurator transactionsConfigurator;
@@ -127,10 +126,6 @@ public class AccessControlSetup {
         userExternalIds.forEach(userExternalId -> {
             final String legalEntityInternalId = this.userPresentationRestClient
                 .retrieveLegalEntityByExternalUserId(userExternalId)
-                .then()
-                .statusCode(SC_OK)
-                .extract()
-                .as(LegalEntityByUserGetResponseBody.class)
                 .getId();
 
             if (!legalEntitiesUserContextMap.containsKey(legalEntityInternalId)) {
@@ -138,7 +133,7 @@ public class AccessControlSetup {
                     .updateMasterServiceAgreementWithExternalIdByLegalEntity(legalEntityInternalId);
             }
 
-            UserContext userContext = getUserContextByExternalId(userExternalId);
+            UserContext userContext = getUserContextBasedOnMSAByExternalUserId(userExternalId);
             legalEntitiesUserContextMap.put(userContext.getInternalLegalEntityId(), userContext);
 
             if (legalEntityContext.getCurrencyDataGroup() == null) {
@@ -205,60 +200,57 @@ public class AccessControlSetup {
                     US_DOMESTIC_WIRE_FUNCTION_NAME,
                     US_FOREIGN_WIRE_FUNCTION_NAME));
 
-        this.permissionsConfigurator.assignPermissions(
+        List<String> sepaDataGroupIds = singletonList(currencyDataGroup.getInternalEurCurrencyDataGroupId());
+        List<String> usWireDataGroupIds = singletonList(currencyDataGroup.getInternalUsdCurrencyDataGroupId());
+        List<String> randomCurrencyDataGroupIds = asList(
+            currencyDataGroup.getInternalRandomCurrencyDataGroupId(),
+            currencyDataGroup.getInternalEurCurrencyDataGroupId(),
+            currencyDataGroup.getInternalUsdCurrencyDataGroupId());
+
+        this.accessGroupIntegrationRestClient.assignPermissions(
             externalUserId,
             internalServiceAgreementId,
             sepaFunctionGroupId,
-            singletonList(currencyDataGroup.getInternalEurCurrencyDataGroupId()));
+            sepaDataGroupIds);
 
-        this.permissionsConfigurator.assignPermissions(
+        LOGGER.info("Permission assigned for service agreement [{}], user [{}], function group [{}], data groups {}",
+            internalServiceAgreementId, externalUserId, sepaFunctionGroupId, sepaDataGroupIds);
+
+        this.accessGroupIntegrationRestClient.assignPermissions(
             externalUserId,
             internalServiceAgreementId,
             usWireFunctionGroupId,
-            singletonList(currencyDataGroup.getInternalUsdCurrencyDataGroupId()));
+            usWireDataGroupIds);
 
-        this.permissionsConfigurator.assignPermissions(
+        LOGGER.info("Permission assigned for service agreement [{}], user [{}], function group [{}], data groups {}",
+            internalServiceAgreementId, externalUserId, usWireFunctionGroupId, usWireDataGroupIds);
+
+        this.accessGroupIntegrationRestClient.assignPermissions(
             externalUserId,
             internalServiceAgreementId,
             noSepaAndUsWireFunctionGroupId,
-            asList(
-                currencyDataGroup.getInternalRandomCurrencyDataGroupId(),
-                currencyDataGroup.getInternalEurCurrencyDataGroupId(),
-                currencyDataGroup.getInternalUsdCurrencyDataGroupId()));
+            randomCurrencyDataGroupIds);
+
+        LOGGER.info("Permission assigned for service agreement [{}], user [{}], function group [{}], data groups {}",
+            internalServiceAgreementId, externalUserId, noSepaAndUsWireFunctionGroupId, randomCurrencyDataGroupIds);
     }
 
-    private UserContext getUserContextByExternalId(String externalUserId) {
+    public UserContext getUserContextBasedOnMSAByExternalUserId(String externalUserId) {
         this.loginRestClient.login(USER_ADMIN, USER_ADMIN);
         this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
         String internalUserId = this.userPresentationRestClient.getUserByExternalId(externalUserId)
-            .then()
-            .statusCode(SC_OK)
-            .extract()
-            .as(UserGetResponseBody.class)
             .getId();
 
         LegalEntityByUserGetResponseBody legalEntity = this.userPresentationRestClient
-            .retrieveLegalEntityByExternalUserId(externalUserId)
-            .then()
-            .statusCode(SC_OK)
-            .extract()
-            .as(LegalEntityByUserGetResponseBody.class);
+            .retrieveLegalEntityByExternalUserId(externalUserId);
 
         String internalServiceAgreementId = this.legalEntityPresentationRestClient
             .getMasterServiceAgreementOfLegalEntity(legalEntity.getId())
-            .then()
-            .statusCode(SC_OK)
-            .extract()
-            .as(ServiceAgreementGetResponseBody.class)
             .getId();
 
         String externalServiceAgreementId = this.serviceAgreementsPresentationRestClient
             .retrieveServiceAgreement(internalServiceAgreementId)
-            .then()
-            .statusCode(SC_OK)
-            .extract()
-            .as(ServiceAgreementGetResponseBody.class)
             .getExternalId();
 
         return new UserContext()

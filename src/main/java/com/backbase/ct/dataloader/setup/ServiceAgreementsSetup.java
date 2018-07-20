@@ -129,9 +129,7 @@ public class ServiceAgreementsSetup {
                     externalUserId,
                     internalServiceAgreementId,
                     noSepaAndUsWireFunctionGroupId,
-                    asList(currencyDataGroup.getInternalRandomCurrencyDataGroupId(),
-                        currencyDataGroup.getInternalEurCurrencyDataGroupId(),
-                        currencyDataGroup.getInternalUsdCurrencyDataGroupId()));
+                    singletonList(currencyDataGroup.getInternalRandomCurrencyDataGroupId()));
             }
         }
     }

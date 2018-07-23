@@ -203,10 +203,7 @@ public class AccessControlSetup {
 
         List<String> sepaDataGroupIds = singletonList(currencyDataGroup.getInternalEurCurrencyDataGroupId());
         List<String> usWireDataGroupIds = singletonList(currencyDataGroup.getInternalUsdCurrencyDataGroupId());
-        List<String> randomCurrencyDataGroupIds = asList(
-            currencyDataGroup.getInternalRandomCurrencyDataGroupId(),
-            currencyDataGroup.getInternalEurCurrencyDataGroupId(),
-            currencyDataGroup.getInternalUsdCurrencyDataGroupId());
+        List<String> randomCurrencyDataGroupIds = singletonList(currencyDataGroup.getInternalRandomCurrencyDataGroupId());
 
         this.accessGroupIntegrationRestClient.assignPermissions(
             externalUserId,

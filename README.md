@@ -123,6 +123,17 @@ Note: each approval type will be assigned to a separate (new) function group wit
 
 Note: this approval type will be assigned to a separate (new) function group with the contacts function.
 
+#### Server configuration
+These parameters should be configured in the `application-live.yml` file in the approval service.
+```
+backbase:
+  security:
+    mtls:
+      enabled: false
+    public:
+      paths: /**
+```
+
 ## How to run data loader
 All builds can be found [here](https://artifacts.backbase.com/backbase-development-builds/com/backbase/ct/dataloader)
 

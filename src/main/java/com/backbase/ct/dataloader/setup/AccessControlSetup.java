@@ -7,6 +7,7 @@ import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_TR
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_LEGAL_ENTITIES_WITH_USERS_JSON;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_LEGAL_ENTITIES_WITH_USERS_WITHOUT_PERMISSION_JSON;
 import static com.backbase.ct.dataloader.data.CommonConstants.SEPA_CT_FUNCTION_NAME;
+import static com.backbase.ct.dataloader.data.CommonConstants.TRANSACTIONS_FUNCTION_NAME;
 import static com.backbase.ct.dataloader.data.CommonConstants.USER_ADMIN;
 import static com.backbase.ct.dataloader.data.CommonConstants.US_DOMESTIC_WIRE_FUNCTION_NAME;
 import static com.backbase.ct.dataloader.data.CommonConstants.US_FOREIGN_WIRE_FUNCTION_NAME;
@@ -186,12 +187,12 @@ public class AccessControlSetup {
         CurrencyDataGroup currencyDataGroup) {
         String sepaFunctionGroupId = this.accessGroupsConfigurator.ingestFunctionGroupWithAllPrivilegesByFunctionNames(
             externalServiceAgreementId,
-            asList(SEPA_CT_FUNCTION_NAME, PRODUCT_SUMMARY_FUNCTION_NAME));
+            asList(SEPA_CT_FUNCTION_NAME, PRODUCT_SUMMARY_FUNCTION_NAME, TRANSACTIONS_FUNCTION_NAME));
 
         String usWireFunctionGroupId = this.accessGroupsConfigurator
             .ingestFunctionGroupWithAllPrivilegesByFunctionNames(
                 externalServiceAgreementId,
-                asList(US_DOMESTIC_WIRE_FUNCTION_NAME, US_FOREIGN_WIRE_FUNCTION_NAME, PRODUCT_SUMMARY_FUNCTION_NAME));
+                asList(US_DOMESTIC_WIRE_FUNCTION_NAME, US_FOREIGN_WIRE_FUNCTION_NAME, PRODUCT_SUMMARY_FUNCTION_NAME, TRANSACTIONS_FUNCTION_NAME));
 
         String noSepaAndUsWireFunctionGroupId = this.accessGroupsConfigurator
             .ingestFunctionGroupWithAllPrivilegesNotContainingProvidedFunctionNames(

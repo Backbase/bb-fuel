@@ -71,17 +71,14 @@
         <dependency>
             <groupId>com.backbase.dbs.approval</groupId>
             <artifactId>approval-integration-spec</artifactId>
-            <version>RELEASE</version>
         </dependency>
         <dependency>
             <groupId>com.backbase.dbs.approval</groupId>
             <artifactId>approval-integration-spec</artifactId>
-            <version>RELEASE</version>
         </dependency>
         <dependency>
-            <groupId>com.backbase.dbs.approval</groupId>
-            <artifactId>approval-integration-spec</artifactId>
-            <version>RELEASE</version>
+            <groupId>com.backbase.dbs.limit</groupId>
+            <artifactId>limits-presentation-spec</artifactId>
         </dependency>
         <dependency>
             <groupId>com.backbase.dbs.arrangement</groupId>
@@ -169,6 +166,10 @@
             <artifactId>junit</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.backbase.dbs.limit</groupId>
+            <artifactId>limits-presentation-spec</artifactId>
         </dependency>
     </dependencies>
 

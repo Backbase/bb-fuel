@@ -20,126 +20,9 @@ Data loader can ingest the following:
 
 It is based on REST and relies on DBS service specs.
 
-### Access control setup
-- Root legal entity with user `admin` as entitlements admin
-- Legal entities (under the root legal entity `C000000`) per legal entity entry with users array in the files [legal-entities-with-users.json](src/main/resources/data/legal-entities-with-users.json) and [legal-entities-with-users-without-permissions.json](src/main/resources/data/legal-entities-with-users-without-permissions.json) - configurable, see section *Custom data*
-
-For legal entities and users in the file [legal-entities-with-users.json](src/main/resources/data/legal-entities-with-users.json):
-- 3 function groups for all business functions with all privileges per service agreement of the legal entity from the input file:
-    1. One function group for business function "SEPA CT" and "Product Summary"
-    2. One function group for business functions "US Domestic Wire", "US Foreign Wire" and "Product Summary"
-    3. One function group with all other business functions
-- 3 data groups:
-    1. EUR currency arrangements for function group for business function "SEPA CT" and "Product Summary"
-    2. USD currency arrangements for function group for business functions "US Domestic Wire", "US Foreign Wire" and "Product Summary"
-    3. Random currency arrangements for the other function group
-
-- All function groups and data groups are assigned to the users via master service agreement of the legal entities from the input file.
-
-### Product summary setup
-- Default products: [products.json](src/main/resources/data/products.json)
-- 3 sets of random arrangements (by default: between 10 and 30) each set for each data group:
-    1. EUR currency arrangements
-    2. USD currency arrangements
-    3. Random currency arrangements
-- In case of current account arrangements random debit cards (by default: between 3 and 10) are associated
-- Additionally (by default disabled) possible to ingest balance history based on a weekly balance history items for the past quarter
-    - Only works if property `ingest.access.control` is set to `true` due to the required external arrangement id when ingesting balance history items.
-    - This external arrangement id is only available when creating an arrangement (part of the access control setup). The external arrangement id is currently not retrievable via any REST endpoint.
-
-### Transactions setup
-- By default ingesting transactions is disabled - configurable via property
-    - Only works if property `ingest.access.control` is set to `true` due to the required external arrangement id when ingesting transactions.
-    - This external arrangement id is only available when creating an arrangement (part of the access control setup). The external arrangement id is currently not retrievable via any REST endpoint.
-- If enabled, random transactions (by default: between 10 and 50) per arrangement per today's date
-- Possible to use the PFM categories by setting the property `use.pfm.categories.for.transactions` to `true`
-
-### Service agreements setup
-Default service agreements (each object represents one service agreement): [serviceagreements.json](src/main/resources/data/serviceagreements.json)
-- Legal entity ids will be retrieved via the external user ids given in the json file to set up the service agreements.
-- Same access control setup for function/data groups and permissions for each service agreement, taking into account:
-- For each participant that shares accounts, arrangements are ingested under its legal entity
-- Function/data groups will be ingested under each service agreement
-- Each participant that shares users are assigned permissions
-
-### Users setup
-By default only the following users are covered:
-- Users with permissions as described under *Entitlements setup* and *Product summary setup*: [legal-entities-with-users.json](src/main/resources/data/legal-entities-with-users.json)
-- Users without permissions under its own legal entity (no master service agreement, function and data groups associated): [legal-entities-with-users-without-permissions.json](src/main/resources/data/legal-entities-with-users-without-permissions.json)
-
-If more/other users are required, you can provide your own `json` files, see *Custom data*.
-
-### Capability data setup
-- The following is available for ingestion, but by default disabled - configurable via property:
-- Contacts with multiple accounts per user
-- Payments per user
-- Notifications on global target group
-- Messages per user
-- Actions per user for SEPA CT and/or US Wire arrangements
-
-Note: This can be rerun on an existing environment which already contains data by setting the property `ingest.access.control` to `false`
-
-### Approvals setup
-Approvals configuration can be ingested for payments and contacts based on master service agreements.
-
-#### Approval types
-- Approval type A with rank 1
-- Approval type B with rank 2
-- Approval type C with rank 3
-
-#### Payments: policies
-- Zero approval policy with upper bound of 100
-- Policy with approval type A (1 approval required) with upper bound of 1000
-- Policy with approval types A + B (for each 1 approval required) with upper bound of 100,000
-- Policy with approval types A + B + C (for each 1 approval required) unbounded
-
-In case of less than 3 users under a legal entity as defined in [legal-entities-with-users.json](src/main/resources/data/legal-entities-with-users.json), only a zero approval policy unbounded is applied
-
-#### Payments: users
-- For each set of 4 users (sorted by name ASC) per legal entity defined in [legal-entities-with-users.json](src/main/resources/data/legal-entities-with-users.json) will have the following setup:
-- User no. 1: approval type A
-- User no. 2: approval type B
-- User no. 3: approval type C
-- User no. 4: approval types A, B, C
-- etc.
-
-Example:
-- User no. 5: approval type A
-- User no. 6: approval type B
-- User no. 7: approval type C
-- User no. 8: approval types A, B, C
-- User no. 9: approval type A
-- User no. 10: approval type B
-
-In case of less than 3 users under a legal entity as defined in [legal-entities-with-users.json](src/main/resources/data/legal-entities-with-users.json), no approval types will be assigned to users
-
-Note: each approval type will be assigned to a separate (new) function group with the payments function.
-
-#### Contacts: policies
-- Policy with approval type A (1 approval required)
-
-#### Contacts: users
-- Each user with approval type A
-
-Note: this approval type will be assigned to a separate (new) function group with the contacts function.
-
-### Limits setup
-Periodic limit per service agreement:
-
-- Daily limit with amount of 1,000,000
-- Privilege "approve"
-- Functions SEPA CT, US Domestic Wire and US Foreign Wire
-
-#### Server configuration
-These parameters should be configured in the `application-live.yml` file in the approval service.
-```
-backbase:
-  security:
-    mtls:
-      enabled: false
-    public:
-      paths: /**
-```
+## Data setup (read before running)
+- [Base setup](docs/BASE_SETUP.md)
+- [Capability data setup](docs/CAPABILITY_DATA_SETUP.md)
 
 ## How to run data loader
 All builds can be found [here](https://artifacts.backbase.com/backbase-development-builds/com/backbase/ct/dataloader)
@@ -173,7 +56,7 @@ java -Denvironment.name=your-env-00 -Darrangements.max=20 -Ddebit.cards.min=10 -
 ### Health check
 Note: By default disabled
 There is a built-in health check available to check whether services are up and running before ingesting. Available for:
-- Entitlements
+- Access control
 - Product summary
 - Transactions
 

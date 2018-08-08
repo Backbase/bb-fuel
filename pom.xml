@@ -9,12 +9,12 @@
 
     <groupId>com.backbase.ct</groupId>
     <artifactId>dataloader</artifactId>
-    <version>1.4.5-SNAPSHOT</version>
+    <version>1.4.5</version>
     <name>Backbase :: Capability Testing :: Dataloader</name>
 
     <scm>
         <developerConnection>scm:git:ssh://git@stash.backbase.com:7999/ct/dataloader.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>dataloader-1.4.5</tag>
     </scm>
 
     <distributionManagement>
@@ -77,10 +77,6 @@
             <artifactId>approval-integration-spec</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.backbase.dbs.limit</groupId>
-            <artifactId>limits-presentation-spec</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.backbase.dbs.arrangement</groupId>
             <artifactId>arrangement-integration-spec</artifactId>
         </dependency>
@@ -125,6 +121,14 @@
             <artifactId>legalentity-presentation-spec</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.backbase.dbs.limit</groupId>
+            <artifactId>limits-presentation-spec</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.backbase.dbs.limit</groupId>
+            <artifactId>limits-presentation-spec</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
@@ -166,10 +170,6 @@
             <artifactId>junit</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.backbase.dbs.limit</groupId>
-            <artifactId>limits-presentation-spec</artifactId>
         </dependency>
     </dependencies>
 

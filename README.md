@@ -123,6 +123,13 @@ Note: each approval type will be assigned to a separate (new) function group wit
 
 Note: this approval type will be assigned to a separate (new) function group with the contacts function.
 
+### Limits setup
+Periodic limit per service agreement:
+
+- Daily limit with amount of 1,000,000
+- Privilege "approve"
+- Functions SEPA CT, US Domestic Wire and US Foreign Wire
+
 #### Server configuration
 These parameters should be configured in the `application-live.yml` file in the approval service.
 ```

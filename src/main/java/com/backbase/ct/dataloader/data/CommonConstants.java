@@ -67,6 +67,7 @@ public final class CommonConstants {
     public static final String PROPERTY_INGEST_NOTIFICATIONS = "ingest.notifications";
     public static final String PROPERTY_INGEST_APPROVALS_FOR_PAYMENTS = "ingest.approvals.for.payments";
     public static final String PROPERTY_INGEST_APPROVALS_FOR_CONTACTS = "ingest.approvals.for.contacts";
+    public static final String PROPERTY_INGEST_LIMITS = "ingest.limits";
     public static final String PROPERTY_CONTACTS_MIN = "contacts.min";
     public static final String PROPERTY_CONTACTS_MAX = "contacts.max";
     public static final String PROPERTY_INGEST_CONTACTS = "ingest.contacts";

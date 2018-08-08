@@ -9,6 +9,7 @@ properties([
                 booleanParam(name: 'USE_PFM_CATEGORIES_FOR_TRANSACTIONS', defaultValue: false, description: 'Use PFM categories for transactions (only applicable when INGEST_TRANSACTIONS = true)'),
                 booleanParam(name: 'INGEST_APPROVALS_FOR_PAYMENTS', defaultValue: false, description: 'Ingest approvals for payments'),
                 booleanParam(name: 'INGEST_APPROVALS_FOR_CONTACTS', defaultValue: false, description: 'Ingest approvals for contacts'),
+                booleanParam(name: 'INGEST_LIMITS', defaultValue: false, description: 'Ingest limits'),
                 booleanParam(name: 'INGEST_CONTACTS', defaultValue: false, description: 'Ingest contacts per user'),
                 booleanParam(name: 'INGEST_NOTIFICATIONS', defaultValue: false, description: 'Ingest notifications on global target group'),
                 booleanParam(name: 'INGEST_PAYMENTS', defaultValue: false, description: 'Ingest payments per user'),
@@ -65,6 +66,7 @@ node {
                     "-Duse.pfm.categories.for.transactions=${params.USE_PFM_CATEGORIES_FOR_TRANSACTIONS} " +
                     "-Dingest.approvals.for.payments=${params.INGEST_APPROVALS_FOR_PAYMENTS} " +
                     "-Dingest.approvals.for.contacts=${params.INGEST_APPROVALS_FOR_CONTACTS} " +
+                    "-Dingest.limits=${params.INGEST_LIMITS} " +
                     "-Dingest.contacts=${params.INGEST_CONTACTS} " +
                     "-Dingest.notifications=${params.INGEST_NOTIFICATIONS} " +
                     "-Dingest.payments=${params.INGEST_PAYMENTS} " +

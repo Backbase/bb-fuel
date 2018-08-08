@@ -4,6 +4,7 @@ import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_AC
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_CONTACTS;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_PAYMENTS;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_CONTACTS;
+import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_LIMITS;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_MESSAGES;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_NOTIFICATIONS;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_PAYMENTS;
@@ -15,6 +16,7 @@ import com.backbase.ct.dataloader.client.common.LoginRestClient;
 import com.backbase.ct.dataloader.configurator.ActionsConfigurator;
 import com.backbase.ct.dataloader.configurator.ApprovalsConfigurator;
 import com.backbase.ct.dataloader.configurator.ContactsConfigurator;
+import com.backbase.ct.dataloader.configurator.LimitsConfigurator;
 import com.backbase.ct.dataloader.configurator.MessagesConfigurator;
 import com.backbase.ct.dataloader.configurator.NotificationsConfigurator;
 import com.backbase.ct.dataloader.configurator.PaymentsConfigurator;
@@ -42,6 +44,7 @@ public class CapabilitiesDataSetup {
     private final UserContextPresentationRestClient userContextPresentationRestClient;
     private final AccessControlSetup accessControlSetup;
     private final ApprovalsConfigurator approvalsConfigurator;
+    private final LimitsConfigurator limitsConfigurator;
     private final NotificationsConfigurator notificationsConfigurator;
     private final ContactsConfigurator contactsConfigurator;
     private final PaymentsConfigurator paymentsConfigurator;
@@ -84,6 +87,21 @@ public class CapabilitiesDataSetup {
                         userContext.getExternalServiceAgreementId(),
                         userContext.getExternalLegalEntityId(),
                         externalUserIds);
+                });
+        }
+    }
+
+    public void ingestLimits() {
+        if (this.globalProperties.getBoolean(PROPERTY_INGEST_LIMITS)) {
+            Arrays.stream(this.entities)
+                .forEach(legalEntityWithUsers -> {
+                    List<String> externalUserIds = legalEntityWithUsers.getUserExternalIds();
+
+                    UserContext userContext = accessControlSetup
+                        .getUserContextBasedOnMSAByExternalUserId(
+                            externalUserIds.get(random.nextInt(externalUserIds.size())));
+
+                    this.limitsConfigurator.ingestLimits(userContext.getInternalServiceAgreementId());
                 });
         }
     }

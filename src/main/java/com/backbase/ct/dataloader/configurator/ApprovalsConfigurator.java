@@ -154,18 +154,7 @@ public class ApprovalsConfigurator {
 
         approvalIntegrationRestClient.assignPolicies(listOfAssignments);
 
-        if (numberOfUsers < 3) {
-            LOGGER.info("Zero approval policy unbounded assigned to business functions {}", functionNames);
-        } else {
-            LOGGER.info("Zero approval policy [{}] with upper bound [{}], "
-                    + "policy A [{}] with upper bound [{}], "
-                    + "policy A + B [{}] with upper bound [{}] and "
-                    + "policy A + B + C [{}] unbounded assigned to business functions {}",
-                policyZeroId, UPPER_BOUND_HUNDRED.toPlainString(),
-                policyAId, UPPER_BOUND_THOUSAND.toPlainString(),
-                policyABId, UPPER_BOUND_HUNDRED_THOUSAND.toPlainString(),
-                policyABCId, functionNames);
-        }
+        LOGGER.info("Policies assigned: {}", listOfAssignments);
     }
 
     private void assignContactsPolicies(String externalServiceAgreementId, String externalLegalEntityId, List<String> functionNames) {
@@ -181,7 +170,7 @@ public class ApprovalsConfigurator {
 
         approvalIntegrationRestClient.assignPolicies(listOfAssignments);
 
-        LOGGER.info("Policy A [{}] assigned to business functions {}", policyAId, functionNames);
+        LOGGER.info("Policies assigned: {}", listOfAssignments);
     }
 
     private List<IntegrationPolicyAssignmentRequest> getPaymentsPolicyAssignments(

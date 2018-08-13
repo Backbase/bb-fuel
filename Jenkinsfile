@@ -17,6 +17,7 @@ properties([
                 booleanParam(name: 'INGEST_ACTIONS', defaultValue: false, description: 'Ingest actions per user'),
                 booleanParam(name: 'USE_PERFORMANCE_TEST_DATA_SETUP', defaultValue: false, description: 'Use performance test data setup\n' +
                         'Only enable when strictly necessary (long running job)'),
+                choice(name: 'PERFORMANCE_TEST_DATA', choices: 'retail\nbusiness', description: 'Retail or business performance test data setup'),
                 choice(name: 'INFRA_BASE_URI', choices: 'infra.backbase.test:8080\neditorial.backbase.test:8080', description: ''),
                 string(name: 'DATALOADER_VERSION', defaultValue: 'LATEST', description: '')
         ])
@@ -54,7 +55,7 @@ node {
             def usePerformanceTestLegalEntitiesWithUsersJson = ""
 
             if ("${params.USE_PERFORMANCE_TEST_DATA_SETUP}".toBoolean()) {
-                usePerformanceTestLegalEntitiesWithUsersJson = "-Dlegal.entities.with.users.json=data/performance-test-legal-entities-with-users.json "
+                usePerformanceTestLegalEntitiesWithUsersJson = "-Dlegal.entities.with.users.json=data/performance-test-legal-entities-with-users-${params.PERFORMANCE_TEST_DATA}.json "
             }
 
             sh "java -Denvironment.name=${params.ENVIRONMENT_NAME} " +

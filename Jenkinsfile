@@ -60,6 +60,7 @@ node {
 
             sh "java -Denvironment.name=${params.ENVIRONMENT_NAME} " +
                     "-Dinfra.base.uri=http://${params.ENVIRONMENT_NAME}-${params.INFRA_BASE_URI} " +
+                    "-Dhealthcheck.timeout.in.minutes=1 " +
                     "-Dingest.access.control=${params.INGEST_ACCESS_CONTROL} " +
                     "-Dingest.custom.service.agreements=${params.INGEST_CUSTOM_SERVICE_AGREEMENTS} " +
                     "-Dingest.balance.history=${params.INGEST_BALANCE_HISTORY} " +

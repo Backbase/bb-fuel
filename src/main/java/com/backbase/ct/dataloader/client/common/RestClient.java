@@ -1,8 +1,10 @@
 package com.backbase.ct.dataloader.client.common;
 
+import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_LOG_ALL_REQUESTS_RESPONSES;
 import static io.restassured.config.HttpClientConfig.httpClientConfig;
 import static org.apache.http.HttpStatus.SC_OK;
 
+import com.backbase.ct.dataloader.util.GlobalProperties;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -10,6 +12,8 @@ import io.restassured.RestAssured;
 import io.restassured.config.LogConfig;
 import io.restassured.config.ObjectMapperConfig;
 import io.restassured.config.RestAssuredConfig;
+import io.restassured.filter.log.RequestLoggingFilter;
+import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.http.ContentType;
 import io.restassured.internal.RequestSpecificationImpl;
 import io.restassured.internal.ResponseParserRegistrar;
@@ -23,6 +27,7 @@ import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import org.apache.http.client.utils.URIBuilder;
 
 /**
@@ -51,6 +56,7 @@ import org.apache.http.client.utils.URIBuilder;
  */
 public class RestClient {
 
+    private GlobalProperties globalProperties = GlobalProperties.getInstance();
     private static final String PARAMETER_NAME = "CONNECTION_MANAGER_TIMEOUT";
     private static final int TIMEOUT_VALUE = 10000;
     private static final String DEFAULT_HEALTH_PATH = "/production-support/health";
@@ -131,6 +137,9 @@ public class RestClient {
             new ResponseSpecificationImpl(RestAssured.DEFAULT_BODY_ROOT_PATH, null, this.responseParserRegistrar,
                 restAssuredConfig, logRepository)).
             getRequestSpecification();
+
+        setLoggingFilters(requestSpec);
+
         requestSpec.queryParam("_csrf", getCookies().get("XSRF-TOKEN"));
 
         requestSpec.cookies(getCookies());
@@ -165,5 +174,20 @@ public class RestClient {
         return requestSpec()
             .contentType(ContentType.JSON)
             .get(DEFAULT_HEALTH_PATH);
+    }
+
+    private void setLoggingFilters(RequestSpecification requestSpec) {
+        boolean logAllRequestsResponses;
+        try {
+            logAllRequestsResponses = globalProperties.getBoolean(PROPERTY_LOG_ALL_REQUESTS_RESPONSES);
+        } catch (NoSuchElementException e) {
+            logAllRequestsResponses = false;
+        }
+
+        if (logAllRequestsResponses) {
+            requestSpec
+                .filter(new ResponseLoggingFilter())
+                .filter(new RequestLoggingFilter());
+        }
     }
 }

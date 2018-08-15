@@ -25,6 +25,7 @@ public final class CommonConstants {
     public static final String PROPERTY_CONTACT_MANAGER_BASE_URI = "contact.manager.base.uri";
     public static final String PROPERTY_APPROVALS_BASE_URI = "approvals.base.uri";
     public static final String PROPERTY_HEALTH_CHECK_TIMEOUT_IN_MINUTES = "healthcheck.timeout.in.minutes";
+    public static final String PROPERTY_LOG_ALL_REQUESTS_RESPONSES = "log.all.requests.responses";
 
     // Users
     public static final String USER_ADMIN = "admin";

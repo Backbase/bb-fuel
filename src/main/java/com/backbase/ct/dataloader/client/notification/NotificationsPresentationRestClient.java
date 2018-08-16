@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 public class NotificationsPresentationRestClient extends AbstractRestClient {
 
     private static final String SERVICE_VERSION = "v2";
-    private static final String NOTIFICATIONS_PRESENTATION_SERVICE = "notification-presentation-service";
-    private static final String ENDPOINT_NOTIFICATIONS = "/notification";
+    private static final String NOTIFICATIONS_PRESENTATION_SERVICE = "notifications-presentation-service";
+    private static final String ENDPOINT_NOTIFICATIONS = "/notifications";
 
     public NotificationsPresentationRestClient() {
         super(SERVICE_VERSION);

@@ -14,6 +14,7 @@ import static com.backbase.ct.dataloader.data.CommonConstants.SEPA_CT_FUNCTION_N
 import static com.backbase.ct.dataloader.data.CommonConstants.USER_ADMIN;
 import static com.backbase.ct.dataloader.data.CommonConstants.US_DOMESTIC_WIRE_FUNCTION_NAME;
 import static com.backbase.ct.dataloader.data.CommonConstants.US_FOREIGN_WIRE_FUNCTION_NAME;
+import static com.backbase.ct.dataloader.util.CommonHelpers.generateRandomNumberInRange;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
@@ -37,6 +38,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -99,14 +101,14 @@ public class ApprovalsConfigurator {
     }
 
     private void createApprovalTypes() {
-        approvalTypeAId = approvalIntegrationRestClient.createApprovalType("A", 1);
-        LOGGER.info("Approval type A [{}] created with rank 1", approvalTypeAId);
+        approvalTypeAId = approvalIntegrationRestClient.createApprovalType("A", generateRandomNumberInRange(1, 100));
+        LOGGER.info("Approval type A [{}] created", approvalTypeAId);
 
-        approvalTypeBId = approvalIntegrationRestClient.createApprovalType("B", 2);
-        LOGGER.info("Approval type B [{}] created with rank 2", approvalTypeBId);
+        approvalTypeBId = approvalIntegrationRestClient.createApprovalType("B", generateRandomNumberInRange(100, 200));
+        LOGGER.info("Approval type B [{}] created", approvalTypeBId);
 
-        approvalTypeCId = approvalIntegrationRestClient.createApprovalType("C", 3);
-        LOGGER.info("Approval type C [{}] created with rank 3", approvalTypeCId);
+        approvalTypeCId = approvalIntegrationRestClient.createApprovalType("C", generateRandomNumberInRange(200, 300));
+        LOGGER.info("Approval type C [{}] created", approvalTypeCId);
     }
 
     private void createPolicies() {

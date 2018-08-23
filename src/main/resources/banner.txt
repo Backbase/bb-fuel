@@ -1,13 +1,19 @@
 
 
-                                     ,,                          ,,
-`7MM"""Yb.            mm           `7MM                        `7MM
-  MM    `Yb.          MM             MM                          MM
-  MM     `Mb  ,6"Yb.mmMMmm  ,6"Yb.   MM  ,pW"Wq.   ,6"Yb.   ,M""bMM  .gP"Ya `7Mb,od8
-  MM      MM 8)   MM  MM   8)   MM   MM 6W'   `Wb 8)   MM ,AP    MM ,M'   Yb  MM' "'
-  MM     ,MP  ,pm9MM  MM    ,pm9MM   MM 8M     M8  ,pm9MM 8MI    MM 8M""""""  MM
-  MM    ,dP' 8M   MM  MM   8M   MM   MM YA.   ,A9 8M   MM `Mb    MM YM.    ,  MM
-.JMMmmmdP'   `Moo9^Yo.`Mbmo`Moo9^Yo.JMML.`Ybmd9'  `Moo9^Yo.`Wbmd"MML.`Mbmmd'.JMML.
+ .S_sSSs     .S_SSSs    sdSS_SSSSSSbs   .S_SSSs          S.        sSSs_sSSs     .S_SSSs     .S_sSSs      sSSs   .S_sSSs
+.SS~YS%%b   .SS~SSSSS   YSSS~S%SSSSSP  .SS~SSSSS         SS.      d%%SP~YS%%b   .SS~SSSSS   .SS~YS%%b    d%%SP  .SS~YS%%b
+S%S   `S%b  S%S   SSSS       S%S       S%S   SSSS        S%S     d%S'     `S%b  S%S   SSSS  S%S   `S%b  d%S'    S%S   `S%b
+S%S    S%S  S%S    S%S       S%S       S%S    S%S        S%S     S%S       S%S  S%S    S%S  S%S    S%S  S%S     S%S    S%S
+S%S    S&S  S%S SSSS%S       S&S       S%S SSSS%S        S&S     S&S       S&S  S%S SSSS%S  S%S    S&S  S&S     S%S    d*S
+S&S    S&S  S&S  SSS%S       S&S       S&S  SSS%S        S&S     S&S       S&S  S&S  SSS%S  S&S    S&S  S&S_Ss  S&S   .S*S
+S&S    S&S  S&S    S&S       S&S       S&S    S&S        S&S     S&S       S&S  S&S    S&S  S&S    S&S  S&S~SP  S&S_sdSSS
+S&S    S&S  S&S    S&S       S&S       S&S    S&S        S&S     S&S       S&S  S&S    S&S  S&S    S&S  S&S     S&S~YSY%b
+S*S    d*S  S*S    S&S       S*S       S*S    S&S        S*b     S*b       d*S  S*S    S&S  S*S    d*S  S*b     S*S   `S%b
+S*S   .S*S  S*S    S*S       S*S       S*S    S*S        S*S.    S*S.     .S*S  S*S    S*S  S*S   .S*S  S*S.    S*S    S%S
+S*S_sdSSS   S*S    S*S       S*S       S*S    S*S         SSSbs   SSSbs_sdSSS   S*S    S*S  S*S_sdSSS    SSSbs  S*S    S&S
+SSS~YSSY    SSS    S*S       S*S       SSS    S*S          YSSP    YSSP~YSSY    SSS    S*S  SSS~YSSY      YSSP  S*S    SSS
+                   SP        SP               SP                                       SP                       SP
+                   Y         Y                Y                                        Y                        Y
 
 
 ${spring.application.name} (${spring.application.version})

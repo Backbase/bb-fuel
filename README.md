@@ -1,7 +1,7 @@
-# Data loader
+# Data Loader
 
 ## Description
-Data loader can ingest the following:
+Data Loader can ingest the following:
 - Legal entities
 - Service agreements
 - Users
@@ -24,14 +24,14 @@ It is based on REST and relies on DBS service specs.
 - [Base setup](docs/BASE_SETUP.md)
 - [Capability data setup](docs/CAPABILITY_DATA_SETUP.md)
 
-## How to run data loader
+## How to run Data Loader
 All builds can be found [here](https://artifacts.backbase.com/backbase-development-builds/com/backbase/ct/dataloader)
 
 1. Provision an [Autoconfig](https://backbase.atlassian.net/wiki/x/94BtC) environment based on `dbs` or `dbs-microservices` stack with **at least** the following capabilities (based on default configuration:
 ```
 capabilities="Entitlements,ProductSummary"
 ```
-2. Run the data loader as follows:
+2. Run Data Loader as follows:
 
 - For Autoconfig environments:
 ```
@@ -83,7 +83,7 @@ healthcheck.timeout.in.minutes=10
 See [Custom data](docs/CUSTOM_DATA.md)
 
 ## Questions and issues
-If you have a question about the Data loader, or are experiencing a problem please contact the author, Kwo Ding via Hipchat or [e-mail](mailto:kwo@backbase.com)
+If you have a question about Data Loader, or are experiencing a problem please contact the author, Kwo Ding via Hipchat or [e-mail](mailto:kwo@backbase.com)
 
 ## Contributing
 You are welcome to provide bug fixes and new features in the form of pull requests. If you'd like to contribute, please be mindful of the following guidelines:

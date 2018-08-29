@@ -38,6 +38,5 @@ Default service agreements (each object represents one service agreement): [serv
 ## Users setup
 By default only the following users are covered:
 - Users with permissions as described under *Access control setup* and *Product summary setup*: [legal-entities-with-users.json](src/main/resources/data/legal-entities-with-users.json)
-- Users without permissions under its own legal entity (no master service agreement, function and data groups associated): [legal-entities-with-users-without-permissions.json](src/main/resources/data/legal-entities-with-users-without-permissions.json)
 
 If more/other users are required, you can provide your own `json` files, see *Custom data*.

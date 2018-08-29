@@ -1,12 +1,11 @@
 package com.backbase.ct.dataloader.setup;
 
 import static com.backbase.ct.dataloader.data.CommonConstants.PRODUCT_SUMMARY_FUNCTION_NAME;
-import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_ACCESS_CONTROL;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_BALANCE_HISTORY;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_TRANSACTIONS;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_LEGAL_ENTITIES_WITH_USERS_JSON;
-import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_LEGAL_ENTITIES_WITH_USERS_WITHOUT_PERMISSION_JSON;
+import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
 import static com.backbase.ct.dataloader.data.CommonConstants.SEPA_CT_FUNCTION_NAME;
 import static com.backbase.ct.dataloader.data.CommonConstants.TRANSACTIONS_FUNCTION_NAME;
 import static com.backbase.ct.dataloader.data.CommonConstants.US_DOMESTIC_WIRE_FUNCTION_NAME;
@@ -51,6 +50,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class AccessControlSetup {
+
     private final static Logger LOGGER = LoggerFactory.getLogger(CapabilitiesDataSetup.class);
 
     private GlobalProperties globalProperties = GlobalProperties.getInstance();
@@ -68,6 +68,7 @@ public class AccessControlSetup {
     private String bankAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
     // TODO refactor to have it parsed once (duplicated in CapabilitiesDataSetup)
     private LegalEntityWithUsers[] entities = initialiseLegalEntityWithUsers();
+
     public LegalEntityWithUsers[] initialiseLegalEntityWithUsers() {
         LegalEntityWithUsers[] entities;
         try {
@@ -92,10 +93,6 @@ public class AccessControlSetup {
 
     public void setupAccessControlForUsers() throws IOException {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_ACCESS_CONTROL)) {
-            final LegalEntityWithUsers[] entitiesWithoutPermissions = ParserUtil.convertJsonToObject(
-                this.globalProperties.getString(PROPERTY_LEGAL_ENTITIES_WITH_USERS_WITHOUT_PERMISSION_JSON),
-                LegalEntityWithUsers[].class);
-
             Arrays.stream(this.entities)
                 .forEach(entity -> {
                     this.legalEntitiesAndUsersConfigurator.ingestUsersUnderLegalEntity(
@@ -107,14 +104,6 @@ public class AccessControlSetup {
 
                     assembleFunctionDataGroupsAndPermissions(entity.getUserExternalIds());
                 });
-
-            Arrays.stream(entitiesWithoutPermissions)
-                .forEach(entity -> this.legalEntitiesAndUsersConfigurator.ingestUsersUnderLegalEntity(
-                    entity.getUserExternalIds(),
-                    entity.getParentLegalEntityExternalId(),
-                    entity.getLegalEntityExternalId(),
-                    entity.getLegalEntityName(),
-                    entity.getLegalEntityType()));
         }
     }
 
@@ -191,7 +180,8 @@ public class AccessControlSetup {
         String usWireFunctionGroupId = this.accessGroupsConfigurator
             .ingestFunctionGroupWithAllPrivilegesByFunctionNames(
                 externalServiceAgreementId,
-                asList(US_DOMESTIC_WIRE_FUNCTION_NAME, US_FOREIGN_WIRE_FUNCTION_NAME, PRODUCT_SUMMARY_FUNCTION_NAME, TRANSACTIONS_FUNCTION_NAME));
+                asList(US_DOMESTIC_WIRE_FUNCTION_NAME, US_FOREIGN_WIRE_FUNCTION_NAME, PRODUCT_SUMMARY_FUNCTION_NAME,
+                    TRANSACTIONS_FUNCTION_NAME));
 
         String noSepaAndUsWireFunctionGroupId = this.accessGroupsConfigurator
             .ingestFunctionGroupWithAllPrivilegesNotContainingProvidedFunctionNames(
@@ -203,7 +193,8 @@ public class AccessControlSetup {
 
         List<String> sepaDataGroupIds = singletonList(currencyDataGroup.getInternalEurCurrencyDataGroupId());
         List<String> usWireDataGroupIds = singletonList(currencyDataGroup.getInternalUsdCurrencyDataGroupId());
-        List<String> randomCurrencyDataGroupIds = singletonList(currencyDataGroup.getInternalRandomCurrencyDataGroupId());
+        List<String> randomCurrencyDataGroupIds = singletonList(
+            currencyDataGroup.getInternalRandomCurrencyDataGroupId());
 
         this.accessGroupIntegrationRestClient.assignPermissions(
             externalUserId,

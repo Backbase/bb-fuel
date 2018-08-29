@@ -15,6 +15,8 @@ properties([
                 booleanParam(name: 'INGEST_PAYMENTS', defaultValue: false, description: 'Ingest payments per user'),
                 booleanParam(name: 'INGEST_MESSAGES', defaultValue: false, description: 'Ingest messages per user'),
                 booleanParam(name: 'INGEST_ACTIONS', defaultValue: false, description: 'Ingest actions per user'),
+                booleanParam(name: 'MULTI_TENANCY_ENVIRONMENT', defaultValue: false, description: 'Enable for multi-tenancy environments'),
+                string(name: 'TENANT_ID', defaultValue: 'tenant_a', description: ''),
                 booleanParam(name: 'USE_PERFORMANCE_TEST_DATA_SETUP', defaultValue: false, description: 'Use performance test data setup\n' +
                         'Only enable when strictly necessary (long running job)'),
                 choice(name: 'PERFORMANCE_TEST_DATA', choices: 'retail\nbusiness', description: 'Retail or business performance test data setup'),
@@ -52,15 +54,19 @@ node {
 
         withEnv(["JAVA_HOME=${tool name: "${env.JDK_TOOL_NAME}"}", "PATH+MAVEN=${tool name: "${env.MAVEN_TOOL_NAME}"}/bin:${env.JAVA_HOME}/bin"]) {
 
-            def usePerformanceTestLegalEntitiesWithUsersJson = ""
+            def customLegalEntitiesWithUserJson = ""
 
-            if ("${params.USE_PERFORMANCE_TEST_DATA_SETUP}".toBoolean()) {
-                usePerformanceTestLegalEntitiesWithUsersJson = "-Dlegal.entities.with.users.json=data/performance-test-legal-entities-with-users-${params.PERFORMANCE_TEST_DATA}.json "
+            if ("${params.MULTI_TENANCY_ENVIRONMENT}".toBoolean()) {
+                customLegalEntitiesWithUserJson = "-Dlegal.entities.with.users.json=data/multitenancy/${params.TENANT_ID}.json"
+            } else if ("${params.USE_PERFORMANCE_TEST_DATA_SETUP}".toBoolean()) {
+                customLegalEntitiesWithUserJson = "-Dlegal.entities.with.users.json=data/performance-test-legal-entities-with-users-${params.PERFORMANCE_TEST_DATA}.json "
             }
 
             sh "java -Denvironment.name=${params.ENVIRONMENT_NAME} " +
                     "-Dinfra.base.uri=http://${params.ENVIRONMENT_NAME}-${params.INFRA_BASE_URI} " +
                     "-Dhealthcheck.timeout.in.minutes=1 " +
+                    "-Dmulti.tenancy.environment=${params.MULTI_TENANCY_ENVIRONMENT} " +
+                    "-Dtenant.id=${params.TENANT_ID} " +
                     "-Dingest.access.control=${params.INGEST_ACCESS_CONTROL} " +
                     "-Dingest.custom.service.agreements=${params.INGEST_CUSTOM_SERVICE_AGREEMENTS} " +
                     "-Dingest.balance.history=${params.INGEST_BALANCE_HISTORY} " +
@@ -74,7 +80,7 @@ node {
                     "-Dingest.payments=${params.INGEST_PAYMENTS} " +
                     "-Dingest.messages=${params.INGEST_MESSAGES} " +
                     "-Dingest.actions=${params.INGEST_ACTIONS} " +
-                    usePerformanceTestLegalEntitiesWithUsersJson +
+                    customLegalEntitiesWithUserJson +
                     "-jar dataloader-${dataloaderVersion}-boot.jar"
         }
     }

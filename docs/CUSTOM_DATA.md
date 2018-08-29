@@ -18,7 +18,7 @@ Based on [multi-tenancy LDAP configuration in Autoconfig environments](https://s
 
 ```
 java -Denvironment.name=your-env-00 \
--Dlegal.entities.with.users.json.location=data/multitenancy/tenant-a.json \
+-Dlegal.entities.with.users.json.location=data/multitenancy/tenant_a.json \
 -Dmulti.tenancy.environment=true \
 -Dtenant.id=tenant_a \
 -Droot.entitlements.admin=user001_t1 \
@@ -29,11 +29,11 @@ Repeat for each tenant according to the LDAP configuration as follows:
 
 | tenant.id | root.entitlements.admin | legal.entities.with.users.json.location |
 |-----------|-------------------------|-----------------------------------------|
-| tenant_a  | user001_t1              | data/multitenancy/tenant-a.json         |
-| tenant_b  | user006_t2              | data/multitenancy/tenant-b.json         |
-| tenant_c  | user011_t3              | data/multitenancy/tenant-c.json         |
-| tenant_d  | user016_t4              | data/multitenancy/tenant-d.json         |
-| tenant_e  | user021_t5              | data/multitenancy/tenant-e.json         |
+| tenant_a  | user001_t1              | data/multitenancy/tenant_a.json         |
+| tenant_b  | user006_t2              | data/multitenancy/tenant_b.json         |
+| tenant_c  | user011_t3              | data/multitenancy/tenant_c.json         |
+| tenant_d  | user016_t4              | data/multitenancy/tenant_d.json         |
+| tenant_e  | user021_t5              | data/multitenancy/tenant_e.json         |
 
 Note: this is a simple multi-tenancy setup example
 

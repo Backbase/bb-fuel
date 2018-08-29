@@ -1,6 +1,7 @@
 package com.backbase.ct.dataloader.setup;
 
 import static com.backbase.ct.dataloader.data.CommonConstants.PRODUCT_SUMMARY_FUNCTION_NAME;
+import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_ACCESS_CONTROL;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_BALANCE_HISTORY;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_TRANSACTIONS;
@@ -8,7 +9,6 @@ import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_LEGAL_ENT
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_LEGAL_ENTITIES_WITH_USERS_WITHOUT_PERMISSION_JSON;
 import static com.backbase.ct.dataloader.data.CommonConstants.SEPA_CT_FUNCTION_NAME;
 import static com.backbase.ct.dataloader.data.CommonConstants.TRANSACTIONS_FUNCTION_NAME;
-import static com.backbase.ct.dataloader.data.CommonConstants.USER_ADMIN;
 import static com.backbase.ct.dataloader.data.CommonConstants.US_DOMESTIC_WIRE_FUNCTION_NAME;
 import static com.backbase.ct.dataloader.data.CommonConstants.US_FOREIGN_WIRE_FUNCTION_NAME;
 import static com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.Currency;
@@ -23,7 +23,6 @@ import com.backbase.ct.dataloader.client.legalentity.LegalEntityPresentationRest
 import com.backbase.ct.dataloader.client.user.UserPresentationRestClient;
 import com.backbase.ct.dataloader.configurator.AccessGroupsConfigurator;
 import com.backbase.ct.dataloader.configurator.LegalEntitiesAndUsersConfigurator;
-import com.backbase.ct.dataloader.configurator.PermissionsConfigurator;
 import com.backbase.ct.dataloader.configurator.ProductSummaryConfigurator;
 import com.backbase.ct.dataloader.configurator.ServiceAgreementsConfigurator;
 import com.backbase.ct.dataloader.configurator.TransactionsConfigurator;
@@ -61,12 +60,12 @@ public class AccessControlSetup {
     private final UserPresentationRestClient userPresentationRestClient;
     private final ProductSummaryConfigurator productSummaryConfigurator;
     private final AccessGroupsConfigurator accessGroupsConfigurator;
-    private final PermissionsConfigurator permissionsConfigurator;
     private final ServiceAgreementsConfigurator serviceAgreementsConfigurator;
     private final AccessGroupIntegrationRestClient accessGroupIntegrationRestClient;
     private final ServiceAgreementsPresentationRestClient serviceAgreementsPresentationRestClient;
     private final LegalEntityPresentationRestClient legalEntityPresentationRestClient;
     private final TransactionsConfigurator transactionsConfigurator;
+    private String bankAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
     // TODO refactor to have it parsed once (duplicated in CapabilitiesDataSetup)
     private LegalEntityWithUsers[] entities = initialiseLegalEntityWithUsers();
     public LegalEntityWithUsers[] initialiseLegalEntityWithUsers() {
@@ -85,9 +84,9 @@ public class AccessControlSetup {
 
     public void setupBankWithEntitlementsAdminAndProducts() throws IOException {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_ACCESS_CONTROL)) {
-            this.legalEntitiesAndUsersConfigurator.ingestRootLegalEntityAndEntitlementsAdmin(USER_ADMIN);
+            this.legalEntitiesAndUsersConfigurator.ingestRootLegalEntityAndEntitlementsAdmin(bankAdmin);
             this.productSummaryConfigurator.ingestProducts();
-            assembleFunctionDataGroupsAndPermissions(singletonList(USER_ADMIN));
+            assembleFunctionDataGroupsAndPermissions(singletonList(bankAdmin));
         }
     }
 
@@ -122,7 +121,7 @@ public class AccessControlSetup {
     private void assembleFunctionDataGroupsAndPermissions(List<String> userExternalIds) {
         Multimap<String, UserContext> legalEntitiesUserContextMap = ArrayListMultimap.create();
         final LegalEntityContext legalEntityContext = new LegalEntityContext();
-        this.loginRestClient.login(USER_ADMIN, USER_ADMIN);
+        this.loginRestClient.login(bankAdmin, bankAdmin);
         this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
         userExternalIds.forEach(userExternalId -> {
@@ -235,7 +234,7 @@ public class AccessControlSetup {
     }
 
     public UserContext getUserContextBasedOnMSAByExternalUserId(String externalUserId) {
-        this.loginRestClient.login(USER_ADMIN, USER_ADMIN);
+        this.loginRestClient.login(bankAdmin, bankAdmin);
         this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
         String internalUserId = this.userPresentationRestClient.getUserByExternalId(externalUserId)

@@ -1,7 +1,7 @@
 package com.backbase.ct.dataloader.configurator;
 
+import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
 import static com.backbase.ct.dataloader.data.CommonConstants.SEPA_CT_FUNCTION_NAME;
-import static com.backbase.ct.dataloader.data.CommonConstants.USER_ADMIN;
 import static com.backbase.ct.dataloader.data.CommonConstants.US_DOMESTIC_WIRE_FUNCTION_NAME;
 import static com.backbase.ct.dataloader.data.CommonConstants.US_FOREIGN_WIRE_FUNCTION_NAME;
 import static com.backbase.ct.dataloader.data.LimitsDataGenerator.createDailyLimitsPostRequestBodyForApprovePrivilege;
@@ -14,6 +14,7 @@ import com.backbase.ct.dataloader.client.accessgroup.AccessGroupPresentationRest
 import com.backbase.ct.dataloader.client.accessgroup.UserContextPresentationRestClient;
 import com.backbase.ct.dataloader.client.common.LoginRestClient;
 import com.backbase.ct.dataloader.client.limit.LimitsPresentationRestClient;
+import com.backbase.ct.dataloader.util.GlobalProperties;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.config.functions.FunctionsGetResponseBody;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.functiongroups.FunctionGroupsGetResponseBody;
 import java.math.BigDecimal;
@@ -28,17 +29,19 @@ import org.springframework.stereotype.Service;
 public class LimitsConfigurator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LimitsConfigurator.class);
+    private GlobalProperties globalProperties = GlobalProperties.getInstance();
 
     private LoginRestClient loginRestClient = new LoginRestClient();
     private final UserContextPresentationRestClient userContextPresentationRestClient;
     private final AccessGroupPresentationRestClient accessGroupPresentationRestClient;
     private final AccessGroupIntegrationRestClient accessGroupIntegrationRestClient;
     private final LimitsPresentationRestClient limitsPresentationRestClient;
+    private String bankAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
 
     public void ingestLimits(String internalServiceAgreementId) {
         BigDecimal limitAmount = new BigDecimal("1000000.0");
 
-        loginRestClient.login(USER_ADMIN, USER_ADMIN);
+        loginRestClient.login(bankAdmin, bankAdmin);
         userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
         List<FunctionsGetResponseBody> paymentsFunctions = accessGroupIntegrationRestClient

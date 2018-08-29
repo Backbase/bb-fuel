@@ -1,6 +1,6 @@
 package com.backbase.ct.dataloader.configurator;
 
-import static com.backbase.ct.dataloader.data.CommonConstants.USER_ADMIN;
+import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
 import static com.backbase.ct.dataloader.data.ServiceAgreementsDataGenerator.generateServiceAgreementPostRequestBody;
 import static com.backbase.ct.dataloader.data.ServiceAgreementsDataGenerator.generateServiceAgreementPutRequestBody;
 import static org.apache.http.HttpStatus.SC_CREATED;
@@ -11,6 +11,7 @@ import com.backbase.ct.dataloader.client.accessgroup.UserContextPresentationRest
 import com.backbase.ct.dataloader.client.common.LoginRestClient;
 import com.backbase.ct.dataloader.client.legalentity.LegalEntityPresentationRestClient;
 import com.backbase.ct.dataloader.client.user.UserPresentationRestClient;
+import com.backbase.ct.dataloader.util.GlobalProperties;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.Participant;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementPostResponseBody;
 import java.util.Arrays;
@@ -25,15 +26,17 @@ import org.springframework.stereotype.Service;
 public class ServiceAgreementsConfigurator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceAgreementsConfigurator.class);
+    private GlobalProperties globalProperties = GlobalProperties.getInstance();
 
     private final LoginRestClient loginRestClient;
     private final UserPresentationRestClient userPresentationRestClient;
     private final LegalEntityPresentationRestClient legalEntityPresentationRestClient;
     private final ServiceAgreementsIntegrationRestClient serviceAgreementsIntegrationRestClient;
     private final UserContextPresentationRestClient userContextPresentationRestClient;
+    private String bankAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
 
     public String ingestServiceAgreementWithProvidersAndConsumers(Set<Participant> participants) {
-        loginRestClient.login(USER_ADMIN, USER_ADMIN);
+        loginRestClient.login(bankAdmin, bankAdmin);
         userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
         enrichParticipantsWithExternalId(participants);
 
@@ -51,7 +54,7 @@ public class ServiceAgreementsConfigurator {
     }
 
     public void updateMasterServiceAgreementWithExternalIdByLegalEntity(String internalLegalEntityId) {
-        loginRestClient.login(USER_ADMIN, USER_ADMIN);
+        loginRestClient.login(bankAdmin, bankAdmin);
         userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
         String internalServiceAgreementId = legalEntityPresentationRestClient

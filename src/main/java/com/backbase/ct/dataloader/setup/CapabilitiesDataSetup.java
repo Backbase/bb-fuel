@@ -1,5 +1,6 @@
 package com.backbase.ct.dataloader.setup;
 
+import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_ACTIONS;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_CONTACTS;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_PAYMENTS;
@@ -9,7 +10,6 @@ import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_ME
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_NOTIFICATIONS;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_PAYMENTS;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_LEGAL_ENTITIES_WITH_USERS_JSON;
-import static com.backbase.ct.dataloader.data.CommonConstants.USER_ADMIN;
 
 import com.backbase.ct.dataloader.client.accessgroup.UserContextPresentationRestClient;
 import com.backbase.ct.dataloader.client.common.LoginRestClient;
@@ -51,6 +51,7 @@ public class CapabilitiesDataSetup {
     private final MessagesConfigurator messagesConfigurator;
     private final ActionsConfigurator actionsConfigurator;
     private final Random random;
+    private String bankAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
     private LegalEntityWithUsers[] entities = initialiseLegalEntityWithUsers();
 
     public LegalEntityWithUsers[] initialiseLegalEntityWithUsers() {
@@ -70,7 +71,7 @@ public class CapabilitiesDataSetup {
     public void ingestApprovals() {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_APPROVALS_FOR_PAYMENTS) ||
             this.globalProperties.getBoolean(PROPERTY_INGEST_APPROVALS_FOR_CONTACTS)) {
-            this.loginRestClient.login(USER_ADMIN, USER_ADMIN);
+            this.loginRestClient.login(bankAdmin, bankAdmin);
             this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
             this.approvalsConfigurator.setupApprovalTypesAndPolicies();
@@ -108,7 +109,7 @@ public class CapabilitiesDataSetup {
 
     public void ingestBankNotifications() {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_NOTIFICATIONS)) {
-            this.loginRestClient.login(USER_ADMIN, USER_ADMIN);
+            this.loginRestClient.login(bankAdmin, bankAdmin);
             this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
             this.notificationsConfigurator.ingestNotifications();
         }
@@ -136,7 +137,7 @@ public class CapabilitiesDataSetup {
 
     public void ingestConversationsPerUser() {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_MESSAGES)) {
-            this.loginRestClient.login(USER_ADMIN, USER_ADMIN);
+            this.loginRestClient.login(bankAdmin, bankAdmin);
             this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
             Arrays.stream(this.entities)
                 .map(LegalEntityWithUsers::getUserExternalIds)

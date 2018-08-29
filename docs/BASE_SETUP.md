@@ -1,7 +1,7 @@
 # Base setup
 
 ## Access control setup
-- Root legal entity with user `admin` as entitlements admin
+- Root legal entity with user external id from property `root.entitlements.admin` as entitlements admin
 - Legal entities (under the root legal entity `C000000`) per legal entity entry with users array in the files [legal-entities-with-users.json](src/main/resources/data/legal-entities-with-users.json) and [legal-entities-with-users-without-permissions.json](src/main/resources/data/legal-entities-with-users-without-permissions.json) - configurable, see section *Custom data*
 
 For legal entities and users in the file [legal-entities-with-users.json](src/main/resources/data/legal-entities-with-users.json):

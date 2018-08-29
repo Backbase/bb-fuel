@@ -8,10 +8,10 @@ import static com.backbase.ct.dataloader.data.ApprovalsDataGenerator.createPolic
 import static com.backbase.ct.dataloader.data.CommonConstants.CONTACTS_FUNCTION_NAME;
 import static com.backbase.ct.dataloader.data.CommonConstants.CONTACTS_RESOURCE_NAME;
 import static com.backbase.ct.dataloader.data.CommonConstants.PAYMENTS_RESOURCE_NAME;
+import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_CONTACTS;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_PAYMENTS;
 import static com.backbase.ct.dataloader.data.CommonConstants.SEPA_CT_FUNCTION_NAME;
-import static com.backbase.ct.dataloader.data.CommonConstants.USER_ADMIN;
 import static com.backbase.ct.dataloader.data.CommonConstants.US_DOMESTIC_WIRE_FUNCTION_NAME;
 import static com.backbase.ct.dataloader.data.CommonConstants.US_FOREIGN_WIRE_FUNCTION_NAME;
 import static com.backbase.ct.dataloader.util.CommonHelpers.generateRandomNumberInRange;
@@ -60,6 +60,7 @@ public class ApprovalsConfigurator {
     private final ServiceAgreementsIntegrationRestClient serviceAgreementsIntegrationRestClient;
     private final UserPresentationRestClient userPresentationRestClient;
 
+    private String bankAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
     private static final List<String> PAYMENTS_FUNCTIONS = asList(
         SEPA_CT_FUNCTION_NAME,
         US_DOMESTIC_WIRE_FUNCTION_NAME,
@@ -82,7 +83,7 @@ public class ApprovalsConfigurator {
 
     public void setupAccessControlAndPerformApprovalAssignments(String externalServiceAgreementId, String externalLegalEntityId,
         List<String> externalUserIds) {
-        loginRestClient.login(USER_ADMIN, USER_ADMIN);
+        loginRestClient.login(bankAdmin, bankAdmin);
         userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
         if (globalProperties.getBoolean(PROPERTY_INGEST_APPROVALS_FOR_PAYMENTS)) {

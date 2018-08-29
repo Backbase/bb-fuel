@@ -1,7 +1,7 @@
 package com.backbase.ct.dataloader.configurator;
 
+import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_USE_PFM_CATEGORIES_FOR_TRANSACTIONS;
-import static com.backbase.ct.dataloader.data.CommonConstants.USER_ADMIN;
 import static org.apache.http.HttpStatus.SC_CREATED;
 
 import com.backbase.ct.dataloader.client.accessgroup.UserContextPresentationRestClient;
@@ -36,6 +36,7 @@ public class TransactionsConfigurator {
     private final CategoriesPresentationRestClient categoriesPresentationRestClient;
     private final LoginRestClient loginRestClient;
     private final UserContextPresentationRestClient userContextPresentationRestClient;
+    private String bankAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
     private Random random = new Random();
 
     public void ingestTransactionsByArrangement(String externalArrangementId) {
@@ -43,7 +44,7 @@ public class TransactionsConfigurator {
         List<String> categoryNames = new ArrayList<>();
 
         if (globalProperties.getBoolean(PROPERTY_USE_PFM_CATEGORIES_FOR_TRANSACTIONS)) {
-            loginRestClient.login(USER_ADMIN, USER_ADMIN);
+            loginRestClient.login(bankAdmin, bankAdmin);
             userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
             categoryNames = categoriesPresentationRestClient.retrieveCategories()
                 .stream()

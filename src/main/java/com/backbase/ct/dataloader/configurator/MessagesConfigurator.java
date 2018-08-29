@@ -1,8 +1,8 @@
 package com.backbase.ct.dataloader.configurator;
 
+import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_MESSAGES_MAX;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_MESSAGES_MIN;
-import static com.backbase.ct.dataloader.data.CommonConstants.USER_ADMIN;
 import static org.apache.http.HttpStatus.SC_ACCEPTED;
 import static org.apache.http.HttpStatus.SC_OK;
 
@@ -30,6 +30,7 @@ public class MessagesConfigurator {
 
     private final LoginRestClient loginRestClient;
     private final MessagesPresentationRestClient messagesPresentationRestClient;
+    private String bankAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
 
     public void ingestConversations(String externalUserId) {
         int randomAmount = CommonHelpers
@@ -50,7 +51,7 @@ public class MessagesConfigurator {
                 .then()
                 .statusCode(SC_ACCEPTED);
 
-            loginRestClient.login(USER_ADMIN, USER_ADMIN);
+            loginRestClient.login(bankAdmin, bankAdmin);
             String conversationId = messagesPresentationRestClient.getConversations()
                 .then()
                 .statusCode(SC_OK)

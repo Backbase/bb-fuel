@@ -1,19 +1,19 @@
 # Custom data
 
-## Run with custom data
+## How to run with custom data
 ```
 java -Denvironment.name=your-env-00 -cp /path/to/custom/resources/folder/:dataloader-jar-with-dependencies.jar com.backbase.testing.dataloader.Runner
 ```
 `/path/to/custom/resources/folder/` must contain the custom `json` files
 
-# Built-in custom data setup
-## Run with performance test data setup
+## Built-in custom data setup
+### How to run with performance test data setup
 Based on [gatling-performance-simulations](https://stash.backbase.com/projects/CT/repos/gatling-performance-simulations/browse):
 ```
 java -Denvironment.name=your-env-00 -Dlegal.entities.with.users.json.location=data/performance-test-legal-entities-with-users-{retail or business}.json dataloader-{version}-boot.jar
 ```
 
-## Run on multi-tenancy environments
+### How to run on multi-tenancy environments
 Based on [multi-tenancy LDAP configuration in Autoconfig environments](https://stash.backbase.com/projects/ANSIBLE/repos/cxp6-v2/browse/files/multitenancy.ldif)
 
 ```
@@ -74,4 +74,4 @@ Example:
 ```
 2. Place `legal-entities-with-users.json` in a folder named `data`
 
-Note: it is also possible to name/place the json file differently with the specific properties: `legal.entities.with.users.json.location`, `legal.entities.with.users.without.permissions.json.location` and `serviceagreements.json.location`
+Note: it is also possible to name/place the json file differently with the specific properties: `legal.entities.with.users.json.location` and `serviceagreements.json.location`

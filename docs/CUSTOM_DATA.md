@@ -1,19 +1,44 @@
 # Custom data
 
-## Run with custom data
+## How to run with custom data
 ```
 java -Denvironment.name=your-env-00 -cp /path/to/custom/resources/folder/:dataloader-jar-with-dependencies.jar com.backbase.testing.dataloader.Runner
 ```
 `/path/to/custom/resources/folder/` must contain the custom `json` files
 
-## Run with performance test data setup:
+## Built-in custom data setup
+### How to run with performance test data setup
 Based on [gatling-performance-simulations](https://stash.backbase.com/projects/CT/repos/gatling-performance-simulations/browse):
 ```
 java -Denvironment.name=your-env-00 -Dlegal.entities.with.users.json.location=data/performance-test-legal-entities-with-users-{retail or business}.json dataloader-{version}-boot.jar
 ```
 
+### How to run on multi-tenancy environments
+Based on [multi-tenancy LDAP configuration in Autoconfig environments](https://stash.backbase.com/projects/ANSIBLE/repos/cxp6-v2/browse/files/multitenancy.ldif)
+
+```
+java -Denvironment.name=your-env-00 \
+-Dlegal.entities.with.users.json.location=data/multitenancy/tenant_a.json \
+-Dmulti.tenancy.environment=true \
+-Dtenant.id=tenant_a \
+-Droot.entitlements.admin=user001_t1 \
+dataloader-{version}-boot.jar
+```
+
+Repeat for each tenant according to the LDAP configuration as follows:
+
+| tenant.id | root.entitlements.admin | legal.entities.with.users.json.location |
+|-----------|-------------------------|-----------------------------------------|
+| tenant_a  | user001_t1              | data/multitenancy/tenant_a.json         |
+| tenant_b  | user006_t2              | data/multitenancy/tenant_b.json         |
+| tenant_c  | user011_t3              | data/multitenancy/tenant_c.json         |
+| tenant_d  | user016_t4              | data/multitenancy/tenant_d.json         |
+| tenant_e  | user021_t5              | data/multitenancy/tenant_e.json         |
+
+Note: this is a simple multi-tenancy setup example
+
 ## How to create custom data
-Example for the `legal-entities-with-users.json` (other files are: `legal-entities-with-users-without-permissions.json`, `serviceagreements.json` and `products.json`):
+Example for the `legal-entities-with-users.json` (other files are: `serviceagreements.json` and `products.json`):
 
 1. Create json file named `legal-entities-with-users.json` with custom legal entities and assigned custom user list conforming existing format (in this case conforming: [legal-entities-with-users.json ](src/main/resources/data/legal-entities-with-users.json ))
 
@@ -49,4 +74,4 @@ Example:
 ```
 2. Place `legal-entities-with-users.json` in a folder named `data`
 
-Note: it is also possible to name/place the json file differently with the specific properties: `legal.entities.with.users.json.location`, `legal.entities.with.users.without.permissions.json.location` and `serviceagreements.json.location`
+Note: it is also possible to name/place the json file differently with the specific properties: `legal.entities.with.users.json.location` and `serviceagreements.json.location`

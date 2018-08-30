@@ -5,10 +5,9 @@ import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_AC
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_BALANCE_HISTORY;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_TRANSACTIONS;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_LEGAL_ENTITIES_WITH_USERS_JSON;
-import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_LEGAL_ENTITIES_WITH_USERS_WITHOUT_PERMISSION_JSON;
+import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
 import static com.backbase.ct.dataloader.data.CommonConstants.SEPA_CT_FUNCTION_NAME;
 import static com.backbase.ct.dataloader.data.CommonConstants.TRANSACTIONS_FUNCTION_NAME;
-import static com.backbase.ct.dataloader.data.CommonConstants.USER_ADMIN;
 import static com.backbase.ct.dataloader.data.CommonConstants.US_DOMESTIC_WIRE_FUNCTION_NAME;
 import static com.backbase.ct.dataloader.data.CommonConstants.US_FOREIGN_WIRE_FUNCTION_NAME;
 import static com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.Currency;
@@ -23,7 +22,6 @@ import com.backbase.ct.dataloader.client.legalentity.LegalEntityPresentationRest
 import com.backbase.ct.dataloader.client.user.UserPresentationRestClient;
 import com.backbase.ct.dataloader.configurator.AccessGroupsConfigurator;
 import com.backbase.ct.dataloader.configurator.LegalEntitiesAndUsersConfigurator;
-import com.backbase.ct.dataloader.configurator.PermissionsConfigurator;
 import com.backbase.ct.dataloader.configurator.ProductSummaryConfigurator;
 import com.backbase.ct.dataloader.configurator.ServiceAgreementsConfigurator;
 import com.backbase.ct.dataloader.configurator.TransactionsConfigurator;
@@ -52,6 +50,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class AccessControlSetup {
+
     private final static Logger LOGGER = LoggerFactory.getLogger(CapabilitiesDataSetup.class);
 
     private GlobalProperties globalProperties = GlobalProperties.getInstance();
@@ -61,14 +60,15 @@ public class AccessControlSetup {
     private final UserPresentationRestClient userPresentationRestClient;
     private final ProductSummaryConfigurator productSummaryConfigurator;
     private final AccessGroupsConfigurator accessGroupsConfigurator;
-    private final PermissionsConfigurator permissionsConfigurator;
     private final ServiceAgreementsConfigurator serviceAgreementsConfigurator;
     private final AccessGroupIntegrationRestClient accessGroupIntegrationRestClient;
     private final ServiceAgreementsPresentationRestClient serviceAgreementsPresentationRestClient;
     private final LegalEntityPresentationRestClient legalEntityPresentationRestClient;
     private final TransactionsConfigurator transactionsConfigurator;
+    private String rootEntitlementsAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
     // TODO refactor to have it parsed once (duplicated in CapabilitiesDataSetup)
     private LegalEntityWithUsers[] entities = initialiseLegalEntityWithUsers();
+
     public LegalEntityWithUsers[] initialiseLegalEntityWithUsers() {
         LegalEntityWithUsers[] entities;
         try {
@@ -85,18 +85,14 @@ public class AccessControlSetup {
 
     public void setupBankWithEntitlementsAdminAndProducts() throws IOException {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_ACCESS_CONTROL)) {
-            this.legalEntitiesAndUsersConfigurator.ingestRootLegalEntityAndEntitlementsAdmin(USER_ADMIN);
+            this.legalEntitiesAndUsersConfigurator.ingestRootLegalEntityAndEntitlementsAdmin(rootEntitlementsAdmin);
             this.productSummaryConfigurator.ingestProducts();
-            assembleFunctionDataGroupsAndPermissions(singletonList(USER_ADMIN));
+            assembleFunctionDataGroupsAndPermissions(singletonList(rootEntitlementsAdmin));
         }
     }
 
     public void setupAccessControlForUsers() throws IOException {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_ACCESS_CONTROL)) {
-            final LegalEntityWithUsers[] entitiesWithoutPermissions = ParserUtil.convertJsonToObject(
-                this.globalProperties.getString(PROPERTY_LEGAL_ENTITIES_WITH_USERS_WITHOUT_PERMISSION_JSON),
-                LegalEntityWithUsers[].class);
-
             Arrays.stream(this.entities)
                 .forEach(entity -> {
                     this.legalEntitiesAndUsersConfigurator.ingestUsersUnderLegalEntity(
@@ -108,21 +104,13 @@ public class AccessControlSetup {
 
                     assembleFunctionDataGroupsAndPermissions(entity.getUserExternalIds());
                 });
-
-            Arrays.stream(entitiesWithoutPermissions)
-                .forEach(entity -> this.legalEntitiesAndUsersConfigurator.ingestUsersUnderLegalEntity(
-                    entity.getUserExternalIds(),
-                    entity.getParentLegalEntityExternalId(),
-                    entity.getLegalEntityExternalId(),
-                    entity.getLegalEntityName(),
-                    entity.getLegalEntityType()));
         }
     }
 
     private void assembleFunctionDataGroupsAndPermissions(List<String> userExternalIds) {
         Multimap<String, UserContext> legalEntitiesUserContextMap = ArrayListMultimap.create();
         final LegalEntityContext legalEntityContext = new LegalEntityContext();
-        this.loginRestClient.login(USER_ADMIN, USER_ADMIN);
+        this.loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
         this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
         userExternalIds.forEach(userExternalId -> {
@@ -192,7 +180,8 @@ public class AccessControlSetup {
         String usWireFunctionGroupId = this.accessGroupsConfigurator
             .ingestFunctionGroupWithAllPrivilegesByFunctionNames(
                 externalServiceAgreementId,
-                asList(US_DOMESTIC_WIRE_FUNCTION_NAME, US_FOREIGN_WIRE_FUNCTION_NAME, PRODUCT_SUMMARY_FUNCTION_NAME, TRANSACTIONS_FUNCTION_NAME));
+                asList(US_DOMESTIC_WIRE_FUNCTION_NAME, US_FOREIGN_WIRE_FUNCTION_NAME, PRODUCT_SUMMARY_FUNCTION_NAME,
+                    TRANSACTIONS_FUNCTION_NAME));
 
         String noSepaAndUsWireFunctionGroupId = this.accessGroupsConfigurator
             .ingestFunctionGroupWithAllPrivilegesNotContainingProvidedFunctionNames(
@@ -204,7 +193,8 @@ public class AccessControlSetup {
 
         List<String> sepaDataGroupIds = singletonList(currencyDataGroup.getInternalEurCurrencyDataGroupId());
         List<String> usWireDataGroupIds = singletonList(currencyDataGroup.getInternalUsdCurrencyDataGroupId());
-        List<String> randomCurrencyDataGroupIds = singletonList(currencyDataGroup.getInternalRandomCurrencyDataGroupId());
+        List<String> randomCurrencyDataGroupIds = singletonList(
+            currencyDataGroup.getInternalRandomCurrencyDataGroupId());
 
         this.accessGroupIntegrationRestClient.assignPermissions(
             externalUserId,
@@ -235,7 +225,7 @@ public class AccessControlSetup {
     }
 
     public UserContext getUserContextBasedOnMSAByExternalUserId(String externalUserId) {
-        this.loginRestClient.login(USER_ADMIN, USER_ADMIN);
+        this.loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
         this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
         String internalUserId = this.userPresentationRestClient.getUserByExternalId(externalUserId)

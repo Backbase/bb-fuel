@@ -4,7 +4,6 @@ import static com.backbase.ct.dataloader.util.CommonHelpers.generateRandomAmount
 import static java.util.Arrays.asList;
 
 import com.backbase.dbs.actions.actionrecipes.presentation.rest.spec.v2.actionrecipes.ActionParent;
-import com.backbase.dbs.actions.actionrecipes.presentation.rest.spec.v2.actionrecipes.ActionParent.Type;
 import com.backbase.dbs.actions.actionrecipes.presentation.rest.spec.v2.actionrecipes.ActionRecipesPostRequestBody;
 import com.github.javafaker.Faker;
 import java.util.List;
@@ -30,8 +29,8 @@ public class ActionsDataGenerator {
     }
 
     private static List<ActionParent> createAllActionsList() {
-        return asList(new ActionParent().withType(Type.NOTIFICATION),
-            new ActionParent().withType(Type.EMAIL),
-            new ActionParent().withType(Type.SMS));
+        return asList(new ActionParent().withType("NOTIFICATION"),
+            new ActionParent().withType("EMAIL"),
+            new ActionParent().withType("SMS"));
     }
 }

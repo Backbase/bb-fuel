@@ -1,6 +1,7 @@
 package com.backbase.ct.dataloader.setup;
 
 import static com.backbase.ct.dataloader.data.CommonConstants.PRODUCT_SUMMARY_FUNCTION_NAME;
+import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
 import static com.backbase.ct.dataloader.data.CommonConstants.SEPA_CT_FUNCTION_NAME;
 import static com.backbase.ct.dataloader.data.CommonConstants.TRANSACTIONS_FUNCTION_NAME;
 import static com.backbase.ct.dataloader.data.CommonConstants.US_DOMESTIC_WIRE_FUNCTION_NAME;
@@ -45,7 +46,7 @@ public class ServiceAgreementsSetup {
     private String usWireFunctionGroupId;
     private String noSepaAndUsWireFunctionGroupId;
     private CurrencyDataGroup currencyDataGroup = null;
-
+    private String rootEntitlementsAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
 
     public void setupCustomServiceAgreements() throws IOException {
         if (this.globalProperties.getBoolean(CommonConstants.PROPERTY_INGEST_CUSTOM_SERVICE_AGREEMENTS)) {
@@ -54,7 +55,7 @@ public class ServiceAgreementsSetup {
                     this.globalProperties.getString(CommonConstants.PROPERTY_SERVICE_AGREEMENTS_JSON),
                     ServiceAgreementPostRequestBody[].class);
 
-            this.loginRestClient.login(CommonConstants.USER_ADMIN, CommonConstants.USER_ADMIN);
+            this.loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
             this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
             Arrays.stream(serviceAgreementPostRequestBodies)

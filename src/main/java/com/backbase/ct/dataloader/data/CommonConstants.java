@@ -26,11 +26,12 @@ public final class CommonConstants {
     public static final String PROPERTY_APPROVALS_BASE_URI = "approvals.base.uri";
     public static final String PROPERTY_HEALTH_CHECK_TIMEOUT_IN_MINUTES = "healthcheck.timeout.in.minutes";
     public static final String PROPERTY_LOG_ALL_REQUESTS_RESPONSES = "log.all.requests.responses";
+    public static final String PROPERTY_MULTI_TENANCY_ENVIRONMENT = "multi.tenancy.environment";
+    public static final String PROPERTY_TENANT_ID = "tenant.id";
 
     // Users
-    public static final String USER_ADMIN = "admin";
+    public static final String PROPERTY_ROOT_ENTITLEMENTS_ADMIN = "root.entitlements.admin";
     public static final String PROPERTY_LEGAL_ENTITIES_WITH_USERS_JSON = "legal.entities.with.users.json";
-    public static final String PROPERTY_LEGAL_ENTITIES_WITH_USERS_WITHOUT_PERMISSION_JSON = "legal.entities.with.users.without.permissions.json";
     public static final String PROPERTY_SERVICE_AGREEMENTS_JSON = "service.agreements.json";
 
     // Entitlements

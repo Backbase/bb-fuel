@@ -2,6 +2,7 @@ package com.backbase.ct.dataloader.data;
 
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.config.functions.FunctionsGetResponseBody;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.datagroups.DataGroupPostRequestBody;
+import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.IntegrationPrivilege;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.Permission;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.Privilege;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.functiongroups.FunctionGroupPostRequestBody;
@@ -48,6 +49,13 @@ public class AccessGroupsDataGenerator {
     }
 
     private static Permission createPermissionWithAllPrivileges(FunctionsGetResponseBody function) {
-        return createPermission(function.getFunctionId(), function.getPrivileges());
+        List<IntegrationPrivilege> integrationPrivileges = function.getPrivileges();
+        List<Privilege> privileges = new ArrayList<>();
+
+        for (IntegrationPrivilege integrationPrivilege : integrationPrivileges) {
+            privileges.add(new Privilege().withPrivilege(integrationPrivilege.getPrivilege()));
+        }
+
+        return createPermission(function.getFunctionId(), privileges);
     }
 }

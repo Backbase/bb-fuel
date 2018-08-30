@@ -65,7 +65,7 @@ public class AccessControlSetup {
     private final ServiceAgreementsPresentationRestClient serviceAgreementsPresentationRestClient;
     private final LegalEntityPresentationRestClient legalEntityPresentationRestClient;
     private final TransactionsConfigurator transactionsConfigurator;
-    private String bankAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
+    private String rootEntitlementsAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
     // TODO refactor to have it parsed once (duplicated in CapabilitiesDataSetup)
     private LegalEntityWithUsers[] entities = initialiseLegalEntityWithUsers();
 
@@ -85,9 +85,9 @@ public class AccessControlSetup {
 
     public void setupBankWithEntitlementsAdminAndProducts() throws IOException {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_ACCESS_CONTROL)) {
-            this.legalEntitiesAndUsersConfigurator.ingestRootLegalEntityAndEntitlementsAdmin(bankAdmin);
+            this.legalEntitiesAndUsersConfigurator.ingestRootLegalEntityAndEntitlementsAdmin(rootEntitlementsAdmin);
             this.productSummaryConfigurator.ingestProducts();
-            assembleFunctionDataGroupsAndPermissions(singletonList(bankAdmin));
+            assembleFunctionDataGroupsAndPermissions(singletonList(rootEntitlementsAdmin));
         }
     }
 
@@ -110,7 +110,7 @@ public class AccessControlSetup {
     private void assembleFunctionDataGroupsAndPermissions(List<String> userExternalIds) {
         Multimap<String, UserContext> legalEntitiesUserContextMap = ArrayListMultimap.create();
         final LegalEntityContext legalEntityContext = new LegalEntityContext();
-        this.loginRestClient.login(bankAdmin, bankAdmin);
+        this.loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
         this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
         userExternalIds.forEach(userExternalId -> {
@@ -225,7 +225,7 @@ public class AccessControlSetup {
     }
 
     public UserContext getUserContextBasedOnMSAByExternalUserId(String externalUserId) {
-        this.loginRestClient.login(bankAdmin, bankAdmin);
+        this.loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
         this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
         String internalUserId = this.userPresentationRestClient.getUserByExternalId(externalUserId)

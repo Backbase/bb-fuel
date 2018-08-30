@@ -36,12 +36,12 @@ public class LimitsConfigurator {
     private final AccessGroupPresentationRestClient accessGroupPresentationRestClient;
     private final AccessGroupIntegrationRestClient accessGroupIntegrationRestClient;
     private final LimitsPresentationRestClient limitsPresentationRestClient;
-    private String bankAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
+    private String rootEntitlementsAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
 
     public void ingestLimits(String internalServiceAgreementId) {
         BigDecimal limitAmount = new BigDecimal("1000000.0");
 
-        loginRestClient.login(bankAdmin, bankAdmin);
+        loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
         userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
         List<FunctionsGetResponseBody> paymentsFunctions = accessGroupIntegrationRestClient

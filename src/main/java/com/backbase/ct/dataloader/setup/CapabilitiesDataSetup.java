@@ -51,7 +51,7 @@ public class CapabilitiesDataSetup {
     private final MessagesConfigurator messagesConfigurator;
     private final ActionsConfigurator actionsConfigurator;
     private final Random random;
-    private String bankAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
+    private String rootEntitlementsAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
     private LegalEntityWithUsers[] entities = initialiseLegalEntityWithUsers();
 
     public LegalEntityWithUsers[] initialiseLegalEntityWithUsers() {
@@ -71,7 +71,7 @@ public class CapabilitiesDataSetup {
     public void ingestApprovals() {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_APPROVALS_FOR_PAYMENTS) ||
             this.globalProperties.getBoolean(PROPERTY_INGEST_APPROVALS_FOR_CONTACTS)) {
-            this.loginRestClient.login(bankAdmin, bankAdmin);
+            this.loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
             this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
             this.approvalsConfigurator.setupApprovalTypesAndPolicies();
@@ -109,7 +109,7 @@ public class CapabilitiesDataSetup {
 
     public void ingestBankNotifications() {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_NOTIFICATIONS)) {
-            this.loginRestClient.login(bankAdmin, bankAdmin);
+            this.loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
             this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
             this.notificationsConfigurator.ingestNotifications();
         }
@@ -137,7 +137,7 @@ public class CapabilitiesDataSetup {
 
     public void ingestConversationsPerUser() {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_MESSAGES)) {
-            this.loginRestClient.login(bankAdmin, bankAdmin);
+            this.loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
             this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
             Arrays.stream(this.entities)
                 .map(LegalEntityWithUsers::getUserExternalIds)

@@ -60,7 +60,7 @@ public class ApprovalsConfigurator {
     private final ServiceAgreementsIntegrationRestClient serviceAgreementsIntegrationRestClient;
     private final UserPresentationRestClient userPresentationRestClient;
 
-    private String bankAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
+    private String rootEntitlementsAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
     private static final List<String> PAYMENTS_FUNCTIONS = asList(
         SEPA_CT_FUNCTION_NAME,
         US_DOMESTIC_WIRE_FUNCTION_NAME,
@@ -83,7 +83,7 @@ public class ApprovalsConfigurator {
 
     public void setupAccessControlAndPerformApprovalAssignments(String externalServiceAgreementId, String externalLegalEntityId,
         List<String> externalUserIds) {
-        loginRestClient.login(bankAdmin, bankAdmin);
+        loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
         userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
         if (globalProperties.getBoolean(PROPERTY_INGEST_APPROVALS_FOR_PAYMENTS)) {

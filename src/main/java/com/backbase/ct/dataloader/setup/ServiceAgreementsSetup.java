@@ -46,7 +46,7 @@ public class ServiceAgreementsSetup {
     private String usWireFunctionGroupId;
     private String noSepaAndUsWireFunctionGroupId;
     private CurrencyDataGroup currencyDataGroup = null;
-    private String bankAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
+    private String rootEntitlementsAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
 
     public void setupCustomServiceAgreements() throws IOException {
         if (this.globalProperties.getBoolean(CommonConstants.PROPERTY_INGEST_CUSTOM_SERVICE_AGREEMENTS)) {
@@ -55,7 +55,7 @@ public class ServiceAgreementsSetup {
                     this.globalProperties.getString(CommonConstants.PROPERTY_SERVICE_AGREEMENTS_JSON),
                     ServiceAgreementPostRequestBody[].class);
 
-            this.loginRestClient.login(bankAdmin, bankAdmin);
+            this.loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
             this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
             Arrays.stream(serviceAgreementPostRequestBodies)

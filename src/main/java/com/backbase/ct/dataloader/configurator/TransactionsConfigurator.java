@@ -36,7 +36,7 @@ public class TransactionsConfigurator {
     private final CategoriesPresentationRestClient categoriesPresentationRestClient;
     private final LoginRestClient loginRestClient;
     private final UserContextPresentationRestClient userContextPresentationRestClient;
-    private String bankAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
+    private String rootEntitlementsAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
     private Random random = new Random();
 
     public void ingestTransactionsByArrangement(String externalArrangementId) {
@@ -44,7 +44,7 @@ public class TransactionsConfigurator {
         List<String> categoryNames = new ArrayList<>();
 
         if (globalProperties.getBoolean(PROPERTY_USE_PFM_CATEGORIES_FOR_TRANSACTIONS)) {
-            loginRestClient.login(bankAdmin, bankAdmin);
+            loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
             userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
             categoryNames = categoriesPresentationRestClient.retrieveCategories()
                 .stream()

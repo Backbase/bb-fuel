@@ -30,7 +30,7 @@ public class MessagesConfigurator {
 
     private final LoginRestClient loginRestClient;
     private final MessagesPresentationRestClient messagesPresentationRestClient;
-    private String bankAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
+    private String rootEntitlementsAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
 
     public void ingestConversations(String externalUserId) {
         int randomAmount = CommonHelpers
@@ -51,7 +51,7 @@ public class MessagesConfigurator {
                 .then()
                 .statusCode(SC_ACCEPTED);
 
-            loginRestClient.login(bankAdmin, bankAdmin);
+            loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
             String conversationId = messagesPresentationRestClient.getConversations()
                 .then()
                 .statusCode(SC_OK)

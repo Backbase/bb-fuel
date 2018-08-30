@@ -33,10 +33,10 @@ public class ServiceAgreementsConfigurator {
     private final LegalEntityPresentationRestClient legalEntityPresentationRestClient;
     private final ServiceAgreementsIntegrationRestClient serviceAgreementsIntegrationRestClient;
     private final UserContextPresentationRestClient userContextPresentationRestClient;
-    private String bankAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
+    private String rootEntitlementsAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
 
     public String ingestServiceAgreementWithProvidersAndConsumers(Set<Participant> participants) {
-        loginRestClient.login(bankAdmin, bankAdmin);
+        loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
         userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
         enrichParticipantsWithExternalId(participants);
 
@@ -54,7 +54,7 @@ public class ServiceAgreementsConfigurator {
     }
 
     public void updateMasterServiceAgreementWithExternalIdByLegalEntity(String internalLegalEntityId) {
-        loginRestClient.login(bankAdmin, bankAdmin);
+        loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
         userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
         String internalServiceAgreementId = legalEntityPresentationRestClient

@@ -57,7 +57,7 @@ node {
             def customLegalEntitiesWithUserJson = ""
 
             if ("${params.MULTI_TENANCY_ENVIRONMENT}".toBoolean()) {
-                customLegalEntitiesWithUserJson = "-Dlegal.entities.with.users.json=data/multitenancy/${params.TENANT_ID}.json"
+                customLegalEntitiesWithUserJson = "-Dlegal.entities.with.users.json=data/multitenancy/${params.TENANT_ID}.json "
             } else if ("${params.USE_PERFORMANCE_TEST_DATA_SETUP}".toBoolean()) {
                 customLegalEntitiesWithUserJson = "-Dlegal.entities.with.users.json=data/performance-test-legal-entities-with-users-${params.PERFORMANCE_TEST_DATA}.json "
             }

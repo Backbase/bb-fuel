@@ -17,6 +17,7 @@ properties([
                 booleanParam(name: 'INGEST_ACTIONS', defaultValue: false, description: 'Ingest actions per user'),
                 booleanParam(name: 'MULTI_TENANCY_ENVIRONMENT', defaultValue: false, description: 'Enable for multi-tenancy environments'),
                 string(name: 'TENANT_ID', defaultValue: 'tenant_a', description: ''),
+                string(name: 'ROOT_ENTITLEMENTS_ADMIN', defaultValue: 'admin', description: ''),
                 booleanParam(name: 'USE_PERFORMANCE_TEST_DATA_SETUP', defaultValue: false, description: 'Use performance test data setup\n' +
                         'Only enable when strictly necessary (long running job)'),
                 choice(name: 'PERFORMANCE_TEST_DATA', choices: 'retail\nbusiness', description: 'Retail or business performance test data setup'),
@@ -67,6 +68,7 @@ node {
                     "-Dhealthcheck.timeout.in.minutes=1 " +
                     "-Dmulti.tenancy.environment=${params.MULTI_TENANCY_ENVIRONMENT} " +
                     "-Dtenant.id=${params.TENANT_ID} " +
+                    "-Droot.entitlements.admin=${params.ROOT_ENTITLEMENTS_ADMIN} " +
                     "-Dingest.access.control=${params.INGEST_ACCESS_CONTROL} " +
                     "-Dingest.custom.service.agreements=${params.INGEST_CUSTOM_SERVICE_AGREEMENTS} " +
                     "-Dingest.balance.history=${params.INGEST_BALANCE_HISTORY} " +

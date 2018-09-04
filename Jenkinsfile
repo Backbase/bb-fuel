@@ -22,7 +22,8 @@ properties([
                         'Only enable when strictly necessary (long running job)'),
                 choice(name: 'PERFORMANCE_TEST_DATA', choices: 'retail\nbusiness', description: 'Retail or business performance test data setup'),
                 choice(name: 'INFRA_BASE_URI', choices: 'infra.backbase.test:8080\neditorial.backbase.test:8080', description: ''),
-                string(name: 'DATALOADER_VERSION', defaultValue: 'LATEST', description: '')
+                string(name: 'DATALOADER_VERSION', defaultValue: 'LATEST', description: ''),
+                string(name: 'HEALTHCHECK_TIMEOUT_IN_MINUTES', defaultValue: '1', description: '')
         ])
 ])
 
@@ -65,7 +66,7 @@ node {
 
             sh "java -Denvironment.name=${params.ENVIRONMENT_NAME} " +
                     "-Dinfra.base.uri=http://${params.ENVIRONMENT_NAME}-${params.INFRA_BASE_URI} " +
-                    "-Dhealthcheck.timeout.in.minutes=1 " +
+                    "-Dhealthcheck.timeout.in.minutes=${params.HEALTHCHECK_TIMEOUT_IN_MINUTES} " +
                     "-Dmulti.tenancy.environment=${params.MULTI_TENANCY_ENVIRONMENT} " +
                     "-Dtenant.id=${params.TENANT_ID} " +
                     "-Droot.entitlements.admin=${params.ROOT_ENTITLEMENTS_ADMIN} " +

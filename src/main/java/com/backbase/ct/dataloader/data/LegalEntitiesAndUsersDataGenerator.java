@@ -23,12 +23,11 @@ public class LegalEntitiesAndUsersDataGenerator {
     public static LegalEntitiesPostRequestBody composeLegalEntitiesPostRequestBody(String legalEntityExternalId,
         String legalEntityName,
         String parentLegalEntityExternalId, String type) {
-
-        String name = faker.name().lastName() + " " + faker.company().industry();
+        String randomLegalEntityName = faker.name().lastName() + " " + faker.company().industry();
 
         return new LegalEntitiesPostRequestBody()
             .withExternalId(Optional.ofNullable(legalEntityExternalId).orElse(generateExternalLegalEntityId()))
-            .withName(Optional.ofNullable(legalEntityName).orElse(name))
+            .withName(Optional.ofNullable(legalEntityName).orElse(randomLegalEntityName))
             .withParentExternalId(
                 Optional.ofNullable(parentLegalEntityExternalId).orElse(CommonConstants.EXTERNAL_ROOT_LEGAL_ENTITY_ID))
             .withType((!Strings.isNullOrEmpty(type)) ? LegalEntityType.fromValue(type) : LegalEntityType.CUSTOMER);

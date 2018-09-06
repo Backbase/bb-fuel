@@ -94,9 +94,9 @@ public class ServiceAgreementsSetup {
             Set<String> externalUserIds = participant.getUsers();
 
             List<String> dataGroupIds = asList(
-                currencyDataGroup.getInternalEurCurrencyDataGroupId(),
-                currencyDataGroup.getInternalUsdCurrencyDataGroupId(),
-                currencyDataGroup.getInternalRandomCurrencyDataGroupId());
+                currencyDataGroup.getEuropeDataGroupId(),
+                currencyDataGroup.getUsDataGroupId(),
+                currencyDataGroup.getInternationalDataGroupId());
 
             for (String externalUserId : externalUserIds) {
                 this.permissionsConfigurator.assignPermissions(

@@ -41,7 +41,7 @@ public class ProductSummaryConfigurator {
             .forEach(product -> arrangementsIntegrationRestClient.ingestProductAndLogResponse(product));
     }
 
-    public List<ArrangementId> ingestSpecificCurrencyArrangementsByLegalEntity(String externalLegalEntityId,
+    public List<ArrangementId> ingestArrangementsByLegalEntity(String externalLegalEntityId,
         ArrangementsPostRequestBodyParent.Currency currency) {
         List<ArrangementId> arrangementIds = Collections.synchronizedList(new ArrayList<>());
 
@@ -49,35 +49,12 @@ public class ProductSummaryConfigurator {
             .generateRandomNumberInRange(globalProperties.getInt(CommonConstants.PROPERTY_ARRANGEMENTS_MIN),
                 globalProperties.getInt(CommonConstants.PROPERTY_ARRANGEMENTS_MAX));
         IntStream.range(0, randomAmount).parallel().forEach(randomNumber -> {
+            ArrangementsPostRequestBodyParent.Currency arrangementCurrency = currency == null
+                ? ArrangementsPostRequestBodyParent.Currency
+                .values()[random.nextInt(ArrangementsPostRequestBodyParent.Currency.values().length)]
+                : currency;
             ArrangementsPostRequestBody arrangement = ProductSummaryDataGenerator
-                .generateArrangementsPostRequestBody(externalLegalEntityId, currency);
-
-            ArrangementsPostResponseBody arrangementsPostResponseBody = arrangementsIntegrationRestClient
-                .ingestArrangement(arrangement)
-                .then()
-                .statusCode(SC_CREATED)
-                .extract()
-                .as(ArrangementsPostResponseBody.class);
-
-            arrangementIds.add(new ArrangementId(arrangementsPostResponseBody.getId(), arrangement.getId()));
-
-            LOGGER.info("Arrangement [{}] with currency [{}] ingested for product [{}] under legal entity [{}]",
-                arrangement.getName(), currency, arrangement.getProductId(), externalLegalEntityId);
-        });
-        return arrangementIds;
-    }
-
-    public List<ArrangementId> ingestRandomCurrencyArrangementsByLegalEntity(String externalLegalEntityId) {
-        List<ArrangementId> arrangementIds = Collections.synchronizedList(new ArrayList<>());
-
-        int randomAmount = CommonHelpers
-            .generateRandomNumberInRange(globalProperties.getInt(CommonConstants.PROPERTY_ARRANGEMENTS_MIN),
-                globalProperties.getInt(CommonConstants.PROPERTY_ARRANGEMENTS_MAX));
-        IntStream.range(0, randomAmount).parallel().forEach(randomNumber -> {
-            ArrangementsPostRequestBodyParent.Currency currency = ArrangementsPostRequestBodyParent.Currency
-                .values()[random.nextInt(ArrangementsPostRequestBodyParent.Currency.values().length)];
-            ArrangementsPostRequestBody arrangement = ProductSummaryDataGenerator
-                .generateArrangementsPostRequestBody(externalLegalEntityId, currency);
+                .generateArrangementsPostRequestBody(externalLegalEntityId, arrangementCurrency);
 
             ArrangementsPostResponseBody arrangementsPostResponseBody = arrangementsIntegrationRestClient
                 .ingestArrangement(arrangement)

@@ -2,38 +2,38 @@ package com.backbase.ct.dataloader.dto;
 
 public class CurrencyDataGroup {
 
-    private String internalRandomCurrencyDataGroupId;
-    private String internalEurCurrencyDataGroupId;
-    private String internalUsdCurrencyDataGroupId;
+    private String internationalDataGroupId;
+    private String europeDataGroupId;
+    private String usDataGroupId;
 
     public CurrencyDataGroup() {
 
     }
 
-    public CurrencyDataGroup withInternalRandomCurrencyDataGroupId(String internalRandomCurrencyDataGroupId) {
-        this.internalRandomCurrencyDataGroupId = internalRandomCurrencyDataGroupId;
+    public CurrencyDataGroup withInternationalDataGroupId(String internalRandomCurrencyDataGroupId) {
+        this.internationalDataGroupId = internalRandomCurrencyDataGroupId;
         return this;
     }
 
-    public CurrencyDataGroup withInternalEurCurrencyDataGroupId(String internalEurCurrencyDataGroupId) {
-        this.internalEurCurrencyDataGroupId = internalEurCurrencyDataGroupId;
+    public CurrencyDataGroup withEuropeDataGroupId(String internalEurCurrencyDataGroupId) {
+        this.europeDataGroupId = internalEurCurrencyDataGroupId;
         return this;
     }
 
-    public CurrencyDataGroup withInternalUsdCurrencyDataGroupId(String internalUsdCurrencyDataGroupId) {
-        this.internalUsdCurrencyDataGroupId = internalUsdCurrencyDataGroupId;
+    public CurrencyDataGroup withUsDataGroupId(String internalUsdCurrencyDataGroupId) {
+        this.usDataGroupId = internalUsdCurrencyDataGroupId;
         return this;
     }
 
-    public String getInternalRandomCurrencyDataGroupId() {
-        return internalRandomCurrencyDataGroupId;
+    public String getInternationalDataGroupId() {
+        return internationalDataGroupId;
     }
 
-    public String getInternalEurCurrencyDataGroupId() {
-        return internalEurCurrencyDataGroupId;
+    public String getEuropeDataGroupId() {
+        return europeDataGroupId;
     }
 
-    public String getInternalUsdCurrencyDataGroupId() {
-        return internalUsdCurrencyDataGroupId;
+    public String getUsDataGroupId() {
+        return usDataGroupId;
     }
 }

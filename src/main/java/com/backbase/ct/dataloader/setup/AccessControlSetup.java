@@ -141,17 +141,17 @@ public class AccessControlSetup {
         final CurrencyDataGroup currencyDataGroup = new CurrencyDataGroup();
         List<Callable<Void>> taskList = new ArrayList<>();
 
-        taskList.add(() -> generateTask(externalServiceAgreementId,
-            () -> this.productSummaryConfigurator.ingestRandomCurrencyArrangementsByLegalEntity(externalLegalEntityId),
-            currencyDataGroup::withInternalRandomCurrencyDataGroupId));
+        taskList.add(() -> generateTask(externalServiceAgreementId, "International",
+            () -> this.productSummaryConfigurator.ingestArrangementsByLegalEntity(externalLegalEntityId, null),
+            currencyDataGroup::withInternationalDataGroupId));
 
-        taskList.add(() -> generateTask(externalServiceAgreementId, () -> this.productSummaryConfigurator
-                .ingestSpecificCurrencyArrangementsByLegalEntity(externalLegalEntityId, Currency.EUR),
-            currencyDataGroup::withInternalEurCurrencyDataGroupId));
+        taskList.add(() -> generateTask(externalServiceAgreementId, "Europe",
+            () -> this.productSummaryConfigurator.ingestArrangementsByLegalEntity(externalLegalEntityId, Currency.EUR),
+            currencyDataGroup::withEuropeDataGroupId));
 
-        taskList.add(() -> generateTask(externalServiceAgreementId, () -> this.productSummaryConfigurator
-                .ingestSpecificCurrencyArrangementsByLegalEntity(externalLegalEntityId, Currency.USD),
-            currencyDataGroup::withInternalUsdCurrencyDataGroupId));
+        taskList.add(() -> generateTask(externalServiceAgreementId, "United States",
+            () -> this.productSummaryConfigurator.ingestArrangementsByLegalEntity(externalLegalEntityId, Currency.USD),
+            currencyDataGroup::withUsDataGroupId));
 
         taskList.parallelStream()
             .forEach(voidCallable -> {
@@ -172,9 +172,9 @@ public class AccessControlSetup {
         String adminFunctionGroupId = this.accessGroupsConfigurator.ingestAdminFunctionGroup(externalServiceAgreementId);
 
         List<String> dataGroupIds = asList(
-            currencyDataGroup.getInternalEurCurrencyDataGroupId(),
-            currencyDataGroup.getInternalUsdCurrencyDataGroupId(),
-            currencyDataGroup.getInternalRandomCurrencyDataGroupId());
+            currencyDataGroup.getEuropeDataGroupId(),
+            currencyDataGroup.getUsDataGroupId(),
+            currencyDataGroup.getInternationalDataGroupId());
 
         this.accessGroupIntegrationRestClient.assignPermissions(
             externalUserId,
@@ -213,11 +213,11 @@ public class AccessControlSetup {
             .withExternalLegalEntityId(legalEntity.getExternalId());
     }
 
-    private Void generateTask(String externalServiceAgreementId, Supplier<List<ArrangementId>> supplier,
+    private Void generateTask(String externalServiceAgreementId, String dataGroupName, Supplier<List<ArrangementId>> supplier,
         Consumer<String> consumer) {
         List<ArrangementId> ids = new ArrayList<>(supplier.get());
         String currencyDataGroupId = this.accessGroupsConfigurator
-            .ingestDataGroupForArrangements(externalServiceAgreementId, ids);
+            .ingestDataGroupForArrangements(externalServiceAgreementId, dataGroupName, ids);
 
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_TRANSACTIONS)) {
             ids.parallelStream()

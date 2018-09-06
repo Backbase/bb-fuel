@@ -63,14 +63,14 @@ public class AccessGroupsConfigurator {
         return functionGroupId;
     }
 
-    public String ingestDataGroupForArrangements(String externalServiceAgreementId,
+    public String ingestDataGroupForArrangements(String externalServiceAgreementId, String dataGroupName,
         List<ArrangementId> arrangementIds) {
         List<String> internalArrangementIds = arrangementIds.stream()
             .map(ArrangementId::getInternalArrangementId)
             .collect(Collectors.toList());
 
         String dataGroupId = accessGroupIntegrationRestClient.ingestDataGroup(
-            generateDataGroupPostRequestBody(externalServiceAgreementId, null, ARRANGEMENTS, internalArrangementIds))
+            generateDataGroupPostRequestBody(externalServiceAgreementId, dataGroupName, ARRANGEMENTS, internalArrangementIds))
             .then()
             .statusCode(SC_CREATED)
             .extract()

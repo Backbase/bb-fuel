@@ -122,7 +122,7 @@ public class ProductSummaryDataGenerator {
         if (currency.equals(ArrangementsPostRequestBodyParent.Currency.EUR)) {
             arrangementsPostRequestBody
                 .withIBAN(accountNumber)
-                .withBBAN(accountNumber.substring(3, accountNumber.length() - 1).replaceAll("[A-Z]", ""));
+                .withBBAN(accountNumber.substring(3, accountNumber.length() - 1).replaceAll("[a-zA-Z]", ""));
         } else {
             arrangementsPostRequestBody
                 .withBBAN(accountNumber);

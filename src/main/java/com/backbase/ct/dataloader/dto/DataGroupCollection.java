@@ -1,26 +1,26 @@
 package com.backbase.ct.dataloader.dto;
 
-public class CurrencyDataGroup {
+public class DataGroupCollection {
 
     private String internationalDataGroupId;
     private String europeDataGroupId;
     private String usDataGroupId;
 
-    public CurrencyDataGroup() {
+    public DataGroupCollection() {
 
     }
 
-    public CurrencyDataGroup withInternationalDataGroupId(String internalRandomCurrencyDataGroupId) {
+    public DataGroupCollection withInternationalDataGroupId(String internalRandomCurrencyDataGroupId) {
         this.internationalDataGroupId = internalRandomCurrencyDataGroupId;
         return this;
     }
 
-    public CurrencyDataGroup withEuropeDataGroupId(String internalEurCurrencyDataGroupId) {
+    public DataGroupCollection withEuropeDataGroupId(String internalEurCurrencyDataGroupId) {
         this.europeDataGroupId = internalEurCurrencyDataGroupId;
         return this;
     }
 
-    public CurrencyDataGroup withUsDataGroupId(String internalUsdCurrencyDataGroupId) {
+    public DataGroupCollection withUsDataGroupId(String internalUsdCurrencyDataGroupId) {
         this.usDataGroupId = internalUsdCurrencyDataGroupId;
         return this;
     }

@@ -11,7 +11,7 @@ import com.backbase.ct.dataloader.configurator.AccessGroupsConfigurator;
 import com.backbase.ct.dataloader.configurator.PermissionsConfigurator;
 import com.backbase.ct.dataloader.configurator.ServiceAgreementsConfigurator;
 import com.backbase.ct.dataloader.data.CommonConstants;
-import com.backbase.ct.dataloader.dto.CurrencyDataGroup;
+import com.backbase.ct.dataloader.dto.DataGroupCollection;
 import com.backbase.ct.dataloader.util.GlobalProperties;
 import com.backbase.ct.dataloader.util.ParserUtil;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.Participant;
@@ -38,7 +38,7 @@ public class ServiceAgreementsSetup {
     private final UserPresentationRestClient userPresentationRestClient;
     private final AccessControlSetup accessControlSetup;
     private String adminFunctionGroupId;
-    private CurrencyDataGroup currencyDataGroup = null;
+    private DataGroupCollection currencyDataGroup = null;
     private String rootEntitlementsAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
 
     public void setupCustomServiceAgreements() throws IOException {

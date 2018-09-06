@@ -21,7 +21,7 @@ import com.backbase.ct.dataloader.configurator.ProductSummaryConfigurator;
 import com.backbase.ct.dataloader.configurator.ServiceAgreementsConfigurator;
 import com.backbase.ct.dataloader.configurator.TransactionsConfigurator;
 import com.backbase.ct.dataloader.dto.ArrangementId;
-import com.backbase.ct.dataloader.dto.CurrencyDataGroup;
+import com.backbase.ct.dataloader.dto.DataGroupCollection;
 import com.backbase.ct.dataloader.dto.LegalEntityContext;
 import com.backbase.ct.dataloader.dto.LegalEntityWithUsers;
 import com.backbase.ct.dataloader.dto.UserContext;
@@ -90,12 +90,7 @@ public class AccessControlSetup {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_ACCESS_CONTROL)) {
             Arrays.stream(this.entities)
                 .forEach(entity -> {
-                    this.legalEntitiesAndUsersConfigurator.ingestUsersUnderLegalEntity(
-                        entity.getUserExternalIds(),
-                        entity.getParentLegalEntityExternalId(),
-                        entity.getLegalEntityExternalId(),
-                        entity.getLegalEntityName(),
-                        entity.getLegalEntityType());
+                    this.legalEntitiesAndUsersConfigurator.ingestUsersUnderLegalEntity(entity);
 
                     assembleFunctionDataGroupsAndPermissions(entity.getUserExternalIds());
                 });
@@ -121,8 +116,8 @@ public class AccessControlSetup {
             UserContext userContext = getUserContextBasedOnMSAByExternalUserId(userExternalId);
             legalEntitiesUserContextMap.put(userContext.getInternalLegalEntityId(), userContext);
 
-            if (legalEntityContext.getCurrencyDataGroup() == null) {
-                legalEntityContext.setCurrencyDataGroup(
+            if (legalEntityContext.getDataGroupCollection() == null) {
+                legalEntityContext.setDataGroupCollection(
                     ingestDataGroupArrangementsForServiceAgreement(userContext.getExternalServiceAgreementId(),
                         userContext.getExternalLegalEntityId()));
             }
@@ -133,12 +128,12 @@ public class AccessControlSetup {
             .forEach(userContext -> ingestFunctionGroupsAndAssignPermissions(userContext.getExternalUserId(),
                 userContext.getInternalServiceAgreementId(),
                 userContext.getExternalServiceAgreementId(),
-                legalEntityContext.getCurrencyDataGroup()));
+                legalEntityContext.getDataGroupCollection()));
     }
 
-    protected CurrencyDataGroup ingestDataGroupArrangementsForServiceAgreement(String externalServiceAgreementId,
+    protected DataGroupCollection ingestDataGroupArrangementsForServiceAgreement(String externalServiceAgreementId,
         String externalLegalEntityId) {
-        final CurrencyDataGroup currencyDataGroup = new CurrencyDataGroup();
+        final DataGroupCollection currencyDataGroup = new DataGroupCollection();
         List<Callable<Void>> taskList = new ArrayList<>();
 
         taskList.add(() -> generateTask(externalServiceAgreementId, "International",
@@ -167,7 +162,7 @@ public class AccessControlSetup {
 
     private void ingestFunctionGroupsAndAssignPermissions(String externalUserId, String internalServiceAgreementId,
         String externalServiceAgreementId,
-        CurrencyDataGroup currencyDataGroup) {
+        DataGroupCollection currencyDataGroup) {
 
         String adminFunctionGroupId = this.accessGroupsConfigurator.ingestAdminFunctionGroup(externalServiceAgreementId);
 

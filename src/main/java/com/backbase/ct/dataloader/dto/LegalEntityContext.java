@@ -2,14 +2,14 @@ package com.backbase.ct.dataloader.dto;
 
 public class LegalEntityContext {
 
-    private CurrencyDataGroup currencyDataGroup;
+    private DataGroupCollection dataGroupCollection;
 
-    public CurrencyDataGroup getCurrencyDataGroup() {
-        return currencyDataGroup;
+    public DataGroupCollection getDataGroupCollection() {
+        return dataGroupCollection;
     }
 
-    public void setCurrencyDataGroup(CurrencyDataGroup currencyDataGroup) {
-        this.currencyDataGroup = currencyDataGroup;
+    public void setDataGroupCollection(DataGroupCollection dataGroupCollection) {
+        this.dataGroupCollection = dataGroupCollection;
     }
 
 }

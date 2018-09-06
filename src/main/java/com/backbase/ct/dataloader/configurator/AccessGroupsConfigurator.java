@@ -30,24 +30,21 @@ public class AccessGroupsConfigurator {
 
     private static final String ARRANGEMENTS = "ARRANGEMENTS";
 
-    public String ingestFunctionGroupWithAllPrivilegesByFunctionNames(String externalServiceAgreementId,
-        List<String> functionNames) {
-        List<FunctionsGetResponseBody> functions = this.accessGroupIntegrationRestClient
-            .retrieveFunctions(functionNames);
+    private static final String ADMIN_FUNCTION_GROUP_NAME = "Admin";
 
-        return ingestFunctionGroupWithAllPrivileges(externalServiceAgreementId, functions);
+    public String ingestAdminFunctionGroup(String externalServiceAgreementId) {
+        return ingestAdminFunctionGroup(externalServiceAgreementId, ADMIN_FUNCTION_GROUP_NAME);
     }
 
-    public String ingestFunctionGroupWithAllPrivilegesNotContainingProvidedFunctionNames(
-        String externalServiceAgreementId, List<String> functionNames) {
+    public String ingestAdminFunctionGroup(String externalServiceAgreementId, String functionGroupName) {
         List<FunctionsGetResponseBody> functions = this.accessGroupIntegrationRestClient
-            .retrieveFunctionsNotContainingProvidedFunctionNames(functionNames);
+            .retrieveFunctions();
 
-        return ingestFunctionGroupWithAllPrivileges(externalServiceAgreementId, functions);
+        return ingestFunctionGroupWithAllPrivileges(externalServiceAgreementId, functionGroupName, functions);
     }
 
     private synchronized String ingestFunctionGroupWithAllPrivileges(String externalServiceAgreementId,
-        List<FunctionsGetResponseBody> functions) {
+        String functionGroupName, List<FunctionsGetResponseBody> functions) {
         String functionIds = functions.stream().map(FunctionsGetResponseBody::getFunctionId)
             .collect(Collectors.toList()).toString().trim();
         String cacheKey = String.format("%s-%s", externalServiceAgreementId, functionIds.trim());
@@ -57,10 +54,10 @@ public class AccessGroupsConfigurator {
         }
 
         String functionGroupId = accessGroupIntegrationRestClient.ingestFunctionGroup(externalServiceAgreementId,
-            createPermissionsWithAllPrivileges(functions));
+            functionGroupName, createPermissionsWithAllPrivileges(functions));
 
-        LOGGER.info("Function group [{}] ingested (service agreement [{}]) all privileges", functionGroupId,
-            externalServiceAgreementId);
+        LOGGER.info("Function group \"{}\" [{}] ingested (service agreement [{}]) all privileges", functionGroupName,
+            functionGroupId, externalServiceAgreementId);
 
         functionGroupsAllPrivilegesCache.put(cacheKey, functionGroupId);
         return functionGroupId;
@@ -73,7 +70,7 @@ public class AccessGroupsConfigurator {
             .collect(Collectors.toList());
 
         String dataGroupId = accessGroupIntegrationRestClient.ingestDataGroup(
-            generateDataGroupPostRequestBody(externalServiceAgreementId, ARRANGEMENTS, internalArrangementIds))
+            generateDataGroupPostRequestBody(externalServiceAgreementId, null, ARRANGEMENTS, internalArrangementIds))
             .then()
             .statusCode(SC_CREATED)
             .extract()

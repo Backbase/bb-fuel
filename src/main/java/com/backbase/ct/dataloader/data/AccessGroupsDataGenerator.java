@@ -15,18 +15,18 @@ public class AccessGroupsDataGenerator {
     private static Faker faker = new Faker();
 
     public static FunctionGroupPostRequestBody generateFunctionGroupPostRequestBody(String externalServiceAgreementId,
-        List<Permission> permissions) {
+        String functionGroupName, List<Permission> permissions) {
         return new FunctionGroupPostRequestBody()
-            .withName(faker.lorem().characters(8))
+            .withName(functionGroupName)
             .withDescription(faker.lorem().characters(8))
             .withExternalServiceAgreementId(externalServiceAgreementId)
             .withPermissions(permissions);
     }
 
     public static DataGroupPostRequestBody generateDataGroupPostRequestBody(String externalServiceAgreementId,
-        String type, List<String> items) {
+        String dataGroupName, String type, List<String> items) {
         return new DataGroupPostRequestBody()
-            .withName(faker.lorem().characters(8))
+            .withName(dataGroupName)
             .withDescription(faker.lorem().characters(8))
             .withExternalServiceAgreementId(externalServiceAgreementId)
             .withType(type)

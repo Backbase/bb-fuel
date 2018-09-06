@@ -1,15 +1,10 @@
 package com.backbase.ct.dataloader.setup;
 
-import static com.backbase.ct.dataloader.data.CommonConstants.PRODUCT_SUMMARY_FUNCTION_NAME;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_ACCESS_CONTROL;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_BALANCE_HISTORY;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_TRANSACTIONS;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_LEGAL_ENTITIES_WITH_USERS_JSON;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
-import static com.backbase.ct.dataloader.data.CommonConstants.SEPA_CT_FUNCTION_NAME;
-import static com.backbase.ct.dataloader.data.CommonConstants.TRANSACTIONS_FUNCTION_NAME;
-import static com.backbase.ct.dataloader.data.CommonConstants.US_DOMESTIC_WIRE_FUNCTION_NAME;
-import static com.backbase.ct.dataloader.data.CommonConstants.US_FOREIGN_WIRE_FUNCTION_NAME;
 import static com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.Currency;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
@@ -173,55 +168,22 @@ public class AccessControlSetup {
     private void ingestFunctionGroupsAndAssignPermissions(String externalUserId, String internalServiceAgreementId,
         String externalServiceAgreementId,
         CurrencyDataGroup currencyDataGroup) {
-        String sepaFunctionGroupId = this.accessGroupsConfigurator.ingestFunctionGroupWithAllPrivilegesByFunctionNames(
-            externalServiceAgreementId,
-            asList(SEPA_CT_FUNCTION_NAME, PRODUCT_SUMMARY_FUNCTION_NAME, TRANSACTIONS_FUNCTION_NAME));
 
-        String usWireFunctionGroupId = this.accessGroupsConfigurator
-            .ingestFunctionGroupWithAllPrivilegesByFunctionNames(
-                externalServiceAgreementId,
-                asList(US_DOMESTIC_WIRE_FUNCTION_NAME, US_FOREIGN_WIRE_FUNCTION_NAME, PRODUCT_SUMMARY_FUNCTION_NAME,
-                    TRANSACTIONS_FUNCTION_NAME));
+        String adminFunctionGroupId = this.accessGroupsConfigurator.ingestAdminFunctionGroup(externalServiceAgreementId);
 
-        String noSepaAndUsWireFunctionGroupId = this.accessGroupsConfigurator
-            .ingestFunctionGroupWithAllPrivilegesNotContainingProvidedFunctionNames(
-                externalServiceAgreementId,
-                asList(
-                    SEPA_CT_FUNCTION_NAME,
-                    US_DOMESTIC_WIRE_FUNCTION_NAME,
-                    US_FOREIGN_WIRE_FUNCTION_NAME));
-
-        List<String> sepaDataGroupIds = singletonList(currencyDataGroup.getInternalEurCurrencyDataGroupId());
-        List<String> usWireDataGroupIds = singletonList(currencyDataGroup.getInternalUsdCurrencyDataGroupId());
-        List<String> randomCurrencyDataGroupIds = singletonList(
+        List<String> dataGroupIds = asList(
+            currencyDataGroup.getInternalEurCurrencyDataGroupId(),
+            currencyDataGroup.getInternalUsdCurrencyDataGroupId(),
             currencyDataGroup.getInternalRandomCurrencyDataGroupId());
 
         this.accessGroupIntegrationRestClient.assignPermissions(
             externalUserId,
             internalServiceAgreementId,
-            sepaFunctionGroupId,
-            sepaDataGroupIds);
+            adminFunctionGroupId,
+            dataGroupIds);
 
         LOGGER.info("Permission assigned for service agreement [{}], user [{}], function group [{}], data groups {}",
-            internalServiceAgreementId, externalUserId, sepaFunctionGroupId, sepaDataGroupIds);
-
-        this.accessGroupIntegrationRestClient.assignPermissions(
-            externalUserId,
-            internalServiceAgreementId,
-            usWireFunctionGroupId,
-            usWireDataGroupIds);
-
-        LOGGER.info("Permission assigned for service agreement [{}], user [{}], function group [{}], data groups {}",
-            internalServiceAgreementId, externalUserId, usWireFunctionGroupId, usWireDataGroupIds);
-
-        this.accessGroupIntegrationRestClient.assignPermissions(
-            externalUserId,
-            internalServiceAgreementId,
-            noSepaAndUsWireFunctionGroupId,
-            randomCurrencyDataGroupIds);
-
-        LOGGER.info("Permission assigned for service agreement [{}], user [{}], function group [{}], data groups {}",
-            internalServiceAgreementId, externalUserId, noSepaAndUsWireFunctionGroupId, randomCurrencyDataGroupIds);
+            internalServiceAgreementId, externalUserId, adminFunctionGroupId, dataGroupIds);
     }
 
     public UserContext getUserContextBasedOnMSAByExternalUserId(String externalUserId) {

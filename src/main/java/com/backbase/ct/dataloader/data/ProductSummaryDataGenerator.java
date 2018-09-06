@@ -1,8 +1,9 @@
 package com.backbase.ct.dataloader.data;
 
 import static com.backbase.ct.dataloader.util.CommonHelpers.generateRandomAmountInRange;
+import static com.backbase.ct.dataloader.util.CommonHelpers.generateRandomNumberInRange;
+import static java.lang.String.valueOf;
 
-import com.backbase.ct.dataloader.util.CommonHelpers;
 import com.backbase.ct.dataloader.util.GlobalProperties;
 import com.backbase.ct.dataloader.util.ParserUtil;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBody;
@@ -60,7 +61,7 @@ public class ProductSummaryDataGenerator {
         ArrangementsPostRequestBodyParent.Currency currency) {
         ArrangementsPostRequestBodyParent.AccountHolderCountry[] accountHolderCountries = ArrangementsPostRequestBodyParent.AccountHolderCountry
             .values();
-        int productId = CommonHelpers.generateRandomNumberInRange(1, 7);
+        int productId = generateRandomNumberInRange(1, 7);
         boolean debitCreditAccountIndicator = false;
         final HashSet<DebitCard> debitCards = new HashSet<>();
 
@@ -69,21 +70,30 @@ public class ProductSummaryDataGenerator {
         }
 
         if (productId == 1) {
-            for (int i = 0; i < CommonHelpers
-                .generateRandomNumberInRange(globalProperties.getInt(CommonConstants.PROPERTY_DEBIT_CARDS_MIN),
+            for (int i = 0;
+                i < generateRandomNumberInRange(globalProperties.getInt(CommonConstants.PROPERTY_DEBIT_CARDS_MIN),
                     globalProperties.getInt(CommonConstants.PROPERTY_DEBIT_CARDS_MAX)); i++) {
                 debitCards.add(new DebitCard()
-                    .withNumber(String.format("%s", CommonHelpers.generateRandomNumberInRange(1111, 9999)))
+                    .withNumber(String.format("%s", generateRandomNumberInRange(1111, 9999)))
                     .withExpiryDate(faker.business()
                         .creditCardExpiry()));
             }
         }
 
+        String accountNumber = currency.equals(ArrangementsPostRequestBodyParent.Currency.EUR)
+            ? generateRandomIban() : valueOf(generateRandomNumberInRange(0, 999999999));
+
+        String bic = faker.finance().bic();
+
+        String arrangementName = faker.resolve("job.field") +
+            bic.substring(0, 2) +
+            accountNumber.substring(accountNumber.length() - 3, accountNumber.length() - 1);
+
         ArrangementsPostRequestBody arrangementsPostRequestBody = new ArrangementsPostRequestBody()
             .withId(UUID.randomUUID().toString())
             .withLegalEntityId(externalLegalEntityId)
             .withProductId(String.format("%s", productId))
-            .withName(faker.lorem().sentence(3, 0).replace(".", ""))
+            .withName(arrangementName)
             .withAlias(faker.lorem().characters(10))
             .withBookedBalance(generateRandomAmountInRange(10000L, 9999999L))
             .withAvailableBalance(generateRandomAmountInRange(10000L, 9999999L))
@@ -105,14 +115,17 @@ public class ProductSummaryDataGenerator {
             .withPostCode(faker.address().zipCode())
             .withTown(faker.address().city())
             .withAccountHolderCountry(
-                accountHolderCountries[CommonHelpers.generateRandomNumberInRange(0, accountHolderCountries.length - 1)])
-            .withCountrySubDivision(faker.address().state());
+                accountHolderCountries[generateRandomNumberInRange(0, accountHolderCountries.length - 1)])
+            .withCountrySubDivision(faker.address().state())
+            .withBIC(bic);
 
         if (currency.equals(ArrangementsPostRequestBodyParent.Currency.EUR)) {
-            arrangementsPostRequestBody.withIBAN(generateRandomIban());
+            arrangementsPostRequestBody
+                .withIBAN(accountNumber)
+                .withBBAN(accountNumber.substring(3, accountNumber.length() - 1).replaceAll("[A-Z]", ""));
         } else {
             arrangementsPostRequestBody
-                .withBBAN(String.valueOf(CommonHelpers.generateRandomNumberInRange(0, 999999999)));
+                .withBBAN(accountNumber);
         }
 
         return arrangementsPostRequestBody;

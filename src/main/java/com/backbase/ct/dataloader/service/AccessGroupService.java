@@ -16,11 +16,15 @@ import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.functiong
 import io.restassured.response.Response;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class AccessGroupService {
+
+    private final static Logger LOGGER = LoggerFactory.getLogger(AccessGroupService.class);
 
     private final AccessGroupPresentationRestClient accessGroupPresentationRestClient;
 
@@ -48,16 +52,24 @@ public class AccessGroupService {
                 .stream()
                 .filter(functionGroupsGetResponseBody -> functionGroupName.equals(functionGroupsGetResponseBody.getName()))
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("No existing function group found by service agreement and name"));
+                .orElseThrow(() -> new RuntimeException(String.format("No existing function group found by service agreement [%s] and name [%s]", externalServiceAgreementId, functionGroupName)));
+
+            LOGGER.info("Function group \"{}\" [{}] already exists, skipped ingesting this function group",
+                existingFunctionGroup.getName(), existingFunctionGroup.getId());
 
             return existingFunctionGroup.getId();
 
         } else {
-            return response.then()
+            String functionGroupId = response.then()
                 .statusCode(SC_CREATED)
                 .extract()
                 .as(DataGroupPostResponseBody.class)
                 .getId();
+
+            LOGGER.info("Function group \"{}\" [{}] ingested under service agreement [{}])",
+                functionGroupName, functionGroupId, externalServiceAgreementId);
+
+            return functionGroupId;
         }
     }
 
@@ -82,16 +94,21 @@ public class AccessGroupService {
                 .stream()
                 .filter(dataGroupsGetResponseBody -> dataGroupName.equals(dataGroupsGetResponseBody.getName()))
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("No existing data group found by service agreement and name"));
+                .orElseThrow(() -> new RuntimeException(String.format("No existing data group found by service agreement [%s] and name [%s]", externalServiceAgreementId, dataGroupName)));
 
             return existingDataGroup.getId();
 
         } else {
-            return response.then()
+            String dataGroupId = response.then()
                 .statusCode(SC_CREATED)
                 .extract()
                 .as(DataGroupPostResponseBody.class)
                 .getId();
+
+            LOGGER.info("Data group \"{}\" [{}] ingested under service agreement [{}]",
+                dataGroupName, dataGroupId, externalServiceAgreementId);
+
+            return dataGroupId;
         }
     }
 

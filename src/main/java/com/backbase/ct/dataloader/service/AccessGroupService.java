@@ -47,6 +47,7 @@ public class AccessGroupService {
                 .retrieveServiceAgreementByExternalId(externalServiceAgreementId)
                 .getId();
 
+            // Combination of function group name and service agreement is unique in the system
             FunctionGroupsGetResponseBody existingFunctionGroup = accessGroupPresentationRestClient
                 .retrieveFunctionGroupsByServiceAgreement(internalServiceAgreementId)
                 .stream()
@@ -89,6 +90,7 @@ public class AccessGroupService {
                 .retrieveServiceAgreementByExternalId(externalServiceAgreementId)
                 .getId();
 
+            // Combination of data group name and service agreement is unique in the system
             DataGroupsGetResponseBody existingDataGroup = accessGroupPresentationRestClient
                 .retrieveDataGroupsByServiceAgreement(internalServiceAgreementId)
                 .stream()

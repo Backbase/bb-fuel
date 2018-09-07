@@ -38,6 +38,7 @@ public class LegalEntityService {
                 return EXTERNAL_ROOT_LEGAL_ENTITY_ID;
             }
 
+            // Legal entity name is unique in the system
             LegalEntitiesGetResponseBody existingLegalEntity = legalEntityPresentationRestClient
                 .retrieveLegalEntities()
                 .stream()

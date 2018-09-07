@@ -40,7 +40,7 @@ public class ProductSummaryConfigurator {
     public void ingestProducts() throws IOException {
         ProductsPostRequestBody[] products = ProductSummaryDataGenerator.generateProductsPostRequestBodies();
         Arrays.stream(products).parallel()
-            .forEach(product -> arrangementsIntegrationRestClient.ingestProductAndLogResponse(product));
+            .forEach(arrangementsIntegrationRestClient::ingestProductAndLogResponse);
     }
 
     public List<ArrangementId> ingestArrangementsByLegalEntity(String externalLegalEntityId,

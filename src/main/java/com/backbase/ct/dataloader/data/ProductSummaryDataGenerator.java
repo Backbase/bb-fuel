@@ -2,13 +2,14 @@ package com.backbase.ct.dataloader.data;
 
 import static com.backbase.ct.dataloader.util.CommonHelpers.generateRandomAmountInRange;
 import static com.backbase.ct.dataloader.util.CommonHelpers.generateRandomNumberInRange;
+import static com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.AccountHolderCountry;
+import static com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.Currency;
 import static java.lang.String.valueOf;
 import static java.util.Arrays.asList;
 
 import com.backbase.ct.dataloader.util.GlobalProperties;
 import com.backbase.ct.dataloader.util.ParserUtil;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBody;
-import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.DebitCard;
 import com.backbase.integration.arrangement.rest.spec.v2.balancehistory.BalanceHistoryPostRequestBody;
 import com.backbase.integration.arrangement.rest.spec.v2.products.ProductsPostRequestBody;
@@ -69,10 +70,8 @@ public class ProductSummaryDataGenerator {
     }
 
     public static ArrangementsPostRequestBody generateArrangementsPostRequestBody(String externalLegalEntityId,
-        ArrangementsPostRequestBodyParent.Currency currency) {
-        ArrangementsPostRequestBodyParent.AccountHolderCountry[] accountHolderCountries = ArrangementsPostRequestBodyParent.AccountHolderCountry
-            .values();
-        int productId = generateRandomNumberInRange(1, 7);
+        Currency currency, int productId) {
+        AccountHolderCountry[] accountHolderCountries = AccountHolderCountry.values();
         boolean debitCreditAccountIndicator = false;
         final HashSet<DebitCard> debitCards = new HashSet<>();
 
@@ -91,7 +90,7 @@ public class ProductSummaryDataGenerator {
             }
         }
 
-        String accountNumber = currency.equals(ArrangementsPostRequestBodyParent.Currency.EUR)
+        String accountNumber = currency.equals(Currency.EUR)
             ? generateRandomIban() : valueOf(generateRandomNumberInRange(0, 999999999));
 
         String bic = faker.finance().bic();
@@ -129,7 +128,7 @@ public class ProductSummaryDataGenerator {
             .withCountrySubDivision(faker.address().state())
             .withBIC(bic);
 
-        if (currency.equals(ArrangementsPostRequestBodyParent.Currency.EUR)) {
+        if (currency.equals(Currency.EUR)) {
             arrangementsPostRequestBody
                 .withIBAN(accountNumber)
                 .withBBAN(accountNumber.substring(3).replaceAll("[a-zA-Z]", ""));

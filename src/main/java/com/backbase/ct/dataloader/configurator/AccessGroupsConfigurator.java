@@ -1,27 +1,29 @@
 package com.backbase.ct.dataloader.configurator;
 
 import static com.backbase.ct.dataloader.data.AccessGroupsDataGenerator.createPermissionsWithAllPrivileges;
+import static java.util.Collections.synchronizedMap;
 import static java.util.stream.Collectors.toList;
+import static org.apache.commons.lang.StringUtils.deleteWhitespace;
 
 import com.backbase.ct.dataloader.client.accessgroup.AccessGroupIntegrationRestClient;
 import com.backbase.ct.dataloader.dto.ArrangementId;
 import com.backbase.ct.dataloader.service.AccessGroupService;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.config.functions.FunctionsGetResponseBody;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class AccessGroupsConfigurator {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AccessGroupsConfigurator.class);
-
     private final AccessGroupIntegrationRestClient accessGroupIntegrationRestClient;
 
     private final AccessGroupService accessGroupService;
+
+    private Map<String, String> functionGroupCache = synchronizedMap(new HashMap<>());
 
     private static final String ARRANGEMENTS = "ARRANGEMENTS";
 
@@ -40,9 +42,18 @@ public class AccessGroupsConfigurator {
 
     private synchronized String ingestFunctionGroupWithAllPrivileges(String externalServiceAgreementId,
         String functionGroupName, List<FunctionsGetResponseBody> functions) {
+        String cacheKey = String.format("%s-%s", externalServiceAgreementId, deleteWhitespace(functionGroupName).trim());
 
-        return accessGroupService.ingestFunctionGroup(externalServiceAgreementId,
+        if (functionGroupCache.containsKey(cacheKey)) {
+            return functionGroupCache.get(cacheKey);
+        }
+
+        String functionGroupId = accessGroupService.ingestFunctionGroup(externalServiceAgreementId,
             functionGroupName, createPermissionsWithAllPrivileges(functions));
+
+        functionGroupCache.put(cacheKey, functionGroupId);
+
+        return functionGroupId;
     }
 
     public String ingestDataGroupForArrangements(String externalServiceAgreementId, String dataGroupName,

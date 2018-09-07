@@ -7,8 +7,6 @@ import com.backbase.ct.dataloader.client.common.AbstractRestClient;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.datagroups.DataGroupsGetResponseBody;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.functiongroups.FunctionGroupsGetResponseBody;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.users.UsersGetResponseBody;
-import io.restassured.response.Response;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
@@ -30,33 +28,39 @@ public class AccessGroupPresentationRestClient extends AbstractRestClient {
         setInitialPath(composeInitialPath());
     }
 
-    public List<String> retrieveFunctionGroupIdsByServiceAgreement(String internalServiceAgreement) {
-        FunctionGroupsGetResponseBody[] functionGroups = retrieveFunctionGroupsByServiceAgreement(
-            internalServiceAgreement)
+    public List<FunctionGroupsGetResponseBody> retrieveFunctionGroupsByServiceAgreement(String internalServiceAgreementId) {
+        return asList(requestSpec()
+            .get(String.format(getPath(ENDPOINT_FUNCTION_BY_SERVICE_AGREEMENT_ID), internalServiceAgreementId))
             .then()
             .statusCode(SC_OK)
             .extract()
-            .as(FunctionGroupsGetResponseBody[].class);
+            .as(FunctionGroupsGetResponseBody[].class));
+    }
 
-        return Arrays.stream(functionGroups)
+    public List<String> retrieveFunctionGroupIdsByServiceAgreement(String internalServiceAgreementId) {
+        return retrieveFunctionGroupsByServiceAgreement(internalServiceAgreementId).stream()
             .map(FunctionGroupsGetResponseBody::getId)
             .collect(Collectors.toList());
     }
 
-    public List<String> retrieveDataGroupIdsByServiceAgreement(String internalServiceAgreement) {
-        DataGroupsGetResponseBody[] dataGroups = retrieveDataGroupsByServiceAgreementAndType(internalServiceAgreement,
-            "ARRANGEMENTS")
+    public List<DataGroupsGetResponseBody> retrieveDataGroupsByServiceAgreement(String internalServiceAgreement) {
+        return asList(requestSpec()
+            .get(String.format(getPath(ENDPOINT_DATA_BY_SERVICE_AGREEMENT_ID_AND_TYPE), internalServiceAgreement,
+                    "ARRANGEMENTS"))
             .then()
             .statusCode(SC_OK)
             .extract()
-            .as(DataGroupsGetResponseBody[].class);
+            .as(DataGroupsGetResponseBody[].class));
+    }
 
-        return Arrays.stream(dataGroups)
+    public List<String> retrieveDataGroupIdsByServiceAgreement(String internalServiceAgreement) {
+        return retrieveDataGroupsByServiceAgreement(internalServiceAgreement).stream()
             .map(DataGroupsGetResponseBody::getId)
             .collect(Collectors.toList());
     }
 
-    public List<String> getDataGroupIdsByFunctionId(String internalServiceAgreementId, String internalUserId, String functionId) {
+    public List<String> getDataGroupIdsByFunctionId(String internalServiceAgreementId, String internalUserId,
+        String functionId) {
         List<String> functionGroupIds = getFunctionGroupsByFunctionId(internalServiceAgreementId, functionId)
             .stream()
             .map(FunctionGroupsGetResponseBody::getId)
@@ -65,7 +69,8 @@ public class AccessGroupPresentationRestClient extends AbstractRestClient {
         List<UsersGetResponseBody> userAccesses = getUserAccessByUserId(internalUserId);
 
         return userAccesses.stream()
-            .filter(userAccessGetResponseBody -> internalServiceAgreementId.equals(userAccessGetResponseBody.getServiceAgreementId()))
+            .filter(userAccessGetResponseBody -> internalServiceAgreementId
+                .equals(userAccessGetResponseBody.getServiceAgreementId()))
             .flatMap(userAccessGetResponseBody -> userAccessGetResponseBody.getDataAccessGroupsByFunctionAccessGroup()
                 .stream())
             .filter(dataAccessGroupsByFunctionAccessGroup -> functionGroupIds
@@ -75,15 +80,10 @@ public class AccessGroupPresentationRestClient extends AbstractRestClient {
             .getDataAccessGroupIds();
     }
 
-    public List<FunctionGroupsGetResponseBody> getFunctionGroupsByFunctionId(String internalServiceAgreementId, String functionId) {
-        FunctionGroupsGetResponseBody[] functionGroups = retrieveFunctionGroupsByServiceAgreement(
-            internalServiceAgreementId)
-            .then()
-            .statusCode(SC_OK)
-            .extract()
-            .as(FunctionGroupsGetResponseBody[].class);
-
-        return Arrays.stream(functionGroups)
+    public List<FunctionGroupsGetResponseBody> getFunctionGroupsByFunctionId(String internalServiceAgreementId,
+        String functionId) {
+        return retrieveFunctionGroupsByServiceAgreement(
+            internalServiceAgreementId).stream()
             .filter(fg -> fg.getPermissions()
                 .stream()
                 .anyMatch(permission -> functionId.equals(permission.getFunctionId())))
@@ -103,17 +103,6 @@ public class AccessGroupPresentationRestClient extends AbstractRestClient {
     @Override
     protected String composeInitialPath() {
         return getGatewayURI() + SLASH + ACCESS_GROUP_PRESENTATION_SERVICE;
-    }
-
-    private Response retrieveFunctionGroupsByServiceAgreement(String internalServiceAgreementId) {
-        return requestSpec()
-            .get(String.format(getPath(ENDPOINT_FUNCTION_BY_SERVICE_AGREEMENT_ID), internalServiceAgreementId));
-    }
-
-    private Response retrieveDataGroupsByServiceAgreementAndType(String internalServiceAgreement, String type) {
-        return requestSpec()
-            .get(
-                String.format(getPath(ENDPOINT_DATA_BY_SERVICE_AGREEMENT_ID_AND_TYPE), internalServiceAgreement, type));
     }
 
 }

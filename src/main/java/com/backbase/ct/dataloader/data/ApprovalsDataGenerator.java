@@ -24,7 +24,7 @@ public class ApprovalsDataGenerator {
     public static IntegrationPostApprovalTypeRequest createPostApprovalTypeRequest(String name, Integer rank) {
         return new IntegrationPostApprovalTypeRequest()
             .withName(name)
-            .withDescription(randomAlphabetic(15))
+            .withDescription(null)
             .withRank(rank);
     }
 
@@ -44,7 +44,7 @@ public class ApprovalsDataGenerator {
     public static IntegrationPostPolicyRequest createPostPolicyRequest(IntegrationPolicyItemDto... policyItems) {
         return new IntegrationPostPolicyRequest()
             .withName(randomAlphabetic(15))
-            .withDescription(randomAlphabetic(15))
+            .withDescription(null)
             .withAllowSelf(random.nextBoolean())
             .withItems(asList(policyItems));
     }
@@ -53,7 +53,7 @@ public class ApprovalsDataGenerator {
         IntegrationPolicyItemDto... policyItems) {
         return new IntegrationPostPolicyRequest()
             .withName(randomAlphabetic(15))
-            .withDescription(randomAlphabetic(15))
+            .withDescription(null)
             .withAllowSelf(allowSelf)
             .withItems(asList(policyItems));
     }
@@ -67,7 +67,7 @@ public class ApprovalsDataGenerator {
     public static IntegrationPostPolicyRequest createPostPolicyRequestWithZeroPolicyItems() {
         return new IntegrationPostPolicyRequest()
             .withName(randomAlphabetic(15))
-            .withDescription(randomAlphabetic(15))
+            .withDescription(null)
             .withAllowSelf(random.nextBoolean())
             .withItems(emptyList());
     }

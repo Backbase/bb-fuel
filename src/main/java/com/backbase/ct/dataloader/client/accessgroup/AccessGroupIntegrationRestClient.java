@@ -1,26 +1,26 @@
 package com.backbase.ct.dataloader.client.accessgroup;
 
-import static com.backbase.ct.dataloader.data.AccessGroupsDataGenerator.generateFunctionGroupPostRequestBody;
 import static java.util.Arrays.asList;
-import static org.apache.http.HttpStatus.SC_CREATED;
 import static org.apache.http.HttpStatus.SC_OK;
 
 import com.backbase.ct.dataloader.client.common.AbstractRestClient;
 import com.backbase.ct.dataloader.data.CommonConstants;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.config.functions.FunctionsGetResponseBody;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.datagroups.DataGroupPostRequestBody;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.Permission;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.functiongroups.FunctionGroupPostRequestBody;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.functiongroups.FunctionGroupPostResponseBody;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.users.permissions.AssignPermissionsPostRequestBody;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
 public class AccessGroupIntegrationRestClient extends AbstractRestClient {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AccessGroupIntegrationRestClient.class);
 
     private static final String ENTITLEMENTS = globalProperties
         .getString(CommonConstants.PROPERTY_ACCESS_CONTROL_BASE_URI);
@@ -42,15 +42,6 @@ public class AccessGroupIntegrationRestClient extends AbstractRestClient {
             .contentType(ContentType.JSON)
             .body(body)
             .post(getPath(ENDPOINT_FUNCTION));
-    }
-
-    public String ingestFunctionGroup(String externalServiceAgreementId, String functionGroupName, List<Permission> permissions) {
-        return ingestFunctionGroup(generateFunctionGroupPostRequestBody(externalServiceAgreementId, functionGroupName, permissions))
-            .then()
-            .statusCode(SC_CREATED)
-            .extract()
-            .as(FunctionGroupPostResponseBody.class)
-            .getId();
     }
 
     public Response ingestDataGroup(DataGroupPostRequestBody body) {

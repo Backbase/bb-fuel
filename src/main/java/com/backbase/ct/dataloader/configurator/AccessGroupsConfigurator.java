@@ -1,18 +1,13 @@
 package com.backbase.ct.dataloader.configurator;
 
 import static com.backbase.ct.dataloader.data.AccessGroupsDataGenerator.createPermissionsWithAllPrivileges;
-import static com.backbase.ct.dataloader.data.AccessGroupsDataGenerator.generateDataGroupPostRequestBody;
-import static org.apache.http.HttpStatus.SC_CREATED;
+import static java.util.stream.Collectors.toList;
 
 import com.backbase.ct.dataloader.client.accessgroup.AccessGroupIntegrationRestClient;
 import com.backbase.ct.dataloader.dto.ArrangementId;
+import com.backbase.ct.dataloader.service.AccessGroupService;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.config.functions.FunctionsGetResponseBody;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.datagroups.DataGroupPostResponseBody;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +21,7 @@ public class AccessGroupsConfigurator {
 
     private final AccessGroupIntegrationRestClient accessGroupIntegrationRestClient;
 
-    private Map<String, String> functionGroupsAllPrivilegesCache = Collections.synchronizedMap(new HashMap<>());
+    private final AccessGroupService accessGroupService;
 
     private static final String ARRANGEMENTS = "ARRANGEMENTS";
 
@@ -45,21 +40,12 @@ public class AccessGroupsConfigurator {
 
     private synchronized String ingestFunctionGroupWithAllPrivileges(String externalServiceAgreementId,
         String functionGroupName, List<FunctionsGetResponseBody> functions) {
-        String functionIds = functions.stream().map(FunctionsGetResponseBody::getFunctionId)
-            .collect(Collectors.toList()).toString().trim();
-        String cacheKey = String.format("%s-%s", externalServiceAgreementId, functionIds.trim());
-
-        if (functionGroupsAllPrivilegesCache.containsKey(cacheKey)) {
-            return functionGroupsAllPrivilegesCache.get(cacheKey);
-        }
-
-        String functionGroupId = accessGroupIntegrationRestClient.ingestFunctionGroup(externalServiceAgreementId,
+        String functionGroupId = accessGroupService.ingestFunctionGroup(externalServiceAgreementId,
             functionGroupName, createPermissionsWithAllPrivileges(functions));
 
-        LOGGER.info("Function group \"{}\" [{}] ingested (service agreement [{}]) all privileges", functionGroupName,
-            functionGroupId, externalServiceAgreementId);
+        LOGGER.info("Function group \"{}\" [{}] ingested/used (service agreement [{}]) all privileges",
+            functionGroupName, functionGroupId, externalServiceAgreementId);
 
-        functionGroupsAllPrivilegesCache.put(cacheKey, functionGroupId);
         return functionGroupId;
     }
 
@@ -67,18 +53,13 @@ public class AccessGroupsConfigurator {
         List<ArrangementId> arrangementIds) {
         List<String> internalArrangementIds = arrangementIds.stream()
             .map(ArrangementId::getInternalArrangementId)
-            .collect(Collectors.toList());
+            .collect(toList());
 
-        String dataGroupId = accessGroupIntegrationRestClient.ingestDataGroup(
-            generateDataGroupPostRequestBody(externalServiceAgreementId, dataGroupName, ARRANGEMENTS, internalArrangementIds))
-            .then()
-            .statusCode(SC_CREATED)
-            .extract()
-            .as(DataGroupPostResponseBody.class)
-            .getId();
+        String dataGroupId = accessGroupService.ingestDataGroup(
+            externalServiceAgreementId, dataGroupName, ARRANGEMENTS, internalArrangementIds);
 
-        LOGGER.info("Data group [{}] ingested (service agreement [{}]) for arrangements {}", dataGroupId,
-            externalServiceAgreementId, internalArrangementIds);
+        LOGGER.info("Data group \"{}\" [{}] ingested/used (service agreement [{}]) for arrangements {}",
+            dataGroupName, dataGroupId, externalServiceAgreementId, internalArrangementIds);
 
         return dataGroupId;
     }

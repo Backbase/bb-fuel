@@ -18,7 +18,7 @@ public class AccessGroupsDataGenerator {
         String functionGroupName, List<Permission> permissions) {
         return new FunctionGroupPostRequestBody()
             .withName(functionGroupName)
-            .withDescription(faker.lorem().characters(8))
+            .withDescription(functionGroupName)
             .withExternalServiceAgreementId(externalServiceAgreementId)
             .withPermissions(permissions);
     }
@@ -27,7 +27,7 @@ public class AccessGroupsDataGenerator {
         String dataGroupName, String type, List<String> items) {
         return new DataGroupPostRequestBody()
             .withName(dataGroupName)
-            .withDescription(faker.lorem().characters(8))
+            .withDescription(dataGroupName)
             .withExternalServiceAgreementId(externalServiceAgreementId)
             .withType(type)
             .withItems(items);

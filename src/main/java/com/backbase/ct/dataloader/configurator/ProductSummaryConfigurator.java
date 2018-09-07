@@ -66,7 +66,7 @@ public class ProductSummaryConfigurator {
             arrangementIds.add(new ArrangementId(arrangementsPostResponseBody.getId(), arrangement.getId()));
 
             LOGGER.info("Arrangement [{}] with currency [{}] ingested for product [{}] under legal entity [{}]",
-                arrangement.getName(), currency, arrangement.getProductId(), externalLegalEntityId);
+                arrangement.getName(), arrangementCurrency, arrangement.getProductId(), externalLegalEntityId);
         });
         return arrangementIds;
     }

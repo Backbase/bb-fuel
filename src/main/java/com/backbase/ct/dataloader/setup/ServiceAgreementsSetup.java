@@ -38,7 +38,7 @@ public class ServiceAgreementsSetup {
     private final UserPresentationRestClient userPresentationRestClient;
     private final AccessControlSetup accessControlSetup;
     private String adminFunctionGroupId;
-    private DataGroupCollection currencyDataGroup = null;
+    private DataGroupCollection dataGroupCollection = null;
     private String rootEntitlementsAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
 
     public void setupCustomServiceAgreements() throws IOException {
@@ -83,7 +83,7 @@ public class ServiceAgreementsSetup {
             .retrieveServiceAgreement(internalServiceAgreementId)
             .getExternalId();
 
-        this.currencyDataGroup = this.accessControlSetup
+        this.dataGroupCollection = this.accessControlSetup
             .ingestDataGroupArrangementsForServiceAgreement(externalServiceAgreementId, externalLegalEntityId);
 
         adminFunctionGroupId = this.accessGroupsConfigurator.ingestAdminFunctionGroup(externalServiceAgreementId);
@@ -94,9 +94,9 @@ public class ServiceAgreementsSetup {
             Set<String> externalUserIds = participant.getUsers();
 
             List<String> dataGroupIds = asList(
-                currencyDataGroup.getEuropeDataGroupId(),
-                currencyDataGroup.getUsDataGroupId(),
-                currencyDataGroup.getInternationalDataGroupId());
+                dataGroupCollection.getEuropeDataGroupId(),
+                dataGroupCollection.getUsDataGroupId(),
+                dataGroupCollection.getInternationalDataGroupId());
 
             for (String externalUserId : externalUserIds) {
                 this.permissionsConfigurator.assignPermissions(

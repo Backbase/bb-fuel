@@ -1,5 +1,7 @@
 package com.backbase.ct.dataloader.data;
 
+import static com.backbase.ct.dataloader.data.CommonConstants.*;
+
 import com.backbase.integration.legalentity.rest.spec.v2.legalentities.LegalEntitiesPostRequestBody;
 import com.backbase.integration.legalentity.rest.spec.v2.legalentities.enumeration.LegalEntityType;
 import com.backbase.integration.user.rest.spec.v2.users.UsersPostRequestBody;
@@ -15,7 +17,7 @@ public class LegalEntitiesAndUsersDataGenerator {
     public static LegalEntitiesPostRequestBody generateRootLegalEntitiesPostRequestBody(String externalLegalEntityId) {
         return new LegalEntitiesPostRequestBody()
             .withExternalId(externalLegalEntityId)
-            .withName(faker.lorem().sentence(3, 0).replace(".", ""))
+            .withName("Bank")
             .withParentExternalId(null)
             .withType(LegalEntityType.BANK);
     }
@@ -23,12 +25,13 @@ public class LegalEntitiesAndUsersDataGenerator {
     public static LegalEntitiesPostRequestBody composeLegalEntitiesPostRequestBody(String legalEntityExternalId,
         String legalEntityName,
         String parentLegalEntityExternalId, String type) {
+        String randomLegalEntityName = faker.name().lastName() + " " + faker.company().industry().replaceAll("(/| or).*", "");
+
         return new LegalEntitiesPostRequestBody()
             .withExternalId(Optional.ofNullable(legalEntityExternalId).orElse(generateExternalLegalEntityId()))
-            .withName(Optional.ofNullable(legalEntityName).orElse(faker.lorem().sentence(3, 0)
-                .replace(".", "")))
+            .withName(Optional.ofNullable(legalEntityName).orElse(randomLegalEntityName))
             .withParentExternalId(
-                Optional.ofNullable(parentLegalEntityExternalId).orElse(CommonConstants.EXTERNAL_ROOT_LEGAL_ENTITY_ID))
+                Optional.ofNullable(parentLegalEntityExternalId).orElse(EXTERNAL_ROOT_LEGAL_ENTITY_ID))
             .withType((!Strings.isNullOrEmpty(type)) ? LegalEntityType.fromValue(type) : LegalEntityType.CUSTOMER);
     }
 
@@ -40,6 +43,6 @@ public class LegalEntitiesAndUsersDataGenerator {
     }
 
     private static String generateExternalLegalEntityId() {
-        return CommonConstants.EXTERNAL_LEGAL_ENTITY_ID_PREFIX + RandomStringUtils.randomNumeric(8);
+        return EXTERNAL_LEGAL_ENTITY_ID_PREFIX + RandomStringUtils.randomNumeric(8);
     }
 }

@@ -1,11 +1,14 @@
 package com.backbase.ct.dataloader.client.legalentity;
 
+import static java.util.Arrays.asList;
 import static org.apache.http.HttpStatus.SC_OK;
 
 import com.backbase.ct.dataloader.client.common.AbstractRestClient;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementGetResponseBody;
+import com.backbase.presentation.legalentity.rest.spec.v2.legalentities.LegalEntitiesGetResponseBody;
 import com.backbase.presentation.legalentity.rest.spec.v2.legalentities.LegalEntityByIdGetResponseBody;
 import io.restassured.response.Response;
+import java.util.List;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -22,6 +25,15 @@ public class LegalEntityPresentationRestClient extends AbstractRestClient {
     public LegalEntityPresentationRestClient() {
         super(SERVICE_VERSION);
         setInitialPath(composeInitialPath());
+    }
+
+    public List<LegalEntitiesGetResponseBody> retrieveLegalEntities() {
+        return asList(requestSpec()
+            .get(getPath(ENDPOINT_LEGAL_ENTITIES))
+            .then()
+            .statusCode(SC_OK)
+            .extract()
+            .as(LegalEntitiesGetResponseBody[].class));
     }
 
     public Response retrieveLegalEntityByExternalId(String externalLegalEntityId) {

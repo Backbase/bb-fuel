@@ -1,15 +1,10 @@
 package com.backbase.ct.dataloader.setup;
 
-import static com.backbase.ct.dataloader.data.CommonConstants.PRODUCT_SUMMARY_FUNCTION_NAME;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_ACCESS_CONTROL;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_BALANCE_HISTORY;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_TRANSACTIONS;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_LEGAL_ENTITIES_WITH_USERS_JSON;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
-import static com.backbase.ct.dataloader.data.CommonConstants.SEPA_CT_FUNCTION_NAME;
-import static com.backbase.ct.dataloader.data.CommonConstants.TRANSACTIONS_FUNCTION_NAME;
-import static com.backbase.ct.dataloader.data.CommonConstants.US_DOMESTIC_WIRE_FUNCTION_NAME;
-import static com.backbase.ct.dataloader.data.CommonConstants.US_FOREIGN_WIRE_FUNCTION_NAME;
 import static com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.Currency;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
@@ -26,7 +21,7 @@ import com.backbase.ct.dataloader.configurator.ProductSummaryConfigurator;
 import com.backbase.ct.dataloader.configurator.ServiceAgreementsConfigurator;
 import com.backbase.ct.dataloader.configurator.TransactionsConfigurator;
 import com.backbase.ct.dataloader.dto.ArrangementId;
-import com.backbase.ct.dataloader.dto.CurrencyDataGroup;
+import com.backbase.ct.dataloader.dto.DataGroupCollection;
 import com.backbase.ct.dataloader.dto.LegalEntityContext;
 import com.backbase.ct.dataloader.dto.LegalEntityWithUsers;
 import com.backbase.ct.dataloader.dto.UserContext;
@@ -95,12 +90,7 @@ public class AccessControlSetup {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_ACCESS_CONTROL)) {
             Arrays.stream(this.entities)
                 .forEach(entity -> {
-                    this.legalEntitiesAndUsersConfigurator.ingestUsersUnderLegalEntity(
-                        entity.getUserExternalIds(),
-                        entity.getParentLegalEntityExternalId(),
-                        entity.getLegalEntityExternalId(),
-                        entity.getLegalEntityName(),
-                        entity.getLegalEntityType());
+                    this.legalEntitiesAndUsersConfigurator.ingestUsersUnderLegalEntity(entity);
 
                     assembleFunctionDataGroupsAndPermissions(entity.getUserExternalIds());
                 });
@@ -126,8 +116,8 @@ public class AccessControlSetup {
             UserContext userContext = getUserContextBasedOnMSAByExternalUserId(userExternalId);
             legalEntitiesUserContextMap.put(userContext.getInternalLegalEntityId(), userContext);
 
-            if (legalEntityContext.getCurrencyDataGroup() == null) {
-                legalEntityContext.setCurrencyDataGroup(
+            if (legalEntityContext.getDataGroupCollection() == null) {
+                legalEntityContext.setDataGroupCollection(
                     ingestDataGroupArrangementsForServiceAgreement(userContext.getExternalServiceAgreementId(),
                         userContext.getExternalLegalEntityId()));
             }
@@ -138,25 +128,25 @@ public class AccessControlSetup {
             .forEach(userContext -> ingestFunctionGroupsAndAssignPermissions(userContext.getExternalUserId(),
                 userContext.getInternalServiceAgreementId(),
                 userContext.getExternalServiceAgreementId(),
-                legalEntityContext.getCurrencyDataGroup()));
+                legalEntityContext.getDataGroupCollection()));
     }
 
-    protected CurrencyDataGroup ingestDataGroupArrangementsForServiceAgreement(String externalServiceAgreementId,
+    protected DataGroupCollection ingestDataGroupArrangementsForServiceAgreement(String externalServiceAgreementId,
         String externalLegalEntityId) {
-        final CurrencyDataGroup currencyDataGroup = new CurrencyDataGroup();
+        final DataGroupCollection dataGroupCollection = new DataGroupCollection();
         List<Callable<Void>> taskList = new ArrayList<>();
 
-        taskList.add(() -> generateTask(externalServiceAgreementId,
-            () -> this.productSummaryConfigurator.ingestRandomCurrencyArrangementsByLegalEntity(externalLegalEntityId),
-            currencyDataGroup::withInternalRandomCurrencyDataGroupId));
+        taskList.add(() -> generateTask(externalServiceAgreementId, "International",
+            () -> this.productSummaryConfigurator.ingestArrangementsByLegalEntity(externalLegalEntityId, null),
+            dataGroupCollection::withInternationalDataGroupId));
 
-        taskList.add(() -> generateTask(externalServiceAgreementId, () -> this.productSummaryConfigurator
-                .ingestSpecificCurrencyArrangementsByLegalEntity(externalLegalEntityId, Currency.EUR),
-            currencyDataGroup::withInternalEurCurrencyDataGroupId));
+        taskList.add(() -> generateTask(externalServiceAgreementId, "Europe",
+            () -> this.productSummaryConfigurator.ingestArrangementsByLegalEntity(externalLegalEntityId, Currency.EUR),
+            dataGroupCollection::withEuropeDataGroupId));
 
-        taskList.add(() -> generateTask(externalServiceAgreementId, () -> this.productSummaryConfigurator
-                .ingestSpecificCurrencyArrangementsByLegalEntity(externalLegalEntityId, Currency.USD),
-            currencyDataGroup::withInternalUsdCurrencyDataGroupId));
+        taskList.add(() -> generateTask(externalServiceAgreementId, "United States",
+            () -> this.productSummaryConfigurator.ingestArrangementsByLegalEntity(externalLegalEntityId, Currency.USD),
+            dataGroupCollection::withUsDataGroupId));
 
         taskList.parallelStream()
             .forEach(voidCallable -> {
@@ -167,61 +157,28 @@ public class AccessControlSetup {
                 }
             });
 
-        return currencyDataGroup;
+        return dataGroupCollection;
     }
 
     private void ingestFunctionGroupsAndAssignPermissions(String externalUserId, String internalServiceAgreementId,
         String externalServiceAgreementId,
-        CurrencyDataGroup currencyDataGroup) {
-        String sepaFunctionGroupId = this.accessGroupsConfigurator.ingestFunctionGroupWithAllPrivilegesByFunctionNames(
-            externalServiceAgreementId,
-            asList(SEPA_CT_FUNCTION_NAME, PRODUCT_SUMMARY_FUNCTION_NAME, TRANSACTIONS_FUNCTION_NAME));
+        DataGroupCollection dataGroupCollection) {
 
-        String usWireFunctionGroupId = this.accessGroupsConfigurator
-            .ingestFunctionGroupWithAllPrivilegesByFunctionNames(
-                externalServiceAgreementId,
-                asList(US_DOMESTIC_WIRE_FUNCTION_NAME, US_FOREIGN_WIRE_FUNCTION_NAME, PRODUCT_SUMMARY_FUNCTION_NAME,
-                    TRANSACTIONS_FUNCTION_NAME));
+        String adminFunctionGroupId = this.accessGroupsConfigurator.ingestAdminFunctionGroup(externalServiceAgreementId);
 
-        String noSepaAndUsWireFunctionGroupId = this.accessGroupsConfigurator
-            .ingestFunctionGroupWithAllPrivilegesNotContainingProvidedFunctionNames(
-                externalServiceAgreementId,
-                asList(
-                    SEPA_CT_FUNCTION_NAME,
-                    US_DOMESTIC_WIRE_FUNCTION_NAME,
-                    US_FOREIGN_WIRE_FUNCTION_NAME));
-
-        List<String> sepaDataGroupIds = singletonList(currencyDataGroup.getInternalEurCurrencyDataGroupId());
-        List<String> usWireDataGroupIds = singletonList(currencyDataGroup.getInternalUsdCurrencyDataGroupId());
-        List<String> randomCurrencyDataGroupIds = singletonList(
-            currencyDataGroup.getInternalRandomCurrencyDataGroupId());
+        List<String> dataGroupIds = asList(
+            dataGroupCollection.getEuropeDataGroupId(),
+            dataGroupCollection.getUsDataGroupId(),
+            dataGroupCollection.getInternationalDataGroupId());
 
         this.accessGroupIntegrationRestClient.assignPermissions(
             externalUserId,
             internalServiceAgreementId,
-            sepaFunctionGroupId,
-            sepaDataGroupIds);
+            adminFunctionGroupId,
+            dataGroupIds);
 
         LOGGER.info("Permission assigned for service agreement [{}], user [{}], function group [{}], data groups {}",
-            internalServiceAgreementId, externalUserId, sepaFunctionGroupId, sepaDataGroupIds);
-
-        this.accessGroupIntegrationRestClient.assignPermissions(
-            externalUserId,
-            internalServiceAgreementId,
-            usWireFunctionGroupId,
-            usWireDataGroupIds);
-
-        LOGGER.info("Permission assigned for service agreement [{}], user [{}], function group [{}], data groups {}",
-            internalServiceAgreementId, externalUserId, usWireFunctionGroupId, usWireDataGroupIds);
-
-        this.accessGroupIntegrationRestClient.assignPermissions(
-            externalUserId,
-            internalServiceAgreementId,
-            noSepaAndUsWireFunctionGroupId,
-            randomCurrencyDataGroupIds);
-
-        LOGGER.info("Permission assigned for service agreement [{}], user [{}], function group [{}], data groups {}",
-            internalServiceAgreementId, externalUserId, noSepaAndUsWireFunctionGroupId, randomCurrencyDataGroupIds);
+            internalServiceAgreementId, externalUserId, adminFunctionGroupId, dataGroupIds);
     }
 
     public UserContext getUserContextBasedOnMSAByExternalUserId(String externalUserId) {
@@ -251,25 +208,25 @@ public class AccessControlSetup {
             .withExternalLegalEntityId(legalEntity.getExternalId());
     }
 
-    private Void generateTask(String externalServiceAgreementId, Supplier<List<ArrangementId>> supplier,
+    private Void generateTask(String externalServiceAgreementId, String dataGroupName, Supplier<List<ArrangementId>> supplier,
         Consumer<String> consumer) {
-        List<ArrangementId> ids = new ArrayList<>(supplier.get());
-        String currencyDataGroupId = this.accessGroupsConfigurator
-            .ingestDataGroupForArrangements(externalServiceAgreementId, ids);
+        List<ArrangementId> arrangementIds = new ArrayList<>(supplier.get());
+        String dataGroupId = this.accessGroupsConfigurator
+            .ingestDataGroupForArrangements(externalServiceAgreementId, dataGroupName, arrangementIds);
 
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_TRANSACTIONS)) {
-            ids.parallelStream()
+            arrangementIds.parallelStream()
                 .forEach(arrangementId -> this.transactionsConfigurator
                     .ingestTransactionsByArrangement(arrangementId.getExternalArrangementId()));
         }
 
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_BALANCE_HISTORY)) {
-            ids.parallelStream()
+            arrangementIds.parallelStream()
                 .forEach(arrangementId -> this.productSummaryConfigurator
                     .ingestBalanceHistory(arrangementId.getExternalArrangementId()));
         }
 
-        consumer.accept(currencyDataGroupId);
+        consumer.accept(dataGroupId);
         return null;
     }
 }

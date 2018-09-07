@@ -31,15 +31,6 @@
   },
   {
     "userExternalIds": [
-      "U0001011",
-      "U0001012",
-      "U0001013",
-      "U0001014",
-      "U0001015"
-    ]
-  },
-  {
-    "userExternalIds": [
       "U0001021",
       "U0001022",
       "U0001023",
@@ -53,6 +44,16 @@
     ]
   },
   {
+    "userExternalIds": [
+      "U0001011",
+      "U0001012",
+      "U0001013",
+      "U0001014",
+      "U0001015"
+    ]
+  },
+  {
+    "legalEntityName": "Green Bicycle Factory",
     "userExternalIds": [
       "U0001111",
       "U0001112",

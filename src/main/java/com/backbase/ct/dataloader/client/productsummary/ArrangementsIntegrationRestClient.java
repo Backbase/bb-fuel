@@ -7,6 +7,7 @@ import com.backbase.buildingblocks.presentation.errors.BadRequestException;
 import com.backbase.ct.dataloader.client.common.AbstractRestClient;
 import com.backbase.ct.dataloader.data.CommonConstants;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBody;
+import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostResponseBody;
 import com.backbase.integration.arrangement.rest.spec.v2.balancehistory.BalanceHistoryPostRequestBody;
 import com.backbase.integration.arrangement.rest.spec.v2.products.ProductsPostRequestBody;
 import io.restassured.http.ContentType;
@@ -34,11 +35,15 @@ public class ArrangementsIntegrationRestClient extends AbstractRestClient {
         setInitialPath(composeInitialPath());
     }
 
-    public Response ingestArrangement(ArrangementsPostRequestBody body) {
+    public ArrangementsPostResponseBody ingestArrangement(ArrangementsPostRequestBody body) {
         return requestSpec()
             .contentType(ContentType.JSON)
             .body(body)
-            .post(getPath(ENDPOINT_ARRANGEMENTS));
+            .post(getPath(ENDPOINT_ARRANGEMENTS))
+            .then()
+            .statusCode(SC_CREATED)
+            .extract()
+            .as(ArrangementsPostResponseBody.class);
     }
 
     public void ingestProductAndLogResponse(ProductsPostRequestBody product) {

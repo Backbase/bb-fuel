@@ -9,7 +9,7 @@
 
     <groupId>com.backbase.ct</groupId>
     <artifactId>dataloader</artifactId>
-    <version>1.5.5-SNAPSHOT</version>
+    <version>1.6.0-SNAPSHOT</version>
     <name>Backbase :: Capability Testing :: Data Loader</name>
 
     <scm>

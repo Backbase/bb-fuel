@@ -14,9 +14,11 @@ public class ServiceAgreementsDataGenerator {
 
     public static ServiceAgreementPostRequestBody generateServiceAgreementPostRequestBody(
         Set<Participant> participants) {
+        String randomLegalEntityName = faker.name().lastName() + " " + faker.company().industry().replaceAll("(/| or).*", "");
+
         return new ServiceAgreementPostRequestBody()
-            .withName(faker.lorem().sentence(3, 0).replace(".", ""))
-            .withDescription(faker.lorem().sentence(3, 0).replace(".", ""))
+            .withName(randomLegalEntityName)
+            .withDescription(randomLegalEntityName)
             .withExternalId(UUID.randomUUID().toString())
             .withStatus(CreateStatus.ENABLED)
             .withParticipants(participants);

@@ -1,12 +1,15 @@
 package com.backbase.ct.dataloader.data;
 
 import static com.backbase.ct.dataloader.util.CommonHelpers.generateRandomAmountInRange;
+import static com.backbase.ct.dataloader.util.CommonHelpers.generateRandomNumberInRange;
+import static com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.AccountHolderCountry;
+import static com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.Currency;
+import static java.lang.String.valueOf;
+import static java.util.Arrays.asList;
 
-import com.backbase.ct.dataloader.util.CommonHelpers;
 import com.backbase.ct.dataloader.util.GlobalProperties;
 import com.backbase.ct.dataloader.util.ParserUtil;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBody;
-import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.DebitCard;
 import com.backbase.integration.arrangement.rest.spec.v2.balancehistory.BalanceHistoryPostRequestBody;
 import com.backbase.integration.arrangement.rest.spec.v2.products.ProductsPostRequestBody;
@@ -14,7 +17,6 @@ import com.github.javafaker.Faker;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -31,10 +33,21 @@ public class ProductSummaryDataGenerator {
     private static Random random = new Random();
     private static final List<CountryCode> COUNTRY_CODES;
     private static final int WEEKS_IN_A_QUARTER = 13;
+    private static final List<String> ARRANGEMENT_NAMES = asList(
+        "Factory",
+        "GBF Corporate",
+        "Legal",
+        "Manufacturing",
+        "Marketing",
+        "Payables",
+        "Personnel",
+        "Receivables",
+        "Sales",
+        "Support"
+    );
 
     static {
-        List<String> allowed = Arrays
-            .asList("AT", "BE", "BG", "CH", "CY", "CZ", "DE", "DK", "EE", "ES", "FI", "FR", "GB", "GI", "GR", "HR",
+        List<String> allowed = asList("AT", "BE", "BG", "CH", "CY", "CZ", "DE", "DK", "EE", "ES", "FI", "FR", "GB", "GI", "GR", "HR",
                 "HU", "IE", "IS", "IT", "LI", "LT", "LU", "LV", "MC", "MT", "NL", "PL", "PT", "RO", "SE", "SI", "SK",
                 "SM");
         COUNTRY_CODES = new ArrayList<>();
@@ -57,10 +70,8 @@ public class ProductSummaryDataGenerator {
     }
 
     public static ArrangementsPostRequestBody generateArrangementsPostRequestBody(String externalLegalEntityId,
-        ArrangementsPostRequestBodyParent.Currency currency) {
-        ArrangementsPostRequestBodyParent.AccountHolderCountry[] accountHolderCountries = ArrangementsPostRequestBodyParent.AccountHolderCountry
-            .values();
-        int productId = CommonHelpers.generateRandomNumberInRange(1, 7);
+        Currency currency, int productId) {
+        AccountHolderCountry[] accountHolderCountries = AccountHolderCountry.values();
         boolean debitCreditAccountIndicator = false;
         final HashSet<DebitCard> debitCards = new HashSet<>();
 
@@ -69,21 +80,29 @@ public class ProductSummaryDataGenerator {
         }
 
         if (productId == 1) {
-            for (int i = 0; i < CommonHelpers
-                .generateRandomNumberInRange(globalProperties.getInt(CommonConstants.PROPERTY_DEBIT_CARDS_MIN),
+            for (int i = 0;
+                i < generateRandomNumberInRange(globalProperties.getInt(CommonConstants.PROPERTY_DEBIT_CARDS_MIN),
                     globalProperties.getInt(CommonConstants.PROPERTY_DEBIT_CARDS_MAX)); i++) {
                 debitCards.add(new DebitCard()
-                    .withNumber(String.format("%s", CommonHelpers.generateRandomNumberInRange(1111, 9999)))
+                    .withNumber(String.format("%s", generateRandomNumberInRange(1111, 9999)))
                     .withExpiryDate(faker.business()
                         .creditCardExpiry()));
             }
         }
 
+        String accountNumber = currency.equals(Currency.EUR)
+            ? generateRandomIban() : valueOf(generateRandomNumberInRange(0, 999999999));
+
+        String bic = faker.finance().bic();
+
+        String arrangementName = ARRANGEMENT_NAMES.get(random.nextInt(ARRANGEMENT_NAMES.size())) + " " +
+            currency + " " + bic.substring(0, 3) + accountNumber.substring(accountNumber.length() - 3);
+
         ArrangementsPostRequestBody arrangementsPostRequestBody = new ArrangementsPostRequestBody()
             .withId(UUID.randomUUID().toString())
             .withLegalEntityId(externalLegalEntityId)
             .withProductId(String.format("%s", productId))
-            .withName(faker.lorem().sentence(3, 0).replace(".", ""))
+            .withName(arrangementName)
             .withAlias(faker.lorem().characters(10))
             .withBookedBalance(generateRandomAmountInRange(10000L, 9999999L))
             .withAvailableBalance(generateRandomAmountInRange(10000L, 9999999L))
@@ -105,14 +124,17 @@ public class ProductSummaryDataGenerator {
             .withPostCode(faker.address().zipCode())
             .withTown(faker.address().city())
             .withAccountHolderCountry(
-                accountHolderCountries[CommonHelpers.generateRandomNumberInRange(0, accountHolderCountries.length - 1)])
-            .withCountrySubDivision(faker.address().state());
+                accountHolderCountries[generateRandomNumberInRange(0, accountHolderCountries.length - 1)])
+            .withCountrySubDivision(faker.address().state())
+            .withBIC(bic);
 
-        if (currency.equals(ArrangementsPostRequestBodyParent.Currency.EUR)) {
-            arrangementsPostRequestBody.withIBAN(generateRandomIban());
+        if (currency.equals(Currency.EUR)) {
+            arrangementsPostRequestBody
+                .withIBAN(accountNumber)
+                .withBBAN(accountNumber.substring(3).replaceAll("[a-zA-Z]", ""));
         } else {
             arrangementsPostRequestBody
-                .withBBAN(String.valueOf(CommonHelpers.generateRandomNumberInRange(0, 999999999)));
+                .withBBAN(accountNumber);
         }
 
         return arrangementsPostRequestBody;

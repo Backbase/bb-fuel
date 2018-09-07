@@ -5,7 +5,6 @@ import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_ROOT_ENTI
 
 import com.backbase.ct.dataloader.client.accessgroup.UserContextPresentationRestClient;
 import com.backbase.ct.dataloader.client.common.LoginRestClient;
-import com.backbase.ct.dataloader.client.legalentity.LegalEntityIntegrationRestClient;
 import com.backbase.ct.dataloader.client.user.UserIntegrationRestClient;
 import com.backbase.ct.dataloader.data.LegalEntitiesAndUsersDataGenerator;
 import com.backbase.ct.dataloader.dto.LegalEntityWithUsers;
@@ -25,7 +24,6 @@ public class LegalEntitiesAndUsersConfigurator {
     private Faker faker = new Faker();
     private final LoginRestClient loginRestClient;
     private final UserContextPresentationRestClient userContextPresentationRestClient;
-    private final LegalEntityIntegrationRestClient legalEntityIntegrationRestClient;
     private final UserIntegrationRestClient userIntegrationRestClient;
     private final LegalEntityService legalEntityService;
     private String rootEntitlementsAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
@@ -55,12 +53,12 @@ public class LegalEntitiesAndUsersConfigurator {
         this.loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
         this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
-        this.legalEntityService.ingestLegalEntity(requestBody);
+        String externalLegalEntityId = this.legalEntityService.ingestLegalEntity(requestBody);
 
         legalEntityWithUsers.getUserExternalIds().parallelStream()
             .forEach(
                 externalUserId -> this.userIntegrationRestClient
                     .ingestUserAndLogResponse(LegalEntitiesAndUsersDataGenerator
-                        .generateUsersPostRequestBody(externalUserId, requestBody.getExternalId())));
+                        .generateUsersPostRequestBody(externalUserId, externalLegalEntityId)));
     }
 }

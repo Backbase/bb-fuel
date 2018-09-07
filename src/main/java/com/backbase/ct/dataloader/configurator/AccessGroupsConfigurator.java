@@ -40,13 +40,9 @@ public class AccessGroupsConfigurator {
 
     private synchronized String ingestFunctionGroupWithAllPrivileges(String externalServiceAgreementId,
         String functionGroupName, List<FunctionsGetResponseBody> functions) {
-        String functionGroupId = accessGroupService.ingestFunctionGroup(externalServiceAgreementId,
+
+        return accessGroupService.ingestFunctionGroup(externalServiceAgreementId,
             functionGroupName, createPermissionsWithAllPrivileges(functions));
-
-        LOGGER.info("Function group \"{}\" [{}] ingested/used (service agreement [{}]) all privileges",
-            functionGroupName, functionGroupId, externalServiceAgreementId);
-
-        return functionGroupId;
     }
 
     public String ingestDataGroupForArrangements(String externalServiceAgreementId, String dataGroupName,
@@ -55,12 +51,7 @@ public class AccessGroupsConfigurator {
             .map(ArrangementId::getInternalArrangementId)
             .collect(toList());
 
-        String dataGroupId = accessGroupService.ingestDataGroup(
+        return accessGroupService.ingestDataGroup(
             externalServiceAgreementId, dataGroupName, ARRANGEMENTS, internalArrangementIds);
-
-        LOGGER.info("Data group \"{}\" [{}] ingested/used (service agreement [{}]) for arrangements {}",
-            dataGroupName, dataGroupId, externalServiceAgreementId, internalArrangementIds);
-
-        return dataGroupId;
     }
 }

@@ -45,15 +45,14 @@ public class LegalEntityService {
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException(String.format("No existing legal entity found by name [%s]", legalEntity.getName())));
 
-            LOGGER.info(String.format("Legal entity [%s] already exists, skipped ingesting this legal entity",
-                legalEntity.getExternalId()));
+            LOGGER.info("Legal entity [{}] already exists, skipped ingesting this legal entity", legalEntity.getExternalId());
 
             return existingLegalEntity.getExternalId();
         } else {
             response.then()
                 .statusCode(SC_CREATED);
 
-            LOGGER.info("Legal entity [%s] ingested", legalEntity.getExternalId());
+            LOGGER.info("Legal entity [{}] ingested", legalEntity.getExternalId());
 
             return legalEntity.getExternalId();
         }

@@ -9,7 +9,7 @@ import static org.apache.http.HttpStatus.SC_OK;
 import com.backbase.ct.dataloader.client.accessgroup.ServiceAgreementsIntegrationRestClient;
 import com.backbase.ct.dataloader.client.accessgroup.UserContextPresentationRestClient;
 import com.backbase.ct.dataloader.client.common.LoginRestClient;
-import com.backbase.ct.dataloader.client.legalentity.LegalEntityPresentationRestClient;
+import com.backbase.ct.dataloader.client.legalentity.LegalEntityIntegrationRestClient;
 import com.backbase.ct.dataloader.client.user.UserPresentationRestClient;
 import com.backbase.ct.dataloader.util.GlobalProperties;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.Participant;
@@ -30,7 +30,7 @@ public class ServiceAgreementsConfigurator {
 
     private final LoginRestClient loginRestClient;
     private final UserPresentationRestClient userPresentationRestClient;
-    private final LegalEntityPresentationRestClient legalEntityPresentationRestClient;
+    private final LegalEntityIntegrationRestClient legalEntityIntegrationRestClient;
     private final ServiceAgreementsIntegrationRestClient serviceAgreementsIntegrationRestClient;
     private final UserContextPresentationRestClient userContextPresentationRestClient;
     private String rootEntitlementsAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
@@ -53,12 +53,9 @@ public class ServiceAgreementsConfigurator {
         return serviceAgreementId;
     }
 
-    public void updateMasterServiceAgreementWithExternalIdByLegalEntity(String internalLegalEntityId) {
-        loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
-        userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
-
-        String internalServiceAgreementId = legalEntityPresentationRestClient
-            .getMasterServiceAgreementOfLegalEntity(internalLegalEntityId)
+    public void updateMasterServiceAgreementWithExternalIdByLegalEntity(String externalLegalEntityId) {
+        String internalServiceAgreementId = legalEntityIntegrationRestClient
+            .getMasterServiceAgreementOfLegalEntity(externalLegalEntityId)
             .getId();
 
         serviceAgreementsIntegrationRestClient

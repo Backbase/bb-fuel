@@ -25,7 +25,8 @@ public class LegalEntitiesAndUsersDataGenerator {
     public static LegalEntitiesPostRequestBody composeLegalEntitiesPostRequestBody(String legalEntityExternalId,
         String legalEntityName,
         String parentLegalEntityExternalId, String type) {
-        String randomLegalEntityName = faker.name().lastName() + " " + faker.company().industry().replaceAll("(/| or).*", "");
+        String randomLegalEntityName = faker.name().lastName() + " " +
+            faker.company().industry().replaceAll("(/| or).*", "").trim();
 
         return new LegalEntitiesPostRequestBody()
             .withExternalId(Optional.ofNullable(legalEntityExternalId).orElse(generateExternalLegalEntityId()))

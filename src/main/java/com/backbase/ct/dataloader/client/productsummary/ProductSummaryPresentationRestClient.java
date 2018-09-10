@@ -51,6 +51,7 @@ public class ProductSummaryPresentationRestClient extends AbstractRestClient {
 
         // Make sure the Regex is in sync with payment-order-presentation-service/src/main/resources/application.yml (property: sepacountries)
         return Arrays.stream(arrangements)
+            .filter(arrangement -> arrangement.getIBAN() != null)
             .filter(arrangement -> arrangement.getIBAN()
                 .matches(
                     "^(AT|BE|BG|CH|CY|CZ|DE|DK|EE|ES|FI|FR|GB|GI|GR|HR|HU|IE|IS|IT|LI|LT|LU|LV|MC|MT|NL|NO|PL|PT|RO|SE|SI|SK|SM)[a-zA-Z0-9_.-]*"))

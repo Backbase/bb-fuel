@@ -26,11 +26,14 @@ public class LegalEntitiesAndUsersConfigurator {
     private final UserContextPresentationRestClient userContextPresentationRestClient;
     private final UserIntegrationRestClient userIntegrationRestClient;
     private final LegalEntityService legalEntityService;
+    private final ServiceAgreementsConfigurator serviceAgreementsConfigurator;
     private String rootEntitlementsAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
 
     public void ingestRootLegalEntityAndEntitlementsAdmin(String externalEntitlementsAdminUserId) {
-        this.legalEntityService.ingestLegalEntity(LegalEntitiesAndUsersDataGenerator
+        String externalLegalEntityId = this.legalEntityService.ingestLegalEntity(LegalEntitiesAndUsersDataGenerator
             .generateRootLegalEntitiesPostRequestBody(EXTERNAL_ROOT_LEGAL_ENTITY_ID));
+        this.serviceAgreementsConfigurator
+            .updateMasterServiceAgreementWithExternalIdByLegalEntity(externalLegalEntityId);
         this.userIntegrationRestClient.ingestUserAndLogResponse(LegalEntitiesAndUsersDataGenerator
             .generateUsersPostRequestBody(externalEntitlementsAdminUserId, EXTERNAL_ROOT_LEGAL_ENTITY_ID));
         this.userIntegrationRestClient.ingestEntitlementsAdminUnderLEAndLogResponse(externalEntitlementsAdminUserId,

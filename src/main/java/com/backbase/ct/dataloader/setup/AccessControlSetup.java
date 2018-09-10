@@ -104,17 +104,17 @@ public class AccessControlSetup {
         this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
         userExternalIds.forEach(userExternalId -> {
-            final String legalEntityInternalId = this.userPresentationRestClient
+            final String legalEntityExternalId = this.userPresentationRestClient
                 .retrieveLegalEntityByExternalUserId(userExternalId)
-                .getId();
+                .getExternalId();
 
-            if (!legalEntitiesUserContextMap.containsKey(legalEntityInternalId)) {
+            if (!legalEntitiesUserContextMap.containsKey(legalEntityExternalId)) {
                 this.serviceAgreementsConfigurator
-                    .updateMasterServiceAgreementWithExternalIdByLegalEntity(legalEntityInternalId);
+                    .updateMasterServiceAgreementWithExternalIdByLegalEntity(legalEntityExternalId);
             }
 
             UserContext userContext = getUserContextBasedOnMSAByExternalUserId(userExternalId);
-            legalEntitiesUserContextMap.put(userContext.getInternalLegalEntityId(), userContext);
+            legalEntitiesUserContextMap.put(userContext.getExternalLegalEntityId(), userContext);
 
             if (legalEntityContext.getDataGroupCollection() == null) {
                 legalEntityContext.setDataGroupCollection(

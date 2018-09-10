@@ -8,8 +8,6 @@ import static com.backbase.ct.dataloader.data.ContactsDataGenerator.generateCont
 import static com.backbase.ct.dataloader.util.CommonHelpers.generateRandomNumberInRange;
 import static org.apache.http.HttpStatus.SC_CREATED;
 
-import com.backbase.ct.dataloader.client.accessgroup.UserContextPresentationRestClient;
-import com.backbase.ct.dataloader.client.common.LoginRestClient;
 import com.backbase.ct.dataloader.client.contact.ContactIntegrationRestClient;
 import com.backbase.ct.dataloader.util.GlobalProperties;
 import com.backbase.dbs.integration.external.inbound.contact.rest.spec.v2.contacts.ContactsBulkIngestionPostRequestBody;
@@ -24,8 +22,6 @@ public class ContactsConfigurator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ContactsConfigurator.class);
     private static GlobalProperties globalProperties = GlobalProperties.getInstance();
-    private final LoginRestClient loginRestClient;
-    private final UserContextPresentationRestClient userContextPresentationRestClient;
     private final ContactIntegrationRestClient contactIntegrationRestClient;
 
     public void ingestContacts(String externalServiceAgreementId, String externalUserId) {

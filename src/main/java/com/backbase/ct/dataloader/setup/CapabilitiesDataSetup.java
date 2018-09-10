@@ -118,10 +118,17 @@ public class CapabilitiesDataSetup {
     public void ingestContactsPerUser() {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_CONTACTS)) {
             Arrays.stream(this.entities)
-                .map(LegalEntityWithUsers::getUserExternalIds)
-                .flatMap(List::stream)
-                .collect(Collectors.toList())
-                .forEach(this.contactsConfigurator::ingestContacts);
+                .forEach(legalEntityWithUsers -> {
+                    List<String> externalUserIds = legalEntityWithUsers.getUserExternalIds();
+
+                    UserContext userContext = accessControlSetup
+                        .getUserContextBasedOnMSAByExternalUserId(
+                            externalUserIds.get(random.nextInt(externalUserIds.size())));
+
+                    this.contactsConfigurator.ingestContacts(
+                        userContext.getExternalServiceAgreementId(),
+                        userContext.getExternalUserId());
+                });
         }
     }
 

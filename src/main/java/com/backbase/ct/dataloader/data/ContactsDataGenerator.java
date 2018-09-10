@@ -17,13 +17,13 @@ public class ContactsDataGenerator {
     private static Faker faker = new Faker();
 
     public static ContactsBulkIngestionPostRequestBody generateContactsBulkIngestionPostRequestBody(
-        String externalUserId, int numberOfContacts, int numberOfAccountsPerContact) {
+        String externalServiceAgreementId, String externalUserId, int numberOfContacts, int numberOfAccountsPerContact) {
         return new ContactsBulkIngestionPostRequestBody()
             .withAccessContext(new AccessContext()
-                .withExternalServiceAgreementId(null)
+                .withExternalServiceAgreementId(externalServiceAgreementId)
                 .withExternalLegalEntityId(null)
                 .withExternalUserId(externalUserId)
-                .withScope(AccessContext.Scope.USER))
+                .withScope(AccessContext.Scope.SA))
             .withContacts(generateContacts(numberOfContacts, numberOfAccountsPerContact));
     }
 

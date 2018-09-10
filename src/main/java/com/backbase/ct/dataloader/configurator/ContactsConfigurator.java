@@ -28,7 +28,7 @@ public class ContactsConfigurator {
     private final UserContextPresentationRestClient userContextPresentationRestClient;
     private final ContactIntegrationRestClient contactIntegrationRestClient;
 
-    public void ingestContacts(String externalUserId) {
+    public void ingestContacts(String externalServiceAgreementId, String externalUserId) {
         int numberOfContacts = generateRandomNumberInRange(globalProperties.getInt(PROPERTY_CONTACTS_MIN),
             globalProperties.getInt(PROPERTY_CONTACTS_MAX));
         int numberOfAccountsPerContact = generateRandomNumberInRange(
@@ -36,10 +36,7 @@ public class ContactsConfigurator {
             globalProperties.getInt(PROPERTY_CONTACT_ACCOUNTS_MAX));
 
         ContactsBulkIngestionPostRequestBody contactsBulkIngestionPostRequestBody = generateContactsBulkIngestionPostRequestBody(
-            externalUserId, numberOfContacts, numberOfAccountsPerContact);
-
-        loginRestClient.login(externalUserId, externalUserId);
-        userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
+            externalServiceAgreementId, externalUserId, numberOfContacts, numberOfAccountsPerContact);
 
         contactIntegrationRestClient.ingestContacts(contactsBulkIngestionPostRequestBody)
             .then()

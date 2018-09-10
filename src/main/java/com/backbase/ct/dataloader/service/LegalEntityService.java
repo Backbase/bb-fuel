@@ -42,7 +42,9 @@ public class LegalEntityService {
             LegalEntitiesGetResponseBody existingLegalEntity = legalEntityPresentationRestClient
                 .retrieveLegalEntities()
                 .stream()
-                .filter(legalEntitiesGetResponseBody -> legalEntity.getName().equals(legalEntitiesGetResponseBody.getName()))
+                .filter(legalEntitiesGetResponseBody ->
+                    legalEntity.getExternalId().equals(legalEntitiesGetResponseBody.getExternalId()) ||
+                    legalEntity.getName().equals(legalEntitiesGetResponseBody.getName()))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException(String.format("No existing legal entity found by name [%s]", legalEntity.getName())));
 

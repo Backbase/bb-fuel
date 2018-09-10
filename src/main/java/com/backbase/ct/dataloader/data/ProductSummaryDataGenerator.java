@@ -6,6 +6,7 @@ import static com.backbase.integration.arrangement.rest.spec.v2.arrangements.Arr
 import static com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.Currency;
 import static java.lang.String.valueOf;
 import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 
 import com.backbase.ct.dataloader.util.GlobalProperties;
 import com.backbase.ct.dataloader.util.ParserUtil;
@@ -18,8 +19,10 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 import org.apache.commons.lang.time.DateUtils;
@@ -33,7 +36,7 @@ public class ProductSummaryDataGenerator {
     private static Random random = new Random();
     private static final List<CountryCode> COUNTRY_CODES;
     private static final int WEEKS_IN_A_QUARTER = 13;
-    private static final List<String> ARRANGEMENT_NAMES = asList(
+    private static final List<String> CURRENT_ACCOUNT_ARRANGEMENT_NAMES = asList(
         "Factory",
         "GBF Corporate",
         "Legal",
@@ -45,11 +48,22 @@ public class ProductSummaryDataGenerator {
         "Sales",
         "Support"
     );
+    public static final Map<Integer, List<String>> PRODUCT_ARRANGEMENT_NAME_MAP = new HashMap<>();
 
     static {
-        List<String> allowed = asList("AT", "BE", "BG", "CH", "CY", "CZ", "DE", "DK", "EE", "ES", "FI", "FR", "GB", "GI", "GR", "HR",
-                "HU", "IE", "IS", "IT", "LI", "LT", "LU", "LV", "MC", "MT", "NL", "PL", "PT", "RO", "SE", "SI", "SK",
-                "SM");
+        PRODUCT_ARRANGEMENT_NAME_MAP.put(1, CURRENT_ACCOUNT_ARRANGEMENT_NAMES);
+        PRODUCT_ARRANGEMENT_NAME_MAP.put(2, singletonList("Savings Account"));
+        PRODUCT_ARRANGEMENT_NAME_MAP.put(3, singletonList("Credit Card"));
+        PRODUCT_ARRANGEMENT_NAME_MAP.put(4, singletonList("Loan"));
+        PRODUCT_ARRANGEMENT_NAME_MAP.put(5, singletonList("Term Deposit"));
+        PRODUCT_ARRANGEMENT_NAME_MAP.put(6, singletonList("Investment Account"));
+    }
+
+    static {
+        List<String> allowed = asList("AT", "BE", "BG", "CH", "CY", "CZ", "DE", "DK", "EE", "ES", "FI", "FR", "GB",
+            "GI", "GR", "HR",
+            "HU", "IE", "IS", "IT", "LI", "LT", "LU", "LV", "MC", "MT", "NL", "PL", "PT", "RO", "SE", "SI", "SK",
+            "SM");
         COUNTRY_CODES = new ArrayList<>();
         CountryCode[] values = CountryCode.values();
         for (CountryCode code : values) {
@@ -72,12 +86,8 @@ public class ProductSummaryDataGenerator {
     public static ArrangementsPostRequestBody generateArrangementsPostRequestBody(String externalLegalEntityId,
         Currency currency, int productId) {
         AccountHolderCountry[] accountHolderCountries = AccountHolderCountry.values();
-        boolean debitCreditAccountIndicator = false;
+        boolean debitCreditAccountIndicator = productId == 1 || productId == 2;
         final HashSet<DebitCard> debitCards = new HashSet<>();
-
-        if (productId == 1 || productId == 2) {
-            debitCreditAccountIndicator = true;
-        }
 
         if (productId == 1) {
             for (int i = 0;
@@ -95,7 +105,8 @@ public class ProductSummaryDataGenerator {
 
         String bic = faker.finance().bic();
 
-        String arrangementName = ARRANGEMENT_NAMES.get(random.nextInt(ARRANGEMENT_NAMES.size())) + " " +
+        String arrangementName = PRODUCT_ARRANGEMENT_NAME_MAP.get(productId)
+            .get(random.nextInt(PRODUCT_ARRANGEMENT_NAME_MAP.get(productId).size())) + " " +
             currency + " " + bic.substring(0, 3) + accountNumber.substring(accountNumber.length() - 3);
 
         ArrangementsPostRequestBody arrangementsPostRequestBody = new ArrangementsPostRequestBody()

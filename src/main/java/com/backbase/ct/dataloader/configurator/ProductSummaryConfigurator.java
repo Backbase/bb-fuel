@@ -40,20 +40,16 @@ public class ProductSummaryConfigurator {
 
     public List<ArrangementId> ingestArrangements(String externalLegalEntityId, Currency currency, ArrangementType arrangementType) {
         List<ArrangementId> arrangementIds = new ArrayList<>();
-        Currency arrangementCurrency = currency == null
-            ? Currency
-            .values()[random.nextInt(Currency.values().length)]
-            : currency;
 
         List<ArrangementsPostRequestBody> arrangements = ProductSummaryDataGenerator
-            .generateArrangementsPostRequestBodies(externalLegalEntityId, arrangementCurrency, arrangementType);
+            .generateArrangementsPostRequestBodies(externalLegalEntityId, currency, arrangementType);
 
         for (ArrangementsPostRequestBody arrangement : arrangements) {
             ArrangementsPostResponseBody arrangementsPostResponseBody = arrangementsIntegrationRestClient
                 .ingestArrangement(arrangement);
 
-            LOGGER.info("Arrangement [{}] with currency [{}] ingested for product [{}] under legal entity [{}]",
-                arrangement.getName(), arrangementCurrency, arrangement.getProductId(), externalLegalEntityId);
+            LOGGER.info("Arrangement [{}] with ingested for product [{}] under legal entity [{}]",
+                arrangement.getName(), arrangement.getProductId(), externalLegalEntityId);
 
             arrangementIds.add(new ArrangementId(arrangementsPostResponseBody.getId(), arrangement.getId()));
         }

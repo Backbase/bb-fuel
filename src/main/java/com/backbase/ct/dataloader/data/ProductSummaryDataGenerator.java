@@ -143,6 +143,11 @@ public class ProductSummaryDataGenerator {
 
         switch (arrangementType) {
             case GENERAL:
+                List<String> arrangementCurrencyList = asList("EUR", "USD", "CAD", "GBP");
+                Currency arrangementCurrency = currency == null
+                    ? Currency.valueOf(arrangementCurrencyList.get(random.nextInt(arrangementCurrencyList.size())))
+                    : currency;
+
                 int numberOfSavingsAccountsPerGroup = 1;
                 int numberOfGeneralTypeArrangements = arrangementTypeAmountMap.get(GENERAL) <= numberOfSavingsAccountsPerGroup
                     ? arrangementTypeAmountMap.get(GENERAL)
@@ -150,22 +155,38 @@ public class ProductSummaryDataGenerator {
 
                 IntStream.range(0, numberOfGeneralTypeArrangements).parallel().forEach(randomNumber ->
                     arrangementsPostRequestBodies
-                        .add(generateArrangementsPostRequestBody(externalLegalEntityId, 1, currency, arrangementType)));
+                        .add(generateArrangementsPostRequestBody(externalLegalEntityId, 1, arrangementCurrency, arrangementType)));
 
                 if (arrangementTypeAmountMap.get(GENERAL) > numberOfSavingsAccountsPerGroup) {
                     IntStream.range(0, numberOfSavingsAccountsPerGroup).parallel().forEach(randomNumber ->
                         arrangementsPostRequestBodies.add(
-                            generateArrangementsPostRequestBody(externalLegalEntityId, 2, currency,
+                            generateArrangementsPostRequestBody(externalLegalEntityId, 2, arrangementCurrency,
                                 arrangementType)));
                 }
                 break;
             case INTERNATIONAL_TRADE:
-            case PAYROLL:
+                List<String> internationalTradeCurrencyList = asList("BHD", "CNY", "JPY", "EUR", "INR", "TRY", "EUR");
+                Currency internationalTradeCurrency = currency == null
+                    ? Currency.valueOf(internationalTradeCurrencyList.get(random.nextInt(internationalTradeCurrencyList.size())))
+                    : currency;
                 IntStream.range(0, arrangementTypeAmountMap.get(arrangementType)).parallel().forEach(randomNumber ->
                     arrangementsPostRequestBodies
-                        .add(generateArrangementsPostRequestBody(externalLegalEntityId, 1, currency, arrangementType)));
+                        .add(generateArrangementsPostRequestBody(externalLegalEntityId, 1, internationalTradeCurrency, arrangementType)));
+                break;
+            case PAYROLL:
+                List<String> payrollCurrencyList = asList("EUR", "GBP", "USD", "CAD");
+                Currency payrollCurrency = currency == null
+                    ? Currency.valueOf(payrollCurrencyList.get(random.nextInt(payrollCurrencyList.size())))
+                    : currency;
+                IntStream.range(0, arrangementTypeAmountMap.get(arrangementType)).parallel().forEach(randomNumber ->
+                    arrangementsPostRequestBodies
+                        .add(generateArrangementsPostRequestBody(externalLegalEntityId, 1, payrollCurrency, arrangementType)));
                 break;
             case FINANCE_INTERNATIONAL:
+                List<String> financeInternationalCurrencyList = asList("EUR", "USD", "CAD", "GBP");
+                Currency financeInternationalCurrency = currency == null
+                    ? Currency.valueOf(financeInternationalCurrencyList.get(random.nextInt(financeInternationalCurrencyList.size())))
+                    : currency;
                 int numberOfLoanAndSavingsAccountsPerGroup = 2;
                 int numberOfInvestmentsAccountsPerGroup = 3;
                 int numberOfFinanceInternationalArrangements = arrangementTypeAmountMap.get(FINANCE_INTERNATIONAL) <=
@@ -175,28 +196,25 @@ public class ProductSummaryDataGenerator {
 
                 IntStream.range(0, numberOfFinanceInternationalArrangements).parallel().forEach(randomNumber ->
                     arrangementsPostRequestBodies
-                        .add(generateArrangementsPostRequestBody(externalLegalEntityId, 1, currency, arrangementType)));
+                        .add(generateArrangementsPostRequestBody(externalLegalEntityId, 1, financeInternationalCurrency, arrangementType)));
 
                 if (arrangementTypeAmountMap.get(FINANCE_INTERNATIONAL) > (numberOfLoanAndSavingsAccountsPerGroup + numberOfInvestmentsAccountsPerGroup)) {
-                    IntStream.range(0, numberOfInvestmentsAccountsPerGroup).parallel().forEach(randomNumber -> {
-                        arrangementsPostRequestBodies.add(
-                            generateArrangementsPostRequestBody(externalLegalEntityId,
-                                6, currency,
-                                arrangementType));
-                    });
+                    IntStream.range(0, numberOfInvestmentsAccountsPerGroup).parallel().forEach(randomNumber -> arrangementsPostRequestBodies.add(
+                        generateArrangementsPostRequestBody(externalLegalEntityId,
+                            6, financeInternationalCurrency,
+                            arrangementType)));
 
                     IntStream.range(0, numberOfLoanAndSavingsAccountsPerGroup).parallel().forEach(randomNumber -> {
                         arrangementsPostRequestBodies.add(
                             generateArrangementsPostRequestBody(externalLegalEntityId,
-                                2, currency,
+                                2, financeInternationalCurrency,
                                 arrangementType));
 
                         arrangementsPostRequestBodies.add(
                             generateArrangementsPostRequestBody(externalLegalEntityId,
-                                4, currency,
+                                4, financeInternationalCurrency,
                                 arrangementType));
                     });
-
                 }
                 break;
         }

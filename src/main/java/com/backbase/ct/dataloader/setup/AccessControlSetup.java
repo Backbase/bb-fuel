@@ -145,38 +145,38 @@ public class AccessControlSetup {
 
         taskList.add(() -> generateTask(externalServiceAgreementId, "Amsterdam",
             () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, Currency.EUR, GENERAL),
-            dataGroupCollection::withEuropeDataGroupId));
+            dataGroupCollection::setAmsterdamDataGroupId));
 
         taskList.add(() -> generateTask(externalServiceAgreementId, "Portland",
             () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, Currency.USD, GENERAL),
-            dataGroupCollection::withUsDataGroupId));
+            dataGroupCollection::setPortlandDataGroupId));
 
         taskList.add(() -> generateTask(externalServiceAgreementId, "Vancouver",
             () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, Currency.CAD, GENERAL),
-            dataGroupCollection::withUsDataGroupId));
+            dataGroupCollection::setVancouverDataGroupId));
 
         taskList.add(() -> generateTask(externalServiceAgreementId, "London",
             () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, Currency.GBP, GENERAL),
-            dataGroupCollection::withUsDataGroupId));
-
-        if (this.globalProperties.getBoolean(PROPERTY_INGEST_ARRANGEMENTS_FINANCE_INTERNATIONAL)) {
-            taskList.add(() -> generateTask(externalServiceAgreementId, FINANCE_INTERNATIONAL.toString(),
-                () -> this.productSummaryConfigurator
-                    .ingestArrangements(externalLegalEntityId, null, FINANCE_INTERNATIONAL),
-                dataGroupCollection::withInternationalDataGroupId));
-        }
+            dataGroupCollection::setLondonDataGroupId));
 
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_ARRANGEMENTS_INTERNATIONAL_TRADE)) {
             taskList.add(() -> generateTask(externalServiceAgreementId, INTERNATIONAL_TRADE.toString(),
                 () -> this.productSummaryConfigurator
                     .ingestArrangements(externalLegalEntityId, null, INTERNATIONAL_TRADE),
-                dataGroupCollection::withInternationalDataGroupId));
+                dataGroupCollection::setInternationalTradeDataGroupId));
+        }
+
+        if (this.globalProperties.getBoolean(PROPERTY_INGEST_ARRANGEMENTS_FINANCE_INTERNATIONAL)) {
+            taskList.add(() -> generateTask(externalServiceAgreementId, FINANCE_INTERNATIONAL.toString(),
+                () -> this.productSummaryConfigurator
+                    .ingestArrangements(externalLegalEntityId, null, FINANCE_INTERNATIONAL),
+                dataGroupCollection::setFinanceInternationalDataGroupId));
         }
 
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_ARRANGEMENTS_PAYROLL)) {
             taskList.add(() -> generateTask(externalServiceAgreementId, PAYROLL.toString(),
                 () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, null, PAYROLL),
-                dataGroupCollection::withInternationalDataGroupId));
+                dataGroupCollection::setPayrollDataGroupId));
         }
 
         taskList.parallelStream()
@@ -198,9 +198,13 @@ public class AccessControlSetup {
         String adminFunctionGroupId = this.accessGroupsConfigurator.ingestAdminFunctionGroup(externalServiceAgreementId);
 
         List<String> dataGroupIds = asList(
-            dataGroupCollection.getEuropeDataGroupId(),
-            dataGroupCollection.getUsDataGroupId(),
-            dataGroupCollection.getInternationalDataGroupId());
+            dataGroupCollection.getAmsterdamDataGroupId(),
+            dataGroupCollection.getPortlandDataGroupId(),
+            dataGroupCollection.getVancouverDataGroupId(),
+            dataGroupCollection.getLondonDataGroupId(),
+            dataGroupCollection.getInternationalTradeDataGroupId(),
+            dataGroupCollection.getFinanceInternationalDataGroupId(),
+            dataGroupCollection.getPayrollDataGroupId());
 
         this.accessGroupIntegrationRestClient.assignPermissions(
             externalUserId,

@@ -9,10 +9,10 @@ import static com.backbase.integration.arrangement.rest.spec.v2.arrangements.Arr
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 
+import com.backbase.ct.dataloader.IngestException;
 import com.backbase.ct.dataloader.client.accessgroup.AccessGroupIntegrationRestClient;
 import com.backbase.ct.dataloader.client.accessgroup.ServiceAgreementsPresentationRestClient;
 import com.backbase.ct.dataloader.client.accessgroup.UserContextPresentationRestClient;
-import com.backbase.ct.dataloader.client.common.LoginRestClient;
 import com.backbase.ct.dataloader.client.legalentity.LegalEntityPresentationRestClient;
 import com.backbase.ct.dataloader.client.user.UserPresentationRestClient;
 import com.backbase.ct.dataloader.configurator.AccessGroupsConfigurator;
@@ -25,7 +25,6 @@ import com.backbase.ct.dataloader.dto.DataGroupCollection;
 import com.backbase.ct.dataloader.dto.LegalEntityContext;
 import com.backbase.ct.dataloader.dto.LegalEntityWithUsers;
 import com.backbase.ct.dataloader.dto.UserContext;
-import com.backbase.ct.dataloader.util.GlobalProperties;
 import com.backbase.ct.dataloader.util.ParserUtil;
 import com.backbase.presentation.user.rest.spec.v2.users.LegalEntityByUserGetResponseBody;
 import com.google.common.collect.ArrayListMultimap;
@@ -38,18 +37,12 @@ import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class AccessControlSetup {
+public class AccessControlSetup extends BaseSetup {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(CapabilitiesDataSetup.class);
-
-    private GlobalProperties globalProperties = GlobalProperties.getInstance();
-    private final LoginRestClient loginRestClient;
     private final UserContextPresentationRestClient userContextPresentationRestClient;
     private final LegalEntitiesAndUsersConfigurator legalEntitiesAndUsersConfigurator;
     private final UserPresentationRestClient userPresentationRestClient;
@@ -61,21 +54,10 @@ public class AccessControlSetup {
     private final LegalEntityPresentationRestClient legalEntityPresentationRestClient;
     private final TransactionsConfigurator transactionsConfigurator;
     private String rootEntitlementsAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
-    // TODO refactor to have it parsed once (duplicated in CapabilitiesDataSetup)
-    private LegalEntityWithUsers[] entities = initialiseLegalEntityWithUsers();
+    private LegalEntityWithUsers[] legalEntitiesWithUsers;
 
-    public LegalEntityWithUsers[] initialiseLegalEntityWithUsers() {
-        LegalEntityWithUsers[] entities;
-        try {
-            entities = ParserUtil.convertJsonToObject(this.globalProperties.getString(
-                PROPERTY_LEGAL_ENTITIES_WITH_USERS_JSON),
-                LegalEntityWithUsers[].class);
-
-        } catch (IOException e) {
-            LOGGER.error("Failed parsing file with entities", e);
-            throw new RuntimeException(e.getMessage());
-        }
-        return entities;
+    public LegalEntityWithUsers[] getLegalEntitiesWithUsers() {
+        return this.legalEntitiesWithUsers;
     }
 
     public void setupBankWithEntitlementsAdminAndProducts() throws IOException {
@@ -86,14 +68,27 @@ public class AccessControlSetup {
         }
     }
 
+    /**
+     * Setup of legal entities must always be done.
+     */
+    public void setupLegalEntitiesWithUsers() {
+        LegalEntityWithUsers[] entities;
+        try {
+            entities = ParserUtil.convertJsonToObject(this.globalProperties.getString(
+                PROPERTY_LEGAL_ENTITIES_WITH_USERS_JSON), LegalEntityWithUsers[].class);
+        } catch (IOException e) {
+            logger.error("Failed parsing file with entities", e);
+            throw new IngestException(e.getMessage(), e);
+        }
+        legalEntitiesWithUsers = entities;
+    }
+
     public void setupAccessControlForUsers() throws IOException {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_ACCESS_CONTROL)) {
-            Arrays.stream(this.entities)
-                .forEach(entity -> {
-                    this.legalEntitiesAndUsersConfigurator.ingestUsersUnderLegalEntity(entity);
-
-                    assembleFunctionDataGroupsAndPermissions(entity.getUserExternalIds());
-                });
+            Arrays.stream(this.legalEntitiesWithUsers).forEach(entity -> {
+                this.legalEntitiesAndUsersConfigurator.ingestUsersUnderLegalEntity(entity);
+                assembleFunctionDataGroupsAndPermissions(entity.getUserExternalIds());
+            });
         }
     }
 
@@ -121,7 +116,6 @@ public class AccessControlSetup {
                     ingestDataGroupArrangementsForServiceAgreement(userContext.getExternalServiceAgreementId(),
                         userContext.getExternalLegalEntityId()));
             }
-
         });
 
         legalEntitiesUserContextMap.values()
@@ -153,7 +147,7 @@ public class AccessControlSetup {
                 try {
                     voidCallable.call();
                 } catch (Exception e) {
-                    throw new RuntimeException(e);
+                    throw new IngestException(e.getMessage(), e);
                 }
             });
 
@@ -177,7 +171,7 @@ public class AccessControlSetup {
             adminFunctionGroupId,
             dataGroupIds);
 
-        LOGGER.info("Permission assigned for service agreement [{}], user [{}], function group [{}], data groups {}",
+        logger.info("Permission assigned for service agreement [{}], user [{}], function group [{}], data groups {}",
             internalServiceAgreementId, externalUserId, adminFunctionGroupId, dataGroupIds);
     }
 

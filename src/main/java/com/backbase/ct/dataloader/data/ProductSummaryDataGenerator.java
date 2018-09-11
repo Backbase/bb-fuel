@@ -1,7 +1,8 @@
 package com.backbase.ct.dataloader.data;
 
 import static com.backbase.ct.dataloader.data.ArrangementType.FINANCE_INTERNATIONAL;
-import static com.backbase.ct.dataloader.data.ArrangementType.GENERAL;
+import static com.backbase.ct.dataloader.data.ArrangementType.GENERAL_BUSINESS;
+import static com.backbase.ct.dataloader.data.ArrangementType.GENERAL_RETAIL;
 import static com.backbase.ct.dataloader.data.ArrangementType.INTERNATIONAL_TRADE;
 import static com.backbase.ct.dataloader.data.ArrangementType.PAYROLL;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_ARRANGEMENTS_FINANCE_INTERNATIONAL_MAX;
@@ -54,7 +55,7 @@ public class ProductSummaryDataGenerator {
     private static Random random = new Random();
     private static final List<CountryCode> COUNTRY_CODES;
     private static final int WEEKS_IN_A_QUARTER = 13;
-    private static final List<String> GENERAL_CURRENT_ACCOUNT_NAMES = asList(
+    private static final List<String> GENERAL_BUSINESS_CURRENT_ACCOUNT_NAMES = asList(
         "Factory",
         "GBF Corporate",
         "Legal",
@@ -89,7 +90,8 @@ public class ProductSummaryDataGenerator {
 
     private static final Map<ArrangementType, List<String>> CURRENT_ACCOUNT_ARRANGEMENT_TYPE_NAME_MAP = new HashMap<>();
     static {
-        CURRENT_ACCOUNT_ARRANGEMENT_TYPE_NAME_MAP.put(GENERAL, GENERAL_CURRENT_ACCOUNT_NAMES);
+        CURRENT_ACCOUNT_ARRANGEMENT_TYPE_NAME_MAP.put(GENERAL_RETAIL, singletonList("Current Account"));
+        CURRENT_ACCOUNT_ARRANGEMENT_TYPE_NAME_MAP.put(GENERAL_BUSINESS, GENERAL_BUSINESS_CURRENT_ACCOUNT_NAMES);
         CURRENT_ACCOUNT_ARRANGEMENT_TYPE_NAME_MAP.put(INTERNATIONAL_TRADE, INTERNATIONAL_TRADE_CURRENT_ACCOUNT_NAMES);
         CURRENT_ACCOUNT_ARRANGEMENT_TYPE_NAME_MAP
             .put(FINANCE_INTERNATIONAL, FINANCE_INTERNATIONAL_CURRENT_ACCOUNT_NAMES);
@@ -123,7 +125,7 @@ public class ProductSummaryDataGenerator {
     private static final Map<ArrangementType, BiFunction<String, Currency, List<ArrangementsPostRequestBody>>> FUNCTION_MAP = new HashMap<>();
 
     static {
-        FUNCTION_MAP.put(GENERAL, ProductSummaryDataGenerator::generateGeneralArrangements);
+        FUNCTION_MAP.put(GENERAL_BUSINESS, ProductSummaryDataGenerator::generateGeneralArrangements);
         FUNCTION_MAP.put(INTERNATIONAL_TRADE, ProductSummaryDataGenerator::generateInternationalTradeArrangements);
         FUNCTION_MAP.put(FINANCE_INTERNATIONAL, ProductSummaryDataGenerator::generateFinanceInternationalArrangements);
         FUNCTION_MAP.put(PAYROLL, ProductSummaryDataGenerator::generatePayrollArrangements);
@@ -141,7 +143,7 @@ public class ProductSummaryDataGenerator {
 
     public static List<ArrangementsPostRequestBody> generateArrangementsPostRequestBodies(String externalLegalEntityId,
         Currency currency, ArrangementType arrangementType) {
-        arrangementTypeAmountMap.put(GENERAL, generateRandomNumberInRange(globalProperties.getInt(PROPERTY_ARRANGEMENTS_GENERAL_MIN),
+        arrangementTypeAmountMap.put(GENERAL_BUSINESS, generateRandomNumberInRange(globalProperties.getInt(PROPERTY_ARRANGEMENTS_GENERAL_MIN),
             globalProperties.getInt(PROPERTY_ARRANGEMENTS_GENERAL_MAX)));
         arrangementTypeAmountMap.put(INTERNATIONAL_TRADE, generateRandomNumberInRange(globalProperties.getInt(PROPERTY_ARRANGEMENTS_INTERNATIONAL_TRADE_MIN),
             globalProperties.getInt(PROPERTY_ARRANGEMENTS_INTERNATIONAL_TRADE_MAX)));
@@ -225,19 +227,20 @@ public class ProductSummaryDataGenerator {
             : currency;
 
         int numberOfSavingsAccountsPerGroup = 1;
-        int numberOfGeneralTypeArrangements = arrangementTypeAmountMap.get(GENERAL) <= numberOfSavingsAccountsPerGroup
-            ? arrangementTypeAmountMap.get(GENERAL)
-            : arrangementTypeAmountMap.get(GENERAL) - numberOfSavingsAccountsPerGroup;
+        int numberOfGeneralTypeArrangements = arrangementTypeAmountMap.get(GENERAL_BUSINESS) <= numberOfSavingsAccountsPerGroup
+            ? arrangementTypeAmountMap.get(GENERAL_BUSINESS)
+            : arrangementTypeAmountMap.get(GENERAL_BUSINESS) - numberOfSavingsAccountsPerGroup;
 
         IntStream.range(0, numberOfGeneralTypeArrangements).parallel().forEach(randomNumber ->
             arrangementsPostRequestBodies
-                .add(generateArrangementsPostRequestBody(externalLegalEntityId, 1, arrangementCurrency, GENERAL)));
+                .add(generateArrangementsPostRequestBody(externalLegalEntityId, 1, arrangementCurrency,
+                    GENERAL_BUSINESS)));
 
-        if (arrangementTypeAmountMap.get(GENERAL) > numberOfSavingsAccountsPerGroup) {
+        if (arrangementTypeAmountMap.get(GENERAL_BUSINESS) > numberOfSavingsAccountsPerGroup) {
             IntStream.range(0, numberOfSavingsAccountsPerGroup).parallel().forEach(randomNumber ->
                 arrangementsPostRequestBodies.add(
                     generateArrangementsPostRequestBody(externalLegalEntityId, 2, arrangementCurrency,
-                        GENERAL)));
+                        GENERAL_BUSINESS)));
         }
 
         return arrangementsPostRequestBodies;

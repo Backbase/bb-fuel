@@ -2,10 +2,16 @@ package com.backbase.ct.dataloader.data;
 
 public enum ArrangementType {
 
-    GENERAL {
+    GENERAL_RETAIL {
         @Override
         public String toString() {
-            return "General";
+            return "General Retail";
+        }
+    },
+    GENERAL_BUSINESS {
+        @Override
+        public String toString() {
+            return "General Business";
         }
     },
     INTERNATIONAL_TRADE {

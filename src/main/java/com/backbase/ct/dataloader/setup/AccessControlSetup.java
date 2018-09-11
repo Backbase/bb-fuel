@@ -145,8 +145,12 @@ public class AccessControlSetup {
         List<Callable<Void>> taskList = new ArrayList<>();
 
         if (numberOfUsersInServiceAgreement == 1) {
-            taskList.add(() -> generateTask(externalServiceAgreementId, "General",
+            taskList.add(() -> generateTask(externalServiceAgreementId, "General EUR",
                 () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, Currency.EUR,
+                    GENERAL_RETAIL),
+                dataGroupCollection::setAmsterdamDataGroupId));
+            taskList.add(() -> generateTask(externalServiceAgreementId, "General USD",
+                () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, Currency.USD,
                     GENERAL_RETAIL),
                 dataGroupCollection::setAmsterdamDataGroupId));
         } else {

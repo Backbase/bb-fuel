@@ -1,6 +1,13 @@
 package com.backbase.ct.dataloader.setup;
 
+import static com.backbase.ct.dataloader.data.ArrangementType.FINANCE_INTERNATIONAL;
+import static com.backbase.ct.dataloader.data.ArrangementType.GENERAL;
+import static com.backbase.ct.dataloader.data.ArrangementType.INTERNATIONAL_TRADE;
+import static com.backbase.ct.dataloader.data.ArrangementType.PAYROLL;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_ACCESS_CONTROL;
+import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_ARRANGEMENTS_FINANCE_INTERNATIONAL;
+import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_ARRANGEMENTS_INTERNATIONAL_TRADE;
+import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_ARRANGEMENTS_PAYROLL;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_BALANCE_HISTORY;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_TRANSACTIONS;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_LEGAL_ENTITIES_WITH_USERS_JSON;
@@ -136,17 +143,41 @@ public class AccessControlSetup {
         final DataGroupCollection dataGroupCollection = new DataGroupCollection();
         List<Callable<Void>> taskList = new ArrayList<>();
 
-        taskList.add(() -> generateTask(externalServiceAgreementId, "International",
-            () -> this.productSummaryConfigurator.ingestArrangementsByLegalEntity(externalLegalEntityId, null),
-            dataGroupCollection::withInternationalDataGroupId));
-
-        taskList.add(() -> generateTask(externalServiceAgreementId, "Europe",
-            () -> this.productSummaryConfigurator.ingestArrangementsByLegalEntity(externalLegalEntityId, Currency.EUR),
+        taskList.add(() -> generateTask(externalServiceAgreementId, "Amsterdam",
+            () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, Currency.EUR, GENERAL),
             dataGroupCollection::withEuropeDataGroupId));
 
-        taskList.add(() -> generateTask(externalServiceAgreementId, "United States",
-            () -> this.productSummaryConfigurator.ingestArrangementsByLegalEntity(externalLegalEntityId, Currency.USD),
+        taskList.add(() -> generateTask(externalServiceAgreementId, "Portland",
+            () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, Currency.USD, GENERAL),
             dataGroupCollection::withUsDataGroupId));
+
+        taskList.add(() -> generateTask(externalServiceAgreementId, "Vancouver",
+            () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, Currency.CAD, GENERAL),
+            dataGroupCollection::withUsDataGroupId));
+
+        taskList.add(() -> generateTask(externalServiceAgreementId, "London",
+            () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, Currency.GBP, GENERAL),
+            dataGroupCollection::withUsDataGroupId));
+
+        if (this.globalProperties.getBoolean(PROPERTY_INGEST_ARRANGEMENTS_FINANCE_INTERNATIONAL)) {
+            taskList.add(() -> generateTask(externalServiceAgreementId, FINANCE_INTERNATIONAL.toString(),
+                () -> this.productSummaryConfigurator
+                    .ingestArrangements(externalLegalEntityId, null, FINANCE_INTERNATIONAL),
+                dataGroupCollection::withInternationalDataGroupId));
+        }
+
+        if (this.globalProperties.getBoolean(PROPERTY_INGEST_ARRANGEMENTS_INTERNATIONAL_TRADE)) {
+            taskList.add(() -> generateTask(externalServiceAgreementId, INTERNATIONAL_TRADE.toString(),
+                () -> this.productSummaryConfigurator
+                    .ingestArrangements(externalLegalEntityId, null, INTERNATIONAL_TRADE),
+                dataGroupCollection::withInternationalDataGroupId));
+        }
+
+        if (this.globalProperties.getBoolean(PROPERTY_INGEST_ARRANGEMENTS_PAYROLL)) {
+            taskList.add(() -> generateTask(externalServiceAgreementId, PAYROLL.toString(),
+                () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, null, PAYROLL),
+                dataGroupCollection::withInternationalDataGroupId));
+        }
 
         taskList.parallelStream()
             .forEach(voidCallable -> {

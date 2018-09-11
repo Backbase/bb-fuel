@@ -1,5 +1,20 @@
 package com.backbase.ct.dataloader.data;
 
+import static com.backbase.ct.dataloader.data.ArrangementType.FINANCE_INTERNATIONAL;
+import static com.backbase.ct.dataloader.data.ArrangementType.GENERAL;
+import static com.backbase.ct.dataloader.data.ArrangementType.INTERNATIONAL_TRADE;
+import static com.backbase.ct.dataloader.data.ArrangementType.PAYROLL;
+import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_ARRANGEMENTS_FINANCE_INTERNATIONAL_MAX;
+import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_ARRANGEMENTS_FINANCE_INTERNATIONAL_MIN;
+import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_ARRANGEMENTS_GENERAL_MAX;
+import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_ARRANGEMENTS_GENERAL_MIN;
+import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_ARRANGEMENTS_INTERNATIONAL_TRADE_MAX;
+import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_ARRANGEMENTS_INTERNATIONAL_TRADE_MIN;
+import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_ARRANGEMENTS_PAYROLL_MAX;
+import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_ARRANGEMENTS_PAYROLL_MIN;
+import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_DEBIT_CARDS_MAX;
+import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_DEBIT_CARDS_MIN;
+import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_PRODUCTS_JSON_LOCATION;
 import static com.backbase.ct.dataloader.util.CommonHelpers.generateRandomAmountInRange;
 import static com.backbase.ct.dataloader.util.CommonHelpers.generateRandomNumberInRange;
 import static com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.AccountHolderCountry;
@@ -25,6 +40,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
+import java.util.stream.IntStream;
 import org.apache.commons.lang.time.DateUtils;
 import org.iban4j.CountryCode;
 import org.iban4j.Iban;
@@ -36,7 +52,8 @@ public class ProductSummaryDataGenerator {
     private static Random random = new Random();
     private static final List<CountryCode> COUNTRY_CODES;
     private static final int WEEKS_IN_A_QUARTER = 13;
-    private static final List<String> CURRENT_ACCOUNT_ARRANGEMENT_NAMES = asList(
+    private static final int NUMBER_OF_PRODUCTS = 6;
+    private static final List<String> GENERAL_CURRENT_ACCOUNT_NAMES = asList(
         "Factory",
         "GBF Corporate",
         "Legal",
@@ -48,10 +65,38 @@ public class ProductSummaryDataGenerator {
         "Sales",
         "Support"
     );
+    private static final List<String> INTERNATIONAL_TRADE_CURRENT_ACCOUNT_NAMES = asList(
+        "Bahrain sales",
+        "China sales",
+        "Japan sales",
+        "France sales",
+        "India sales",
+        "Turkey sales",
+        "Belgium sales"
+    );
+    private static final List<String> FINANCE_INTERNATIONAL_CURRENT_ACCOUNT_NAMES = asList(
+        "Savings",
+        "Assets",
+        "Liability",
+        "Equity",
+        "Revenue",
+        "Expenses",
+        "Executive expenses",
+        "Transport"
+    );
+
     public static final Map<Integer, List<String>> PRODUCT_ARRANGEMENT_NAME_MAP = new HashMap<>();
+    public static final Map<ArrangementType, List<String>> CURRENT_ACCOUNT_ARRANGEMENT_TYPE_NAME_MAP = new HashMap<>();
 
     static {
-        PRODUCT_ARRANGEMENT_NAME_MAP.put(1, CURRENT_ACCOUNT_ARRANGEMENT_NAMES);
+        CURRENT_ACCOUNT_ARRANGEMENT_TYPE_NAME_MAP.put(GENERAL, GENERAL_CURRENT_ACCOUNT_NAMES);
+        CURRENT_ACCOUNT_ARRANGEMENT_TYPE_NAME_MAP.put(INTERNATIONAL_TRADE, INTERNATIONAL_TRADE_CURRENT_ACCOUNT_NAMES);
+        CURRENT_ACCOUNT_ARRANGEMENT_TYPE_NAME_MAP
+            .put(FINANCE_INTERNATIONAL, FINANCE_INTERNATIONAL_CURRENT_ACCOUNT_NAMES);
+        CURRENT_ACCOUNT_ARRANGEMENT_TYPE_NAME_MAP.put(PAYROLL, singletonList("Payroll"));
+    }
+
+    static {
         PRODUCT_ARRANGEMENT_NAME_MAP.put(2, singletonList("Savings Account"));
         PRODUCT_ARRANGEMENT_NAME_MAP.put(3, singletonList("Credit Card"));
         PRODUCT_ARRANGEMENT_NAME_MAP.put(4, singletonList("Loan"));
@@ -79,20 +124,77 @@ public class ProductSummaryDataGenerator {
 
     public static ProductsPostRequestBody[] generateProductsPostRequestBodies() throws IOException {
         return ParserUtil
-            .convertJsonToObject(globalProperties.getString(CommonConstants.PROPERTY_PRODUCTS_JSON_LOCATION),
+            .convertJsonToObject(globalProperties.getString(PROPERTY_PRODUCTS_JSON_LOCATION),
                 ProductsPostRequestBody[].class);
     }
 
-    public static ArrangementsPostRequestBody generateArrangementsPostRequestBody(String externalLegalEntityId,
-        Currency currency, int productId) {
+    public static List<ArrangementsPostRequestBody> generateArrangementsPostRequestBodies(String externalLegalEntityId,
+        Currency currency, ArrangementType arrangementType) {
+        List<ArrangementsPostRequestBody> arrangementsPostRequestBodies = new ArrayList<>();
+        Map<ArrangementType, Integer> arrangementTypeAmountMap = new HashMap<>();
+
+        arrangementTypeAmountMap.put(GENERAL, generateRandomNumberInRange(globalProperties.getInt(PROPERTY_ARRANGEMENTS_GENERAL_MIN),
+            globalProperties.getInt(PROPERTY_ARRANGEMENTS_GENERAL_MAX)));
+        arrangementTypeAmountMap.put(INTERNATIONAL_TRADE, generateRandomNumberInRange(globalProperties.getInt(PROPERTY_ARRANGEMENTS_INTERNATIONAL_TRADE_MIN),
+            globalProperties.getInt(PROPERTY_ARRANGEMENTS_INTERNATIONAL_TRADE_MAX)));
+        arrangementTypeAmountMap.put(FINANCE_INTERNATIONAL, generateRandomNumberInRange(globalProperties.getInt(PROPERTY_ARRANGEMENTS_FINANCE_INTERNATIONAL_MIN),
+            globalProperties.getInt(PROPERTY_ARRANGEMENTS_FINANCE_INTERNATIONAL_MAX)));
+        arrangementTypeAmountMap.put(PAYROLL, generateRandomNumberInRange(globalProperties.getInt(PROPERTY_ARRANGEMENTS_PAYROLL_MIN),
+            globalProperties.getInt(PROPERTY_ARRANGEMENTS_PAYROLL_MAX)));
+
+        int numberOfGeneralTypeArrangements = arrangementTypeAmountMap.get(GENERAL) < NUMBER_OF_PRODUCTS
+            ? arrangementTypeAmountMap.get(GENERAL)
+            : arrangementTypeAmountMap.get(GENERAL) - (NUMBER_OF_PRODUCTS - 1);
+
+        switch (arrangementType) {
+            case GENERAL:
+                IntStream.range(0, numberOfGeneralTypeArrangements).parallel().forEach(randomNumber ->
+                    arrangementsPostRequestBodies
+                        .add(generateArrangementsPostRequestBody(externalLegalEntityId, 1, currency, arrangementType)));
+
+                if (arrangementTypeAmountMap.get(GENERAL) >= NUMBER_OF_PRODUCTS) {
+                    IntStream.range(2, 7).parallel().forEach(productId ->
+                        arrangementsPostRequestBodies.add(
+                            generateArrangementsPostRequestBody(externalLegalEntityId, productId, currency,
+                                arrangementType)));
+                }
+                break;
+            case INTERNATIONAL_TRADE:
+            case PAYROLL:
+                IntStream.range(0, arrangementTypeAmountMap.get(arrangementType)).parallel().forEach(randomNumber ->
+                    arrangementsPostRequestBodies
+                        .add(generateArrangementsPostRequestBody(externalLegalEntityId, 1, currency, arrangementType)));
+                break;
+            case FINANCE_INTERNATIONAL:
+                IntStream.range(0, numberOfGeneralTypeArrangements).parallel().forEach(randomNumber ->
+                    arrangementsPostRequestBodies
+                        .add(generateArrangementsPostRequestBody(externalLegalEntityId, 1, currency, arrangementType)));
+
+                if (arrangementTypeAmountMap.get(FINANCE_INTERNATIONAL) >= NUMBER_OF_PRODUCTS) {
+                    // Savings, Loan, Investment Account
+                    List<Integer> productIds = asList(2, 4, 6);
+
+                    IntStream.range(2, 7).parallel().forEach(randomNumber ->
+                        arrangementsPostRequestBodies.add(
+                            generateArrangementsPostRequestBody(externalLegalEntityId,
+                                productIds.get(random.nextInt(productIds.size())), currency,
+                                arrangementType)));
+                }
+                break;
+        }
+        return arrangementsPostRequestBodies;
+    }
+
+    private static ArrangementsPostRequestBody generateArrangementsPostRequestBody(String externalLegalEntityId,
+        int productId, Currency currency, ArrangementType arrangementType) {
         AccountHolderCountry[] accountHolderCountries = AccountHolderCountry.values();
         boolean debitCreditAccountIndicator = productId == 1 || productId == 2;
         final HashSet<DebitCard> debitCards = new HashSet<>();
 
         if (productId == 1) {
             for (int i = 0;
-                i < generateRandomNumberInRange(globalProperties.getInt(CommonConstants.PROPERTY_DEBIT_CARDS_MIN),
-                    globalProperties.getInt(CommonConstants.PROPERTY_DEBIT_CARDS_MAX)); i++) {
+                i < generateRandomNumberInRange(globalProperties.getInt(PROPERTY_DEBIT_CARDS_MIN),
+                    globalProperties.getInt(PROPERTY_DEBIT_CARDS_MAX)); i++) {
                 debitCards.add(new DebitCard()
                     .withNumber(String.format("%s", generateRandomNumberInRange(1111, 9999)))
                     .withExpiryDate(faker.business()
@@ -105,9 +207,13 @@ public class ProductSummaryDataGenerator {
 
         String bic = faker.finance().bic();
 
-        String arrangementName = PRODUCT_ARRANGEMENT_NAME_MAP.get(productId)
-            .get(random.nextInt(PRODUCT_ARRANGEMENT_NAME_MAP.get(productId).size())) + " " +
-            currency + " " + bic.substring(0, 3) + accountNumber.substring(accountNumber.length() - 3);
+        String arrangementNameSuffix =
+            " " + currency + " " + bic.substring(0, 3) + accountNumber.substring(accountNumber.length() - 3);
+
+        String arrangementName = productId == 1 ? CURRENT_ACCOUNT_ARRANGEMENT_TYPE_NAME_MAP.get(arrangementType)
+            .get(random.nextInt(CURRENT_ACCOUNT_ARRANGEMENT_TYPE_NAME_MAP.get(arrangementType).size()))
+            + arrangementNameSuffix : PRODUCT_ARRANGEMENT_NAME_MAP.get(productId)
+            .get(random.nextInt(PRODUCT_ARRANGEMENT_NAME_MAP.get(productId).size())) + arrangementNameSuffix;
 
         ArrangementsPostRequestBody arrangementsPostRequestBody = new ArrangementsPostRequestBody()
             .withId(UUID.randomUUID().toString())
@@ -163,7 +269,8 @@ public class ProductSummaryDataGenerator {
         return balanceHistoryPostRequestBodies;
     }
 
-    private static BalanceHistoryPostRequestBody generateBalanceHistoryPostRequestBody(String externalArrangementId,
+    private static BalanceHistoryPostRequestBody generateBalanceHistoryPostRequestBody(String
+        externalArrangementId,
         Date updatedDate) {
         return new BalanceHistoryPostRequestBody()
             .withArrangementId(externalArrangementId)

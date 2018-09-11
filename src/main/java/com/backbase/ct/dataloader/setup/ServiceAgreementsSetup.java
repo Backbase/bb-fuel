@@ -26,10 +26,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class ServiceAgreementsSetup {
+public class ServiceAgreementsSetup extends BaseSetup {
 
-    private GlobalProperties globalProperties = GlobalProperties.getInstance();
-    private LoginRestClient loginRestClient = new LoginRestClient();
     private final UserContextPresentationRestClient userContextPresentationRestClient;
     private final ServiceAgreementsConfigurator serviceAgreementsConfigurator;
     private final ServiceAgreementsPresentationRestClient serviceAgreementsPresentationRestClient;

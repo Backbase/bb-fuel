@@ -66,6 +66,7 @@ public class ProductSummaryDataGenerator {
         "Sales",
         "Support"
     );
+
     private static final List<String> INTERNATIONAL_TRADE_CURRENT_ACCOUNT_NAMES = asList(
         "Bahrain sales",
         "China sales",
@@ -75,8 +76,8 @@ public class ProductSummaryDataGenerator {
         "Turkey sales",
         "Belgium sales"
     );
+
     private static final List<String> FINANCE_INTERNATIONAL_CURRENT_ACCOUNT_NAMES = asList(
-        "Savings",
         "Assets",
         "Liability",
         "Equity",
@@ -85,7 +86,6 @@ public class ProductSummaryDataGenerator {
         "Executive expenses",
         "Transport"
     );
-
 
     private static final Map<ArrangementType, List<String>> CURRENT_ACCOUNT_ARRANGEMENT_TYPE_NAME_MAP = new HashMap<>();
     static {
@@ -99,11 +99,11 @@ public class ProductSummaryDataGenerator {
     private static final Map<Integer, List<String>> PRODUCT_ARRANGEMENT_NAME_MAP = new HashMap<>();
 
     static {
-        PRODUCT_ARRANGEMENT_NAME_MAP.put(2, singletonList("Savings Account"));
+        PRODUCT_ARRANGEMENT_NAME_MAP.put(2, singletonList("Savings"));
         PRODUCT_ARRANGEMENT_NAME_MAP.put(3, singletonList("Credit Card"));
         PRODUCT_ARRANGEMENT_NAME_MAP.put(4, singletonList("Loan"));
         PRODUCT_ARRANGEMENT_NAME_MAP.put(5, singletonList("Term Deposit"));
-        PRODUCT_ARRANGEMENT_NAME_MAP.put(6, singletonList("Investment Account"));
+        PRODUCT_ARRANGEMENT_NAME_MAP.put(6, singletonList("Investments"));
     }
 
     static {

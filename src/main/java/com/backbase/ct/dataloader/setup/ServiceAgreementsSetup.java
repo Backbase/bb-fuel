@@ -94,9 +94,13 @@ public class ServiceAgreementsSetup {
             Set<String> externalUserIds = participant.getUsers();
 
             List<String> dataGroupIds = asList(
-                dataGroupCollection.getEuropeDataGroupId(),
-                dataGroupCollection.getUsDataGroupId(),
-                dataGroupCollection.getInternationalDataGroupId());
+                dataGroupCollection.getAmsterdamDataGroupId(),
+                dataGroupCollection.getPortlandDataGroupId(),
+                dataGroupCollection.getVancouverDataGroupId(),
+                dataGroupCollection.getLondonDataGroupId(),
+                dataGroupCollection.getInternationalTradeDataGroupId(),
+                dataGroupCollection.getFinanceInternationalDataGroupId(),
+                dataGroupCollection.getPayrollDataGroupId());
 
             for (String externalUserId : externalUserIds) {
                 this.permissionsConfigurator.assignPermissions(

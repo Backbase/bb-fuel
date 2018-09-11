@@ -52,7 +52,6 @@ public class ProductSummaryDataGenerator {
     private static Random random = new Random();
     private static final List<CountryCode> COUNTRY_CODES;
     private static final int WEEKS_IN_A_QUARTER = 13;
-    private static final int NUMBER_OF_PRODUCTS = 6;
     private static final List<String> GENERAL_CURRENT_ACCOUNT_NAMES = asList(
         "Factory",
         "GBF Corporate",
@@ -142,20 +141,21 @@ public class ProductSummaryDataGenerator {
         arrangementTypeAmountMap.put(PAYROLL, generateRandomNumberInRange(globalProperties.getInt(PROPERTY_ARRANGEMENTS_PAYROLL_MIN),
             globalProperties.getInt(PROPERTY_ARRANGEMENTS_PAYROLL_MAX)));
 
-        int numberOfGeneralTypeArrangements = arrangementTypeAmountMap.get(GENERAL) < NUMBER_OF_PRODUCTS
-            ? arrangementTypeAmountMap.get(GENERAL)
-            : arrangementTypeAmountMap.get(GENERAL) - (NUMBER_OF_PRODUCTS - 1);
-
         switch (arrangementType) {
             case GENERAL:
+                int numberOfSavingsAccountsPerGroup = 1;
+                int numberOfGeneralTypeArrangements = arrangementTypeAmountMap.get(GENERAL) <= numberOfSavingsAccountsPerGroup
+                    ? arrangementTypeAmountMap.get(GENERAL)
+                    : arrangementTypeAmountMap.get(GENERAL) - numberOfSavingsAccountsPerGroup;
+
                 IntStream.range(0, numberOfGeneralTypeArrangements).parallel().forEach(randomNumber ->
                     arrangementsPostRequestBodies
                         .add(generateArrangementsPostRequestBody(externalLegalEntityId, 1, currency, arrangementType)));
 
-                if (arrangementTypeAmountMap.get(GENERAL) >= NUMBER_OF_PRODUCTS) {
-                    IntStream.range(2, 7).parallel().forEach(productId ->
+                if (arrangementTypeAmountMap.get(GENERAL) > numberOfSavingsAccountsPerGroup) {
+                    IntStream.range(0, numberOfSavingsAccountsPerGroup).parallel().forEach(randomNumber ->
                         arrangementsPostRequestBodies.add(
-                            generateArrangementsPostRequestBody(externalLegalEntityId, productId, currency,
+                            generateArrangementsPostRequestBody(externalLegalEntityId, 2, currency,
                                 arrangementType)));
                 }
                 break;
@@ -166,19 +166,37 @@ public class ProductSummaryDataGenerator {
                         .add(generateArrangementsPostRequestBody(externalLegalEntityId, 1, currency, arrangementType)));
                 break;
             case FINANCE_INTERNATIONAL:
-                IntStream.range(0, numberOfGeneralTypeArrangements).parallel().forEach(randomNumber ->
+                int numberOfLoanAndSavingsAccountsPerGroup = 2;
+                int numberOfInvestmentsAccountsPerGroup = 3;
+                int numberOfFinanceInternationalArrangements = arrangementTypeAmountMap.get(FINANCE_INTERNATIONAL) <=
+                    (numberOfLoanAndSavingsAccountsPerGroup + numberOfInvestmentsAccountsPerGroup)
+                    ? arrangementTypeAmountMap.get(FINANCE_INTERNATIONAL)
+                    : arrangementTypeAmountMap.get(FINANCE_INTERNATIONAL) - (numberOfLoanAndSavingsAccountsPerGroup + numberOfInvestmentsAccountsPerGroup);
+
+                IntStream.range(0, numberOfFinanceInternationalArrangements).parallel().forEach(randomNumber ->
                     arrangementsPostRequestBodies
                         .add(generateArrangementsPostRequestBody(externalLegalEntityId, 1, currency, arrangementType)));
 
-                if (arrangementTypeAmountMap.get(FINANCE_INTERNATIONAL) >= NUMBER_OF_PRODUCTS) {
-                    // Savings, Loan, Investment Account
-                    List<Integer> productIds = asList(2, 4, 6);
-
-                    IntStream.range(2, 7).parallel().forEach(randomNumber ->
+                if (arrangementTypeAmountMap.get(FINANCE_INTERNATIONAL) > (numberOfLoanAndSavingsAccountsPerGroup + numberOfInvestmentsAccountsPerGroup)) {
+                    IntStream.range(0, numberOfInvestmentsAccountsPerGroup).parallel().forEach(randomNumber -> {
                         arrangementsPostRequestBodies.add(
                             generateArrangementsPostRequestBody(externalLegalEntityId,
-                                productIds.get(random.nextInt(productIds.size())), currency,
-                                arrangementType)));
+                                6, currency,
+                                arrangementType));
+                    });
+
+                    IntStream.range(0, numberOfLoanAndSavingsAccountsPerGroup).parallel().forEach(randomNumber -> {
+                        arrangementsPostRequestBodies.add(
+                            generateArrangementsPostRequestBody(externalLegalEntityId,
+                                2, currency,
+                                arrangementType));
+
+                        arrangementsPostRequestBodies.add(
+                            generateArrangementsPostRequestBody(externalLegalEntityId,
+                                4, currency,
+                                arrangementType));
+                    });
+
                 }
                 break;
         }

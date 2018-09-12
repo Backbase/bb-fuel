@@ -45,21 +45,23 @@
   },
   {
     "userExternalIds": [
-      "U0001011",
-      "U0001012",
-      "U0001013",
-      "U0001014",
-      "U0001015"
+      "carter.terry",
+      "arielle.buckridge",
+      "holly.stroman",
+      "houston.toy",
+      "steve.johnson"
     ]
   },
   {
     "legalEntityName": "Green Bicycle Factory",
     "userExternalIds": [
-      "U0001111",
-      "U0001112",
-      "U0001113",
-      "U0001114",
-      "U0001115"
+      "robin.green",
+      "sarah.lee",
+      "alex.wong",
+      "jan.verschoor",
+      "iris.schipper",
+      "joe.santorelli",
+      "paddy.brian"
     ]
   }
 ]

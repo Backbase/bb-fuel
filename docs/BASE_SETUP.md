@@ -6,18 +6,29 @@
 
 For legal entities and users in the file [legal-entities-with-users.json](src/main/resources/data/legal-entities-with-users.json):
 - One admin function group for all business functions with all privileges per service agreement of the legal entity from the input file.
-- 3 data groups (all assigned to the admin function group)
-    1. EUR arrangements
-    2. USD arrangements
-    3. International arrangements
+- Data groups (all assigned to the admin function group):
+    - In case of retail (1 user per legal entity):
+        - General EUR arrangements
+        - General USD arrangements
+    - In case of business (more than 1 user per legal entity):
+        - "Amsterdam" - EUR arrangements
+        - "Portland" - USD arrangements
+        - "Vancouver" - CAD arrangements
+        - "London" - GBP arrangements
+        - Additionally if `ingest.international.and.payroll.data.groups` is `true`:
+            - "International Trade" - various currency arrangements
+            - "Finance International" - various currency arrangements
+            - "Payroll" - various currency arrangements
 
 - All function groups and data groups are assigned to the users via master service agreement of the legal entities from the input file.
 
 ## Product summary setup
 - Default products: [products.json](src/main/resources/data/products.json)
-- 3 sets of arrangements each set for each data group (each set contains number of arrangements, by default: between 15 and 20)
-    - For product types other than "Current Account" only one arrangement will be ingested
-    - All other arrangements will be of type "Current Account"
+- The product types of the arrangements as listed under *Access control setup* are as follows:
+    - Retail: all current accounts, and one of each other product type
+    - Business: all current accounts, and additionally for:
+        - "Amsterdam", "Portland", "Vancouver" and "London" - 1 savings account
+        - "Finance International" - 2 loans, 2 savings and 4 investments accounts
 - In case of current account arrangements random debit cards (by default: between 3 and 10) are associated
 - Additionally (by default disabled) possible to ingest balance history based on a weekly balance history items for the past quarter
     - Only works if property `ingest.access.control` is set to `true` due to the required external arrangement id when ingesting balance history items.

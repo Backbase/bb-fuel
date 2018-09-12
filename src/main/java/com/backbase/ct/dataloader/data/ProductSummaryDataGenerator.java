@@ -186,7 +186,7 @@ public class ProductSummaryDataGenerator {
             ? financeInternationalCurrencyList.get(random.nextInt(financeInternationalCurrencyList.size()))
             : currency;
         int numberOfLoanAndSavingsAccountsPerGroup = 2;
-        int numberOfInvestmentsAccountsPerGroup = 3;
+        int numberOfInvestmentsAccountsPerGroup = 4;
         int numberOfCurrentAccountArrangements = ARRANGEMENT_TYPE_AMOUNT_MAP.get(FINANCE_INTERNATIONAL) <=
             (numberOfLoanAndSavingsAccountsPerGroup + numberOfInvestmentsAccountsPerGroup)
             ? ARRANGEMENT_TYPE_AMOUNT_MAP.get(FINANCE_INTERNATIONAL)

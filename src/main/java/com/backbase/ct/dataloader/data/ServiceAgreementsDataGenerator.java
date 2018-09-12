@@ -14,7 +14,8 @@ public class ServiceAgreementsDataGenerator {
 
     public static ServiceAgreementPostRequestBody generateServiceAgreementPostRequestBody(
         Set<Participant> participants) {
-        String randomLegalEntityName = faker.name().lastName() + " " + faker.company().industry().replaceAll("(/| or).*", "");
+        String randomLegalEntityName = faker.name().lastName() + " " + 
+          faker.company().industry().replaceAll("(/| or).*", "").trim();
 
         return new ServiceAgreementPostRequestBody()
             .withName(randomLegalEntityName)

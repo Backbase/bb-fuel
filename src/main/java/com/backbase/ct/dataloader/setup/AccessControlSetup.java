@@ -144,47 +144,51 @@ public class AccessControlSetup {
 
         if (numberOfUsersInServiceAgreement == 1) {
             taskList.add(() -> generateTask(externalServiceAgreementId, "General EUR",
-                () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, Currency.EUR,
-                    GENERAL_RETAIL),
+                () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, GENERAL_RETAIL, Currency.EUR
+                ),
                 dataGroupCollection::setAmsterdamDataGroupId));
             taskList.add(() -> generateTask(externalServiceAgreementId, "General USD",
-                () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, Currency.USD,
-                    GENERAL_RETAIL),
+                () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, GENERAL_RETAIL, Currency.USD
+                ),
                 dataGroupCollection::setAmsterdamDataGroupId));
         } else {
             taskList.add(() -> generateTask(externalServiceAgreementId, "Amsterdam",
-                () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, Currency.EUR,
-                    GENERAL_BUSINESS),
+                () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, GENERAL_BUSINESS,
+                    Currency.EUR
+                ),
                 dataGroupCollection::setAmsterdamDataGroupId));
 
             taskList.add(() -> generateTask(externalServiceAgreementId, "Portland",
-                () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, Currency.USD,
-                    GENERAL_BUSINESS),
+                () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, GENERAL_BUSINESS,
+                    Currency.USD
+                ),
                 dataGroupCollection::setPortlandDataGroupId));
 
             taskList.add(() -> generateTask(externalServiceAgreementId, "Vancouver",
-                () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, Currency.CAD,
-                    GENERAL_BUSINESS),
+                () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, GENERAL_BUSINESS,
+                    Currency.CAD
+                ),
                 dataGroupCollection::setVancouverDataGroupId));
 
             taskList.add(() -> generateTask(externalServiceAgreementId, "London",
-                () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, Currency.GBP,
-                    GENERAL_BUSINESS),
+                () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, GENERAL_BUSINESS,
+                    Currency.GBP
+                ),
                 dataGroupCollection::setLondonDataGroupId));
 
             if (this.globalProperties.getBoolean(PROPERTY_INGEST_INTERNATIONAL_AND_PAYROLL_DATA_GROUPS)) {
                 taskList.add(() -> generateTask(externalServiceAgreementId, INTERNATIONAL_TRADE.toString(),
                     () -> this.productSummaryConfigurator
-                        .ingestArrangements(externalLegalEntityId, null, INTERNATIONAL_TRADE),
+                        .ingestArrangements(externalLegalEntityId, INTERNATIONAL_TRADE, null),
                     dataGroupCollection::setInternationalTradeDataGroupId));
 
                 taskList.add(() -> generateTask(externalServiceAgreementId, FINANCE_INTERNATIONAL.toString(),
                     () -> this.productSummaryConfigurator
-                        .ingestArrangements(externalLegalEntityId, null, FINANCE_INTERNATIONAL),
+                        .ingestArrangements(externalLegalEntityId, FINANCE_INTERNATIONAL, null),
                     dataGroupCollection::setFinanceInternationalDataGroupId));
 
                 taskList.add(() -> generateTask(externalServiceAgreementId, PAYROLL.toString(),
-                    () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, null, PAYROLL),
+                    () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, PAYROLL, null),
                     dataGroupCollection::setPayrollDataGroupId));
             }
         }

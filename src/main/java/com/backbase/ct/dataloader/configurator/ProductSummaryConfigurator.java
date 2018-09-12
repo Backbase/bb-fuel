@@ -7,7 +7,6 @@ import com.backbase.ct.dataloader.client.productsummary.ArrangementsIntegrationR
 import com.backbase.ct.dataloader.data.ArrangementType;
 import com.backbase.ct.dataloader.data.ProductSummaryDataGenerator;
 import com.backbase.ct.dataloader.dto.ArrangementId;
-import com.backbase.ct.dataloader.util.GlobalProperties;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBody;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.Currency;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostResponseBody;
@@ -17,7 +16,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,8 +26,6 @@ import org.springframework.stereotype.Service;
 public class ProductSummaryConfigurator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductSummaryConfigurator.class);
-    private static GlobalProperties globalProperties = GlobalProperties.getInstance();
-    private Random random = new Random();
     private final ArrangementsIntegrationRestClient arrangementsIntegrationRestClient;
 
     public void ingestProducts() throws IOException {
@@ -38,11 +34,12 @@ public class ProductSummaryConfigurator {
             .forEach(arrangementsIntegrationRestClient::ingestProductAndLogResponse);
     }
 
-    public List<ArrangementId> ingestArrangements(String externalLegalEntityId, Currency currency, ArrangementType arrangementType) {
+    public List<ArrangementId> ingestArrangements(String externalLegalEntityId, ArrangementType arrangementType,
+        Currency currency) {
         List<ArrangementId> arrangementIds = new ArrayList<>();
 
         List<ArrangementsPostRequestBody> arrangements = ProductSummaryDataGenerator
-            .generateArrangementsPostRequestBodies(externalLegalEntityId, currency, arrangementType);
+            .generateArrangementsPostRequestBodies(externalLegalEntityId, arrangementType, currency);
 
         for (ArrangementsPostRequestBody arrangement : arrangements) {
             ArrangementsPostResponseBody arrangementsPostResponseBody = arrangementsIntegrationRestClient

@@ -20,6 +20,8 @@ import static com.backbase.ct.dataloader.util.CommonHelpers.generateRandomAmount
 import static com.backbase.ct.dataloader.util.CommonHelpers.generateRandomNumberInRange;
 import static com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.AccountHolderCountry;
 import static com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.Currency;
+import static com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.Currency.*;
+import static com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.Currency.BHD;
 import static com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.Currency.CNY;
 import static com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.Currency.EUR;
 import static com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.Currency.INR;
@@ -85,7 +87,7 @@ public class ProductSummaryDataGenerator {
     private static final Map<Currency, String> INTERNATIONAL_TRADE_CURRENCY_NAME_MAP = new HashMap<>();
 
     static {
-        INTERNATIONAL_TRADE_CURRENCY_NAME_MAP.put(EUR, "Bahrain sales");
+        INTERNATIONAL_TRADE_CURRENCY_NAME_MAP.put(BHD, "Bahrain sales");
         INTERNATIONAL_TRADE_CURRENCY_NAME_MAP.put(CNY, "China sales");
         INTERNATIONAL_TRADE_CURRENCY_NAME_MAP.put(JPY, "Japan sales");
         INTERNATIONAL_TRADE_CURRENCY_NAME_MAP.put(INR, "India sales");
@@ -171,7 +173,7 @@ public class ProductSummaryDataGenerator {
     }
 
     public static List<ArrangementsPostRequestBody> generateArrangementsPostRequestBodies(String externalLegalEntityId,
-        Currency currency, ArrangementType arrangementType) {
+        ArrangementType arrangementType, Currency currency) {
 
         return FUNCTION_MAP.get(arrangementType).apply(externalLegalEntityId, currency);
     }
@@ -179,10 +181,9 @@ public class ProductSummaryDataGenerator {
     private static List<ArrangementsPostRequestBody> generateFinanceInternationalArrangements(
         String externalLegalEntityId, Currency currency) {
         List<ArrangementsPostRequestBody> arrangementsPostRequestBodies = new ArrayList<>();
-        List<String> financeInternationalCurrencyList = asList("EUR", "USD", "CAD", "GBP");
+        List<Currency> financeInternationalCurrencyList = asList(EUR, GBP, USD, CAD);
         Currency financeInternationalCurrency = currency == null
-            ? Currency
-            .valueOf(financeInternationalCurrencyList.get(random.nextInt(financeInternationalCurrencyList.size())))
+            ? financeInternationalCurrencyList.get(random.nextInt(financeInternationalCurrencyList.size()))
             : currency;
         int numberOfLoanAndSavingsAccountsPerGroup = 2;
         int numberOfInvestmentsAccountsPerGroup = 3;
@@ -230,9 +231,9 @@ public class ProductSummaryDataGenerator {
     private static List<ArrangementsPostRequestBody> generatePayrollArrangements(String externalLegalEntityId,
         Currency currency) {
         List<ArrangementsPostRequestBody> arrangementsPostRequestBodies = new ArrayList<>();
-        List<String> payrollCurrencyList = asList("EUR", "GBP", "USD", "CAD");
+        List<Currency> payrollCurrencyList = asList(EUR, GBP, USD, CAD);
         Currency payrollCurrency = currency == null
-            ? Currency.valueOf(payrollCurrencyList.get(random.nextInt(payrollCurrencyList.size())))
+            ? payrollCurrencyList.get(random.nextInt(payrollCurrencyList.size()))
             : currency;
 
         List<String> currentAccountNames = CURRENT_ACCOUNT_ARRANGEMENT_TYPE_NAME_MAP.get(PAYROLL);
@@ -252,10 +253,9 @@ public class ProductSummaryDataGenerator {
     private static List<ArrangementsPostRequestBody> generateInternationalTradeArrangements(
         String externalLegalEntityId, Currency currency) {
         List<ArrangementsPostRequestBody> arrangementsPostRequestBodies = new ArrayList<>();
-        List<String> internationalTradeCurrencyList = asList("BHD", "CNY", "JPY", "EUR", "INR", "TRY", "EUR");
+        List<Currency> internationalTradeCurrencyList = asList(BHD, CNY, JPY, EUR, INR, TRY, EUR);
         Currency internationalTradeCurrency = currency == null
-            ? Currency
-            .valueOf(internationalTradeCurrencyList.get(random.nextInt(internationalTradeCurrencyList.size())))
+            ? internationalTradeCurrencyList.get(random.nextInt(internationalTradeCurrencyList.size()))
             : currency;
 
         List<String> currentAccountNames = CURRENT_ACCOUNT_ARRANGEMENT_TYPE_NAME_MAP.get(INTERNATIONAL_TRADE);
@@ -275,9 +275,9 @@ public class ProductSummaryDataGenerator {
     private static List<ArrangementsPostRequestBody> generateGeneralBusinessArrangements(String externalLegalEntityId,
         Currency currency) {
         List<ArrangementsPostRequestBody> arrangementsPostRequestBodies = new ArrayList<>();
-        List<String> arrangementCurrencyList = asList("EUR", "USD", "CAD", "GBP");
+        List<Currency> arrangementCurrencyList = asList(EUR, GBP, USD, CAD);
         Currency arrangementCurrency = currency == null
-            ? Currency.valueOf(arrangementCurrencyList.get(random.nextInt(arrangementCurrencyList.size())))
+            ? arrangementCurrencyList.get(random.nextInt(arrangementCurrencyList.size()))
             : currency;
 
         int numberOfSavingsAccountsPerGroup = 1;
@@ -310,9 +310,9 @@ public class ProductSummaryDataGenerator {
     private static List<ArrangementsPostRequestBody> generateGeneralRetailArrangements(String externalLegalEntityId,
         Currency currency) {
         List<ArrangementsPostRequestBody> arrangementsPostRequestBodies = new ArrayList<>();
-        List<String> arrangementCurrencyList = asList("EUR", "USD", "CAD", "GBP");
+        List<Currency> arrangementCurrencyList = asList(EUR, GBP, USD, CAD);
         Currency arrangementCurrency = currency == null
-            ? Currency.valueOf(arrangementCurrencyList.get(random.nextInt(arrangementCurrencyList.size())))
+            ? arrangementCurrencyList.get(random.nextInt(arrangementCurrencyList.size()))
             : currency;
 
         final int NUMBER_OF_PRODUCTS = 6;

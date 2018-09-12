@@ -6,9 +6,7 @@ import static com.backbase.ct.dataloader.data.ArrangementType.GENERAL_RETAIL;
 import static com.backbase.ct.dataloader.data.ArrangementType.INTERNATIONAL_TRADE;
 import static com.backbase.ct.dataloader.data.ArrangementType.PAYROLL;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_ACCESS_CONTROL;
-import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_ARRANGEMENTS_FINANCE_INTERNATIONAL;
-import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_ARRANGEMENTS_INTERNATIONAL_TRADE;
-import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_ARRANGEMENTS_PAYROLL;
+import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_INTERNATIONAL_AND_PAYROLL_DATA_GROUPS;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_BALANCE_HISTORY;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_TRANSACTIONS;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_LEGAL_ENTITIES_WITH_USERS_JSON;
@@ -174,21 +172,17 @@ public class AccessControlSetup {
                     GENERAL_BUSINESS),
                 dataGroupCollection::setLondonDataGroupId));
 
-            if (this.globalProperties.getBoolean(PROPERTY_INGEST_ARRANGEMENTS_INTERNATIONAL_TRADE)) {
+            if (this.globalProperties.getBoolean(PROPERTY_INGEST_INTERNATIONAL_AND_PAYROLL_DATA_GROUPS)) {
                 taskList.add(() -> generateTask(externalServiceAgreementId, INTERNATIONAL_TRADE.toString(),
                     () -> this.productSummaryConfigurator
                         .ingestArrangements(externalLegalEntityId, null, INTERNATIONAL_TRADE),
                     dataGroupCollection::setInternationalTradeDataGroupId));
-            }
 
-            if (this.globalProperties.getBoolean(PROPERTY_INGEST_ARRANGEMENTS_FINANCE_INTERNATIONAL)) {
                 taskList.add(() -> generateTask(externalServiceAgreementId, FINANCE_INTERNATIONAL.toString(),
                     () -> this.productSummaryConfigurator
                         .ingestArrangements(externalLegalEntityId, null, FINANCE_INTERNATIONAL),
                     dataGroupCollection::setFinanceInternationalDataGroupId));
-            }
 
-            if (this.globalProperties.getBoolean(PROPERTY_INGEST_ARRANGEMENTS_PAYROLL)) {
                 taskList.add(() -> generateTask(externalServiceAgreementId, PAYROLL.toString(),
                     () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, null, PAYROLL),
                     dataGroupCollection::setPayrollDataGroupId));

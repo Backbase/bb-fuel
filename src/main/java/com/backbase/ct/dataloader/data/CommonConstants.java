@@ -59,13 +59,11 @@ public final class CommonConstants {
     public static final String PROPERTY_CONTACT_ACCOUNTS_MAX = "contact.accounts.max";
     public static final String PROPERTY_ARRANGEMENTS_GENERAL_MIN = "arrangements.general.min";
     public static final String PROPERTY_ARRANGEMENTS_GENERAL_MAX = "arrangements.general.max";
-    public static final String PROPERTY_INGEST_ARRANGEMENTS_INTERNATIONAL_TRADE = "ingest.arrangements.international.trade";
+    public static final String PROPERTY_INGEST_INTERNATIONAL_AND_PAYROLL_DATA_GROUPS = "ingest.international.and.payroll.data.groups";
     public static final String PROPERTY_ARRANGEMENTS_INTERNATIONAL_TRADE_MIN = "arrangements.international.trade.min";
     public static final String PROPERTY_ARRANGEMENTS_INTERNATIONAL_TRADE_MAX = "arrangements.international.trade.max";
-    public static final String PROPERTY_INGEST_ARRANGEMENTS_FINANCE_INTERNATIONAL = "ingest.arrangements.finance.international";
     public static final String PROPERTY_ARRANGEMENTS_FINANCE_INTERNATIONAL_MIN = "arrangements.finance.international.min";
     public static final String PROPERTY_ARRANGEMENTS_FINANCE_INTERNATIONAL_MAX = "arrangements.finance.international.max";
-    public static final String PROPERTY_INGEST_ARRANGEMENTS_PAYROLL = "ingest.arrangements.payroll";
     public static final String PROPERTY_ARRANGEMENTS_PAYROLL_MIN = "arrangements.payroll.min";
     public static final String PROPERTY_ARRANGEMENTS_PAYROLL_MAX = "arrangements.payroll.max";
     public static final String PROPERTY_INGEST_BALANCE_HISTORY = "ingest.balance.history";

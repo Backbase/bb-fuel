@@ -197,7 +197,7 @@ public class ProductSummaryDataGenerator {
 
         IntStream.range(0, numberOfCurrentAccountArrangements).parallel().forEach(randomNumber -> {
             int currentAccountNameIndex = randomNumber < currentAccountNames.size() ? randomNumber
-                : randomNumber - currentAccountNames.size();
+                : random.nextInt(currentAccountNames.size());
 
             arrangementsPostRequestBodies
                 .add(generateArrangementsPostRequestBody(externalLegalEntityId, 1,
@@ -240,7 +240,7 @@ public class ProductSummaryDataGenerator {
 
         IntStream.range(0, ARRANGEMENT_TYPE_AMOUNT_MAP.get(PAYROLL)).parallel().forEach(randomNumber -> {
             int currentAccountNameIndex = randomNumber < currentAccountNames.size() ? randomNumber
-                : randomNumber - currentAccountNames.size();
+                : random.nextInt(currentAccountNames.size());
 
             arrangementsPostRequestBodies
                 .add(generateArrangementsPostRequestBody(externalLegalEntityId, 1, payrollCurrency,
@@ -262,7 +262,7 @@ public class ProductSummaryDataGenerator {
 
         IntStream.range(0, ARRANGEMENT_TYPE_AMOUNT_MAP.get(INTERNATIONAL_TRADE)).parallel().forEach(randomNumber -> {
             int currentAccountNameIndex = randomNumber < currentAccountNames.size() ? randomNumber
-                : randomNumber - currentAccountNames.size();
+                : random.nextInt(currentAccountNames.size());
 
             arrangementsPostRequestBodies
                 .add(generateArrangementsPostRequestBody(externalLegalEntityId, 1, internationalTradeCurrency,
@@ -290,7 +290,7 @@ public class ProductSummaryDataGenerator {
 
         IntStream.range(0, numberOfCurrentAccountArrangements).parallel().forEach(randomNumber -> {
             int currentAccountNameIndex = randomNumber < currentAccountNames.size() ? randomNumber
-                : randomNumber - currentAccountNames.size();
+                : random.nextInt(currentAccountNames.size());
 
             arrangementsPostRequestBodies
                 .add(generateArrangementsPostRequestBody(externalLegalEntityId, 1, arrangementCurrency,
@@ -327,7 +327,7 @@ public class ProductSummaryDataGenerator {
 
         IntStream.range(0, numberOfCurrentAccountArrangements).parallel().forEach(randomNumber -> {
             int currentAccountNameIndex = randomNumber < currentAccountNames.size() ? randomNumber
-                : randomNumber - currentAccountNames.size();
+                : random.nextInt(currentAccountNames.size());
 
             arrangementsPostRequestBodies
                 .add(generateArrangementsPostRequestBody(externalLegalEntityId, 1, arrangementCurrency,
@@ -380,7 +380,7 @@ public class ProductSummaryDataGenerator {
         String arrangementNameSuffix =
             " " + currency + " " + bic.substring(0, 3) + accountNumber.substring(accountNumber.length() - 3);
 
-        String fullArrangementName = arrangementName != null ? arrangementName :
+        String fullArrangementName = arrangementName != null ? arrangementName + arrangementNameSuffix :
             (productId == 1 ? currentAccountArrangementName + arrangementNameSuffix
                 : PRODUCT_ARRANGEMENT_NAME_MAP.get(productId).get(random.nextInt(
                     PRODUCT_ARRANGEMENT_NAME_MAP.get(productId).size())) + arrangementNameSuffix);

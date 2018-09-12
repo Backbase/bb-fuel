@@ -7,6 +7,10 @@ import lombok.Setter;
 @Setter
 public class DataGroupCollection {
 
+    private String genericEurDataGroupId;
+
+    private String genericUsdDataGroupId;
+
     private String amsterdamDataGroupId;
 
     private String portlandDataGroupId;

@@ -6,8 +6,8 @@ import static com.backbase.ct.dataloader.data.ArrangementType.GENERAL_RETAIL;
 import static com.backbase.ct.dataloader.data.ArrangementType.INTERNATIONAL_TRADE;
 import static com.backbase.ct.dataloader.data.ArrangementType.PAYROLL;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_ACCESS_CONTROL;
-import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_INTERNATIONAL_AND_PAYROLL_DATA_GROUPS;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_BALANCE_HISTORY;
+import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_INTERNATIONAL_AND_PAYROLL_DATA_GROUPS;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_TRANSACTIONS;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_LEGAL_ENTITIES_WITH_USERS_JSON;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
@@ -40,9 +40,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -146,11 +148,11 @@ public class AccessControlSetup {
             taskList.add(() -> generateTask(externalServiceAgreementId, "General EUR",
                 () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, GENERAL_RETAIL, Currency.EUR
                 ),
-                dataGroupCollection::setAmsterdamDataGroupId));
+                dataGroupCollection::setGenericEurDataGroupId));
             taskList.add(() -> generateTask(externalServiceAgreementId, "General USD",
                 () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, GENERAL_RETAIL, Currency.USD
                 ),
-                dataGroupCollection::setAmsterdamDataGroupId));
+                dataGroupCollection::setGenericUsdDataGroupId));
         } else {
             taskList.add(() -> generateTask(externalServiceAgreementId, "Amsterdam",
                 () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, GENERAL_BUSINESS,
@@ -213,13 +215,18 @@ public class AccessControlSetup {
             .ingestAdminFunctionGroup(externalServiceAgreementId);
 
         List<String> dataGroupIds = asList(
+            dataGroupCollection.getGenericEurDataGroupId(),
+            dataGroupCollection.getGenericUsdDataGroupId(),
             dataGroupCollection.getAmsterdamDataGroupId(),
             dataGroupCollection.getPortlandDataGroupId(),
             dataGroupCollection.getVancouverDataGroupId(),
             dataGroupCollection.getLondonDataGroupId(),
             dataGroupCollection.getInternationalTradeDataGroupId(),
             dataGroupCollection.getFinanceInternationalDataGroupId(),
-            dataGroupCollection.getPayrollDataGroupId());
+            dataGroupCollection.getPayrollDataGroupId())
+            .parallelStream()
+            .filter(Objects::nonNull)
+            .collect(Collectors.toList());
 
         this.accessGroupIntegrationRestClient.assignPermissions(
             externalUserId,

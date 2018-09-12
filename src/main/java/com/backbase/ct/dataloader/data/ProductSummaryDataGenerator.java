@@ -20,6 +20,7 @@ import static com.backbase.ct.dataloader.util.CommonHelpers.generateRandomAmount
 import static com.backbase.ct.dataloader.util.CommonHelpers.generateRandomNumberInRange;
 import static com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.AccountHolderCountry;
 import static com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.Currency;
+import static com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.Currency.*;
 import static java.lang.String.valueOf;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
@@ -77,21 +78,22 @@ public class ProductSummaryDataGenerator {
         "Transport"
     );
 
-    private static final Map<String, Currency> INTERNATIONAL_TRADE_NAME_CURRENCY_MAP = new HashMap<>();
+    private static final Map<Currency, String> INTERNATIONAL_TRADE_CURRENCY_NAME_MAP = new HashMap<>();
     static {
-        INTERNATIONAL_TRADE_NAME_CURRENCY_MAP.put("Bahrain sales", Currency.EUR);
-        INTERNATIONAL_TRADE_NAME_CURRENCY_MAP.put("China sales", Currency.CNY);
-        INTERNATIONAL_TRADE_NAME_CURRENCY_MAP.put("Japan sales", Currency.JPY);
-        INTERNATIONAL_TRADE_NAME_CURRENCY_MAP.put("India sales", Currency.INR);
-        INTERNATIONAL_TRADE_NAME_CURRENCY_MAP.put("Turkey sales", Currency.TRY);
-        INTERNATIONAL_TRADE_NAME_CURRENCY_MAP.put("Belgium sales", Currency.EUR);
+        INTERNATIONAL_TRADE_CURRENCY_NAME_MAP.put(EUR, "Bahrain sales");
+        INTERNATIONAL_TRADE_CURRENCY_NAME_MAP.put(CNY, "China sales");
+        INTERNATIONAL_TRADE_CURRENCY_NAME_MAP.put(JPY, "Japan sales");
+        INTERNATIONAL_TRADE_CURRENCY_NAME_MAP.put(INR, "India sales");
+        INTERNATIONAL_TRADE_CURRENCY_NAME_MAP.put(TRY, "Turkey sales");
+        INTERNATIONAL_TRADE_CURRENCY_NAME_MAP.put(EUR, "Belgium sales");
     }
 
     private static final Map<ArrangementType, List<String>> CURRENT_ACCOUNT_ARRANGEMENT_TYPE_NAME_MAP = new HashMap<>();
     static {
         CURRENT_ACCOUNT_ARRANGEMENT_TYPE_NAME_MAP.put(GENERAL_RETAIL, singletonList("Current Account"));
         CURRENT_ACCOUNT_ARRANGEMENT_TYPE_NAME_MAP.put(GENERAL_BUSINESS, GENERAL_BUSINESS_CURRENT_ACCOUNT_NAMES);
-        CURRENT_ACCOUNT_ARRANGEMENT_TYPE_NAME_MAP.put(INTERNATIONAL_TRADE, new ArrayList<>(INTERNATIONAL_TRADE_NAME_CURRENCY_MAP.keySet()));
+        CURRENT_ACCOUNT_ARRANGEMENT_TYPE_NAME_MAP.put(INTERNATIONAL_TRADE,
+            new ArrayList<>(INTERNATIONAL_TRADE_CURRENCY_NAME_MAP.values()));
         CURRENT_ACCOUNT_ARRANGEMENT_TYPE_NAME_MAP
             .put(FINANCE_INTERNATIONAL, FINANCE_INTERNATIONAL_CURRENT_ACCOUNT_NAMES);
         CURRENT_ACCOUNT_ARRANGEMENT_TYPE_NAME_MAP.put(PAYROLL, singletonList("Payroll"));
@@ -299,14 +301,11 @@ public class ProductSummaryDataGenerator {
             }
         }
 
-        String currentAccountArrangementName = CURRENT_ACCOUNT_ARRANGEMENT_TYPE_NAME_MAP.get(arrangementType)
+        String currentAccountArrangementName = arrangementType == INTERNATIONAL_TRADE
+            ? INTERNATIONAL_TRADE_CURRENCY_NAME_MAP.get(currency) : CURRENT_ACCOUNT_ARRANGEMENT_TYPE_NAME_MAP.get(arrangementType)
             .get(random.nextInt(CURRENT_ACCOUNT_ARRANGEMENT_TYPE_NAME_MAP.get(arrangementType).size()));
 
-        if (currency == null && arrangementType == INTERNATIONAL_TRADE) {
-            currency = INTERNATIONAL_TRADE_NAME_CURRENCY_MAP.get(currentAccountArrangementName);
-        }
-
-        String accountNumber = currency == Currency.EUR
+        String accountNumber = currency == EUR
             ? generateRandomIban() : valueOf(generateRandomNumberInRange(0, 999999999));
 
         String bic = faker.finance().bic();
@@ -314,9 +313,9 @@ public class ProductSummaryDataGenerator {
         String arrangementNameSuffix =
             " " + currency + " " + bic.substring(0, 3) + accountNumber.substring(accountNumber.length() - 3);
 
-        String fullArrangementName = productId == 1 ? currentAccountArrangementName
-            + arrangementNameSuffix : PRODUCT_ARRANGEMENT_NAME_MAP.get(productId)
-            .get(random.nextInt(PRODUCT_ARRANGEMENT_NAME_MAP.get(productId).size())) + arrangementNameSuffix;
+        String fullArrangementName = productId == 1 ? currentAccountArrangementName + arrangementNameSuffix
+            : PRODUCT_ARRANGEMENT_NAME_MAP.get(productId).get(random.nextInt(
+                PRODUCT_ARRANGEMENT_NAME_MAP.get(productId).size())) + arrangementNameSuffix;
 
         ArrangementsPostRequestBody arrangementsPostRequestBody = new ArrangementsPostRequestBody()
             .withId(UUID.randomUUID().toString())
@@ -348,7 +347,7 @@ public class ProductSummaryDataGenerator {
             .withCountrySubDivision(faker.address().state())
             .withBIC(bic);
 
-        if (currency.equals(Currency.EUR)) {
+        if (currency.equals(EUR)) {
             arrangementsPostRequestBody
                 .withIBAN(accountNumber)
                 .withBBAN(accountNumber.substring(3).replaceAll("[a-zA-Z]", ""));

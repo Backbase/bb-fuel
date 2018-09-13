@@ -9,12 +9,12 @@
 
     <groupId>com.backbase.ct</groupId>
     <artifactId>dataloader</artifactId>
-    <version>1.6.10-SNAPSHOT</version>
+    <version>1.6.10</version>
     <name>Backbase :: Capability Testing :: Data Loader</name>
 
     <scm>
         <developerConnection>scm:git:ssh://git@stash.backbase.com:7999/ct/dataloader.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>dataloader-1.6.10</tag>
     </scm>
 
     <distributionManagement>

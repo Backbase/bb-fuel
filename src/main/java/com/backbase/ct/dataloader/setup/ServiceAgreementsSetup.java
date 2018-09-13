@@ -19,6 +19,7 @@ import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagr
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -67,6 +68,11 @@ public class ServiceAgreementsSetup extends BaseSetup {
             .filter(Participant::getSharingAccounts)
             .collect(Collectors.toSet());
 
+        Set<String> users = participants.stream()
+            .map(Participant::getUsers)
+            .flatMap(Set::stream)
+            .collect(Collectors.toSet());
+
         String externalAdminUserId = participantsSharingAccounts.iterator()
             .next()
             .getAdmins()
@@ -82,7 +88,8 @@ public class ServiceAgreementsSetup extends BaseSetup {
             .getExternalId();
 
         this.dataGroupCollection = this.accessControlSetup
-            .ingestDataGroupArrangementsForServiceAgreement(externalServiceAgreementId, externalLegalEntityId);
+            .ingestDataGroupArrangementsForServiceAgreement(externalServiceAgreementId, externalLegalEntityId,
+                users.size());
 
         adminFunctionGroupId = this.accessGroupsConfigurator.ingestAdminFunctionGroup(externalServiceAgreementId);
     }
@@ -92,9 +99,18 @@ public class ServiceAgreementsSetup extends BaseSetup {
             Set<String> externalUserIds = participant.getUsers();
 
             List<String> dataGroupIds = asList(
-                dataGroupCollection.getEuropeDataGroupId(),
-                dataGroupCollection.getUsDataGroupId(),
-                dataGroupCollection.getInternationalDataGroupId());
+                dataGroupCollection.getGeneralEurId(),
+                dataGroupCollection.getGeneralUsdId(),
+                dataGroupCollection.getAmsterdamId(),
+                dataGroupCollection.getPortlandId(),
+                dataGroupCollection.getVancouverId(),
+                dataGroupCollection.getLondonId(),
+                dataGroupCollection.getInternationalTradeId(),
+                dataGroupCollection.getFinanceInternationalId(),
+                dataGroupCollection.getPayrollId())
+                .parallelStream()
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
 
             for (String externalUserId : externalUserIds) {
                 this.permissionsConfigurator.assignPermissions(

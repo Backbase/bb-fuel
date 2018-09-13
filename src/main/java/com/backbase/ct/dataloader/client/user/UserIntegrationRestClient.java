@@ -39,8 +39,8 @@ public class UserIntegrationRestClient extends AbstractRestClient {
             response.then()
                 .extract()
                 .as(BadRequestException.class)
-                .getErrorCode()
-                .equals("user.access.fetch.data.error.message.USER_ALREADY_ENTITLEMENTS_ADMIN")) {
+                .getMessage()
+                .equals("User is already admin in service agreement")) {
             LOGGER.warn(String
                 .format(
                     "Entitlements admin [%s] already exists under legal entity [%s], skipped ingesting this entitlements admin",

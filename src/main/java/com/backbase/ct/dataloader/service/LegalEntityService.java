@@ -32,7 +32,10 @@ public class LegalEntityService {
                 .extract()
                 .as(com.backbase.presentation.legalentity.rest.spec.v2.legalentities.exceptions.BadRequestException.class)
                 .getErrorCode()
-                .equals("legalEntity.save.error.message.E_EX_ID_ALREADY_EXISTS")) {
+                .matches("legalEntity.save.error.message.(.*)_ALREADY_EXISTS")) {
+
+            LOGGER.info("Legal entity [{}] already exists, skipped ingesting this legal entity",
+                legalEntity.getExternalId());
 
             if (legalEntity.getParentExternalId() == null) {
                 return EXTERNAL_ROOT_LEGAL_ENTITY_ID;
@@ -46,9 +49,8 @@ public class LegalEntityService {
                     legalEntity.getExternalId().equals(legalEntitiesGetResponseBody.getExternalId()) ||
                     legalEntity.getName().equals(legalEntitiesGetResponseBody.getName()))
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException(String.format("No existing legal entity found by name [%s]", legalEntity.getName())));
-
-            LOGGER.info("Legal entity [{}] already exists, skipped ingesting this legal entity", legalEntity.getExternalId());
+                .orElseThrow(() -> new RuntimeException(
+                    String.format("No existing legal entity found by name [%s]", legalEntity.getName())));
 
             return existingLegalEntity.getExternalId();
         } else {

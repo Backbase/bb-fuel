@@ -1,39 +1,27 @@
 package com.backbase.ct.dataloader.dto;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class DataGroupCollection {
 
-    private String internationalDataGroupId;
-    private String europeDataGroupId;
-    private String usDataGroupId;
+    private String generalEurId;
 
-    public DataGroupCollection() {
+    private String generalUsdId;
 
-    }
+    private String amsterdamId;
 
-    public DataGroupCollection withInternationalDataGroupId(String internalRandomCurrencyDataGroupId) {
-        this.internationalDataGroupId = internalRandomCurrencyDataGroupId;
-        return this;
-    }
+    private String portlandId;
 
-    public DataGroupCollection withEuropeDataGroupId(String internalEurCurrencyDataGroupId) {
-        this.europeDataGroupId = internalEurCurrencyDataGroupId;
-        return this;
-    }
+    private String vancouverId;
 
-    public DataGroupCollection withUsDataGroupId(String internalUsdCurrencyDataGroupId) {
-        this.usDataGroupId = internalUsdCurrencyDataGroupId;
-        return this;
-    }
+    private String londonId;
 
-    public String getInternationalDataGroupId() {
-        return internationalDataGroupId;
-    }
+    private String internationalTradeId;
 
-    public String getEuropeDataGroupId() {
-        return europeDataGroupId;
-    }
+    private String financeInternationalId;
 
-    public String getUsDataGroupId() {
-        return usDataGroupId;
-    }
+    private String payrollId;
 }

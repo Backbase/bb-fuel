@@ -1,7 +1,13 @@
 package com.backbase.ct.dataloader.setup;
 
+import static com.backbase.ct.dataloader.data.ArrangementType.FINANCE_INTERNATIONAL;
+import static com.backbase.ct.dataloader.data.ArrangementType.GENERAL_BUSINESS;
+import static com.backbase.ct.dataloader.data.ArrangementType.GENERAL_RETAIL;
+import static com.backbase.ct.dataloader.data.ArrangementType.INTERNATIONAL_TRADE;
+import static com.backbase.ct.dataloader.data.ArrangementType.PAYROLL;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_ACCESS_CONTROL;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_BALANCE_HISTORY;
+import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_INTERNATIONAL_AND_PAYROLL_DATA_GROUPS;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_TRANSACTIONS;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_LEGAL_ENTITIES_WITH_USERS_JSON;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
@@ -33,9 +39,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -114,7 +122,7 @@ public class AccessControlSetup extends BaseSetup {
             if (legalEntityContext.getDataGroupCollection() == null) {
                 legalEntityContext.setDataGroupCollection(
                     ingestDataGroupArrangementsForServiceAgreement(userContext.getExternalServiceAgreementId(),
-                        userContext.getExternalLegalEntityId()));
+                        userContext.getExternalLegalEntityId(), userExternalIds.size()));
             }
         });
 
@@ -126,21 +134,60 @@ public class AccessControlSetup extends BaseSetup {
     }
 
     protected DataGroupCollection ingestDataGroupArrangementsForServiceAgreement(String externalServiceAgreementId,
-        String externalLegalEntityId) {
+        String externalLegalEntityId, int numberOfUsersInServiceAgreement) {
         final DataGroupCollection dataGroupCollection = new DataGroupCollection();
         List<Callable<Void>> taskList = new ArrayList<>();
 
-        taskList.add(() -> generateTask(externalServiceAgreementId, "International",
-            () -> this.productSummaryConfigurator.ingestArrangementsByLegalEntity(externalLegalEntityId, null),
-            dataGroupCollection::withInternationalDataGroupId));
+        if (numberOfUsersInServiceAgreement == 1) {
+            taskList.add(() -> generateTask(externalServiceAgreementId, "General EUR",
+                () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, GENERAL_RETAIL, Currency.EUR
+                ),
+                dataGroupCollection::setGeneralEurId));
+            taskList.add(() -> generateTask(externalServiceAgreementId, "General USD",
+                () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, GENERAL_RETAIL, Currency.USD
+                ),
+                dataGroupCollection::setGeneralUsdId));
+        } else {
+            taskList.add(() -> generateTask(externalServiceAgreementId, "Amsterdam",
+                () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, GENERAL_BUSINESS,
+                    Currency.EUR
+                ),
+                dataGroupCollection::setAmsterdamId));
 
-        taskList.add(() -> generateTask(externalServiceAgreementId, "Europe",
-            () -> this.productSummaryConfigurator.ingestArrangementsByLegalEntity(externalLegalEntityId, Currency.EUR),
-            dataGroupCollection::withEuropeDataGroupId));
+            taskList.add(() -> generateTask(externalServiceAgreementId, "Portland",
+                () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, GENERAL_BUSINESS,
+                    Currency.USD
+                ),
+                dataGroupCollection::setPortlandId));
 
-        taskList.add(() -> generateTask(externalServiceAgreementId, "United States",
-            () -> this.productSummaryConfigurator.ingestArrangementsByLegalEntity(externalLegalEntityId, Currency.USD),
-            dataGroupCollection::withUsDataGroupId));
+            taskList.add(() -> generateTask(externalServiceAgreementId, "Vancouver",
+                () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, GENERAL_BUSINESS,
+                    Currency.CAD
+                ),
+                dataGroupCollection::setVancouverId));
+
+            taskList.add(() -> generateTask(externalServiceAgreementId, "London",
+                () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, GENERAL_BUSINESS,
+                    Currency.GBP
+                ),
+                dataGroupCollection::setLondonId));
+
+            if (this.globalProperties.getBoolean(PROPERTY_INGEST_INTERNATIONAL_AND_PAYROLL_DATA_GROUPS)) {
+                taskList.add(() -> generateTask(externalServiceAgreementId, INTERNATIONAL_TRADE.toString(),
+                    () -> this.productSummaryConfigurator
+                        .ingestArrangements(externalLegalEntityId, INTERNATIONAL_TRADE, null),
+                    dataGroupCollection::setInternationalTradeId));
+
+                taskList.add(() -> generateTask(externalServiceAgreementId, FINANCE_INTERNATIONAL.toString(),
+                    () -> this.productSummaryConfigurator
+                        .ingestArrangements(externalLegalEntityId, FINANCE_INTERNATIONAL, null),
+                    dataGroupCollection::setFinanceInternationalId));
+
+                taskList.add(() -> generateTask(externalServiceAgreementId, PAYROLL.toString(),
+                    () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, PAYROLL, null),
+                    dataGroupCollection::setPayrollId));
+            }
+        }
 
         taskList.parallelStream()
             .forEach(voidCallable -> {
@@ -158,12 +205,22 @@ public class AccessControlSetup extends BaseSetup {
         String externalServiceAgreementId,
         DataGroupCollection dataGroupCollection) {
 
-        String adminFunctionGroupId = this.accessGroupsConfigurator.ingestAdminFunctionGroup(externalServiceAgreementId);
+        String adminFunctionGroupId = this.accessGroupsConfigurator
+            .ingestAdminFunctionGroup(externalServiceAgreementId);
 
         List<String> dataGroupIds = asList(
-            dataGroupCollection.getEuropeDataGroupId(),
-            dataGroupCollection.getUsDataGroupId(),
-            dataGroupCollection.getInternationalDataGroupId());
+            dataGroupCollection.getGeneralEurId(),
+            dataGroupCollection.getGeneralUsdId(),
+            dataGroupCollection.getAmsterdamId(),
+            dataGroupCollection.getPortlandId(),
+            dataGroupCollection.getVancouverId(),
+            dataGroupCollection.getLondonId(),
+            dataGroupCollection.getInternationalTradeId(),
+            dataGroupCollection.getFinanceInternationalId(),
+            dataGroupCollection.getPayrollId())
+            .parallelStream()
+            .filter(Objects::nonNull)
+            .collect(Collectors.toList());
 
         this.accessGroupIntegrationRestClient.assignPermissions(
             externalUserId,
@@ -202,7 +259,8 @@ public class AccessControlSetup extends BaseSetup {
             .withExternalLegalEntityId(legalEntity.getExternalId());
     }
 
-    private Void generateTask(String externalServiceAgreementId, String dataGroupName, Supplier<List<ArrangementId>> supplier,
+    private Void generateTask(String externalServiceAgreementId, String dataGroupName,
+        Supplier<List<ArrangementId>> supplier,
         Consumer<String> consumer) {
         List<ArrangementId> arrangementIds = new ArrayList<>(supplier.get());
         String dataGroupId = this.accessGroupsConfigurator

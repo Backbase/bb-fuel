@@ -41,7 +41,7 @@ public class AccessGroupService {
                 .extract()
                 .as(BadRequestException.class)
                 .getErrorCode()
-                .equals("functionGroup.save.error.message.E_ALREADY_EXISTS")) {
+                .matches("functionGroup.save.error.message.(.*)_ALREADY_EXISTS")) {
 
             String internalServiceAgreementId = serviceAgreementsIntegrationRestClient
                 .retrieveServiceAgreementByExternalId(externalServiceAgreementId)
@@ -84,7 +84,7 @@ public class AccessGroupService {
                 .extract()
                 .as(BadRequestException.class)
                 .getErrorCode()
-                .equals("dataAccessGroup.save.error.message.E_ALREADY_EXISTS")) {
+                .matches("dataAccessGroup.save.error.message.(.*)_ALREADY_EXISTS")) {
 
             String internalServiceAgreementId = serviceAgreementsIntegrationRestClient
                 .retrieveServiceAgreementByExternalId(externalServiceAgreementId)

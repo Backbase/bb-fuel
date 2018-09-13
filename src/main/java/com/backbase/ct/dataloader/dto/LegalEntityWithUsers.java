@@ -19,15 +19,22 @@ public class LegalEntityWithUsers {
     private String parentLegalEntityExternalId;
     private String legalEntityName;
     private String legalEntityType;
-    /**
-     * Shortcut list with admin ids to generate random user names. Use {@link User} to define your own names.
-     */
-    private @Singular List<String> userExternalIds;
 
     private @Singular List<User> users;
 
     public List<String> getAdminUserExternalIds() {
         return filterUserExternalIdsOnRole("admin");
+    }
+
+    public List<String> getUserExternalIds() {
+        List<String> externalIds = new ArrayList<>();
+        if (users != null) {
+            Set<String> ids = users.stream()
+                .map(User::getExternalId)
+                .collect(Collectors.toSet());
+            externalIds.addAll(ids);
+        }
+        return externalIds;
     }
 
     /**

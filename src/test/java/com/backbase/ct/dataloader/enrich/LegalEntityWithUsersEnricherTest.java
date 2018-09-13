@@ -7,6 +7,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 
 import com.backbase.ct.dataloader.dto.LegalEntityWithUsers;
+import com.backbase.ct.dataloader.dto.User;
 import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,7 +22,7 @@ public class LegalEntityWithUsersEnricherTest {
 
     private static LegalEntityWithUsers createLegalEntityWithUsers(String userExternalId) {
         LegalEntityWithUsers le = new LegalEntityWithUsers();
-        le.setUserExternalIds(singletonList(userExternalId));
+        le.setUsers(singletonList(User.builder().externalId(userExternalId).build()));
 
         return le;
     }

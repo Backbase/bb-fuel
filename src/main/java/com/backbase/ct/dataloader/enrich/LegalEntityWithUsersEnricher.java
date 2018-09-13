@@ -15,14 +15,14 @@ public class LegalEntityWithUsersEnricher {
     private Faker faker = new Faker();
 
     private static boolean isRetailUser(LegalEntityWithUsers legalEntityWithUsers) {
-        return legalEntityWithUsers.getUserExternalIds().size() == 1
+        return legalEntityWithUsers.getUsers().size() == 1
             && legalEntityWithUsers.getLegalEntityName() == null;
     }
 
     public void enrich(List<LegalEntityWithUsers> legalEntityWithUsers) {
         legalEntityWithUsers.forEach( le -> {
             enrichLegalEntity(le);
-            enrichUsers(le);
+            enrichUsers(le.getUsers());
         });
     }
 
@@ -34,31 +34,10 @@ public class LegalEntityWithUsersEnricher {
         );
     }
 
-    private void enrichUsers(LegalEntityWithUsers legalEntity) {
-        createAdminUsersFromSimpleIds(legalEntity);
-        enrichUsers(legalEntity.getUsers());
-    }
-
-    private List<User> createAdminUsersFromSimpleIds(LegalEntityWithUsers legalEntity) {
-        List<User> users = legalEntity.getUsers();
-        List<String> ids = legalEntity.getUserExternalIds();
-        if (ids != null) {
-            List<User> simpleUsers = ids.stream()
-                .map(id -> User.builder().externalId(id).build())
-                .collect(Collectors.toList());
-            if (users == null) {
-                users = new ArrayList<>();
-            }
-            users.addAll(simpleUsers);
-            legalEntity.setUsers(users);
-        }
-        return users;
-    }
-
     /**
      * Split a string, capitalize each word and divide them by a space.
      */
-    public static String convertLogonNameToFullName(String value, String separatorChars) {
+    private static String convertLogonNameToFullName(String value, String separatorChars) {
         String[] strings = StringUtils.split(value.toLowerCase(), separatorChars);
         for (int i = 0; i < strings.length; i++) {
             strings[i] = StringUtils.capitalize(strings[i]);
@@ -67,7 +46,7 @@ public class LegalEntityWithUsersEnricher {
     }
 
     private void enrichUsers(List<User> users) {
-        users.forEach(user -> enrichUser(user));
+        users.forEach(this::enrichUser);
     }
 
     /**

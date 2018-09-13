@@ -1,8 +1,24 @@
 package com.backbase.ct.dataloader.data;
 
+import static com.backbase.ct.dataloader.data.ArrangementType.FINANCE_INTERNATIONAL;
+import static com.backbase.ct.dataloader.data.ArrangementType.GENERAL_BUSINESS;
+import static com.backbase.ct.dataloader.data.ArrangementType.GENERAL_RETAIL;
+import static com.backbase.ct.dataloader.data.ArrangementType.INTERNATIONAL_TRADE;
+import static com.backbase.ct.dataloader.data.ArrangementType.PAYROLL;
+import static com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.Currency.BHD;
+import static com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.Currency.CNY;
+import static com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.Currency.EUR;
+import static com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.Currency.INR;
+import static com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.Currency.JPY;
+import static com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.Currency.TRY;
 import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 
+import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.Currency;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public final class CommonConstants {
 
@@ -49,8 +65,6 @@ public final class CommonConstants {
     public static final String PROPERTY_INGEST_ACCESS_CONTROL = "ingest.access.control";
     public static final String PROPERTY_INGEST_CUSTOM_SERVICE_AGREEMENTS = "ingest.custom.service.agreements";
 
-    // Products
-    static final String PROPERTY_PRODUCTS_JSON_LOCATION = "products.json";
 
     // User data
     static final String PROPERTY_DEBIT_CARDS_MIN = "debit.cards.min";
@@ -89,6 +103,54 @@ public final class CommonConstants {
     public static final String PROPERTY_ACTIONS_MIN = "actions.min";
     public static final String PROPERTY_ACTIONS_MAX = "actions.max";
     public static final String PROPERTY_INGEST_ACTIONS = "ingest.actions";
+
+    // Product summary
+    static final String PROPERTY_PRODUCTS_JSON_LOCATION = "products.json";
+    static final List<String> GENERAL_BUSINESS_CURRENT_ACCOUNT_NAMES = asList(
+        "Factory",
+        "GBF Corporate",
+        "Legal",
+        "Manufacturing",
+        "Marketing",
+        "Payables",
+        "Personnel",
+        "Receivables",
+        "Sales",
+        "Support"
+    );
+
+    static final List<String> FINANCE_INTERNATIONAL_CURRENT_ACCOUNT_NAMES = asList(
+        "Assets",
+        "Liability",
+        "Equity",
+        "Revenue",
+        "Expenses",
+        "Executive expenses",
+        "Transport"
+    );
+
+    static final Map<Currency, String> INTERNATIONAL_TRADE_CURRENCY_NAME_MAP = new HashMap<>();
+
+    static {
+        INTERNATIONAL_TRADE_CURRENCY_NAME_MAP.put(BHD, "Bahrain sales");
+        INTERNATIONAL_TRADE_CURRENCY_NAME_MAP.put(CNY, "China sales");
+        INTERNATIONAL_TRADE_CURRENCY_NAME_MAP.put(JPY, "Japan sales");
+        INTERNATIONAL_TRADE_CURRENCY_NAME_MAP.put(INR, "India sales");
+        INTERNATIONAL_TRADE_CURRENCY_NAME_MAP.put(TRY, "Turkey sales");
+        INTERNATIONAL_TRADE_CURRENCY_NAME_MAP.put(EUR, "Belgium sales");
+    }
+
+    static final Map<ArrangementType, List<String>> CURRENT_ACCOUNT_ARRANGEMENT_TYPE_NAME_MAP = new HashMap<>();
+
+    static {
+        CURRENT_ACCOUNT_ARRANGEMENT_TYPE_NAME_MAP.put(GENERAL_RETAIL, singletonList("Current Account"));
+        CURRENT_ACCOUNT_ARRANGEMENT_TYPE_NAME_MAP.put(GENERAL_BUSINESS, GENERAL_BUSINESS_CURRENT_ACCOUNT_NAMES);
+        CURRENT_ACCOUNT_ARRANGEMENT_TYPE_NAME_MAP.put(INTERNATIONAL_TRADE,
+            new ArrayList<>(INTERNATIONAL_TRADE_CURRENCY_NAME_MAP.values()));
+        CURRENT_ACCOUNT_ARRANGEMENT_TYPE_NAME_MAP
+            .put(FINANCE_INTERNATIONAL, FINANCE_INTERNATIONAL_CURRENT_ACCOUNT_NAMES);
+        CURRENT_ACCOUNT_ARRANGEMENT_TYPE_NAME_MAP.put(PAYROLL, singletonList("Payroll"));
+    }
 
     // Payments
     public static final String PAYMENT_TYPE_SEPA_CREDIT_TRANSFER = "SEPA_CREDIT_TRANSFER";

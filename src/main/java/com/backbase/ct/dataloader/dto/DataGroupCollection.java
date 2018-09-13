@@ -7,21 +7,21 @@ import lombok.Setter;
 @Setter
 public class DataGroupCollection {
 
-    private String genericEurDataGroupId;
+    private String generalEurId;
 
-    private String genericUsdDataGroupId;
+    private String generalUsdId;
 
-    private String amsterdamDataGroupId;
+    private String amsterdamId;
 
-    private String portlandDataGroupId;
+    private String portlandId;
 
-    private String vancouverDataGroupId;
+    private String vancouverId;
 
-    private String londonDataGroupId;
+    private String londonId;
 
-    private String internationalTradeDataGroupId;
+    private String internationalTradeId;
 
-    private String financeInternationalDataGroupId;
+    private String financeInternationalId;
 
-    private String payrollDataGroupId;
+    private String payrollId;
 }

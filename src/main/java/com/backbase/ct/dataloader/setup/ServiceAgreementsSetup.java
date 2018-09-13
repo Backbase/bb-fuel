@@ -101,15 +101,15 @@ public class ServiceAgreementsSetup {
             Set<String> externalUserIds = participant.getUsers();
 
             List<String> dataGroupIds = asList(
-                dataGroupCollection.getGenericEurDataGroupId(),
-                dataGroupCollection.getGenericUsdDataGroupId(),
-                dataGroupCollection.getAmsterdamDataGroupId(),
-                dataGroupCollection.getPortlandDataGroupId(),
-                dataGroupCollection.getVancouverDataGroupId(),
-                dataGroupCollection.getLondonDataGroupId(),
-                dataGroupCollection.getInternationalTradeDataGroupId(),
-                dataGroupCollection.getFinanceInternationalDataGroupId(),
-                dataGroupCollection.getPayrollDataGroupId())
+                dataGroupCollection.getGeneralEurId(),
+                dataGroupCollection.getGeneralUsdId(),
+                dataGroupCollection.getAmsterdamId(),
+                dataGroupCollection.getPortlandId(),
+                dataGroupCollection.getVancouverId(),
+                dataGroupCollection.getLondonId(),
+                dataGroupCollection.getInternationalTradeId(),
+                dataGroupCollection.getFinanceInternationalId(),
+                dataGroupCollection.getPayrollId())
                 .parallelStream()
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());

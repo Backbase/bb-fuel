@@ -148,50 +148,50 @@ public class AccessControlSetup {
             taskList.add(() -> generateTask(externalServiceAgreementId, "General EUR",
                 () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, GENERAL_RETAIL, Currency.EUR
                 ),
-                dataGroupCollection::setGenericEurDataGroupId));
+                dataGroupCollection::setGeneralEurId));
             taskList.add(() -> generateTask(externalServiceAgreementId, "General USD",
                 () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, GENERAL_RETAIL, Currency.USD
                 ),
-                dataGroupCollection::setGenericUsdDataGroupId));
+                dataGroupCollection::setGeneralUsdId));
         } else {
             taskList.add(() -> generateTask(externalServiceAgreementId, "Amsterdam",
                 () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, GENERAL_BUSINESS,
                     Currency.EUR
                 ),
-                dataGroupCollection::setAmsterdamDataGroupId));
+                dataGroupCollection::setAmsterdamId));
 
             taskList.add(() -> generateTask(externalServiceAgreementId, "Portland",
                 () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, GENERAL_BUSINESS,
                     Currency.USD
                 ),
-                dataGroupCollection::setPortlandDataGroupId));
+                dataGroupCollection::setPortlandId));
 
             taskList.add(() -> generateTask(externalServiceAgreementId, "Vancouver",
                 () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, GENERAL_BUSINESS,
                     Currency.CAD
                 ),
-                dataGroupCollection::setVancouverDataGroupId));
+                dataGroupCollection::setVancouverId));
 
             taskList.add(() -> generateTask(externalServiceAgreementId, "London",
                 () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, GENERAL_BUSINESS,
                     Currency.GBP
                 ),
-                dataGroupCollection::setLondonDataGroupId));
+                dataGroupCollection::setLondonId));
 
             if (this.globalProperties.getBoolean(PROPERTY_INGEST_INTERNATIONAL_AND_PAYROLL_DATA_GROUPS)) {
                 taskList.add(() -> generateTask(externalServiceAgreementId, INTERNATIONAL_TRADE.toString(),
                     () -> this.productSummaryConfigurator
                         .ingestArrangements(externalLegalEntityId, INTERNATIONAL_TRADE, null),
-                    dataGroupCollection::setInternationalTradeDataGroupId));
+                    dataGroupCollection::setInternationalTradeId));
 
                 taskList.add(() -> generateTask(externalServiceAgreementId, FINANCE_INTERNATIONAL.toString(),
                     () -> this.productSummaryConfigurator
                         .ingestArrangements(externalLegalEntityId, FINANCE_INTERNATIONAL, null),
-                    dataGroupCollection::setFinanceInternationalDataGroupId));
+                    dataGroupCollection::setFinanceInternationalId));
 
                 taskList.add(() -> generateTask(externalServiceAgreementId, PAYROLL.toString(),
                     () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, PAYROLL, null),
-                    dataGroupCollection::setPayrollDataGroupId));
+                    dataGroupCollection::setPayrollId));
             }
         }
 
@@ -215,15 +215,15 @@ public class AccessControlSetup {
             .ingestAdminFunctionGroup(externalServiceAgreementId);
 
         List<String> dataGroupIds = asList(
-            dataGroupCollection.getGenericEurDataGroupId(),
-            dataGroupCollection.getGenericUsdDataGroupId(),
-            dataGroupCollection.getAmsterdamDataGroupId(),
-            dataGroupCollection.getPortlandDataGroupId(),
-            dataGroupCollection.getVancouverDataGroupId(),
-            dataGroupCollection.getLondonDataGroupId(),
-            dataGroupCollection.getInternationalTradeDataGroupId(),
-            dataGroupCollection.getFinanceInternationalDataGroupId(),
-            dataGroupCollection.getPayrollDataGroupId())
+            dataGroupCollection.getGeneralEurId(),
+            dataGroupCollection.getGeneralUsdId(),
+            dataGroupCollection.getAmsterdamId(),
+            dataGroupCollection.getPortlandId(),
+            dataGroupCollection.getVancouverId(),
+            dataGroupCollection.getLondonId(),
+            dataGroupCollection.getInternationalTradeId(),
+            dataGroupCollection.getFinanceInternationalId(),
+            dataGroupCollection.getPayrollId())
             .parallelStream()
             .filter(Objects::nonNull)
             .collect(Collectors.toList());

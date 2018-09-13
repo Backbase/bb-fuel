@@ -55,13 +55,13 @@
   {
     "legalEntityName": "Green Bicycle Factory",
     "userExternalIds": [
-      "robin.green",
-      "sarah.lee",
-      "alex.wong",
-      "jan.verschoor",
-      "iris.schipper",
-      "joe.santorelli",
-      "paddy.brian"
+      "robin_green",
+      "sarah_lee",
+      "alex_wong",
+      "jan_verschoor",
+      "iris_schipper",
+      "joe_santorelli",
+      "paddy_brian"
     ]
   }
 ]

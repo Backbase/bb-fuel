@@ -62,7 +62,7 @@ public class Runner implements ApplicationRunner {
     }
 
     private void setupAccessControl() throws IOException {
-        accessControlSetup.setupLegalEntitiesWithUsers();
+        accessControlSetup.readLegalEntitiesWithUsers();
         accessControlSetup.setupBankWithEntitlementsAdminAndProducts();
         accessControlSetup.setupAccessControlForUsers();
         serviceAgreementsSetup.setupCustomServiceAgreements();

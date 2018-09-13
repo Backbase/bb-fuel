@@ -35,20 +35,18 @@ public class UserIntegrationRestClient extends AbstractRestClient {
     public void ingestEntitlementsAdminUnderLEAndLogResponse(String externalUserId, String externalLegalEntityId) {
         Response response = ingestEntitlementsAdminUnderLE(externalUserId, externalLegalEntityId);
 
-        if (response.statusCode() == SC_BAD_REQUEST &&
-            response.then()
+        if (response.statusCode() == SC_BAD_REQUEST
+            && response.then()
                 .extract()
                 .as(BadRequestException.class)
                 .getErrorCode()
                 .equals("user.access.fetch.data.error.message.USER_ALREADY_ENTITLEMENTS_ADMIN")) {
-            LOGGER.warn(String
-                .format(
-                    "Entitlements admin [%s] already exists under legal entity [%s], skipped ingesting this entitlements admin",
+            LOGGER.warn("Entitlements admin [{}] already exists under legal entity [{}], skipped ingesting this entitlements admin",
                     externalUserId,
-                    externalLegalEntityId));
+                    externalLegalEntityId);
         } else if (response.statusCode() == SC_OK) {
-            LOGGER.info(String.format("Entitlements admin [%s] ingested under legal entity [%s]", externalUserId,
-                externalLegalEntityId));
+            LOGGER.info("Entitlements admin [{}] ingested under legal entity [{}]",
+                externalUserId, externalLegalEntityId);
         } else {
             response.then()
                 .statusCode(SC_OK);
@@ -64,10 +62,10 @@ public class UserIntegrationRestClient extends AbstractRestClient {
                 .as(BadRequestException.class)
                 .getMessage()
                 .equals("User already exists")) {
-            LOGGER.info(String.format("User [%s] already exists, skipped ingesting this user", user.getExternalId()));
+            LOGGER.info("User [{}] already exists, skipped ingesting this user", user.getExternalId());
         } else if (response.statusCode() == SC_CREATED) {
-            LOGGER.info(String.format("User [%s] ingested under legal entity [%s]", user.getExternalId(),
-                user.getLegalEntityExternalId()));
+            LOGGER.info("User [%s] ingested under legal entity [%s]",
+                user.getExternalId(), user.getLegalEntityExternalId());
         } else {
             response.then()
                 .statusCode(SC_CREATED);
@@ -94,5 +92,4 @@ public class UserIntegrationRestClient extends AbstractRestClient {
             .body(body)
             .post(getPath(ENDPOINT_USERS));
     }
-
 }

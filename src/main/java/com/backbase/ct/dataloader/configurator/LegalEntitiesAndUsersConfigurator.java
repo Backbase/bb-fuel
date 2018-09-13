@@ -8,10 +8,10 @@ import com.backbase.ct.dataloader.client.common.LoginRestClient;
 import com.backbase.ct.dataloader.client.user.UserIntegrationRestClient;
 import com.backbase.ct.dataloader.data.LegalEntitiesAndUsersDataGenerator;
 import com.backbase.ct.dataloader.dto.LegalEntityWithUsers;
+import com.backbase.ct.dataloader.dto.User;
 import com.backbase.ct.dataloader.service.LegalEntityService;
 import com.backbase.ct.dataloader.util.GlobalProperties;
 import com.backbase.integration.legalentity.rest.spec.v2.legalentities.LegalEntitiesPostRequestBody;
-import com.github.javafaker.Faker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +21,6 @@ public class LegalEntitiesAndUsersConfigurator {
 
     private GlobalProperties globalProperties = GlobalProperties.getInstance();
 
-    private Faker faker = new Faker();
     private final LoginRestClient loginRestClient;
     private final UserContextPresentationRestClient userContextPresentationRestClient;
     private final UserIntegrationRestClient userIntegrationRestClient;
@@ -29,27 +28,31 @@ public class LegalEntitiesAndUsersConfigurator {
     private final ServiceAgreementsConfigurator serviceAgreementsConfigurator;
     private String rootEntitlementsAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
 
+    // TODO check with Kwo if we need a distinctive full name
+    private static User createAdminUser(String externalEntitlementsAdminUserId) {
+        return User.builder()
+            .externalId(externalEntitlementsAdminUserId)
+            .role("admin")
+            .fullName("admin admin").build();
+    }
     public void ingestRootLegalEntityAndEntitlementsAdmin(String externalEntitlementsAdminUserId) {
         String externalLegalEntityId = this.legalEntityService.ingestLegalEntity(LegalEntitiesAndUsersDataGenerator
             .generateRootLegalEntitiesPostRequestBody(EXTERNAL_ROOT_LEGAL_ENTITY_ID));
         this.serviceAgreementsConfigurator
             .updateMasterServiceAgreementWithExternalIdByLegalEntity(externalLegalEntityId);
+
         this.userIntegrationRestClient.ingestUserAndLogResponse(LegalEntitiesAndUsersDataGenerator
-            .generateUsersPostRequestBody(externalEntitlementsAdminUserId, EXTERNAL_ROOT_LEGAL_ENTITY_ID));
+            .generateUsersPostRequestBody(
+                createAdminUser(externalEntitlementsAdminUserId), EXTERNAL_ROOT_LEGAL_ENTITY_ID));
         this.userIntegrationRestClient.ingestEntitlementsAdminUnderLEAndLogResponse(externalEntitlementsAdminUserId,
             EXTERNAL_ROOT_LEGAL_ENTITY_ID);
     }
 
     public void ingestUsersUnderLegalEntity(LegalEntityWithUsers legalEntityWithUsers) {
-        String legalEntityName = legalEntityWithUsers.getUserExternalIds().size() == 1 &&
-            legalEntityWithUsers.getLegalEntityName() == null
-            ? faker.name().firstName() + " " + faker.name().lastName()
-            : legalEntityWithUsers.getLegalEntityName();
-
         final LegalEntitiesPostRequestBody requestBody = LegalEntitiesAndUsersDataGenerator
             .composeLegalEntitiesPostRequestBody(
                 legalEntityWithUsers.getLegalEntityExternalId(),
-                legalEntityName,
+                legalEntityWithUsers.getLegalEntityName(),
                 legalEntityWithUsers.getParentLegalEntityExternalId(),
                 legalEntityWithUsers.getLegalEntityType());
 
@@ -58,10 +61,10 @@ public class LegalEntitiesAndUsersConfigurator {
 
         String externalLegalEntityId = this.legalEntityService.ingestLegalEntity(requestBody);
 
-        legalEntityWithUsers.getUserExternalIds().parallelStream()
+        legalEntityWithUsers.getUsers().parallelStream()
             .forEach(
-                externalUserId -> this.userIntegrationRestClient
+                user -> this.userIntegrationRestClient
                     .ingestUserAndLogResponse(LegalEntitiesAndUsersDataGenerator
-                        .generateUsersPostRequestBody(externalUserId, externalLegalEntityId)));
+                        .generateUsersPostRequestBody(user, externalLegalEntityId)));
     }
 }

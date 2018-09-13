@@ -10,5 +10,5 @@ public abstract class BaseSetup {
 
     protected GlobalProperties globalProperties = GlobalProperties.getInstance();
 
-    protected LoginRestClient loginRestClient = new LoginRestClient();
+    protected final LoginRestClient loginRestClient = new LoginRestClient();
 }

@@ -25,6 +25,7 @@ import com.backbase.ct.dataloader.dto.DataGroupCollection;
 import com.backbase.ct.dataloader.dto.LegalEntityContext;
 import com.backbase.ct.dataloader.dto.LegalEntityWithUsers;
 import com.backbase.ct.dataloader.dto.UserContext;
+import com.backbase.ct.dataloader.input.LegalEntityWithUsersReader;
 import com.backbase.ct.dataloader.util.ParserUtil;
 import com.backbase.presentation.user.rest.spec.v2.users.LegalEntityByUserGetResponseBody;
 import com.google.common.collect.ArrayListMultimap;
@@ -53,11 +54,19 @@ public class AccessControlSetup extends BaseSetup {
     private final ServiceAgreementsPresentationRestClient serviceAgreementsPresentationRestClient;
     private final LegalEntityPresentationRestClient legalEntityPresentationRestClient;
     private final TransactionsConfigurator transactionsConfigurator;
+    private final LegalEntityWithUsersReader legalEntityWithUsersReader;
     private String rootEntitlementsAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
-    private LegalEntityWithUsers[] legalEntitiesWithUsers;
+    private List<LegalEntityWithUsers> legalEntitiesWithUsers;
 
-    public LegalEntityWithUsers[] getLegalEntitiesWithUsers() {
+    public List<LegalEntityWithUsers> getLegalEntitiesWithUsers() {
         return this.legalEntitiesWithUsers;
+    }
+
+    /**
+     * Setup of legal entities must always be done.
+     */
+    public void readLegalEntitiesWithUsers() {
+        this.legalEntitiesWithUsers = this.legalEntityWithUsersReader.load();
     }
 
     public void setupBankWithEntitlementsAdminAndProducts() throws IOException {
@@ -68,24 +77,9 @@ public class AccessControlSetup extends BaseSetup {
         }
     }
 
-    /**
-     * Setup of legal entities must always be done.
-     */
-    public void setupLegalEntitiesWithUsers() {
-        LegalEntityWithUsers[] entities;
-        try {
-            entities = ParserUtil.convertJsonToObject(this.globalProperties.getString(
-                PROPERTY_LEGAL_ENTITIES_WITH_USERS_JSON), LegalEntityWithUsers[].class);
-        } catch (IOException e) {
-            logger.error("Failed parsing file with entities", e);
-            throw new IngestException(e.getMessage(), e);
-        }
-        legalEntitiesWithUsers = entities;
-    }
-
-    public void setupAccessControlForUsers() throws IOException {
+    public void setupAccessControlForUsers() {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_ACCESS_CONTROL)) {
-            Arrays.stream(this.legalEntitiesWithUsers).forEach(entity -> {
+            this.legalEntitiesWithUsers.forEach(entity -> {
                 this.legalEntitiesAndUsersConfigurator.ingestUsersUnderLegalEntity(entity);
                 assembleFunctionDataGroupsAndPermissions(entity.getUserExternalIds());
             });

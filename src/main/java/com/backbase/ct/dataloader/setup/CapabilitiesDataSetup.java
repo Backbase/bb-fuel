@@ -50,34 +50,32 @@ public class CapabilitiesDataSetup extends BaseSetup {
 
             this.approvalsConfigurator.setupApprovalTypesAndPolicies();
 
-            Arrays.stream(this.accessControlSetup.getLegalEntitiesWithUsers())
-                .forEach(legalEntityWithUsers -> {
-                    List<String> externalUserIds = legalEntityWithUsers.getUserExternalIds();
+            this.accessControlSetup.getLegalEntitiesWithUsers().forEach(legalEntityWithUsers -> {
+                List<String> externalUserIds = legalEntityWithUsers.getUserExternalIds();
 
-                    UserContext userContext = accessControlSetup
-                        .getUserContextBasedOnMSAByExternalUserId(
-                            externalUserIds.get(random.nextInt(externalUserIds.size())));
+                UserContext userContext = accessControlSetup
+                    .getUserContextBasedOnMSAByExternalUserId(
+                        externalUserIds.get(random.nextInt(externalUserIds.size())));
 
-                    this.approvalsConfigurator.setupAccessControlAndPerformApprovalAssignments(
-                        userContext.getExternalServiceAgreementId(),
-                        userContext.getExternalLegalEntityId(),
-                        externalUserIds);
-                });
+                this.approvalsConfigurator.setupAccessControlAndPerformApprovalAssignments(
+                    userContext.getExternalServiceAgreementId(),
+                    userContext.getExternalLegalEntityId(),
+                    externalUserIds);
+            });
         }
     }
 
     public void ingestLimits() {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_LIMITS)) {
-            Arrays.stream(this.accessControlSetup.getLegalEntitiesWithUsers())
-                .forEach(legalEntityWithUsers -> {
-                    List<String> externalUserIds = legalEntityWithUsers.getUserExternalIds();
+            this.accessControlSetup.getLegalEntitiesWithUsers().forEach(legalEntityWithUsers -> {
+                List<String> externalUserIds = legalEntityWithUsers.getUserExternalIds();
 
-                    UserContext userContext = accessControlSetup
-                        .getUserContextBasedOnMSAByExternalUserId(
-                            externalUserIds.get(random.nextInt(externalUserIds.size())));
+                UserContext userContext = accessControlSetup
+                    .getUserContextBasedOnMSAByExternalUserId(
+                        externalUserIds.get(random.nextInt(externalUserIds.size())));
 
-                    this.limitsConfigurator.ingestLimits(userContext.getInternalServiceAgreementId());
-                });
+                this.limitsConfigurator.ingestLimits(userContext.getInternalServiceAgreementId());
+            });
         }
     }
 
@@ -91,24 +89,23 @@ public class CapabilitiesDataSetup extends BaseSetup {
 
     public void ingestContactsPerUser() {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_CONTACTS)) {
-            Arrays.stream(this.accessControlSetup.getLegalEntitiesWithUsers())
-                .forEach(legalEntityWithUsers -> {
-                    List<String> externalUserIds = legalEntityWithUsers.getUserExternalIds();
+            this.accessControlSetup.getLegalEntitiesWithUsers().forEach(legalEntityWithUsers -> {
+                List<String> externalUserIds = legalEntityWithUsers.getUserExternalIds();
 
-                    UserContext userContext = accessControlSetup
-                        .getUserContextBasedOnMSAByExternalUserId(
-                            externalUserIds.get(random.nextInt(externalUserIds.size())));
+                UserContext userContext = accessControlSetup
+                    .getUserContextBasedOnMSAByExternalUserId(
+                        externalUserIds.get(random.nextInt(externalUserIds.size())));
 
-                    this.contactsConfigurator.ingestContacts(
-                        userContext.getExternalServiceAgreementId(),
-                        userContext.getExternalUserId());
-                });
-        }
+                this.contactsConfigurator.ingestContacts(
+                    userContext.getExternalServiceAgreementId(),
+                    userContext.getExternalUserId());
+            });
+    }
     }
 
     public void ingestPaymentsPerUser() {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_PAYMENTS)) {
-            Arrays.stream(this.accessControlSetup.getLegalEntitiesWithUsers())
+            this.accessControlSetup.getLegalEntitiesWithUsers().stream()
                 .map(LegalEntityWithUsers::getUserExternalIds)
                 .flatMap(List::stream)
                 .collect(Collectors.toList())
@@ -120,7 +117,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_MESSAGES)) {
             this.loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
             this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
-            Arrays.stream(this.accessControlSetup.getLegalEntitiesWithUsers())
+            this.accessControlSetup.getLegalEntitiesWithUsers().stream()
                 .map(LegalEntityWithUsers::getUserExternalIds)
                 .flatMap(List::stream)
                 .collect(Collectors.toList())
@@ -130,7 +127,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
 
     public void ingestActionsPerUser() {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_ACTIONS)) {
-            Arrays.stream(this.accessControlSetup.getLegalEntitiesWithUsers())
+            this.accessControlSetup.getLegalEntitiesWithUsers().stream()
                 .map(LegalEntityWithUsers::getUserExternalIds)
                 .flatMap(List::stream)
                 .collect(Collectors.toList())

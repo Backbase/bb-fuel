@@ -69,14 +69,6 @@
             <artifactId>approval-integration-spec</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.backbase.dbs.approval</groupId>
-            <artifactId>approval-integration-spec</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.backbase.dbs.approval</groupId>
-            <artifactId>approval-integration-spec</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.backbase.dbs.arrangement</groupId>
             <artifactId>arrangement-integration-spec</artifactId>
         </dependency>
@@ -119,10 +111,6 @@
         <dependency>
             <groupId>com.backbase.dbs.legalentity</groupId>
             <artifactId>legalentity-presentation-spec</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.backbase.dbs.limit</groupId>
-            <artifactId>limits-presentation-spec</artifactId>
         </dependency>
         <dependency>
             <groupId>com.backbase.dbs.limit</groupId>

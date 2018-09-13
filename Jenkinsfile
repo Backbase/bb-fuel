@@ -20,7 +20,7 @@ properties([
                 choice(name: 'PERFORMANCE_TEST_DATA', choices: 'retail\nbusiness', description: 'Retail or business performance test data setup'),
                 choice(name: 'INFRA_BASE_URI', choices: 'infra.backbase.test:8080\neditorial.backbase.test:8080', description: ''),
                 string(name: 'DATALOADER_VERSION', defaultValue: 'LATEST', description: ''),
-                string(name: 'HEALTHCHECK_TIMEOUT_IN_MINUTES', defaultValue: '1', description: '')
+                string(name: 'ADDITIONAL_ARGUMENTS', defaultValue: '', description: 'Additional command line arguments')
         ])
 ])
 
@@ -61,7 +61,6 @@ node {
 
             sh "java -Denvironment.name=${params.ENVIRONMENT_NAME} " +
                     "-Dinfra.base.uri=http://${params.ENVIRONMENT_NAME}-${params.INFRA_BASE_URI} " +
-                    "-Dhealthcheck.timeout.in.minutes=${params.HEALTHCHECK_TIMEOUT_IN_MINUTES} " +
                     "-Dingest.access.control=${params.INGEST_ACCESS_CONTROL} " +
                     "-Dingest.custom.service.agreements=${params.INGEST_CUSTOM_SERVICE_AGREEMENTS} " +
                     "-Dingest.balance.history=${params.INGEST_BALANCE_HISTORY} " +
@@ -76,6 +75,7 @@ node {
                     "-Dingest.messages=${params.INGEST_MESSAGES} " +
                     "-Dingest.actions=${params.INGEST_ACTIONS} " +
                     customLegalEntitiesWithUsersJson +
+                    "${params.ADDITIONAL_ARGUMENTS} " +
                     "-jar dataloader-${dataloaderVersion}-boot.jar"
         }
     }

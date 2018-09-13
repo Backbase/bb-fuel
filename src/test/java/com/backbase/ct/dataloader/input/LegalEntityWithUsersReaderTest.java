@@ -60,4 +60,13 @@ public class LegalEntityWithUsersReaderTest {
             subject.load("data/example/example-custom-legal-entities-with-users.json");
         assertThat(legalEntities, hasSize(3));
     }
+
+    @Test
+    public void testMultiTenancyJsonFiles() {
+        assertThat(subject.load("data/multitenancy/tenant_a.json"), hasSize(1));
+        assertThat(subject.load("data/multitenancy/tenant_b.json"), hasSize(1));
+        assertThat(subject.load("data/multitenancy/tenant_c.json"), hasSize(1));
+        assertThat(subject.load("data/multitenancy/tenant_d.json"), hasSize(1));
+        assertThat(subject.load("data/multitenancy/tenant_e.json"), hasSize(1));
+    }
 }

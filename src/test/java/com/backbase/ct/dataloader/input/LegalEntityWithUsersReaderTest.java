@@ -3,9 +3,13 @@ package com.backbase.ct.dataloader.input;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 
+import com.backbase.ct.dataloader.data.CommonConstants;
 import com.backbase.ct.dataloader.dto.LegalEntityWithUsers;
 import com.backbase.ct.dataloader.enrich.LegalEntityWithUsersEnricher;
+import com.backbase.ct.dataloader.util.GlobalProperties;
 import java.util.List;
+import org.apache.commons.configuration.PropertiesConfiguration;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -17,6 +21,12 @@ public class LegalEntityWithUsersReaderTest {
 
     @InjectMocks
     private LegalEntityWithUsersReader subject;
+
+    @Before
+    public void init() {
+        System.setProperty(CommonConstants.PROPERTY_CONFIGURATION_SWITCHER, "true");
+        System.setProperty(CommonConstants.LOCAL_PROPERTIES_FILE_NAME, "local.properties");
+    }
 
     @Mock
     private LegalEntityWithUsersEnricher legalEntityWithUsersEnricher;

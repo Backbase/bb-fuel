@@ -103,25 +103,35 @@
     ]
   },
   {
-    "legalEntityExternalId": "LE000001",
-    "parentLegalEntityExternalId": "C000000",
     "legalEntityName": "Green Bicycle Factory",
-    "legalEntityType": "CUSTOMER",
     "users": [
       {
-        "externalId": "robin.green",
-        "fullName": "Robin Green",
+        "externalId": "paddy_brian",
         "role": "admin"
       },
       {
-        "externalId": "U0091002",
-        "fullName": "Alison Johnson",
+        "externalId": "sarah_lee",
+        "role": "admin"
+      },
+      {
+        "externalId": "robin_green",
         "role": "manager"
       },
       {
-        "externalId": "U0091003",
-        "fullName": "Katie Lynn",
-        "role": "admin"
+        "externalId": "alex_wong",
+        "role": "employee"
+      },
+      {
+        "externalId": "jan_verschoor",
+        "role": "employee"
+      },
+      {
+        "externalId": "iris_schipper",
+        "role": "employee"
+      },
+      {
+        "externalId": "joe_santorelli",
+        "role": "employee"
       }
     ]
   }

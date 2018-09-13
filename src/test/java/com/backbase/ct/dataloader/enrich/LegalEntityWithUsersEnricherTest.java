@@ -7,7 +7,6 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 
 import com.backbase.ct.dataloader.dto.LegalEntityWithUsers;
-import com.backbase.ct.dataloader.dto.User;
 import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,10 +19,17 @@ public class LegalEntityWithUsersEnricherTest {
     @InjectMocks
     private LegalEntityWithUsersEnricher subject;
 
+    private static LegalEntityWithUsers createLegalEntityWithUsers(String userExternalId) {
+        LegalEntityWithUsers le = new LegalEntityWithUsers();
+        le.setUserExternalIds(singletonList(userExternalId));
+
+        return le;
+    }
+
     @Test
     public void testEnrich() {
         List<LegalEntityWithUsers> legalEntities = singletonList(
-            LegalEntityWithUsers.builder().userExternalId("U0001").build());
+            createLegalEntityWithUsers("U0001"));
 
         subject.enrich(legalEntities);
 
@@ -35,9 +41,10 @@ public class LegalEntityWithUsersEnricherTest {
 
     @Test
     public void testUsernameConversion() {
-        User user = User.builder().externalId("alice.johnson_IS_NICE").build();
-        LegalEntityWithUsers le = LegalEntityWithUsers.builder().userExternalId(user.getExternalId()).build();
+        LegalEntityWithUsers le = createLegalEntityWithUsers("alice.johnson_IS_NICE");
+
         subject.enrich(singletonList(le));
+
         assertThat(le.getUsers().get(0).getFullName(), is("Alice Johnson Is Nice"));
     }
 }

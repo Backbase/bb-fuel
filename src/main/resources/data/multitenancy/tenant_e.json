@@ -1,10 +1,18 @@
 [
   {
-    "userExternalIds": [
-      "user022_t5",
-      "user023_t5",
-      "user024_t5",
-      "user025_t5"
+    "users": [
+      {
+        "externalId": "user022_t5"
+      },
+      {
+        "externalId": "user023_t5"
+      },
+      {
+        "externalId": "user024_t5"
+      },
+      {
+        "externalId": "user025_t5"
+      }
     ]
   }
 ]

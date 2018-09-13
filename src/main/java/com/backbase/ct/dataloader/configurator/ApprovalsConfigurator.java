@@ -110,21 +110,21 @@ public class ApprovalsConfigurator {
     private void createPolicies() {
         policyZeroId = approvalIntegrationRestClient.createZeroApprovalPolicy();
 
-        policyAId = approvalIntegrationRestClient.createPolicy(
-            createPolicyItemDto(approvalTypeAId, 1));
+        policyAId = approvalIntegrationRestClient.createPolicy(singletonList(
+            createPolicyItemDto(approvalTypeAId, 1)));
 
         LOGGER.info("Policy with approval type A [{}] created", policyAId);
 
-        policyABId = approvalIntegrationRestClient.createPolicy(
+        policyABId = approvalIntegrationRestClient.createPolicy(asList(
             createPolicyItemDto(approvalTypeAId, 1),
-            createPolicyItemDto(approvalTypeBId, 1));
+            createPolicyItemDto(approvalTypeBId, 1)));
 
         LOGGER.info("Policy with approval types A and B [{}] created", policyABId);
 
-        policyABCId = approvalIntegrationRestClient.createPolicy(
+        policyABCId = approvalIntegrationRestClient.createPolicy(asList(
             createPolicyItemDto(approvalTypeAId, 1),
             createPolicyItemDto(approvalTypeBId, 1),
-            createPolicyItemDto(approvalTypeCId, 1));
+            createPolicyItemDto(approvalTypeCId, 1)));
 
         LOGGER.info("Policy with approval types A, B and C [{}] created", policyABCId);
     }
@@ -197,7 +197,7 @@ public class ApprovalsConfigurator {
                 externalLegalEntityId,
                 PAYMENTS_RESOURCE_NAME,
                 paymentsFunction,
-                createPolicyAssignmentRequestBounds(policyId, upperBound)));
+                singletonList(createPolicyAssignmentRequestBounds(policyId, upperBound))));
         }
 
         return policyAssignmentRequests;
@@ -212,7 +212,7 @@ public class ApprovalsConfigurator {
             externalLegalEntityId,
             PAYMENTS_RESOURCE_NAME,
             paymentsFunction,
-            createPolicyAssignmentRequestBounds(policyZeroId, null)));
+            singletonList(createPolicyAssignmentRequestBounds(policyZeroId, null))));
     }
 
 
@@ -224,7 +224,7 @@ public class ApprovalsConfigurator {
             externalLegalEntityId,
             CONTACTS_RESOURCE_NAME,
             CONTACTS_FUNCTION_NAME,
-            createPolicyAssignmentRequestBounds(policyAId, null)));
+            singletonList(createPolicyAssignmentRequestBounds(policyAId, null))));
     }
 
     private void setupAccessControlAndAssignApprovalTypesForPayments(
@@ -284,10 +284,10 @@ public class ApprovalsConfigurator {
             }
         }
 
-        approvalIntegrationRestClient.assignApprovalTypes(
+        approvalIntegrationRestClient.assignApprovalTypes(asList(
             createApprovalTypeAssignmentDto(approvalTypeAId, paymentsFunctionGroupAId),
             createApprovalTypeAssignmentDto(approvalTypeBId, paymentsFunctionGroupBId),
-            createApprovalTypeAssignmentDto(approvalTypeCId, paymentsFunctionGroupCId));
+            createApprovalTypeAssignmentDto(approvalTypeCId, paymentsFunctionGroupCId)));
     }
 
     private void setupAccessControlAndAssignApprovalTypesForContacts(
@@ -309,7 +309,7 @@ public class ApprovalsConfigurator {
                 emptyList());
         }
 
-        approvalIntegrationRestClient.assignApprovalTypes(
-            createApprovalTypeAssignmentDto(approvalTypeAId, contactsFunctionGroupAId));
+        approvalIntegrationRestClient.assignApprovalTypes(singletonList(
+            createApprovalTypeAssignmentDto(approvalTypeAId, contactsFunctionGroupAId)));
     }
 }

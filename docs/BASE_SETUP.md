@@ -26,7 +26,7 @@ For legal entities and users in the file [legal-entities-with-users.json](src/ma
 - Default products: [products.json](src/main/resources/data/products.json)
 - The product types of the arrangements as listed under *Access control setup* are as follows:
     - Retail: all current accounts, and one of each other product type
-    - Business: all current accounts, and additionally for:
+    - Business: all current accounts, and additionally for (only if number of arrangements allows, all current accounts):
         - "Amsterdam", "Portland", "Vancouver" and "London" - 1 savings account
         - "Finance International" - 2 loans, 2 savings and 4 investments accounts
 - In case of current account arrangements random debit cards (by default: between 3 and 10) are associated

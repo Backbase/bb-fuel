@@ -30,4 +30,24 @@ public class LegalEntityWithUsersReaderTest {
         assertThat("GBF should have one manager",
             legalEntities.get(7).filterUserExternalIdsOnRole("manager"), hasSize(1));
     }
+
+    @Test
+    public void testReadingPerformanceBusinessJson() {
+        List<LegalEntityWithUsers> legalEntities =
+            subject.load("data/performance-test-legal-entities-with-users-business.json");
+        assertThat(legalEntities, hasSize(35));
+    }
+
+    @Test
+    public void testReadingPerformanceRetailJson() {
+        List<LegalEntityWithUsers> legalEntities =
+            subject.load("data/performance-test-legal-entities-with-users-retail.json");
+        assertThat(legalEntities, hasSize(140));
+    }
+    @Test
+    public void testReadingExampleJson() {
+        List<LegalEntityWithUsers> legalEntities =
+            subject.load("data/example/example-custom-legal-entities-with-users.json");
+        assertThat(legalEntities, hasSize(3));
+    }
 }

@@ -24,14 +24,14 @@ public class ApprovalsDataGenerator {
     public static IntegrationPostApprovalTypeRequest createPostApprovalTypeRequest(String name, Integer rank) {
         return new IntegrationPostApprovalTypeRequest()
             .withName(name)
-            .withDescription(null)
+            .withDescription(name)
             .withRank(rank);
     }
 
     public static IntegrationPostBulkApprovalTypeAssignmentRequest createPostBulkApprovalTypesAssignmentRequest(
-        IntegrationApprovalTypeAssignmentDto... approvalTypeAssignmentDtos) {
+        List<IntegrationApprovalTypeAssignmentDto> approvalTypeAssignmentDtos) {
         return new IntegrationPostBulkApprovalTypeAssignmentRequest()
-            .withApprovalTypeAssignments(asList(approvalTypeAssignmentDtos));
+            .withApprovalTypeAssignments(approvalTypeAssignmentDtos);
     }
 
     public static IntegrationApprovalTypeAssignmentDto createApprovalTypeAssignmentDto(String approvalTypeId,
@@ -41,19 +41,23 @@ public class ApprovalsDataGenerator {
             .withJobProfileId(jobProfileId);
     }
 
-    public static IntegrationPostPolicyRequest createPostPolicyRequest(IntegrationPolicyItemDto... policyItems) {
+    public static IntegrationPostPolicyRequest createPostPolicyRequest(List<IntegrationPolicyItemDto> policyItems) {
+        String name = randomAlphabetic(15);
+
         return new IntegrationPostPolicyRequest()
-            .withName(randomAlphabetic(15))
-            .withDescription(null)
-            .withAllowSelf(random.nextBoolean())
-            .withItems(asList(policyItems));
+            .withName(name)
+            .withDescription(name)
+            .withAllowSelf(true)
+            .withItems(policyItems);
     }
 
     public static IntegrationPostPolicyRequest createPostPolicyRequest(boolean allowSelf,
         IntegrationPolicyItemDto... policyItems) {
+        String name = randomAlphabetic(15);
+
         return new IntegrationPostPolicyRequest()
-            .withName(randomAlphabetic(15))
-            .withDescription(null)
+            .withName(name)
+            .withDescription(name)
             .withAllowSelf(allowSelf)
             .withItems(asList(policyItems));
     }
@@ -65,10 +69,12 @@ public class ApprovalsDataGenerator {
     }
 
     public static IntegrationPostPolicyRequest createPostPolicyRequestWithZeroPolicyItems() {
+        String name = randomAlphabetic(15);
+
         return new IntegrationPostPolicyRequest()
-            .withName(randomAlphabetic(15))
-            .withDescription(null)
-            .withAllowSelf(random.nextBoolean())
+            .withName(name)
+            .withDescription(name)
+            .withAllowSelf(true)
             .withItems(emptyList());
     }
 
@@ -82,13 +88,13 @@ public class ApprovalsDataGenerator {
         String externalLegalEntityId,
         String resource,
         String function,
-        IntegrationPolicyAssignmentRequestBounds... integrationPolicyAssignmentRequestBounds) {
+        List<IntegrationPolicyAssignmentRequestBounds> integrationPolicyAssignmentRequestBounds) {
         return new IntegrationPolicyAssignmentRequest()
             .withExternalServiceAgreementId(externalServiceAgreementId)
             .withExternalLegalEntityId(externalLegalEntityId)
             .withResource(resource)
             .withFunction(function)
-            .withBounds(asList(integrationPolicyAssignmentRequestBounds));
+            .withBounds(integrationPolicyAssignmentRequestBounds);
     }
 
     public static IntegrationPolicyAssignmentRequestBounds createPolicyAssignmentRequestBounds(String policyId,

@@ -116,7 +116,7 @@ public class ApprovalIntegrationRestClient extends AbstractRestClient {
     }
 
     public IntegrationPostBulkApprovalTypeAssignmentResponse assignApprovalTypes(
-        IntegrationApprovalTypeAssignmentDto... approvalTypeAssignmentDtos) {
+        List<IntegrationApprovalTypeAssignmentDto> approvalTypeAssignmentDtos) {
         return assignApprovalTypes(createPostBulkApprovalTypesAssignmentRequest(approvalTypeAssignmentDtos))
             .then()
             .statusCode(SC_CREATED)
@@ -124,7 +124,7 @@ public class ApprovalIntegrationRestClient extends AbstractRestClient {
             .as(IntegrationPostBulkApprovalTypeAssignmentResponse.class);
     }
 
-    public String createPolicy(IntegrationPolicyItemDto... policyItems) {
+    public String createPolicy(List<IntegrationPolicyItemDto> policyItems) {
         return createPolicy(createPostPolicyRequest(policyItems))
             .then()
             .statusCode(SC_CREATED)

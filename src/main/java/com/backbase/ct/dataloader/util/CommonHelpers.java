@@ -2,6 +2,7 @@ package com.backbase.ct.dataloader.util;
 
 import java.math.BigDecimal;
 import java.util.Random;
+import org.apache.commons.lang.StringUtils;
 
 public class CommonHelpers {
 
@@ -24,5 +25,17 @@ public class CommonHelpers {
 
     public static long convertMinutesToMillis(long minutes) {
         return (minutes * 60L * 1000L);
+    }
+
+
+    /**
+     * Split a string to lowercase, capitalize each word and divide them by a space.
+     */
+    public static String splitDelimitedWordToSingleCapatilizedWords(String value, String separatorChars) {
+        String[] strings = StringUtils.split(value.toLowerCase(), separatorChars);
+        for (int i = 0; i < strings.length; i++) {
+            strings[i] = StringUtils.capitalize(strings[i]);
+        }
+        return StringUtils.join(strings, " ");
     }
 }

@@ -1,0 +1,31 @@
+1002,payments.sepa,SEPA CT,payments,Payments
+1003,transactions,Transactions,transactions,Transactions
+1005,contacts,Contacts,contacts,Contacts
+1006,product.summary,Product Summary,product.summary,Product Summary
+1007,assign.users,Assign Users,service.agreement,Service Agreement
+1009,assign.permissions,Assign Permissions,service.agreement,Service Agreement
+1010,manage.users,Manage Users,user,User
+1011,manage.legalentities,Manage Legal Entities,legalentity,Legal Entity
+1012,manage.limits,Manage Limits,limits,Limits
+1013,audit,Audit,audit,Audit
+1014,manage.shadow.limits,Manage Shadow Limits,limits,Limits
+1015,intra.company.payments,Intra Company Payments,payments,Payments
+1016,manage.statements,Manage Statements,account.statements,Account Statements
+1017,us.domestic.wire,US Domestic Wire,payments,Payments
+1018,us.foreign.wire,US Foreign Wire,payments,Payments
+1019,manage.data.groups,Manage Data Groups,entitlements,Entitlements
+1020,manage.function.groups,Manage Function Groups,entitlements,Entitlements
+1021,us.billpay.payments,US Billpay Payments,payments,Payments
+1022,us.billpay.payees,US Billpay Payees,contacts,Contacts
+1023,us.billpay.accounts,US Billpay Accounts,arrangements,Arrangements
+1024,us.billpay.payees.search,US Billpay Payees-Search,contacts,Contacts
+1025,us.billpay.payees.summary,US Billpay Payees-Summary,contacts,Contacts
+1026,us.billpay.enrolment,US Billpay Enrolment,billpay,Billpay
+1027,access.actions.history,Access Actions History,actions,Actions
+1028,manage.service.agreements,Manage Service Agreements,service.agreement,Service Agreement
+1029,manage.actions.recipes,Manage Action Recipes,actions,Actions
+1030,manage.notifications,Manage Notifications,notifications,Notifications
+1031,manage.topics,Manage Topics,message.center,Message Center
+1032,assign.approval.policies,Assign Approval Policies,approvals,Approvals
+1033,manage.approval.policy.level,Manage Approval Policy and Level,approvals,Approvals
+1034,manage.identities,Manage Identities,identities,Identities

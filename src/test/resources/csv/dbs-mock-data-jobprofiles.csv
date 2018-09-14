@@ -1,0 +1,89 @@
+Admin;;Execute;View;Create;Edit;Delete;Approve;Cancel
+Approval Level: C;US Billpay Enrolment;Y;Y;-;-;-;-;-
+;Product Summary;-;Y;-;Y;-;-;-
+;Audit;-;Y;Y;-;-;-;-
+;US Billpay Payments;-;Y;Y;Y;Y;-;-
+;Manage Legal Entities;-;Y;-;-;-;-;-
+;Manage Shadow Limits;-;Y;N;N;Y;-;-
+;Assign Permissions;-;Y;Y;Y;-;-;-
+;Assign Function Groups;-;Y;Y;Y;-;-;-
+;US Domestic Wire;-;Y;Y;Y;Y;Y;Y
+;Manage Users;-;Y;-;-;-;-;-
+;US Billpay Payees;-;Y;Y;Y;Y;-;-
+;Manage Data Groups;-;Y;Y;Y;Y;Y;-
+;Intra Company Payments;-;Y;Y;Y;Y;Y;Y
+;Manage Service Agreements;-;Y;Y;Y;Y;Y;-
+;US Billpay Payees-Summary;-;Y;-;-;-;-;-
+;SEPA CT;-;Y;Y;Y;Y;Y;Y
+;US Billpay Accounts;-;Y;-;-;-;-;-
+;Transactions;-;Y;-;Y;-;-;-
+;Contacts;-;Y;Y;Y;Y;Y;-
+;Manage Limits;-;Y;Y;Y;Y;-;-
+;Manage Action Recipes;Y;Y;Y;Y;Y;-;-
+;Access Actions History;Y;Y;-;-;-;-;-
+;Manage Statements;-;Y;-;-;-;-;-
+;Manage Notifications;-;Y;Y;-;Y;-;-
+;Manage Function Groups;-;Y;Y;Y;Y;Y;-
+;Assign Users;-;Y;Y;Y;-;-;-
+;US Foreign Wire;-;Y;Y;Y;Y;Y;Y
+;US Billpay Payees-Search;Y;Y;-;-;-;-;-
+;;;;;;;;
+Manager;;Execute;View;Create;Edit;Delete;Approve;Cancel
+Approval Level: B;US Billpay Enrolment;Y;Y;-;-;-;-;-
+;Product Summary;-;Y;-;Y;-;-;-
+;Audit;-;Y;Y;-;-;-;-
+;US Billpay Payments;-;Y;Y;Y;Y;-;-
+;Manage Legal Entities;-;Y;-;-;-;-;-
+;Manage Shadow Limits;-;Y;N;N;N;-;-
+;Assign Permissions;-;Y;N;N;-;-;-
+;Assign Function Groups;-;Y;Y;Y;-;-;-
+;US Domestic Wire;-;Y;Y;Y;Y;Y;Y
+;Manage Users;-;Y;-;-;-;-;-
+;US Billpay Payees;-;Y;Y;Y;Y;-;-
+;Manage Data Groups;-;Y;Y;Y;Y;Y;-
+;Intra Company Payments;-;Y;Y;Y;Y;Y;Y
+;Manage Service Agreements;-;Y;N;N;N;N;-
+;US Billpay Payees-Summary;-;Y;-;-;-;-;-
+;SEPA CT;-;Y;Y;Y;Y;Y;Y
+;US Billpay Accounts;-;Y;-;-;-;-;-
+;Transactions;-;Y;-;Y;-;-;-
+;Contacts;-;Y;Y;Y;Y;Y;-
+;Manage Limits;-;Y;N;N;N;-;-
+;Manage Action Recipes;Y;Y;Y;Y;Y;-;-
+;Access Actions History;Y;Y;-;-;-;-;-
+;Manage Statements;-;Y;-;-;-;-;-
+;Manage Notifications;-;Y;Y;-;Y;-;-
+;Manage Function Groups;-;Y;Y;Y;Y;Y;-
+;Assign Users;-;Y;N;N;-;-;-
+;US Foreign Wire;-;Y;Y;Y;Y;Y;Y
+;US Billpay Payees-Search;Y;Y;-;-;-;-;-
+;;;;;;;;
+Finance Employee;;Execute;View;Create;Edit;Delete;Approve;Cancel
+Approval Level: A;US Billpay Enrolment;Y;Y;-;-;-;-;-
+;Product Summary;-;Y;-;Y;-;-;-
+;Audit;-;Y;N;-;-;-;-
+;US Billpay Payments;-;Y;Y;Y;Y;-;-
+;Manage Legal Entities;-;Y;-;-;-;-;-
+;Manage Shadow Limits;-;N;N;N;N;-;-
+;Assign Permissions;-;N;N;N;-;-;-
+;Assign Function Groups;-;N;N;N;-;-;-
+;US Domestic Wire;-;Y;Y;Y;Y;Y;N
+;Manage Users;-;Y;-;-;-;-;-
+;US Billpay Payees;-;Y;Y;Y;Y;-;-
+;Manage Data Groups;-;N;N;N;N;N;-
+;Intra Company Payments;-;Y;Y;Y;Y;Y;Y
+;Manage Service Agreements;-;Y;N;N;N;N;-
+;US Billpay Payees-Summary;-;Y;-;-;-;-;-
+;SEPA CT;-;Y;Y;Y;Y;Y;N
+;US Billpay Accounts;-;Y;-;-;-;-;-
+;Transactions;-;Y;-;Y;-;-;-
+;Contacts;-;Y;Y;Y;Y;Y;-
+;Manage Limits;-;N;N;N;N;-;-
+;Manage Action Recipes;Y;Y;N;N;N;-;-
+;Access Actions History;Y;Y;-;-;-;-;-
+;Manage Statements;-;Y;-;-;-;-;-
+;Manage Notifications;-;Y;Y;-;Y;-;-
+;Manage Function Groups;-;N;N;N;N;N;-
+;Assign Users;-;Y;N;N;-;-;-
+;US Foreign Wire;-;Y;Y;Y;Y;Y;N
+;US Billpay Payees-Search;Y;Y;-;-;-;-;-

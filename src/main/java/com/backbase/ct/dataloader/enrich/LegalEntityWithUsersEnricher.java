@@ -1,11 +1,11 @@
 package com.backbase.ct.dataloader.enrich;
 
+import static com.backbase.ct.dataloader.util.CommonHelpers.splitDelimitedWordToSingleCapatilizedWords;
+
 import com.backbase.ct.dataloader.dto.LegalEntityWithUsers;
 import com.backbase.ct.dataloader.dto.User;
 import com.github.javafaker.Faker;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 
@@ -34,17 +34,6 @@ public class LegalEntityWithUsersEnricher {
         );
     }
 
-    /**
-     * Split a string, capitalize each word and divide them by a space.
-     */
-    private static String convertLogonNameToFullName(String value, String separatorChars) {
-        String[] strings = StringUtils.split(value.toLowerCase(), separatorChars);
-        for (int i = 0; i < strings.length; i++) {
-            strings[i] = StringUtils.capitalize(strings[i]);
-        }
-        return StringUtils.join(strings, " ");
-    }
-
     private void enrichUsers(List<User> users) {
         users.forEach(this::enrichUser);
     }
@@ -57,7 +46,7 @@ public class LegalEntityWithUsersEnricher {
     private void enrichUser(User user) {
         if (StringUtils.isEmpty(user.getFullName())) {
             if (user.getExternalId().matches(".*[_.].*")) {
-                user.setFullName(convertLogonNameToFullName(user.getExternalId(), "_."));
+                user.setFullName(splitDelimitedWordToSingleCapatilizedWords(user.getExternalId(), "_."));
             } else {
                 user.setFullName(faker.name().firstName() + " " + faker.name().lastName());
             }

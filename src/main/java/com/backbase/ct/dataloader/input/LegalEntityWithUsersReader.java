@@ -4,15 +4,12 @@ import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_LEGAL_ENT
 import static java.util.Arrays.asList;
 
 import com.backbase.ct.dataloader.dto.LegalEntityWithUsers;
-import com.backbase.ct.dataloader.dto.User;
 import com.backbase.ct.dataloader.enrich.LegalEntityWithUsersEnricher;
 import com.backbase.ct.dataloader.util.GlobalProperties;
 import com.backbase.ct.dataloader.util.ParserUtil;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

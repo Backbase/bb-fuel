@@ -3,7 +3,6 @@ package com.backbase.ct.dataloader.setup;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_ACCESS_CONTROL;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_BALANCE_HISTORY;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_TRANSACTIONS;
-import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_LEGAL_ENTITIES_WITH_USERS_JSON;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
 import static com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.Currency;
 import static java.util.Arrays.asList;
@@ -26,13 +25,11 @@ import com.backbase.ct.dataloader.dto.LegalEntityContext;
 import com.backbase.ct.dataloader.dto.LegalEntityWithUsers;
 import com.backbase.ct.dataloader.dto.UserContext;
 import com.backbase.ct.dataloader.input.LegalEntityWithUsersReader;
-import com.backbase.ct.dataloader.util.ParserUtil;
 import com.backbase.presentation.user.rest.spec.v2.users.LegalEntityByUserGetResponseBody;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.function.Consumer;
@@ -63,7 +60,7 @@ public class AccessControlSetup extends BaseSetup {
     }
 
     /**
-     * Setup of legal entities must always be done.
+     * Legal entities are loaded from file.
      */
     public void readLegalEntitiesWithUsers() {
         this.legalEntitiesWithUsers = this.legalEntityWithUsersReader.load();

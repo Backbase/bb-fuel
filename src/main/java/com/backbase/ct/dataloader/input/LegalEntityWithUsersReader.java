@@ -5,23 +5,16 @@ import static java.util.Arrays.asList;
 
 import com.backbase.ct.dataloader.dto.LegalEntityWithUsers;
 import com.backbase.ct.dataloader.enrich.LegalEntityWithUsersEnricher;
-import com.backbase.ct.dataloader.util.GlobalProperties;
 import com.backbase.ct.dataloader.util.ParserUtil;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class LegalEntityWithUsersReader {
-
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    private GlobalProperties globalProperties = GlobalProperties.getInstance();
+public class LegalEntityWithUsersReader extends BaseReader {
 
     private final LegalEntityWithUsersEnricher legalEntityWithUsersEnricher;
 

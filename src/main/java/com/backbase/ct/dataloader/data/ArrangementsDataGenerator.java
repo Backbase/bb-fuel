@@ -135,7 +135,7 @@ public class ArrangementsDataGenerator {
 
             arrangementsPostRequestBodies
                 .add(generateArrangementsPostRequestBody(externalLegalEntityId, 1, internationalTradeCurrency,
-                    INTERNATIONAL_TRADE, currentAccountNames.get(currentAccountNameIndex)));
+                    INTERNATIONAL_TRADE, null));
         });
 
         return arrangementsPostRequestBodies;

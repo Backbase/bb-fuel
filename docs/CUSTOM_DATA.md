@@ -42,17 +42,19 @@ Example for the `legal-entities-with-users.json` (other files are: `serviceagree
 
 1. Create json file named `legal-entities-with-users.json` with custom legal entities and assigned custom user list conforming existing format (in this case conforming: [legal-entities-with-users.json ](src/main/resources/data/legal-entities-with-users.json ))
 
-By default if customizable fields have not been provided, system will generate randomized values for it.
+By default if customizable fields have not been provided, system will generate randomized values for it. Full names will be derived from externalId if this field contains dot(s) or underscore(s) (just set the full name if do not want this feature).
 Optional fields in the data structure:
 - `legalEntityExternalId`
 - `parentLegalEntityExternalId`
 - `legalEntityName`
 - `legalEntityType`
+- `user.fullName`
+- `user.role`
 
 Mandatory fields:
-- `userExternalIds` - array of Strings, representing User ids.
+- `user.externalId` - string representing User id.
 
-Each `userExternalIds` array consists of the users which will be ingested under the above legal entity.
+Each `user` in array will be ingested under the above legal entity.
 
 Example:
 ```javascript
@@ -62,12 +64,22 @@ Example:
     "parentLegalEntityExternalId": "C000000",
     "legalEntityName": "Hong Kong Legal Entity",
     "legalEntityType": "CUSTOMER",
-    "userExternalIds": [
-      "U0091011",
-      "U0091012",
-      "U0091013",
-      "U0091014",
-      "U0091015"
+    "users": [
+      {
+        "externalId": "U0091011"
+      },
+      {
+        "externalId": "U0091012"
+      },
+      {
+        "externalId": "U0091013"
+      },
+      {
+        "externalId": "U0091014"
+      },
+      {
+        "externalId": "U0091015"
+      }
     ]
   }
 ]

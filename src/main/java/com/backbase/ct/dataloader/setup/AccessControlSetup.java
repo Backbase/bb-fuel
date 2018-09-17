@@ -98,16 +98,16 @@ public class AccessControlSetup extends BaseSetup {
         this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
         userExternalIds.forEach(userExternalId -> {
-            final String legalEntityExternalId = this.userPresentationRestClient
-                .retrieveLegalEntityByExternalUserId(userExternalId)
-                .getExternalId();
+            LegalEntityByUserGetResponseBody legalEntity = this.userPresentationRestClient
+                .retrieveLegalEntityByExternalUserId(userExternalId);
+            final String legalEntityExternalId = legalEntity.getExternalId();
 
             if (!legalEntitiesUserContextMap.containsKey(legalEntityExternalId)) {
                 this.serviceAgreementsConfigurator
                     .updateMasterServiceAgreementWithExternalIdByLegalEntity(legalEntityExternalId);
             }
 
-            UserContext userContext = getUserContextBasedOnMSAByExternalUserId(userExternalId);
+            UserContext userContext = getUserContextBasedOnMSAByExternalUserId(userExternalId, legalEntity);
             legalEntitiesUserContextMap.put(userContext.getExternalLegalEntityId(), userContext);
 
             if (legalEntityContext.getDataGroupCollection() == null) {
@@ -224,14 +224,19 @@ public class AccessControlSetup extends BaseSetup {
     }
 
     public UserContext getUserContextBasedOnMSAByExternalUserId(String externalUserId) {
+        return getUserContextBasedOnMSAByExternalUserId(externalUserId, null);
+    }
+
+    private UserContext getUserContextBasedOnMSAByExternalUserId(String externalUserId,
+            LegalEntityByUserGetResponseBody legalEntity) {
         this.loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
         this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
-        String internalUserId = this.userPresentationRestClient.getUserByExternalId(externalUserId)
-            .getId();
+        String internalUserId = this.userPresentationRestClient.getUserByExternalId(externalUserId).getId();
 
-        LegalEntityByUserGetResponseBody legalEntity = this.userPresentationRestClient
-            .retrieveLegalEntityByExternalUserId(externalUserId);
+        if (legalEntity == null) {
+            legalEntity = this.userPresentationRestClient.retrieveLegalEntityByExternalUserId(externalUserId);
+        }
 
         String internalServiceAgreementId = this.legalEntityPresentationRestClient
             .getMasterServiceAgreementOfLegalEntity(legalEntity.getId())

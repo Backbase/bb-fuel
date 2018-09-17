@@ -7,6 +7,7 @@ import static org.apache.commons.lang.StringUtils.deleteWhitespace;
 
 import com.backbase.ct.dataloader.client.accessgroup.AccessGroupIntegrationRestClient;
 import com.backbase.ct.dataloader.dto.ArrangementId;
+import com.backbase.ct.dataloader.dto.entitlement.JobProfile;
 import com.backbase.ct.dataloader.service.AccessGroupService;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.config.functions.FunctionsGetResponseBody;
 import java.util.HashMap;

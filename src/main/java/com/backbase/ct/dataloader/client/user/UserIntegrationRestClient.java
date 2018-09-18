@@ -39,11 +39,10 @@ public class UserIntegrationRestClient extends AbstractRestClient {
             && response.then()
                 .extract()
                 .as(BadRequestException.class)
-                .getMessage()
-                .equals("User is already admin in service agreement")) {
+            .getErrorCode()
+            .equals("user.access.fetch.data.error.message.USER_ALREADY_ENTITLEMENTS_ADMIN")) {
             LOGGER.warn("Entitlements admin [{}] already exists under legal entity [{}], skipped ingesting this entitlements admin",
-                    externalUserId,
-                    externalLegalEntityId);
+                    externalUserId, externalLegalEntityId);
         } else if (response.statusCode() == SC_OK) {
             LOGGER.info("Entitlements admin [{}] ingested under legal entity [{}]",
                 externalUserId, externalLegalEntityId);

@@ -47,9 +47,6 @@ public class ArrangementsDataGenerator {
             globalProperties.getInt(PROPERTY_ARRANGEMENTS_FINANCE_INTERNATIONAL_MAX));
         List<ArrangementsPostRequestBody> arrangementsPostRequestBodies = new ArrayList<>();
         List<Currency> financeInternationalCurrencyList = asList(EUR, GBP, USD, CAD);
-        Currency financeInternationalCurrency = currency == null
-            ? financeInternationalCurrencyList.get(random.nextInt(financeInternationalCurrencyList.size()))
-            : currency;
         int numberOfLoanAndSavingsAccountsPerGroup = 2;
         int numberOfInvestmentsAccountsPerGroup = 4;
         int numberOfCurrentAccountArrangements = numberOfArrangements <=
@@ -60,6 +57,9 @@ public class ArrangementsDataGenerator {
         List<String> currentAccountNames = CURRENT_ACCOUNT_ARRANGEMENT_TYPE_NAME_MAP.get(FINANCE_INTERNATIONAL);
 
         IntStream.range(0, numberOfCurrentAccountArrangements).parallel().forEach(randomNumber -> {
+            Currency financeInternationalCurrency = currency == null
+                ? financeInternationalCurrencyList.get(random.nextInt(financeInternationalCurrencyList.size()))
+                : currency;
             int currentAccountNameIndex = randomNumber < currentAccountNames.size() ? randomNumber
                 : random.nextInt(currentAccountNames.size());
 
@@ -72,12 +72,22 @@ public class ArrangementsDataGenerator {
         if (numberOfArrangements > (numberOfLoanAndSavingsAccountsPerGroup
             + numberOfInvestmentsAccountsPerGroup)) {
             IntStream.range(0, numberOfInvestmentsAccountsPerGroup).parallel()
-                .forEach(randomNumber -> arrangementsPostRequestBodies.add(
-                    generateArrangementsPostRequestBody(externalLegalEntityId,
-                        6, financeInternationalCurrency,
-                        FINANCE_INTERNATIONAL)));
+                .forEach(randomNumber -> {
+                    Currency financeInternationalCurrency = currency == null
+                        ? financeInternationalCurrencyList.get(random.nextInt(financeInternationalCurrencyList.size()))
+                        : currency;
+
+                    arrangementsPostRequestBodies.add(
+                        generateArrangementsPostRequestBody(externalLegalEntityId,
+                            6, financeInternationalCurrency,
+                            FINANCE_INTERNATIONAL));
+                });
 
             IntStream.range(0, numberOfLoanAndSavingsAccountsPerGroup).parallel().forEach(randomNumber -> {
+                Currency financeInternationalCurrency = currency == null
+                    ? financeInternationalCurrencyList.get(random.nextInt(financeInternationalCurrencyList.size()))
+                    : currency;
+
                 arrangementsPostRequestBodies.add(
                     generateArrangementsPostRequestBody(externalLegalEntityId,
                         2, financeInternationalCurrency,
@@ -99,13 +109,13 @@ public class ArrangementsDataGenerator {
 
         List<ArrangementsPostRequestBody> arrangementsPostRequestBodies = new ArrayList<>();
         List<Currency> payrollCurrencyList = asList(EUR, GBP, USD, CAD);
-        Currency payrollCurrency = currency == null
-            ? payrollCurrencyList.get(random.nextInt(payrollCurrencyList.size()))
-            : currency;
 
         List<String> currentAccountNames = CURRENT_ACCOUNT_ARRANGEMENT_TYPE_NAME_MAP.get(PAYROLL);
 
         IntStream.range(0, numberOfArrangements).parallel().forEach(randomNumber -> {
+            Currency payrollCurrency = currency == null
+                ? payrollCurrencyList.get(random.nextInt(payrollCurrencyList.size()))
+                : currency;
             int currentAccountNameIndex = randomNumber < currentAccountNames.size() ? randomNumber
                 : random.nextInt(currentAccountNames.size());
 
@@ -123,15 +133,13 @@ public class ArrangementsDataGenerator {
             globalProperties.getInt(PROPERTY_ARRANGEMENTS_INTERNATIONAL_TRADE_MAX));
         List<ArrangementsPostRequestBody> arrangementsPostRequestBodies = new ArrayList<>();
         List<Currency> internationalTradeCurrencyList = asList(BHD, CNY, JPY, EUR, INR, TRY, EUR);
-        Currency internationalTradeCurrency = currency == null
-            ? internationalTradeCurrencyList.get(random.nextInt(internationalTradeCurrencyList.size()))
-            : currency;
 
         List<String> currentAccountNames = CURRENT_ACCOUNT_ARRANGEMENT_TYPE_NAME_MAP.get(INTERNATIONAL_TRADE);
 
         IntStream.range(0, numberOfArrangements).parallel().forEach(randomNumber -> {
-            int currentAccountNameIndex = randomNumber < currentAccountNames.size() ? randomNumber
-                : random.nextInt(currentAccountNames.size());
+            Currency internationalTradeCurrency = currency == null
+                ? internationalTradeCurrencyList.get(random.nextInt(internationalTradeCurrencyList.size()))
+                : currency;
 
             arrangementsPostRequestBodies
                 .add(generateArrangementsPostRequestBody(externalLegalEntityId, 1, internationalTradeCurrency,
@@ -147,9 +155,6 @@ public class ArrangementsDataGenerator {
             globalProperties.getInt(PROPERTY_ARRANGEMENTS_GENERAL_MAX));
         List<ArrangementsPostRequestBody> arrangementsPostRequestBodies = new ArrayList<>();
         List<Currency> arrangementCurrencyList = asList(EUR, GBP, USD, CAD);
-        Currency arrangementCurrency = currency == null
-            ? arrangementCurrencyList.get(random.nextInt(arrangementCurrencyList.size()))
-            : currency;
 
         int numberOfSavingsAccountsPerGroup = 1;
         int numberOfCurrentAccountArrangements =
@@ -159,6 +164,9 @@ public class ArrangementsDataGenerator {
         List<String> currentAccountNames = CURRENT_ACCOUNT_ARRANGEMENT_TYPE_NAME_MAP.get(GENERAL_BUSINESS);
 
         IntStream.range(0, numberOfCurrentAccountArrangements).parallel().forEach(randomNumber -> {
+            Currency arrangementCurrency = currency == null
+                ? arrangementCurrencyList.get(random.nextInt(arrangementCurrencyList.size()))
+                : currency;
             int currentAccountNameIndex = randomNumber < currentAccountNames.size() ? randomNumber
                 : random.nextInt(currentAccountNames.size());
 
@@ -168,10 +176,15 @@ public class ArrangementsDataGenerator {
         });
 
         if (numberOfArrangements > numberOfSavingsAccountsPerGroup) {
-            IntStream.range(0, numberOfSavingsAccountsPerGroup).parallel().forEach(randomNumber ->
+            IntStream.range(0, numberOfSavingsAccountsPerGroup).parallel().forEach(randomNumber -> {
+                Currency arrangementCurrency = currency == null
+                    ? arrangementCurrencyList.get(random.nextInt(arrangementCurrencyList.size()))
+                    : currency;
+
                 arrangementsPostRequestBodies.add(
                     generateArrangementsPostRequestBody(externalLegalEntityId, 2, arrangementCurrency,
-                        GENERAL_BUSINESS)));
+                        GENERAL_BUSINESS));
+            });
         }
 
         return arrangementsPostRequestBodies;
@@ -183,9 +196,6 @@ public class ArrangementsDataGenerator {
             globalProperties.getInt(PROPERTY_ARRANGEMENTS_GENERAL_MAX));
         List<ArrangementsPostRequestBody> arrangementsPostRequestBodies = new ArrayList<>();
         List<Currency> arrangementCurrencyList = asList(EUR, GBP, USD, CAD);
-        Currency arrangementCurrency = currency == null
-            ? arrangementCurrencyList.get(random.nextInt(arrangementCurrencyList.size()))
-            : currency;
 
         final int NUMBER_OF_PRODUCTS = 6;
 
@@ -197,6 +207,9 @@ public class ArrangementsDataGenerator {
             ? numberOfArrangements : numberOfArrangements - (NUMBER_OF_PRODUCTS - 1);
 
         IntStream.range(0, numberOfCurrentAccountArrangements).parallel().forEach(randomNumber -> {
+            Currency arrangementCurrency = currency == null
+                ? arrangementCurrencyList.get(random.nextInt(arrangementCurrencyList.size()))
+                : currency;
             int currentAccountNameIndex = randomNumber < currentAccountNames.size() ? randomNumber
                 : random.nextInt(currentAccountNames.size());
 
@@ -207,10 +220,14 @@ public class ArrangementsDataGenerator {
 
         if (numberOfArrangements > NUMBER_OF_PRODUCTS) {
             // Any other product than current account
-            IntStream.range(2, (NUMBER_OF_PRODUCTS + 1)).parallel().forEach(productId ->
+            IntStream.range(2, (NUMBER_OF_PRODUCTS + 1)).parallel().forEach(productId -> {
+                Currency arrangementCurrency = currency == null
+                ? arrangementCurrencyList.get(random.nextInt(arrangementCurrencyList.size()))
+                : currency;
                 arrangementsPostRequestBodies.add(
                     generateArrangementsPostRequestBody(externalLegalEntityId, productId, arrangementCurrency,
-                        GENERAL_BUSINESS)));
+                        GENERAL_BUSINESS));
+            });
         }
 
         return arrangementsPostRequestBodies;

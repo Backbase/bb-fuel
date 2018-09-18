@@ -45,7 +45,7 @@ public class AccessGroupsConfigurator {
     }
 
     /**
-     * TODO call this 
+     * TODO call this
      */
     private synchronized String ingestJobProfileWithPrivileges(String externalServiceAgreementId,
         JobProfile jobProfile, List<FunctionsGetResponseBody> functions) {

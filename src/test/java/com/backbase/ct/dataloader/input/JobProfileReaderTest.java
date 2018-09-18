@@ -32,9 +32,9 @@ public class JobProfileReaderTest {
     @Test
     public void testLoadRetail() {
         List<JobProfile> jobProfiles = subject.load("data/job-profiles-retail.json");
-        assertThat(jobProfiles, hasSize(2));
+        assertThat(jobProfiles, hasSize(1));
         assertThat("profile should have enough permissions",
-            jobProfiles.get(0).getPermissions().size(), greaterThan(20));
+            jobProfiles.get(0).getPermissions().size(), greaterThan(10));
         assertThat("permission should have business function",
             jobProfiles.get(0).getPermissions().get(0).getBusinessFunction(), notNullValue());
     }

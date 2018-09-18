@@ -26,19 +26,43 @@ public class AccessGroupsConfigurator {
 
     private Map<String, String> functionGroupCache = synchronizedMap(new HashMap<>());
 
+    List<FunctionsGetResponseBody> functions;
+
     private static final String ARRANGEMENTS = "ARRANGEMENTS";
 
     private static final String ADMIN_FUNCTION_GROUP_NAME = "Admin";
+//
+//    public String ingestJobProfile(String externalServiceAgreementId, JobProfile jobProfile) {
+//
+//    }
 
     public String ingestAdminFunctionGroup(String externalServiceAgreementId) {
         return ingestAdminFunctionGroup(externalServiceAgreementId, ADMIN_FUNCTION_GROUP_NAME);
     }
 
     public String ingestAdminFunctionGroup(String externalServiceAgreementId, String functionGroupName) {
-        List<FunctionsGetResponseBody> functions = this.accessGroupIntegrationRestClient
-            .retrieveFunctions();
+        if (functions == null) {
+            functions = this.accessGroupIntegrationRestClient.retrieveFunctions();
+        }
 
         return ingestFunctionGroupWithAllPrivileges(externalServiceAgreementId, functionGroupName, functions);
+    }
+
+    private synchronized String ingestJobProfileWithPrivileges(String externalServiceAgreementId,
+        JobProfile jobProfile, List<FunctionsGetResponseBody> functions) {
+        String cacheKey = String.format("%s-%s", externalServiceAgreementId,
+            deleteWhitespace(jobProfile.getJobProfileName()).trim());
+
+        if (functionGroupCache.containsKey(cacheKey)) {
+            return functionGroupCache.get(cacheKey);
+        }
+
+        String functionGroupId = accessGroupService.ingestFunctionGroup(externalServiceAgreementId,
+            jobProfile.getJobProfileName(), createPermissionsWithAllPrivileges(functions));
+
+        functionGroupCache.put(cacheKey, functionGroupId);
+
+        return functionGroupId;
     }
 
     private synchronized String ingestFunctionGroupWithAllPrivileges(String externalServiceAgreementId,

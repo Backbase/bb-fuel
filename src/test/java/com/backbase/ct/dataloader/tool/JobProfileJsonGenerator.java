@@ -55,26 +55,34 @@ public class JobProfileJsonGenerator {
     }
 
     @Test
-    public void testGenerateJsonFileFromCsvFile() {
-        String name = "dbs-mock-data-jobprofiles";
+    public void testSingleProfile() {
+        List<JobProfile> jobProfiles = parseJobProfilesFromCsv(MANAGER_PROFILE_CSV);
+        assertThat(jobProfiles, hasSize(1));
+    }
+
+    @Test
+    public void generateJsonFileForBusinessBanking() {
+        generateJsonFileFromCsvFile("dbs-mock-data-jobprofiles", 3);
+    }
+
+    @Test
+    public void generateJsonFileForRetail() {
+        generateJsonFileFromCsvFile("dbs-mock-data-jobprofiles-retail", 2);
+    }
+
+    private void generateJsonFileFromCsvFile(String name, int expectedNumberOfProfiles) {
         List<JobProfile> jobProfiles = parseJobProfilesFromFile("csv/" + name + ".csv");
-        // TODO check to which codes the following ´labels´ map: [Assign Function Groups]
         // renamed [Manage Product Groups, Manage Users in Service Agreement, Manage Permissions, Assign pairs of FAG/DAG, Manage Job Profiles]
         // missing [Manage Identities, Manage Approval Policy and Level, Manage Topics]
+        // TODO check to which codes the following ´labels´ map: [Assign Function Groups]
 //        validateJobProfiles(jobProfiles);
-        assertThat(jobProfiles, hasSize(3));
+        assertThat(jobProfiles, hasSize(expectedNumberOfProfiles));
         try {
             FileOutputStream output = new FileOutputStream(new File("target/" + name + ".json"));
             ParserUtil.convertObjectToJson(output, jobProfiles);
         } catch (IOException e) {
             fail("Could not write generated contents " + e.getMessage());
         }
-    }
-
-    @Test
-    public void testSingleProfile() {
-        List<JobProfile> jobProfiles = parseJobProfilesFromCsv(manager);
-        assertThat(jobProfiles, hasSize(1));
     }
 
     private List<JobProfile> parseJobProfilesFromFile(String classPathResource)  {
@@ -149,7 +157,10 @@ public class JobProfileJsonGenerator {
                 privilegeNames = privilegeChecks;
             } else {
                 if (counter == 1) {
-                    profile.setApprovalLevel(data.get(0).split(":")[1].trim());
+                    String[] labelValue = data.get(0).split(":");
+                    if (labelValue.length > 1) {
+                        profile.setApprovalLevel(labelValue[1].trim());
+                    }
                 }
                 List<String> privileges = new ArrayList<>();
                 Permission permission = Permission.builder()
@@ -171,7 +182,7 @@ public class JobProfileJsonGenerator {
         return profiles;
     }
 
-    private static final String manager = "Manager;;Execute;View;Create;Edit;Delete;Approve;Cancel\n"
+    private static final String MANAGER_PROFILE_CSV = "Manager;;Execute;View;Create;Edit;Delete;Approve;Cancel\n"
         + "(Approval Level - B);US Billpay Enrolment;Y;Y;-;-;-;-;-\n"
         + ";Product Summary;-;Y;-;Y;-;-;-\n"
         + ";Audit;-;Y;Y;-;-;-;-\n"

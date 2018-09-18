@@ -20,9 +20,19 @@ public class JobProfileReaderTest {
     private JobProfileReader subject;
 
     @Test
-    public void testLoad() {
+    public void testLoadBusinessBanking() {
         List<JobProfile> jobProfiles = subject.load();
         assertThat(jobProfiles, hasSize(3));
+        assertThat("profile should have enough permissions",
+            jobProfiles.get(0).getPermissions().size(), greaterThan(20));
+        assertThat("permission should have business function",
+            jobProfiles.get(0).getPermissions().get(0).getBusinessFunction(), notNullValue());
+    }
+
+    @Test
+    public void testLoadRetail() {
+        List<JobProfile> jobProfiles = subject.load("data/job-profiles-retail.json");
+        assertThat(jobProfiles, hasSize(2));
         assertThat("profile should have enough permissions",
             jobProfiles.get(0).getPermissions().size(), greaterThan(20));
         assertThat("permission should have business function",

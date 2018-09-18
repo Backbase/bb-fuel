@@ -123,13 +123,13 @@ public class ArrangementsDataGenerator {
             globalProperties.getInt(PROPERTY_ARRANGEMENTS_INTERNATIONAL_TRADE_MAX));
         List<ArrangementsPostRequestBody> arrangementsPostRequestBodies = new ArrayList<>();
         List<Currency> internationalTradeCurrencyList = asList(BHD, CNY, JPY, EUR, INR, TRY, EUR);
-        Currency internationalTradeCurrency = currency == null
-            ? internationalTradeCurrencyList.get(random.nextInt(internationalTradeCurrencyList.size()))
-            : currency;
 
         List<String> currentAccountNames = CURRENT_ACCOUNT_ARRANGEMENT_TYPE_NAME_MAP.get(INTERNATIONAL_TRADE);
 
         IntStream.range(0, numberOfArrangements).parallel().forEach(randomNumber -> {
+            Currency internationalTradeCurrency = currency == null
+                ? internationalTradeCurrencyList.get(random.nextInt(internationalTradeCurrencyList.size()))
+                : currency;
             int currentAccountNameIndex = randomNumber < currentAccountNames.size() ? randomNumber
                 : random.nextInt(currentAccountNames.size());
 

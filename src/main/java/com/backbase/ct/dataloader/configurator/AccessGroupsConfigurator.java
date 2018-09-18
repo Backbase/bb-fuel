@@ -31,10 +31,6 @@ public class AccessGroupsConfigurator {
     private static final String ARRANGEMENTS = "ARRANGEMENTS";
 
     private static final String ADMIN_FUNCTION_GROUP_NAME = "Admin";
-//
-//    public String ingestJobProfile(String externalServiceAgreementId, JobProfile jobProfile) {
-//
-//    }
 
     public String ingestAdminFunctionGroup(String externalServiceAgreementId) {
         return ingestAdminFunctionGroup(externalServiceAgreementId, ADMIN_FUNCTION_GROUP_NAME);
@@ -48,6 +44,9 @@ public class AccessGroupsConfigurator {
         return ingestFunctionGroupWithAllPrivileges(externalServiceAgreementId, functionGroupName, functions);
     }
 
+    /**
+     * TODO call this 
+     */
     private synchronized String ingestJobProfileWithPrivileges(String externalServiceAgreementId,
         JobProfile jobProfile, List<FunctionsGetResponseBody> functions) {
         String cacheKey = String.format("%s-%s", externalServiceAgreementId,

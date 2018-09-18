@@ -2,7 +2,7 @@ package com.backbase.ct.dataloader.configurator;
 
 import static com.backbase.ct.dataloader.data.CommonConstants.EXTERNAL_ROOT_LEGAL_ENTITY_ID;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
-import static com.backbase.ct.dataloader.enrich.LegalEntityWithUsersEnricher.createFakedAdminUser;
+import static com.backbase.ct.dataloader.enrich.LegalEntityWithUsersEnricher.createAdminUser;
 
 import com.backbase.ct.dataloader.client.accessgroup.UserContextPresentationRestClient;
 import com.backbase.ct.dataloader.client.common.LoginRestClient;
@@ -36,7 +36,7 @@ public class LegalEntitiesAndUsersConfigurator {
 
         this.userIntegrationRestClient.ingestUserAndLogResponse(LegalEntitiesAndUsersDataGenerator
             .generateUsersPostRequestBody(
-                createFakedAdminUser(externalEntitlementsAdminUserId), EXTERNAL_ROOT_LEGAL_ENTITY_ID));
+                createAdminUser(externalEntitlementsAdminUserId), EXTERNAL_ROOT_LEGAL_ENTITY_ID));
         this.userIntegrationRestClient.ingestEntitlementsAdminUnderLEAndLogResponse(externalEntitlementsAdminUserId,
             EXTERNAL_ROOT_LEGAL_ENTITY_ID);
     }

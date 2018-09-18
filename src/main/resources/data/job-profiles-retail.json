@@ -1,6 +1,6 @@
 [
   {
-    "jobProfileName": "admin",
+    "jobProfileName": "Admin",
     "permissions": [
       {
         "businessFunction": "Audit",
@@ -213,7 +213,7 @@
     ]
   },
   {
-    "jobProfileName": "retail user",
+    "jobProfileName": "Retail User",
     "permissions": [
       {
         "businessFunction": "Contacts",

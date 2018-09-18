@@ -22,7 +22,7 @@ public class JobProfileReaderTest {
     @Test
     public void testLoadBusinessBanking() {
         List<JobProfile> jobProfiles = subject.load();
-        assertThat(jobProfiles, hasSize(3));
+        assertThat(jobProfiles, hasSize(2));
         assertThat("profile should have enough permissions",
             jobProfiles.get(0).getPermissions().size(), greaterThan(20));
         assertThat("permission should have business function",

@@ -15,13 +15,20 @@ public class LegalEntityWithUsersEnricher {
     private static final Faker FAKER = new Faker();
 
     /**
+     * Build it up with first and last name because faker fullname method sometimes adds prefix or suffix.
+     */
+    private static String buildFakerFullName() {
+        return FAKER.name().firstName() + " " + FAKER.name().lastName();
+    }
+
+    /**
      * Create user with admin role, fake fullName and given externalId.
      */
-    public static User createFakedAdminUser(String externalId) {
+    public static User createAdminUser(String externalId) {
         return User.builder()
             .externalId(externalId)
             .role("admin")
-            .fullName(FAKER.name().fullName()).build();
+            .fullName(buildFakerFullName()).build();
     }
 
     private static boolean isRetailUser(LegalEntityWithUsers legalEntityWithUsers) {
@@ -42,7 +49,7 @@ public class LegalEntityWithUsersEnricher {
     private void enrichLegalEntity(LegalEntityWithUsers legalEntity) {
         legalEntity.setLegalEntityName(
             isRetailUser(legalEntity)
-                ? FAKER.name().fullName()
+                ? buildFakerFullName()
                 : legalEntity.getLegalEntityName()
         );
     }
@@ -54,14 +61,14 @@ public class LegalEntityWithUsersEnricher {
     /**
      * Assign the admin role when not explicitly set. When fullName is not set do the following:
      * If externalId contains one or more separators (._) convert it by capitalizing each word and split with a space.
-     * Otherwise fake up the full name.
+     * Otherwise fake up the first and last name.
      */
     private void enrichUser(User user) {
         if (StringUtils.isEmpty(user.getFullName())) {
             if (user.getExternalId().matches(".*[_.].*")) {
                 user.setFullName(splitDelimitedWordToSingleCapatilizedWords(user.getExternalId(), "_."));
             } else {
-                user.setFullName(FAKER.name().fullName());
+                user.setFullName(buildFakerFullName());
             }
         }
         if (StringUtils.isEmpty(user.getRole())) {

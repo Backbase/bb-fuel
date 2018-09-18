@@ -141,6 +141,7 @@ public class JobProfileJsonGenerator {
         // row 1 starts with counter 0, thus actual row and column number as described above differ 1 (subtract)
         int counter = 0;
         for (String line : lines) {
+            String originalLine = line;
             if (line.replaceAll(";", "").length() == 0) {
                 counter = 0;
                 profile = createJobProfileWithEmptyPermissions();
@@ -153,7 +154,7 @@ public class JobProfileJsonGenerator {
             List<String> data = splitter.splitToList(line);
             List<String> privilegeChecks = data.subList(2, data.size());
             if (counter == 0) {
-                profile.setJobProfileName(data.get(0));
+                profile.setJobProfileName(splitter.splitToList(originalLine).get(0));
                 privilegeNames = privilegeChecks;
             } else {
                 if (counter == 1) {

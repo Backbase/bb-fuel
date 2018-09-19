@@ -4,19 +4,18 @@ import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_ROOT_ENTI
 import static com.backbase.ct.dataloader.data.CommonConstants.SEPA_CT_FUNCTION_NAME;
 import static com.backbase.ct.dataloader.data.CommonConstants.US_DOMESTIC_WIRE_FUNCTION_NAME;
 import static com.backbase.ct.dataloader.data.CommonConstants.US_FOREIGN_WIRE_FUNCTION_NAME;
-import static com.backbase.ct.dataloader.data.LimitsDataGenerator.createDailyLimitsPostRequestBodyForApprovePrivilege;
+import static com.backbase.ct.dataloader.data.LimitsDataGenerator.createTransactionalLimitsPostRequestBodyForPrivilege;
 import static java.util.Arrays.asList;
-import static java.util.stream.Collectors.toList;
 import static org.apache.http.HttpStatus.SC_CREATED;
 
 import com.backbase.ct.dataloader.client.accessgroup.AccessGroupIntegrationRestClient;
 import com.backbase.ct.dataloader.client.accessgroup.AccessGroupPresentationRestClient;
+import com.backbase.ct.dataloader.client.accessgroup.ServiceAgreementsPresentationRestClient;
 import com.backbase.ct.dataloader.client.accessgroup.UserContextPresentationRestClient;
 import com.backbase.ct.dataloader.client.common.LoginRestClient;
 import com.backbase.ct.dataloader.client.limit.LimitsPresentationRestClient;
 import com.backbase.ct.dataloader.util.GlobalProperties;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.config.functions.FunctionsGetResponseBody;
-import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.functiongroups.FunctionGroupsGetResponseBody;
 import java.math.BigDecimal;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -35,14 +34,21 @@ public class LimitsConfigurator {
     private final UserContextPresentationRestClient userContextPresentationRestClient;
     private final AccessGroupPresentationRestClient accessGroupPresentationRestClient;
     private final AccessGroupIntegrationRestClient accessGroupIntegrationRestClient;
+    private final ServiceAgreementsPresentationRestClient serviceAgreementsPresentationRestClient;
     private final LimitsPresentationRestClient limitsPresentationRestClient;
     private String rootEntitlementsAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
+    private static final List<String> PRIVILEGES = asList("create", "approve");
+    private static final String ADMIN_FUNCTION_GROUP_NAME = "Admin";
 
     public void ingestLimits(String internalServiceAgreementId) {
         BigDecimal limitAmount = new BigDecimal("1000000.0");
 
         loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
         userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
+
+        String externalServiceAgreementId = serviceAgreementsPresentationRestClient
+            .retrieveServiceAgreement(internalServiceAgreementId)
+            .getExternalId();
 
         List<FunctionsGetResponseBody> paymentsFunctions = accessGroupIntegrationRestClient
             .retrieveFunctions(asList(
@@ -53,28 +59,34 @@ public class LimitsConfigurator {
         for (FunctionsGetResponseBody paymentsFunction : paymentsFunctions) {
             String currency = SEPA_CT_FUNCTION_NAME.equals(paymentsFunction.getName()) ? "EUR" : "USD";
 
-            List<String> paymentsFunctionGroupIds = accessGroupPresentationRestClient
-                .getFunctionGroupsByFunctionId(internalServiceAgreementId, paymentsFunction.getFunctionId())
+            String existingAdminFunctionGroupId = accessGroupPresentationRestClient
+                .retrieveFunctionGroupsByServiceAgreement(internalServiceAgreementId)
                 .stream()
-                .map(FunctionGroupsGetResponseBody::getId)
-                .collect(toList());
+                .filter(functionGroupsGetResponseBody -> ADMIN_FUNCTION_GROUP_NAME
+                    .equals(functionGroupsGetResponseBody.getName()))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException(String
+                    .format("No existing function group found by service agreement [%s] and name [%s]",
+                        externalServiceAgreementId, ADMIN_FUNCTION_GROUP_NAME)))
+                .getId();
 
-            paymentsFunctionGroupIds.forEach(paymentsFunctionGroupId -> {
-                String limitId = limitsPresentationRestClient.createPeriodicLimit(createDailyLimitsPostRequestBodyForApprovePrivilege(
-                    internalServiceAgreementId,
-                    paymentsFunctionGroupId,
-                    paymentsFunction.getFunctionId(),
-                    currency,
-                    limitAmount))
+            for (String privilege : PRIVILEGES) {
+                String limitId = limitsPresentationRestClient.createTransactionalLimit(
+                    createTransactionalLimitsPostRequestBodyForPrivilege(
+                        internalServiceAgreementId,
+                        existingAdminFunctionGroupId,
+                        paymentsFunction.getFunctionId(),
+                        currency,
+                        privilege,
+                        limitAmount))
                     .then()
                     .statusCode(SC_CREATED)
-                .extract()
-                .path("uuid");
+                    .extract()
+                    .path("uuid");
 
-                LOGGER.info("Daily limit [{}] created for approve privilege on function group {} and function {}",
-                    limitId, paymentsFunctionGroupId, paymentsFunction.getFunctionId());
-            });
-
+                LOGGER.info("Transactional limit [{}] created for {} privilege on function group {} and function {}",
+                    limitId, privilege, existingAdminFunctionGroupId, paymentsFunction.getFunctionId());
+            }
         }
     }
 }

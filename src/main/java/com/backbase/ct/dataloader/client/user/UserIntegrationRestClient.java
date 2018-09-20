@@ -63,7 +63,7 @@ public class UserIntegrationRestClient extends AbstractRestClient {
                 .equals("User already exists")) {
             LOGGER.info("User [{}] already exists, skipped ingesting this user", user.getExternalId());
         } else if (response.statusCode() == SC_CREATED) {
-            LOGGER.info("User [%s] ingested under legal entity [%s]",
+            LOGGER.info("User [{}] ingested under legal entity [{}]",
                 user.getExternalId(), user.getLegalEntityExternalId());
         } else {
             response.then()

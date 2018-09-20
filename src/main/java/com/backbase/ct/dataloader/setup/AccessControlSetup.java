@@ -10,18 +10,18 @@ import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_BA
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_INTERNATIONAL_AND_PAYROLL_DATA_GROUPS;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_TRANSACTIONS;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
+import static com.backbase.ct.dataloader.enrich.LegalEntityWithUsersEnricher.createAdminUser;
 import static com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.Currency;
-import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 
 import com.backbase.ct.dataloader.IngestException;
-import com.backbase.ct.dataloader.client.accessgroup.AccessGroupIntegrationRestClient;
 import com.backbase.ct.dataloader.client.accessgroup.ServiceAgreementsPresentationRestClient;
 import com.backbase.ct.dataloader.client.accessgroup.UserContextPresentationRestClient;
 import com.backbase.ct.dataloader.client.legalentity.LegalEntityPresentationRestClient;
 import com.backbase.ct.dataloader.client.user.UserPresentationRestClient;
 import com.backbase.ct.dataloader.configurator.AccessGroupsConfigurator;
 import com.backbase.ct.dataloader.configurator.LegalEntitiesAndUsersConfigurator;
+import com.backbase.ct.dataloader.configurator.PermissionsConfigurator;
 import com.backbase.ct.dataloader.configurator.ProductSummaryConfigurator;
 import com.backbase.ct.dataloader.configurator.ServiceAgreementsConfigurator;
 import com.backbase.ct.dataloader.configurator.TransactionsConfigurator;
@@ -29,19 +29,21 @@ import com.backbase.ct.dataloader.dto.ArrangementId;
 import com.backbase.ct.dataloader.dto.DataGroupCollection;
 import com.backbase.ct.dataloader.dto.LegalEntityContext;
 import com.backbase.ct.dataloader.dto.LegalEntityWithUsers;
+import com.backbase.ct.dataloader.dto.User;
 import com.backbase.ct.dataloader.dto.UserContext;
+import com.backbase.ct.dataloader.dto.entitlement.JobProfile;
+import com.backbase.ct.dataloader.input.JobProfileReader;
 import com.backbase.ct.dataloader.input.LegalEntityWithUsersReader;
+import com.backbase.ct.dataloader.service.JobProfileService;
 import com.backbase.presentation.user.rest.spec.v2.users.LegalEntityByUserGetResponseBody;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -55,13 +57,17 @@ public class AccessControlSetup extends BaseSetup {
     private final ProductSummaryConfigurator productSummaryConfigurator;
     private final AccessGroupsConfigurator accessGroupsConfigurator;
     private final ServiceAgreementsConfigurator serviceAgreementsConfigurator;
-    private final AccessGroupIntegrationRestClient accessGroupIntegrationRestClient;
+    private final PermissionsConfigurator permissionsConfigurator;
     private final ServiceAgreementsPresentationRestClient serviceAgreementsPresentationRestClient;
     private final LegalEntityPresentationRestClient legalEntityPresentationRestClient;
     private final TransactionsConfigurator transactionsConfigurator;
     private final LegalEntityWithUsersReader legalEntityWithUsersReader;
+    private final JobProfileService jobProfileService;
+
+    private final JobProfileReader jobProfileReader;
     private String rootEntitlementsAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
     private List<LegalEntityWithUsers> legalEntitiesWithUsers;
+    private List<JobProfile> jobProfileTemplates;
 
     public List<LegalEntityWithUsers> getLegalEntitiesWithUsers() {
         return this.legalEntitiesWithUsers;
@@ -70,36 +76,38 @@ public class AccessControlSetup extends BaseSetup {
     /**
      * Legal entities are loaded from file.
      */
-    public void readLegalEntitiesWithUsers() {
+    public void initiate() throws IOException {
         this.legalEntitiesWithUsers = this.legalEntityWithUsersReader.load();
-    }
-
-    public void setupBankWithEntitlementsAdminAndProducts() throws IOException {
+        this.jobProfileTemplates = this.jobProfileReader.load();
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_ACCESS_CONTROL)) {
-            this.legalEntitiesAndUsersConfigurator.ingestRootLegalEntityAndEntitlementsAdmin(rootEntitlementsAdmin);
-            this.productSummaryConfigurator.ingestProducts();
-            assembleFunctionDataGroupsAndPermissions(singletonList(rootEntitlementsAdmin));
+            this.setupBankWithEntitlementsAdminAndProducts();
+            this.setupAccessControlForUsers();
         }
     }
 
-    public void setupAccessControlForUsers() {
-        if (this.globalProperties.getBoolean(PROPERTY_INGEST_ACCESS_CONTROL)) {
-            this.legalEntitiesWithUsers.forEach(entity -> {
-                this.legalEntitiesAndUsersConfigurator.ingestUsersUnderLegalEntity(entity);
-                assembleFunctionDataGroupsAndPermissions(entity.getUserExternalIds());
-            });
-        }
+    private void setupBankWithEntitlementsAdminAndProducts() throws IOException {
+        User admin = createAdminUser(rootEntitlementsAdmin);
+        this.legalEntitiesAndUsersConfigurator.ingestRootLegalEntityAndEntitlementsAdmin(admin);
+        this.productSummaryConfigurator.ingestProducts();
+        assembleFunctionDataGroupsAndPermissions(singletonList(admin));
     }
 
-    private void assembleFunctionDataGroupsAndPermissions(List<String> userExternalIds) {
+    private void setupAccessControlForUsers() {
+        this.legalEntitiesWithUsers.forEach(entity -> {
+            this.legalEntitiesAndUsersConfigurator.ingestUsersUnderLegalEntity(entity);
+            assembleFunctionDataGroupsAndPermissions(entity.getUsers());
+        });
+    }
+
+    private void assembleFunctionDataGroupsAndPermissions(List<User> users) {
         Multimap<String, UserContext> legalEntitiesUserContextMap = ArrayListMultimap.create();
         final LegalEntityContext legalEntityContext = new LegalEntityContext();
         this.loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
         this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
-        userExternalIds.forEach(userExternalId -> {
+        users.forEach(user -> {
             LegalEntityByUserGetResponseBody legalEntity = this.userPresentationRestClient
-                .retrieveLegalEntityByExternalUserId(userExternalId);
+                .retrieveLegalEntityByExternalUserId(user.getExternalId());
             final String legalEntityExternalId = legalEntity.getExternalId();
 
             if (!legalEntitiesUserContextMap.containsKey(legalEntityExternalId)) {
@@ -107,18 +115,18 @@ public class AccessControlSetup extends BaseSetup {
                     .updateMasterServiceAgreementWithExternalIdByLegalEntity(legalEntityExternalId);
             }
 
-            UserContext userContext = getUserContextBasedOnMSAByExternalUserId(userExternalId, legalEntity);
+            UserContext userContext = getUserContextBasedOnMSAByExternalUserId(user, legalEntity);
             legalEntitiesUserContextMap.put(userContext.getExternalLegalEntityId(), userContext);
 
             if (legalEntityContext.getDataGroupCollection() == null) {
                 legalEntityContext.setDataGroupCollection(
                     ingestDataGroupArrangementsForServiceAgreement(userContext.getExternalServiceAgreementId(),
-                        userContext.getExternalLegalEntityId(), userExternalIds.size()));
+                        userContext.getExternalLegalEntityId(), users.size()));
             }
         });
 
         legalEntitiesUserContextMap.values()
-            .forEach(userContext -> ingestFunctionGroupsAndAssignPermissions(userContext.getExternalUserId(),
+            .forEach(userContext -> ingestFunctionGroupsAndAssignPermissions(userContext.getUser(),
                 userContext.getInternalServiceAgreementId(),
                 userContext.getExternalServiceAgreementId(),
                 legalEntityContext.getDataGroupCollection()));
@@ -192,50 +200,43 @@ public class AccessControlSetup extends BaseSetup {
         return dataGroupCollection;
     }
 
-    private void ingestFunctionGroupsAndAssignPermissions(String externalUserId, String internalServiceAgreementId,
+    private void ingestFunctionGroupsAndAssignPermissions(User user, String internalServiceAgreementId,
         String externalServiceAgreementId,
         DataGroupCollection dataGroupCollection) {
 
-        String adminFunctionGroupId = this.accessGroupsConfigurator
-            .ingestAdminFunctionGroup(externalServiceAgreementId);
+        if (this.jobProfileService.getAssignedJobProfiles(externalServiceAgreementId) == null) {
+            jobProfileTemplates.forEach(template -> {
+                JobProfile jobProfile = new JobProfile(template);
+                jobProfile.setExternalServiceAgreementId(externalServiceAgreementId);
+                this.accessGroupsConfigurator.ingestFunctionGroup(jobProfile);
+                jobProfileService.saveAssignedProfile(jobProfile);
+            });
+        }
 
-        List<String> dataGroupIds = asList(
-            dataGroupCollection.getGeneralEurId(),
-            dataGroupCollection.getGeneralUsdId(),
-            dataGroupCollection.getAmsterdamId(),
-            dataGroupCollection.getPortlandId(),
-            dataGroupCollection.getVancouverId(),
-            dataGroupCollection.getLondonId(),
-            dataGroupCollection.getInternationalTradeId(),
-            dataGroupCollection.getFinanceInternationalId(),
-            dataGroupCollection.getPayrollId())
-            .parallelStream()
-            .filter(Objects::nonNull)
-            .collect(Collectors.toList());
-
-        this.accessGroupIntegrationRestClient.assignPermissions(
-            externalUserId,
-            internalServiceAgreementId,
-            adminFunctionGroupId,
-            dataGroupIds);
-
-        logger.info("Permission assigned for service agreement [{}], user [{}], function group [{}], data groups {}",
-            internalServiceAgreementId, externalUserId, adminFunctionGroupId, dataGroupIds);
+        this.jobProfileService.getAssignedJobProfiles(externalServiceAgreementId).forEach(jobProfile -> {
+            if (jobProfileService.isJobProfileForUserRole(jobProfile, user.getRole())) {
+                this.permissionsConfigurator.assignPermissions(
+                    user.getExternalId(),
+                    internalServiceAgreementId,
+                    jobProfile.getId(),
+                    dataGroupCollection.getDataGroupIds());
+            }
+        });
     }
 
-    public UserContext getUserContextBasedOnMSAByExternalUserId(String externalUserId) {
-        return getUserContextBasedOnMSAByExternalUserId(externalUserId, null);
+    public UserContext getUserContextBasedOnMSAByExternalUserId(User user) {
+        return getUserContextBasedOnMSAByExternalUserId(user, null);
     }
 
-    private UserContext getUserContextBasedOnMSAByExternalUserId(String externalUserId,
+    private UserContext getUserContextBasedOnMSAByExternalUserId(User user,
             LegalEntityByUserGetResponseBody legalEntity) {
         this.loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
         this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
-        String internalUserId = this.userPresentationRestClient.getUserByExternalId(externalUserId).getId();
+        String internalUserId = this.userPresentationRestClient.getUserByExternalId(user.getExternalId()).getId();
 
         if (legalEntity == null) {
-            legalEntity = this.userPresentationRestClient.retrieveLegalEntityByExternalUserId(externalUserId);
+            legalEntity = this.userPresentationRestClient.retrieveLegalEntityByExternalUserId(user.getExternalId());
         }
 
         String internalServiceAgreementId = this.legalEntityPresentationRestClient
@@ -247,8 +248,8 @@ public class AccessControlSetup extends BaseSetup {
             .getExternalId();
 
         return new UserContext()
+            .withUser(user)
             .withInternalUserId(internalUserId)
-            .withExternalUserId(externalUserId)
             .withInternalServiceAgreementId(internalServiceAgreementId)
             .withExternalServiceAgreementId(externalServiceAgreementId)
             .withInternalLegalEntityId(legalEntity.getId())

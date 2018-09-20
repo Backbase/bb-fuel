@@ -1,5 +1,8 @@
 [
   {
+    "jobProfileName": "Admin"
+  },
+  {
     "jobProfileName": "Retail User",
     "permissions": [
       {

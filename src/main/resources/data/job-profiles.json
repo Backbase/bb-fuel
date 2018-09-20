@@ -1,5 +1,235 @@
 [
   {
+    "jobProfileName": "Admin",
+    "approvalLevel": "C"
+  },
+  {
+    "jobProfileName": "Manager",
+    "approvalLevel": "B",
+    "permissions": [
+      {
+        "businessFunction": "US Billpay Enrolment",
+        "privileges": [
+          "execute",
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Product Summary",
+        "privileges": [
+          "view",
+          "edit"
+        ]
+      },
+      {
+        "businessFunction": "Audit",
+        "privileges": [
+          "view",
+          "create"
+        ]
+      },
+      {
+        "businessFunction": "US Billpay Payments",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete"
+        ]
+      },
+      {
+        "businessFunction": "Manage Legal Entities",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Manage Shadow Limits",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Manage Permissions",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Assign Function Groups",
+        "privileges": [
+          "view",
+          "create",
+          "edit"
+        ]
+      },
+      {
+        "businessFunction": "US Domestic Wire",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "Manage Users",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "US Billpay Payees",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete"
+        ]
+      },
+      {
+        "businessFunction": "Manage Data Groups",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve"
+        ]
+      },
+      {
+        "businessFunction": "Intra Company Payments",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "Manage Service Agreements",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "US Billpay Payees-Summary",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "SEPA CT",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "US Billpay Accounts",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Transactions",
+        "privileges": [
+          "view",
+          "edit"
+        ]
+      },
+      {
+        "businessFunction": "Contacts",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve"
+        ]
+      },
+      {
+        "businessFunction": "Manage Limits",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Manage Action Recipes",
+        "privileges": [
+          "execute",
+          "view",
+          "create",
+          "edit",
+          "delete"
+        ]
+      },
+      {
+        "businessFunction": "Access Actions History",
+        "privileges": [
+          "execute",
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Manage Statements",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Manage Notifications",
+        "privileges": [
+          "view",
+          "create",
+          "delete"
+        ]
+      },
+      {
+        "businessFunction": "Manage Function Groups",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve"
+        ]
+      },
+      {
+        "businessFunction": "Assign Users",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "US Foreign Wire",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "US Billpay Payees-Search",
+        "privileges": [
+          "execute",
+          "view"
+        ]
+      }
+    ]
+  },
+  {
     "jobProfileName": "Finance Employee",
     "approvalLevel": "A",
     "permissions": [
@@ -148,7 +378,7 @@
         ]
       },
       {
-        "businessFunction": "Manage Users in Service Agreement",
+        "businessFunction": "Assign Users",
         "privileges": [
           "view"
         ]
@@ -161,232 +391,6 @@
           "edit",
           "delete",
           "approve"
-        ]
-      },
-      {
-        "businessFunction": "US Billpay Payees-Search",
-        "privileges": [
-          "execute",
-          "view"
-        ]
-      }
-    ]
-  },
-  {
-    "jobProfileName": "Manager",
-    "approvalLevel": "B",
-    "permissions": [
-      {
-        "businessFunction": "US Billpay Enrolment",
-        "privileges": [
-          "execute",
-          "view"
-        ]
-      },
-      {
-        "businessFunction": "Product Summary",
-        "privileges": [
-          "view",
-          "edit"
-        ]
-      },
-      {
-        "businessFunction": "Audit",
-        "privileges": [
-          "view",
-          "create"
-        ]
-      },
-      {
-        "businessFunction": "US Billpay Payments",
-        "privileges": [
-          "view",
-          "create",
-          "edit",
-          "delete"
-        ]
-      },
-      {
-        "businessFunction": "Manage Legal Entities",
-        "privileges": [
-          "view"
-        ]
-      },
-      {
-        "businessFunction": "Manage Shadow Limits",
-        "privileges": [
-          "view"
-        ]
-      },
-      {
-        "businessFunction": "Manage Permissions",
-        "privileges": [
-          "view"
-        ]
-      },
-      {
-        "businessFunction": "Assign pairs of FAG/DAG",
-        "privileges": [
-          "view",
-          "create",
-          "edit"
-        ]
-      },
-      {
-        "businessFunction": "US Domestic Wire",
-        "privileges": [
-          "view",
-          "create",
-          "edit",
-          "delete",
-          "approve",
-          "cancel"
-        ]
-      },
-      {
-        "businessFunction": "Manage Users",
-        "privileges": [
-          "view"
-        ]
-      },
-      {
-        "businessFunction": "US Billpay Payees",
-        "privileges": [
-          "view",
-          "create",
-          "edit",
-          "delete"
-        ]
-      },
-      {
-        "businessFunction": "Manage Product Groups",
-        "privileges": [
-          "view",
-          "create",
-          "edit",
-          "delete",
-          "approve"
-        ]
-      },
-      {
-        "businessFunction": "Intra Company Payments",
-        "privileges": [
-          "view",
-          "create",
-          "edit",
-          "delete",
-          "approve",
-          "cancel"
-        ]
-      },
-      {
-        "businessFunction": "Manage Service Agreements",
-        "privileges": [
-          "view"
-        ]
-      },
-      {
-        "businessFunction": "US Billpay Payees-Summary",
-        "privileges": [
-          "view"
-        ]
-      },
-      {
-        "businessFunction": "SEPA CT",
-        "privileges": [
-          "view",
-          "create",
-          "edit",
-          "delete",
-          "approve",
-          "cancel"
-        ]
-      },
-      {
-        "businessFunction": "US Billpay Accounts",
-        "privileges": [
-          "view"
-        ]
-      },
-      {
-        "businessFunction": "Transactions",
-        "privileges": [
-          "view",
-          "edit"
-        ]
-      },
-      {
-        "businessFunction": "Contacts",
-        "privileges": [
-          "view",
-          "create",
-          "edit",
-          "delete",
-          "approve"
-        ]
-      },
-      {
-        "businessFunction": "Manage Limits",
-        "privileges": [
-          "view"
-        ]
-      },
-      {
-        "businessFunction": "Manage Action Recipes",
-        "privileges": [
-          "execute",
-          "view",
-          "create",
-          "edit",
-          "delete"
-        ]
-      },
-      {
-        "businessFunction": "Access Actions History",
-        "privileges": [
-          "execute",
-          "view"
-        ]
-      },
-      {
-        "businessFunction": "Manage Statements",
-        "privileges": [
-          "view"
-        ]
-      },
-      {
-        "businessFunction": "Manage Notifications",
-        "privileges": [
-          "view",
-          "create",
-          "delete"
-        ]
-      },
-      {
-        "businessFunction": "Manage Job Profiles",
-        "privileges": [
-          "view",
-          "create",
-          "edit",
-          "delete",
-          "approve"
-        ]
-      },
-      {
-        "businessFunction": "Manage Users in Service Agreement",
-        "privileges": [
-          "view"
-        ]
-      },
-      {
-        "businessFunction": "US Foreign Wire",
-        "privileges": [
-          "view",
-          "create",
-          "edit",
-          "delete",
-          "approve",
-          "cancel"
         ]
       },
       {

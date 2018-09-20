@@ -2,13 +2,13 @@ package com.backbase.ct.dataloader.configurator;
 
 import static com.backbase.ct.dataloader.data.CommonConstants.EXTERNAL_ROOT_LEGAL_ENTITY_ID;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
-import static com.backbase.ct.dataloader.enrich.LegalEntityWithUsersEnricher.createAdminUser;
 
 import com.backbase.ct.dataloader.client.accessgroup.UserContextPresentationRestClient;
 import com.backbase.ct.dataloader.client.common.LoginRestClient;
 import com.backbase.ct.dataloader.client.user.UserIntegrationRestClient;
 import com.backbase.ct.dataloader.data.LegalEntitiesAndUsersDataGenerator;
 import com.backbase.ct.dataloader.dto.LegalEntityWithUsers;
+import com.backbase.ct.dataloader.dto.User;
 import com.backbase.ct.dataloader.service.LegalEntityService;
 import com.backbase.ct.dataloader.util.GlobalProperties;
 import com.backbase.integration.legalentity.rest.spec.v2.legalentities.LegalEntitiesPostRequestBody;
@@ -28,16 +28,15 @@ public class LegalEntitiesAndUsersConfigurator {
     private final ServiceAgreementsConfigurator serviceAgreementsConfigurator;
     private String rootEntitlementsAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
 
-    public void ingestRootLegalEntityAndEntitlementsAdmin(String externalEntitlementsAdminUserId) {
+    public void ingestRootLegalEntityAndEntitlementsAdmin(User admin) {
         String externalLegalEntityId = this.legalEntityService.ingestLegalEntity(LegalEntitiesAndUsersDataGenerator
             .generateRootLegalEntitiesPostRequestBody(EXTERNAL_ROOT_LEGAL_ENTITY_ID));
         this.serviceAgreementsConfigurator
             .updateMasterServiceAgreementWithExternalIdByLegalEntity(externalLegalEntityId);
 
         this.userIntegrationRestClient.ingestUserAndLogResponse(LegalEntitiesAndUsersDataGenerator
-            .generateUsersPostRequestBody(
-                createAdminUser(externalEntitlementsAdminUserId), EXTERNAL_ROOT_LEGAL_ENTITY_ID));
-        this.userIntegrationRestClient.ingestEntitlementsAdminUnderLEAndLogResponse(externalEntitlementsAdminUserId,
+            .generateUsersPostRequestBody(admin, EXTERNAL_ROOT_LEGAL_ENTITY_ID));
+        this.userIntegrationRestClient.ingestEntitlementsAdminUnderLEAndLogResponse(admin.getExternalId(),
             EXTERNAL_ROOT_LEGAL_ENTITY_ID);
     }
 

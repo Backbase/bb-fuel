@@ -19,8 +19,8 @@ import com.backbase.ct.dataloader.configurator.MessagesConfigurator;
 import com.backbase.ct.dataloader.configurator.NotificationsConfigurator;
 import com.backbase.ct.dataloader.configurator.PaymentsConfigurator;
 import com.backbase.ct.dataloader.dto.LegalEntityWithUsers;
+import com.backbase.ct.dataloader.dto.User;
 import com.backbase.ct.dataloader.dto.UserContext;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -42,44 +42,59 @@ public class CapabilitiesDataSetup extends BaseSetup {
     private final Random random;
     private String rootEntitlementsAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
 
-    public void ingestApprovals() {
-        if (this.globalProperties.getBoolean(PROPERTY_INGEST_APPROVALS_FOR_PAYMENTS) ||
-            this.globalProperties.getBoolean(PROPERTY_INGEST_APPROVALS_FOR_CONTACTS)) {
+
+    /**
+     * Ingest data with services of projects APPR, PO, LIM, NOT, CON, MC and ACT.
+     */
+    @Override
+    public void initiate() {
+        this.ingestApprovals();
+        this.ingestPaymentsPerUser();
+        this.ingestLimits();
+        this.ingestBankNotifications();
+        this.ingestContactsPerUser();
+        this.ingestConversationsPerUser();
+        this.ingestActionsPerUser();
+    }
+
+    private void ingestApprovals() {
+        if (this.globalProperties.getBoolean(PROPERTY_INGEST_APPROVALS_FOR_PAYMENTS)
+            || this.globalProperties.getBoolean(PROPERTY_INGEST_APPROVALS_FOR_CONTACTS)) {
             this.loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
             this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
             this.approvalsConfigurator.setupApprovalTypesAndPolicies();
 
             this.accessControlSetup.getLegalEntitiesWithUsers().forEach(legalEntityWithUsers -> {
-                List<String> externalUserIds = legalEntityWithUsers.getUserExternalIds();
-
-                UserContext userContext = accessControlSetup
-                    .getUserContextBasedOnMSAByExternalUserId(
-                        externalUserIds.get(random.nextInt(externalUserIds.size())));
+                List<User> users = legalEntityWithUsers.getUsers();
+                UserContext userContext = getRandomUserContextBasedOnMsaByExternalUserId(users);
 
                 this.approvalsConfigurator.setupAccessControlAndPerformApprovalAssignments(
                     userContext.getExternalServiceAgreementId(),
                     userContext.getExternalLegalEntityId(),
-                    externalUserIds);
+                    users.size());
             });
         }
     }
 
-    public void ingestLimits() {
+    private UserContext getRandomUserContextBasedOnMsaByExternalUserId(List<User> users) {
+        return accessControlSetup
+            .getUserContextBasedOnMSAByExternalUserId(
+                users.get(random.nextInt(users.size())));
+    }
+
+    private void ingestLimits() {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_LIMITS)) {
             this.accessControlSetup.getLegalEntitiesWithUsers().forEach(legalEntityWithUsers -> {
-                List<String> externalUserIds = legalEntityWithUsers.getUserExternalIds();
-
-                UserContext userContext = accessControlSetup
-                    .getUserContextBasedOnMSAByExternalUserId(
-                        externalUserIds.get(random.nextInt(externalUserIds.size())));
+                List<User> users = legalEntityWithUsers.getUsers();
+                UserContext userContext = getRandomUserContextBasedOnMsaByExternalUserId(users);
 
                 this.limitsConfigurator.ingestLimits(userContext.getInternalServiceAgreementId());
             });
         }
     }
 
-    public void ingestBankNotifications() {
+    private void ingestBankNotifications() {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_NOTIFICATIONS)) {
             this.loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
             this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
@@ -87,23 +102,20 @@ public class CapabilitiesDataSetup extends BaseSetup {
         }
     }
 
-    public void ingestContactsPerUser() {
+    private void ingestContactsPerUser() {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_CONTACTS)) {
             this.accessControlSetup.getLegalEntitiesWithUsers().forEach(legalEntityWithUsers -> {
-                List<String> externalUserIds = legalEntityWithUsers.getUserExternalIds();
-
-                UserContext userContext = accessControlSetup
-                    .getUserContextBasedOnMSAByExternalUserId(
-                        externalUserIds.get(random.nextInt(externalUserIds.size())));
+                List<User> users = legalEntityWithUsers.getUsers();
+                UserContext userContext = getRandomUserContextBasedOnMsaByExternalUserId(users);
 
                 this.contactsConfigurator.ingestContacts(
                     userContext.getExternalServiceAgreementId(),
                     userContext.getExternalUserId());
             });
-    }
+        }
     }
 
-    public void ingestPaymentsPerUser() {
+    private void ingestPaymentsPerUser() {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_PAYMENTS)) {
             this.accessControlSetup.getLegalEntitiesWithUsers().stream()
                 .map(LegalEntityWithUsers::getUserExternalIds)
@@ -113,7 +125,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
         }
     }
 
-    public void ingestConversationsPerUser() {
+    private void ingestConversationsPerUser() {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_MESSAGES)) {
             this.loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
             this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
@@ -125,7 +137,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
         }
     }
 
-    public void ingestActionsPerUser() {
+    private void ingestActionsPerUser() {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_ACTIONS)) {
             this.accessControlSetup.getLegalEntitiesWithUsers().stream()
                 .map(LegalEntityWithUsers::getUserExternalIds)

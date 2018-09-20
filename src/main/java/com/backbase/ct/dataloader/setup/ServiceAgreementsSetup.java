@@ -5,19 +5,16 @@ import static java.util.Arrays.asList;
 
 import com.backbase.ct.dataloader.client.accessgroup.ServiceAgreementsPresentationRestClient;
 import com.backbase.ct.dataloader.client.accessgroup.UserContextPresentationRestClient;
-import com.backbase.ct.dataloader.client.common.LoginRestClient;
 import com.backbase.ct.dataloader.client.user.UserPresentationRestClient;
 import com.backbase.ct.dataloader.configurator.AccessGroupsConfigurator;
 import com.backbase.ct.dataloader.configurator.PermissionsConfigurator;
 import com.backbase.ct.dataloader.configurator.ServiceAgreementsConfigurator;
 import com.backbase.ct.dataloader.data.CommonConstants;
 import com.backbase.ct.dataloader.dto.DataGroupCollection;
-import com.backbase.ct.dataloader.util.GlobalProperties;
 import com.backbase.ct.dataloader.util.ParserUtil;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.Participant;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementPostRequestBody;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -40,27 +37,30 @@ public class ServiceAgreementsSetup extends BaseSetup {
     private DataGroupCollection dataGroupCollection = null;
     private String rootEntitlementsAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
 
-    public void setupCustomServiceAgreements() throws IOException {
+    @Override
+    public void initiate() throws IOException {
         if (this.globalProperties.getBoolean(CommonConstants.PROPERTY_INGEST_CUSTOM_SERVICE_AGREEMENTS)) {
-            ServiceAgreementPostRequestBody[] serviceAgreementPostRequestBodies = ParserUtil
-                .convertJsonToObject(
+            List<ServiceAgreementPostRequestBody> serviceAgreementPostRequestBodies = ParserUtil
+                .convertJsonToList(
                     this.globalProperties.getString(CommonConstants.PROPERTY_SERVICE_AGREEMENTS_JSON),
-                    ServiceAgreementPostRequestBody[].class);
-
-            this.loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
-            this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
-
-            Arrays.stream(serviceAgreementPostRequestBodies)
-                .forEach(serviceAgreementPostRequestBody -> {
-                    String internalServiceAgreementId = this.serviceAgreementsConfigurator
-                        .ingestServiceAgreementWithProvidersAndConsumers(
-                            serviceAgreementPostRequestBody.getParticipants());
-
-                    setupFunctionDataGroups(internalServiceAgreementId,
-                        serviceAgreementPostRequestBody.getParticipants());
-                    setupPermissions(internalServiceAgreementId, serviceAgreementPostRequestBody.getParticipants());
-                });
+                    ServiceAgreementPostRequestBody.class);
+            ingestCustomSericeAgreements(serviceAgreementPostRequestBodies);
         }
+    }
+
+    private void ingestCustomSericeAgreements(List<ServiceAgreementPostRequestBody> serviceAgreementPostRequestBodies) {
+        this.loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
+        this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
+
+        serviceAgreementPostRequestBodies.forEach(serviceAgreementPostRequestBody -> {
+            String internalServiceAgreementId = this.serviceAgreementsConfigurator
+                .ingestServiceAgreementWithProvidersAndConsumers(
+                    serviceAgreementPostRequestBody.getParticipants());
+
+            setupFunctionDataGroups(internalServiceAgreementId,
+                serviceAgreementPostRequestBody.getParticipants());
+            setupPermissions(internalServiceAgreementId, serviceAgreementPostRequestBody.getParticipants());
+        });
     }
 
     private void setupFunctionDataGroups(String internalServiceAgreementId, Set<Participant> participants) {
@@ -91,33 +91,21 @@ public class ServiceAgreementsSetup extends BaseSetup {
             .ingestDataGroupArrangementsForServiceAgreement(externalServiceAgreementId, externalLegalEntityId,
                 users.size());
 
-        adminFunctionGroupId = this.accessGroupsConfigurator.ingestAdminFunctionGroup(externalServiceAgreementId);
+        adminFunctionGroupId = this.accessGroupsConfigurator
+            .ingestAdminFunctionGroup(externalServiceAgreementId).getId();
     }
 
     private void setupPermissions(String internalServiceAgreementId, Set<Participant> participants) {
         for (Participant participant : participants) {
             Set<String> externalUserIds = participant.getUsers();
 
-            List<String> dataGroupIds = asList(
-                dataGroupCollection.getGeneralEurId(),
-                dataGroupCollection.getGeneralUsdId(),
-                dataGroupCollection.getAmsterdamId(),
-                dataGroupCollection.getPortlandId(),
-                dataGroupCollection.getVancouverId(),
-                dataGroupCollection.getLondonId(),
-                dataGroupCollection.getInternationalTradeId(),
-                dataGroupCollection.getFinanceInternationalId(),
-                dataGroupCollection.getPayrollId())
-                .parallelStream()
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-
             for (String externalUserId : externalUserIds) {
                 this.permissionsConfigurator.assignPermissions(
                     externalUserId,
                     internalServiceAgreementId,
+                    // TODO assess impact for different job profiles
                     this.adminFunctionGroupId,
-                    dataGroupIds);
+                    dataGroupCollection.getDataGroupIds());
             }
         }
     }

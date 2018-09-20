@@ -62,7 +62,7 @@ public class JobProfileJsonGenerator {
 
     @Test
     public void generateJsonFileForBusinessBanking() {
-        generateJsonFileFromCsvFile("dbs-mock-data-jobprofiles", 3);
+        generateJsonFileFromCsvFile("dbs-mock-data-jobprofile-business", 3);
     }
 
     @Test
@@ -72,9 +72,6 @@ public class JobProfileJsonGenerator {
 
     private void generateJsonFileFromCsvFile(String name, int expectedNumberOfProfiles) {
         List<JobProfile> jobProfiles = parseJobProfilesFromFile("csv/" + name + ".csv");
-        // renamed [Manage Product Groups, Manage Users in Service Agreement, Manage Permissions, Assign pairs of FAG/DAG, Manage Job Profiles]
-        // missing [Manage Identities, Manage Approval Policy and Level, Manage Topics]
-        // TODO check to which codes the following ´labels´ map: [Assign Function Groups]
 //        validateJobProfiles(jobProfiles);
         assertThat(jobProfiles, hasSize(expectedNumberOfProfiles));
         try {

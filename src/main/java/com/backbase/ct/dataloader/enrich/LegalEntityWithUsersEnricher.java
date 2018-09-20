@@ -40,7 +40,7 @@ public class LegalEntityWithUsersEnricher {
      * Give names to LE and its users if not set. Give users the admin role if not set.
      */
     public void enrich(List<LegalEntityWithUsers> legalEntityWithUsers) {
-        legalEntityWithUsers.forEach( le -> {
+        legalEntityWithUsers.forEach(le -> {
             enrichLegalEntity(le);
             enrichUsers(le.getUsers());
         });

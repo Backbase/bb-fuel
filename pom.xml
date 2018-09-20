@@ -4,7 +4,7 @@
     <parent>
         <artifactId>backbase-integration-starter-parent</artifactId>
         <groupId>com.backbase.buildingblocks</groupId>
-        <version>5.11.0</version>
+        <version>5.13.0</version>
     </parent>
 
     <groupId>com.backbase.ct</groupId>
@@ -119,6 +119,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <version>1.18.2</version>
         </dependency>
         <dependency>
             <groupId>com.backbase.dbs.messages</groupId>

@@ -62,20 +62,12 @@ public class Runner implements ApplicationRunner {
     }
 
     private void setupAccessControl() throws IOException {
-        accessControlSetup.readLegalEntitiesWithUsers();
-        accessControlSetup.setupBankWithEntitlementsAdminAndProducts();
-        accessControlSetup.setupAccessControlForUsers();
-        serviceAgreementsSetup.setupCustomServiceAgreements();
+        accessControlSetup.initiate();
+        serviceAgreementsSetup.initiate();
     }
 
     private void ingestCapabilityData() {
-        capabilitiesDataSetup.ingestApprovals();
-        capabilitiesDataSetup.ingestPaymentsPerUser();
-        capabilitiesDataSetup.ingestLimits();
-        capabilitiesDataSetup.ingestBankNotifications();
-        capabilitiesDataSetup.ingestContactsPerUser();
-        capabilitiesDataSetup.ingestConversationsPerUser();
-        capabilitiesDataSetup.ingestActionsPerUser();
+        capabilitiesDataSetup.initiate();
     }
 
     private void logDuration(Instant start) {

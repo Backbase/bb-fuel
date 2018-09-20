@@ -5,7 +5,7 @@ Approval Level: C;US Billpay Enrolment;Y;Y;-;-;-;-;-
 ;US Billpay Payments;-;Y;Y;Y;Y;-;-
 ;Manage Legal Entities;-;Y;-;-;-;-;-
 ;Manage Shadow Limits;-;Y;N;N;Y;-;-
-;Assign Permissions;-;Y;Y;Y;-;-;-
+;Manage Permissions;-;Y;Y;Y;-;-;-
 ;Assign Function Groups;-;Y;Y;Y;-;-;-
 ;US Domestic Wire;-;Y;Y;Y;Y;Y;Y
 ;Manage Users;-;Y;-;-;-;-;-
@@ -35,7 +35,7 @@ Approval Level: B;US Billpay Enrolment;Y;Y;-;-;-;-;-
 ;US Billpay Payments;-;Y;Y;Y;Y;-;-
 ;Manage Legal Entities;-;Y;-;-;-;-;-
 ;Manage Shadow Limits;-;Y;N;N;N;-;-
-;Assign Permissions;-;Y;N;N;-;-;-
+;Manage Permissions;-;Y;N;N;-;-;-
 ;Assign Function Groups;-;Y;Y;Y;-;-;-
 ;US Domestic Wire;-;Y;Y;Y;Y;Y;Y
 ;Manage Users;-;Y;-;-;-;-;-
@@ -65,7 +65,7 @@ Approval Level: A;US Billpay Enrolment;Y;Y;-;-;-;-;-
 ;US Billpay Payments;-;Y;Y;Y;Y;-;-
 ;Manage Legal Entities;-;Y;-;-;-;-;-
 ;Manage Shadow Limits;-;N;N;N;N;-;-
-;Assign Permissions;-;N;N;N;-;-;-
+;Manage Permissions;-;N;N;N;-;-;-
 ;Assign Function Groups;-;N;N;N;-;-;-
 ;US Domestic Wire;-;Y;Y;Y;Y;Y;N
 ;Manage Users;-;Y;-;-;-;-;-

@@ -1,7 +1,6 @@
 package com.backbase.ct.dataloader.service;
 
-import static java.util.Arrays.asList;
-import static java.util.Collections.singletonList;
+import static com.backbase.ct.dataloader.dto.entitlement.JobProfile.PROFILE_ROLE_ADMIN;
 import static java.util.Collections.synchronizedMap;
 import static org.apache.commons.lang.StringUtils.deleteWhitespace;
 
@@ -22,17 +21,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class JobProfileService {
 
+    public static final String ADMIN_FUNCTION_GROUP_NAME = "Admin";
+
     private static final Logger LOGGER = LoggerFactory.getLogger(JobProfileService.class);
-
-    private static final Map<String, List<String>> ROLE_APPROVAL_LEVELS;
-
-    static {
-        // very inflexible but suits our needs for now
-        ROLE_APPROVAL_LEVELS = new HashMap<>();
-        ROLE_APPROVAL_LEVELS.put("admin", asList("A,B,C".split(",")));
-        ROLE_APPROVAL_LEVELS.put("manager", asList("A,B".split(",")));
-        ROLE_APPROVAL_LEVELS.put("employee", singletonList("A"));
-    }
 
     private Map<String, List<JobProfile>> assignedJobProfiles = new HashMap<>();
 
@@ -43,38 +34,47 @@ public class JobProfileService {
             deleteWhitespace(jobProfile.getJobProfileName()).trim());
     }
 
-    /**
-     * Mock data model assumes a one-to-one relationship for Job profile and approval level. Role and Job profile have a
-     * one-to-many relationship. This can bite if approvals is not enabled in a business banking environment.
-     *
-     * @return true if jobProfile has no approval level or the config contains this approval level for given role
-     */
-    public boolean isJobProfileForUserRole(JobProfile jobProfile, String role) {
-        if (jobProfile.getApprovalLevel() == null) {
-            // the model assumes approvals enabled for business banking, so implicitly this is a profile for retail
-            return true;
-        }
+    public boolean isJobProfileForBranch(boolean isRetail, JobProfile template) {
+        return (this.isJobProfileForAdmin(template)
+            || (template.getIsRetail() && isRetail
+            || (!isRetail && !template.getIsRetail())));
+    }
 
-        List<String> approvalLevels = ROLE_APPROVAL_LEVELS.get(role.toLowerCase());
-        // custom role is not validated so
-        if (approvalLevels == null || approvalLevels.isEmpty()) {
-            LOGGER.warn("Role has no configured approval levels (so this user will not be assigned any job profile)");
+    /**
+     * Admin is a special case for job profile.
+     */
+    public boolean isJobProfileForAdmin(JobProfile jobProfile) {
+        return ADMIN_FUNCTION_GROUP_NAME.equalsIgnoreCase(jobProfile.getJobProfileName())
+            && jobProfile.getRoles().contains(PROFILE_ROLE_ADMIN);
+    }
+
+    /**
+     * Evaluate jobProfile roles, its name and isRetail property to given rol and isRetailCustomer.
+     */
+    public boolean isJobProfileForUserRole(JobProfile jobProfile, String role, boolean isRetailCustomer) {
+        List<String> roles = jobProfile.getRoles();
+
+        if (roles == null || roles.isEmpty()) {
+            LOGGER.warn("No roles configured for this profile {}", jobProfile.getJobProfileName());
             return false;
+        } else if (isRetailCustomer) {
+            return (jobProfile.getIsRetail() && roles.contains(role))
+            || (!jobProfile.getIsRetail() // admin profile is shared between retail and business
+                && ADMIN_FUNCTION_GROUP_NAME.equalsIgnoreCase(jobProfile.getJobProfileName())
+                && roles.contains(role));
         }
-        return approvalLevels.contains(jobProfile.getApprovalLevel());
+        return !jobProfile.getIsRetail() && roles.contains(role);
     }
 
     public List<JobProfile> getAssignedJobProfiles(String externalServiceAgreementId) {
         return assignedJobProfiles.get(externalServiceAgreementId);
     }
 
-    public boolean saveAssignedProfile(JobProfile jobProfile) {
-        List<JobProfile> profiles = this.assignedJobProfiles.get(jobProfile.getExternalServiceAgreementId());
-        if (profiles == null) {
-            profiles = new ArrayList<>();
-            this.assignedJobProfiles.put(jobProfile.getExternalServiceAgreementId(), profiles);
-        }
-        return profiles.add(jobProfile);
+    public void saveAssignedProfile(JobProfile jobProfile) {
+        this.assignedJobProfiles
+            .computeIfAbsent(
+                jobProfile.getExternalServiceAgreementId(), key -> new ArrayList<>())
+            .add(jobProfile);
     }
 
     public JobProfile findByApprovalLevelAndExternalServiceAgreementId(

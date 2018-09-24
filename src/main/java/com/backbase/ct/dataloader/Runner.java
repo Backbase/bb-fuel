@@ -6,6 +6,7 @@ import com.backbase.ct.dataloader.healthcheck.TransactionsHealthCheck;
 import com.backbase.ct.dataloader.setup.AccessControlSetup;
 import com.backbase.ct.dataloader.setup.CapabilitiesDataSetup;
 import com.backbase.ct.dataloader.setup.ServiceAgreementsSetup;
+import com.backbase.ct.dataloader.util.GlobalProperties;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
@@ -45,6 +46,7 @@ public class Runner implements ApplicationRunner {
      * @throws IOException when setupAccessControl throws it
      */
     private void doIt() throws IOException {
+        LOGGER.info("Ingesting data into {}", GlobalProperties.getInstance().getString("environment.name"));
         performHealthChecks();
 
         Instant start = Instant.now();

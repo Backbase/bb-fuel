@@ -89,8 +89,11 @@ public class AccessGroupsDataGenerator {
                 return new Privilege().withPrivilege(privilegeName);
             } else {
                 throw new IllegalArgumentException(
-                    String.format("Business Function [%s] does not allow for privilege [%s]",
-                        function.getName(), privilegeName));
+                    String.format("Business Function [%s] does not allow for privilege [%s] but allows: %s",
+                        function.getName(), privilegeName,
+                        function.getPrivileges().stream()
+                            .map(IntegrationPrivilege::getPrivilege)
+                            .collect(toList())));
             }
         }).collect(toList());
 

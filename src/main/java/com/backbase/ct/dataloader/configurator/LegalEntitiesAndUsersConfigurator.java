@@ -28,19 +28,31 @@ public class LegalEntitiesAndUsersConfigurator {
     private final ServiceAgreementsConfigurator serviceAgreementsConfigurator;
     private String rootEntitlementsAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
 
-    public void ingestRootLegalEntityAndEntitlementsAdmin(User admin) {
+    /**
+     * Dispatch the creation of legal entity depending whether given legalEntityWithUsers is a root entity.
+     */
+    public void ingestLegalEntityWithUsers(LegalEntityWithUsers legalEntityWithUsers) {
+        if (legalEntityWithUsers.isRoot()) {
+            ingestRootLegalEntityAndEntitlementsAdmin(legalEntityWithUsers);
+        } else {
+            ingestLegalEntityAndUsers(legalEntityWithUsers);
+        }
+    }
+
+    private void ingestRootLegalEntityAndEntitlementsAdmin(LegalEntityWithUsers root) {
         String externalLegalEntityId = this.legalEntityService.ingestLegalEntity(LegalEntitiesAndUsersDataGenerator
             .generateRootLegalEntitiesPostRequestBody(EXTERNAL_ROOT_LEGAL_ENTITY_ID));
         this.serviceAgreementsConfigurator
             .updateMasterServiceAgreementWithExternalIdByLegalEntity(externalLegalEntityId);
 
+        User admin = root.getUsers().get(0);
         this.userIntegrationRestClient.ingestUserAndLogResponse(LegalEntitiesAndUsersDataGenerator
             .generateUsersPostRequestBody(admin, EXTERNAL_ROOT_LEGAL_ENTITY_ID));
         this.userIntegrationRestClient.ingestEntitlementsAdminUnderLEAndLogResponse(admin.getExternalId(),
             EXTERNAL_ROOT_LEGAL_ENTITY_ID);
     }
 
-    public void ingestUsersUnderLegalEntity(LegalEntityWithUsers legalEntityWithUsers) {
+    private void ingestLegalEntityAndUsers(LegalEntityWithUsers legalEntityWithUsers) {
         final LegalEntitiesPostRequestBody requestBody = LegalEntitiesAndUsersDataGenerator
             .composeLegalEntitiesPostRequestBody(
                 legalEntityWithUsers.getLegalEntityExternalId(),

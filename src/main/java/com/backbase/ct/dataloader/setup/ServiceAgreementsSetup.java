@@ -89,7 +89,7 @@ public class ServiceAgreementsSetup extends BaseSetup {
 
         this.dataGroupCollection = this.accessControlSetup
             .ingestDataGroupArrangementsForServiceAgreement(externalServiceAgreementId, externalLegalEntityId,
-                users.size());
+                users.size() == 1); //RB20180923: simplified assumption holds for now
 
         adminFunctionGroupId = this.accessGroupsConfigurator
             .ingestAdminFunctionGroup(externalServiceAgreementId).getId();

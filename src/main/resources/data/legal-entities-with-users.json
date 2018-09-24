@@ -106,16 +106,16 @@
     "legalEntityName": "Green Bicycle Factory",
     "users": [
       {
+        "externalId": "robin_green",
+        "role": "admin"
+      },
+      {
         "externalId": "paddy_brian",
         "role": "admin"
       },
       {
         "externalId": "sarah_lee",
         "role": "manager"
-      },
-      {
-        "externalId": "robin_green",
-        "role": "admin"
       },
       {
         "externalId": "alex_wong",

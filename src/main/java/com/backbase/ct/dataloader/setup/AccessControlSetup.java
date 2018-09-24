@@ -10,9 +10,8 @@ import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_BA
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_INTERNATIONAL_AND_PAYROLL_DATA_GROUPS;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_TRANSACTIONS;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
-import static com.backbase.ct.dataloader.enrich.LegalEntityWithUsersEnricher.createAdminUser;
+import static com.backbase.ct.dataloader.enrich.LegalEntityWithUsersEnricher.createRootLegalEntityWithAdmin;
 import static com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.Currency;
-import static java.util.Collections.singletonList;
 
 import com.backbase.ct.dataloader.IngestException;
 import com.backbase.ct.dataloader.client.accessgroup.ServiceAgreementsPresentationRestClient;
@@ -74,7 +73,7 @@ public class AccessControlSetup extends BaseSetup {
     }
 
     /**
-     * Legal entities are loaded from file.
+     * Legal entities and job profiles are loaded from files.
      */
     public void initiate() throws IOException {
         this.legalEntitiesWithUsers = this.legalEntityWithUsersReader.load();
@@ -86,26 +85,26 @@ public class AccessControlSetup extends BaseSetup {
     }
 
     private void setupBankWithEntitlementsAdminAndProducts() throws IOException {
-        User admin = createAdminUser(rootEntitlementsAdmin);
-        this.legalEntitiesAndUsersConfigurator.ingestRootLegalEntityAndEntitlementsAdmin(admin);
+        LegalEntityWithUsers rootBank = createRootLegalEntityWithAdmin(rootEntitlementsAdmin);
+        this.legalEntitiesAndUsersConfigurator.ingestLegalEntityWithUsers(rootBank);
         this.productSummaryConfigurator.ingestProducts();
-        assembleFunctionDataGroupsAndPermissions(singletonList(admin));
+        assembleFunctionDataGroupsAndPermissions(rootBank);
     }
 
     private void setupAccessControlForUsers() {
-        this.legalEntitiesWithUsers.forEach(entity -> {
-            this.legalEntitiesAndUsersConfigurator.ingestUsersUnderLegalEntity(entity);
-            assembleFunctionDataGroupsAndPermissions(entity.getUsers());
+        this.legalEntitiesWithUsers.forEach(legalEntity -> {
+            this.legalEntitiesAndUsersConfigurator.ingestLegalEntityWithUsers(legalEntity);
+            assembleFunctionDataGroupsAndPermissions(legalEntity);
         });
     }
 
-    private void assembleFunctionDataGroupsAndPermissions(List<User> users) {
+    private void assembleFunctionDataGroupsAndPermissions(LegalEntityWithUsers legalEntityWithUsers) {
         Multimap<String, UserContext> legalEntitiesUserContextMap = ArrayListMultimap.create();
         final LegalEntityContext legalEntityContext = new LegalEntityContext();
         this.loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
         this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
-        users.forEach(user -> {
+        legalEntityWithUsers.getUsers().forEach(user -> {
             LegalEntityByUserGetResponseBody legalEntity = this.userPresentationRestClient
                 .retrieveLegalEntityByExternalUserId(user.getExternalId());
             final String legalEntityExternalId = legalEntity.getExternalId();
@@ -121,7 +120,7 @@ public class AccessControlSetup extends BaseSetup {
             if (legalEntityContext.getDataGroupCollection() == null) {
                 legalEntityContext.setDataGroupCollection(
                     ingestDataGroupArrangementsForServiceAgreement(userContext.getExternalServiceAgreementId(),
-                        userContext.getExternalLegalEntityId(), users.size()));
+                        userContext.getExternalLegalEntityId(), legalEntityWithUsers.getIsRetail()));
             }
         });
 
@@ -129,64 +128,18 @@ public class AccessControlSetup extends BaseSetup {
             .forEach(userContext -> ingestFunctionGroupsAndAssignPermissions(userContext.getUser(),
                 userContext.getInternalServiceAgreementId(),
                 userContext.getExternalServiceAgreementId(),
+                legalEntityWithUsers.getIsRetail(),
                 legalEntityContext.getDataGroupCollection()));
     }
 
     protected DataGroupCollection ingestDataGroupArrangementsForServiceAgreement(String externalServiceAgreementId,
-        String externalLegalEntityId, int numberOfUsersInServiceAgreement) {
+        String externalLegalEntityId, boolean isRetail) {
         final DataGroupCollection dataGroupCollection = new DataGroupCollection();
-        List<Callable<Void>> taskList = new ArrayList<>();
-
-        if (numberOfUsersInServiceAgreement == 1) {
-            taskList.add(() -> generateTask(externalServiceAgreementId, "General EUR",
-                () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, GENERAL_RETAIL, Currency.EUR
-                ),
-                dataGroupCollection::setGeneralEurId));
-            taskList.add(() -> generateTask(externalServiceAgreementId, "General USD",
-                () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, GENERAL_RETAIL, Currency.USD
-                ),
-                dataGroupCollection::setGeneralUsdId));
-        } else {
-            taskList.add(() -> generateTask(externalServiceAgreementId, "Amsterdam",
-                () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, GENERAL_BUSINESS,
-                    Currency.EUR
-                ),
-                dataGroupCollection::setAmsterdamId));
-
-            taskList.add(() -> generateTask(externalServiceAgreementId, "Portland",
-                () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, GENERAL_BUSINESS,
-                    Currency.USD
-                ),
-                dataGroupCollection::setPortlandId));
-
-            taskList.add(() -> generateTask(externalServiceAgreementId, "Vancouver",
-                () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, GENERAL_BUSINESS,
-                    Currency.CAD
-                ),
-                dataGroupCollection::setVancouverId));
-
-            taskList.add(() -> generateTask(externalServiceAgreementId, "London",
-                () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, GENERAL_BUSINESS,
-                    Currency.GBP
-                ),
-                dataGroupCollection::setLondonId));
-
-            if (this.globalProperties.getBoolean(PROPERTY_INGEST_INTERNATIONAL_AND_PAYROLL_DATA_GROUPS)) {
-                taskList.add(() -> generateTask(externalServiceAgreementId, INTERNATIONAL_TRADE.toString(),
-                    () -> this.productSummaryConfigurator
-                        .ingestArrangements(externalLegalEntityId, INTERNATIONAL_TRADE, null),
-                    dataGroupCollection::setInternationalTradeId));
-
-                taskList.add(() -> generateTask(externalServiceAgreementId, FINANCE_INTERNATIONAL.toString(),
-                    () -> this.productSummaryConfigurator
-                        .ingestArrangements(externalLegalEntityId, FINANCE_INTERNATIONAL, null),
-                    dataGroupCollection::setFinanceInternationalId));
-
-                taskList.add(() -> generateTask(externalServiceAgreementId, PAYROLL.toString(),
-                    () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, PAYROLL, null),
-                    dataGroupCollection::setPayrollId));
-            }
-        }
+        List<Callable<Void>> taskList = isRetail
+            ? generateIngestArrangementsTasksForRetail(
+                externalServiceAgreementId, externalLegalEntityId, dataGroupCollection)
+            : generateIngestArrangementsTasksForBusiness(
+                externalServiceAgreementId, externalLegalEntityId, dataGroupCollection);
 
         taskList.parallelStream()
             .forEach(voidCallable -> {
@@ -200,12 +153,76 @@ public class AccessControlSetup extends BaseSetup {
         return dataGroupCollection;
     }
 
+    private List<Callable<Void>> generateIngestArrangementsTasksForRetail(String externalServiceAgreementId,
+        String externalLegalEntityId, DataGroupCollection dataGroupCollection) {
+        List<Callable<Void>> taskList = new ArrayList<>();
+        taskList.add(() -> generateTask(externalServiceAgreementId, "General EUR",
+            () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, GENERAL_RETAIL, Currency.EUR
+            ),
+            dataGroupCollection::setGeneralEurId));
+        taskList.add(() -> generateTask(externalServiceAgreementId, "General USD",
+            () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, GENERAL_RETAIL, Currency.USD
+            ),
+            dataGroupCollection::setGeneralUsdId));
+
+        return taskList;
+    }
+
+    private List<Callable<Void>> generateIngestArrangementsTasksForBusiness(String externalServiceAgreementId,
+        String externalLegalEntityId, DataGroupCollection dataGroupCollection) {
+        List<Callable<Void>> taskList = new ArrayList<>();
+        taskList.add(() -> generateTask(externalServiceAgreementId, "Amsterdam",
+            () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, GENERAL_BUSINESS,
+                Currency.EUR
+            ),
+            dataGroupCollection::setAmsterdamId));
+
+        taskList.add(() -> generateTask(externalServiceAgreementId, "Portland",
+            () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, GENERAL_BUSINESS,
+                Currency.USD
+            ),
+            dataGroupCollection::setPortlandId));
+
+        taskList.add(() -> generateTask(externalServiceAgreementId, "Vancouver",
+            () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, GENERAL_BUSINESS,
+                Currency.CAD
+            ),
+            dataGroupCollection::setVancouverId));
+
+        taskList.add(() -> generateTask(externalServiceAgreementId, "London",
+            () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, GENERAL_BUSINESS,
+                Currency.GBP
+            ),
+            dataGroupCollection::setLondonId));
+
+        if (this.globalProperties.getBoolean(PROPERTY_INGEST_INTERNATIONAL_AND_PAYROLL_DATA_GROUPS)) {
+            taskList.add(() -> generateTask(externalServiceAgreementId, INTERNATIONAL_TRADE.toString(),
+                () -> this.productSummaryConfigurator
+                    .ingestArrangements(externalLegalEntityId, INTERNATIONAL_TRADE, null),
+                dataGroupCollection::setInternationalTradeId));
+
+            taskList.add(() -> generateTask(externalServiceAgreementId, FINANCE_INTERNATIONAL.toString(),
+                () -> this.productSummaryConfigurator
+                    .ingestArrangements(externalLegalEntityId, FINANCE_INTERNATIONAL, null),
+                dataGroupCollection::setFinanceInternationalId));
+
+            taskList.add(() -> generateTask(externalServiceAgreementId, PAYROLL.toString(),
+                () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, PAYROLL, null),
+                dataGroupCollection::setPayrollId));
+        }
+        return taskList;
+    }
+
     private void ingestFunctionGroupsAndAssignPermissions(User user, String internalServiceAgreementId,
-        String externalServiceAgreementId,
-        DataGroupCollection dataGroupCollection) {
+        String externalServiceAgreementId, boolean isRetail, DataGroupCollection dataGroupCollection) {
 
         if (this.jobProfileService.getAssignedJobProfiles(externalServiceAgreementId) == null) {
             jobProfileTemplates.forEach(template -> {
+                if (!jobProfileService.isJobProfileForBranch(isRetail, template)) {
+                    logger.info("JobProfile template [{}] does not apply to this LE [isRetail: {}]",
+                        template.getJobProfileName(), isRetail);
+                    return;
+                }
                 JobProfile jobProfile = new JobProfile(template);
                 jobProfile.setExternalServiceAgreementId(externalServiceAgreementId);
                 this.accessGroupsConfigurator.ingestFunctionGroup(jobProfile);
@@ -214,7 +231,7 @@ public class AccessControlSetup extends BaseSetup {
         }
 
         this.jobProfileService.getAssignedJobProfiles(externalServiceAgreementId).forEach(jobProfile -> {
-            if (jobProfileService.isJobProfileForUserRole(jobProfile, user.getRole())) {
+            if (jobProfileService.isJobProfileForUserRole(jobProfile, user.getRole(), isRetail)) {
                 this.permissionsConfigurator.assignPermissions(
                     user.getExternalId(),
                     internalServiceAgreementId,
@@ -259,6 +276,7 @@ public class AccessControlSetup extends BaseSetup {
     private Void generateTask(String externalServiceAgreementId, String dataGroupName,
         Supplier<List<ArrangementId>> supplier,
         Consumer<String> consumer) {
+        logger.info("generateTask [{}] [{}]", externalServiceAgreementId, dataGroupName);
         List<ArrangementId> arrangementIds = new ArrayList<>(supplier.get());
         String dataGroupId = this.accessGroupsConfigurator
             .ingestDataGroupForArrangements(externalServiceAgreementId, dataGroupName, arrangementIds);

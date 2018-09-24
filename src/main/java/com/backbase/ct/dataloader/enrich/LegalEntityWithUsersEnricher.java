@@ -22,6 +22,16 @@ public class LegalEntityWithUsersEnricher {
     }
 
     /**
+     * Create the root Legal Entity and admin user with given externalUserId.
+     */
+    public static LegalEntityWithUsers createRootLegalEntityWithAdmin(String externalUserId) {
+        return LegalEntityWithUsers.builder()
+            .isRoot(true)
+            .isRetail(false) // root cannot be retail
+            .user(createAdminUser(externalUserId)).build();
+    }
+
+    /**
      * Create user with admin role, fake fullName and given externalId.
      */
     public static User createAdminUser(String externalId) {
@@ -47,8 +57,11 @@ public class LegalEntityWithUsersEnricher {
     }
 
     private void enrichLegalEntity(LegalEntityWithUsers legalEntity) {
+        if (legalEntity.getIsRetail() == null) {
+            legalEntity.setIsRetail(isRetailUser(legalEntity));
+        }
         legalEntity.setLegalEntityName(
-            isRetailUser(legalEntity)
+            legalEntity.getIsRetail()
                 ? buildFakerFullName()
                 : legalEntity.getLegalEntityName()
         );

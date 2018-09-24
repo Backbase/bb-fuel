@@ -81,6 +81,14 @@ healthcheck.timeout.in.minutes=10
 ## Custom data
 See [Custom data](docs/CUSTOM_DATA.md)
 
+## Versions
+Data Loader supports multiple DBS versions. See below which version maps to the required DBS version.
+
+| DBS Version | Tool Version                                                                                       |
+|-------------|----------------------------------------------------------------------------------------------------|
+| 2.12.2      | [1.5.0+](https://stash.backbase.com/projects/CT/repos/dataloader/browse?at=dataloader-1.5.0)       |
+| 2.13.0      | [1.6.0+](https://stash.backbase.com/projects/CT/repos/dataloader/browse?at=dataloader-1.6.0)       |
+
 ## Questions and issues
 If you have a question about Data Loader, or are experiencing a problem please contact the author, Kwo Ding via Hipchat or [e-mail](mailto:kwo@backbase.com)
 

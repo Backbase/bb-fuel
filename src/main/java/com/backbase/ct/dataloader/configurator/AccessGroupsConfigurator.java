@@ -2,6 +2,7 @@ package com.backbase.ct.dataloader.configurator;
 
 import static com.backbase.ct.dataloader.data.AccessGroupsDataGenerator.createPermissionsForJobProfile;
 import static com.backbase.ct.dataloader.data.AccessGroupsDataGenerator.createPermissionsWithAllPrivileges;
+import static com.backbase.ct.dataloader.service.JobProfileService.ADMIN_FUNCTION_GROUP_NAME;
 import static java.util.stream.Collectors.toList;
 
 import com.backbase.ct.dataloader.client.accessgroup.AccessGroupIntegrationRestClient;
@@ -23,15 +24,12 @@ public class AccessGroupsConfigurator {
 
     private final AccessGroupService accessGroupService;
 
-//    private Map<String, String> functionGroupCache = synchronizedMap(new HashMap<>());
     private final JobProfileService jobProfileService;
 
     private static final String ARRANGEMENTS = "ARRANGEMENTS";
 
-    private static final String ADMIN_FUNCTION_GROUP_NAME = "Admin";
-
     public JobProfile ingestAdminFunctionGroup(String externalServiceAgreementId) {
-        JobProfile adminProfile = new JobProfile(ADMIN_FUNCTION_GROUP_NAME, null, null);
+        JobProfile adminProfile = new JobProfile(ADMIN_FUNCTION_GROUP_NAME, null, null, null, null);
         adminProfile.setExternalServiceAgreementId(externalServiceAgreementId);
         ingestFunctionGroup(adminProfile);
         return adminProfile;

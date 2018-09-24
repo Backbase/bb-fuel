@@ -19,6 +19,8 @@ public class LegalEntityWithUsers {
     private String parentLegalEntityExternalId;
     private String legalEntityName;
     private String legalEntityType;
+    private Boolean isRetail;
+    private boolean isRoot;
 
     private @Singular List<User> users;
 

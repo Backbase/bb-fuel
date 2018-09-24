@@ -144,7 +144,7 @@ public class ProductSummaryDataGenerator {
                 : PRODUCT_ARRANGEMENT_NAME_MAP.get(productId).get(ThreadLocalRandom.current().nextInt(
                     PRODUCT_ARRANGEMENT_NAME_MAP.get(productId).size())) + arrangementNameSuffix);
         String id = UUID.randomUUID().toString();
-        LOGGER.info("generateArrangementsPostRequestBody id: {}, ccy: {} leId {} productId {}",
+        LOGGER.debug("generateArrangementsPostRequestBody id: {}, ccy: {} leId {} productId {}",
             id, currency, externalLegalEntityId, productId);
 
         ArrangementsPostRequestBody arrangementsPostRequestBody = new ArrangementsPostRequestBody()

@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -46,7 +47,7 @@ public class LegalEntityWithUsersReader extends BaseReader {
      * Check on duplicate ids.
      */
     private void validate(LegalEntityWithUsers[] legalEntityWithUsers) {
-        if (legalEntityWithUsers == null || legalEntityWithUsers.length == 0) {
+        if (ArrayUtils.isEmpty(legalEntityWithUsers)) {
             throw new InvalidInputException("No legal entities have been parsed");
         }
         Arrays.stream(legalEntityWithUsers).forEach(le -> {

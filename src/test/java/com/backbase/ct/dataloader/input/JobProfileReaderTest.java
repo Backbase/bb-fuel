@@ -50,6 +50,13 @@ public class JobProfileReaderTest {
         expectedException.expect(InvalidInputException.class);
         expectedException.expectMessage(containsString("Unrecognized field"));
 
-        List<JobProfile> jobProfiles = subject.load("data/products.json");
+        subject.load("data/products.json");
+    }
+    @Test
+    public void testDuplicateProfileFails() {
+        expectedException.expect(InvalidInputException.class);
+        expectedException.expectMessage("JobProfiles with duplicate names: [Retail User]");
+
+        subject.load("data/duplicate-job-profiles.json");
     }
 }

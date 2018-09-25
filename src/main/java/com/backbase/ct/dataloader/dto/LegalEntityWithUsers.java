@@ -1,8 +1,14 @@
 package com.backbase.ct.dataloader.dto;
 
+import static com.google.common.base.Predicates.alwaysTrue;
+
+import com.backbase.ct.dataloader.dto.entitlement.JobProfile;
+import com.google.common.base.Predicates;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,33 +30,26 @@ public class LegalEntityWithUsers {
 
     private @Singular List<User> users;
 
+    private List<String> filterUserExternalIds(Predicate<User> userFilter) {
+        if (users != null) {
+            Set<String> ids = users.stream()
+                .filter(userFilter)
+                .map(User::getExternalId)
+                .collect(Collectors.toSet());
+            return new ArrayList<>(ids);
+        }
+        return Collections.emptyList();
+    }
+
+    public List<String> filterUserExternalIdsOnRole(String role) {
+        return filterUserExternalIds(user -> role.equals(user.getRole()));
+    }
+
     public List<String> getAdminUserExternalIds() {
-        return filterUserExternalIdsOnRole("admin");
+        return filterUserExternalIdsOnRole(JobProfile.PROFILE_ROLE_ADMIN);
     }
 
     public List<String> getUserExternalIds() {
-        List<String> externalIds = new ArrayList<>();
-        if (users != null) {
-            Set<String> ids = users.stream()
-                .map(User::getExternalId)
-                .collect(Collectors.toSet());
-            externalIds.addAll(ids);
-        }
-        return externalIds;
-    }
-
-    /**
-     * Get users that match the role.
-     */
-    public List<String> filterUserExternalIdsOnRole(String role) {
-        List<String> externalIds = new ArrayList<>();
-        if (users != null) {
-            Set<String> ids = users.stream()
-                .filter(user -> role.equals(user.getRole()))
-                .map(User::getExternalId)
-                .collect(Collectors.toSet());
-            externalIds.addAll(ids);
-        }
-        return externalIds;
+        return filterUserExternalIds(alwaysTrue());
     }
 }

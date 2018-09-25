@@ -92,13 +92,7 @@ public class JobProfileService {
     }
 
     public String retrieveIdFromCache(JobProfile jobProfile) {
-        String cacheKey = createCacheKey(jobProfile);
-
-        if (functionGroupCache.containsKey(cacheKey)) {
-            return functionGroupCache.get(cacheKey);
-        }
-
-        return null;
+        return functionGroupCache.get(createCacheKey(jobProfile));
     }
 
     public void storeInCache(JobProfile jobProfile) {

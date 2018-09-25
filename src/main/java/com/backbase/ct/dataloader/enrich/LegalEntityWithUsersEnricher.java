@@ -4,6 +4,7 @@ import static com.backbase.ct.dataloader.util.CommonHelpers.splitDelimitedWordTo
 
 import com.backbase.ct.dataloader.dto.LegalEntityWithUsers;
 import com.backbase.ct.dataloader.dto.User;
+import com.backbase.ct.dataloader.dto.entitlement.JobProfile;
 import com.github.javafaker.Faker;
 import java.util.List;
 import org.apache.commons.lang.StringUtils;
@@ -85,7 +86,7 @@ public class LegalEntityWithUsersEnricher {
             }
         }
         if (StringUtils.isEmpty(user.getRole())) {
-            user.setRole("admin");
+            user.setRole(JobProfile.PROFILE_ROLE_ADMIN);
         }
     }
 }

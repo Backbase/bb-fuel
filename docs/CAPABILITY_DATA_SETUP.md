@@ -74,8 +74,8 @@ backbase:
 ```
 
 ## Limits setup
-Periodic limit per service agreement:
+Periodic limit per service agreement, for function group "Admin":
 
-- Daily limit with amount of 1,000,000
-- Privilege "approve"
+- Transactional limit with amount of 1,000,000
+- Privileges "create" and "approve"
 - Functions SEPA CT, US Domestic Wire and US Foreign Wire

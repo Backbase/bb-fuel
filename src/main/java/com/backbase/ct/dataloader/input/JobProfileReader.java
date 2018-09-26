@@ -52,14 +52,14 @@ public class JobProfileReader extends BaseReader {
      */
     private void validate(JobProfile[] jobProfiles) {
         if (ArrayUtils.isEmpty(jobProfiles)) {
-            throw new InvalidInputException("No jobProfiles have been parsed");
+            throw new InvalidInputException("No job profiles have been parsed");
         }
         List<String> names = stream(jobProfiles)
             .map(JobProfile::getJobProfileName)
             .collect(toList());
         Set<String> uniqueNames = new HashSet<>(names);
         if (uniqueNames.size() != jobProfiles.length) {
-            throw new InvalidInputException(String.format("JobProfiles with duplicate names: %s",
+            throw new InvalidInputException(String.format("Job profiles with duplicate names: %s",
                 ListUtils.subtract(names, new ArrayList<>(uniqueNames))));
         }
     }

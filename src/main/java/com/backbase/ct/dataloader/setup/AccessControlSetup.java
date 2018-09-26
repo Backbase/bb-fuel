@@ -219,7 +219,7 @@ public class AccessControlSetup extends BaseSetup {
         if (this.jobProfileService.getAssignedJobProfiles(externalServiceAgreementId) == null) {
             jobProfileTemplates.forEach(template -> {
                 if (!jobProfileService.isJobProfileForBranch(isRetail, template)) {
-                    logger.info("JobProfile template [{}] does not apply to this LE [isRetail: {}]",
+                    logger.info("Job profile template [{}] does not apply to this legal entity [isRetail: {}]",
                         template.getJobProfileName(), isRetail);
                     return;
                 }
@@ -276,7 +276,7 @@ public class AccessControlSetup extends BaseSetup {
     private Void generateTask(String externalServiceAgreementId, String dataGroupName,
         Supplier<List<ArrangementId>> supplier,
         Consumer<String> consumer) {
-        logger.info("generateTask [{}] [{}]", externalServiceAgreementId, dataGroupName);
+        logger.debug("generateTask [{}] [{}]", externalServiceAgreementId, dataGroupName);
         List<ArrangementId> arrangementIds = new ArrayList<>(supplier.get());
         String dataGroupId = this.accessGroupsConfigurator
             .ingestDataGroupForArrangements(externalServiceAgreementId, dataGroupName, arrangementIds);

@@ -45,7 +45,7 @@ public class AccessGroupsDataGenerator {
             .stream()
             .filter(functionsGetResponseBody -> functionsGetResponseBody.getName().equals(businessFunction))
             .findFirst()
-            .orElseThrow(() -> new IllegalArgumentException("No matching Business Function for " + businessFunction));
+            .orElseThrow(() -> new IllegalArgumentException("No matching business function for " + businessFunction));
     }
 
     public static List<Permission> createPermissionsForJobProfile(JobProfile jobProfile,

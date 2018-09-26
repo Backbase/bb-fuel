@@ -87,7 +87,7 @@ public class JobProfileService {
             .filter(jobProfile -> approvalLevel.equals(jobProfile.getApprovalLevel()))
             .findFirst()
             .orElseThrow(() ->
-                new IllegalStateException(String.format("No jobProfile found for level [%s] and externalSaId [%s]",
+                new IllegalStateException(String.format("No job profile found for level [%s] and external service agreement id [%s]",
                     approvalLevel, externalServiceAgreementId)));
     }
 

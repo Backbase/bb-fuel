@@ -16,7 +16,7 @@ import static java.util.Collections.singletonList;
 
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.Currency;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
@@ -58,13 +58,11 @@ public final class CommonConstants {
     public static final String US_FOREIGN_WIRE_FUNCTION_NAME = "US Foreign Wire";
     public static final String PAYMENTS_RESOURCE_NAME = "Payments";
     public static final String CONTACTS_RESOURCE_NAME = "Contacts";
-    public static final String CONTACTS_FUNCTION_NAME = "Contacts";
-    public static final String PRODUCT_SUMMARY_FUNCTION_NAME = "Product Summary";
-    public static final String TRANSACTIONS_FUNCTION_NAME = "Transactions";
+    public static final String CONTACTS_FUNCTION_NAME = CONTACTS_RESOURCE_NAME;
     public static final String PRIVILEGE_CREATE = "create";
     public static final String PROPERTY_INGEST_ACCESS_CONTROL = "ingest.access.control";
     public static final String PROPERTY_INGEST_CUSTOM_SERVICE_AGREEMENTS = "ingest.custom.service.agreements";
-
+    public static final String PROPERTY_JOB_PROFILES_JSON_LOCATION = "job.profiles.json";
 
     // User data
     static final String PROPERTY_DEBIT_CARDS_MIN = "debit.cards.min";
@@ -129,7 +127,7 @@ public final class CommonConstants {
         "Transport"
     );
 
-    static final Map<Currency, String> INTERNATIONAL_TRADE_CURRENCY_NAME_MAP = new HashMap<>();
+    static final Map<Currency, String> INTERNATIONAL_TRADE_CURRENCY_NAME_MAP = new EnumMap<>(Currency.class);
 
     static {
         INTERNATIONAL_TRADE_CURRENCY_NAME_MAP.put(BHD, "Bahrain sales");
@@ -140,7 +138,8 @@ public final class CommonConstants {
         INTERNATIONAL_TRADE_CURRENCY_NAME_MAP.put(EUR, "Belgium sales");
     }
 
-    static final Map<ArrangementType, List<String>> CURRENT_ACCOUNT_ARRANGEMENT_TYPE_NAME_MAP = new HashMap<>();
+    static final Map<ArrangementType, List<String>> CURRENT_ACCOUNT_ARRANGEMENT_TYPE_NAME_MAP =
+        new EnumMap<>(ArrangementType.class);
 
     static {
         CURRENT_ACCOUNT_ARRANGEMENT_TYPE_NAME_MAP.put(GENERAL_RETAIL, singletonList("Current Account"));

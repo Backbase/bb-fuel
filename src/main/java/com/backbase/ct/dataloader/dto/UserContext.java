@@ -2,6 +2,8 @@ package com.backbase.ct.dataloader.dto;
 
 public class UserContext {
 
+    private User user;
+
     private String internalUserId;
 
     private String externalUserId;
@@ -35,8 +37,17 @@ public class UserContext {
         this.internalUserId = internalUserId;
     }
 
+    public User getUser() {
+        return this.user;
+    }
+
     public UserContext withInternalUserId(String internalUserId) {
         this.internalUserId = internalUserId;
+        return this;
+    }
+
+    public UserContext withUser(User user) {
+        this.user= user;
         return this;
     }
 

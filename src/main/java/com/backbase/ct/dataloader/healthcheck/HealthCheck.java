@@ -42,6 +42,7 @@ public class HealthCheck {
                         Thread.sleep(10000);
                     } catch (InterruptedException e) {
                         LOGGER.info("Sleep cancelled", e);
+                        Thread.currentThread().interrupt();
                     }
                 }
                 throw new IllegalStateException("[" + restClient.getInitialPath() + "] timed out");

@@ -14,7 +14,7 @@ import com.backbase.ct.dataloader.client.user.UserPresentationRestClient;
 import com.backbase.ct.dataloader.util.GlobalProperties;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.Participant;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementPostResponseBody;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -48,7 +48,9 @@ public class ServiceAgreementsConfigurator {
             .as(ServiceAgreementPostResponseBody.class)
             .getId();
 
-        LOGGER.info("Service agreement ingested for participants {}", Arrays.toString(participants.toArray()));
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info("Service agreement ingested for participants {}", new ArrayList<>(participants));
+        }
 
         return serviceAgreementId;
     }

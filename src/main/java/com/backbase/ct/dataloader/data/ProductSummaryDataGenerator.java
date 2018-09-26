@@ -12,6 +12,7 @@ import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_DEBIT_CAR
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_PRODUCTS_JSON_LOCATION;
 import static com.backbase.ct.dataloader.util.CommonHelpers.generateRandomAmountInRange;
 import static com.backbase.ct.dataloader.util.CommonHelpers.generateRandomNumberInRange;
+import static com.backbase.ct.dataloader.util.CommonHelpers.getRandomFromList;
 import static com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.AccountHolderCountry;
 import static com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.Currency;
 import static com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.Currency.EUR;
@@ -34,18 +35,21 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.BiFunction;
 import org.apache.commons.lang.time.DateUtils;
 import org.iban4j.CountryCode;
 import org.iban4j.Iban;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ProductSummaryDataGenerator {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProductSummaryDataGenerator.class);
+
 
     private static GlobalProperties globalProperties = GlobalProperties.getInstance();
     private static Faker faker = new Faker();
-    private static Random random = new Random();
     private static final List<CountryCode> COUNTRY_CODES;
     private static final int WEEKS_IN_A_QUARTER = 13;
 
@@ -73,7 +77,6 @@ public class ProductSummaryDataGenerator {
         }
     }
 
-
     private static final Map<ArrangementType, BiFunction<String, Currency, List<ArrangementsPostRequestBody>>> FUNCTION_MAP = new HashMap<>();
 
     static {
@@ -85,7 +88,7 @@ public class ProductSummaryDataGenerator {
     }
 
     public static String generateRandomIban() {
-        return Iban.random(COUNTRY_CODES.get(random.nextInt(COUNTRY_CODES.size()))).toString();
+        return Iban.random(getRandomFromList(COUNTRY_CODES)).toString();
     }
 
     public static ProductsPostRequestBody[] generateProductsPostRequestBodies() throws IOException {
@@ -116,7 +119,7 @@ public class ProductSummaryDataGenerator {
                 i < generateRandomNumberInRange(globalProperties.getInt(PROPERTY_DEBIT_CARDS_MIN),
                     globalProperties.getInt(PROPERTY_DEBIT_CARDS_MAX)); i++) {
                 debitCards.add(new DebitCard()
-                    .withNumber(String.format("%s", generateRandomNumberInRange(1111, 9999)))
+                    .withNumber(String.valueOf(generateRandomNumberInRange(1111, 9999)))
                     .withExpiryDate(faker.business()
                         .creditCardExpiry()));
             }
@@ -125,7 +128,8 @@ public class ProductSummaryDataGenerator {
         String currentAccountArrangementName = arrangementType == INTERNATIONAL_TRADE
             ? INTERNATIONAL_TRADE_CURRENCY_NAME_MAP.get(currency)
             : CURRENT_ACCOUNT_ARRANGEMENT_TYPE_NAME_MAP.get(arrangementType)
-                .get(random.nextInt(CURRENT_ACCOUNT_ARRANGEMENT_TYPE_NAME_MAP.get(arrangementType).size()));
+                .get(ThreadLocalRandom.current().nextInt(
+                    CURRENT_ACCOUNT_ARRANGEMENT_TYPE_NAME_MAP.get(arrangementType).size()));
 
         String accountNumber = currency == EUR
             ? generateRandomIban() : valueOf(generateRandomNumberInRange(0, 999999999));
@@ -137,13 +141,16 @@ public class ProductSummaryDataGenerator {
 
         String fullArrangementName = arrangementName != null ? arrangementName + arrangementNameSuffix :
             (productId == 1 ? currentAccountArrangementName + arrangementNameSuffix
-                : PRODUCT_ARRANGEMENT_NAME_MAP.get(productId).get(random.nextInt(
+                : PRODUCT_ARRANGEMENT_NAME_MAP.get(productId).get(ThreadLocalRandom.current().nextInt(
                     PRODUCT_ARRANGEMENT_NAME_MAP.get(productId).size())) + arrangementNameSuffix);
+        String id = UUID.randomUUID().toString();
+        LOGGER.debug("generateArrangementsPostRequestBody id: {}, ccy: {} leId {} productId {}",
+            id, currency, externalLegalEntityId, productId);
 
         ArrangementsPostRequestBody arrangementsPostRequestBody = new ArrangementsPostRequestBody()
-            .withId(UUID.randomUUID().toString())
+            .withId(id)
             .withLegalEntityId(externalLegalEntityId)
-            .withProductId(String.format("%s", productId))
+            .withProductId(String.valueOf(productId))
             .withName(fullArrangementName)
             .withAlias(faker.lorem().characters(10))
             .withBookedBalance(generateRandomAmountInRange(10000L, 9999999L))
@@ -152,8 +159,8 @@ public class ProductSummaryDataGenerator {
             .withCurrency(currency)
             .withExternalTransferAllowed(true)
             .withUrgentTransferAllowed(true)
-            .withAccruedInterest(BigDecimal.valueOf(random.nextInt(10)))
-            .withNumber(String.format("%s", random.nextInt(9999)))
+            .withAccruedInterest(BigDecimal.valueOf(ThreadLocalRandom.current().nextInt(10)))
+            .withNumber(String.format("%s", ThreadLocalRandom.current().nextInt(9999)))
             .withPrincipalAmount(generateRandomAmountInRange(10000L, 999999L))
             .withCurrentInvestmentValue(generateRandomAmountInRange(10000L, 999999L))
             .withDebitAccount(debitCreditAccountIndicator)

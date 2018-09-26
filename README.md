@@ -81,6 +81,24 @@ healthcheck.timeout.in.minutes=10
 ## Custom data
 See [Custom data](docs/CUSTOM_DATA.md)
 
+## Versions
+Data Loader supports multiple DBS versions. See below which version maps to the required DBS version.
+
+| DBS version | Tool minimal version                                                                                             |
+|-------------|------------------------------------------------------------------------------------------------------------------|
+| 2.13.0      | [1.6.0+](https://artifacts.backbase.com/backbase-development-builds/com/backbase/ct/dataloader/1.6.0/)           |
+| 2.12.2      | [1.4.11+](https://artifacts.backbase.com/backbase-development-builds/com/backbase/ct/dataloader/1.4.11/)         |
+| 2.12.1      | [1.4.5+](https://artifacts.backbase.com/backbase-development-builds/com/backbase/ct/dataloader/1.4.5/)           |
+| 2.12.0      | [1.3.6+](https://artifacts.backbase.com/backbase-development-builds/com/backbase/ct/dataloader/1.3.6/)           |
+| 2.11.2      | [1.3.5+](https://artifacts.backbase.com/backbase-development-builds/com/backbase/ct/dataloader/1.3.5/)           |
+| 2.11.1      | [1.1.0+](https://artifacts.backbase.com/backbase-development-builds/com/backbase/ct/dataloader/1.1.0/)           |
+| 2.11.0      | [1.0.5+](https://artifacts.backbase.com/backbase-development-builds/com/backbase/ct/dataloader/1.0.5/)           |
+| 2.10.4      | [2.10.4 tag on repo](https://stash.backbase.com/projects/CT/repos/dataloader/commits?until=refs%2Ftags%2F2.10.4) |
+| 2.10.3      | [2.10.3 tag on repo](https://stash.backbase.com/projects/CT/repos/dataloader/commits?until=refs%2Ftags%2F2.10.3) |
+| 2.10.2      | [2.10.2 tag on repo](https://stash.backbase.com/projects/CT/repos/dataloader/commits?until=refs%2Ftags%2F2.10.2) |
+| 2.10.1      | [2.10.1 tag on repo](https://stash.backbase.com/projects/CT/repos/dataloader/commits?until=refs%2Ftags%2F2.10.1) |
+| 2.10.0      | [2.10.0 tag on repo](https://stash.backbase.com/projects/CT/repos/dataloader/commits?until=refs%2Ftags%2F2.10.0) |
+
 ## Questions and issues
 If you have a question about Data Loader, or are experiencing a problem please contact the author, Kwo Ding via Hipchat or [e-mail](mailto:kwo@backbase.com)
 

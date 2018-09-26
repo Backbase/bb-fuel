@@ -57,10 +57,9 @@ public class ArrangementsIntegrationRestClient extends AbstractRestClient {
                 .get(0)
                 .getKey()
                 .equals("account.api.product.alreadyExists")) {
-            LOGGER.info(String
-                .format("Product [%s] already exists, skipped ingesting this product", product.getProductKindName()));
+            LOGGER.info("Product [{}] already exists, skipped ingesting this product", product.getProductKindName());
         } else if (response.statusCode() == SC_CREATED) {
-            LOGGER.info(String.format("Product [%s] ingested", product.getProductKindName()));
+            LOGGER.info("Product [{}] ingested", product.getProductKindName());
         } else {
             response.then()
                 .statusCode(SC_CREATED);
@@ -85,5 +84,4 @@ public class ArrangementsIntegrationRestClient extends AbstractRestClient {
             .body(body)
             .post(getPath(ENDPOINT_PRODUCTS));
     }
-
 }

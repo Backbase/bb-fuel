@@ -4,7 +4,7 @@ import static com.backbase.ct.dataloader.data.ApprovalsDataGenerator.createAppro
 import static com.backbase.ct.dataloader.data.ApprovalsDataGenerator.createPolicyAssignmentRequest;
 import static com.backbase.ct.dataloader.data.ApprovalsDataGenerator.createPolicyAssignmentRequestBounds;
 import static com.backbase.ct.dataloader.data.ApprovalsDataGenerator.createPolicyItemDto;
-import static com.backbase.ct.dataloader.data.CommonConstants.*;
+import static com.backbase.ct.dataloader.data.CommonConstants.CONTACTS_FUNCTION_NAME;
 import static com.backbase.ct.dataloader.data.CommonConstants.CONTACTS_RESOURCE_NAME;
 import static com.backbase.ct.dataloader.data.CommonConstants.PAYMENTS_RESOURCE_NAME;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_CONTACTS;
@@ -15,29 +15,20 @@ import static com.backbase.ct.dataloader.data.CommonConstants.US_DOMESTIC_WIRE_F
 import static com.backbase.ct.dataloader.data.CommonConstants.US_FOREIGN_WIRE_FUNCTION_NAME;
 import static com.backbase.ct.dataloader.util.CommonHelpers.generateRandomNumberInRange;
 import static java.util.Arrays.asList;
-import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
-import static java.util.Collections.sort;
-import static java.util.stream.Collectors.toList;
 
-import com.backbase.ct.dataloader.client.accessgroup.AccessGroupIntegrationRestClient;
-import com.backbase.ct.dataloader.client.accessgroup.AccessGroupPresentationRestClient;
-import com.backbase.ct.dataloader.client.accessgroup.ServiceAgreementsIntegrationRestClient;
 import com.backbase.ct.dataloader.client.accessgroup.UserContextPresentationRestClient;
 import com.backbase.ct.dataloader.client.approval.ApprovalIntegrationRestClient;
 import com.backbase.ct.dataloader.client.common.LoginRestClient;
-import com.backbase.ct.dataloader.client.user.UserPresentationRestClient;
+import com.backbase.ct.dataloader.service.JobProfileService;
 import com.backbase.ct.dataloader.util.GlobalProperties;
 import com.backbase.dbs.approval.integration.spec.IntegrationPolicyAssignmentRequest;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.config.functions.FunctionsGetResponseBody;
 import com.backbase.rest.spec.common.types.Currency;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,11 +44,7 @@ public class ApprovalsConfigurator {
     private final LoginRestClient loginRestClient;
     private final UserContextPresentationRestClient userContextPresentationRestClient;
     private final ApprovalIntegrationRestClient approvalIntegrationRestClient;
-    private final AccessGroupsConfigurator accessGroupsConfigurator;
-    private final AccessGroupPresentationRestClient accessGroupPresentationRestClient;
-    private final AccessGroupIntegrationRestClient accessGroupIntegrationRestClient;
-    private final ServiceAgreementsIntegrationRestClient serviceAgreementsIntegrationRestClient;
-    private final UserPresentationRestClient userPresentationRestClient;
+    private final JobProfileService jobProfileService;
 
     private String rootEntitlementsAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
     private static final List<String> PAYMENTS_FUNCTIONS = asList(
@@ -81,17 +68,19 @@ public class ApprovalsConfigurator {
     }
 
     public void setupAccessControlAndPerformApprovalAssignments(String externalServiceAgreementId, String externalLegalEntityId,
-        List<String> externalUserIds) {
+        int numberOfUsers) {
         loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
         userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
+        boolean isPaymentsApprovalsEnabled = globalProperties.getBoolean(PROPERTY_INGEST_APPROVALS_FOR_PAYMENTS);
+        boolean isContactsApprovalsEnabled = globalProperties.getBoolean(PROPERTY_INGEST_APPROVALS_FOR_CONTACTS);
 
-        if (globalProperties.getBoolean(PROPERTY_INGEST_APPROVALS_FOR_PAYMENTS)) {
-            setupAccessControlAndAssignApprovalTypesForPayments(externalServiceAgreementId, externalUserIds);
-            assignPaymentsPolicies(externalServiceAgreementId, externalLegalEntityId, externalUserIds.size());
+        if (isPaymentsApprovalsEnabled || isContactsApprovalsEnabled) {
+            setupAccessControlAndAssignApprovalTypes(externalServiceAgreementId);
         }
-
-        if (globalProperties.getBoolean(PROPERTY_INGEST_APPROVALS_FOR_CONTACTS)) {
-            setupAccessControlAndAssignApprovalTypesForContacts(externalServiceAgreementId, externalUserIds);
+        if (isPaymentsApprovalsEnabled) {
+            assignPaymentsPolicies(externalServiceAgreementId, externalLegalEntityId, numberOfUsers);
+        }
+        if (isContactsApprovalsEnabled) {
             assignContactsPolicies(externalServiceAgreementId, externalLegalEntityId);
         }
     }
@@ -227,89 +216,18 @@ public class ApprovalsConfigurator {
             singletonList(createPolicyAssignmentRequestBounds(policyAId, null))));
     }
 
-    private void setupAccessControlAndAssignApprovalTypesForPayments(
-        String externalServiceAgreementId,
-        List<String> externalUserIds) {
-        sort(externalUserIds);
+    private void setupAccessControlAndAssignApprovalTypes(String externalServiceAgreementId) {
 
-        String internalServiceAgreementId = serviceAgreementsIntegrationRestClient
-            .retrieveServiceAgreementByExternalId(externalServiceAgreementId)
-            .getId();
-
-        String paymentsFunctionGroupAId = accessGroupsConfigurator.ingestAdminFunctionGroup(externalServiceAgreementId,
-            "Payments A");
-
-        String paymentsFunctionGroupBId = accessGroupsConfigurator.ingestAdminFunctionGroup(externalServiceAgreementId,
-            "Payments B");
-
-        String paymentsFunctionGroupCId = accessGroupsConfigurator.ingestAdminFunctionGroup(externalServiceAgreementId,
-            "Payments C");
-
-        List<String> functionIds = accessGroupIntegrationRestClient
-            .retrieveFunctions()
-            .stream().map(FunctionsGetResponseBody::getFunctionId)
-            .collect(toList());
-
-        Set<String> existingDataGroupIdSet = new HashSet<>();
-
-        for (String externalUserId : externalUserIds) {
-            String internalUserId = userPresentationRestClient.getUserByExternalId(externalUserId)
-                .getId();
-
-            functionIds.forEach(functionId -> existingDataGroupIdSet.addAll(
-                accessGroupPresentationRestClient.getDataGroupIdsByFunctionId(
-                    internalServiceAgreementId,
-                    internalUserId,
-                    functionId)));
-        }
-
-        List<String> existingDataGroupIds = new ArrayList<>(existingDataGroupIdSet);
-
-        Map<Integer, List<String>> functionGroupMap = new HashMap<>();
-
-        functionGroupMap.put(0, asList(paymentsFunctionGroupAId, paymentsFunctionGroupBId, paymentsFunctionGroupCId));
-        functionGroupMap.put(1, singletonList(paymentsFunctionGroupAId));
-        functionGroupMap.put(2, singletonList(paymentsFunctionGroupBId));
-        functionGroupMap.put(3, singletonList(paymentsFunctionGroupCId));
-
-        for (int i = 1; i < externalUserIds.size() + 1; i++) {
-            List<String> functionGroupIds = functionGroupMap.get(i % 4);
-
-            for (String functionGroupId : functionGroupIds) {
-                accessGroupIntegrationRestClient.assignPermissions(
-                    externalUserIds.get(i - 1),
-                    internalServiceAgreementId,
-                    functionGroupId,
-                    existingDataGroupIds);
-            }
-        }
+        String functionGroupAId = jobProfileService.findByApprovalLevelAndExternalServiceAgreementId(
+            "A", externalServiceAgreementId).getId();
+        String functionGroupBId = jobProfileService.findByApprovalLevelAndExternalServiceAgreementId(
+            "B", externalServiceAgreementId).getId();
+        String functionGroupCId = jobProfileService.findByApprovalLevelAndExternalServiceAgreementId(
+            "C", externalServiceAgreementId).getId();
 
         approvalIntegrationRestClient.assignApprovalTypes(asList(
-            createApprovalTypeAssignmentDto(approvalTypeAId, paymentsFunctionGroupAId),
-            createApprovalTypeAssignmentDto(approvalTypeBId, paymentsFunctionGroupBId),
-            createApprovalTypeAssignmentDto(approvalTypeCId, paymentsFunctionGroupCId)));
-    }
-
-    private void setupAccessControlAndAssignApprovalTypesForContacts(
-        String externalServiceAgreementId,
-        List<String> externalUserIds) {
-
-        String internalServiceAgreementId = serviceAgreementsIntegrationRestClient
-            .retrieveServiceAgreementByExternalId(externalServiceAgreementId)
-            .getId();
-
-        String contactsFunctionGroupAId = accessGroupsConfigurator.ingestAdminFunctionGroup(externalServiceAgreementId,
-            "Contacts A");
-
-        for (String externalUserId : externalUserIds) {
-            accessGroupIntegrationRestClient.assignPermissions(
-                externalUserId,
-                internalServiceAgreementId,
-                contactsFunctionGroupAId,
-                emptyList());
-        }
-
-        approvalIntegrationRestClient.assignApprovalTypes(singletonList(
-            createApprovalTypeAssignmentDto(approvalTypeAId, contactsFunctionGroupAId)));
+            createApprovalTypeAssignmentDto(approvalTypeAId, functionGroupAId),
+            createApprovalTypeAssignmentDto(approvalTypeBId, functionGroupBId),
+            createApprovalTypeAssignmentDto(approvalTypeCId, functionGroupCId)));
     }
 }

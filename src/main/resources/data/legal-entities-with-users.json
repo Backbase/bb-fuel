@@ -1,67 +1,138 @@
 [
   {
-    "userExternalIds": [
-      "user"
+    "users": [
+      {
+        "externalId": "user"
+      }
     ]
   },
   {
-    "userExternalIds": [
-      "designer"
+    "users": [
+      {
+        "externalId": "designer"
+      }
     ]
   },
   {
-    "userExternalIds": [
-      "manager"
+    "users": [
+      {
+        "externalId": "manager"
+      }
     ]
   },
   {
-    "userExternalIds": [
-      "U0000010",
-      "U0000011"
+    "users": [
+      {
+        "externalId": "U0000010"
+      },
+      {
+        "externalId": "U0000011"
+      }
     ]
   },
   {
-    "userExternalIds": [
-      "U0001001",
-      "U0001002",
-      "U0001003",
-      "U0001004",
-      "U0001005"
+    "users": [
+      {
+        "externalId": "U0001001"
+      },
+      {
+        "externalId": "U0001002"
+      },
+      {
+        "externalId": "U0001003"
+      },
+      {
+        "externalId": "U0001004"
+      },
+      {
+        "externalId": "U0001005"
+      }
     ]
   },
   {
-    "userExternalIds": [
-      "U0001021",
-      "U0001022",
-      "U0001023",
-      "U0001024",
-      "U0001025",
-      "U0001026",
-      "U0001027",
-      "U0001028",
-      "U0001029",
-      "U0001030"
+    "users": [
+      {
+        "externalId": "U0001021"
+      },
+      {
+        "externalId": "U0001022"
+      },
+      {
+        "externalId": "U0001023"
+      },
+      {
+        "externalId": "U0001024"
+      },
+      {
+        "externalId": "U0001025"
+      },
+      {
+        "externalId": "U0001026"
+      },
+      {
+        "externalId": "U0001027"
+      },
+      {
+        "externalId": "U0001028"
+      },
+      {
+        "externalId": "U0001029"
+      },
+      {
+        "externalId": "U0001030"
+      }
     ]
   },
   {
-    "userExternalIds": [
-      "U0001011",
-      "U0001012",
-      "U0001013",
-      "U0001014",
-      "U0001015"
+    "users": [
+      {
+        "externalId": "U0001011"
+      },
+      {
+        "externalId": "U0001012"
+      },
+      {
+        "externalId": "U0001013"
+      },
+      {
+        "externalId": "U0001014"
+      },
+      {
+        "externalId": "U0001015"
+      }
     ]
   },
   {
     "legalEntityName": "Green Bicycle Factory",
-    "userExternalIds": [
-      "robin_green",
-      "sarah_lee",
-      "alex_wong",
-      "jan_verschoor",
-      "iris_schipper",
-      "joe_santorelli",
-      "paddy_brian"
+    "users": [
+      {
+        "externalId": "robin_green",
+        "role": "admin"
+      },
+      {
+        "externalId": "paddy_brian",
+        "role": "admin"
+      },
+      {
+        "externalId": "sarah_lee",
+        "role": "manager"
+      },
+      {
+        "externalId": "alex_wong",
+        "role": "employee"
+      },
+      {
+        "externalId": "jan_verschoor",
+        "role": "employee"
+      },
+      {
+        "externalId": "iris_schipper",
+        "role": "employee"
+      },
+      {
+        "externalId": "joe_santorelli",
+        "role": "employee"
+      }
     ]
   }
 ]

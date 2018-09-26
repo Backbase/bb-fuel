@@ -1,0 +1,53 @@
+Admin;;Execute;View;Create;Edit;Delete;Approve;Cancel
+;Audit;-;Y;Y;-;-;-;-
+;Assign Permissions;-;Y;Y;Y;-;-;-
+;Assign Function Groups;-;Y;Y;Y;-;-;-
+;Assign Users;-;Y;Y;Y;-;-;-
+;Access Actions History;Y;Y;-;-;-;-;-
+;Contacts;-;Y;Y;Y;Y;Y;-
+;Manage Legal Entities;-;Y;-;-;-;-;-
+;Manage Users;-;Y;-;-;-;-;-
+;Manage Data Groups;-;Y;Y;Y;Y;Y;-
+;Manage Service Agreements;-;Y;Y;Y;Y;Y;-
+;Manage Limits;-;Y;Y;Y;Y;-;-
+;Manage Action Recipes;Y;Y;Y;Y;Y;-;-
+;Manage Notifications;-;Y;Y;-;Y;-;-
+;Manage Function Groups;-;Y;Y;Y;Y;Y;-
+;SEPA CT;-;Y;Y;Y;Y;Y;Y
+;Product Summary;-;Y;-;Y;-;-;-
+;Transactions;-;Y;-;Y;-;-;-
+;US Billpay Enrolment;Y;Y;-;-;-;-;-
+;US Billpay Payments;-;Y;Y;Y;Y;-;-
+;US Domestic Wire;-;Y;Y;Y;Y;Y;Y
+;US Billpay Payees;-;Y;Y;Y;Y;-;-
+;US Billpay Payees-Summary;-;Y;-;-;-;-;-
+;US Billpay Accounts;-;Y;-;-;-;-;-
+;US Foreign Wire;-;Y;Y;Y;Y;Y;Y
+;US Billpay Payees-Search;Y;Y;-;-;-;-;-
+;;;;;;;;
+Retail User;;Execute;View;Create;Edit;Delete;Approve;Cancel
+;Audit;-;-;-;-;-;-;-
+;Assign Permissions;-;-;-;-;-;-;-
+;Assign Function Groups;-;-;-;-;-;-;-
+;Assign Users;-;-;-;-;-;-;-
+;Access Actions History;-;-;-;-;-;-;-
+;Contacts;-;Y;Y;Y;Y;Y;-
+;Manage Legal Entities;-;-;-;-;-;-;-
+;Manage Users;-;-;-;-;-;-;-
+;Manage Data Groups;-;-;-;-;-;-;-
+;Manage Service Agreements;-;-;-;-;-;-;-
+;Manage Limits;-;Y;Y;Y;Y;-;-
+;Manage Action Recipes;Y;Y;Y;Y;Y;-;-
+;Manage Notifications;-;Y;-;-;-;-;-
+;Manage Function Groups;-;-;-;-;-;-;-
+;SEPA CT;-;Y;Y;Y;Y;-;Y
+;Product Summary;-;Y;-;Y;-;-;-
+;Transactions;-;Y;-;Y;-;-;-
+;US Billpay Enrolment;Y;Y;-;-;-;-;-
+;US Billpay Payments;-;Y;Y;Y;Y;-;-
+;US Domestic Wire;-;Y;Y;Y;Y;Y;Y
+;US Billpay Payees;-;Y;Y;Y;;-;-
+;US Billpay Payees-Summary;-;Y;-;-;-;-;-
+;US Billpay Accounts;-;Y;-;-;-;-;-
+;US Foreign Wire;-;Y;Y;Y;Y;Y;Y
+;US Billpay Payees-Search;Y;Y;-;-;-;-;-

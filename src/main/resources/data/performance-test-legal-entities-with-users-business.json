@@ -1,282 +1,562 @@
 [
   {
-    "userExternalIds": [
-      "U0000160",
-      "U0000140",
-      "U0000120",
-      "U0001009"
+    "users": [
+      {
+        "externalId": "U0000160"
+      },
+      {
+        "externalId": "U0000140"
+      },
+      {
+        "externalId": "U0000120"
+      },
+      {
+        "externalId": "U0001009"
+      }
     ]
   },
   {
-    "userExternalIds": [
-      "U0001010",
-      "U0001011",
-      "U0001012",
-      "U0001013"
+    "users": [
+      {
+        "externalId": "U0001010"
+      },
+      {
+        "externalId": "U0001011"
+      },
+      {
+        "externalId": "U0001012"
+      },
+      {
+        "externalId": "U0001013"
+      }
     ]
   },
   {
-    "userExternalIds": [
-      "U0001014",
-      "U0001015",
-      "U0001016",
-      "U0001017"
+    "users": [
+      {
+        "externalId": "U0001014"
+      },
+      {
+        "externalId": "U0001015"
+      },
+      {
+        "externalId": "U0001016"
+      },
+      {
+        "externalId": "U0001017"
+      }
     ]
   },
   {
-    "userExternalIds": [
-      "U0001018",
-      "U0001019",
-      "U0001020",
-      "U0001021"
+    "users": [
+      {
+        "externalId": "U0001018"
+      },
+      {
+        "externalId": "U0001019"
+      },
+      {
+        "externalId": "U0001020"
+      },
+      {
+        "externalId": "U0001021"
+      }
     ]
   },
   {
-    "userExternalIds": [
-      "U0001022",
-      "U0001023",
-      "U0001024",
-      "U0001025"
+    "users": [
+      {
+        "externalId": "U0001022"
+      },
+      {
+        "externalId": "U0001023"
+      },
+      {
+        "externalId": "U0001024"
+      },
+      {
+        "externalId": "U0001025"
+      }
     ]
   },
   {
-    "userExternalIds": [
-      "U0001026",
-      "U0001027",
-      "U0001028",
-      "U0001029"
+    "users": [
+      {
+        "externalId": "U0001026"
+      },
+      {
+        "externalId": "U0001027"
+      },
+      {
+        "externalId": "U0001028"
+      },
+      {
+        "externalId": "U0001029"
+      }
     ]
   },
   {
-    "userExternalIds": [
-      "U0001030",
-      "U0001031",
-      "U0001032",
-      "U0001033"
+    "users": [
+      {
+        "externalId": "U0001030"
+      },
+      {
+        "externalId": "U0001031"
+      },
+      {
+        "externalId": "U0001032"
+      },
+      {
+        "externalId": "U0001033"
+      }
     ]
   },
   {
-    "userExternalIds": [
-      "U0001034",
-      "U0001035",
-      "U0001036",
-      "U0001037"
+    "users": [
+      {
+        "externalId": "U0001034"
+      },
+      {
+        "externalId": "U0001035"
+      },
+      {
+        "externalId": "U0001036"
+      },
+      {
+        "externalId": "U0001037"
+      }
     ]
   },
   {
-    "userExternalIds": [
-      "U0001038",
-      "U0001039",
-      "U0001040",
-      "U0001041"
+    "users": [
+      {
+        "externalId": "U0001038"
+      },
+      {
+        "externalId": "U0001039"
+      },
+      {
+        "externalId": "U0001040"
+      },
+      {
+        "externalId": "U0001041"
+      }
     ]
   },
   {
-    "userExternalIds": [
-      "U0001042",
-      "U0001043",
-      "U0001044",
-      "U0001045"
+    "users": [
+      {
+        "externalId": "U0001042"
+      },
+      {
+        "externalId": "U0001043"
+      },
+      {
+        "externalId": "U0001044"
+      },
+      {
+        "externalId": "U0001045"
+      }
     ]
   },
   {
-    "userExternalIds": [
-      "U0001046",
-      "U0001047",
-      "U0001048",
-      "U0001049"
+    "users": [
+      {
+        "externalId": "U0001046"
+      },
+      {
+        "externalId": "U0001047"
+      },
+      {
+        "externalId": "U0001048"
+      },
+      {
+        "externalId": "U0001049"
+      }
     ]
   },
   {
-    "userExternalIds": [
-      "U0001050",
-      "U0001051",
-      "U0001052",
-      "U0001053"
+    "users": [
+      {
+        "externalId": "U0001050"
+      },
+      {
+        "externalId": "U0001051"
+      },
+      {
+        "externalId": "U0001052"
+      },
+      {
+        "externalId": "U0001053"
+      }
     ]
   },
   {
-    "userExternalIds": [
-      "U0001054",
-      "U0001055",
-      "U0001056",
-      "U0001057"
+    "users": [
+      {
+        "externalId": "U0001054"
+      },
+      {
+        "externalId": "U0001055"
+      },
+      {
+        "externalId": "U0001056"
+      },
+      {
+        "externalId": "U0001057"
+      }
     ]
   },
   {
-    "userExternalIds": [
-      "U0001058",
-      "U0001059",
-      "U0001060",
-      "U0001061"
+    "users": [
+      {
+        "externalId": "U0001058"
+      },
+      {
+        "externalId": "U0001059"
+      },
+      {
+        "externalId": "U0001060"
+      },
+      {
+        "externalId": "U0001061"
+      }
     ]
   },
   {
-    "userExternalIds": [
-      "U0001062",
-      "U0001063",
-      "U0001064",
-      "U0001065"
+    "users": [
+      {
+        "externalId": "U0001062"
+      },
+      {
+        "externalId": "U0001063"
+      },
+      {
+        "externalId": "U0001064"
+      },
+      {
+        "externalId": "U0001065"
+      }
     ]
   },
   {
-    "userExternalIds": [
-      "U0001066",
-      "U0001067",
-      "U0001068",
-      "U0001069"
+    "users": [
+      {
+        "externalId": "U0001066"
+      },
+      {
+        "externalId": "U0001067"
+      },
+      {
+        "externalId": "U0001068"
+      },
+      {
+        "externalId": "U0001069"
+      }
     ]
   },
   {
-    "userExternalIds": [
-      "U0001070",
-      "U0001071",
-      "U0001072",
-      "U0001073"
+    "users": [
+      {
+        "externalId": "U0001070"
+      },
+      {
+        "externalId": "U0001071"
+      },
+      {
+        "externalId": "U0001072"
+      },
+      {
+        "externalId": "U0001073"
+      }
     ]
   },
   {
-    "userExternalIds": [
-      "U0001074",
-      "U0001075",
-      "U0001076",
-      "U0001077"
+    "users": [
+      {
+        "externalId": "U0001074"
+      },
+      {
+        "externalId": "U0001075"
+      },
+      {
+        "externalId": "U0001076"
+      },
+      {
+        "externalId": "U0001077"
+      }
     ]
   },
   {
-    "userExternalIds": [
-      "U0001078",
-      "U0001079",
-      "U0001080",
-      "U0001081"
+    "users": [
+      {
+        "externalId": "U0001078"
+      },
+      {
+        "externalId": "U0001079"
+      },
+      {
+        "externalId": "U0001080"
+      },
+      {
+        "externalId": "U0001081"
+      }
     ]
   },
   {
-    "userExternalIds": [
-      "U0001082",
-      "U0001083",
-      "U0001084",
-      "U0001085"
+    "users": [
+      {
+        "externalId": "U0001082"
+      },
+      {
+        "externalId": "U0001083"
+      },
+      {
+        "externalId": "U0001084"
+      },
+      {
+        "externalId": "U0001085"
+      }
     ]
   },
   {
-    "userExternalIds": [
-      "U0001086",
-      "U0001087",
-      "U0001088",
-      "U0001089"
+    "users": [
+      {
+        "externalId": "U0001086"
+      },
+      {
+        "externalId": "U0001087"
+      },
+      {
+        "externalId": "U0001088"
+      },
+      {
+        "externalId": "U0001089"
+      }
     ]
   },
   {
-    "userExternalIds": [
-      "U0001090",
-      "U0001091",
-      "U0001092",
-      "U0001093"
+    "users": [
+      {
+        "externalId": "U0001090"
+      },
+      {
+        "externalId": "U0001091"
+      },
+      {
+        "externalId": "U0001092"
+      },
+      {
+        "externalId": "U0001093"
+      }
     ]
   },
   {
-    "userExternalIds": [
-      "U0001094",
-      "U0001095",
-      "U0001096",
-      "U0001097"
+    "users": [
+      {
+        "externalId": "U0001094"
+      },
+      {
+        "externalId": "U0001095"
+      },
+      {
+        "externalId": "U0001096"
+      },
+      {
+        "externalId": "U0001097"
+      }
     ]
   },
   {
-    "userExternalIds": [
-      "U0001098",
-      "U0001099",
-      "U0001100",
-      "U0001101"
+    "users": [
+      {
+        "externalId": "U0001098"
+      },
+      {
+        "externalId": "U0001099"
+      },
+      {
+        "externalId": "U0001100"
+      },
+      {
+        "externalId": "U0001101"
+      }
     ]
   },
   {
-    "userExternalIds": [
-      "U0001102",
-      "U0001103",
-      "U0001104",
-      "U0001105"
+    "users": [
+      {
+        "externalId": "U0001102"
+      },
+      {
+        "externalId": "U0001103"
+      },
+      {
+        "externalId": "U0001104"
+      },
+      {
+        "externalId": "U0001105"
+      }
     ]
   },
   {
-    "userExternalIds": [
-      "U0001107",
-      "U0001108",
-      "U0001109",
-      "U0001110"
+    "users": [
+      {
+        "externalId": "U0001107"
+      },
+      {
+        "externalId": "U0001108"
+      },
+      {
+        "externalId": "U0001109"
+      },
+      {
+        "externalId": "U0001110"
+      }
     ]
   },
   {
-    "userExternalIds": [
-      "U0001111",
-      "U0001112",
-      "U0001113",
-      "U0001114"
+    "users": [
+      {
+        "externalId": "U0001111"
+      },
+      {
+        "externalId": "U0001112"
+      },
+      {
+        "externalId": "U0001113"
+      },
+      {
+        "externalId": "U0001114"
+      }
     ]
   },
   {
-    "userExternalIds": [
-      "U0001115",
-      "U0001116",
-      "U0001117",
-      "U0001118"
+    "users": [
+      {
+        "externalId": "U0001115"
+      },
+      {
+        "externalId": "U0001116"
+      },
+      {
+        "externalId": "U0001117"
+      },
+      {
+        "externalId": "U0001118"
+      }
     ]
   },
   {
-    "userExternalIds": [
-      "U0001119",
-      "U0001120",
-      "U0001121",
-      "U0001122"
+    "users": [
+      {
+        "externalId": "U0001119"
+      },
+      {
+        "externalId": "U0001120"
+      },
+      {
+        "externalId": "U0001121"
+      },
+      {
+        "externalId": "U0001122"
+      }
     ]
   },
   {
-    "userExternalIds": [
-      "U0001123",
-      "U0001124",
-      "U0001125",
-      "U0001126"
+    "users": [
+      {
+        "externalId": "U0001123"
+      },
+      {
+        "externalId": "U0001124"
+      },
+      {
+        "externalId": "U0001125"
+      },
+      {
+        "externalId": "U0001126"
+      }
     ]
   },
   {
-    "userExternalIds": [
-      "U0001127",
-      "U0001128",
-      "U0001129",
-      "U0001130"
+    "users": [
+      {
+        "externalId": "U0001127"
+      },
+      {
+        "externalId": "U0001128"
+      },
+      {
+        "externalId": "U0001129"
+      },
+      {
+        "externalId": "U0001130"
+      }
     ]
   },
   {
-    "userExternalIds": [
-      "U0001131",
-      "U0001132",
-      "U0001133",
-      "U0001134"
+    "users": [
+      {
+        "externalId": "U0001131"
+      },
+      {
+        "externalId": "U0001132"
+      },
+      {
+        "externalId": "U0001133"
+      },
+      {
+        "externalId": "U0001134"
+      }
     ]
   },
   {
-    "userExternalIds": [
-      "U0001135",
-      "U0001136",
-      "U0001137",
-      "U0001138"
+    "users": [
+      {
+        "externalId": "U0001135"
+      },
+      {
+        "externalId": "U0001136"
+      },
+      {
+        "externalId": "U0001137"
+      },
+      {
+        "externalId": "U0001138"
+      }
     ]
   },
   {
-    "userExternalIds": [
-      "U0001139",
-      "U0001140",
-      "U0001141",
-      "U0001142"
+    "users": [
+      {
+        "externalId": "U0001139"
+      },
+      {
+        "externalId": "U0001140"
+      },
+      {
+        "externalId": "U0001141"
+      },
+      {
+        "externalId": "U0001142"
+      }
     ]
   },
   {
-    "userExternalIds": [
-      "U0001143",
-      "U0001144",
-      "U0001145",
-      "U0001146"
+    "users": [
+      {
+        "externalId": "U0001143"
+      },
+      {
+        "externalId": "U0001144"
+      },
+      {
+        "externalId": "U0001145"
+      },
+      {
+        "externalId": "U0001146"
+      }
     ]
   }
 ]

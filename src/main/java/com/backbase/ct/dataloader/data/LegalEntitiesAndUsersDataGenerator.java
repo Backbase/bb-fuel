@@ -2,6 +2,7 @@ package com.backbase.ct.dataloader.data;
 
 import static com.backbase.ct.dataloader.data.CommonConstants.*;
 
+import com.backbase.ct.dataloader.dto.User;
 import com.backbase.integration.legalentity.rest.spec.v2.legalentities.LegalEntitiesPostRequestBody;
 import com.backbase.integration.legalentity.rest.spec.v2.legalentities.enumeration.LegalEntityType;
 import com.backbase.integration.user.rest.spec.v2.users.UsersPostRequestBody;
@@ -25,8 +26,8 @@ public class LegalEntitiesAndUsersDataGenerator {
     public static LegalEntitiesPostRequestBody composeLegalEntitiesPostRequestBody(String legalEntityExternalId,
         String legalEntityName,
         String parentLegalEntityExternalId, String type) {
-        String randomLegalEntityName = faker.name().lastName() + " " +
-            faker.company().industry().replaceAll("(/| or).*", "").trim();
+        String randomLegalEntityName = faker.name().lastName() + " "
+            + faker.company().industry().replaceAll("(/| or).*", "").trim();
 
         return new LegalEntitiesPostRequestBody()
             .withExternalId(Optional.ofNullable(legalEntityExternalId).orElse(generateExternalLegalEntityId()))
@@ -36,11 +37,11 @@ public class LegalEntitiesAndUsersDataGenerator {
             .withType((!Strings.isNullOrEmpty(type)) ? LegalEntityType.fromValue(type) : LegalEntityType.CUSTOMER);
     }
 
-    public static UsersPostRequestBody generateUsersPostRequestBody(String userId, String legalEntityId) {
+    public static UsersPostRequestBody generateUsersPostRequestBody(User user, String legalEntityId) {
         return new UsersPostRequestBody()
-            .withExternalId(userId)
+            .withExternalId(user.getExternalId())
             .withLegalEntityExternalId(legalEntityId)
-            .withFullName(faker.name().firstName() + " " + faker.name().lastName());
+            .withFullName(user.getFullName());
     }
 
     private static String generateExternalLegalEntityId() {

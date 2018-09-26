@@ -1,17 +1,18 @@
 package com.backbase.ct.dataloader.configurator;
 
+import static com.backbase.ct.dataloader.data.AccessGroupsDataGenerator.createPermissionsForJobProfile;
 import static com.backbase.ct.dataloader.data.AccessGroupsDataGenerator.createPermissionsWithAllPrivileges;
-import static java.util.Collections.synchronizedMap;
+import static com.backbase.ct.dataloader.service.JobProfileService.ADMIN_FUNCTION_GROUP_NAME;
 import static java.util.stream.Collectors.toList;
-import static org.apache.commons.lang.StringUtils.deleteWhitespace;
 
 import com.backbase.ct.dataloader.client.accessgroup.AccessGroupIntegrationRestClient;
 import com.backbase.ct.dataloader.dto.ArrangementId;
+import com.backbase.ct.dataloader.dto.entitlement.JobProfile;
 import com.backbase.ct.dataloader.service.AccessGroupService;
+import com.backbase.ct.dataloader.service.JobProfileService;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.config.functions.FunctionsGetResponseBody;
-import java.util.HashMap;
+import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.Permission;
 import java.util.List;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,35 +24,37 @@ public class AccessGroupsConfigurator {
 
     private final AccessGroupService accessGroupService;
 
-    private Map<String, String> functionGroupCache = synchronizedMap(new HashMap<>());
+    private final JobProfileService jobProfileService;
 
     private static final String ARRANGEMENTS = "ARRANGEMENTS";
 
-    private static final String ADMIN_FUNCTION_GROUP_NAME = "Admin";
-
-    public String ingestAdminFunctionGroup(String externalServiceAgreementId) {
-        return ingestAdminFunctionGroup(externalServiceAgreementId, ADMIN_FUNCTION_GROUP_NAME);
+    public JobProfile ingestAdminFunctionGroup(String externalServiceAgreementId) {
+        JobProfile adminProfile = new JobProfile(ADMIN_FUNCTION_GROUP_NAME, null, null, null, null);
+        adminProfile.setExternalServiceAgreementId(externalServiceAgreementId);
+        ingestFunctionGroup(adminProfile);
+        return adminProfile;
     }
 
-    public String ingestAdminFunctionGroup(String externalServiceAgreementId, String functionGroupName) {
-        List<FunctionsGetResponseBody> functions = this.accessGroupIntegrationRestClient
-            .retrieveFunctions();
+    /**
+     * Ingest a function group aka job profile.
+     * A profile without explicit permissions will be granted all.
+     */
+    public synchronized String ingestFunctionGroup(JobProfile jobProfile) {
+        List<FunctionsGetResponseBody> functions = this.accessGroupIntegrationRestClient.retrieveFunctions();
 
-        return ingestFunctionGroupWithAllPrivileges(externalServiceAgreementId, functionGroupName, functions);
-    }
-
-    private synchronized String ingestFunctionGroupWithAllPrivileges(String externalServiceAgreementId,
-        String functionGroupName, List<FunctionsGetResponseBody> functions) {
-        String cacheKey = String.format("%s-%s", externalServiceAgreementId, deleteWhitespace(functionGroupName).trim());
-
-        if (functionGroupCache.containsKey(cacheKey)) {
-            return functionGroupCache.get(cacheKey);
+        String functionGroupId = jobProfileService.retrieveIdFromCache(jobProfile);
+        if (functionGroupId != null) {
+            return functionGroupId;
         }
+        List<Permission> permissions = jobProfile.getPermissions() == null
+            ? createPermissionsWithAllPrivileges(functions)
+            : createPermissionsForJobProfile(jobProfile, functions);
 
-        String functionGroupId = accessGroupService.ingestFunctionGroup(externalServiceAgreementId,
-            functionGroupName, createPermissionsWithAllPrivileges(functions));
+        functionGroupId = accessGroupService.ingestFunctionGroup(jobProfile.getExternalServiceAgreementId(),
+            jobProfile.getJobProfileName(), permissions);
+        jobProfile.setId(functionGroupId);
 
-        functionGroupCache.put(cacheKey, functionGroupId);
+        jobProfileService.storeInCache(jobProfile);
 
         return functionGroupId;
     }

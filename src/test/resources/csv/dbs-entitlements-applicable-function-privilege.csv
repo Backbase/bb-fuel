@@ -1,0 +1,108 @@
+3,SEPA CT,Payments,create,1,1002,3
+4,Transactions,Transactions,view,0,1003,2
+5,Transactions,Transactions,edit,0,1003,4
+7,Contacts,Contacts,view,0,1005,2
+8,Contacts,Contacts,create,0,1005,3
+9,Contacts,Contacts,edit,0,1005,4
+10,Contacts,Contacts,delete,0,1005,5
+11,Product Summary,Product Summary,view,0,1006,2
+12,Product Summary,Product Summary,edit,0,1006,4
+13,Assign Users,Service Agreement,view,0,1007,2
+14,Assign Users,Service Agreement,create,0,1007,3
+15,Assign Users,Service Agreement,edit,0,1007,4
+19,Assign Permissions,Service Agreement,view,0,1009,2
+20,Assign Permissions,Service Agreement,create,0,1009,3
+21,Assign Permissions,Service Agreement,edit,0,1009,4
+22,Manage Users,User,view,0,1010,2
+23,Manage Legal Entities,Legal Entity,view,0,1011,2
+24,SEPA CT,Payments,view,0,1002,2
+25,SEPA CT,Payments,edit,0,1002,4
+26,SEPA CT,Payments,delete,0,1002,5
+27,Manage Limits,Limits,view,0,1012,2
+28,Manage Limits,Limits,create,0,1012,3
+29,Manage Limits,Limits,edit,0,1012,4
+30,Manage Limits,Limits,delete,0,1012,5
+31,Audit,Audit,view,0,1013,2
+32,Audit,Audit,create,0,1013,3
+33,Manage Shadow Limits,Limits,view,0,1014,2
+34,Manage Shadow Limits,Limits,create,0,1014,3
+35,Manage Shadow Limits,Limits,edit,0,1014,4
+36,Manage Shadow Limits,Limits,delete,0,1014,5
+37,Intra Company Payments,Payments,view,0,1015,2
+38,Intra Company Payments,Payments,create,1,1015,3
+39,Intra Company Payments,Payments,edit,0,1015,4
+40,Intra Company Payments,Payments,delete,0,1015,5
+41,Intra Company Payments,Payments,approve,0,1015,6
+42,Manage Statements,Account Statements,view,0,1016,2
+43,US Domestic Wire,Payments,view,0,1017,2
+44,US Domestic Wire,Payments,create,1,1017,3
+45,US Domestic Wire,Payments,edit,0,1017,4
+46,US Domestic Wire,Payments,delete,0,1017,5
+47,US Domestic Wire,Payments,approve,0,1017,6
+48,US Foreign Wire,Payments,view,0,1018,2
+49,US Foreign Wire,Payments,create,1,1018,3
+50,US Foreign Wire,Payments,edit,0,1018,4
+51,US Foreign Wire,Payments,delete,0,1018,5
+52,US Foreign Wire,Payments,approve,0,1018,6
+53,SEPA CT,Payments,approve,0,1002,6
+54,Manage Data Groups,Entitlements,view,0,1019,2
+55,Manage Data Groups,Entitlements,create,0,1019,3
+56,Manage Data Groups,Entitlements,edit,0,1019,4
+57,Manage Data Groups,Entitlements,delete,0,1019,5
+58,Manage Data Groups,Entitlements,approve,0,1019,6
+59,Manage Function Groups,Entitlements,view,0,1020,2
+60,Manage Function Groups,Entitlements,create,0,1020,3
+61,Manage Function Groups,Entitlements,edit,0,1020,4
+62,Manage Function Groups,Entitlements,delete,0,1020,5
+63,Manage Function Groups,Entitlements,approve,0,1020,6
+64,US Billpay Payments,Payments,view,0,1021,2
+65,US Billpay Payments,Payments,create,0,1021,3
+66,US Billpay Payments,Payments,edit,0,1021,4
+67,US Billpay Payments,Payments,delete,0,1021,5
+68,US Billpay Payees,Contacts,view,0,1022,2
+69,US Billpay Payees,Contacts,create,0,1022,3
+70,US Billpay Payees,Contacts,edit,0,1022,4
+71,US Billpay Payees,Contacts,delete,0,1022,5
+72,US Billpay Accounts,Arrangements,view,0,1023,2
+73,US Billpay Payees-Search,Contacts,execute,0,1024,1
+74,US Billpay Payees-Summary,Contacts,view,0,1025,2
+75,US Billpay Enrolment,Billpay,execute,0,1026,1
+76,US Billpay Enrolment,Billpay,view,0,1026,2
+77,Access Actions History,Actions,execute,0,1027,1
+78,Access Actions History,Actions,view,0,1027,2
+79,Intra Company Payments,Payments,cancel,0,1015,7
+80,US Domestic Wire,Payments,cancel,0,1017,7
+81,US Foreign Wire,Payments,cancel,0,1018,7
+82,SEPA CT,Payments,cancel,0,1002,7
+83,Manage Service Agreements,Service Agreement,view,0,1028,2
+84,Manage Service Agreements,Service Agreement,create,0,1028,3
+85,Manage Service Agreements,Service Agreement,edit,0,1028,4
+86,Manage Service Agreements,Service Agreement,delete,0,1028,5
+87,Manage Service Agreements,Service Agreement,approve,0,1028,6
+88,Manage Action Recipes,Actions,execute,0,1029,1
+89,Manage Action Recipes,Actions,view,0,1029,2
+90,Manage Action Recipes,Actions,create,0,1029,3
+91,Manage Action Recipes,Actions,edit,0,1029,4
+92,Manage Action Recipes,Actions,delete,0,1029,5
+93,Manage Notifications,Notifications,view,0,1030,2
+94,Manage Notifications,Notifications,create,0,1030,3
+95,Manage Notifications,Notifications,delete,0,1030,5
+96,Contacts,Contacts,approve,0,1005,6
+97,Manage Topics,Message Center,execute,0,1031,1
+98,Manage Topics,Message Center,view,0,1031,2
+99,Manage Topics,Message Center,create,0,1031,3
+100,Manage Topics,Message Center,edit,0,1031,4
+101,Manage Topics,Message Center,delete,0,1031,5
+102,Assign Approval Policies,Approvals,view,0,1032,2
+103,Assign Approval Policies,Approvals,create,0,1032,3
+104,Assign Approval Policies,Approvals,edit,0,1032,4
+105,Assign Approval Policies,Approvals,delete,0,1032,5
+106,Assign Approval Policies,Approvals,approve,0,1032,6
+107,Manage Approval Policy and Level,Approvals,view,0,1033,2
+108,Manage Approval Policy and Level,Approvals,create,0,1033,3
+109,Manage Approval Policy and Level,Approvals,edit,0,1033,4
+110,Manage Approval Policy and Level,Approvals,delete,0,1033,5
+111,Manage Approval Policy and Level,Approvals,approve,0,1033,6
+112,Manage Identities,Identities,view,0,1034,2
+113,Manage Identities,Identities,create,0,1034,3
+114,Manage Identities,Identities,edit,0,1034,4

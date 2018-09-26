@@ -45,7 +45,7 @@ public class ProductSummaryConfigurator {
             ArrangementsPostResponseBody arrangementsPostResponseBody = arrangementsIntegrationRestClient
                 .ingestArrangement(arrangement);
 
-            LOGGER.info("Arrangement [{}] with ingested for product [{}] under legal entity [{}]",
+            LOGGER.info("Arrangement [{}] ingested for product [{}] under legal entity [{}]",
                 arrangement.getName(), arrangement.getProductId(), externalLegalEntityId);
 
             arrangementIds.add(new ArrangementId(arrangementsPostResponseBody.getId(), arrangement.getId()));

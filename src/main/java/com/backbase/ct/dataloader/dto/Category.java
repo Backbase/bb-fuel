@@ -1,6 +1,6 @@
 package com.backbase.ct.dataloader.dto;
 
-public enum Branch {
+public enum Category {
 
     ROOT, RETAIL, BUSINESS;
 

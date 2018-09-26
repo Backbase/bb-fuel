@@ -2,7 +2,7 @@ package com.backbase.ct.dataloader.enrich;
 
 import static com.backbase.ct.dataloader.util.CommonHelpers.splitDelimitedWordToSingleCapatilizedWords;
 
-import com.backbase.ct.dataloader.dto.Branch;
+import com.backbase.ct.dataloader.dto.Category;
 import com.backbase.ct.dataloader.dto.LegalEntityWithUsers;
 import com.backbase.ct.dataloader.dto.User;
 import com.backbase.ct.dataloader.dto.entitlement.JobProfile;
@@ -28,7 +28,7 @@ public class LegalEntityWithUsersEnricher {
      */
     public static LegalEntityWithUsers createRootLegalEntityWithAdmin(String externalUserId) {
         return LegalEntityWithUsers.builder()
-            .branch(Branch.ROOT)
+            .branch(Category.ROOT)
             .user(createAdminUser(externalUserId)).build();
     }
 
@@ -58,12 +58,12 @@ public class LegalEntityWithUsersEnricher {
     }
 
     private void enrichLegalEntity(LegalEntityWithUsers legalEntity) {
-        if (legalEntity.getBranch() == null) {
-            legalEntity.setBranch(isRetailUser(legalEntity)
-            ? Branch.RETAIL : Branch.BUSINESS);
+        if (legalEntity.getCategory() == null) {
+            legalEntity.setCategory(isRetailUser(legalEntity)
+            ? Category.RETAIL : Category.BUSINESS);
         }
         legalEntity.setLegalEntityName(
-            legalEntity.getBranch().isRetail()
+            legalEntity.getCategory().isRetail()
                 ? buildFakerFullName()
                 : legalEntity.getLegalEntityName()
         );

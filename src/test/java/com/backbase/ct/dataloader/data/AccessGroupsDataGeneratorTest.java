@@ -85,7 +85,7 @@ public class AccessGroupsDataGeneratorTest {
         List<FunctionsGetResponseBody> functions = createFunctionsGetResponseBodys("Manage Users");
 
         expectedException.expect(IllegalArgumentException.class);
-        expectedException.expectMessage(containsString("No matching Business Function"));
+        expectedException.expectMessage(containsString("No matching business function"));
         AccessGroupsDataGenerator.createPermissionsForJobProfile(jobProfile, functions);
     }
 

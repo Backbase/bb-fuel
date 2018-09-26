@@ -55,7 +55,7 @@ public class JobProfileReaderTest {
     @Test
     public void testDuplicateProfileFails() {
         expectedException.expect(InvalidInputException.class);
-        expectedException.expectMessage("JobProfiles with duplicate names: [Retail User]");
+        expectedException.expectMessage("Job profiles with duplicate names: [Retail User]");
 
         subject.load("data/duplicate-job-profiles.json");
     }

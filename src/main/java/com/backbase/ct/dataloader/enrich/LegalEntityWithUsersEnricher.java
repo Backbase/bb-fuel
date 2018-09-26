@@ -28,7 +28,7 @@ public class LegalEntityWithUsersEnricher {
      */
     public static LegalEntityWithUsers createRootLegalEntityWithAdmin(String externalUserId) {
         return LegalEntityWithUsers.builder()
-            .branch(Category.ROOT)
+            .category(Category.ROOT)
             .user(createAdminUser(externalUserId)).build();
     }
 

@@ -32,7 +32,7 @@ public class LegalEntitiesAndUsersConfigurator {
      * Dispatch the creation of legal entity depending whether given legalEntityWithUsers is a root entity.
      */
     public void ingestLegalEntityWithUsers(LegalEntityWithUsers legalEntityWithUsers) {
-        if (legalEntityWithUsers.isRoot()) {
+        if (legalEntityWithUsers.getBranch().isRoot()) {
             ingestRootLegalEntityAndEntitlementsAdmin(legalEntityWithUsers);
         } else {
             ingestLegalEntityAndUsers(legalEntityWithUsers);

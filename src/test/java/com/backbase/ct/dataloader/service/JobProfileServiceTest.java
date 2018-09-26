@@ -47,7 +47,7 @@ public class JobProfileServiceTest {
         assertThat(found.getExternalServiceAgreementId(), is(EXTERNAL_SERVICE_AGREEMENT_ID_1));
 
         expectedException.expect(IllegalStateException.class);
-        expectedException.expectMessage(containsString("No jobProfile found"));
+        expectedException.expectMessage(containsString("No job profile found "));
         this.subject.findByApprovalLevelAndExternalServiceAgreementId(
             "D", EXTERNAL_SERVICE_AGREEMENT_ID_1);
     }

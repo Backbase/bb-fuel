@@ -120,7 +120,7 @@ public class AccessControlSetup extends BaseSetup {
             if (legalEntityContext.getDataGroupCollection() == null) {
                 legalEntityContext.setDataGroupCollection(
                     ingestDataGroupArrangementsForServiceAgreement(userContext.getExternalServiceAgreementId(),
-                        userContext.getExternalLegalEntityId(), legalEntityWithUsers.getIsRetail()));
+                        userContext.getExternalLegalEntityId(), legalEntityWithUsers.getBranch().isRetail()));
             }
         });
 
@@ -128,7 +128,7 @@ public class AccessControlSetup extends BaseSetup {
             .forEach(userContext -> ingestFunctionGroupsAndAssignPermissions(userContext.getUser(),
                 userContext.getInternalServiceAgreementId(),
                 userContext.getExternalServiceAgreementId(),
-                legalEntityWithUsers.getIsRetail(),
+                legalEntityWithUsers.getBranch().isRetail(),
                 legalEntityContext.getDataGroupCollection()));
     }
 

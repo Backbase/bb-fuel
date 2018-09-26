@@ -3,7 +3,6 @@ package com.backbase.ct.dataloader.dto;
 import static com.google.common.base.Predicates.alwaysTrue;
 
 import com.backbase.ct.dataloader.dto.entitlement.JobProfile;
-import com.google.common.base.Predicates;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -25,8 +24,7 @@ public class LegalEntityWithUsers {
     private String parentLegalEntityExternalId;
     private String legalEntityName;
     private String legalEntityType;
-    private Boolean isRetail;
-    private boolean isRoot;
+    private Branch branch;
 
     private @Singular List<User> users;
 

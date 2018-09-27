@@ -16,7 +16,6 @@ import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagr
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementPostRequestBody;
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -40,11 +39,11 @@ public class ServiceAgreementsSetup extends BaseSetup {
     @Override
     public void initiate() throws IOException {
         if (this.globalProperties.getBoolean(CommonConstants.PROPERTY_INGEST_CUSTOM_SERVICE_AGREEMENTS)) {
-            List<ServiceAgreementPostRequestBody> serviceAgreementPostRequestBodies = ParserUtil
-                .convertJsonToList(
+            ServiceAgreementPostRequestBody[] serviceAgreementPostRequestBodies = ParserUtil
+                .convertJsonToObject(
                     this.globalProperties.getString(CommonConstants.PROPERTY_SERVICE_AGREEMENTS_JSON),
-                    ServiceAgreementPostRequestBody.class);
-            ingestCustomSericeAgreements(serviceAgreementPostRequestBodies);
+                    ServiceAgreementPostRequestBody[].class);
+            ingestCustomSericeAgreements(asList(serviceAgreementPostRequestBodies));
         }
     }
 

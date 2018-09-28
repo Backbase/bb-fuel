@@ -20,6 +20,7 @@ import static java.util.Collections.singletonList;
 import com.backbase.ct.dataloader.client.accessgroup.UserContextPresentationRestClient;
 import com.backbase.ct.dataloader.client.approval.ApprovalIntegrationRestClient;
 import com.backbase.ct.dataloader.client.common.LoginRestClient;
+import com.backbase.ct.dataloader.dto.entitlement.JobProfile;
 import com.backbase.ct.dataloader.service.JobProfileService;
 import com.backbase.ct.dataloader.util.GlobalProperties;
 import com.backbase.dbs.approval.integration.spec.IntegrationPolicyAssignmentRequest;
@@ -29,6 +30,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -204,7 +207,6 @@ public class ApprovalsConfigurator {
             singletonList(createPolicyAssignmentRequestBounds(policyZeroId, null))));
     }
 
-
     private List<IntegrationPolicyAssignmentRequest> getContactsPolicyAssignments(
         String externalServiceAgreementId,
         String externalLegalEntityId) {
@@ -216,7 +218,25 @@ public class ApprovalsConfigurator {
             singletonList(createPolicyAssignmentRequestBounds(policyAId, null))));
     }
 
+    /**
+     * Retrieve assigned job profiles and when they have the expected approval levels A, B and C assign these.
+     */
     private void setupAccessControlAndAssignApprovalTypes(String externalServiceAgreementId) {
+        List<JobProfile> jobProfiles = jobProfileService.getAssignedJobProfiles(externalServiceAgreementId);
+        if (jobProfiles == null) {
+            throw new IllegalStateException("Job profiles are missing for external service agreement "
+                + externalServiceAgreementId);
+        }
+        List<String> referencedApprovalLevels = jobProfiles.stream()
+            .map(JobProfile::getApprovalLevel)
+            .filter(Objects::nonNull)
+            .collect(Collectors.toList());
+
+        if (!referencedApprovalLevels.containsAll(asList("A", "B", "C"))) {
+            LOGGER.info("No approval type assignments needed as the agreement belongs to retail {}",
+                referencedApprovalLevels);
+            return;
+        }
 
         String functionGroupAId = jobProfileService.findByApprovalLevelAndExternalServiceAgreementId(
             "A", externalServiceAgreementId).getId();

@@ -6,6 +6,8 @@ import static com.backbase.ct.dataloader.data.ArrangementType.GENERAL_RETAIL;
 import static com.backbase.ct.dataloader.data.ArrangementType.INTERNATIONAL_TRADE;
 import static com.backbase.ct.dataloader.data.ArrangementType.PAYROLL;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_ACCESS_CONTROL;
+import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_CONTACTS;
+import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_PAYMENTS;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_BALANCE_HISTORY;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_INTERNATIONAL_AND_PAYROLL_DATA_GROUPS;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_INGEST_TRANSACTIONS;
@@ -81,6 +83,9 @@ public class AccessControlSetup extends BaseSetup {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_ACCESS_CONTROL)) {
             this.setupBankWithEntitlementsAdminAndProducts();
             this.setupAccessControlForUsers();
+        } else if (this.globalProperties.getBoolean(PROPERTY_INGEST_APPROVALS_FOR_PAYMENTS)
+            || this.globalProperties.getBoolean(PROPERTY_INGEST_APPROVALS_FOR_CONTACTS)) {
+            this.prepareJobProfiles();
         }
     }
 
@@ -98,9 +103,10 @@ public class AccessControlSetup extends BaseSetup {
         });
     }
 
-    private void assembleFunctionDataGroupsAndPermissions(LegalEntityWithUsers legalEntityWithUsers) {
+    private Multimap<String, UserContext> createLegalEntitiesUserContextMap(
+        LegalEntityWithUsers legalEntityWithUsers) {
+
         Multimap<String, UserContext> legalEntitiesUserContextMap = ArrayListMultimap.create();
-        final LegalEntityContext legalEntityContext = new LegalEntityContext();
         this.loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
         this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
@@ -116,20 +122,33 @@ public class AccessControlSetup extends BaseSetup {
 
             UserContext userContext = getUserContextBasedOnMSAByExternalUserId(user, legalEntity);
             legalEntitiesUserContextMap.put(userContext.getExternalLegalEntityId(), userContext);
-
-            if (legalEntityContext.getDataGroupCollection() == null) {
-                legalEntityContext.setDataGroupCollection(
-                    ingestDataGroupArrangementsForServiceAgreement(userContext.getExternalServiceAgreementId(),
-                        userContext.getExternalLegalEntityId(), legalEntityWithUsers.getCategory().isRetail()));
-            }
         });
+        return legalEntitiesUserContextMap;
+    }
+
+    private void assembleFunctionDataGroupsAndPermissions(LegalEntityWithUsers legalEntityWithUsers) {
+        Multimap<String, UserContext> legalEntitiesUserContextMap =
+            createLegalEntitiesUserContextMap(legalEntityWithUsers);
+        this.loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
+        this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
+
+        final LegalEntityContext legalEntityContext = new LegalEntityContext();
 
         legalEntitiesUserContextMap.values()
-            .forEach(userContext -> ingestFunctionGroupsAndAssignPermissions(userContext.getUser(),
-                userContext.getInternalServiceAgreementId(),
-                userContext.getExternalServiceAgreementId(),
-                legalEntityWithUsers.getCategory().isRetail(),
-                legalEntityContext.getDataGroupCollection()));
+            .forEach(userContext -> {
+                if (legalEntityContext.getDataGroupCollection() == null) {
+                    legalEntityContext.setDataGroupCollection(
+                        ingestDataGroupArrangementsForServiceAgreement(userContext.getExternalServiceAgreementId(),
+                            userContext.getExternalLegalEntityId(), legalEntityWithUsers.getCategory().isRetail()));
+                }
+                boolean isRetail = legalEntityWithUsers.getCategory().isRetail();
+                ingestFunctionGroups(userContext.getExternalServiceAgreementId(), isRetail);
+                assignPermissions(userContext.getUser(),
+                    userContext.getInternalServiceAgreementId(),
+                    userContext.getExternalServiceAgreementId(),
+                    isRetail,
+                    legalEntityContext.getDataGroupCollection());
+            });
     }
 
     protected DataGroupCollection ingestDataGroupArrangementsForServiceAgreement(String externalServiceAgreementId,
@@ -213,14 +232,29 @@ public class AccessControlSetup extends BaseSetup {
         return taskList;
     }
 
-    private void ingestFunctionGroupsAndAssignPermissions(User user, String internalServiceAgreementId,
-        String externalServiceAgreementId, boolean isRetail, DataGroupCollection dataGroupCollection) {
+    /**
+     * This will populate the jobProfiles in the local JobProfileService even if ingested already.
+     */
+    private void prepareJobProfiles() {
+        this.legalEntitiesWithUsers.forEach(legalEntityWithUsers -> {
+            boolean isRetail = legalEntityWithUsers.getCategory().isRetail();
+            createLegalEntitiesUserContextMap(legalEntityWithUsers)
+                .values()
+                .forEach(userContext -> ingestFunctionGroups(
+                    userContext.getExternalServiceAgreementId(),isRetail)
+                );
+        });
+    }
 
+    /**
+     * AccessGroupConfigurator is called to ingest and detects duplicates.
+     */
+    private void ingestFunctionGroups(String externalServiceAgreementId, boolean isRetail) {
         if (this.jobProfileService.getAssignedJobProfiles(externalServiceAgreementId) == null) {
             jobProfileTemplates.forEach(template -> {
                 if (!jobProfileService.isJobProfileForBranch(isRetail, template)) {
                     logger.info("Job profile template [{}] does not apply to this legal entity [isRetail: {}]",
-                        template.getJobProfileName(), isRetail);
+                    template.getJobProfileName(), isRetail);
                     return;
                 }
                 JobProfile jobProfile = new JobProfile(template);
@@ -229,6 +263,10 @@ public class AccessControlSetup extends BaseSetup {
                 jobProfileService.saveAssignedProfile(jobProfile);
             });
         }
+    }
+
+    private void assignPermissions(User user, String internalServiceAgreementId,
+        String externalServiceAgreementId, boolean isRetail, DataGroupCollection dataGroupCollection) {
 
         this.jobProfileService.getAssignedJobProfiles(externalServiceAgreementId).forEach(jobProfile -> {
             if (jobProfileService.isJobProfileForUserRole(jobProfile, user.getRole(), isRetail)) {

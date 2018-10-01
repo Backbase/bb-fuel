@@ -1,0 +1,7 @@
+Example:
+
+loadData(
+  environmentName: 'env-name-00',
+  dataLoaderVersion: 'latest',
+  additionalArguments: '-Dingest.access.control=true -Dingest.custom.service.agreements=true'
+)

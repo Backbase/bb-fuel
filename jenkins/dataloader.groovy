@@ -19,7 +19,7 @@ properties([
                         'Only enable when strictly necessary (long running job)'),
                 choice(name: 'PERFORMANCE_TEST_DATA', choices: 'retail\nbusiness', description: 'Retail or business performance test data setup'),
                 choice(name: 'INFRA_BASE_URI', choices: 'infra.backbase.test:8080\neditorial.backbase.test:8080', description: ''),
-                string(name: 'DATALOADER_VERSION', defaultValue: 'LATEST', description: ''),
+                string(name: 'DATALOADER_VERSION', defaultValue: 'latest', description: ''),
                 string(name: 'ADDITIONAL_ARGUMENTS', defaultValue: '', description: 'Additional command line arguments')
         ])
 ])

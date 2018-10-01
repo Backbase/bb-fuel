@@ -37,7 +37,7 @@ pipeline {
                     }
 
                     loadData(
-                            environmentName: 'env-name-00',
+                            environmentName: params.ENVIRONMENT_NAME,
                             dataloaderVersion: params.DATALOADER_VERSION,
                             additionalArguments: "-Dinfra.base.uri=http://${params.ENVIRONMENT_NAME}-${params.INFRA_BASE_URI} " +
                                     "-Dingest.access.control=${params.INGEST_ACCESS_CONTROL} " +

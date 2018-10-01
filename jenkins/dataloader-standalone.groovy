@@ -44,7 +44,7 @@ def getDataLoaderVersion(version) {
 
 node {
     stage('Load data') {
-        def dataLoaderVersion = getDataLoaderVersion(params.dataLoaderVersion)
+        def dataLoaderVersion = getDataLoaderVersion(params.DATALOADER_VERSION)
 
         cleanWs()
         downloadArtifact(dataLoaderVersion)

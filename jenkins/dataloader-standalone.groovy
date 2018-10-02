@@ -19,22 +19,20 @@ properties([
                         'Only enable when strictly necessary (long running job)'),
                 choice(name: 'PERFORMANCE_TEST_DATA', choices: 'retail\nbusiness', description: 'Retail or business performance test data setup'),
                 choice(name: 'INFRA_BASE_URI', choices: 'infra.backbase.test:8080\neditorial.backbase.test:8080', description: ''),
-                string(name: 'DATALOADER_VERSION', defaultValue: 'LATEST', description: ''),
+                string(name: 'DATALOADER_VERSION', defaultValue: 'latest', description: ''),
                 string(name: 'ADDITIONAL_ARGUMENTS', defaultValue: '', description: 'Additional command line arguments')
         ])
 ])
 
-def downloadArtifact = { version ->
+def downloadArtifact(version) {
     withCredentials([[$class          : 'UsernamePasswordMultiBinding', credentialsId: "${env.ARTIFACTS_CREDENTIALS_ID}",
                       usernameVariable: 'AR_USERNAME', passwordVariable: 'AR_PASSWORD']]) {
         sh "curl -X GET -k -u ${AR_USERNAME}:${AR_PASSWORD} https://artifacts.backbase.com/backbase-development-builds/com/backbase/ct/dataloader/${version}/dataloader-${version}-boot.jar -O -J -L"
     }
 }
 
-def getDataloaderVersion() {
-    def version = "${params.DATALOADER_VERSION}"
-
-    if (version == 'LATEST') {
+def getDataLoaderVersion(version) {
+    if (version == 'latest') {
         withCredentials([[$class          : 'UsernamePasswordMultiBinding', credentialsId: "${env.ARTIFACTS_CREDENTIALS_ID}",
                           usernameVariable: 'AR_USERNAME', passwordVariable: 'AR_PASSWORD']]) {
             version = sh(returnStdout: true, script: '''curl -X GET -s -k -u ${AR_USERNAME}:${AR_PASSWORD} https://artifacts.backbase.com/backbase-development-builds/com/backbase/ct/dataloader/ | grep href | grep -v maven | cut -d'"' -f2 | cut -d'/' -f1 | sort --version-sort | tail -n 1''').toString().trim()
@@ -46,13 +44,12 @@ def getDataloaderVersion() {
 
 node {
     stage('Load data') {
-        def dataloaderVersion = getDataloaderVersion()
+        def dataLoaderVersion = getDataLoaderVersion(params.DATALOADER_VERSION)
 
         cleanWs()
-        downloadArtifact(dataloaderVersion)
+        downloadArtifact(dataLoaderVersion)
 
         withEnv(["JAVA_HOME=${tool name: "${env.JDK_TOOL_NAME}"}", "PATH+MAVEN=${tool name: "${env.MAVEN_TOOL_NAME}"}/bin:${env.JAVA_HOME}/bin"]) {
-
             def customLegalEntitiesWithUsersJson = ""
 
             if ("${params.USE_PERFORMANCE_TEST_DATA_SETUP}".toBoolean()) {
@@ -76,7 +73,7 @@ node {
                     "-Dingest.actions=${params.INGEST_ACTIONS} " +
                     customLegalEntitiesWithUsersJson +
                     "${params.ADDITIONAL_ARGUMENTS} " +
-                    "-jar dataloader-${dataloaderVersion}-boot.jar"
+                    "-jar dataloader-${dataLoaderVersion}-boot.jar"
         }
     }
 }

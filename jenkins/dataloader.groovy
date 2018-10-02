@@ -1,3 +1,5 @@
+@Library('test-library') _
+
 properties([
         parameters([
                 string(name: 'ENVIRONMENT_NAME', defaultValue: 'env-name-00', description: 'Autoconfig environment name, example: frosty-snow-99\nRead before running: https://stash.backbase.com/projects/CT/repos/dataloader/browse/README.md'),

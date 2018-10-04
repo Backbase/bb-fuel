@@ -288,7 +288,7 @@ public class AccessControlSetup extends BaseSetup {
         this.loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
         this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
-        String internalUserId = this.userPresentationRestClient.getUserByExternalId().getId();
+        String internalUserId = this.userPresentationRestClient.getUserByExternalId(user.getExternalId()).getId();
 
         if (legalEntity == null) {
             legalEntity = this.userPresentationRestClient.retrieveLegalEntityByExternalUserId(user.getExternalId());

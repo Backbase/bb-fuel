@@ -7,10 +7,15 @@ import static com.backbase.ct.dataloader.data.ApprovalsDataGenerator.createPostP
 import static com.backbase.ct.dataloader.data.ApprovalsDataGenerator.createPostPolicyRequest;
 import static com.backbase.ct.dataloader.data.ApprovalsDataGenerator.createPostPolicyRequestWithZeroPolicyItems;
 import static com.backbase.ct.dataloader.data.CommonConstants.PROPERTY_APPROVALS_BASE_URI;
+import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 import static org.apache.http.HttpStatus.SC_CREATED;
 import static org.apache.http.HttpStatus.SC_NO_CONTENT;
 import static org.apache.http.HttpStatus.SC_OK;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
+import com.backbase.buildingblocks.presentation.errors.BadRequestException;
+import com.backbase.ct.dataloader.IngestException;
 import com.backbase.ct.dataloader.client.common.AbstractRestClient;
 import com.backbase.dbs.approval.integration.spec.IntegrationApprovalTypeAssignmentDto;
 import com.backbase.dbs.approval.integration.spec.IntegrationDeletePolicyAssignmentRequest;
@@ -24,9 +29,13 @@ import com.backbase.dbs.approval.integration.spec.IntegrationPostBulkApprovalTyp
 import com.backbase.dbs.approval.integration.spec.IntegrationPostPolicyAssignmentBulkRequest;
 import com.backbase.dbs.approval.integration.spec.IntegrationPostPolicyRequest;
 import com.backbase.dbs.approval.integration.spec.IntegrationPostPolicyResponse;
+import com.google.common.collect.Lists;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import java.util.Arrays;
 import java.util.List;
+import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -115,13 +124,25 @@ public class ApprovalIntegrationRestClient extends AbstractRestClient {
             .getId();
     }
 
-    public IntegrationPostBulkApprovalTypeAssignmentResponse assignApprovalTypes(
+    public void assignApprovalTypes(
         List<IntegrationApprovalTypeAssignmentDto> approvalTypeAssignmentDtos) {
-        return assignApprovalTypes(createPostBulkApprovalTypesAssignmentRequest(approvalTypeAssignmentDtos))
-            .then()
-            .statusCode(SC_CREATED)
-            .extract()
-            .as(IntegrationPostBulkApprovalTypeAssignmentResponse.class);
+        Response response = assignApprovalTypes(createPostBulkApprovalTypesAssignmentRequest(approvalTypeAssignmentDtos));
+        if (response.getStatusCode() == SC_BAD_REQUEST) {
+            BadRequestException badRequestException = response.then().extract().as(BadRequestException.class);
+            if (badRequestException.getErrors().get(0).getKey().equals(
+                "approval.api.ApprovalTypeAssignmentConflict")) {
+                String ids = badRequestException.getErrors()
+                    .get(0).getContext().get("conflictingJobProfileIds");
+                if (approvalTypeAssignmentDtos.stream().map(IntegrationApprovalTypeAssignmentDto::getJobProfileId -> get))Arrays.asList(ids.split(","));
+                LOGGER.warn("Already assigned job profiles to approval types {}", ids);
+            } else {
+                throw new IngestException("assignApprovalTypes failed", badRequestException);
+            }
+        } else {
+            response
+                .then()
+                .statusCode(SC_CREATED);
+        }
     }
 
     public String createPolicy(List<IntegrationPolicyItemDto> policyItems) {
@@ -145,9 +166,19 @@ public class ApprovalIntegrationRestClient extends AbstractRestClient {
     }
 
     public void assignPolicies(List<IntegrationPolicyAssignmentRequest> policyAssignmentRequests) {
-        assignPolicies(createPostPolicyAssignmentBulkRequest(policyAssignmentRequests))
-            .then()
-            .statusCode(SC_NO_CONTENT);
+        Response response = assignPolicies(createPostPolicyAssignmentBulkRequest(policyAssignmentRequests));
+        if (response.statusCode() == SC_BAD_REQUEST
+            && response.then()
+                .extract()
+                .as(BadRequestException.class)
+                .getMessage().contains("already exists")) {
+            LOGGER.info("Policy assignment already ingested [{}]", policyAssignmentRequests);
+        } else if (response.statusCode() == SC_NO_CONTENT) {
+            LOGGER.info("Policies assigned");
+        } else {
+            response.then()
+                .statusCode(SC_NO_CONTENT);
+        }
     }
 
     public IntegrationDeletePolicyAssignmentResponse deletePolicyAssignment(String externalServiceAgreementId,
@@ -166,5 +197,4 @@ public class ApprovalIntegrationRestClient extends AbstractRestClient {
     protected String composeInitialPath() {
         return APPROVAL_INTEGRATION_SERVICE;
     }
-
 }

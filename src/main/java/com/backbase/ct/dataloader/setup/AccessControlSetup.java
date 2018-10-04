@@ -288,7 +288,7 @@ public class AccessControlSetup extends BaseSetup {
         this.loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
         this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
-        String internalUserId = this.userPresentationRestClient.getUserByExternalId(user.getExternalId()).getId();
+        String internalUserId = this.userPresentationRestClient.getUserByExternalId().getId();
 
         if (legalEntity == null) {
             legalEntity = this.userPresentationRestClient.retrieveLegalEntityByExternalUserId(user.getExternalId());
@@ -305,6 +305,7 @@ public class AccessControlSetup extends BaseSetup {
         return new UserContext()
             .withUser(user)
             .withInternalUserId(internalUserId)
+            .withExternalUserId(user.getExternalId())
             .withInternalServiceAgreementId(internalServiceAgreementId)
             .withExternalServiceAgreementId(externalServiceAgreementId)
             .withInternalLegalEntityId(legalEntity.getId())

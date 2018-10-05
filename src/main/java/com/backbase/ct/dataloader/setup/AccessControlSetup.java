@@ -305,6 +305,7 @@ public class AccessControlSetup extends BaseSetup {
         return new UserContext()
             .withUser(user)
             .withInternalUserId(internalUserId)
+            .withExternalUserId(user.getExternalId())
             .withInternalServiceAgreementId(internalServiceAgreementId)
             .withExternalServiceAgreementId(externalServiceAgreementId)
             .withInternalLegalEntityId(legalEntity.getId())

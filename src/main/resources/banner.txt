@@ -1,19 +1,11 @@
 
-
- .S_sSSs     .S_SSSs    sdSS_SSSSSSbs   .S_SSSs          S.        sSSs_sSSs     .S_SSSs     .S_sSSs      sSSs   .S_sSSs
-.SS~YS%%b   .SS~SSSSS   YSSS~S%SSSSSP  .SS~SSSSS         SS.      d%%SP~YS%%b   .SS~SSSSS   .SS~YS%%b    d%%SP  .SS~YS%%b
-S%S   `S%b  S%S   SSSS       S%S       S%S   SSSS        S%S     d%S'     `S%b  S%S   SSSS  S%S   `S%b  d%S'    S%S   `S%b
-S%S    S%S  S%S    S%S       S%S       S%S    S%S        S%S     S%S       S%S  S%S    S%S  S%S    S%S  S%S     S%S    S%S
-S%S    S&S  S%S SSSS%S       S&S       S%S SSSS%S        S&S     S&S       S&S  S%S SSSS%S  S%S    S&S  S&S     S%S    d*S
-S&S    S&S  S&S  SSS%S       S&S       S&S  SSS%S        S&S     S&S       S&S  S&S  SSS%S  S&S    S&S  S&S_Ss  S&S   .S*S
-S&S    S&S  S&S    S&S       S&S       S&S    S&S        S&S     S&S       S&S  S&S    S&S  S&S    S&S  S&S~SP  S&S_sdSSS
-S&S    S&S  S&S    S&S       S&S       S&S    S&S        S&S     S&S       S&S  S&S    S&S  S&S    S&S  S&S     S&S~YSY%b
-S*S    d*S  S*S    S&S       S*S       S*S    S&S        S*b     S*b       d*S  S*S    S&S  S*S    d*S  S*b     S*S   `S%b
-S*S   .S*S  S*S    S*S       S*S       S*S    S*S        S*S.    S*S.     .S*S  S*S    S*S  S*S   .S*S  S*S.    S*S    S%S
-S*S_sdSSS   S*S    S*S       S*S       S*S    S*S         SSSbs   SSSbs_sdSSS   S*S    S*S  S*S_sdSSS    SSSbs  S*S    S&S
-SSS~YSSY    SSS    S*S       S*S       SSS    S*S          YSSP    YSSP~YSSY    SSS    S*S  SSS~YSSY      YSSP  S*S    SSS
-                   SP        SP               SP                                       SP                       SP
-                   Y         Y                Y                                        Y                        Y
+ ________  ________          ________ ___  ___  _______   ___
+|\   __  \|\   __  \        |\  _____\\  \|\  \|\  ___ \ |\  \
+\ \  \|\ /\ \  \|\ /_       \ \  \__/\ \  \\\  \ \   __/|\ \  \
+ \ \   __  \ \   __  \       \ \   __\\ \  \\\  \ \  \_|/_\ \  \
+  \ \  \|\  \ \  \|\  \       \ \  \_| \ \  \\\  \ \  \_|\ \ \  \____
+   \ \_______\ \_______\       \ \__\   \ \_______\ \_______\ \_______\
+    \|_______|\|_______|        \|__|    \|_______|\|_______|\|_______|
 
 
 ${spring.application.name} (${spring.application.version})

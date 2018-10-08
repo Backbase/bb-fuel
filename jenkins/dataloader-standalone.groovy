@@ -1,6 +1,6 @@
 properties([
         parameters([
-                string(name: 'ENVIRONMENT_NAME', defaultValue: 'env-name-00', description: 'Autoconfig environment name, example: frosty-snow-99\nRead before running: https://stash.backbase.com/projects/CT/repos/bbfuel/browse/README.md'),
+                string(name: 'ENVIRONMENT_NAME', defaultValue: 'env-name-00', description: 'Autoconfig environment name, example: frosty-snow-99\nRead before running: https://stash.backbase.com/projects/CT/repos/bb-fuel/browse/README.md'),
                 booleanParam(name: 'INGEST_ACCESS_CONTROL', defaultValue: true, description: 'Ingest access control setup'),
                 booleanParam(name: 'INGEST_CUSTOM_SERVICE_AGREEMENTS', defaultValue: false, description: 'Ingest custom service agreements'),
                 booleanParam(name: 'INGEST_BALANCE_HISTORY', defaultValue: false, description: 'Ingest balance history per arrangement (only applicable when INGEST_ACCESS_CONTROL = true)\n' +
@@ -19,7 +19,7 @@ properties([
                         'Only enable when strictly necessary (long running job)'),
                 choice(name: 'PERFORMANCE_TEST_DATA', choices: 'retail\nbusiness', description: 'Retail or business performance test data setup'),
                 choice(name: 'INFRA_BASE_URI', choices: 'infra.backbase.test:8080\neditorial.backbase.test:8080', description: ''),
-                string(name: 'DATALOADER_VERSION', defaultValue: 'latest', description: ''),
+                string(name: 'BB_FUEL_VERSION', defaultValue: 'latest', description: ''),
                 string(name: 'ADDITIONAL_ARGUMENTS', defaultValue: '', description: 'Additional command line arguments')
         ])
 ])
@@ -27,7 +27,7 @@ properties([
 def downloadArtifact(version) {
     withCredentials([[$class          : 'UsernamePasswordMultiBinding', credentialsId: "${env.ARTIFACTS_CREDENTIALS_ID}",
                       usernameVariable: 'AR_USERNAME', passwordVariable: 'AR_PASSWORD']]) {
-        sh "curl -X GET -k -u ${AR_USERNAME}:${AR_PASSWORD} https://artifacts.backbase.com/backbase-development-builds/com/backbase/ct/bbfuel/${version}/bbfuel-${version}-boot.jar -O -J -L"
+        sh "curl -X GET -k -u ${AR_USERNAME}:${AR_PASSWORD} https://artifacts.backbase.com/backbase-development-builds/com/backbase/ct/bb-fuel/${version}/bb-fuel-${version}-boot.jar -O -J -L"
     }
 }
 
@@ -35,7 +35,7 @@ def getDataLoaderVersion(version) {
     if (version == 'latest') {
         withCredentials([[$class          : 'UsernamePasswordMultiBinding', credentialsId: "${env.ARTIFACTS_CREDENTIALS_ID}",
                           usernameVariable: 'AR_USERNAME', passwordVariable: 'AR_PASSWORD']]) {
-            version = sh(returnStdout: true, script: '''curl -X GET -s -k -u ${AR_USERNAME}:${AR_PASSWORD} https://artifacts.backbase.com/backbase-development-builds/com/backbase/ct/bbfuel/ | grep href | grep -v maven | cut -d'"' -f2 | cut -d'/' -f1 | sort --version-sort | tail -n 1''').toString().trim()
+            version = sh(returnStdout: true, script: '''curl -X GET -s -k -u ${AR_USERNAME}:${AR_PASSWORD} https://artifacts.backbase.com/backbase-development-builds/com/backbase/ct/bb-fuel/ | grep href | grep -v maven | cut -d'"' -f2 | cut -d'/' -f1 | sort --version-sort | tail -n 1''').toString().trim()
         }
     }
 
@@ -44,10 +44,10 @@ def getDataLoaderVersion(version) {
 
 node {
     stage('Load data') {
-        def dataLoaderVersion = getDataLoaderVersion(params.DATALOADER_VERSION)
+        def bbFuelVersion = getDataLoaderVersion(params.BB_FUEL_VERSION)
 
         cleanWs()
-        downloadArtifact(dataLoaderVersion)
+        downloadArtifact(bbFuelVersion)
 
         withEnv(["JAVA_HOME=${tool name: "${env.JDK_TOOL_NAME}"}", "PATH+MAVEN=${tool name: "${env.MAVEN_TOOL_NAME}"}/bin:${env.JAVA_HOME}/bin"]) {
             def customLegalEntitiesWithUsersJson = ""
@@ -73,7 +73,7 @@ node {
                     "-Dingest.actions=${params.INGEST_ACTIONS} " +
                     customLegalEntitiesWithUsersJson +
                     "${params.ADDITIONAL_ARGUMENTS} " +
-                    "-jar bbfuel-${dataLoaderVersion}-boot.jar"
+                    "-jar bb-fuel-${bbFuelVersion}-boot.jar"
         }
     }
 }

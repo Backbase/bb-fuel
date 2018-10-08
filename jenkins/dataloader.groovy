@@ -2,7 +2,7 @@
 
 properties([
         parameters([
-                string(name: 'ENVIRONMENT_NAME', defaultValue: 'env-name-00', description: 'Autoconfig environment name, example: frosty-snow-99\nRead before running: https://stash.backbase.com/projects/CT/repos/bbfuel/browse/README.md'),
+                string(name: 'ENVIRONMENT_NAME', defaultValue: 'env-name-00', description: 'Autoconfig environment name, example: frosty-snow-99\nRead before running: https://stash.backbase.com/projects/CT/repos/bb-fuel/browse/README.md'),
                 booleanParam(name: 'INGEST_ACCESS_CONTROL', defaultValue: true, description: 'Ingest access control setup'),
                 booleanParam(name: 'INGEST_CUSTOM_SERVICE_AGREEMENTS', defaultValue: false, description: 'Ingest custom service agreements'),
                 booleanParam(name: 'INGEST_BALANCE_HISTORY', defaultValue: false, description: 'Ingest balance history per arrangement (only applicable when INGEST_ACCESS_CONTROL = true)\n' +
@@ -21,7 +21,7 @@ properties([
                         'Only enable when strictly necessary (long running job)'),
                 choice(name: 'PERFORMANCE_TEST_DATA', choices: 'retail\nbusiness', description: 'Retail or business performance test data setup'),
                 choice(name: 'INFRA_BASE_URI', choices: 'infra.backbase.test:8080\neditorial.backbase.test:8080', description: ''),
-                string(name: 'DATALOADER_VERSION', defaultValue: 'latest', description: ''),
+                string(name: 'BB_FUEL_VERSION', defaultValue: 'latest', description: ''),
                 string(name: 'ADDITIONAL_ARGUMENTS', defaultValue: '', description: 'Additional command line arguments')
         ])
 ])
@@ -40,7 +40,7 @@ pipeline {
 
                     loadData(
                             environmentName: params.ENVIRONMENT_NAME,
-                            dataLoaderVersion: params.DATALOADER_VERSION,
+                            bbFuelVersion: params.BB_FUEL_VERSION,
                             additionalArguments: "-Dinfra.base.uri=http://${params.ENVIRONMENT_NAME}-${params.INFRA_BASE_URI} " +
                                     "-Dingest.access.control=${params.INGEST_ACCESS_CONTROL} " +
                                     "-Dingest.custom.service.agreements=${params.INGEST_CUSTOM_SERVICE_AGREEMENTS} " +

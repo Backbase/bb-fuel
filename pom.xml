@@ -8,12 +8,12 @@
     </parent>
 
     <groupId>com.backbase.ct</groupId>
-    <artifactId>dataloader</artifactId>
+    <artifactId>bb-fuel</artifactId>
     <version>1.7.7-SNAPSHOT</version>
-    <name>Backbase :: Capability Testing :: Data Loader</name>
+    <name>Backbase :: Capability Testing :: bb-fuel</name>
 
     <scm>
-        <developerConnection>scm:git:ssh://git@stash.backbase.com:7999/ct/dataloader.git</developerConnection>
+        <developerConnection>scm:git:ssh://git@stash.backbase.com:7999/ct/bb-fuel.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
 
@@ -26,7 +26,7 @@
     </distributionManagement>
 
     <properties>
-        <mainClass>com.backbase.ct.dataloader.Application</mainClass>
+        <mainClass>com.backbase.ct.bbfuel.Application</mainClass>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <slf4j-simple.version>1.7.25</slf4j-simple.version>

@@ -1,6 +1,6 @@
 spring:
   application:
-    name: dataloader
+    name: bb-fuel
     version: @project.version@
 #  activemq:
 #    broker-url: ${activemq.url:tcp://${environment.name}-infra.backbase.test:51616}
@@ -11,7 +11,7 @@ logging:
   level:
     com.backbase: WARN
     org.springframework: WARN
-    com.backbase.ct.dataloader: DEBUG
+    com.backbase.ct.bb-fuel: DEBUG
 
 sso:
   jwt:

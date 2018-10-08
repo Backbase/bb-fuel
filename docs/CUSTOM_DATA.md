@@ -2,7 +2,7 @@
 
 ## How to run with custom data
 ```
-java -Denvironment.name=your-env-00 -cp /path/to/custom/resources/folder/:dataloader-jar-with-dependencies.jar com.backbase.testing.dataloader.Runner
+java -Denvironment.name=your-env-00 -cp /path/to/custom/resources/folder/:bb-fuel-jar-with-dependencies.jar com.backbase.testing.bb-fuel.Runner
 ```
 `/path/to/custom/resources/folder/` must contain the custom `json` files
 
@@ -10,7 +10,7 @@ java -Denvironment.name=your-env-00 -cp /path/to/custom/resources/folder/:datalo
 ### How to run with performance test data setup
 Based on [gatling-performance-simulations](https://stash.backbase.com/projects/CT/repos/gatling-performance-simulations/browse):
 ```
-java -Denvironment.name=your-env-00 -Dlegal.entities.with.users.json.location=data/performance-test-legal-entities-with-users-{retail or business}.json dataloader-{version}-boot.jar
+java -Denvironment.name=your-env-00 -Dlegal.entities.with.users.json.location=data/performance-test-legal-entities-with-users-{retail or business}.json bb-fuel-{version}-boot.jar
 ```
 
 ### How to run on multi-tenancy environments
@@ -22,7 +22,7 @@ java -Denvironment.name=your-env-00 \
 -Dmulti.tenancy.environment=true \
 -Dtenant.id=tenant_a \
 -Droot.entitlements.admin=user001_t1 \
-dataloader-{version}-boot.jar
+bb-fuel-{version}-boot.jar
 ```
 
 Repeat for each tenant according to the LDAP configuration as follows:

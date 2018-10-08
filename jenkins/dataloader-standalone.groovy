@@ -1,6 +1,6 @@
 properties([
         parameters([
-                string(name: 'ENVIRONMENT_NAME', defaultValue: 'env-name-00', description: 'Autoconfig environment name, example: frosty-snow-99\nRead before running: https://stash.backbase.com/projects/CT/repos/dataloader/browse/README.md'),
+                string(name: 'ENVIRONMENT_NAME', defaultValue: 'env-name-00', description: 'Autoconfig environment name, example: frosty-snow-99\nRead before running: https://stash.backbase.com/projects/CT/repos/bbfuel/browse/README.md'),
                 booleanParam(name: 'INGEST_ACCESS_CONTROL', defaultValue: true, description: 'Ingest access control setup'),
                 booleanParam(name: 'INGEST_CUSTOM_SERVICE_AGREEMENTS', defaultValue: false, description: 'Ingest custom service agreements'),
                 booleanParam(name: 'INGEST_BALANCE_HISTORY', defaultValue: false, description: 'Ingest balance history per arrangement (only applicable when INGEST_ACCESS_CONTROL = true)\n' +
@@ -27,7 +27,7 @@ properties([
 def downloadArtifact(version) {
     withCredentials([[$class          : 'UsernamePasswordMultiBinding', credentialsId: "${env.ARTIFACTS_CREDENTIALS_ID}",
                       usernameVariable: 'AR_USERNAME', passwordVariable: 'AR_PASSWORD']]) {
-        sh "curl -X GET -k -u ${AR_USERNAME}:${AR_PASSWORD} https://artifacts.backbase.com/backbase-development-builds/com/backbase/ct/dataloader/${version}/dataloader-${version}-boot.jar -O -J -L"
+        sh "curl -X GET -k -u ${AR_USERNAME}:${AR_PASSWORD} https://artifacts.backbase.com/backbase-development-builds/com/backbase/ct/bbfuel/${version}/bbfuel-${version}-boot.jar -O -J -L"
     }
 }
 
@@ -35,7 +35,7 @@ def getDataLoaderVersion(version) {
     if (version == 'latest') {
         withCredentials([[$class          : 'UsernamePasswordMultiBinding', credentialsId: "${env.ARTIFACTS_CREDENTIALS_ID}",
                           usernameVariable: 'AR_USERNAME', passwordVariable: 'AR_PASSWORD']]) {
-            version = sh(returnStdout: true, script: '''curl -X GET -s -k -u ${AR_USERNAME}:${AR_PASSWORD} https://artifacts.backbase.com/backbase-development-builds/com/backbase/ct/dataloader/ | grep href | grep -v maven | cut -d'"' -f2 | cut -d'/' -f1 | sort --version-sort | tail -n 1''').toString().trim()
+            version = sh(returnStdout: true, script: '''curl -X GET -s -k -u ${AR_USERNAME}:${AR_PASSWORD} https://artifacts.backbase.com/backbase-development-builds/com/backbase/ct/bbfuel/ | grep href | grep -v maven | cut -d'"' -f2 | cut -d'/' -f1 | sort --version-sort | tail -n 1''').toString().trim()
         }
     }
 
@@ -73,7 +73,7 @@ node {
                     "-Dingest.actions=${params.INGEST_ACTIONS} " +
                     customLegalEntitiesWithUsersJson +
                     "${params.ADDITIONAL_ARGUMENTS} " +
-                    "-jar dataloader-${dataLoaderVersion}-boot.jar"
+                    "-jar bbfuel-${dataLoaderVersion}-boot.jar"
         }
     }
 }

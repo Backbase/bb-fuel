@@ -1,7 +1,7 @@
-# Data Loader
+# bb-fuel
 
 ## Description
-Data Loader can ingest the following:
+bb-fuel can ingest the following:
 - Legal entities
 - Service agreements
 - Users
@@ -24,24 +24,24 @@ It is based on REST and relies on DBS service specs.
 - [Base setup](docs/BASE_SETUP.md)
 - [Capability data setup](docs/CAPABILITY_DATA_SETUP.md)
 
-## How to run Data Loader
-All builds can be found [here](https://artifacts.backbase.com/backbase-development-builds/com/backbase/ct/dataloader)
+## How to run bb-fuel
+All builds can be found [here](https://artifacts.backbase.com/backbase-development-builds/com/backbase/ct/bb-fuel)
 
 1. Provision an [Autoconfig](https://backbase.atlassian.net/wiki/x/94BtC) environment based on `dbs` or `dbs-microservices` stack with **at least** the following capabilities (based on default configuration:
 ```
 capabilities="Entitlements,ProductSummary"
 ```
-2. Run Data Loader as follows:
+2. Run bb-fuel as follows:
 
 - For Autoconfig environments:
 ```
-java -Denvironment.name=your-env-00 -jar dataloader-{version}-boot.jar
+java -Denvironment.name=your-env-00 -jar bb-fuel-{version}-boot.jar
 ```
 - Or alter the [environment.properties](src/main/resources/environment.properties) accordingly
 
 - For local Blade environment:
 ```
-java -Duse.local.configurations=true -jar dataloader-{version}-boot.jar
+java -Duse.local.configurations=true -jar bb-fuel-{version}-boot.jar
 ```
 - See [local.properties](src/main/resources/local.properties) for this local configuration
 
@@ -50,7 +50,7 @@ The following properties can be set to custom values for different purposes: [da
 
 Example:
 ```
-java -Denvironment.name=your-env-00 -Darrangements.max=20 -Ddebit.cards.min=10 -Ddebit.cards.max=30 -Dtransactions-max=50 -jar dataloader-{version}-boot.jar
+java -Denvironment.name=your-env-00 -Darrangements.max=20 -Ddebit.cards.min=10 -Ddebit.cards.max=30 -Dtransactions-max=50 -jar bb-fuel-{version}-boot.jar
 ```
 
 ### Health check
@@ -82,25 +82,25 @@ healthcheck.timeout.in.minutes=10
 See [Custom data](docs/CUSTOM_DATA.md)
 
 ## Versions
-Data Loader supports multiple DBS versions. See below which version maps to the required DBS version.
+bb-fuel supports multiple DBS versions. See below which version maps to the required DBS version.
 
 | DBS version | Tool minimal version                                                                                             |
 |-------------|------------------------------------------------------------------------------------------------------------------|
-| 2.13.0      | [1.6.0+](https://artifacts.backbase.com/backbase-development-builds/com/backbase/ct/dataloader/1.6.0/)           |
-| 2.12.2      | [1.4.11+](https://artifacts.backbase.com/backbase-development-builds/com/backbase/ct/dataloader/1.4.11/)         |
-| 2.12.1      | [1.4.5+](https://artifacts.backbase.com/backbase-development-builds/com/backbase/ct/dataloader/1.4.5/)           |
-| 2.12.0      | [1.3.6+](https://artifacts.backbase.com/backbase-development-builds/com/backbase/ct/dataloader/1.3.6/)           |
-| 2.11.2      | [1.3.5+](https://artifacts.backbase.com/backbase-development-builds/com/backbase/ct/dataloader/1.3.5/)           |
-| 2.11.1      | [1.1.0+](https://artifacts.backbase.com/backbase-development-builds/com/backbase/ct/dataloader/1.1.0/)           |
-| 2.11.0      | [1.0.5+](https://artifacts.backbase.com/backbase-development-builds/com/backbase/ct/dataloader/1.0.5/)           |
-| 2.10.4      | [2.10.4 tag on repo](https://stash.backbase.com/projects/CT/repos/dataloader/commits?until=refs%2Ftags%2F2.10.4) |
-| 2.10.3      | [2.10.3 tag on repo](https://stash.backbase.com/projects/CT/repos/dataloader/commits?until=refs%2Ftags%2F2.10.3) |
-| 2.10.2      | [2.10.2 tag on repo](https://stash.backbase.com/projects/CT/repos/dataloader/commits?until=refs%2Ftags%2F2.10.2) |
-| 2.10.1      | [2.10.1 tag on repo](https://stash.backbase.com/projects/CT/repos/dataloader/commits?until=refs%2Ftags%2F2.10.1) |
-| 2.10.0      | [2.10.0 tag on repo](https://stash.backbase.com/projects/CT/repos/dataloader/commits?until=refs%2Ftags%2F2.10.0) |
+| 2.13.0      | [1.6.0+](https://artifacts.backbase.com/backbase-development-builds/com/backbase/ct/bb-fuel/1.6.0/)           |
+| 2.12.2      | [1.4.11+](https://artifacts.backbase.com/backbase-development-builds/com/backbase/ct/bb-fuel/1.4.11/)         |
+| 2.12.1      | [1.4.5+](https://artifacts.backbase.com/backbase-development-builds/com/backbase/ct/bb-fuel/1.4.5/)           |
+| 2.12.0      | [1.3.6+](https://artifacts.backbase.com/backbase-development-builds/com/backbase/ct/bb-fuel/1.3.6/)           |
+| 2.11.2      | [1.3.5+](https://artifacts.backbase.com/backbase-development-builds/com/backbase/ct/bb-fuel/1.3.5/)           |
+| 2.11.1      | [1.1.0+](https://artifacts.backbase.com/backbase-development-builds/com/backbase/ct/bb-fuel/1.1.0/)           |
+| 2.11.0      | [1.0.5+](https://artifacts.backbase.com/backbase-development-builds/com/backbase/ct/bb-fuel/1.0.5/)           |
+| 2.10.4      | [2.10.4 tag on repo](https://stash.backbase.com/projects/CT/repos/bb-fuel/commits?until=refs%2Ftags%2F2.10.4) |
+| 2.10.3      | [2.10.3 tag on repo](https://stash.backbase.com/projects/CT/repos/bb-fuel/commits?until=refs%2Ftags%2F2.10.3) |
+| 2.10.2      | [2.10.2 tag on repo](https://stash.backbase.com/projects/CT/repos/bb-fuel/commits?until=refs%2Ftags%2F2.10.2) |
+| 2.10.1      | [2.10.1 tag on repo](https://stash.backbase.com/projects/CT/repos/bb-fuel/commits?until=refs%2Ftags%2F2.10.1) |
+| 2.10.0      | [2.10.0 tag on repo](https://stash.backbase.com/projects/CT/repos/bb-fuel/commits?until=refs%2Ftags%2F2.10.0) |
 
 ## Questions and issues
-If you have a question about Data Loader, or are experiencing a problem please contact the author, Kwo Ding via Hipchat or [e-mail](mailto:kwo@backbase.com)
+If you have a question about bb-fuel, or are experiencing a problem please contact the author, Kwo Ding via Hipchat or [e-mail](mailto:kwo@backbase.com)
 
 ## Contributing
 You are welcome to provide bug fixes and new features in the form of pull requests. If you'd like to contribute, please be mindful of the following guidelines:

@@ -11,7 +11,7 @@ logging:
   level:
     com.backbase: WARN
     org.springframework: WARN
-    com.backbase.ct.bb-fuel: DEBUG
+    com.backbase.ct.bbfuel: DEBUG
 
 sso:
   jwt:

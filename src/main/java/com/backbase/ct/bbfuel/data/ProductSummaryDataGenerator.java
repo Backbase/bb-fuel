@@ -18,8 +18,8 @@ import static com.backbase.integration.arrangement.rest.spec.v2.arrangements.Arr
 import static com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.Currency.EUR;
 import static java.lang.String.valueOf;
 import static java.util.Arrays.asList;
-import static java.util.Collections.singletonList;
 
+import com.backbase.ct.bbfuel.util.CommonHelpers;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
 import com.backbase.ct.bbfuel.util.ParserUtil;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBody;
@@ -53,14 +53,14 @@ public class ProductSummaryDataGenerator {
     private static final List<CountryCode> COUNTRY_CODES;
     private static final int WEEKS_IN_A_QUARTER = 13;
 
-    private static final Map<Integer, List<String>> PRODUCT_ARRANGEMENT_NAME_MAP = new HashMap<>();
+    private static final Map<Integer, String> PRODUCT_ARRANGEMENT_NAME_MAP = new HashMap<>();
 
     static {
-        PRODUCT_ARRANGEMENT_NAME_MAP.put(2, singletonList("Savings"));
-        PRODUCT_ARRANGEMENT_NAME_MAP.put(3, singletonList("Credit Card"));
-        PRODUCT_ARRANGEMENT_NAME_MAP.put(4, singletonList("Loan"));
-        PRODUCT_ARRANGEMENT_NAME_MAP.put(5, singletonList("Term Deposit"));
-        PRODUCT_ARRANGEMENT_NAME_MAP.put(6, singletonList("Investments"));
+        PRODUCT_ARRANGEMENT_NAME_MAP.put(2, "Savings");
+        PRODUCT_ARRANGEMENT_NAME_MAP.put(3, "Credit Card");
+        PRODUCT_ARRANGEMENT_NAME_MAP.put(4, "Loan");
+        PRODUCT_ARRANGEMENT_NAME_MAP.put(5, "Term Deposit");
+        PRODUCT_ARRANGEMENT_NAME_MAP.put(6, "Investments");
     }
 
     static {
@@ -97,7 +97,7 @@ public class ProductSummaryDataGenerator {
                 ProductsPostRequestBody[].class);
     }
 
-    public static List<ArrangementsPostRequestBody> generateArrangementsPostRequestBodies(String externalLegalEntityId,
+    public static synchronized List<ArrangementsPostRequestBody> generateArrangementsPostRequestBodies(String externalLegalEntityId,
         ArrangementType arrangementType, Currency currency) {
 
         return FUNCTION_MAP.get(arrangementType).apply(externalLegalEntityId, currency);
@@ -106,6 +106,12 @@ public class ProductSummaryDataGenerator {
     static ArrangementsPostRequestBody generateArrangementsPostRequestBody(String externalLegalEntityId,
         int productId, Currency currency, ArrangementType arrangementType) {
         return generateArrangementsPostRequestBody(externalLegalEntityId, productId, currency, arrangementType, null);
+    }
+
+    private static String constructArrangementName(Integer productId, String currentAccountArrangementName,
+        String arrangementNameSuffix) {
+        return productId == 1 ? currentAccountArrangementName + arrangementNameSuffix
+            : PRODUCT_ARRANGEMENT_NAME_MAP.get(productId) + arrangementNameSuffix;
     }
 
     static ArrangementsPostRequestBody generateArrangementsPostRequestBody(String externalLegalEntityId,
@@ -140,9 +146,7 @@ public class ProductSummaryDataGenerator {
             " " + currency + " " + bic.substring(0, 3) + accountNumber.substring(accountNumber.length() - 3);
 
         String fullArrangementName = arrangementName != null ? arrangementName + arrangementNameSuffix :
-            (productId == 1 ? currentAccountArrangementName + arrangementNameSuffix
-                : PRODUCT_ARRANGEMENT_NAME_MAP.get(productId).get(ThreadLocalRandom.current().nextInt(
-                    PRODUCT_ARRANGEMENT_NAME_MAP.get(productId).size())) + arrangementNameSuffix);
+            constructArrangementName(productId, currentAccountArrangementName, arrangementNameSuffix);
         String id = UUID.randomUUID().toString();
         LOGGER.debug("generateArrangementsPostRequestBody id: {}, ccy: {} leId {} productId {}",
             id, currency, externalLegalEntityId, productId);

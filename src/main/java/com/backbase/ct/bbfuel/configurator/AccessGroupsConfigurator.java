@@ -63,7 +63,7 @@ public class AccessGroupsConfigurator {
         return functionGroupId;
     }
 
-    public String ingestDataGroupForArrangements(String externalServiceAgreementId, ProductGroup productGroup,
+    public synchronized String ingestDataGroupForArrangements(String externalServiceAgreementId, ProductGroup productGroup,
         List<ArrangementId> arrangementIds) {
         List<String> internalArrangementIds = arrangementIds.stream()
             .map(ArrangementId::getInternalArrangementId)

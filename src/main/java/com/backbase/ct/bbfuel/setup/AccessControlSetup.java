@@ -154,11 +154,12 @@ public class AccessControlSetup extends BaseSetup {
                 productGroupTemplate.getCurrentAccountNames(),
                 productGroupTemplate.getProductIds());
 
-            this.accessGroupsConfigurator
+            String dataGroupId = this.accessGroupsConfigurator
                 .ingestDataGroupForArrangements(externalServiceAgreementId, productGroupTemplate,
                     arrangementIds);
 
             ProductGroup productGroup = new ProductGroup(productGroupTemplate);
+            productGroup.setId(dataGroupId);
             productGroup.setExternalServiceAgreementId(externalServiceAgreementId);
             productGroupService.saveAssignedProductGroup(productGroup);
 
@@ -221,7 +222,6 @@ public class AccessControlSetup extends BaseSetup {
 
         this.jobProfileService.getAssignedJobProfiles(externalServiceAgreementId).forEach(jobProfile -> {
             if (jobProfileService.isJobProfileForUserRole(jobProfile, user.getRole(), isRetail)) {
-
                 List<String> dataGroupIds = this.productGroupService
                     .getAssignedProductGroups(externalServiceAgreementId)
                     .stream()

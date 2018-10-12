@@ -6,6 +6,7 @@ import static com.backbase.ct.bbfuel.data.ProductSummaryDataGenerator.generateBa
 import static com.backbase.ct.bbfuel.data.ProductSummaryDataGenerator.generateCurrentAccountArrangementsPostRequestBodies;
 import static com.backbase.ct.bbfuel.data.ProductSummaryDataGenerator.generateNonCurrentAccountArrangementsPostRequestBodies;
 import static com.backbase.ct.bbfuel.util.CommonHelpers.generateRandomNumberInRange;
+import static java.util.Collections.synchronizedList;
 import static org.apache.http.HttpStatus.SC_CREATED;
 
 import com.backbase.ct.bbfuel.IngestException;
@@ -41,10 +42,10 @@ public class ProductSummaryConfigurator {
             .forEach(arrangementsIntegrationRestClient::ingestProductAndLogResponse);
     }
 
-    public List<ArrangementId> ingestArrangements(String externalLegalEntityId, List<Currency> currencies,
+    public synchronized List<ArrangementId> ingestArrangements(String externalLegalEntityId, List<Currency> currencies,
         List<String> currentAccountNames, List<String> productIds) {
         List<ArrangementsPostRequestBody> arrangements = new ArrayList<>();
-        List<ArrangementId> arrangementIds = new ArrayList<>();
+        List<ArrangementId> arrangementIds = synchronizedList(new ArrayList<>());
         int totalNumberOfArrangements = generateRandomNumberInRange(globalProperties.getInt(PROPERTY_ARRANGEMENTS_GENERAL_MIN),
             globalProperties.getInt(PROPERTY_ARRANGEMENTS_GENERAL_MAX));
 

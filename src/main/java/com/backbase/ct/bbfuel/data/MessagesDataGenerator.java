@@ -1,17 +1,17 @@
 package com.backbase.ct.bbfuel.data;
 
+import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromStringList;
+
 import com.backbase.dbs.messages.presentation.rest.spec.v4.messagecenter.ConversationDraftsPostRequestBody;
 import com.backbase.dbs.messages.presentation.rest.spec.v4.messagecenter.DraftsPostRequestBody;
 import com.github.javafaker.Faker;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 import org.apache.commons.codec.binary.Base64;
 
 public class MessagesDataGenerator {
 
     private static Faker faker = new Faker();
-    private static Random random = new Random();
 
     public static DraftsPostRequestBody generateDraftsPostRequestBody() {
         List<String> categories = Arrays.asList("ma", "ln", "pym");
@@ -19,7 +19,7 @@ public class MessagesDataGenerator {
         return new DraftsPostRequestBody()
             .withBody(encodeString(faker.lorem().paragraph()))
             .withSubject(faker.lorem().sentence().replace(".", ""))
-            .withCategory(categories.get(random.nextInt(2)))
+            .withCategory(getRandomFromStringList(categories))
             .withImportant(true);
     }
 

@@ -38,4 +38,12 @@ public class CommonHelpers {
         }
         return StringUtils.join(strings, " ");
     }
+
+    public static <T extends Enum> T getRandomFromEnumValues(T[] values) {
+        return values[ThreadLocalRandom.current().nextInt(values.length)];
+    }
+
+    public static String getRandomFromStringList(List<String> values) {
+        return values.get(ThreadLocalRandom.current().nextInt(values.size()));
+    }
 }

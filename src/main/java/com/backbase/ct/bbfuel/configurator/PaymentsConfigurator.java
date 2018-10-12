@@ -2,6 +2,7 @@ package com.backbase.ct.bbfuel.configurator;
 
 import static com.backbase.ct.bbfuel.data.CommonConstants.PAYMENT_TYPE_SEPA_CREDIT_TRANSFER;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PAYMENT_TYPE_US_DOMESTIC_WIRE;
+import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromStringList;
 import static org.apache.http.HttpStatus.SC_ACCEPTED;
 
 import com.backbase.ct.bbfuel.client.accessgroup.UserContextPresentationRestClient;
@@ -51,7 +52,7 @@ public class PaymentsConfigurator {
             .generateRandomNumberInRange(globalProperties.getInt(CommonConstants.PROPERTY_PAYMENTS_MIN),
                 globalProperties.getInt(CommonConstants.PROPERTY_PAYMENTS_MAX));
         IntStream.range(0, randomAmount).parallel().forEach(randomNumber -> {
-            String paymentType = PAYMENT_TYPES.get(random.nextInt(PAYMENT_TYPES.size()));
+            String paymentType = getRandomFromStringList(PAYMENT_TYPES);
             ArrangementsByBusinessFunctionGetResponseBody randomArrangement;
 
             if (PAYMENT_TYPE_SEPA_CREDIT_TRANSFER.equals(paymentType)) {

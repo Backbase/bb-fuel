@@ -35,6 +35,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.BiFunction;
@@ -93,10 +94,23 @@ public class ProductSummaryDataGenerator {
         return Iban.random(getRandomFromList(COUNTRY_CODES)).toString();
     }
 
-    public static ProductsPostRequestBody[] generateProductsPostRequestBodies() throws IOException {
-        return ParserUtil
+    public static List<ProductsPostRequestBody> generateProductsPostRequestBodies() throws IOException {
+        return asList(ParserUtil
             .convertJsonToObject(globalProperties.getString(PROPERTY_PRODUCTS_JSON_LOCATION),
-                ProductsPostRequestBody[].class);
+                ProductsPostRequestBody[].class));
+    }
+
+    public static String getProductTypeNameFromProductsPostRequestBodies(String productId) throws IOException {
+        List<ProductsPostRequestBody> productsPostRequestBodies = asList(ParserUtil
+            .convertJsonToObject(globalProperties.getString(PROPERTY_PRODUCTS_JSON_LOCATION),
+                ProductsPostRequestBody[].class));
+
+        ProductsPostRequestBody product = productsPostRequestBodies.stream()
+            .filter(productsPostRequestBody -> productId.equals(productsPostRequestBody.getId()))
+            .findFirst()
+            .orElseThrow(() -> new RuntimeException(String.format("No product found by id: %s", productId)));
+
+        return product.getProductTypeName();
     }
 
     public static synchronized List<ArrangementsPostRequestBody> generateArrangementsPostRequestBodies(
@@ -151,12 +165,18 @@ public class ProductSummaryDataGenerator {
 
         IntStream.range(0, numberOfArrangements).parallel().forEach(randomNumber -> {
 
-            String currentAccountName = ""; // TODO: Implement read from products.json
+
             Currency currency = getRandomFromList(currencies);
             productIds.remove(String.valueOf(1));
             String productId = getRandomFromList(productIds);
+            String arrangementName = null;
+            try {
+                arrangementName = getProductTypeNameFromProductsPostRequestBodies(productId);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             ArrangementsPostRequestBody arrangementsPostRequestBody = getArrangementsPostRequestBody(
-                externalLegalEntityId, currentAccountName, currency, Integer.valueOf(productId));
+                externalLegalEntityId, arrangementName, currency, Integer.valueOf(productId));
 
             arrangementsPostRequestBodies.add(arrangementsPostRequestBody);
         });

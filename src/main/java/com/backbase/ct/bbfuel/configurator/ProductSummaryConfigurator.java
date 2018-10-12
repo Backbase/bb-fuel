@@ -36,14 +36,13 @@ public class ProductSummaryConfigurator {
     private final ArrangementsIntegrationRestClient arrangementsIntegrationRestClient;
 
     public void ingestProducts() throws IOException {
-        ProductsPostRequestBody[] products = ProductSummaryDataGenerator.generateProductsPostRequestBodies();
-        Arrays.stream(products).parallel()
+        List<ProductsPostRequestBody> products = ProductSummaryDataGenerator.generateProductsPostRequestBodies();
+        products.stream().parallel()
             .forEach(arrangementsIntegrationRestClient::ingestProductAndLogResponse);
     }
 
     public List<ArrangementId> ingestArrangements(String externalLegalEntityId, List<Currency> currencies,
-        List<String> currentAccountNames, List<String> productIds, boolean isRetail) {
-        List<ArrangementsPostRequestBody> arrangements = new ArrayList<>();
+        List<String> currentAccountNames, List<String> productIds) {
         List<ArrangementId> arrangementIds = new ArrayList<>();
         int totalNumberOfArrangements = generateRandomNumberInRange(globalProperties.getInt(PROPERTY_ARRANGEMENTS_GENERAL_MIN),
             globalProperties.getInt(PROPERTY_ARRANGEMENTS_GENERAL_MAX));
@@ -52,12 +51,13 @@ public class ProductSummaryConfigurator {
         int numberOfNonCurrentAccounts = tenPercentOfTotal > 0 ? tenPercentOfTotal : 0;
         int numberOfCurrentAccounts = totalNumberOfArrangements - numberOfNonCurrentAccounts;
 
-        arrangements.addAll(generateCurrentAccountArrangementsPostRequestBodies(
-            externalLegalEntityId, currencies, currentAccountNames, numberOfCurrentAccounts));
+        List<ArrangementsPostRequestBody> arrangements = new ArrayList<>(
+            generateCurrentAccountArrangementsPostRequestBodies(
+                externalLegalEntityId, currencies, currentAccountNames, numberOfCurrentAccounts));
 
         if (numberOfNonCurrentAccounts > 0) {
             arrangements.addAll(generateNonCurrentAccountArrangementsPostRequestBodies(
-                    externalLegalEntityId, currencies, productIds, numberOfNonCurrentAccounts);
+                    externalLegalEntityId, currencies, productIds, numberOfNonCurrentAccounts));
         }
 
         for (ArrangementsPostRequestBody arrangement : arrangements) {

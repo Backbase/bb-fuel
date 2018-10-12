@@ -8,8 +8,10 @@ import static java.util.stream.Collectors.toList;
 import com.backbase.ct.bbfuel.client.accessgroup.AccessGroupIntegrationRestClient;
 import com.backbase.ct.bbfuel.dto.ArrangementId;
 import com.backbase.ct.bbfuel.dto.entitlement.JobProfile;
+import com.backbase.ct.bbfuel.dto.entitlement.ProductGroup;
 import com.backbase.ct.bbfuel.service.AccessGroupService;
 import com.backbase.ct.bbfuel.service.JobProfileService;
+import com.backbase.ct.bbfuel.service.ProductGroupService;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.config.functions.FunctionsGetResponseBody;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.Permission;
 import java.util.List;
@@ -25,6 +27,8 @@ public class AccessGroupsConfigurator {
     private final AccessGroupService accessGroupService;
 
     private final JobProfileService jobProfileService;
+
+    private final ProductGroupService productGroupService;
 
     private static final String ARRANGEMENTS = "ARRANGEMENTS";
 
@@ -59,13 +63,23 @@ public class AccessGroupsConfigurator {
         return functionGroupId;
     }
 
-    public String ingestDataGroupForArrangements(String externalServiceAgreementId, String dataGroupName,
+    public String ingestDataGroupForArrangements(String externalServiceAgreementId, ProductGroup productGroup,
         List<ArrangementId> arrangementIds) {
         List<String> internalArrangementIds = arrangementIds.stream()
             .map(ArrangementId::getInternalArrangementId)
             .collect(toList());
 
-        return accessGroupService.ingestDataGroup(
-            externalServiceAgreementId, dataGroupName, ARRANGEMENTS, internalArrangementIds);
+        String dataGroupId = productGroupService.retrieveIdFromCache(productGroup);
+        if (dataGroupId != null) {
+            return dataGroupId;
+        }
+
+        dataGroupId = accessGroupService.ingestDataGroup(
+            externalServiceAgreementId, productGroup.getProductGroupName(), ARRANGEMENTS, internalArrangementIds);
+        productGroup.setId(dataGroupId);
+
+        productGroupService.storeInCache(productGroup);
+
+        return dataGroupId;
     }
 }

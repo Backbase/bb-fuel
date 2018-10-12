@@ -35,7 +35,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.BiFunction;
@@ -164,10 +163,7 @@ public class ProductSummaryDataGenerator {
         List<ArrangementsPostRequestBody> arrangementsPostRequestBodies = new ArrayList<>();
 
         IntStream.range(0, numberOfArrangements).parallel().forEach(randomNumber -> {
-
-
             Currency currency = getRandomFromList(currencies);
-            productIds.remove(String.valueOf(1));
             String productId = getRandomFromList(productIds);
             String arrangementName = null;
             try {

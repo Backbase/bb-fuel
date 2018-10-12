@@ -20,7 +20,6 @@ import com.backbase.integration.arrangement.rest.spec.v2.balancehistory.BalanceH
 import com.backbase.integration.arrangement.rest.spec.v2.products.ProductsPostRequestBody;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -55,20 +54,20 @@ public class ProductSummaryConfigurator {
             generateCurrentAccountArrangementsPostRequestBodies(
                 externalLegalEntityId, currencies, currentAccountNames, numberOfCurrentAccounts));
 
-        if (numberOfNonCurrentAccounts > 0) {
+        productIds.remove(String.valueOf(1));
+
+        if (numberOfNonCurrentAccounts > 0 && !productIds.isEmpty()) {
             arrangements.addAll(generateNonCurrentAccountArrangementsPostRequestBodies(
                     externalLegalEntityId, currencies, productIds, numberOfNonCurrentAccounts));
         }
 
-        for (ArrangementsPostRequestBody arrangement : arrangements) {
+        arrangements.forEach(arrangement -> {
             ArrangementsPostResponseBody arrangementsPostResponseBody = arrangementsIntegrationRestClient
                 .ingestArrangement(arrangement);
-
             LOGGER.info("Arrangement [{}] ingested for product [{}] under legal entity [{}]",
                 arrangement.getName(), arrangement.getProductId(), externalLegalEntityId);
-
             arrangementIds.add(new ArrangementId(arrangementsPostResponseBody.getId(), arrangement.getId()));
-        }
+        });
 
         return arrangementIds;
     }

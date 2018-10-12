@@ -1,0 +1,159 @@
+[
+  {
+    "productGroupName": "Amsterdam",
+    "currencies": [
+      "EUR"
+    ],
+    "currentAccountNames": [
+      "Factory",
+      "GBF Corporate",
+      "Legal",
+      "Manufacturing",
+      "Marketing",
+      "Payables",
+      "Personnel",
+      "Receivables",
+      "Sales",
+      "Support"
+    ],
+    "productIds": [
+      "1", "2"
+    ]
+  },
+  {
+    "productGroupName": "Portland",
+    "currencies": [
+      "USD"
+    ],
+    "currentAccountNames": [
+      "Factory",
+      "GBF Corporate",
+      "Legal",
+      "Manufacturing",
+      "Marketing",
+      "Payables",
+      "Personnel",
+      "Receivables",
+      "Sales",
+      "Support"
+    ],
+    "productIds": [
+      "1", "2"
+    ]
+  },
+  {
+    "productGroupName": "Vancouver",
+    "currencies": [
+      "CAD"
+    ],
+    "currentAccountNames": [
+      "Factory",
+      "GBF Corporate",
+      "Legal",
+      "Manufacturing",
+      "Marketing",
+      "Payables",
+      "Personnel",
+      "Receivables",
+      "Sales",
+      "Support"
+    ],
+    "productIds": [
+      "1", "2"
+    ]
+  },
+  {
+    "productGroupName": "London",
+    "currencies": [
+      "GBP"
+    ],
+    "currentAccountNames": [
+      "Factory",
+      "GBF Corporate",
+      "Legal",
+      "Manufacturing",
+      "Marketing",
+      "Payables",
+      "Personnel",
+      "Receivables",
+      "Sales",
+      "Support"
+    ],
+    "productIds": [
+      "1", "2"
+    ]
+  },
+  {
+    "productGroupName": "International Trade",
+    "currencies": [
+      "BHD",
+      "CNY",
+      "JPY",
+      "EUR",
+      "INR",
+      "TRY",
+      "EUR"
+    ],
+    "currentAccountNames": [
+      "Bahrain sales",
+      "China sales",
+      "Japan sales",
+      "India sales",
+      "Turkey sales",
+      "Belgium sales"
+    ],
+    "productIds": [
+      "1"
+    ]
+  },
+  {
+    "productGroupName": "Finance International",
+    "currencies": [
+      "EUR",
+      "GBP",
+      "USD",
+      "CAD"
+    ],
+    "currentAccountNames": [
+      "Assets",
+      "Liability",
+      "Equity",
+      "Revenue",
+      "Expenses",
+      "Executive expenses",
+      "Transport"
+    ],
+    "productIds": [
+      "1", "2", "4", "6"
+    ]
+  },
+  {
+    "productGroupName": "Payroll",
+    "currencies": [
+      "EUR",
+      "GBP",
+      "USD",
+      "CAD"
+    ],
+    "currentAccountNames": [
+      "Payroll"
+    ],
+    "productIds": [
+      "1"
+    ]
+  },
+  {
+    "productGroupName": "General EUR/USD",
+    "isRetail": true,
+    "currencies": [
+      "EUR",
+      "USD"
+    ],
+    "currentAccountNames": [
+      "Current Account"
+    ],
+    "productIds": [
+      "1", "2", "3", "4", "5", "6"
+    ]
+  }
+]

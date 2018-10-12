@@ -14,8 +14,9 @@ import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_TRANSA
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
 import static com.backbase.ct.bbfuel.enrich.LegalEntityWithUsersEnricher.createRootLegalEntityWithAdmin;
 import static com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.Currency;
+import static java.util.Collections.synchronizedMap;
+import static org.apache.commons.lang.StringUtils.deleteWhitespace;
 
-import com.backbase.ct.bbfuel.IngestException;
 import com.backbase.ct.bbfuel.client.accessgroup.ServiceAgreementsPresentationRestClient;
 import com.backbase.ct.bbfuel.client.accessgroup.UserContextPresentationRestClient;
 import com.backbase.ct.bbfuel.client.legalentity.LegalEntityPresentationRestClient;
@@ -33,15 +34,19 @@ import com.backbase.ct.bbfuel.dto.LegalEntityWithUsers;
 import com.backbase.ct.bbfuel.dto.User;
 import com.backbase.ct.bbfuel.dto.UserContext;
 import com.backbase.ct.bbfuel.dto.entitlement.JobProfile;
+import com.backbase.ct.bbfuel.dto.entitlement.ProductGroup;
 import com.backbase.ct.bbfuel.input.JobProfileReader;
 import com.backbase.ct.bbfuel.input.LegalEntityWithUsersReader;
+import com.backbase.ct.bbfuel.input.ProductGroupReader;
 import com.backbase.ct.bbfuel.service.JobProfileService;
 import com.backbase.presentation.user.rest.spec.v2.users.LegalEntityByUserGetResponseBody;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -66,20 +71,23 @@ public class AccessControlSetup extends BaseSetup {
     private final JobProfileService jobProfileService;
 
     private final JobProfileReader jobProfileReader;
+    private final ProductGroupReader productGroupReader;
     private String rootEntitlementsAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
     private List<LegalEntityWithUsers> legalEntitiesWithUsers;
     private List<JobProfile> jobProfileTemplates;
+    private List<ProductGroup> productGroupTemplates;
 
     public List<LegalEntityWithUsers> getLegalEntitiesWithUsers() {
         return this.legalEntitiesWithUsers;
     }
 
     /**
-     * Legal entities and job profiles are loaded from files.
+     * Legal entities, job profiles and product groups are loaded from files.
      */
     public void initiate() throws IOException {
         this.legalEntitiesWithUsers = this.legalEntityWithUsersReader.load();
         this.jobProfileTemplates = this.jobProfileReader.load();
+        this.productGroupTemplates = this.productGroupReader.load();
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_ACCESS_CONTROL)) {
             this.setupBankWithEntitlementsAdminAndProducts();
             this.setupAccessControlForUsers();
@@ -151,85 +159,48 @@ public class AccessControlSetup extends BaseSetup {
             });
     }
 
-    protected DataGroupCollection ingestDataGroupArrangementsForServiceAgreement(String externalServiceAgreementId,
+    protected List<String> ingestDataGroupArrangementsForServiceAgreement(String externalServiceAgreementId,
         String externalLegalEntityId, boolean isRetail) {
-        final DataGroupCollection dataGroupCollection = new DataGroupCollection();
-        List<Callable<Void>> taskList = isRetail
-            ? generateIngestArrangementsTasksForRetail(
-                externalServiceAgreementId, externalLegalEntityId, dataGroupCollection)
-            : generateIngestArrangementsTasksForBusiness(
-                externalServiceAgreementId, externalLegalEntityId, dataGroupCollection);
+        List<String> dataGroupIds = new ArrayList<>();
 
-        taskList.parallelStream()
-            .forEach(voidCallable -> {
-                try {
-                    voidCallable.call();
-                } catch (Exception e) {
-                    throw new IngestException(e.getMessage(), e);
-                }
-            });
+        productGroupTemplates.forEach(productGroupTemplate -> {
+            if (isRetail && !productGroupTemplate.getIsRetail()) {
+                return;
+            }
+            List<ArrangementId> arrangementIds = this.productSummaryConfigurator.ingestArrangements(
+                externalLegalEntityId,
+                productGroupTemplate.getCurrencies(),
+                productGroupTemplate.getCurrentAccountNames(),
+                productGroupTemplate.getProductIds(),
+                isRetail);
 
-        return dataGroupCollection;
+            String dataGroupId = this.accessGroupsConfigurator
+                .ingestDataGroupForArrangements(externalServiceAgreementId, productGroupTemplate.getProductGroupName(),
+                    arrangementIds);
+
+            dataGroupIds.add(dataGroupId);
+
+            ingestTransactions(arrangementIds);
+            ingestBalanceHistory(arrangementIds);
+        });
+
+        return dataGroupIds;
     }
 
-    private List<Callable<Void>> generateIngestArrangementsTasksForRetail(String externalServiceAgreementId,
-        String externalLegalEntityId, DataGroupCollection dataGroupCollection) {
-        List<Callable<Void>> taskList = new ArrayList<>();
-        taskList.add(() -> generateTask(externalServiceAgreementId, "General EUR",
-            () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, GENERAL_RETAIL, Currency.EUR
-            ),
-            dataGroupCollection::setGeneralEurId));
-        taskList.add(() -> generateTask(externalServiceAgreementId, "General USD",
-            () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, GENERAL_RETAIL, Currency.USD
-            ),
-            dataGroupCollection::setGeneralUsdId));
-
-        return taskList;
-    }
-
-    private List<Callable<Void>> generateIngestArrangementsTasksForBusiness(String externalServiceAgreementId,
-        String externalLegalEntityId, DataGroupCollection dataGroupCollection) {
-        List<Callable<Void>> taskList = new ArrayList<>();
-        taskList.add(() -> generateTask(externalServiceAgreementId, "Amsterdam",
-            () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, GENERAL_BUSINESS,
-                Currency.EUR
-            ),
-            dataGroupCollection::setAmsterdamId));
-
-        taskList.add(() -> generateTask(externalServiceAgreementId, "Portland",
-            () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, GENERAL_BUSINESS,
-                Currency.USD
-            ),
-            dataGroupCollection::setPortlandId));
-
-        taskList.add(() -> generateTask(externalServiceAgreementId, "Vancouver",
-            () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, GENERAL_BUSINESS,
-                Currency.CAD
-            ),
-            dataGroupCollection::setVancouverId));
-
-        taskList.add(() -> generateTask(externalServiceAgreementId, "London",
-            () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, GENERAL_BUSINESS,
-                Currency.GBP
-            ),
-            dataGroupCollection::setLondonId));
-
-        if (this.globalProperties.getBoolean(PROPERTY_INGEST_INTERNATIONAL_AND_PAYROLL_DATA_GROUPS)) {
-            taskList.add(() -> generateTask(externalServiceAgreementId, INTERNATIONAL_TRADE.toString(),
-                () -> this.productSummaryConfigurator
-                    .ingestArrangements(externalLegalEntityId, INTERNATIONAL_TRADE, null),
-                dataGroupCollection::setInternationalTradeId));
-
-            taskList.add(() -> generateTask(externalServiceAgreementId, FINANCE_INTERNATIONAL.toString(),
-                () -> this.productSummaryConfigurator
-                    .ingestArrangements(externalLegalEntityId, FINANCE_INTERNATIONAL, null),
-                dataGroupCollection::setFinanceInternationalId));
-
-            taskList.add(() -> generateTask(externalServiceAgreementId, PAYROLL.toString(),
-                () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, PAYROLL, null),
-                dataGroupCollection::setPayrollId));
+    private void ingestTransactions(List<ArrangementId> arrangementIds) {
+        if (this.globalProperties.getBoolean(PROPERTY_INGEST_TRANSACTIONS)) {
+            arrangementIds.parallelStream()
+                .forEach(arrangementId -> this.transactionsConfigurator
+                    .ingestTransactionsByArrangement(arrangementId.getExternalArrangementId()));
         }
-        return taskList;
+    }
+
+    private void ingestBalanceHistory(List<ArrangementId> arrangementIds) {
+        if (this.globalProperties.getBoolean(PROPERTY_INGEST_BALANCE_HISTORY)) {
+            arrangementIds.parallelStream()
+                .forEach(arrangementId -> this.productSummaryConfigurator
+                    .ingestBalanceHistory(arrangementId.getExternalArrangementId()));
+        }
     }
 
     /**
@@ -241,7 +212,7 @@ public class AccessControlSetup extends BaseSetup {
             createLegalEntitiesUserContextMap(legalEntityWithUsers)
                 .values()
                 .forEach(userContext -> ingestFunctionGroups(
-                    userContext.getExternalServiceAgreementId(),isRetail)
+                    userContext.getExternalServiceAgreementId(), isRetail)
                 );
         });
     }
@@ -254,7 +225,7 @@ public class AccessControlSetup extends BaseSetup {
             jobProfileTemplates.forEach(template -> {
                 if (!jobProfileService.isJobProfileForBranch(isRetail, template)) {
                     logger.info("Job profile template [{}] does not apply to this legal entity [isRetail: {}]",
-                    template.getJobProfileName(), isRetail);
+                        template.getJobProfileName(), isRetail);
                     return;
                 }
                 JobProfile jobProfile = new JobProfile(template);
@@ -284,7 +255,7 @@ public class AccessControlSetup extends BaseSetup {
     }
 
     private UserContext getUserContextBasedOnMSAByExternalUserId(User user,
-            LegalEntityByUserGetResponseBody legalEntity) {
+        LegalEntityByUserGetResponseBody legalEntity) {
         this.loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
         this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
@@ -312,27 +283,4 @@ public class AccessControlSetup extends BaseSetup {
             .withExternalLegalEntityId(legalEntity.getExternalId());
     }
 
-    private Void generateTask(String externalServiceAgreementId, String dataGroupName,
-        Supplier<List<ArrangementId>> supplier,
-        Consumer<String> consumer) {
-        logger.debug("generateTask [{}] [{}]", externalServiceAgreementId, dataGroupName);
-        List<ArrangementId> arrangementIds = new ArrayList<>(supplier.get());
-        String dataGroupId = this.accessGroupsConfigurator
-            .ingestDataGroupForArrangements(externalServiceAgreementId, dataGroupName, arrangementIds);
-
-        if (this.globalProperties.getBoolean(PROPERTY_INGEST_TRANSACTIONS)) {
-            arrangementIds.parallelStream()
-                .forEach(arrangementId -> this.transactionsConfigurator
-                    .ingestTransactionsByArrangement(arrangementId.getExternalArrangementId()));
-        }
-
-        if (this.globalProperties.getBoolean(PROPERTY_INGEST_BALANCE_HISTORY)) {
-            arrangementIds.parallelStream()
-                .forEach(arrangementId -> this.productSummaryConfigurator
-                    .ingestBalanceHistory(arrangementId.getExternalArrangementId()));
-        }
-
-        consumer.accept(dataGroupId);
-        return null;
-    }
 }

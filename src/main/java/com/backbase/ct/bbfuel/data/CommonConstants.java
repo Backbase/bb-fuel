@@ -63,6 +63,7 @@ public final class CommonConstants {
     public static final String PROPERTY_INGEST_ACCESS_CONTROL = "ingest.access.control";
     public static final String PROPERTY_INGEST_CUSTOM_SERVICE_AGREEMENTS = "ingest.custom.service.agreements";
     public static final String PROPERTY_JOB_PROFILES_JSON_LOCATION = "job.profiles.json";
+    public static final String PROPERTY_PRODUCT_GROUPS_JSON_LOCATION = "product.groups.json";
 
     // User data
     static final String PROPERTY_DEBIT_CARDS_MIN = "debit.cards.min";

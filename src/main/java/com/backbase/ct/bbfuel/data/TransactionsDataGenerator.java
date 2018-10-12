@@ -4,7 +4,7 @@ import static com.backbase.ct.bbfuel.data.CommonConstants.TRANSACTION_TYPES;
 import static com.backbase.ct.bbfuel.data.CommonConstants.TRANSACTION_TYPE_GROUPS;
 import static com.backbase.ct.bbfuel.util.CommonHelpers.generateRandomNumberInRange;
 import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromEnumValues;
-import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromStringList;
+import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
 import static com.backbase.integration.transaction.external.rest.spec.v2.transactions.TransactionsPostRequestBody.CreditDebitIndicator.CRDT;
 import static java.util.Arrays.asList;
 
@@ -49,16 +49,16 @@ public class TransactionsDataGenerator {
             finalCategory = category;
         } else {
             finalCategory = creditDebitIndicator == CRDT
-                ? getRandomFromStringList(CREDIT_BUSINESS_CATEGORIES)
-                : getRandomFromStringList(DEBIT_BUSINESS_CATEGORIES);
+                ? getRandomFromList(CREDIT_BUSINESS_CATEGORIES)
+                : getRandomFromList(DEBIT_BUSINESS_CATEGORIES);
         }
 
         return new TransactionsPostRequestBody().withId(UUID.randomUUID().toString())
             .withArrangementId(externalArrangementId)
             .withReference(faker.lorem().characters(10))
             .withDescription(faker.lorem().sentence().replace(".", ""))
-            .withTypeGroup(getRandomFromStringList(TRANSACTION_TYPE_GROUPS))
-            .withType(getRandomFromStringList(TRANSACTION_TYPES))
+            .withTypeGroup(getRandomFromList(TRANSACTION_TYPE_GROUPS))
+            .withType(getRandomFromList(TRANSACTION_TYPES))
             .withCategory(finalCategory)
             .withBookingDate(DateUtils.addDays(new Date(), generateRandomNumberInRange(-365, 0)))
             .withValueDate(DateUtils.addDays(new Date(), generateRandomNumberInRange(-365, 0)))

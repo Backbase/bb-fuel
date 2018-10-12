@@ -2,7 +2,7 @@ package com.backbase.ct.bbfuel.data;
 
 import static com.backbase.ct.bbfuel.data.CommonConstants.PAYMENT_TYPE_SEPA_CREDIT_TRANSFER;
 import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromEnumValues;
-import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromStringList;
+import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
 
 import com.backbase.ct.bbfuel.util.CommonHelpers;
 import com.backbase.dbs.presentation.paymentorder.rest.spec.v2.paymentorders.AccountIdentification;
@@ -115,13 +115,13 @@ public class PaymentsDataGenerator {
 
     private static Bank generateCorrespondentBank() {
         return new Bank()
-            .withBankBranchCode(getRandomFromStringList(branchCodes))
+            .withBankBranchCode(getRandomFromList(branchCodes))
             .withName(faker.name().fullName());
     }
 
     private static Bank generateCreditorBank() {
         return new Bank()
-            .withBankBranchCode(getRandomFromStringList(branchCodes))
+            .withBankBranchCode(getRandomFromList(branchCodes))
             .withName(faker.name().fullName())
             .withPostalAddress(new PostalAddress()
                 .withAddressLine1(faker.address().streetAddress())

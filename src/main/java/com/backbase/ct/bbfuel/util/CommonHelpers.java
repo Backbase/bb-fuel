@@ -43,7 +43,4 @@ public class CommonHelpers {
         return values[ThreadLocalRandom.current().nextInt(values.length)];
     }
 
-    public static String getRandomFromStringList(List<String> values) {
-        return values.get(ThreadLocalRandom.current().nextInt(values.size()));
-    }
 }

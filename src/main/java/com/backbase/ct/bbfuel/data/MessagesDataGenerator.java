@@ -1,6 +1,6 @@
 package com.backbase.ct.bbfuel.data;
 
-import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromStringList;
+import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
 
 import com.backbase.dbs.messages.presentation.rest.spec.v4.messagecenter.ConversationDraftsPostRequestBody;
 import com.backbase.dbs.messages.presentation.rest.spec.v4.messagecenter.DraftsPostRequestBody;
@@ -19,7 +19,7 @@ public class MessagesDataGenerator {
         return new DraftsPostRequestBody()
             .withBody(encodeString(faker.lorem().paragraph()))
             .withSubject(faker.lorem().sentence().replace(".", ""))
-            .withCategory(getRandomFromStringList(categories))
+            .withCategory(getRandomFromList(categories))
             .withImportant(true);
     }
 

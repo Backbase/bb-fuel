@@ -1,5 +1,7 @@
 package com.backbase.ct.bbfuel.data;
 
+import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromEnumValues;
+
 import com.backbase.dbs.presentation.notifications.rest.spec.v2.notifications.NotificationsPostRequestBody;
 import com.backbase.dbs.presentation.notifications.rest.spec.v2.notifications.SeverityLevel;
 import com.github.javafaker.Faker;
@@ -12,7 +14,7 @@ public class NotificationsDataGenerator {
 
     public static NotificationsPostRequestBody generateNotificationsPostRequestBodyForGlobalTargetGroup() {
         return new NotificationsPostRequestBody()
-            .withLevel(SeverityLevel.values()[random.nextInt(SeverityLevel.values().length)])
+            .withLevel(getRandomFromEnumValues(SeverityLevel.values()))
             .withMessage(faker.lorem().paragraph() + " {{link}}")
             .withOrigin(faker.lorem().characters(10))
             .withTargetGroup(NotificationsPostRequestBody.TargetGroup.GLOBAL)

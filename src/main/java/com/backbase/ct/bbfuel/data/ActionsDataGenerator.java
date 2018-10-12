@@ -1,6 +1,7 @@
 package com.backbase.ct.bbfuel.data;
 
 import static com.backbase.ct.bbfuel.util.CommonHelpers.generateRandomAmountInRange;
+import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
 import static java.util.Arrays.asList;
 
 import com.backbase.dbs.actions.actionrecipes.presentation.rest.spec.v2.actionrecipes.ActionParent;
@@ -21,7 +22,7 @@ public class ActionsDataGenerator {
         return new ActionRecipesPostRequestBody()
             .withName(faker.lorem().characters(30))
             .withActive(true)
-            .withSpecificationId(specificationIds.get(random.nextInt(specificationIds.size())))
+            .withSpecificationId(getRandomFromList(specificationIds))
             .withActions(createAllActionsList())
             .withAmount(generateRandomAmountInRange(100000L, 999999L))
             .withArrangementId(internalArrangementId)

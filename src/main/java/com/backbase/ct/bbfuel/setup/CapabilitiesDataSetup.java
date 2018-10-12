@@ -9,6 +9,7 @@ import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_MESSAG
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_NOTIFICATIONS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_PAYMENTS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
+import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
 
 import com.backbase.ct.bbfuel.client.accessgroup.UserContextPresentationRestClient;
 import com.backbase.ct.bbfuel.configurator.ActionsConfigurator;
@@ -80,7 +81,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
     private UserContext getRandomUserContextBasedOnMsaByExternalUserId(List<User> users) {
         return accessControlSetup
             .getUserContextBasedOnMSAByExternalUserId(
-                users.get(random.nextInt(users.size())));
+                getRandomFromList(users));
     }
 
     private void ingestLimits() {

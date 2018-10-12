@@ -2,6 +2,7 @@ package com.backbase.ct.bbfuel.configurator;
 
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_USE_PFM_CATEGORIES_FOR_TRANSACTIONS;
+import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
 import static org.apache.http.HttpStatus.SC_CREATED;
 
 import com.backbase.ct.bbfuel.client.accessgroup.UserContextPresentationRestClient;
@@ -61,7 +62,7 @@ public class TransactionsConfigurator {
             .forEach(randomNumber -> {
                 String categoryName = null;
                 if (globalProperties.getBoolean(PROPERTY_USE_PFM_CATEGORIES_FOR_TRANSACTIONS)) {
-                    categoryName = finalCategoryNames.get(random.nextInt(finalCategoryNames.size()));
+                    categoryName = getRandomFromList(finalCategoryNames);
                 }
 
                 transactions.add(

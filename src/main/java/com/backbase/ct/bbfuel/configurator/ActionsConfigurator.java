@@ -4,6 +4,7 @@ import static com.backbase.ct.bbfuel.data.ActionsDataGenerator.generateActionRec
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ACTIONS_MAX;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ACTIONS_MIN;
 import static com.backbase.ct.bbfuel.util.CommonHelpers.generateRandomNumberInRange;
+import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
 import static org.apache.http.HttpStatus.SC_ACCEPTED;
 
 import com.backbase.ct.bbfuel.client.accessgroup.UserContextPresentationRestClient;
@@ -47,7 +48,7 @@ public class ActionsConfigurator {
         arrangements.addAll(productSummaryPresentationRestClient.getUsDomesticWireArrangements());
 
         IntStream.range(0, randomAmount).parallel().forEach(randomNumber -> {
-            String internalArrangementId = arrangements.get(random.nextInt(arrangements.size())).getId();
+            String internalArrangementId = getRandomFromList(arrangements).getId();
 
             ActionRecipesPostRequestBody actionRecipesPostRequestBody = generateActionRecipesPostRequestBody(
                 internalArrangementId);

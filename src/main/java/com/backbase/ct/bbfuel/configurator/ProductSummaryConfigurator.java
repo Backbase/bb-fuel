@@ -8,6 +8,7 @@ import static com.backbase.ct.bbfuel.data.ProductSummaryDataGenerator.generateNo
 import static com.backbase.ct.bbfuel.util.CommonHelpers.generateRandomNumberInRange;
 import static org.apache.http.HttpStatus.SC_CREATED;
 
+import com.backbase.ct.bbfuel.IngestException;
 import com.backbase.ct.bbfuel.client.productsummary.ArrangementsIntegrationRestClient;
 import com.backbase.ct.bbfuel.data.ArrangementType;
 import com.backbase.ct.bbfuel.data.ProductSummaryDataGenerator;
@@ -42,6 +43,7 @@ public class ProductSummaryConfigurator {
 
     public List<ArrangementId> ingestArrangements(String externalLegalEntityId, List<Currency> currencies,
         List<String> currentAccountNames, List<String> productIds) {
+        List<ArrangementsPostRequestBody> arrangements = new ArrayList<>();
         List<ArrangementId> arrangementIds = new ArrayList<>();
         int totalNumberOfArrangements = generateRandomNumberInRange(globalProperties.getInt(PROPERTY_ARRANGEMENTS_GENERAL_MIN),
             globalProperties.getInt(PROPERTY_ARRANGEMENTS_GENERAL_MAX));
@@ -50,9 +52,14 @@ public class ProductSummaryConfigurator {
         int numberOfNonCurrentAccounts = tenPercentOfTotal > 0 ? tenPercentOfTotal : 0;
         int numberOfCurrentAccounts = totalNumberOfArrangements - numberOfNonCurrentAccounts;
 
-        List<ArrangementsPostRequestBody> arrangements = new ArrayList<>(
-            generateCurrentAccountArrangementsPostRequestBodies(
-                externalLegalEntityId, currencies, currentAccountNames, numberOfCurrentAccounts));
+        if (productIds.isEmpty()) {
+            throw new IngestException("No product ids found in input file");
+        }
+
+        if (productIds.contains(String.valueOf(1))) {
+            arrangements.addAll(generateCurrentAccountArrangementsPostRequestBodies(
+                    externalLegalEntityId, currencies, currentAccountNames, numberOfCurrentAccounts));
+        }
 
         productIds.remove(String.valueOf(1));
 
@@ -61,7 +68,7 @@ public class ProductSummaryConfigurator {
                     externalLegalEntityId, currencies, productIds, numberOfNonCurrentAccounts));
         }
 
-        arrangements.forEach(arrangement -> {
+        arrangements.parallelStream().forEach(arrangement -> {
             ArrangementsPostResponseBody arrangementsPostResponseBody = arrangementsIntegrationRestClient
                 .ingestArrangement(arrangement);
             LOGGER.info("Arrangement [{}] ingested for product [{}] under legal entity [{}]",

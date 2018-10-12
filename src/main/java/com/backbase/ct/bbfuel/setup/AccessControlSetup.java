@@ -145,20 +145,22 @@ public class AccessControlSetup extends BaseSetup {
         String externalLegalEntityId, boolean isRetail) {
 
         productGroupTemplates.forEach(productGroupTemplate -> {
-            if (isRetail && !productGroupTemplate.getIsRetail()) {
+            ProductGroup productGroup = new ProductGroup(productGroupTemplate);
+
+            if (isRetail && !productGroup.getIsRetail()) {
                 return;
             }
+
             List<ArrangementId> arrangementIds = this.productSummaryConfigurator.ingestArrangements(
                 externalLegalEntityId,
-                productGroupTemplate.getCurrencies(),
-                productGroupTemplate.getCurrentAccountNames(),
-                productGroupTemplate.getProductIds());
+                productGroup.getCurrencies(),
+                productGroup.getCurrentAccountNames(),
+                productGroup.getProductIds());
 
             String dataGroupId = this.accessGroupsConfigurator
                 .ingestDataGroupForArrangements(externalServiceAgreementId, productGroupTemplate,
                     arrangementIds);
 
-            ProductGroup productGroup = new ProductGroup(productGroupTemplate);
             productGroup.setId(dataGroupId);
             productGroup.setExternalServiceAgreementId(externalServiceAgreementId);
             productGroupService.saveAssignedProductGroup(productGroup);

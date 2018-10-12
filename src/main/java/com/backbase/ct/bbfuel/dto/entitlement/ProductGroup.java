@@ -26,7 +26,7 @@ public class ProductGroup extends DbsEntity {
 
     public ProductGroup(ProductGroup source) {
         this.setProductGroupName(source.getProductGroupName());
-        this.setIsRetail(source.getIsRetail());
+        this.setIsRetail(source.getIsRetail() == null ? Boolean.valueOf(false) : source.getIsRetail());
         if (source.getCurrencies() != null) {
             this.setCurrencies(new ArrayList<>(source.getCurrencies()));
         }

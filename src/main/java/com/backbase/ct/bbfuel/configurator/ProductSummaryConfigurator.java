@@ -9,7 +9,6 @@ import static com.backbase.ct.bbfuel.util.CommonHelpers.generateRandomNumberInRa
 import static java.util.Collections.synchronizedList;
 import static org.apache.http.HttpStatus.SC_CREATED;
 
-import com.backbase.ct.bbfuel.IngestException;
 import com.backbase.ct.bbfuel.client.productsummary.ArrangementsIntegrationRestClient;
 import com.backbase.ct.bbfuel.data.ArrangementType;
 import com.backbase.ct.bbfuel.data.ProductSummaryDataGenerator;
@@ -52,10 +51,6 @@ public class ProductSummaryConfigurator {
         int tenPercentOfTotal = (int) Math.round(totalNumberOfArrangements * 0.1);
         int numberOfNonCurrentAccounts = tenPercentOfTotal > 0 ? tenPercentOfTotal : 0;
         int numberOfCurrentAccounts = totalNumberOfArrangements - numberOfNonCurrentAccounts;
-
-        if (productIds.isEmpty()) {
-            throw new IngestException("No product ids found in input file");
-        }
 
         if (productIds.contains(String.valueOf(1))) {
             arrangements.addAll(generateCurrentAccountArrangementsPostRequestBodies(

@@ -1,11 +1,8 @@
 package com.backbase.ct.bbfuel.configurator;
 
-import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ARRANGEMENTS_GENERAL_MAX;
-import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ARRANGEMENTS_GENERAL_MIN;
 import static com.backbase.ct.bbfuel.data.ProductSummaryDataGenerator.generateBalanceHistoryPostRequestBodies;
 import static com.backbase.ct.bbfuel.data.ProductSummaryDataGenerator.generateCurrentAccountArrangementsPostRequestBodies;
 import static com.backbase.ct.bbfuel.data.ProductSummaryDataGenerator.generateNonCurrentAccountArrangementsPostRequestBodies;
-import static com.backbase.ct.bbfuel.util.CommonHelpers.generateRandomNumberInRange;
 import static java.util.Collections.synchronizedList;
 import static org.apache.http.HttpStatus.SC_CREATED;
 
@@ -40,15 +37,13 @@ public class ProductSummaryConfigurator {
     }
 
     public synchronized List<ArrangementId> ingestArrangements(String externalLegalEntityId, List<Currency> currencies,
-        List<String> currentAccountNames, List<String> productIds) {
-        List<ArrangementsPostRequestBody> arrangements = new ArrayList<>();
+        List<String> currentAccountNames, List<String> productIds, int numberOfArrangements) {
+        List<ArrangementsPostRequestBody> arrangements = synchronizedList(new ArrayList<>());
         List<ArrangementId> arrangementIds = synchronizedList(new ArrayList<>());
-        int totalNumberOfArrangements = generateRandomNumberInRange(globalProperties.getInt(PROPERTY_ARRANGEMENTS_GENERAL_MIN),
-            globalProperties.getInt(PROPERTY_ARRANGEMENTS_GENERAL_MAX));
 
-        int tenPercentOfTotal = (int) Math.round(totalNumberOfArrangements * 0.1);
+        int tenPercentOfTotal = (int) Math.round(numberOfArrangements * 0.1);
         int numberOfNonCurrentAccounts = tenPercentOfTotal > 0 ? tenPercentOfTotal : 0;
-        int numberOfCurrentAccounts = totalNumberOfArrangements - numberOfNonCurrentAccounts;
+        int numberOfCurrentAccounts = numberOfArrangements - numberOfNonCurrentAccounts;
 
         if (productIds.contains(String.valueOf(1))) {
             arrangements.addAll(generateCurrentAccountArrangementsPostRequestBodies(

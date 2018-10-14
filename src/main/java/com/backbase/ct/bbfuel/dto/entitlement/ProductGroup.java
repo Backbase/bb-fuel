@@ -1,5 +1,6 @@
 package com.backbase.ct.bbfuel.dto.entitlement;
 
+import com.backbase.ct.bbfuel.dto.Amount;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.Currency;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,7 @@ public class ProductGroup extends DbsEntity {
     private List<Currency> currencies;
     private List<String> currentAccountNames;
     private List<String> productIds;
+    private Amount numberOfArrangements;
 
     public ProductGroup() {
         super();
@@ -36,5 +38,7 @@ public class ProductGroup extends DbsEntity {
         if (source.getProductIds() != null) {
             this.setProductIds(new ArrayList<>(source.getProductIds()));
         }
+
+        this.setNumberOfArrangements(source.getNumberOfArrangements());
     }
 }

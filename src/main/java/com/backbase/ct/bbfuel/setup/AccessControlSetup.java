@@ -7,6 +7,7 @@ import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_BALANC
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_TRANSACTIONS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
 import static com.backbase.ct.bbfuel.enrich.LegalEntityWithUsersEnricher.createRootLegalEntityWithAdmin;
+import static com.backbase.ct.bbfuel.util.CommonHelpers.generateRandomNumberInRange;
 
 import com.backbase.ct.bbfuel.client.accessgroup.UserContextPresentationRestClient;
 import com.backbase.ct.bbfuel.client.user.UserPresentationRestClient;
@@ -154,7 +155,9 @@ public class AccessControlSetup extends BaseSetup {
                 externalLegalEntityId,
                 productGroup.getCurrencies(),
                 productGroup.getCurrentAccountNames(),
-                productGroup.getProductIds());
+                productGroup.getProductIds(),
+                generateRandomNumberInRange(productGroup.getNumberOfArrangements().getMin(),
+                    productGroup.getNumberOfArrangements().getMax()));
 
             productGroup.setExternalServiceAgreementId(externalServiceAgreementId);
             this.accessGroupsConfigurator

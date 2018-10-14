@@ -36,7 +36,7 @@ public class ProductSummaryConfigurator {
             .forEach(arrangementsIntegrationRestClient::ingestProductAndLogResponse);
     }
 
-    public synchronized List<ArrangementId> ingestArrangements(String externalLegalEntityId, List<Currency> currencies,
+    public List<ArrangementId> ingestArrangements(String externalLegalEntityId, List<Currency> currencies,
         List<String> currentAccountNames, List<String> productIds, int numberOfArrangements) {
         List<ArrangementsPostRequestBody> arrangements = synchronizedList(new ArrayList<>());
         List<ArrangementId> arrangementIds = synchronizedList(new ArrayList<>());

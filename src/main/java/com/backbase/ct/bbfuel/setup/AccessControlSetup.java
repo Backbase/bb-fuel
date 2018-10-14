@@ -33,7 +33,6 @@ import com.backbase.ct.bbfuel.service.UserContextService;
 import com.backbase.presentation.user.rest.spec.v2.users.LegalEntityByUserGetResponseBody;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
-import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -71,7 +70,7 @@ public class AccessControlSetup extends BaseSetup {
     /**
      * Legal entities, job profiles and product groups are loaded from files.
      */
-    public void initiate() throws IOException {
+    public void initiate() {
         this.legalEntitiesWithUsers = this.legalEntityWithUsersReader.load();
         this.jobProfileTemplates = this.jobProfileReader.load();
         this.productGroupTemplates = this.productGroupReader.load();
@@ -84,7 +83,7 @@ public class AccessControlSetup extends BaseSetup {
         }
     }
 
-    private void setupBankWithEntitlementsAdminAndProducts() throws IOException {
+    private void setupBankWithEntitlementsAdminAndProducts() {
         LegalEntityWithUsers rootBank = createRootLegalEntityWithAdmin(rootEntitlementsAdmin);
         this.legalEntitiesAndUsersConfigurator.ingestLegalEntityWithUsers(rootBank);
         this.productSummaryConfigurator.ingestProducts();

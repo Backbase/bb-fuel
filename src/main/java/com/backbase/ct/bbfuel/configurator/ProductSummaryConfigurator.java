@@ -10,7 +10,6 @@ import static java.util.Collections.synchronizedList;
 import static org.apache.http.HttpStatus.SC_CREATED;
 
 import com.backbase.ct.bbfuel.client.productsummary.ArrangementsIntegrationRestClient;
-import com.backbase.ct.bbfuel.data.ArrangementType;
 import com.backbase.ct.bbfuel.data.ProductSummaryDataGenerator;
 import com.backbase.ct.bbfuel.dto.ArrangementId;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
@@ -19,7 +18,6 @@ import com.backbase.integration.arrangement.rest.spec.v2.arrangements.Arrangemen
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostResponseBody;
 import com.backbase.integration.arrangement.rest.spec.v2.balancehistory.BalanceHistoryPostRequestBody;
 import com.backbase.integration.arrangement.rest.spec.v2.products.ProductsPostRequestBody;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -35,8 +33,8 @@ public class ProductSummaryConfigurator {
     private static GlobalProperties globalProperties = GlobalProperties.getInstance();
     private final ArrangementsIntegrationRestClient arrangementsIntegrationRestClient;
 
-    public void ingestProducts() throws IOException {
-        List<ProductsPostRequestBody> products = ProductSummaryDataGenerator.generateProductsPostRequestBodies();
+    public void ingestProducts() {
+        List<ProductsPostRequestBody> products = ProductSummaryDataGenerator.getProductsFromFile();
         products.stream().parallel()
             .forEach(arrangementsIntegrationRestClient::ingestProductAndLogResponse);
     }
@@ -71,26 +69,6 @@ public class ProductSummaryConfigurator {
                 arrangement.getName(), arrangement.getProductId(), externalLegalEntityId);
             arrangementIds.add(new ArrangementId(arrangementsPostResponseBody.getId(), arrangement.getId()));
         });
-
-        return arrangementIds;
-    }
-
-    public List<ArrangementId> ingestArrangements(String externalLegalEntityId, ArrangementType arrangementType,
-        Currency currency) {
-        List<ArrangementId> arrangementIds = new ArrayList<>();
-
-        List<ArrangementsPostRequestBody> arrangements = ProductSummaryDataGenerator
-            .generateArrangementsPostRequestBodies(externalLegalEntityId, arrangementType, currency);
-
-        for (ArrangementsPostRequestBody arrangement : arrangements) {
-            ArrangementsPostResponseBody arrangementsPostResponseBody = arrangementsIntegrationRestClient
-                .ingestArrangement(arrangement);
-
-            LOGGER.info("Arrangement [{}] ingested for product [{}] under legal entity [{}]",
-                arrangement.getName(), arrangement.getProductId(), externalLegalEntityId);
-
-            arrangementIds.add(new ArrangementId(arrangementsPostResponseBody.getId(), arrangement.getId()));
-        }
 
         return arrangementIds;
     }

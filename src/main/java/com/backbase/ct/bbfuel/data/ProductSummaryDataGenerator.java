@@ -54,7 +54,7 @@ public class ProductSummaryDataGenerator {
         }
     }
 
-    public static String generateRandomIban() {
+    static String generateRandomIban() {
         return Iban.random(getRandomFromList(COUNTRY_CODES)).toString();
     }
 
@@ -156,8 +156,8 @@ public class ProductSummaryDataGenerator {
             .withNumber(String.format("%s", ThreadLocalRandom.current().nextInt(9999)))
             .withPrincipalAmount(generateRandomAmountInRange(10000L, 999999L))
             .withCurrentInvestmentValue(generateRandomAmountInRange(10000L, 999999L))
-            .withDebitAccount(true)
-            .withCreditAccount(true)
+            .withDebitAccount(productId == 1)
+            .withCreditAccount(productId == 1)
             .withDebitCards(debitCards)
             .withAccountHolderName(faker.name().fullName())
             .withAccountHolderAddressLine1(faker.address().streetAddress())

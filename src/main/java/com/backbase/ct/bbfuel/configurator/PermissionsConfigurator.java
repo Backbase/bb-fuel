@@ -1,7 +1,12 @@
 package com.backbase.ct.bbfuel.configurator;
 
+import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
+import static org.apache.http.HttpStatus.SC_OK;
+
 import com.backbase.ct.bbfuel.client.accessgroup.AccessGroupIntegrationRestClient;
 import com.backbase.ct.bbfuel.client.accessgroup.AccessGroupPresentationRestClient;
+import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.exceptions.BadRequestException;
+import io.restassured.response.Response;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -29,7 +34,9 @@ public class PermissionsConfigurator {
                 externalUserId,
                 internalServiceAgreementId,
                 functionGroupId,
-                dataGroupIds);
+                dataGroupIds)
+                .then()
+                .statusCode(SC_OK);
 
             LOGGER
                 .info("Permission assigned for service agreement [{}], user [{}], function group [{}], data groups {}",
@@ -39,13 +46,30 @@ public class PermissionsConfigurator {
 
     public void assignPermissions(String externalUserId, String internalServiceAgreementId, String functionGroupId,
         List<String> dataGroupIds) {
-        accessGroupIntegrationRestClient.assignPermissions(
+        Response response = accessGroupIntegrationRestClient.assignPermissions(
             externalUserId,
             internalServiceAgreementId,
             functionGroupId,
             dataGroupIds);
 
-        LOGGER.info("Permission assigned for service agreement [{}], user [{}], function group [{}], data groups {}",
-            internalServiceAgreementId, externalUserId, functionGroupId, dataGroupIds);
+        if (response.statusCode() == SC_BAD_REQUEST &&
+            response.then()
+                .extract()
+                .as(BadRequestException.class)
+                .getErrorCode()
+                .equals("dataAccessGroup.assign.error.message.E_ASSIGNED")) {
+
+            LOGGER.info("Data groups {} already assigned for service agreement [{}], user [{}], function group [{}], skipped assigning",
+                dataGroupIds, internalServiceAgreementId, externalUserId, functionGroupId);
+        } else {
+            response.then()
+                .statusCode(SC_OK);
+
+            LOGGER
+                .info("Permission assigned for service agreement [{}], user [{}], function group [{}], data groups {}",
+                    internalServiceAgreementId, externalUserId, functionGroupId, dataGroupIds);
+        }
+
+
     }
 }

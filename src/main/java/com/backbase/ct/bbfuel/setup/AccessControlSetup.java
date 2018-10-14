@@ -9,6 +9,7 @@ import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ROOT_ENTITLEM
 import static com.backbase.ct.bbfuel.enrich.LegalEntityWithUsersEnricher.createRootLegalEntityWithAdmin;
 import static com.backbase.ct.bbfuel.util.CommonHelpers.generateRandomNumberInRange;
 
+import com.backbase.ct.bbfuel.client.accessgroup.AccessGroupPresentationRestClient;
 import com.backbase.ct.bbfuel.client.accessgroup.UserContextPresentationRestClient;
 import com.backbase.ct.bbfuel.client.user.UserPresentationRestClient;
 import com.backbase.ct.bbfuel.configurator.AccessGroupsConfigurator;
@@ -30,6 +31,7 @@ import com.backbase.ct.bbfuel.input.ProductGroupReader;
 import com.backbase.ct.bbfuel.service.JobProfileService;
 import com.backbase.ct.bbfuel.service.ProductGroupService;
 import com.backbase.ct.bbfuel.service.UserContextService;
+import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.datagroups.DataGroupsGetResponseBody;
 import com.backbase.presentation.user.rest.spec.v2.users.LegalEntityByUserGetResponseBody;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
@@ -44,6 +46,7 @@ import org.springframework.stereotype.Component;
 public class AccessControlSetup extends BaseSetup {
 
     private final UserContextPresentationRestClient userContextPresentationRestClient;
+    private final AccessGroupPresentationRestClient accessGroupPresentationRestClient;
     private final LegalEntitiesAndUsersConfigurator legalEntitiesAndUsersConfigurator;
     private final UserPresentationRestClient userPresentationRestClient;
     private final ProductSummaryConfigurator productSummaryConfigurator;
@@ -128,8 +131,10 @@ public class AccessControlSetup extends BaseSetup {
 
         legalEntitiesUserContextMap.values()
             .forEach(userContext -> {
-                ingestDataGroupArrangementsForServiceAgreement(userContext.getExternalServiceAgreementId(),
-                    userContext.getExternalLegalEntityId(), legalEntityWithUsers.getCategory().isRetail());
+                ingestDataGroupArrangementsForServiceAgreement(userContext.getInternalServiceAgreementId(),
+                    userContext.getExternalServiceAgreementId(),
+                    userContext.getExternalLegalEntityId(),
+                    legalEntityWithUsers.getCategory().isRetail());
 
                 boolean isRetail = legalEntityWithUsers.getCategory().isRetail();
                 ingestFunctionGroups(userContext.getExternalServiceAgreementId(), isRetail);
@@ -140,7 +145,8 @@ public class AccessControlSetup extends BaseSetup {
             });
     }
 
-    protected void ingestDataGroupArrangementsForServiceAgreement(String externalServiceAgreementId,
+    protected void ingestDataGroupArrangementsForServiceAgreement(String internalServiceAgreementId,
+        String externalServiceAgreementId,
         String externalLegalEntityId, boolean isRetail) {
 
         productGroupTemplates.forEach(productGroupTemplate -> {
@@ -150,23 +156,39 @@ public class AccessControlSetup extends BaseSetup {
                 return;
             }
 
-            List<ArrangementId> arrangementIds = this.productSummaryConfigurator.ingestArrangements(
-                externalLegalEntityId,
-                productGroup.getCurrencies(),
-                productGroup.getCurrentAccountNames(),
-                productGroup.getProductIds(),
-                generateRandomNumberInRange(productGroup.getNumberOfArrangements().getMin(),
-                    productGroup.getNumberOfArrangements().getMax()));
+            // Combination of data group name and service agreement is unique in the system
+            DataGroupsGetResponseBody existingDataGroup = accessGroupPresentationRestClient
+                .retrieveDataGroupsByServiceAgreement(internalServiceAgreementId)
+                .stream()
+                .filter(dataGroupsGetResponseBody -> productGroup.getProductGroupName()
+                    .equals(dataGroupsGetResponseBody.getName()))
+                .findFirst()
+                .orElse(null);
 
-            productGroup.setExternalServiceAgreementId(externalServiceAgreementId);
-            this.accessGroupsConfigurator
-                .ingestDataGroupForArrangements(productGroup,
-                    arrangementIds);
+            if (existingDataGroup == null) {
+                List<ArrangementId> arrangementIds = this.productSummaryConfigurator.ingestArrangements(
+                    externalLegalEntityId,
+                    productGroup.getCurrencies(),
+                    productGroup.getCurrentAccountNames(),
+                    productGroup.getProductIds(),
+                    generateRandomNumberInRange(productGroup.getNumberOfArrangements().getMin(),
+                        productGroup.getNumberOfArrangements().getMax()));
 
-            productGroupService.saveAssignedProductGroup(productGroup);
+                productGroup.setExternalServiceAgreementId(externalServiceAgreementId);
+                this.accessGroupsConfigurator
+                    .ingestDataGroupForArrangements(productGroup,
+                        arrangementIds);
 
-            ingestTransactions(arrangementIds);
-            ingestBalanceHistory(arrangementIds);
+                productGroupService.saveAssignedProductGroup(productGroup);
+
+                ingestTransactions(arrangementIds);
+                ingestBalanceHistory(arrangementIds);
+            } else {
+                productGroup.setId(existingDataGroup.getId());
+                productGroup.setExternalServiceAgreementId(externalServiceAgreementId);
+                productGroupService.storeInCache(productGroup);
+                productGroupService.saveAssignedProductGroup(productGroup);
+            }
         });
     }
 

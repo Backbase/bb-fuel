@@ -61,13 +61,13 @@ public class ServiceAgreementsSetup extends BaseSetup {
                 .retrieveServiceAgreement(internalServiceAgreementId)
                 .getExternalId();
 
-            setupFunctionDataGroups(externalServiceAgreementId,
+            setupFunctionDataGroups(internalServiceAgreementId, externalServiceAgreementId,
                 serviceAgreementPostRequestBody.getParticipants());
             setupPermissions(internalServiceAgreementId, externalServiceAgreementId, serviceAgreementPostRequestBody.getParticipants());
         });
     }
 
-    private void setupFunctionDataGroups(String externalServiceAgreementId,
+    private void setupFunctionDataGroups(String internalServiceAgreementId, String externalServiceAgreementId,
         Set<Participant> participants) {
         Set<Participant> participantsSharingAccounts = participants.stream()
             .filter(Participant::getSharingAccounts)
@@ -89,8 +89,8 @@ public class ServiceAgreementsSetup extends BaseSetup {
             .getExternalId();
 
         this.accessControlSetup
-            .ingestDataGroupArrangementsForServiceAgreement(externalServiceAgreementId, externalLegalEntityId,
-                users.size() == 1); //RB20180923: simplified assumption holds for now
+            .ingestDataGroupArrangementsForServiceAgreement(internalServiceAgreementId, externalServiceAgreementId,
+                externalLegalEntityId, users.size() == 1); //RB20180923: simplified assumption holds for now
 
         adminFunctionGroupId = this.accessGroupsConfigurator
             .ingestAdminFunctionGroup(externalServiceAgreementId).getId();

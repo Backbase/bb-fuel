@@ -2,12 +2,12 @@
 
 ## Access control setup
 - Root legal entity with user external id from property `root.entitlements.admin` as entitlements admin
-- Legal entities (under the root legal entity `C000000`) per legal entity entry with users array in the files [legal-entities-with-users.json](src/main/resources/data/legal-entities-with-users.json) and [legal-entities-with-users-without-permissions.json](src/main/resources/data/legal-entities-with-users-without-permissions.json) - configurable, see section *Custom data*
+- Legal entities (under the root legal entity `C000000`) per legal entity entry with users array in the file [legal-entities-with-users.json](src/main/resources/data/legal-entities-with-users.json) - configurable, see section *Custom data*
 
 For legal entities and users in the file [legal-entities-with-users.json](src/main/resources/data/legal-entities-with-users.json):
+- All job profiles and product groups are assigned to the users via master service agreement of the legal entities from the input file.
 - Job profiles as defined in [job-profiles.json](src/main/resources/data/job-profiles.json)
 - Product groups as defined in [product-groups.json](src/main/resources/data/product-groups.json)
-- All job profiles and data groups are assigned to the users via master service agreement of the legal entities from the input file.
 
 ## Product summary setup
 - Default products: [products.json](src/main/resources/data/products.json)
@@ -22,7 +22,7 @@ Default service agreements (each object represents one service agreement): [serv
 - Legal entity ids will be retrieved via the external user ids given in the json file to set up the service agreements.
 - Same access control setup for function/data groups and permissions for each service agreement, taking into account:
 - For each participant that shares accounts, arrangements are ingested under its legal entity
-- Function/data groups will be ingested under each service agreement
+- Job profiles/product groups will be ingested under each service agreement
 - Each participant that shares users are assigned permissions
 
 ## Users setup

@@ -43,12 +43,12 @@ public class AccessGroupsConfigurator {
      * Ingest a function group aka job profile.
      * A profile without explicit permissions will be granted all.
      */
-    public synchronized String ingestFunctionGroup(JobProfile jobProfile) {
+    public synchronized void ingestFunctionGroup(JobProfile jobProfile) {
         List<FunctionsGetResponseBody> functions = this.accessGroupIntegrationRestClient.retrieveFunctions();
 
         String functionGroupId = jobProfileService.retrieveIdFromCache(jobProfile);
         if (functionGroupId != null) {
-            return functionGroupId;
+            return;
         }
         List<Permission> permissions = jobProfile.getPermissions() == null
             ? createPermissionsWithAllPrivileges(functions)
@@ -59,11 +59,9 @@ public class AccessGroupsConfigurator {
         jobProfile.setId(functionGroupId);
 
         jobProfileService.storeInCache(jobProfile);
-
-        return functionGroupId;
     }
 
-    public synchronized String ingestDataGroupForArrangements(String externalServiceAgreementId, ProductGroup productGroup,
+    public synchronized void ingestDataGroupForArrangements(ProductGroup productGroup,
         List<ArrangementId> arrangementIds) {
         List<String> internalArrangementIds = arrangementIds.stream()
             .map(ArrangementId::getInternalArrangementId)
@@ -71,15 +69,13 @@ public class AccessGroupsConfigurator {
 
         String dataGroupId = productGroupService.retrieveIdFromCache(productGroup);
         if (dataGroupId != null) {
-            return dataGroupId;
+            return;
         }
 
-        dataGroupId = accessGroupService.ingestDataGroup(
-            externalServiceAgreementId, productGroup.getProductGroupName(), ARRANGEMENTS, internalArrangementIds);
+        dataGroupId = accessGroupService.ingestDataGroup(productGroup.getExternalServiceAgreementId(),
+            productGroup.getProductGroupName(), ARRANGEMENTS, internalArrangementIds);
         productGroup.setId(dataGroupId);
 
         productGroupService.storeInCache(productGroup);
-
-        return dataGroupId;
     }
 }

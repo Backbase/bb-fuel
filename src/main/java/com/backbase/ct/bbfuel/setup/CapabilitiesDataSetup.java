@@ -22,8 +22,8 @@ import com.backbase.ct.bbfuel.configurator.PaymentsConfigurator;
 import com.backbase.ct.bbfuel.dto.LegalEntityWithUsers;
 import com.backbase.ct.bbfuel.dto.User;
 import com.backbase.ct.bbfuel.dto.UserContext;
+import com.backbase.ct.bbfuel.service.UserContextService;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -31,6 +31,8 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class CapabilitiesDataSetup extends BaseSetup {
+
+    private final UserContextService userContextService;
     private final UserContextPresentationRestClient userContextPresentationRestClient;
     private final AccessControlSetup accessControlSetup;
     private final ApprovalsConfigurator approvalsConfigurator;
@@ -40,9 +42,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
     private final PaymentsConfigurator paymentsConfigurator;
     private final MessagesConfigurator messagesConfigurator;
     private final ActionsConfigurator actionsConfigurator;
-    private final Random random;
     private String rootEntitlementsAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
-
 
     /**
      * Ingest data with services of projects APPR, PO, LIM, NOT, CON, MC and ACT.
@@ -79,7 +79,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
     }
 
     private UserContext getRandomUserContextBasedOnMsaByExternalUserId(List<User> users) {
-        return accessControlSetup
+        return userContextService
             .getUserContextBasedOnMSAByExternalUserId(
                 getRandomFromList(users));
     }

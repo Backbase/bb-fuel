@@ -8,9 +8,7 @@ import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_TRANSA
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
 import static com.backbase.ct.bbfuel.enrich.LegalEntityWithUsersEnricher.createRootLegalEntityWithAdmin;
 
-import com.backbase.ct.bbfuel.client.accessgroup.ServiceAgreementsPresentationRestClient;
 import com.backbase.ct.bbfuel.client.accessgroup.UserContextPresentationRestClient;
-import com.backbase.ct.bbfuel.client.legalentity.LegalEntityPresentationRestClient;
 import com.backbase.ct.bbfuel.client.user.UserPresentationRestClient;
 import com.backbase.ct.bbfuel.configurator.AccessGroupsConfigurator;
 import com.backbase.ct.bbfuel.configurator.LegalEntitiesAndUsersConfigurator;
@@ -30,11 +28,13 @@ import com.backbase.ct.bbfuel.input.LegalEntityWithUsersReader;
 import com.backbase.ct.bbfuel.input.ProductGroupReader;
 import com.backbase.ct.bbfuel.service.JobProfileService;
 import com.backbase.ct.bbfuel.service.ProductGroupService;
+import com.backbase.ct.bbfuel.service.UserContextService;
 import com.backbase.presentation.user.rest.spec.v2.users.LegalEntityByUserGetResponseBody;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -50,12 +50,11 @@ public class AccessControlSetup extends BaseSetup {
     private final AccessGroupsConfigurator accessGroupsConfigurator;
     private final ServiceAgreementsConfigurator serviceAgreementsConfigurator;
     private final PermissionsConfigurator permissionsConfigurator;
-    private final ServiceAgreementsPresentationRestClient serviceAgreementsPresentationRestClient;
-    private final LegalEntityPresentationRestClient legalEntityPresentationRestClient;
     private final TransactionsConfigurator transactionsConfigurator;
     private final LegalEntityWithUsersReader legalEntityWithUsersReader;
     private final JobProfileService jobProfileService;
     private final ProductGroupService productGroupService;
+    private final UserContextService userContextService;
 
     private final JobProfileReader jobProfileReader;
     private final ProductGroupReader productGroupReader;
@@ -115,7 +114,7 @@ public class AccessControlSetup extends BaseSetup {
                     .updateMasterServiceAgreementWithExternalIdByLegalEntity(legalEntityExternalId);
             }
 
-            UserContext userContext = getUserContextBasedOnMSAByExternalUserId(user, legalEntity);
+            UserContext userContext = userContextService.getUserContextBasedOnMSAByExternalUserId(user, legalEntity);
             legalEntitiesUserContextMap.put(userContext.getExternalLegalEntityId(), userContext);
         });
         return legalEntitiesUserContextMap;
@@ -157,12 +156,11 @@ public class AccessControlSetup extends BaseSetup {
                 productGroup.getCurrentAccountNames(),
                 productGroup.getProductIds());
 
-            String dataGroupId = this.accessGroupsConfigurator
-                .ingestDataGroupForArrangements(externalServiceAgreementId, productGroupTemplate,
+            productGroup.setExternalServiceAgreementId(externalServiceAgreementId);
+            this.accessGroupsConfigurator
+                .ingestDataGroupForArrangements(productGroup,
                     arrangementIds);
 
-            productGroup.setId(dataGroupId);
-            productGroup.setExternalServiceAgreementId(externalServiceAgreementId);
             productGroupService.saveAssignedProductGroup(productGroup);
 
             ingestTransactions(arrangementIds);
@@ -228,6 +226,7 @@ public class AccessControlSetup extends BaseSetup {
                     .getAssignedProductGroups(externalServiceAgreementId)
                     .stream()
                     .map(DbsEntity::getId)
+                    .filter(Objects::nonNull)
                     .collect(Collectors.toList());
 
                 this.permissionsConfigurator.assignPermissions(
@@ -237,39 +236,6 @@ public class AccessControlSetup extends BaseSetup {
                     dataGroupIds);
             }
         });
-    }
-
-    public UserContext getUserContextBasedOnMSAByExternalUserId(User user) {
-        return getUserContextBasedOnMSAByExternalUserId(user, null);
-    }
-
-    private UserContext getUserContextBasedOnMSAByExternalUserId(User user,
-        LegalEntityByUserGetResponseBody legalEntity) {
-        this.loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
-        this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
-
-        String internalUserId = this.userPresentationRestClient.getUserByExternalId(user.getExternalId()).getId();
-
-        if (legalEntity == null) {
-            legalEntity = this.userPresentationRestClient.retrieveLegalEntityByExternalUserId(user.getExternalId());
-        }
-
-        String internalServiceAgreementId = this.legalEntityPresentationRestClient
-            .getMasterServiceAgreementOfLegalEntity(legalEntity.getId())
-            .getId();
-
-        String externalServiceAgreementId = this.serviceAgreementsPresentationRestClient
-            .retrieveServiceAgreement(internalServiceAgreementId)
-            .getExternalId();
-
-        return new UserContext()
-            .withUser(user)
-            .withInternalUserId(internalUserId)
-            .withExternalUserId(user.getExternalId())
-            .withInternalServiceAgreementId(internalServiceAgreementId)
-            .withExternalServiceAgreementId(externalServiceAgreementId)
-            .withInternalLegalEntityId(legalEntity.getId())
-            .withExternalLegalEntityId(legalEntity.getExternalId());
     }
 
 }

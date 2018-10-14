@@ -59,8 +59,8 @@ public class PermissionsConfigurator {
                 .getErrorCode()
                 .equals("dataAccessGroup.assign.error.message.E_ASSIGNED")) {
 
-            LOGGER.info("Data groups {} already assigned for service agreement [{}], user [{}], function group [{}], skipped assigning",
-                dataGroupIds, internalServiceAgreementId, externalUserId, functionGroupId);
+            LOGGER.info("Data groups already assigned to service agreement [{}], user [{}], function group [{}], skipped assigning data group ids {}",
+                internalServiceAgreementId, externalUserId, functionGroupId, dataGroupIds);
         } else {
             response.then()
                 .statusCode(SC_OK);

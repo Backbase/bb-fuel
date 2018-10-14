@@ -1,7 +1,5 @@
 package com.backbase.ct.bbfuel.data;
 
-import static com.backbase.ct.bbfuel.data.CommonConstants.TRANSACTION_TYPES;
-import static com.backbase.ct.bbfuel.data.CommonConstants.TRANSACTION_TYPE_GROUPS;
 import static com.backbase.ct.bbfuel.util.CommonHelpers.generateRandomNumberInRange;
 import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromEnumValues;
 import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
@@ -14,7 +12,6 @@ import com.backbase.integration.transaction.external.rest.spec.v2.transactions.T
 import com.github.javafaker.Faker;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 import org.apache.commons.lang.time.DateUtils;
 import org.iban4j.Iban;
@@ -22,8 +19,24 @@ import org.iban4j.Iban;
 public class TransactionsDataGenerator {
 
     private static Faker faker = new Faker();
-    private static Random random = new Random();
     private static final String EUR_CURRENCY = "EUR";
+    private static final List<String> TRANSACTION_TYPE_GROUPS = asList(
+        "Payment",
+        "Withdrawal",
+        "Loans",
+        "Fees"
+    );
+
+    private static final List<String> TRANSACTION_TYPES = asList(
+        "SEPA CT",
+        "SEPA DD",
+        "BACS",
+        "Faster payment",
+        "CHAPS",
+        "International payment",
+        "Loan redemption",
+        "Interest settlement"
+    );
     private static final List<String> CREDIT_BUSINESS_CATEGORIES = asList(
         "Suppliers",
         "Salaries",

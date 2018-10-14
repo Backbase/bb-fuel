@@ -54,15 +54,11 @@ public class ProductSummaryDataGenerator {
         }
     }
 
-    public static String generateRandomIban() {
-        return Iban.random(getRandomFromList(COUNTRY_CODES)).toString();
-    }
-
     public static List<ProductsPostRequestBody> getProductsFromFile() {
         return productReader.load();
     }
 
-    public static String getProductTypeNameFromProductsInputFile(String productId) {
+    private static String getProductTypeNameFromProductsInputFile(String productId) {
         List<ProductsPostRequestBody> productsPostRequestBodies = getProductsFromFile();
 
         ProductsPostRequestBody product = productsPostRequestBodies.stream()
@@ -200,4 +196,9 @@ public class ProductSummaryDataGenerator {
             .withBalance(generateRandomAmountInRange(1000000L, 1999999L))
             .withUpdatedDate(updatedDate);
     }
+
+    private static String generateRandomIban() {
+        return Iban.random(getRandomFromList(COUNTRY_CODES)).toString();
+    }
+
 }

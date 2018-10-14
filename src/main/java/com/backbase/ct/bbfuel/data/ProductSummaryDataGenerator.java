@@ -11,6 +11,7 @@ import static com.backbase.integration.arrangement.rest.spec.v2.arrangements.Arr
 import static com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.Currency.EUR;
 import static java.lang.String.valueOf;
 import static java.util.Arrays.asList;
+import static org.apache.commons.collections.ListUtils.synchronizedList;
 
 import com.backbase.ct.bbfuel.input.ProductReader;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
@@ -75,7 +76,7 @@ public class ProductSummaryDataGenerator {
     public static List<ArrangementsPostRequestBody> generateCurrentAccountArrangementsPostRequestBodies(
         String externalLegalEntityId,
         List<Currency> currencies, List<String> currentAccountNames, int numberOfArrangements) {
-        List<ArrangementsPostRequestBody> arrangementsPostRequestBodies = new ArrayList<>();
+        List<ArrangementsPostRequestBody> arrangementsPostRequestBodies = synchronizedList(new ArrayList<>());
 
         IntStream.range(0, numberOfArrangements).parallel().forEach(randomNumber -> {
             int randomCurrentAccountIndex = ThreadLocalRandom.current().nextInt(currentAccountNames.size());
@@ -102,7 +103,7 @@ public class ProductSummaryDataGenerator {
     public static List<ArrangementsPostRequestBody> generateNonCurrentAccountArrangementsPostRequestBodies(
         String externalLegalEntityId,
         List<Currency> currencies, List<String> productIds, int numberOfArrangements) {
-        List<ArrangementsPostRequestBody> arrangementsPostRequestBodies = new ArrayList<>();
+        List<ArrangementsPostRequestBody> arrangementsPostRequestBodies = synchronizedList(new ArrayList<>());
 
         IntStream.range(0, numberOfArrangements).parallel().forEach(randomNumber -> {
             Currency currency = getRandomFromList(currencies);

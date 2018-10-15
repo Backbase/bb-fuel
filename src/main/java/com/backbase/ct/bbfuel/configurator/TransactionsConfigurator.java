@@ -2,13 +2,12 @@ package com.backbase.ct.bbfuel.configurator;
 
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_USE_PFM_CATEGORIES_FOR_TRANSACTIONS;
-import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
 import static org.apache.http.HttpStatus.SC_CREATED;
 
 import com.backbase.ct.bbfuel.client.accessgroup.UserContextPresentationRestClient;
 import com.backbase.ct.bbfuel.client.common.LoginRestClient;
-import com.backbase.ct.bbfuel.client.transaction.TransactionsIntegrationRestClient;
 import com.backbase.ct.bbfuel.client.pfm.CategoriesPresentationRestClient;
+import com.backbase.ct.bbfuel.client.transaction.TransactionsIntegrationRestClient;
 import com.backbase.ct.bbfuel.data.CommonConstants;
 import com.backbase.ct.bbfuel.data.TransactionsDataGenerator;
 import com.backbase.ct.bbfuel.util.CommonHelpers;
@@ -18,8 +17,6 @@ import com.backbase.presentation.categories.management.rest.spec.v2.categories.i
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -38,36 +35,26 @@ public class TransactionsConfigurator {
     private final LoginRestClient loginRestClient;
     private final UserContextPresentationRestClient userContextPresentationRestClient;
     private String rootEntitlementsAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
-    private Random random = new Random();
 
-    public void ingestTransactionsByArrangement(String externalArrangementId) {
+    public void ingestTransactionsByArrangement(String externalArrangementId, boolean isRetail) {
         List<TransactionsPostRequestBody> transactions = Collections.synchronizedList(new ArrayList<>());
-        List<String> categoryNames = new ArrayList<>();
+        List<CategoryGetResponseBody> retailCategories = new ArrayList<>();
 
         if (globalProperties.getBoolean(PROPERTY_USE_PFM_CATEGORIES_FOR_TRANSACTIONS)) {
             loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
             userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
-            categoryNames = categoriesPresentationRestClient.retrieveCategories()
-                .stream()
-                .map(CategoryGetResponseBody::getCategoryName)
-                .collect(Collectors.toList());
+            retailCategories = categoriesPresentationRestClient.retrieveCategories();
         }
 
         int randomAmount = CommonHelpers
             .generateRandomNumberInRange(globalProperties.getInt(CommonConstants.PROPERTY_TRANSACTIONS_MIN),
                 globalProperties.getInt(CommonConstants.PROPERTY_TRANSACTIONS_MAX));
-        List<String> finalCategoryNames = categoryNames;
+
+        List<CategoryGetResponseBody> finalCategories = new ArrayList<>(retailCategories);
 
         IntStream.range(0, randomAmount).parallel()
-            .forEach(randomNumber -> {
-                String categoryName = null;
-                if (globalProperties.getBoolean(PROPERTY_USE_PFM_CATEGORIES_FOR_TRANSACTIONS)) {
-                    categoryName = getRandomFromList(finalCategoryNames);
-                }
-
-                transactions.add(
-                    TransactionsDataGenerator.generateTransactionsPostRequestBody(externalArrangementId, categoryName));
-            });
+            .forEach(randomNumber -> transactions.add(
+                TransactionsDataGenerator.generateTransactionsPostRequestBody(externalArrangementId, isRetail, finalCategories)));
 
         transactionsIntegrationRestClient.ingestTransactions(transactions)
             .then()

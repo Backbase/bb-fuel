@@ -183,7 +183,7 @@ public class AccessControlSetup extends BaseSetup {
 
                 productGroupService.saveAssignedProductGroup(productGroupSeed);
 
-                ingestTransactions(arrangementIds);
+                ingestTransactions(arrangementIds, isRetail);
                 ingestBalanceHistory(arrangementIds);
             } else {
                 productGroupSeed.setId(existingDataGroup.getId());
@@ -194,11 +194,11 @@ public class AccessControlSetup extends BaseSetup {
         });
     }
 
-    private void ingestTransactions(List<ArrangementId> arrangementIds) {
+    private void ingestTransactions(List<ArrangementId> arrangementIds, boolean isRetail) {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_TRANSACTIONS)) {
             arrangementIds.parallelStream()
                 .forEach(arrangementId -> this.transactionsConfigurator
-                    .ingestTransactionsByArrangement(arrangementId.getExternalArrangementId()));
+                    .ingestTransactionsByArrangement(arrangementId.getExternalArrangementId(), isRetail));
         }
     }
 

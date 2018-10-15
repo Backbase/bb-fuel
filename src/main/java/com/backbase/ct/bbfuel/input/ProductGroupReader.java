@@ -1,6 +1,6 @@
 package com.backbase.ct.bbfuel.input;
 
-import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_PRODUCT_GROUPS_JSON_LOCATION;
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_PRODUCT_GROUP_SEED_JSON_LOCATION;
 import static java.util.Arrays.asList;
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toList;
@@ -25,7 +25,7 @@ public class ProductGroupReader extends BaseReader {
      * Load the configured json file.
      */
     public List<ProductGroup> load() {
-        return load(this.globalProperties.getString(PROPERTY_PRODUCT_GROUPS_JSON_LOCATION));
+        return load(this.globalProperties.getString(PROPERTY_PRODUCT_GROUP_SEED_JSON_LOCATION));
     }
 
     /**

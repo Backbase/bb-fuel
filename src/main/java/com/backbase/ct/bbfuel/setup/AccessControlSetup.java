@@ -24,7 +24,7 @@ import com.backbase.ct.bbfuel.dto.User;
 import com.backbase.ct.bbfuel.dto.UserContext;
 import com.backbase.ct.bbfuel.dto.entitlement.DbsEntity;
 import com.backbase.ct.bbfuel.dto.entitlement.JobProfile;
-import com.backbase.ct.bbfuel.dto.entitlement.ProductGroup;
+import com.backbase.ct.bbfuel.dto.entitlement.ProductGroupSeed;
 import com.backbase.ct.bbfuel.input.JobProfileReader;
 import com.backbase.ct.bbfuel.input.LegalEntityWithUsersReader;
 import com.backbase.ct.bbfuel.input.ProductGroupSeedReader;
@@ -64,7 +64,7 @@ public class AccessControlSetup extends BaseSetup {
     private String rootEntitlementsAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
     private List<LegalEntityWithUsers> legalEntitiesWithUsers;
     private List<JobProfile> jobProfileTemplates;
-    private List<ProductGroup> productGroupTemplates;
+    private List<ProductGroupSeed> productGroupSeedTemplates;
 
     public List<LegalEntityWithUsers> getLegalEntitiesWithUsers() {
         return this.legalEntitiesWithUsers;
@@ -76,7 +76,7 @@ public class AccessControlSetup extends BaseSetup {
     public void initiate() {
         this.legalEntitiesWithUsers = this.legalEntityWithUsersReader.load();
         this.jobProfileTemplates = this.jobProfileReader.load();
-        this.productGroupTemplates = this.productGroupSeedReader.load();
+        this.productGroupSeedTemplates = this.productGroupSeedReader.load();
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_ACCESS_CONTROL)) {
             this.setupBankWithEntitlementsAdminAndProducts();
             this.setupAccessControlForUsers();
@@ -149,18 +149,18 @@ public class AccessControlSetup extends BaseSetup {
         String externalServiceAgreementId,
         String externalLegalEntityId, boolean isRetail) {
 
-        productGroupTemplates.forEach(productGroupTemplate -> {
+        productGroupSeedTemplates.forEach(productGroupTemplate -> {
             if (isRetail && !productGroupTemplate.getIsRetail()) {
                 return;
             }
 
-            ProductGroup productGroup = new ProductGroup(productGroupTemplate);
+            ProductGroupSeed productGroupSeed = new ProductGroupSeed(productGroupTemplate);
 
             // Combination of data group name and service agreement is unique in the system
             DataGroupsGetResponseBody existingDataGroup = accessGroupPresentationRestClient
                 .retrieveDataGroupsByServiceAgreement(internalServiceAgreementId)
                 .stream()
-                .filter(dataGroupsGetResponseBody -> productGroup.getProductGroupName()
+                .filter(dataGroupsGetResponseBody -> productGroupSeed.getProductGroupName()
                     .equals(dataGroupsGetResponseBody.getName()))
                 .findFirst()
                 .orElse(null);
@@ -168,26 +168,26 @@ public class AccessControlSetup extends BaseSetup {
             if (existingDataGroup == null) {
                 List<ArrangementId> arrangementIds = this.productSummaryConfigurator.ingestArrangements(
                     externalLegalEntityId,
-                    productGroup.getCurrencies(),
-                    productGroup.getCurrentAccountNames(),
-                    productGroup.getProductIds(),
-                    generateRandomNumberInRange(productGroup.getNumberOfArrangements().getMin(),
-                        productGroup.getNumberOfArrangements().getMax()));
+                    productGroupSeed.getCurrencies(),
+                    productGroupSeed.getCurrentAccountNames(),
+                    productGroupSeed.getProductIds(),
+                    generateRandomNumberInRange(productGroupSeed.getNumberOfArrangements().getMin(),
+                        productGroupSeed.getNumberOfArrangements().getMax()));
 
-                productGroup.setExternalServiceAgreementId(externalServiceAgreementId);
+                productGroupSeed.setExternalServiceAgreementId(externalServiceAgreementId);
                 this.accessGroupsConfigurator
-                    .ingestDataGroupForArrangements(productGroup,
+                    .ingestDataGroupForArrangements(productGroupSeed,
                         arrangementIds);
 
-                productGroupService.saveAssignedProductGroup(productGroup);
+                productGroupService.saveAssignedProductGroup(productGroupSeed);
 
                 ingestTransactions(arrangementIds);
                 ingestBalanceHistory(arrangementIds);
             } else {
-                productGroup.setId(existingDataGroup.getId());
-                productGroup.setExternalServiceAgreementId(externalServiceAgreementId);
-                productGroupService.storeInCache(productGroup);
-                productGroupService.saveAssignedProductGroup(productGroup);
+                productGroupSeed.setId(existingDataGroup.getId());
+                productGroupSeed.setExternalServiceAgreementId(externalServiceAgreementId);
+                productGroupService.storeInCache(productGroupSeed);
+                productGroupService.saveAssignedProductGroup(productGroupSeed);
             }
         });
     }

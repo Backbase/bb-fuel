@@ -5,7 +5,7 @@ import static java.util.Arrays.asList;
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toList;
 
-import com.backbase.ct.bbfuel.dto.entitlement.ProductGroup;
+import com.backbase.ct.bbfuel.dto.entitlement.ProductGroupSeed;
 import com.backbase.ct.bbfuel.util.ParserUtil;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,37 +24,37 @@ public class ProductGroupSeedReader extends BaseReader {
     /**
      * Load the configured json file.
      */
-    public List<ProductGroup> load() {
+    public List<ProductGroupSeed> load() {
         return load(this.globalProperties.getString(PROPERTY_PRODUCT_GROUP_SEED_JSON_LOCATION));
     }
 
     /**
      * Load json file.
      */
-    public List<ProductGroup> load(String uri) {
-        List<ProductGroup> productGroups;
+    public List<ProductGroupSeed> load(String uri) {
+        List<ProductGroupSeed> productGroupSeeds;
         try {
-            ProductGroup[] parsedProductGroups = ParserUtil.convertJsonToObject(uri, ProductGroup[].class);
-            validate(parsedProductGroups);
-            productGroups = asList(parsedProductGroups);
+            ProductGroupSeed[] parsedProductGroupSeeds = ParserUtil.convertJsonToObject(uri, ProductGroupSeed[].class);
+            validate(parsedProductGroupSeeds);
+            productGroupSeeds = asList(parsedProductGroupSeeds);
         } catch (IOException e) {
             logger.error("Failed parsing file with entities", e);
             throw new InvalidInputException(e.getMessage(), e);
         }
-        return productGroups;
+        return productGroupSeeds;
     }
     /**
      * Check on duplicate names.
      */
-    private void validate(ProductGroup[] productGroups) {
-        if (ArrayUtils.isEmpty(productGroups)) {
+    private void validate(ProductGroupSeed[] productGroupSeeds) {
+        if (ArrayUtils.isEmpty(productGroupSeeds)) {
             throw new InvalidInputException("No product groups have been parsed");
         }
-        List<String> names = stream(productGroups)
-            .map(ProductGroup::getProductGroupName)
+        List<String> names = stream(productGroupSeeds)
+            .map(ProductGroupSeed::getProductGroupName)
             .collect(toList());
         Set<String> uniqueNames = new HashSet<>(names);
-        if (uniqueNames.size() != productGroups.length) {
+        if (uniqueNames.size() != productGroupSeeds.length) {
             throw new InvalidInputException(String.format("Product groups with duplicate names: %s",
                 ListUtils.subtract(names, new ArrayList<>(uniqueNames))));
         }

@@ -15,7 +15,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @Builder
 @AllArgsConstructor
-public class ProductGroup extends DbsEntity {
+public class ProductGroupSeed extends DbsEntity {
 
     private String productGroupName;
     private Boolean isRetail;
@@ -24,11 +24,11 @@ public class ProductGroup extends DbsEntity {
     private List<String> productIds;
     private Amount numberOfArrangements;
 
-    public ProductGroup() {
+    public ProductGroupSeed() {
         super();
     }
 
-    public ProductGroup(ProductGroup source) {
+    public ProductGroupSeed(ProductGroupSeed source) {
         copyProperties(source, this);
         this.setIsRetail(source.getIsRetail() == null ? Boolean.valueOf(false) : source.getIsRetail());
         if (source.getCurrencies() != null) {

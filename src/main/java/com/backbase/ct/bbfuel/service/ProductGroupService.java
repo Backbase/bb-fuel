@@ -3,7 +3,7 @@ package com.backbase.ct.bbfuel.service;
 import static java.util.Collections.synchronizedMap;
 import static org.apache.commons.lang.StringUtils.deleteWhitespace;
 
-import com.backbase.ct.bbfuel.dto.entitlement.ProductGroup;
+import com.backbase.ct.bbfuel.dto.entitlement.ProductGroupSeed;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,29 +20,29 @@ public class ProductGroupService {
 
     private Map<String, String> productGroupCache = synchronizedMap(new HashMap<>());
 
-    private Map<String, List<ProductGroup>> assignedProductGroups = new HashMap<>();
+    private Map<String, List<ProductGroupSeed>> assignedProductGroups = new HashMap<>();
 
-    private static String createCacheKey(ProductGroup productGroup) {
-        return String.format("%s-%s", productGroup.getExternalServiceAgreementId(),
-            deleteWhitespace(productGroup.getProductGroupName()).trim());
+    private static String createCacheKey(ProductGroupSeed productGroupSeed) {
+        return String.format("%s-%s", productGroupSeed.getExternalServiceAgreementId(),
+            deleteWhitespace(productGroupSeed.getProductGroupName()).trim());
     }
 
-    public List<ProductGroup> getAssignedProductGroups(String externalServiceAgreementId) {
+    public List<ProductGroupSeed> getAssignedProductGroups(String externalServiceAgreementId) {
         return assignedProductGroups.get(externalServiceAgreementId);
     }
 
-    public void saveAssignedProductGroup(ProductGroup productGroup) {
+    public void saveAssignedProductGroup(ProductGroupSeed productGroupSeed) {
         this.assignedProductGroups
             .computeIfAbsent(
-                productGroup.getExternalServiceAgreementId(), key -> new ArrayList<>())
-            .add(productGroup);
+                productGroupSeed.getExternalServiceAgreementId(), key -> new ArrayList<>())
+            .add(productGroupSeed);
     }
 
-    public String retrieveIdFromCache(ProductGroup productGroup) {
-        return productGroupCache.get(createCacheKey(productGroup));
+    public String retrieveIdFromCache(ProductGroupSeed productGroupSeed) {
+        return productGroupCache.get(createCacheKey(productGroupSeed));
     }
 
-    public void storeInCache(ProductGroup productGroup) {
-        productGroupCache.put(createCacheKey(productGroup), productGroup.getId());
+    public void storeInCache(ProductGroupSeed productGroupSeed) {
+        productGroupCache.put(createCacheKey(productGroupSeed), productGroupSeed.getId());
     }
 }

@@ -8,7 +8,7 @@ import static java.util.stream.Collectors.toList;
 import com.backbase.ct.bbfuel.client.accessgroup.AccessGroupIntegrationRestClient;
 import com.backbase.ct.bbfuel.dto.ArrangementId;
 import com.backbase.ct.bbfuel.dto.entitlement.JobProfile;
-import com.backbase.ct.bbfuel.dto.entitlement.ProductGroup;
+import com.backbase.ct.bbfuel.dto.entitlement.ProductGroupSeed;
 import com.backbase.ct.bbfuel.service.AccessGroupService;
 import com.backbase.ct.bbfuel.service.JobProfileService;
 import com.backbase.ct.bbfuel.service.ProductGroupService;
@@ -61,21 +61,21 @@ public class AccessGroupsConfigurator {
         jobProfileService.storeInCache(jobProfile);
     }
 
-    public synchronized void ingestDataGroupForArrangements(ProductGroup productGroup,
+    public synchronized void ingestDataGroupForArrangements(ProductGroupSeed productGroupSeed,
         List<ArrangementId> arrangementIds) {
         List<String> internalArrangementIds = arrangementIds.stream()
             .map(ArrangementId::getInternalArrangementId)
             .collect(toList());
 
-        String dataGroupId = productGroupService.retrieveIdFromCache(productGroup);
+        String dataGroupId = productGroupService.retrieveIdFromCache(productGroupSeed);
         if (dataGroupId != null) {
             return;
         }
 
-        dataGroupId = accessGroupService.ingestDataGroup(productGroup.getExternalServiceAgreementId(),
-            productGroup.getProductGroupName(), ARRANGEMENTS, internalArrangementIds);
-        productGroup.setId(dataGroupId);
+        dataGroupId = accessGroupService.ingestDataGroup(productGroupSeed.getExternalServiceAgreementId(),
+            productGroupSeed.getProductGroupName(), ARRANGEMENTS, internalArrangementIds);
+        productGroupSeed.setId(dataGroupId);
 
-        productGroupService.storeInCache(productGroup);
+        productGroupService.storeInCache(productGroupSeed);
     }
 }

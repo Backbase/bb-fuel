@@ -27,7 +27,7 @@ import com.backbase.ct.bbfuel.dto.entitlement.JobProfile;
 import com.backbase.ct.bbfuel.dto.entitlement.ProductGroup;
 import com.backbase.ct.bbfuel.input.JobProfileReader;
 import com.backbase.ct.bbfuel.input.LegalEntityWithUsersReader;
-import com.backbase.ct.bbfuel.input.ProductGroupReader;
+import com.backbase.ct.bbfuel.input.ProductGroupSeedReader;
 import com.backbase.ct.bbfuel.service.JobProfileService;
 import com.backbase.ct.bbfuel.service.ProductGroupService;
 import com.backbase.ct.bbfuel.service.UserContextService;
@@ -60,7 +60,7 @@ public class AccessControlSetup extends BaseSetup {
     private final UserContextService userContextService;
 
     private final JobProfileReader jobProfileReader;
-    private final ProductGroupReader productGroupReader;
+    private final ProductGroupSeedReader productGroupSeedReader;
     private String rootEntitlementsAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
     private List<LegalEntityWithUsers> legalEntitiesWithUsers;
     private List<JobProfile> jobProfileTemplates;
@@ -76,7 +76,7 @@ public class AccessControlSetup extends BaseSetup {
     public void initiate() {
         this.legalEntitiesWithUsers = this.legalEntityWithUsersReader.load();
         this.jobProfileTemplates = this.jobProfileReader.load();
-        this.productGroupTemplates = this.productGroupReader.load();
+        this.productGroupTemplates = this.productGroupSeedReader.load();
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_ACCESS_CONTROL)) {
             this.setupBankWithEntitlementsAdminAndProducts();
             this.setupAccessControlForUsers();

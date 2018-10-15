@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class ProductGroupReader extends BaseReader {
+public class ProductGroupSeedReader extends BaseReader {
 
     /**
      * Load the configured json file.

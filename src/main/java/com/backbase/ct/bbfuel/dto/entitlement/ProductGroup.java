@@ -1,13 +1,17 @@
 package com.backbase.ct.bbfuel.dto.entitlement;
 
+import static org.apache.commons.beanutils.BeanUtils.copyProperties;
+
 import com.backbase.ct.bbfuel.dto.Amount;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.Currency;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.apache.commons.beanutils.BeanUtils;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -26,8 +30,8 @@ public class ProductGroup extends DbsEntity {
         super();
     }
 
-    public ProductGroup(ProductGroup source) {
-        this.setProductGroupName(source.getProductGroupName());
+    public ProductGroup(ProductGroup source) throws InvocationTargetException, IllegalAccessException {
+        copyProperties(this, source);
         this.setIsRetail(source.getIsRetail() == null ? Boolean.valueOf(false) : source.getIsRetail());
         if (source.getCurrencies() != null) {
             this.setCurrencies(new ArrayList<>(source.getCurrencies()));
@@ -38,7 +42,5 @@ public class ProductGroup extends DbsEntity {
         if (source.getProductIds() != null) {
             this.setProductIds(new ArrayList<>(source.getProductIds()));
         }
-
-        this.setNumberOfArrangements(source.getNumberOfArrangements());
     }
 }

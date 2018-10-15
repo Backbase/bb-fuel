@@ -1,5 +1,8 @@
 package com.backbase.ct.bbfuel.dto.entitlement;
 
+import static org.apache.commons.beanutils.BeanUtils.copyProperties;
+
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -7,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.apache.commons.beanutils.BeanUtils;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -26,10 +30,8 @@ public class JobProfile extends DbsEntity {
         super();
     }
 
-    public JobProfile(JobProfile source) {
-        this.setJobProfileName(source.getJobProfileName());
-        this.setApprovalLevel(source.getApprovalLevel());
-        this.setIsRetail(source.getIsRetail());
+    public JobProfile(JobProfile source) throws InvocationTargetException, IllegalAccessException {
+        copyProperties(this, source);
         if (source.getRoles() != null) {
             this.setRoles(new ArrayList<>(source.getRoles()));
         }

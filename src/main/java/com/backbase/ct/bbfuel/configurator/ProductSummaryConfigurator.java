@@ -47,14 +47,15 @@ public class ProductSummaryConfigurator {
 
         if (productIds.contains(String.valueOf(1))) {
             arrangements.addAll(generateCurrentAccountArrangementsPostRequestBodies(
-                    externalLegalEntityId, currencies, currentAccountNames, numberOfCurrentAccounts));
+                externalLegalEntityId, currencies, currentAccountNames, numberOfCurrentAccounts));
         }
 
         productIds.remove(String.valueOf(1));
 
         if (numberOfNonCurrentAccounts > 0 && !productIds.isEmpty()) {
             arrangements.addAll(generateNonCurrentAccountArrangementsPostRequestBodies(
-                    externalLegalEntityId, currencies, productIds, numberOfNonCurrentAccounts));
+                externalLegalEntityId, currencies, productIds,
+                productIds.contains(String.valueOf(1)) ? numberOfNonCurrentAccounts : numberOfArrangements));
         }
 
         arrangements.parallelStream().forEach(arrangement -> {

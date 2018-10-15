@@ -32,23 +32,23 @@ public class ProductGroupReader extends BaseReader {
      * Load json file.
      */
     public List<ProductGroup> load(String uri) {
-        List<ProductGroup> jobProfiles;
+        List<ProductGroup> productGroups;
         try {
             ProductGroup[] parsedProductGroups = ParserUtil.convertJsonToObject(uri, ProductGroup[].class);
             validate(parsedProductGroups);
-            jobProfiles = asList(parsedProductGroups);
+            productGroups = asList(parsedProductGroups);
         } catch (IOException e) {
             logger.error("Failed parsing file with entities", e);
             throw new InvalidInputException(e.getMessage(), e);
         }
-        return jobProfiles;
+        return productGroups;
     }
     /**
      * Check on duplicate names.
      */
     private void validate(ProductGroup[] productGroups) {
         if (ArrayUtils.isEmpty(productGroups)) {
-            throw new InvalidInputException("No job profiles have been parsed");
+            throw new InvalidInputException("No product groups have been parsed");
         }
         List<String> names = stream(productGroups)
             .map(ProductGroup::getProductGroupName)

@@ -1,10 +1,9 @@
 package com.backbase.ct.bbfuel.dto.entitlement;
 
-import static org.apache.commons.beanutils.BeanUtils.copyProperties;
+import static org.springframework.beans.BeanUtils.copyProperties;
 
 import com.backbase.ct.bbfuel.dto.Amount;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.Currency;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -29,8 +28,8 @@ public class ProductGroup extends DbsEntity {
         super();
     }
 
-    public ProductGroup(ProductGroup source) throws InvocationTargetException, IllegalAccessException {
-        copyProperties(this, source);
+    public ProductGroup(ProductGroup source) {
+        copyProperties(source, this);
         this.setIsRetail(source.getIsRetail() == null ? Boolean.valueOf(false) : source.getIsRetail());
         if (source.getCurrencies() != null) {
             this.setCurrencies(new ArrayList<>(source.getCurrencies()));

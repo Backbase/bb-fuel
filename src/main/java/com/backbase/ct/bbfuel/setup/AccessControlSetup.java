@@ -156,7 +156,6 @@ public class AccessControlSetup extends BaseSetup {
                 return;
             }
 
-
             // Combination of data group name and service agreement is unique in the system
             DataGroupsGetResponseBody existingDataGroup = accessGroupPresentationRestClient
                 .retrieveDataGroupsByServiceAgreement(internalServiceAgreementId)

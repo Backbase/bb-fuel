@@ -42,7 +42,7 @@ public class TransactionsDataGenerator {
         "Salaries",
         "Rent",
         "Loan repayment",
-        "Misc."
+        "Miscellaneous"
     );
     private static final List<String> DEBIT_BUSINESS_CATEGORIES = asList(
         "Intercompany receivable",

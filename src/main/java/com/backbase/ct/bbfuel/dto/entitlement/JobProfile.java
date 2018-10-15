@@ -30,6 +30,7 @@ public class JobProfile extends DbsEntity {
 
     public JobProfile(JobProfile source) {
         copyProperties(source, this);
+        this.setIsRetail(source.getIsRetail() == null ? Boolean.valueOf(false) : source.getIsRetail());
         if (source.getRoles() != null) {
             this.setRoles(new ArrayList<>(source.getRoles()));
         }

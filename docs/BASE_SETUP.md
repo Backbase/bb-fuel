@@ -12,6 +12,7 @@ For legal entities and users in the file [legal-entities-with-users.json](src/ma
 ## Product summary setup
 - Default products: [products.json](src/main/resources/data/products.json)
 - Arrangements in product groups are defined in [product-groups.json](src/main/resources/data/product-groups.json)
+    - Non current accounts (productId not equal to `1`) will be 10% of total amount of arrangements, only in case of productIds also contain `1`, otherwise the total amount will be used for the non current accounts.
 - In case of current account arrangements random debit cards (configurable) are associated
 - Additionally (by default disabled) possible to ingest balance history based on a weekly balance history items for the past quarter
     - Only works if property `ingest.access.control` is set to `true` due to the required external arrangement id when ingesting balance history items.

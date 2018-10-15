@@ -11,7 +11,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.apache.commons.beanutils.BeanUtils;
 
 @Data
 @EqualsAndHashCode(callSuper = true)

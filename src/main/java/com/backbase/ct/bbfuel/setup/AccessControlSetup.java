@@ -35,8 +35,10 @@ import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.datagroup
 import com.backbase.presentation.user.rest.spec.v2.users.LegalEntityByUserGetResponseBody;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -246,18 +248,18 @@ public class AccessControlSetup extends BaseSetup {
 
         this.jobProfileService.getAssignedJobProfiles(externalServiceAgreementId).forEach(jobProfile -> {
             if (jobProfileService.isJobProfileForUserRole(jobProfile, user.getRole(), isRetail)) {
-                List<String> dataGroupIds = this.productGroupService
+                Set<String> dataGroupIds = this.productGroupService
                     .getAssignedProductGroups(externalServiceAgreementId)
                     .stream()
                     .map(DbsEntity::getId)
                     .filter(Objects::nonNull)
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toSet());
 
                 this.permissionsConfigurator.assignPermissions(
                     user.getExternalId(),
                     internalServiceAgreementId,
                     jobProfile.getId(),
-                    dataGroupIds);
+                    new ArrayList<>(dataGroupIds));
             }
         });
     }

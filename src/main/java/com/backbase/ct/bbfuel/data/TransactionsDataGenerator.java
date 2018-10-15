@@ -40,7 +40,7 @@ public class TransactionsDataGenerator {
     private static final List<String> CREDIT_BUSINESS_CATEGORIES = asList(
         "Suppliers",
         "Salaries",
-        "Rent",
+        "Office rent",
         "Loan repayment",
         "Miscellaneous"
     );

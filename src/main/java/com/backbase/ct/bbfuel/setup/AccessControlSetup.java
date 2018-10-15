@@ -150,11 +150,11 @@ public class AccessControlSetup extends BaseSetup {
         String externalLegalEntityId, boolean isRetail) {
 
         productGroupTemplates.forEach(productGroupTemplate -> {
-            ProductGroup productGroup = new ProductGroup(productGroupTemplate);
-
-            if (isRetail && !productGroup.getIsRetail()) {
+            if (isRetail && !productGroupTemplate.getIsRetail()) {
                 return;
             }
+
+            ProductGroup productGroup = new ProductGroup(productGroupTemplate);
 
             // Combination of data group name and service agreement is unique in the system
             DataGroupsGetResponseBody existingDataGroup = accessGroupPresentationRestClient

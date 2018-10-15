@@ -2,7 +2,6 @@ package com.backbase.ct.bbfuel.dto.entitlement;
 
 import static org.springframework.beans.BeanUtils.copyProperties;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

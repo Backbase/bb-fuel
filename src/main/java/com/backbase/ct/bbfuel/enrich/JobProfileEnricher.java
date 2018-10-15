@@ -24,5 +24,9 @@ public class JobProfileEnricher {
         if (jobProfile.getRoles().isEmpty()) {
             jobProfile.getRoles().add(PROFILE_ROLE_ADMIN);
         }
+
+        if (jobProfile.getIsRetail() == null) {
+            jobProfile.setIsRetail(false);
+        }
     }
 }

@@ -38,12 +38,12 @@ public class ProductSummaryConfigurator {
         List<ArrangementsPostRequestBody> arrangements = synchronizedList(new ArrayList<>());
         List<ArrangementId> arrangementIds = synchronizedList(new ArrayList<>());
 
-        int numberOfArrangements = productGroupSeed.getNumberOfArrangements().getRandom();
+        int numberOfArrangements = productGroupSeed.getNumberOfArrangements().getRandomNumberInRange();
         int tenPercentOfTotal = (int) Math.round(numberOfArrangements * 0.1);
         int numberOfNonCurrentAccounts = tenPercentOfTotal > 0 ? tenPercentOfTotal : 0;
 
         if (productGroupSeed.getProductIds().contains(String.valueOf(1))) {
-            productGroupSeed.getNumberOfArrangements().setRandom(numberOfArrangements - numberOfNonCurrentAccounts);
+            productGroupSeed.getNumberOfArrangements().setRandomNumberInRange(numberOfArrangements - numberOfNonCurrentAccounts);
 
             arrangements.addAll(generateCurrentAccountArrangementsPostRequestBodies(
                 externalLegalEntityId, productGroupSeed));
@@ -52,7 +52,7 @@ public class ProductSummaryConfigurator {
         }
 
         if (numberOfNonCurrentAccounts > 0 && !productGroupSeed.getProductIds().isEmpty()) {
-            productGroupSeed.getNumberOfArrangements().setRandom(
+            productGroupSeed.getNumberOfArrangements().setRandomNumberInRange(
                 productGroupSeed.getProductIds().contains(String.valueOf(1)) ? numberOfNonCurrentAccounts : numberOfArrangements);
 
             arrangements.addAll(generateNonCurrentAccountArrangementsPostRequestBodies(

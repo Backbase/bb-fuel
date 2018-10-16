@@ -2,7 +2,7 @@ package com.backbase.ct.bbfuel.dto.entitlement;
 
 import static org.springframework.beans.BeanUtils.copyProperties;
 
-import com.backbase.ct.bbfuel.dto.Amount;
+import com.backbase.ct.bbfuel.dto.AmountRange;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.Currency;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +22,8 @@ public class ProductGroupSeed extends DbsEntity {
     private List<Currency> currencies;
     private List<String> currentAccountNames;
     private List<String> productIds;
-    private Amount numberOfArrangements;
-    private Amount numberOfDebitCards;
+    private AmountRange numberOfArrangements;
+    private AmountRange numberOfDebitCards;
 
     public ProductGroupSeed() {
         super();

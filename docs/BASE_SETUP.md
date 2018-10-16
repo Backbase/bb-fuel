@@ -2,34 +2,18 @@
 
 ## Access control setup
 - Root legal entity with user external id from property `root.entitlements.admin` as entitlements admin
-- Legal entities (under the root legal entity `C000000`) per legal entity entry with users array in the files [legal-entities-with-users.json](src/main/resources/data/legal-entities-with-users.json) and [legal-entities-with-users-without-permissions.json](src/main/resources/data/legal-entities-with-users-without-permissions.json) - configurable, see section *Custom data*
+- Legal entities (under the root legal entity `C000000`) per legal entity entry with users array in the file [legal-entities-with-users.json](src/main/resources/data/legal-entities-with-users.json) - configurable, see section *Custom data*
 
 For legal entities and users in the file [legal-entities-with-users.json](src/main/resources/data/legal-entities-with-users.json):
-- One admin function group for all business functions with all privileges per service agreement of the legal entity from the input file.
-- Data groups (all assigned to the admin function group):
-    - In case of retail (1 user per legal entity):
-        - General EUR arrangements
-        - General USD arrangements
-    - In case of business (more than 1 user per legal entity):
-        - "Amsterdam" - EUR arrangements
-        - "Portland" - USD arrangements
-        - "Vancouver" - CAD arrangements
-        - "London" - GBP arrangements
-        - Additionally if `ingest.international.and.payroll.data.groups` is `true`:
-            - "International Trade" - various currency arrangements
-            - "Finance International" - various currency arrangements
-            - "Payroll" - various currency arrangements
-
-- All function groups and data groups are assigned to the users via master service agreement of the legal entities from the input file.
+- All job profiles and product groups are assigned to the users via master service agreement of the legal entities from the input file.
+- Job profiles as defined in [job-profiles.json](src/main/resources/data/job-profiles.json)
+- Product groups as defined in [product-group-seed.json](src/main/resources/data/seed/product-group-seed.json)
 
 ## Product summary setup
 - Default products: [products.json](src/main/resources/data/products.json)
-- The product types of the arrangements as listed under *Access control setup* are as follows:
-    - Retail: all current accounts, and one of each other product type
-    - Business: all current accounts, and additionally for (only if number of arrangements allows, all current accounts):
-        - "Amsterdam", "Portland", "Vancouver" and "London" - 1 savings account
-        - "Finance International" - 2 loans, 2 savings and 4 investments accounts
-- In case of current account arrangements random debit cards (by default: between 3 and 10) are associated
+- Arrangements in product groups are defined in [product-group-seed.json](src/main/resources/data/seed/product-group-seed.json)
+    - Non current accounts (productId not equal to `1`) will be 10% of total amount of arrangements, only in case of productIds also contain `1`, otherwise the total amount will be used for the non current accounts.
+- In case of current account arrangements random debit cards (configurable) are associated
 - Additionally (by default disabled) possible to ingest balance history based on a weekly balance history items for the past quarter
     - Only works if property `ingest.access.control` is set to `true` due to the required external arrangement id when ingesting balance history items.
     - This external arrangement id is only available when creating an arrangement (part of the access control setup). The external arrangement id is currently not retrievable via any REST endpoint.
@@ -39,7 +23,7 @@ Default service agreements (each object represents one service agreement): [serv
 - Legal entity ids will be retrieved via the external user ids given in the json file to set up the service agreements.
 - Same access control setup for function/data groups and permissions for each service agreement, taking into account:
 - For each participant that shares accounts, arrangements are ingested under its legal entity
-- Function/data groups will be ingested under each service agreement
+- Job profiles/product groups will be ingested under each service agreement
 - Each participant that shares users are assigned permissions
 
 ## Users setup

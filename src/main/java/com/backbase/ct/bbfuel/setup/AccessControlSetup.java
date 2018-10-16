@@ -1,24 +1,15 @@
 package com.backbase.ct.bbfuel.setup;
 
-import static com.backbase.ct.bbfuel.data.ArrangementType.FINANCE_INTERNATIONAL;
-import static com.backbase.ct.bbfuel.data.ArrangementType.GENERAL_BUSINESS;
-import static com.backbase.ct.bbfuel.data.ArrangementType.GENERAL_RETAIL;
-import static com.backbase.ct.bbfuel.data.ArrangementType.INTERNATIONAL_TRADE;
-import static com.backbase.ct.bbfuel.data.ArrangementType.PAYROLL;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_ACCESS_CONTROL;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_CONTACTS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_PAYMENTS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_BALANCE_HISTORY;
-import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_INTERNATIONAL_AND_PAYROLL_DATA_GROUPS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_TRANSACTIONS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
 import static com.backbase.ct.bbfuel.enrich.LegalEntityWithUsersEnricher.createRootLegalEntityWithAdmin;
-import static com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.Currency;
 
-import com.backbase.ct.bbfuel.IngestException;
-import com.backbase.ct.bbfuel.client.accessgroup.ServiceAgreementsPresentationRestClient;
+import com.backbase.ct.bbfuel.client.accessgroup.AccessGroupPresentationRestClient;
 import com.backbase.ct.bbfuel.client.accessgroup.UserContextPresentationRestClient;
-import com.backbase.ct.bbfuel.client.legalentity.LegalEntityPresentationRestClient;
 import com.backbase.ct.bbfuel.client.user.UserPresentationRestClient;
 import com.backbase.ct.bbfuel.configurator.AccessGroupsConfigurator;
 import com.backbase.ct.bbfuel.configurator.LegalEntitiesAndUsersConfigurator;
@@ -27,24 +18,27 @@ import com.backbase.ct.bbfuel.configurator.ProductSummaryConfigurator;
 import com.backbase.ct.bbfuel.configurator.ServiceAgreementsConfigurator;
 import com.backbase.ct.bbfuel.configurator.TransactionsConfigurator;
 import com.backbase.ct.bbfuel.dto.ArrangementId;
-import com.backbase.ct.bbfuel.dto.DataGroupCollection;
-import com.backbase.ct.bbfuel.dto.LegalEntityContext;
 import com.backbase.ct.bbfuel.dto.LegalEntityWithUsers;
 import com.backbase.ct.bbfuel.dto.User;
 import com.backbase.ct.bbfuel.dto.UserContext;
+import com.backbase.ct.bbfuel.dto.entitlement.DbsEntity;
 import com.backbase.ct.bbfuel.dto.entitlement.JobProfile;
+import com.backbase.ct.bbfuel.dto.entitlement.ProductGroupSeed;
 import com.backbase.ct.bbfuel.input.JobProfileReader;
 import com.backbase.ct.bbfuel.input.LegalEntityWithUsersReader;
+import com.backbase.ct.bbfuel.input.ProductGroupSeedReader;
 import com.backbase.ct.bbfuel.service.JobProfileService;
+import com.backbase.ct.bbfuel.service.ProductGroupService;
+import com.backbase.ct.bbfuel.service.UserContextService;
+import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.datagroups.DataGroupsGetResponseBody;
 import com.backbase.presentation.user.rest.spec.v2.users.LegalEntityByUserGetResponseBody;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -53,33 +47,37 @@ import org.springframework.stereotype.Component;
 public class AccessControlSetup extends BaseSetup {
 
     private final UserContextPresentationRestClient userContextPresentationRestClient;
+    private final AccessGroupPresentationRestClient accessGroupPresentationRestClient;
     private final LegalEntitiesAndUsersConfigurator legalEntitiesAndUsersConfigurator;
     private final UserPresentationRestClient userPresentationRestClient;
     private final ProductSummaryConfigurator productSummaryConfigurator;
     private final AccessGroupsConfigurator accessGroupsConfigurator;
     private final ServiceAgreementsConfigurator serviceAgreementsConfigurator;
     private final PermissionsConfigurator permissionsConfigurator;
-    private final ServiceAgreementsPresentationRestClient serviceAgreementsPresentationRestClient;
-    private final LegalEntityPresentationRestClient legalEntityPresentationRestClient;
     private final TransactionsConfigurator transactionsConfigurator;
     private final LegalEntityWithUsersReader legalEntityWithUsersReader;
     private final JobProfileService jobProfileService;
+    private final ProductGroupService productGroupService;
+    private final UserContextService userContextService;
 
     private final JobProfileReader jobProfileReader;
+    private final ProductGroupSeedReader productGroupSeedReader;
     private String rootEntitlementsAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
     private List<LegalEntityWithUsers> legalEntitiesWithUsers;
     private List<JobProfile> jobProfileTemplates;
+    private List<ProductGroupSeed> productGroupSeedTemplates;
 
     public List<LegalEntityWithUsers> getLegalEntitiesWithUsers() {
         return this.legalEntitiesWithUsers;
     }
 
     /**
-     * Legal entities and job profiles are loaded from files.
+     * Legal entities, job profiles and product groups are loaded from files.
      */
-    public void initiate() throws IOException {
+    public void initiate() {
         this.legalEntitiesWithUsers = this.legalEntityWithUsersReader.load();
         this.jobProfileTemplates = this.jobProfileReader.load();
+        this.productGroupSeedTemplates = this.productGroupSeedReader.load();
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_ACCESS_CONTROL)) {
             this.setupBankWithEntitlementsAdminAndProducts();
             this.setupAccessControlForUsers();
@@ -89,7 +87,7 @@ public class AccessControlSetup extends BaseSetup {
         }
     }
 
-    private void setupBankWithEntitlementsAdminAndProducts() throws IOException {
+    private void setupBankWithEntitlementsAdminAndProducts() {
         LegalEntityWithUsers rootBank = createRootLegalEntityWithAdmin(rootEntitlementsAdmin);
         this.legalEntitiesAndUsersConfigurator.ingestLegalEntityWithUsers(rootBank);
         this.productSummaryConfigurator.ingestProducts();
@@ -120,7 +118,7 @@ public class AccessControlSetup extends BaseSetup {
                     .updateMasterServiceAgreementWithExternalIdByLegalEntity(legalEntityExternalId);
             }
 
-            UserContext userContext = getUserContextBasedOnMSAByExternalUserId(user, legalEntity);
+            UserContext userContext = userContextService.getUserContextBasedOnMSAByExternalUserId(user, legalEntity);
             legalEntitiesUserContextMap.put(userContext.getExternalLegalEntityId(), userContext);
         });
         return legalEntitiesUserContextMap;
@@ -132,104 +130,77 @@ public class AccessControlSetup extends BaseSetup {
         this.loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
         this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
-        final LegalEntityContext legalEntityContext = new LegalEntityContext();
-
         legalEntitiesUserContextMap.values()
             .forEach(userContext -> {
-                if (legalEntityContext.getDataGroupCollection() == null) {
-                    legalEntityContext.setDataGroupCollection(
-                        ingestDataGroupArrangementsForServiceAgreement(userContext.getExternalServiceAgreementId(),
-                            userContext.getExternalLegalEntityId(), legalEntityWithUsers.getCategory().isRetail()));
-                }
+                ingestDataGroupArrangementsForServiceAgreement(userContext.getInternalServiceAgreementId(),
+                    userContext.getExternalServiceAgreementId(),
+                    userContext.getExternalLegalEntityId(),
+                    legalEntityWithUsers.getCategory().isRetail());
+
                 boolean isRetail = legalEntityWithUsers.getCategory().isRetail();
                 ingestFunctionGroups(userContext.getExternalServiceAgreementId(), isRetail);
                 assignPermissions(userContext.getUser(),
                     userContext.getInternalServiceAgreementId(),
                     userContext.getExternalServiceAgreementId(),
-                    isRetail,
-                    legalEntityContext.getDataGroupCollection());
+                    isRetail);
             });
     }
 
-    protected DataGroupCollection ingestDataGroupArrangementsForServiceAgreement(String externalServiceAgreementId,
+    protected void ingestDataGroupArrangementsForServiceAgreement(String internalServiceAgreementId,
+        String externalServiceAgreementId,
         String externalLegalEntityId, boolean isRetail) {
-        final DataGroupCollection dataGroupCollection = new DataGroupCollection();
-        List<Callable<Void>> taskList = isRetail
-            ? generateIngestArrangementsTasksForRetail(
-                externalServiceAgreementId, externalLegalEntityId, dataGroupCollection)
-            : generateIngestArrangementsTasksForBusiness(
-                externalServiceAgreementId, externalLegalEntityId, dataGroupCollection);
 
-        taskList.parallelStream()
-            .forEach(voidCallable -> {
-                try {
-                    voidCallable.call();
-                } catch (Exception e) {
-                    throw new IngestException(e.getMessage(), e);
-                }
-            });
+        productGroupSeedTemplates.forEach(productGroupTemplate -> {
+            ProductGroupSeed productGroupSeed = new ProductGroupSeed(productGroupTemplate);
 
-        return dataGroupCollection;
+            if (isRetail && !productGroupSeed.getIsRetail()) {
+                return;
+            }
+
+            // Combination of data group name and service agreement is unique in the system
+            DataGroupsGetResponseBody existingDataGroup = accessGroupPresentationRestClient
+                .retrieveDataGroupsByServiceAgreement(internalServiceAgreementId)
+                .stream()
+                .filter(dataGroupsGetResponseBody -> productGroupSeed.getProductGroupName()
+                    .equals(dataGroupsGetResponseBody.getName()))
+                .findFirst()
+                .orElse(null);
+
+            if (existingDataGroup == null) {
+                List<ArrangementId> arrangementIds = this.productSummaryConfigurator.ingestArrangements(
+                    externalLegalEntityId, productGroupSeed);
+
+                productGroupSeed.setExternalServiceAgreementId(externalServiceAgreementId);
+                this.accessGroupsConfigurator
+                    .ingestDataGroupForArrangements(productGroupSeed, arrangementIds);
+
+                productGroupService.saveAssignedProductGroup(productGroupSeed);
+
+                ingestTransactions(arrangementIds, isRetail);
+                ingestBalanceHistory(arrangementIds);
+            } else {
+                productGroupSeed.setId(existingDataGroup.getId());
+                productGroupSeed.setExternalServiceAgreementId(externalServiceAgreementId);
+                productGroupService.storeInCache(productGroupSeed);
+                productGroupService.saveAssignedProductGroup(productGroupSeed);
+            }
+        });
     }
 
-    private List<Callable<Void>> generateIngestArrangementsTasksForRetail(String externalServiceAgreementId,
-        String externalLegalEntityId, DataGroupCollection dataGroupCollection) {
-        List<Callable<Void>> taskList = new ArrayList<>();
-        taskList.add(() -> generateTask(externalServiceAgreementId, "General EUR",
-            () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, GENERAL_RETAIL, Currency.EUR
-            ),
-            dataGroupCollection::setGeneralEurId));
-        taskList.add(() -> generateTask(externalServiceAgreementId, "General USD",
-            () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, GENERAL_RETAIL, Currency.USD
-            ),
-            dataGroupCollection::setGeneralUsdId));
-
-        return taskList;
-    }
-
-    private List<Callable<Void>> generateIngestArrangementsTasksForBusiness(String externalServiceAgreementId,
-        String externalLegalEntityId, DataGroupCollection dataGroupCollection) {
-        List<Callable<Void>> taskList = new ArrayList<>();
-        taskList.add(() -> generateTask(externalServiceAgreementId, "Amsterdam",
-            () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, GENERAL_BUSINESS,
-                Currency.EUR
-            ),
-            dataGroupCollection::setAmsterdamId));
-
-        taskList.add(() -> generateTask(externalServiceAgreementId, "Portland",
-            () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, GENERAL_BUSINESS,
-                Currency.USD
-            ),
-            dataGroupCollection::setPortlandId));
-
-        taskList.add(() -> generateTask(externalServiceAgreementId, "Vancouver",
-            () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, GENERAL_BUSINESS,
-                Currency.CAD
-            ),
-            dataGroupCollection::setVancouverId));
-
-        taskList.add(() -> generateTask(externalServiceAgreementId, "London",
-            () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, GENERAL_BUSINESS,
-                Currency.GBP
-            ),
-            dataGroupCollection::setLondonId));
-
-        if (this.globalProperties.getBoolean(PROPERTY_INGEST_INTERNATIONAL_AND_PAYROLL_DATA_GROUPS)) {
-            taskList.add(() -> generateTask(externalServiceAgreementId, INTERNATIONAL_TRADE.toString(),
-                () -> this.productSummaryConfigurator
-                    .ingestArrangements(externalLegalEntityId, INTERNATIONAL_TRADE, null),
-                dataGroupCollection::setInternationalTradeId));
-
-            taskList.add(() -> generateTask(externalServiceAgreementId, FINANCE_INTERNATIONAL.toString(),
-                () -> this.productSummaryConfigurator
-                    .ingestArrangements(externalLegalEntityId, FINANCE_INTERNATIONAL, null),
-                dataGroupCollection::setFinanceInternationalId));
-
-            taskList.add(() -> generateTask(externalServiceAgreementId, PAYROLL.toString(),
-                () -> this.productSummaryConfigurator.ingestArrangements(externalLegalEntityId, PAYROLL, null),
-                dataGroupCollection::setPayrollId));
+    private void ingestTransactions(List<ArrangementId> arrangementIds, boolean isRetail) {
+        if (this.globalProperties.getBoolean(PROPERTY_INGEST_TRANSACTIONS)) {
+            arrangementIds.parallelStream()
+                .forEach(arrangementId -> this.transactionsConfigurator
+                    .ingestTransactionsByArrangement(arrangementId.getExternalArrangementId(), isRetail));
         }
-        return taskList;
+    }
+
+    private void ingestBalanceHistory(List<ArrangementId> arrangementIds) {
+        if (this.globalProperties.getBoolean(PROPERTY_INGEST_BALANCE_HISTORY)) {
+            arrangementIds.parallelStream()
+                .forEach(arrangementId -> this.productSummaryConfigurator
+                    .ingestBalanceHistory(arrangementId.getExternalArrangementId()));
+        }
     }
 
     /**
@@ -241,7 +212,7 @@ public class AccessControlSetup extends BaseSetup {
             createLegalEntitiesUserContextMap(legalEntityWithUsers)
                 .values()
                 .forEach(userContext -> ingestFunctionGroups(
-                    userContext.getExternalServiceAgreementId(),isRetail)
+                    userContext.getExternalServiceAgreementId(), isRetail)
                 );
         });
     }
@@ -254,7 +225,7 @@ public class AccessControlSetup extends BaseSetup {
             jobProfileTemplates.forEach(template -> {
                 if (!jobProfileService.isJobProfileForBranch(isRetail, template)) {
                     logger.info("Job profile template [{}] does not apply to this legal entity [isRetail: {}]",
-                    template.getJobProfileName(), isRetail);
+                        template.getJobProfileName(), isRetail);
                     return;
                 }
                 JobProfile jobProfile = new JobProfile(template);
@@ -266,73 +237,24 @@ public class AccessControlSetup extends BaseSetup {
     }
 
     private void assignPermissions(User user, String internalServiceAgreementId,
-        String externalServiceAgreementId, boolean isRetail, DataGroupCollection dataGroupCollection) {
+        String externalServiceAgreementId, boolean isRetail) {
 
         this.jobProfileService.getAssignedJobProfiles(externalServiceAgreementId).forEach(jobProfile -> {
             if (jobProfileService.isJobProfileForUserRole(jobProfile, user.getRole(), isRetail)) {
+                Set<String> dataGroupIds = this.productGroupService
+                    .getAssignedProductGroups(externalServiceAgreementId)
+                    .stream()
+                    .map(DbsEntity::getId)
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toSet());
+
                 this.permissionsConfigurator.assignPermissions(
                     user.getExternalId(),
                     internalServiceAgreementId,
                     jobProfile.getId(),
-                    dataGroupCollection.getDataGroupIds());
+                    new ArrayList<>(dataGroupIds));
             }
         });
     }
 
-    public UserContext getUserContextBasedOnMSAByExternalUserId(User user) {
-        return getUserContextBasedOnMSAByExternalUserId(user, null);
-    }
-
-    private UserContext getUserContextBasedOnMSAByExternalUserId(User user,
-            LegalEntityByUserGetResponseBody legalEntity) {
-        this.loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
-        this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
-
-        String internalUserId = this.userPresentationRestClient.getUserByExternalId(user.getExternalId()).getId();
-
-        if (legalEntity == null) {
-            legalEntity = this.userPresentationRestClient.retrieveLegalEntityByExternalUserId(user.getExternalId());
-        }
-
-        String internalServiceAgreementId = this.legalEntityPresentationRestClient
-            .getMasterServiceAgreementOfLegalEntity(legalEntity.getId())
-            .getId();
-
-        String externalServiceAgreementId = this.serviceAgreementsPresentationRestClient
-            .retrieveServiceAgreement(internalServiceAgreementId)
-            .getExternalId();
-
-        return new UserContext()
-            .withUser(user)
-            .withInternalUserId(internalUserId)
-            .withExternalUserId(user.getExternalId())
-            .withInternalServiceAgreementId(internalServiceAgreementId)
-            .withExternalServiceAgreementId(externalServiceAgreementId)
-            .withInternalLegalEntityId(legalEntity.getId())
-            .withExternalLegalEntityId(legalEntity.getExternalId());
-    }
-
-    private Void generateTask(String externalServiceAgreementId, String dataGroupName,
-        Supplier<List<ArrangementId>> supplier,
-        Consumer<String> consumer) {
-        logger.debug("generateTask [{}] [{}]", externalServiceAgreementId, dataGroupName);
-        List<ArrangementId> arrangementIds = new ArrayList<>(supplier.get());
-        String dataGroupId = this.accessGroupsConfigurator
-            .ingestDataGroupForArrangements(externalServiceAgreementId, dataGroupName, arrangementIds);
-
-        if (this.globalProperties.getBoolean(PROPERTY_INGEST_TRANSACTIONS)) {
-            arrangementIds.parallelStream()
-                .forEach(arrangementId -> this.transactionsConfigurator
-                    .ingestTransactionsByArrangement(arrangementId.getExternalArrangementId()));
-        }
-
-        if (this.globalProperties.getBoolean(PROPERTY_INGEST_BALANCE_HISTORY)) {
-            arrangementIds.parallelStream()
-                .forEach(arrangementId -> this.productSummaryConfigurator
-                    .ingestBalanceHistory(arrangementId.getExternalArrangementId()));
-        }
-
-        consumer.accept(dataGroupId);
-        return null;
-    }
 }

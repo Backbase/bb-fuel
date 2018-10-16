@@ -8,8 +8,10 @@ import static java.util.stream.Collectors.toList;
 import com.backbase.ct.bbfuel.client.accessgroup.AccessGroupIntegrationRestClient;
 import com.backbase.ct.bbfuel.dto.ArrangementId;
 import com.backbase.ct.bbfuel.dto.entitlement.JobProfile;
+import com.backbase.ct.bbfuel.dto.entitlement.ProductGroupSeed;
 import com.backbase.ct.bbfuel.service.AccessGroupService;
 import com.backbase.ct.bbfuel.service.JobProfileService;
+import com.backbase.ct.bbfuel.service.ProductGroupService;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.config.functions.FunctionsGetResponseBody;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.Permission;
 import java.util.List;
@@ -26,6 +28,8 @@ public class AccessGroupsConfigurator {
 
     private final JobProfileService jobProfileService;
 
+    private final ProductGroupService productGroupService;
+
     private static final String ARRANGEMENTS = "ARRANGEMENTS";
 
     public JobProfile ingestAdminFunctionGroup(String externalServiceAgreementId) {
@@ -39,12 +43,12 @@ public class AccessGroupsConfigurator {
      * Ingest a function group aka job profile.
      * A profile without explicit permissions will be granted all.
      */
-    public synchronized String ingestFunctionGroup(JobProfile jobProfile) {
+    public synchronized void ingestFunctionGroup(JobProfile jobProfile) {
         List<FunctionsGetResponseBody> functions = this.accessGroupIntegrationRestClient.retrieveFunctions();
 
         String functionGroupId = jobProfileService.retrieveIdFromCache(jobProfile);
         if (functionGroupId != null) {
-            return functionGroupId;
+            return;
         }
         List<Permission> permissions = jobProfile.getPermissions() == null
             ? createPermissionsWithAllPrivileges(functions)
@@ -55,17 +59,23 @@ public class AccessGroupsConfigurator {
         jobProfile.setId(functionGroupId);
 
         jobProfileService.storeInCache(jobProfile);
-
-        return functionGroupId;
     }
 
-    public String ingestDataGroupForArrangements(String externalServiceAgreementId, String dataGroupName,
+    public synchronized void ingestDataGroupForArrangements(ProductGroupSeed productGroupSeed,
         List<ArrangementId> arrangementIds) {
         List<String> internalArrangementIds = arrangementIds.stream()
             .map(ArrangementId::getInternalArrangementId)
             .collect(toList());
 
-        return accessGroupService.ingestDataGroup(
-            externalServiceAgreementId, dataGroupName, ARRANGEMENTS, internalArrangementIds);
+        String dataGroupId = productGroupService.retrieveIdFromCache(productGroupSeed);
+        if (dataGroupId != null) {
+            return;
+        }
+
+        dataGroupId = accessGroupService.ingestDataGroup(productGroupSeed.getExternalServiceAgreementId(),
+            productGroupSeed.getProductGroupName(), ARRANGEMENTS, internalArrangementIds);
+        productGroupSeed.setId(dataGroupId);
+
+        productGroupService.storeInCache(productGroupSeed);
     }
 }

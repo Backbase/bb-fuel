@@ -34,14 +34,14 @@ public class LegalEntityWithUsersReaderTest {
     @Test
     public void testReadingPerformanceBusinessJson() {
         List<LegalEntityWithUsers> legalEntities =
-            subject.load("data/performance-test-legal-entities-with-users-business.json");
+            subject.load("data/performance/performance-test-legal-entities-with-users-business.json");
         assertThat(legalEntities, hasSize(35));
     }
 
     @Test
     public void testReadingPerformanceRetailJson() {
         List<LegalEntityWithUsers> legalEntities =
-            subject.load("data/performance-test-legal-entities-with-users-retail.json");
+            subject.load("data/performance/performance-test-legal-entities-with-users-retail.json");
         assertThat(legalEntities, hasSize(140));
     }
     @Test

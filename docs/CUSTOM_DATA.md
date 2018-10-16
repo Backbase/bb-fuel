@@ -10,7 +10,7 @@ java -Denvironment.name=your-env-00 -cp /path/to/custom/resources/folder/:bb-fue
 ### How to run with performance test data setup
 Based on [gatling-performance-simulations](https://stash.backbase.com/projects/CT/repos/gatling-performance-simulations/browse):
 ```
-java -Denvironment.name=your-env-00 -Dlegal.entities.with.users.json.location=data/performance-test-legal-entities-with-users-{retail or business}.json bb-fuel-{version}-boot.jar
+java -Denvironment.name=your-env-00 -Dlegal.entities.with.users.json.location=data/performance/performance-test-legal-entities-with-users-{retail or business}.json bb-fuel-{version}-boot.jar
 ```
 
 ### How to run on multi-tenancy environments

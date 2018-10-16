@@ -85,19 +85,17 @@ public class AccessGroupIntegrationRestClient extends AbstractRestClient {
             .post(getPath(ENDPOINT_USERS_PERMISSIONS));
     }
 
-    public void assignPermissions(
+    public Response assignPermissions(
         String externalUserId,
         String internalServiceAgreementId,
         String functionGroupId,
         List<String> dataGroupIds) {
-        assignPermissions(new AssignPermissionsPostRequestBody()
+        return assignPermissions(new AssignPermissionsPostRequestBody()
             .withExternalLegalEntityId(null)
             .withExternalUserId(externalUserId)
             .withServiceAgreementId(internalServiceAgreementId)
             .withFunctionGroupId(functionGroupId)
-            .withDataGroupIds(dataGroupIds))
-            .then()
-            .statusCode(SC_OK);
+            .withDataGroupIds(dataGroupIds));
     }
 
     @Override

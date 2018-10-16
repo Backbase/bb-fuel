@@ -1,5 +1,7 @@
 package com.backbase.ct.bbfuel.dto.entitlement;
 
+import static org.springframework.beans.BeanUtils.copyProperties;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,9 +29,7 @@ public class JobProfile extends DbsEntity {
     }
 
     public JobProfile(JobProfile source) {
-        this.setJobProfileName(source.getJobProfileName());
-        this.setApprovalLevel(source.getApprovalLevel());
-        this.setIsRetail(source.getIsRetail());
+        copyProperties(source, this);
         if (source.getRoles() != null) {
             this.setRoles(new ArrayList<>(source.getRoles()));
         }

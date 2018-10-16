@@ -1,25 +1,5 @@
 package com.backbase.ct.bbfuel.data;
 
-import static com.backbase.ct.bbfuel.data.ArrangementType.FINANCE_INTERNATIONAL;
-import static com.backbase.ct.bbfuel.data.ArrangementType.GENERAL_BUSINESS;
-import static com.backbase.ct.bbfuel.data.ArrangementType.GENERAL_RETAIL;
-import static com.backbase.ct.bbfuel.data.ArrangementType.INTERNATIONAL_TRADE;
-import static com.backbase.ct.bbfuel.data.ArrangementType.PAYROLL;
-import static com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.Currency.BHD;
-import static com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.Currency.CNY;
-import static com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.Currency.EUR;
-import static com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.Currency.INR;
-import static com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.Currency.JPY;
-import static com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.Currency.TRY;
-import static java.util.Arrays.asList;
-import static java.util.Collections.singletonList;
-
-import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.Currency;
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
-
 public final class CommonConstants {
 
     private CommonConstants() {
@@ -63,21 +43,11 @@ public final class CommonConstants {
     public static final String PROPERTY_INGEST_ACCESS_CONTROL = "ingest.access.control";
     public static final String PROPERTY_INGEST_CUSTOM_SERVICE_AGREEMENTS = "ingest.custom.service.agreements";
     public static final String PROPERTY_JOB_PROFILES_JSON_LOCATION = "job.profiles.json";
+    public static final String PROPERTY_PRODUCT_GROUP_SEED_JSON_LOCATION = "product.group.seed.json";
 
     // User data
-    static final String PROPERTY_DEBIT_CARDS_MIN = "debit.cards.min";
-    static final String PROPERTY_DEBIT_CARDS_MAX = "debit.cards.max";
     public static final String PROPERTY_CONTACT_ACCOUNTS_MIN = "contact.accounts.min";
     public static final String PROPERTY_CONTACT_ACCOUNTS_MAX = "contact.accounts.max";
-    public static final String PROPERTY_ARRANGEMENTS_GENERAL_MIN = "arrangements.general.min";
-    public static final String PROPERTY_ARRANGEMENTS_GENERAL_MAX = "arrangements.general.max";
-    public static final String PROPERTY_INGEST_INTERNATIONAL_AND_PAYROLL_DATA_GROUPS = "ingest.international.and.payroll.data.groups";
-    public static final String PROPERTY_ARRANGEMENTS_INTERNATIONAL_TRADE_MIN = "arrangements.international.trade.min";
-    public static final String PROPERTY_ARRANGEMENTS_INTERNATIONAL_TRADE_MAX = "arrangements.international.trade.max";
-    public static final String PROPERTY_ARRANGEMENTS_FINANCE_INTERNATIONAL_MIN = "arrangements.finance.international.min";
-    public static final String PROPERTY_ARRANGEMENTS_FINANCE_INTERNATIONAL_MAX = "arrangements.finance.international.max";
-    public static final String PROPERTY_ARRANGEMENTS_PAYROLL_MIN = "arrangements.payroll.min";
-    public static final String PROPERTY_ARRANGEMENTS_PAYROLL_MAX = "arrangements.payroll.max";
     public static final String PROPERTY_INGEST_BALANCE_HISTORY = "ingest.balance.history";
     public static final String PROPERTY_TRANSACTIONS_MIN = "transactions.min";
     public static final String PROPERTY_TRANSACTIONS_MAX = "transactions.max";
@@ -103,74 +73,10 @@ public final class CommonConstants {
     public static final String PROPERTY_INGEST_ACTIONS = "ingest.actions";
 
     // Product summary
-    static final String PROPERTY_PRODUCTS_JSON_LOCATION = "products.json";
-    static final List<String> GENERAL_BUSINESS_CURRENT_ACCOUNT_NAMES = asList(
-        "Factory",
-        "GBF Corporate",
-        "Legal",
-        "Manufacturing",
-        "Marketing",
-        "Payables",
-        "Personnel",
-        "Receivables",
-        "Sales",
-        "Support"
-    );
-
-    static final List<String> FINANCE_INTERNATIONAL_CURRENT_ACCOUNT_NAMES = asList(
-        "Assets",
-        "Liability",
-        "Equity",
-        "Revenue",
-        "Expenses",
-        "Executive expenses",
-        "Transport"
-    );
-
-    static final Map<Currency, String> INTERNATIONAL_TRADE_CURRENCY_NAME_MAP = new EnumMap<>(Currency.class);
-
-    static {
-        INTERNATIONAL_TRADE_CURRENCY_NAME_MAP.put(BHD, "Bahrain sales");
-        INTERNATIONAL_TRADE_CURRENCY_NAME_MAP.put(CNY, "China sales");
-        INTERNATIONAL_TRADE_CURRENCY_NAME_MAP.put(JPY, "Japan sales");
-        INTERNATIONAL_TRADE_CURRENCY_NAME_MAP.put(INR, "India sales");
-        INTERNATIONAL_TRADE_CURRENCY_NAME_MAP.put(TRY, "Turkey sales");
-        INTERNATIONAL_TRADE_CURRENCY_NAME_MAP.put(EUR, "Belgium sales");
-    }
-
-    static final Map<ArrangementType, List<String>> CURRENT_ACCOUNT_ARRANGEMENT_TYPE_NAME_MAP =
-        new EnumMap<>(ArrangementType.class);
-
-    static {
-        CURRENT_ACCOUNT_ARRANGEMENT_TYPE_NAME_MAP.put(GENERAL_RETAIL, singletonList("Current Account"));
-        CURRENT_ACCOUNT_ARRANGEMENT_TYPE_NAME_MAP.put(GENERAL_BUSINESS, GENERAL_BUSINESS_CURRENT_ACCOUNT_NAMES);
-        CURRENT_ACCOUNT_ARRANGEMENT_TYPE_NAME_MAP.put(INTERNATIONAL_TRADE,
-            new ArrayList<>(INTERNATIONAL_TRADE_CURRENCY_NAME_MAP.values()));
-        CURRENT_ACCOUNT_ARRANGEMENT_TYPE_NAME_MAP
-            .put(FINANCE_INTERNATIONAL, FINANCE_INTERNATIONAL_CURRENT_ACCOUNT_NAMES);
-        CURRENT_ACCOUNT_ARRANGEMENT_TYPE_NAME_MAP.put(PAYROLL, singletonList("Payroll"));
-    }
+    public static final String PROPERTY_PRODUCTS_JSON_LOCATION = "products.json";
 
     // Payments
     public static final String PAYMENT_TYPE_SEPA_CREDIT_TRANSFER = "SEPA_CREDIT_TRANSFER";
     public static final String PAYMENT_TYPE_US_DOMESTIC_WIRE = "US_DOMESTIC_WIRE";
 
-    // Transactions
-    public static final List<String> TRANSACTION_TYPE_GROUPS = asList(
-        "Payment",
-        "Withdrawal",
-        "Loans",
-        "Fees"
-    );
-
-    public static final List<String> TRANSACTION_TYPES = asList(
-        "SEPA CT",
-        "SEPA DD",
-        "BACS (UK)",
-        "Faster payment (UK)",
-        "CHAPS (UK)",
-        "International payment",
-        "Loan redemption",
-        "Interest settlement"
-    );
 }

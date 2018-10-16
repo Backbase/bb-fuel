@@ -10,7 +10,8 @@ import com.backbase.ct.bbfuel.configurator.AccessGroupsConfigurator;
 import com.backbase.ct.bbfuel.configurator.PermissionsConfigurator;
 import com.backbase.ct.bbfuel.configurator.ServiceAgreementsConfigurator;
 import com.backbase.ct.bbfuel.data.CommonConstants;
-import com.backbase.ct.bbfuel.dto.DataGroupCollection;
+import com.backbase.ct.bbfuel.dto.entitlement.DbsEntity;
+import com.backbase.ct.bbfuel.service.ProductGroupService;
 import com.backbase.ct.bbfuel.util.ParserUtil;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.Participant;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementPostRequestBody;
@@ -32,8 +33,8 @@ public class ServiceAgreementsSetup extends BaseSetup {
     private final PermissionsConfigurator permissionsConfigurator;
     private final UserPresentationRestClient userPresentationRestClient;
     private final AccessControlSetup accessControlSetup;
+    private final ProductGroupService productGroupService;
     private String adminFunctionGroupId;
-    private DataGroupCollection dataGroupCollection = null;
     private String rootEntitlementsAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
 
     @Override
@@ -43,11 +44,11 @@ public class ServiceAgreementsSetup extends BaseSetup {
                 .convertJsonToObject(
                     this.globalProperties.getString(CommonConstants.PROPERTY_SERVICE_AGREEMENTS_JSON),
                     ServiceAgreementPostRequestBody[].class);
-            ingestCustomSericeAgreements(asList(serviceAgreementPostRequestBodies));
+            ingestCustomServiceAgreements(asList(serviceAgreementPostRequestBodies));
         }
     }
 
-    private void ingestCustomSericeAgreements(List<ServiceAgreementPostRequestBody> serviceAgreementPostRequestBodies) {
+    private void ingestCustomServiceAgreements(List<ServiceAgreementPostRequestBody> serviceAgreementPostRequestBodies) {
         this.loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
         this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
@@ -56,13 +57,18 @@ public class ServiceAgreementsSetup extends BaseSetup {
                 .ingestServiceAgreementWithProvidersAndConsumers(
                     serviceAgreementPostRequestBody.getParticipants());
 
-            setupFunctionDataGroups(internalServiceAgreementId,
+            String externalServiceAgreementId = this.serviceAgreementsPresentationRestClient
+                .retrieveServiceAgreement(internalServiceAgreementId)
+                .getExternalId();
+
+            setupFunctionDataGroups(internalServiceAgreementId, externalServiceAgreementId,
                 serviceAgreementPostRequestBody.getParticipants());
-            setupPermissions(internalServiceAgreementId, serviceAgreementPostRequestBody.getParticipants());
+            setupPermissions(internalServiceAgreementId, externalServiceAgreementId, serviceAgreementPostRequestBody.getParticipants());
         });
     }
 
-    private void setupFunctionDataGroups(String internalServiceAgreementId, Set<Participant> participants) {
+    private void setupFunctionDataGroups(String internalServiceAgreementId, String externalServiceAgreementId,
+        Set<Participant> participants) {
         Set<Participant> participantsSharingAccounts = participants.stream()
             .filter(Participant::getSharingAccounts)
             .collect(Collectors.toSet());
@@ -82,29 +88,31 @@ public class ServiceAgreementsSetup extends BaseSetup {
             .retrieveLegalEntityByExternalUserId(externalAdminUserId)
             .getExternalId();
 
-        String externalServiceAgreementId = this.serviceAgreementsPresentationRestClient
-            .retrieveServiceAgreement(internalServiceAgreementId)
-            .getExternalId();
-
-        this.dataGroupCollection = this.accessControlSetup
-            .ingestDataGroupArrangementsForServiceAgreement(externalServiceAgreementId, externalLegalEntityId,
-                users.size() == 1); //RB20180923: simplified assumption holds for now
+        this.accessControlSetup
+            .ingestDataGroupArrangementsForServiceAgreement(internalServiceAgreementId, externalServiceAgreementId,
+                externalLegalEntityId, users.size() == 1); //RB20180923: simplified assumption holds for now
 
         adminFunctionGroupId = this.accessGroupsConfigurator
             .ingestAdminFunctionGroup(externalServiceAgreementId).getId();
     }
 
-    private void setupPermissions(String internalServiceAgreementId, Set<Participant> participants) {
+    private void setupPermissions(String internalServiceAgreementId, String externalServiceAgreementId, Set<Participant> participants) {
         for (Participant participant : participants) {
             Set<String> externalUserIds = participant.getUsers();
 
             for (String externalUserId : externalUserIds) {
+                List<String> dataGroupIds = this.productGroupService
+                    .getAssignedProductGroups(externalServiceAgreementId)
+                    .stream()
+                    .map(DbsEntity::getId)
+                    .collect(Collectors.toList());
+
                 this.permissionsConfigurator.assignPermissions(
                     externalUserId,
                     internalServiceAgreementId,
                     // TODO assess impact for different job profiles
                     this.adminFunctionGroupId,
-                    dataGroupCollection.getDataGroupIds());
+                    dataGroupIds);
             }
         }
     }

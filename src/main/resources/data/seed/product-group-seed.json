@@ -1,0 +1,222 @@
+[
+  {
+    "productGroupName": "Amsterdam",
+    "currencies": [
+      "EUR"
+    ],
+    "currentAccountNames": [
+      "Factory",
+      "GBF Corporate",
+      "Legal",
+      "Manufacturing",
+      "Marketing",
+      "Payables",
+      "Personnel",
+      "Receivables",
+      "Sales",
+      "Support"
+    ],
+    "productIds": [
+      "1", "2"
+    ],
+    "numberOfArrangements": {
+      "min": 5,
+      "max": 8
+    },
+    "numberOfDebitCards": {
+      "min": 2,
+      "max": 3
+    }
+  },
+  {
+    "productGroupName": "Portland",
+    "currencies": [
+      "USD"
+    ],
+    "currentAccountNames": [
+      "Factory",
+      "GBF Corporate",
+      "Legal",
+      "Manufacturing",
+      "Marketing",
+      "Payables",
+      "Personnel",
+      "Receivables",
+      "Sales",
+      "Support"
+    ],
+    "productIds": [
+      "1", "2"
+    ],
+    "numberOfArrangements": {
+      "min": 5,
+      "max": 8
+    },
+    "numberOfDebitCards": {
+      "min": 2,
+      "max": 3
+    }
+  },
+  {
+    "productGroupName": "Vancouver",
+    "currencies": [
+      "CAD"
+    ],
+    "currentAccountNames": [
+      "Factory",
+      "GBF Corporate",
+      "Legal",
+      "Manufacturing",
+      "Marketing",
+      "Payables",
+      "Personnel",
+      "Receivables",
+      "Sales",
+      "Support"
+    ],
+    "productIds": [
+      "1", "2"
+    ],
+    "numberOfArrangements": {
+      "min": 5,
+      "max": 8
+    },
+    "numberOfDebitCards": {
+      "min": 2,
+      "max": 3
+    }
+  },
+  {
+    "productGroupName": "London",
+    "currencies": [
+      "GBP"
+    ],
+    "currentAccountNames": [
+      "Factory",
+      "GBF Corporate",
+      "Legal",
+      "Manufacturing",
+      "Marketing",
+      "Payables",
+      "Personnel",
+      "Receivables",
+      "Sales",
+      "Support"
+    ],
+    "productIds": [
+      "1", "2"
+    ],
+    "numberOfArrangements": {
+      "min": 5,
+      "max": 8
+    },
+    "numberOfDebitCards": {
+      "min": 2,
+      "max": 3
+    }
+  },
+  {
+    "productGroupName": "International Trade",
+    "currencies": [
+      "BHD",
+      "CNY",
+      "JPY",
+      "INR",
+      "TRY",
+      "EUR"
+    ],
+    "currentAccountNames": [
+      "Bahrain sales",
+      "China sales",
+      "Japan sales",
+      "India sales",
+      "Turkey sales",
+      "Belgium sales"
+    ],
+    "productIds": [
+      "1"
+    ],
+    "numberOfArrangements": {
+      "min": 5,
+      "max": 8
+    },
+    "numberOfDebitCards": {
+      "min": 2,
+      "max": 3
+    }
+  },
+  {
+    "productGroupName": "Finance International",
+    "currencies": [
+      "EUR",
+      "GBP",
+      "USD",
+      "CAD"
+    ],
+    "currentAccountNames": [
+      "Assets",
+      "Liability",
+      "Equity",
+      "Revenue",
+      "Expenses",
+      "Executive expenses",
+      "Transport"
+    ],
+    "productIds": [
+      "1", "2", "4", "6"
+    ],
+    "numberOfArrangements": {
+      "min": 5,
+      "max": 8
+    },
+    "numberOfDebitCards": {
+      "min": 2,
+      "max": 3
+    }
+  },
+  {
+    "productGroupName": "Payroll",
+    "currencies": [
+      "EUR",
+      "GBP",
+      "USD",
+      "CAD"
+    ],
+    "currentAccountNames": [
+      "Payroll"
+    ],
+    "productIds": [
+      "1"
+    ],
+    "numberOfArrangements": {
+      "min": 5,
+      "max": 8
+    },
+    "numberOfDebitCards": {
+      "min": 2,
+      "max": 3
+    }
+  },
+  {
+    "productGroupName": "General EUR/USD",
+    "isRetail": true,
+    "currencies": [
+      "EUR",
+      "USD"
+    ],
+    "currentAccountNames": [
+      "Current Account"
+    ],
+    "productIds": [
+      "1", "2", "3", "4", "5", "6"
+    ],
+    "numberOfArrangements": {
+      "min": 5,
+      "max": 8
+    },
+    "numberOfDebitCards": {
+      "min": 2,
+      "max": 3
+    }
+  }
+]

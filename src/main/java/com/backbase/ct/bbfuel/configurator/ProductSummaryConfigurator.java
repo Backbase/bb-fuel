@@ -38,25 +38,21 @@ public class ProductSummaryConfigurator {
         List<ArrangementsPostRequestBody> arrangements = synchronizedList(new ArrayList<>());
         List<ArrangementId> arrangementIds = synchronizedList(new ArrayList<>());
 
-        int numberOfArrangements = productGroupSeed.getNumberOfArrangements().getNumberInRange();
+        int numberOfArrangements = productGroupSeed.getNumberOfArrangements().getRandomNumberInRange();
         int tenPercentOfTotal = (int) Math.round(numberOfArrangements * 0.1);
         int numberOfNonCurrentAccounts = tenPercentOfTotal > 0 ? tenPercentOfTotal : 0;
 
         if (productGroupSeed.getProductIds().contains(String.valueOf(1))) {
-            productGroupSeed.getNumberOfArrangements().setNumberInRange(numberOfArrangements - numberOfNonCurrentAccounts);
-
             arrangements.addAll(generateCurrentAccountArrangementsPostRequestBodies(
-                externalLegalEntityId, productGroupSeed));
+                externalLegalEntityId, productGroupSeed, numberOfArrangements - numberOfNonCurrentAccounts));
 
             productGroupSeed.getProductIds().remove(String.valueOf(1));
         }
 
         if (numberOfNonCurrentAccounts > 0 && !productGroupSeed.getProductIds().isEmpty()) {
-            productGroupSeed.getNumberOfArrangements().setNumberInRange(
-                productGroupSeed.getProductIds().contains(String.valueOf(1)) ? numberOfNonCurrentAccounts : numberOfArrangements);
-
             arrangements.addAll(generateNonCurrentAccountArrangementsPostRequestBodies(
-                externalLegalEntityId, productGroupSeed));
+                externalLegalEntityId, productGroupSeed,
+                productGroupSeed.getProductIds().contains(String.valueOf(1)) ? numberOfNonCurrentAccounts : numberOfArrangements));
         }
 
         arrangements.parallelStream().forEach(arrangement -> {

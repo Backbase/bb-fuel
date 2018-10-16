@@ -73,10 +73,10 @@ public class ProductSummaryDataGenerator {
     }
 
     public static List<ArrangementsPostRequestBody> generateCurrentAccountArrangementsPostRequestBodies(
-        String externalLegalEntityId, ProductGroupSeed productGroupSeed) {
+        String externalLegalEntityId, ProductGroupSeed productGroupSeed, int numberOfArrangements) {
         List<ArrangementsPostRequestBody> arrangementsPostRequestBodies = synchronizedList(new ArrayList<>());
 
-        IntStream.range(0, productGroupSeed.getNumberOfArrangements().getNumberInRange()).parallel().forEach(randomNumber -> {
+        IntStream.range(0, numberOfArrangements).parallel().forEach(randomNumber -> {
             int randomCurrentAccountIndex = ThreadLocalRandom.current().nextInt(productGroupSeed.getCurrentAccountNames().size());
             // To support specific currency - account name map such as in the International Trade product group example
             int randomCurrencyIndex = productGroupSeed.getCurrencies().size() == productGroupSeed.getCurrentAccountNames().size()
@@ -94,7 +94,7 @@ public class ProductSummaryDataGenerator {
 
             HashSet<DebitCard> debitCards = new HashSet<>();
 
-            for (int i = 0; i < productGroupSeed.getNumberOfDebitCards().getNumberInRange(); i++) {
+            for (int i = 0; i < productGroupSeed.getNumberOfDebitCards().getRandomNumberInRange(); i++) {
                 debitCards.add(new DebitCard()
                     .withNumber(String.valueOf(generateRandomNumberInRange(1111, 9999)))
                     .withExpiryDate(faker.business()
@@ -110,10 +110,10 @@ public class ProductSummaryDataGenerator {
     }
 
     public static List<ArrangementsPostRequestBody> generateNonCurrentAccountArrangementsPostRequestBodies(
-        String externalLegalEntityId, ProductGroupSeed productGroupSeed) {
+        String externalLegalEntityId, ProductGroupSeed productGroupSeed, int numberOfArrangements) {
         List<ArrangementsPostRequestBody> arrangementsPostRequestBodies = synchronizedList(new ArrayList<>());
 
-        IntStream.range(0, productGroupSeed.getNumberOfArrangements().getNumberInRange()).parallel().forEach(randomNumber -> {
+        IntStream.range(0, numberOfArrangements).parallel().forEach(randomNumber -> {
             Currency currency = getRandomFromList(productGroupSeed.getCurrencies());
             String productId = getRandomFromList(productGroupSeed.getProductIds());
             String arrangementName = getProductTypeNameFromProductsInputFile(productId);

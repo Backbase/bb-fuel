@@ -32,9 +32,9 @@ public class TransactionsDataGenerator {
     private static final List<String> TRANSACTION_TYPES = asList(
         "SEPA CT",
         "SEPA DD",
-        "BACS",
-        "Faster payment",
-        "CHAPS",
+        "BACS (UK)",
+        "Faster payment (UK)",
+        "CHAPS (UK)",
         "International payment",
         "Loan redemption",
         "Interest settlement"

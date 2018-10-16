@@ -18,23 +18,23 @@ public class AmountRange {
     @Setter
     private Integer max;
 
-    private Integer randomNumberInRange;
+    private Integer numberInRange;
 
-    public int getRandomNumberInRange() {
-        if (this.randomNumberInRange == null) {
-            this.randomNumberInRange = generateRandomNumberInRange(this.min, this.max);
+    public int getNumberInRange() {
+        if (this.numberInRange == null) {
+            this.numberInRange = generateRandomNumberInRange(this.min, this.max);
         }
 
-        return randomNumberInRange;
+        return numberInRange;
     }
 
-    public void setRandomNumberInRange(int randomNumber) {
-        if (randomNumber < this.min || randomNumber > this.max ) {
+    public void setNumberInRange(int number) {
+        if (number < this.min || number > this.max ) {
             throw new IllegalArgumentException(String.format(
                 "Number must be between min (%s) and max (%s)", this.min, this.max));
         }
 
-        this.randomNumberInRange = randomNumber;
+        this.numberInRange = number;
     }
 
 }

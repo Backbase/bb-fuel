@@ -76,7 +76,7 @@ public class ProductSummaryDataGenerator {
         String externalLegalEntityId, ProductGroupSeed productGroupSeed) {
         List<ArrangementsPostRequestBody> arrangementsPostRequestBodies = synchronizedList(new ArrayList<>());
 
-        IntStream.range(0, productGroupSeed.getNumberOfArrangements().getRandomNumberInRange()).parallel().forEach(randomNumber -> {
+        IntStream.range(0, productGroupSeed.getNumberOfArrangements().getNumberInRange()).parallel().forEach(randomNumber -> {
             int randomCurrentAccountIndex = ThreadLocalRandom.current().nextInt(productGroupSeed.getCurrentAccountNames().size());
             // To support specific currency - account name map such as in the International Trade product group example
             int randomCurrencyIndex = productGroupSeed.getCurrencies().size() == productGroupSeed.getCurrentAccountNames().size()
@@ -94,7 +94,7 @@ public class ProductSummaryDataGenerator {
 
             HashSet<DebitCard> debitCards = new HashSet<>();
 
-            for (int i = 0; i < productGroupSeed.getNumberOfDebitCards().getRandomNumberInRange(); i++) {
+            for (int i = 0; i < productGroupSeed.getNumberOfDebitCards().getNumberInRange(); i++) {
                 debitCards.add(new DebitCard()
                     .withNumber(String.valueOf(generateRandomNumberInRange(1111, 9999)))
                     .withExpiryDate(faker.business()
@@ -113,7 +113,7 @@ public class ProductSummaryDataGenerator {
         String externalLegalEntityId, ProductGroupSeed productGroupSeed) {
         List<ArrangementsPostRequestBody> arrangementsPostRequestBodies = synchronizedList(new ArrayList<>());
 
-        IntStream.range(0, productGroupSeed.getNumberOfArrangements().getRandomNumberInRange()).parallel().forEach(randomNumber -> {
+        IntStream.range(0, productGroupSeed.getNumberOfArrangements().getNumberInRange()).parallel().forEach(randomNumber -> {
             Currency currency = getRandomFromList(productGroupSeed.getCurrencies());
             String productId = getRandomFromList(productGroupSeed.getProductIds());
             String arrangementName = getProductTypeNameFromProductsInputFile(productId);

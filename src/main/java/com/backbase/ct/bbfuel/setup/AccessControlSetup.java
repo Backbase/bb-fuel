@@ -153,8 +153,7 @@ public class AccessControlSetup extends BaseSetup {
         productGroupSeedTemplates.forEach(productGroupTemplate -> {
             ProductGroupSeed productGroupSeed = new ProductGroupSeed(productGroupTemplate);
 
-            if ((isRetail && !productGroupSeed.getIsRetail()) ||
-                (!isRetail && productGroupSeed.getIsRetail())) {
+            if ((isRetail && !productGroupSeed.getIsRetail()) || (!isRetail && productGroupSeed.getIsRetail())) {
                 return;
             }
 

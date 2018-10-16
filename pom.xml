@@ -9,12 +9,12 @@
 
     <groupId>com.backbase.ct</groupId>
     <artifactId>bb-fuel</artifactId>
-    <version>1.8.0-SNAPSHOT</version>
+    <version>1.8.0</version>
     <name>Backbase :: Capability Testing :: bb-fuel</name>
 
     <scm>
         <developerConnection>scm:git:ssh://git@stash.backbase.com:7999/ct/bb-fuel.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>bb-fuel-1.8.0</tag>
     </scm>
 
     <distributionManagement>

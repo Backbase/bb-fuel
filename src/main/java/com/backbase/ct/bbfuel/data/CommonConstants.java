@@ -46,8 +46,6 @@ public final class CommonConstants {
     public static final String PROPERTY_PRODUCT_GROUP_SEED_JSON_LOCATION = "product.group.seed.json";
 
     // User data
-    static final String PROPERTY_DEBIT_CARDS_MIN = "debit.cards.min";
-    static final String PROPERTY_DEBIT_CARDS_MAX = "debit.cards.max";
     public static final String PROPERTY_CONTACT_ACCOUNTS_MIN = "contact.accounts.min";
     public static final String PROPERTY_CONTACT_ACCOUNTS_MAX = "contact.accounts.max";
     public static final String PROPERTY_INGEST_BALANCE_HISTORY = "ingest.balance.history";

@@ -23,6 +23,7 @@ public class ProductGroupSeed extends DbsEntity {
     private List<String> currentAccountNames;
     private List<String> productIds;
     private Amount numberOfArrangements;
+    private Amount numberOfDebitCards;
 
     public ProductGroupSeed() {
         super();

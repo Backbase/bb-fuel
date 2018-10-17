@@ -140,11 +140,20 @@ public class CapabilitiesDataSetup extends BaseSetup {
 
     private void ingestActionsPerUser() {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_ACTIONS)) {
-            this.accessControlSetup.getLegalEntitiesWithUsers().stream()
-                .map(LegalEntityWithUsers::getUserExternalIds)
-                .flatMap(List::stream)
+            List<String> externalUserIds = this.accessControlSetup.getLegalEntitiesWithUsers()
+                .stream()
+                .filter(legalEntities -> legalEntities.getUsers()
+                    .stream()
+                    // TODO: Check job profile of user for "create" permission on "Manage Action Recipes"
+                    .noneMatch(user -> "employee".equals(user.getRole())))
                 .collect(Collectors.toList())
-                .forEach(this.actionsConfigurator::ingestActions);
+                .stream()
+                .map(LegalEntityWithUsers::getUsers)
+                .flatMap(List::stream)
+                .map(User::getExternalId)
+                .collect(Collectors.toList());
+
+            externalUserIds.forEach(this.actionsConfigurator::ingestActions);
         }
     }
 }

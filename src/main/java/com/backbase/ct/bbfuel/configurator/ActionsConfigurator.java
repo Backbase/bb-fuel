@@ -16,7 +16,6 @@ import com.backbase.dbs.actions.actionrecipes.presentation.rest.spec.v2.actionre
 import com.backbase.presentation.productsummary.rest.spec.v2.productsummary.ArrangementsByBusinessFunctionGetResponseBody;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -34,7 +33,6 @@ public class ActionsConfigurator {
     private final UserContextPresentationRestClient userContextPresentationRestClient;
     private final ProductSummaryPresentationRestClient productSummaryPresentationRestClient;
     private final ActionRecipesPresentationRestClient actionRecipesPresentationRestClient ;
-    private Random random = new Random();
 
     public void ingestActions(String externalUserId) {
         List<ArrangementsByBusinessFunctionGetResponseBody> arrangements = new ArrayList<>();

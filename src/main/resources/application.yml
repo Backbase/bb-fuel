@@ -1,7 +1,7 @@
 spring:
   application:
     name: bb-fuel
-    version: @project.version@
+    version: project.version@
 #  activemq:
 #    broker-url: ${activemq.url:tcp://${environment.name}-infra.backbase.test:51616}
 
@@ -23,4 +23,8 @@ sso:
 
 security:
   basic:
+    enabled: false
+
+eureka:
+  client:
     enabled: false

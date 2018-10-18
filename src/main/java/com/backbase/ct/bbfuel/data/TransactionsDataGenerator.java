@@ -39,27 +39,19 @@ public class TransactionsDataGenerator {
         "Loan redemption",
         "Interest settlement"
     );
-    private static final List<String> CREDIT_BUSINESS_CATEGORIES = asList(
+    private static final List<String> DEBIT_BUSINESS_CATEGORIES = asList(
         "Suppliers",
         "Salaries",
         "Office rent",
         "Loan repayment",
         "Miscellaneous"
     );
-    private static final List<String> DEBIT_BUSINESS_CATEGORIES = asList(
+    private static final List<String> CREDIT_BUSINESS_CATEGORIES = asList(
         "Intercompany receivable",
         "Intracompany receivable",
         "Direct debit collections",
         "Interest received",
         "Term deposit"
-    );
-    private static List<String> CREDIT_RETAIL_CATEGORIES = asList(
-        "Income",
-        "Other Income",
-        "Bonus",
-        "Salary/Wages",
-        "Interest Income",
-        "Rental Income"
     );
     private static List<String> DEBIT_RETAIL_CATEGORIES = asList(
         "Food Drinks",
@@ -86,6 +78,14 @@ public class TransactionsDataGenerator {
         "Restaurants",
         "Clothing",
         "Electronics"
+    );
+    private static List<String> CREDIT_RETAIL_CATEGORIES = asList(
+        "Income",
+        "Other Income",
+        "Bonus",
+        "Salary/Wages",
+        "Interest Income",
+        "Rental Income"
     );
 
     public static TransactionsPostRequestBody generateTransactionsPostRequestBody(String externalArrangementId,

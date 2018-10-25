@@ -13,9 +13,9 @@
     <name>Backbase :: Capability Testing :: bb-fuel</name>
 
     <scm>
-        <url>https://github.com/Backbase/bb-fuel</url>
-        <connection>scm:git:https://github.com/Backbase/bb-fuel.git</connection>
-        <developerConnection>scm:git:https://github.com/Backbase/bb-fuel.git</developerConnection>
+        <url>https://github.com/backbase/bb-fuel</url>
+        <connection>scm:git:https://github.com/backbase/bb-fuel.git</connection>
+        <developerConnection>scm:git:https://github.com/backbase/bb-fuel.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
 

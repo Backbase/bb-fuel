@@ -17,7 +17,7 @@ def downloadArtifact(version) {
 
 def getBbFuelVersion(version) {
     if (version == 'latest') {
-        version = sh(returnStdout: true, script: '''curl -X GET -s https://github.com/backbase/bb-fuel/releases/latest | grep browser_download_url | cut -d '"' -f 4 | wget -qi -''').toString().trim()
+        version = sh(returnStdout: true, script: '''curl -X GET -s https://api.github.com/repos/backbase/bb-fuel/releases/latest | grep browser_download_url | cut -d '"' -f 4 | wget -qi -''').toString().trim()
     }
 
     return version

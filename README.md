@@ -97,11 +97,11 @@ bb-fuel supports multiple DBS versions. See below which version maps to the requ
 | 2.11.2      | [1.3.5+](https://github.com/backbase/bb-fuel/releases/tag/bb-fuel-1.3.5/)   |
 | 2.11.1      | [1.1.0+](https://github.com/backbase/bb-fuel/releases/tag/bb-fuel-1.1.0/)   |
 | 2.11.0      | [1.0.5+](https://github.com/backbase/bb-fuel/releases/tag/bb-fuel-1.0.5/)   |
-| 2.10.4      | [2.10.4 tag on repo](https://github.com/backbase/bb-fuel/tree/2.10.4/)      |
-| 2.10.3      | [2.10.3 tag on repo](https://github.com/backbase/bb-fuel/tree/2.10.3)       |
-| 2.10.2      | [2.10.2 tag on repo](https://github.com/backbase/bb-fuel/tree/2.10.2)       |
-| 2.10.1      | [2.10.1 tag on repo](https://github.com/backbase/bb-fuel/tree/2.10.1)       |
-| 2.10.0      | [2.10.0 tag on repo](https://github.com/backbase/bb-fuel/tree/2.10.0)       |
+| 2.10.4      | [2.10.4 tag](https://github.com/backbase/bb-fuel/releases/tag/2.10.4/)      |
+| 2.10.3      | [2.10.3 tag](https://github.com/backbase/bb-fuel/releases/tag/2.10.3)       |
+| 2.10.2      | [2.10.2 tag](https://github.com/backbase/bb-fuel/releases/tag/2.10.2)       |
+| 2.10.1      | [2.10.1 tag](https://github.com/backbase/bb-fuel/releases/tag/2.10.1)       |
+| 2.10.0      | [2.10.0 tag](https://github.com/backbase/bb-fuel/releases/tag/2.10.0)       |
 
 ## Contributing
 You are welcome to provide bug fixes and new features in the form of pull requests. If you'd like to contribute, please be mindful of the following guidelines:

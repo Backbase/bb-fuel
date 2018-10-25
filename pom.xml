@@ -13,17 +13,9 @@
     <name>Backbase :: Capability Testing :: bb-fuel</name>
 
     <scm>
-        <developerConnection>scm:git:ssh://git@stash.backbase.com:7999/ct/bb-fuel.git</developerConnection>
+        <developerConnection>scm:git:https://github.com/backbase/bb-fuel.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
-
-    <distributionManagement>
-        <repository>
-            <id>Backbase Artifact Builds Repository</id>
-            <name>artifacts.backbase.com-builds</name>
-            <url>https://artifacts.backbase.com/backbase-development-builds</url>
-        </repository>
-    </distributionManagement>
 
     <properties>
         <mainClass>com.backbase.ct.bbfuel.Application</mainClass>
@@ -36,6 +28,7 @@
         <iban4j.version>3.2.1</iban4j.version>
         <junit.version>4.12</junit.version>
         <maven-assembly-plugin.version>2.4.1</maven-assembly-plugin.version>
+        <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -176,6 +169,11 @@
                     <mainClass>${mainClass}</mainClass>
                     <layout>JAR</layout>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>${maven-release-plugin.version}</version>
             </plugin>
         </plugins>
     </build>

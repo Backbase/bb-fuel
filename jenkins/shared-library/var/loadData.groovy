@@ -12,18 +12,12 @@ def call(Map params) {
 }
 
 def downloadArtifact(version) {
-    withCredentials([[$class          : 'UsernamePasswordMultiBinding', credentialsId: "${env.ARTIFACTS_CREDENTIALS_ID}",
-                      usernameVariable: 'AR_USERNAME', passwordVariable: 'AR_PASSWORD']]) {
-        sh "curl -X GET -k -u ${AR_USERNAME}:${AR_PASSWORD} https://artifacts.backbase.com/backbase-development-builds/com/backbase/ct/bb-fuel/${version}/bb-fuel-${version}-boot.jar -O -J -L"
-    }
+    sh "curl -X GET -s https://github.com/backbase/bb-fuel/releases/download/bb-fuel-${version}/bb-fuel-${version}-boot.jar -O -J -L"
 }
 
 def getBbFuelVersion(version) {
     if (version == 'latest') {
-        withCredentials([[$class          : 'UsernamePasswordMultiBinding', credentialsId: "${env.ARTIFACTS_CREDENTIALS_ID}",
-                          usernameVariable: 'AR_USERNAME', passwordVariable: 'AR_PASSWORD']]) {
-            version = sh(returnStdout: true, script: '''curl -X GET -s -k -u ${AR_USERNAME}:${AR_PASSWORD} https://artifacts.backbase.com/backbase-development-builds/com/backbase/ct/bb-fuel/ | grep href | grep -v maven | cut -d'"' -f2 | cut -d'/' -f1 | sort --version-sort | tail -n 1''').toString().trim()
-        }
+        version = sh(returnStdout: true, script: '''curl -X GET -s https://github.com/backbase/bb-fuel/releases/latest | grep browser_download_url | cut -d '"' -f 4 | wget -qi -''').toString().trim()
     }
 
     return version

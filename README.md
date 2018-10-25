@@ -88,20 +88,20 @@ See [Custom data](docs/CUSTOM_DATA.md)
 ## Versions
 bb-fuel supports multiple DBS versions. See below which version maps to the required DBS version.
 
-| DBS version | Tool minimal version                                                                                             |
-|-------------|------------------------------------------------------------------------------------------------------------------|
-| 2.13.0      | [1.6.0+](https://github.com/backbase/bb-fuel/releases/tag/bb-fuel-1.6.0)    |
-| 2.12.2      | [1.4.11+](https://github.com/backbase/bb-fuel/releases/tag/bb-fuel-1.4.11/) |
-| 2.12.1      | [1.4.5+](https://github.com/backbase/bb-fuel/releases/tag/bb-fuel-1.4.5/)   |
-| 2.12.0      | [1.3.6+](https://github.com/backbase/bb-fuel/releases/tag/bb-fuel-1.3.6/)   |
-| 2.11.2      | [1.3.5+](https://github.com/backbase/bb-fuel/releases/tag/bb-fuel-1.3.5/)   |
-| 2.11.1      | [1.1.0+](https://github.com/backbase/bb-fuel/releases/tag/bb-fuel-1.1.0/)   |
-| 2.11.0      | [1.0.5+](https://github.com/backbase/bb-fuel/releases/tag/bb-fuel-1.0.5/)   |
-| 2.10.4      | [2.10.4 tag](https://github.com/backbase/bb-fuel/releases/tag/2.10.4/)      |
-| 2.10.3      | [2.10.3 tag](https://github.com/backbase/bb-fuel/releases/tag/2.10.3)       |
-| 2.10.2      | [2.10.2 tag](https://github.com/backbase/bb-fuel/releases/tag/2.10.2)       |
-| 2.10.1      | [2.10.1 tag](https://github.com/backbase/bb-fuel/releases/tag/2.10.1)       |
-| 2.10.0      | [2.10.0 tag](https://github.com/backbase/bb-fuel/releases/tag/2.10.0)       |
+| DBS version | bb-fuel minimal [version](https://github.com/backbase/bb-fuel/releases) |
+|-------------|-------------------------------------------------------------------------|
+| 2.13.0      | 1.6.0+                                                                  |
+| 2.12.2      | 1.4.11+                                                                 |
+| 2.12.1      | 1.4.5+                                                                  |
+| 2.12.0      | 1.3.6+                                                                  |
+| 2.11.2      | 1.3.5+                                                                  |
+| 2.11.1      | 1.1.0+                                                                  |
+| 2.11.0      | 1.0.5+                                                                  |
+| 2.10.4      | [2.10.4 tag](https://github.com/backbase/bb-fuel/releases/tag/2.10.4/)  |
+| 2.10.3      | [2.10.3 tag](https://github.com/backbase/bb-fuel/releases/tag/2.10.3)   |
+| 2.10.2      | [2.10.2 tag](https://github.com/backbase/bb-fuel/releases/tag/2.10.2)   |
+| 2.10.1      | [2.10.1 tag](https://github.com/backbase/bb-fuel/releases/tag/2.10.1)   |
+| 2.10.0      | [2.10.0 tag](https://github.com/backbase/bb-fuel/releases/tag/2.10.0)   |
 
 ## Contributing
 You are welcome to provide bug fixes and new features in the form of pull requests. If you'd like to contribute, please be mindful of the following guidelines:

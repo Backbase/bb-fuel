@@ -1,24 +1,26 @@
 def call(Map params) {
-    def bbFuelVersion = getBbFuelVersion(params.bbFuelVersion)
+    def bbFuelTagName = getBbFuelTagName(params.bbFuelVersion)
 
     cleanWs()
-    downloadArtifact(bbFuelVersion)
+    downloadArtifact(bbFuelTagName)
 
     withEnv(["JAVA_HOME=${tool name: "${env.JDK_TOOL_NAME}"}", "PATH+MAVEN=${tool name: "${env.MAVEN_TOOL_NAME}"}/bin:${env.JAVA_HOME}/bin"]) {
         sh "java -Denvironment.name=${params.environmentName} " +
                 "${params.additionalArguments} " +
-                "-jar bb-fuel-${bbFuelVersion}-boot.jar"
+                "-jar ${bbFuelTagName}-boot.jar"
     }
 }
 
-def downloadArtifact(version) {
-    sh "curl -X GET -s https://github.com/backbase/bb-fuel/releases/download/bb-fuel-${version}/bb-fuel-${version}-boot.jar -O -J -L"
+def downloadArtifact(tagName) {
+    sh  "curl -X GET -s https://api.github.com/repos/backbase/bb-fuel/releases/tags/${tagName} | grep browser_download_url | cut -d '\"' -f 4 | wget -qi -"
 }
 
-def getBbFuelVersion(version) {
+def getBbFuelTagName(version) {
+    def tagName = "bb-fuel-${version}"
+
     if (version == 'latest') {
-        version = sh(returnStdout: true, script: '''curl -X GET -s https://api.github.com/repos/backbase/bb-fuel/releases/latest | grep browser_download_url | cut -d '"' -f 4 | wget -qi -''').toString().trim()
+        tagName = sh(returnStdout: true, script: '''curl -X GET -s https://api.github.com/repos/backbase/bb-fuel/releases/latest | grep tag_name | cut -d '"' -f 4''').toString().trim()
     }
 
-    return version
+    return tagName
 }

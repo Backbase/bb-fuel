@@ -15,7 +15,7 @@ deploy:
   tag_name: $TAG
   file: target/$TAG-boot.jar
   on:
-    repo: backbase/bb-fuel
+    repo: Backbase/bb-fuel
   name: $TAG
 branches:
   only:

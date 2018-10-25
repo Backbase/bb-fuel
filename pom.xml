@@ -13,7 +13,7 @@
     <name>Backbase :: Capability Testing :: bb-fuel</name>
 
     <scm>
-        <developerConnection>scm:git:https://github.com/backbase/bb-fuel.git</developerConnection>
+        <developerConnection>scm:git:https://github.com/Backbase/bb-fuel.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
 

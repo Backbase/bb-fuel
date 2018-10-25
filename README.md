@@ -1,5 +1,7 @@
 # bb-fuel
 
+[![build_status](https://travis-ci.org/Backbase/bb-fuel.svg?branch=master)](https://travis-ci.org/Backbase/bb-fuel)
+
 ## Description
 bb-fuel is a Backbase DBS data loader tool for test and demo data. It can ingest the following:
 - Legal entities

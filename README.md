@@ -32,7 +32,7 @@ All builds can be found [here](https://github.com/backbase/bb-fuel/releases)
 1. Prerequisites:
 - Environment should be based on one of these configurations: [environment.properties](src/main/resources/environment.properties) or [local.properties](src/main/resources/local.properties)
 - Environment should contain at least the Entitlements and ProductSummary capabilities.
-- Note: Alter the properties accordingly to your environment if necessary (each property can be set via command line or build the project with your custom properties via `mvn clean package`)
+- Note: Alter the properties accordingly to your environment if necessary (each property can be set via command line or build the project with your custom properties with `mvn clean package`)
 
 2. Run bb-fuel as follows:
 - For environments based on this configuration: [environment.properties](src/main/resources/environment.properties)

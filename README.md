@@ -29,25 +29,20 @@ It is based on REST and relies on DBS service specs.
 ## How to run bb-fuel
 All builds can be found [here](https://github.com/backbase/bb-fuel/releases)
 
-1. Provision an Autoconfig environment based on `dbs` or `dbs-microservices` stack with **at least** the following capabilities (based on default configuration):
-```
-capabilities="Entitlements,ProductSummary"
-```
-It is also possible to use a local [Blade](https://start.backbase.com/) environment.
+1. Prerequisites:
+- Environment should be based on one of these configurations: [environment.properties](src/main/resources/environment.properties) or [local.properties](src/main/resources/local.properties)
+- Environment should contain at least the Entitlements and ProductSummary capabilities.
+- Note: Alter the properties accordingly to your environment if necessary (each property can be set via command line or build the project with your custom properties via `mvn clean package`)
 
 2. Run bb-fuel as follows:
-
-- For Autoconfig environments:
+- For environments based on this configuration: [environment.properties](src/main/resources/environment.properties)
 ```
 java -Denvironment.name=your-env-00 -jar bb-fuel-{version}-boot.jar
 ```
-- Or alter the [environment.properties](src/main/resources/environment.properties) accordingly
-
-- For local Blade environment:
+- For environments based on this configuration: [local.properties](src/main/resources/local.properties) which is based on the [Blade](https://start.backbase.com/) environment setup:
 ```
 java -Duse.local.configurations=true -jar bb-fuel-{version}-boot.jar
 ```
-- See [local.properties](src/main/resources/local.properties) for this local configuration
 
 ## Properties for ingesting data
 The following properties can be set to custom values for different purposes: [data.properties](src/main/resources/data.properties)
@@ -106,7 +101,7 @@ bb-fuel supports multiple DBS versions. See below which version maps to the requ
 ## Contributing
 You are welcome to provide bug fixes and new features in the form of pull requests. If you'd like to contribute, please be mindful of the following guidelines:
 
-- All changes should be tested on an Autoconfig or [Blade](https://start.backbase.com/) environment based on the latest versions.
+- All changes should be tested on a [Blade](https://start.backbase.com/) environment (or a similar environment setup) based on the latest versions.
 - Please make one change/feature per pull request.
 - Use descriptive commit messages which will be used for release notes.
 - Try to avoid reformats of files that change the indentation, tabs to spaces etc., as this makes reviewing diffs much more difficult.

@@ -49,7 +49,7 @@ The following properties can be set to custom values for different purposes: [da
 
 Example:
 ```
-java -Denvironment.name=your-env-00 -Darrangements.max=20 -Ddebit.cards.min=10 -Ddebit.cards.max=30 -Dtransactions-max=50 -jar bb-fuel-{version}-boot.jar
+java -Denvironment.name=your-env-00 -Dingest.transactions=true -Dtransactions.min=20 -Dtransactions.max=50 -jar bb-fuel-{version}-boot.jar
 ```
 
 ### Health check

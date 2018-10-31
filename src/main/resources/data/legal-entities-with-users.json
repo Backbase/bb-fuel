@@ -134,5 +134,67 @@
         "role": "employee"
       }
     ]
+  },
+  {
+    "legalEntityName": "Boats of Atlantis",
+    "legalEntityExternalId": "boats_of_atlantis",
+    "users": [
+      {
+        "externalId": "abbott_burlingame",
+        "role": "admin"
+      }
+    ]
+  },
+  {
+    "legalEntityName": "Boats of Atlantis Europe",
+    "legalEntityExternalId": "boats_of_atlantis_europe",
+    "parentLegalEntityExternalId": "boats_of_atlantis",
+    "users": [
+      {
+        "externalId": "howe_rumlar",
+        "role": "support"
+      },
+      {
+        "externalId": "aurore_garthside",
+        "role": "employee"
+      }
+    ]
+  },
+  {
+    "legalEntityName": "Boats of Atlantis Faroe",
+    "legalEntityExternalId": "boats_of_atlantis_faroe",
+    "parentLegalEntityExternalId": "boats_of_atlantis_europe",
+    "users": [
+      {
+        "externalId": "ewert_grissom",
+        "role": "employee"
+      }
+    ]
+  },
+  {
+    "legalEntityName": "Boats of Atlantis Asia",
+    "legalEntityExternalId": "boats_of_atlantis_asia",
+    "parentLegalEntityExternalId": "boats_of_atlantis",
+    "users": [
+      {
+        "externalId": "osred_alistair",
+        "role": "support"
+      },
+      {
+        "externalId": "corey_peregrine",
+        "role": "employee"
+      }
+    ]
+  },
+  {
+    "legalEntityName": "Boats of Atlantis Mongolia",
+    "legalEntityExternalId": "boats_of_atlantis_mongolia",
+    "parentLegalEntityExternalId": "boats_of_atlantis_asia",
+    "users": [
+      {
+        "externalId": "webb_chester",
+        "role": "employee"
+      }
+    ]
   }
 ]

@@ -532,5 +532,17 @@
         ]
       }
     ]
+  },
+  {
+    "jobProfileName": "Support Employee",
+    "roles": ["admin", "support"],
+    "permissions": [
+      {
+        "businessFunction": "Support Access for Payments",
+        "privileges": [
+          "view"
+        ]
+      }
+    ]
   }
 ]

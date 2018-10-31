@@ -137,62 +137,62 @@
   },
   {
     "legalEntityName": "Boats of Atlantis",
-    "legalEntityExternalId": "boats_of_atlantis",
+    "legalEntityExternalId": "B0000000000100",
     "users": [
       {
-        "externalId": "abbott_burlingame",
+        "externalId": "U0001016",
         "role": "admin"
       }
     ]
   },
   {
     "legalEntityName": "Boats of Atlantis Europe",
-    "legalEntityExternalId": "boats_of_atlantis_europe",
-    "parentLegalEntityExternalId": "boats_of_atlantis",
+    "legalEntityExternalId": "B0000000000110",
+    "parentLegalEntityExternalId": "B0000000000100",
     "users": [
       {
-        "externalId": "howe_rumlar",
+        "externalId": "U0001017",
         "role": "support"
       },
       {
-        "externalId": "aurore_garthside",
+        "externalId": "U0001018",
         "role": "employee"
       }
     ]
   },
   {
     "legalEntityName": "Boats of Atlantis Faroe",
-    "legalEntityExternalId": "boats_of_atlantis_faroe",
-    "parentLegalEntityExternalId": "boats_of_atlantis_europe",
+    "legalEntityExternalId": "B0000000000111",
+    "parentLegalEntityExternalId": "B0000000000110",
     "users": [
       {
-        "externalId": "ewert_grissom",
+        "externalId": "U0001019",
         "role": "employee"
       }
     ]
   },
   {
     "legalEntityName": "Boats of Atlantis Asia",
-    "legalEntityExternalId": "boats_of_atlantis_asia",
-    "parentLegalEntityExternalId": "boats_of_atlantis",
+    "legalEntityExternalId": "B0000000000120",
+    "parentLegalEntityExternalId": "B0000000000100",
     "users": [
       {
-        "externalId": "osred_alistair",
+        "externalId": "U0001020",
         "role": "support"
       },
       {
-        "externalId": "corey_peregrine",
+        "externalId": "U0001021",
         "role": "employee"
       }
     ]
   },
   {
     "legalEntityName": "Boats of Atlantis Mongolia",
-    "legalEntityExternalId": "boats_of_atlantis_mongolia",
-    "parentLegalEntityExternalId": "boats_of_atlantis_asia",
+    "legalEntityExternalId": "B0000000000121",
+    "parentLegalEntityExternalId": "B0000000000120",
     "users": [
       {
-        "externalId": "webb_chester",
+        "externalId": "U0001022",
         "role": "employee"
       }
     ]

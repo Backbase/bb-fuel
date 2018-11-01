@@ -24,7 +24,7 @@ public class LegalEntityWithUsersReaderTest {
     @Test
     public void testLoad() {
         List<LegalEntityWithUsers> legalEntities = subject.load();
-        assertThat(legalEntities, hasSize(8));
+        assertThat(legalEntities, hasSize(13));
         assertThat("GBF should have admin user ids",
             legalEntities.get(7).getAdminUserExternalIds(), hasSize(2));
         assertThat("GBF should have one manager",
@@ -44,6 +44,7 @@ public class LegalEntityWithUsersReaderTest {
             subject.load("data/performance/performance-test-legal-entities-with-users-retail.json");
         assertThat(legalEntities, hasSize(140));
     }
+
     @Test
     public void testReadingExampleJson() {
         List<LegalEntityWithUsers> legalEntities =

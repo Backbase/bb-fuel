@@ -71,6 +71,15 @@ public class AccessControlSetup extends BaseSetup {
         return this.legalEntitiesWithUsers;
     }
 
+    public List<LegalEntityWithUsers> getLegalEntitiesWithUsersExcludingSupport() {
+        return getLegalEntitiesWithUsers()
+            .stream()
+            .filter(legalEntities -> legalEntities.getUsers()
+                .stream()
+                .noneMatch(user -> "support".equals(user.getRole())))
+            .collect(Collectors.toList());
+    }
+
     /**
      * Legal entities, job profiles and product groups are loaded from files.
      */

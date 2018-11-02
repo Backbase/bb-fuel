@@ -66,7 +66,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
 
             this.approvalsConfigurator.setupApprovalTypesAndPolicies();
 
-            this.accessControlSetup.getLegalEntitiesWithUsers().forEach(legalEntityWithUsers -> {
+            this.accessControlSetup.getLegalEntitiesWithUsersExcludingSupport().forEach(legalEntityWithUsers -> {
                 List<User> users = legalEntityWithUsers.getUsers();
                 UserContext userContext = getRandomUserContextBasedOnMsaByExternalUserId(users);
 
@@ -86,7 +86,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
 
     private void ingestLimits() {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_LIMITS)) {
-            this.accessControlSetup.getLegalEntitiesWithUsers().forEach(legalEntityWithUsers -> {
+            this.accessControlSetup.getLegalEntitiesWithUsersExcludingSupport().forEach(legalEntityWithUsers -> {
                 List<User> users = legalEntityWithUsers.getUsers();
                 UserContext userContext = getRandomUserContextBasedOnMsaByExternalUserId(users);
 
@@ -105,7 +105,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
 
     private void ingestContactsPerUser() {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_CONTACTS)) {
-            this.accessControlSetup.getLegalEntitiesWithUsers().forEach(legalEntityWithUsers -> {
+            this.accessControlSetup.getLegalEntitiesWithUsersExcludingSupport().forEach(legalEntityWithUsers -> {
                 List<User> users = legalEntityWithUsers.getUsers();
                 UserContext userContext = getRandomUserContextBasedOnMsaByExternalUserId(users);
 
@@ -118,7 +118,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
 
     private void ingestPaymentsPerUser() {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_PAYMENTS)) {
-            this.accessControlSetup.getLegalEntitiesWithUsers().stream()
+            this.accessControlSetup.getLegalEntitiesWithUsersExcludingSupport().stream()
                 .map(LegalEntityWithUsers::getUserExternalIds)
                 .flatMap(List::stream)
                 .collect(Collectors.toList())
@@ -130,7 +130,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_MESSAGES)) {
             this.loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
             this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
-            this.accessControlSetup.getLegalEntitiesWithUsers().stream()
+            this.accessControlSetup.getLegalEntitiesWithUsersExcludingSupport().stream()
                 .map(LegalEntityWithUsers::getUserExternalIds)
                 .flatMap(List::stream)
                 .collect(Collectors.toList())
@@ -140,7 +140,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
 
     private void ingestActionsPerUser() {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_ACTIONS)) {
-            List<String> externalUserIds = this.accessControlSetup.getLegalEntitiesWithUsers()
+            List<String> externalUserIds = this.accessControlSetup.getLegalEntitiesWithUsersExcludingSupport()
                 .stream()
                 .filter(legalEntities -> legalEntities.getUsers()
                     .stream()

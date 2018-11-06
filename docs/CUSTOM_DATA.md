@@ -40,7 +40,7 @@ Note: this is a simple multi-tenancy setup example
 ## How to create custom data
 Example for the `legal-entities-with-users.json` (other files are: `serviceagreements.json` and `products.json`):
 
-1. Create json file named `legal-entities-with-users.json` with custom legal entities and assigned custom user list conforming existing format (in this case conforming: [legal-entities-with-users.json ](src/main/resources/data/legal-entities-with-users.json ))
+1. Create json file named `legal-entities-with-users.json` with custom legal entities and assigned custom user list conforming existing format (in this case conforming: [legal-entities-with-users.json](../src/main/resources/data/legal-entities-with-users.json))
 
 By default if customizable fields have not been provided, system will generate randomized values for it. Full names will be derived from externalId if this field contains dot(s) or underscore(s) (just set the full name if do not want this feature).
 Optional fields in the data structure:

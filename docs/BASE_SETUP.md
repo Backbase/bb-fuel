@@ -14,7 +14,7 @@ For legal entities and users in the file [legal-entities-with-users.json](../src
 - Arrangements in product groups are defined in [product-group-seed.json](../src/main/resources/data/seed/product-group-seed.json)
     - Non current accounts (productId not equal to `1`) will be 10% of total amount of arrangements, only in case of productIds also contain `1`, otherwise the total amount will be used for the non current accounts.
 - In case of current account arrangements random debit cards (configurable) are associated
-- Additionally (by default disabled) possible to ingest balance history based on a weekly balance history items for the past quarter
+- Additionally (by default disabled) possible to ingest balance history based on a weekly balance history items for the past quarter, plus daily balance history items for the past week.
     - Only works if property `ingest.access.control` is set to `true` due to the required external arrangement id when ingesting balance history items.
     - This external arrangement id is only available when creating an arrangement (part of the access control setup). The external arrangement id is currently not retrievable via any REST endpoint.
 

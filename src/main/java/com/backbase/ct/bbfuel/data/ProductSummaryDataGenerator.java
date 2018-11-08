@@ -38,6 +38,7 @@ public class ProductSummaryDataGenerator {
     private static Faker faker = new Faker();
     private static final List<CountryCode> COUNTRY_CODES;
     private static final int WEEKS_IN_A_QUARTER = 13;
+    private static final int DAYS_IN_A_WEEK = 7;
 
     static {
         List<String> allowed = asList("AT", "BE", "BG", "CH", "CY", "CZ", "DE", "DK", "EE", "ES", "FI", "FR", "GB",
@@ -181,6 +182,11 @@ public class ProductSummaryDataGenerator {
         for (int i = 0; i >= -WEEKS_IN_A_QUARTER; i--) {
             balanceHistoryPostRequestBodies.add(generateBalanceHistoryPostRequestBody(
                 externalArrangementId, DateUtils.addWeeks(new Date(), i)));
+        }
+
+        for (int i = 0; i >= -DAYS_IN_A_WEEK; i--) {
+            balanceHistoryPostRequestBodies.add(generateBalanceHistoryPostRequestBody(
+                externalArrangementId, DateUtils.addDays(new Date(), i)));
         }
 
         return balanceHistoryPostRequestBodies;

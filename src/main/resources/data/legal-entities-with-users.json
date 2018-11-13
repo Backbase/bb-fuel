@@ -33,19 +33,24 @@
   {
     "users": [
       {
-        "externalId": "U0001001"
+        "externalId": "U0001001",
+        "role": "employee"
       },
       {
-        "externalId": "U0001002"
+        "externalId": "U0001002",
+        "role": "employee"
       },
       {
-        "externalId": "U0001003"
+        "externalId": "U0001003",
+        "role": "employee"
       },
       {
-        "externalId": "U0001004"
+        "externalId": "U0001004",
+        "role": "manager"
       },
       {
-        "externalId": "U0001005"
+        "externalId": "U0001005",
+        "role": "admin"
       }
     ]
   },

@@ -10,7 +10,6 @@ import com.backbase.ct.bbfuel.configurator.AccessGroupsConfigurator;
 import com.backbase.ct.bbfuel.configurator.PermissionsConfigurator;
 import com.backbase.ct.bbfuel.configurator.ServiceAgreementsConfigurator;
 import com.backbase.ct.bbfuel.data.CommonConstants;
-import com.backbase.ct.bbfuel.dto.entitlement.DbsEntity;
 import com.backbase.ct.bbfuel.service.ProductGroupService;
 import com.backbase.ct.bbfuel.util.ParserUtil;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.Participant;
@@ -102,10 +101,7 @@ public class ServiceAgreementsSetup extends BaseSetup {
 
             for (String externalUserId : externalUserIds) {
                 List<String> dataGroupIds = this.productGroupService
-                    .getAssignedProductGroups(externalServiceAgreementId)
-                    .stream()
-                    .map(DbsEntity::getId)
-                    .collect(Collectors.toList());
+                    .findAssignedProductGroupsIds(externalServiceAgreementId);
 
                 this.permissionsConfigurator.assignPermissions(
                     externalUserId,

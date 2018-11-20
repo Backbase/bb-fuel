@@ -76,6 +76,6 @@ public class AccessGroupsConfigurator {
             productGroupSeed.getProductGroupName(), ARRANGEMENTS, internalArrangementIds);
         productGroupSeed.setId(dataGroupId);
 
-        productGroupService.storeInCache(productGroupSeed);
+        productGroupService.saveAssignedProductGroup(productGroupSeed);
     }
 }

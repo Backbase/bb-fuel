@@ -7,10 +7,10 @@
 For legal entities and users in the file [legal-entities-with-users.json](../src/main/resources/data/legal-entities-with-users.json):
 - All job profiles are assigned to the users via master service agreement of the legal entities from the input file.
     - Job profiles are defined in [job-profiles.json](../src/main/resources/data/job-profiles.json)
-    - You can limit the job profiles assigned to a user by explicitly referring to one of the roles defined in the job profile. P.e. the `retail` role on a user will result in only assignment of the job profile `Retail User`.   
+    - You can limit the job profiles assigned to a user by explicitly referring to one of the roles defined in the job profile. E.g. the `retail` role on a user will result in only assignment of the job profile `Retail User`.   
 - All product groups are assigned to the users via master service agreement of the legal entities from the input file.
     - Product groups are defined in [product-group-seed.json](../src/main/resources/data/seed/product-group-seed.json)
-    - You can limit product groups assigned to a user by explicitly referring to the actual names in productGroupNames of a user. P.e. a user with only one productGroupName `Payroll` will only be granted permissions for the `Payroll` product group.
+    - You can limit product groups assigned to a user by explicitly referring to the actual names in productGroupNames of a user. E.g. a user with only one productGroupName `Payroll` will only be granted permissions for the `Payroll` product group.
 
 ## Product summary setup
 - Default products: [products.json](../src/main/resources/data/products.json)

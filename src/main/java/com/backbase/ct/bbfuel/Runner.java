@@ -48,7 +48,7 @@ public class Runner implements ApplicationRunner {
     private void doIt() throws IOException {
         if (LOGGER.isInfoEnabled()) {
             String environment = GlobalProperties.getInstance().getString("environment.name");
-            LOGGER.info("Ingesting data into {}", (environment == null ? "local environment" : environment));
+            LOGGER.info("Ingesting data into {}", (environment == null ? "environment" : environment));
         }
         performHealthChecks();
 

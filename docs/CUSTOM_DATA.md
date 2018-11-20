@@ -18,11 +18,11 @@ Based on [multi-tenancy LDAP configuration in Autoconfig environments](https://s
 
 ```
 java -Denvironment.name=your-env-00 \
--Dlegal.entities.with.users.json.location=data/multitenancy/tenant_a.json \
+-Dlegal.entities.with.users.json=data/multitenancy/tenant_a.json \
 -Dmulti.tenancy.environment=true \
 -Dtenant.id=tenant_a \
 -Droot.entitlements.admin=user001_t1 \
-bb-fuel-{version}-boot.jar
+-jar bb-fuel-{version}-boot.jar
 ```
 
 Repeat for each tenant according to the LDAP configuration as follows:

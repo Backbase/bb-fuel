@@ -46,7 +46,10 @@ public class Runner implements ApplicationRunner {
      * @throws IOException when setupAccessControl throws it
      */
     private void doIt() throws IOException {
-        LOGGER.info("Ingesting data into {}", GlobalProperties.getInstance().getString("environment.name"));
+        if (LOGGER.isInfoEnabled()) {
+            String environment = GlobalProperties.getInstance().getString("environment.name");
+            LOGGER.info("Ingesting data into {}", (environment == null ? "environment" : environment));
+        }
         performHealthChecks();
 
         Instant start = Instant.now();

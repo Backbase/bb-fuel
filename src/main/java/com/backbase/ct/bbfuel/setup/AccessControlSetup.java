@@ -21,12 +21,13 @@ import com.backbase.ct.bbfuel.dto.ArrangementId;
 import com.backbase.ct.bbfuel.dto.LegalEntityWithUsers;
 import com.backbase.ct.bbfuel.dto.User;
 import com.backbase.ct.bbfuel.dto.UserContext;
-import com.backbase.ct.bbfuel.dto.entitlement.DbsEntity;
 import com.backbase.ct.bbfuel.dto.entitlement.JobProfile;
 import com.backbase.ct.bbfuel.dto.entitlement.ProductGroupSeed;
+import com.backbase.ct.bbfuel.enrich.ProductGroupSeedEnricher;
 import com.backbase.ct.bbfuel.input.JobProfileReader;
 import com.backbase.ct.bbfuel.input.LegalEntityWithUsersReader;
 import com.backbase.ct.bbfuel.input.ProductGroupSeedReader;
+import com.backbase.ct.bbfuel.input.validation.ProductGroupAssignmentValidator;
 import com.backbase.ct.bbfuel.service.JobProfileService;
 import com.backbase.ct.bbfuel.service.ProductGroupService;
 import com.backbase.ct.bbfuel.service.UserContextService;
@@ -34,10 +35,8 @@ import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.datagroup
 import com.backbase.presentation.user.rest.spec.v2.users.LegalEntityByUserGetResponseBody;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -58,6 +57,8 @@ public class AccessControlSetup extends BaseSetup {
     private final LegalEntityWithUsersReader legalEntityWithUsersReader;
     private final JobProfileService jobProfileService;
     private final ProductGroupService productGroupService;
+    private final ProductGroupAssignmentValidator productGroupAssignmentValidator;
+    private final ProductGroupSeedEnricher productGroupEnricher;
     private final UserContextService userContextService;
 
     private final JobProfileReader jobProfileReader;
@@ -86,7 +87,7 @@ public class AccessControlSetup extends BaseSetup {
     public void initiate() {
         this.legalEntitiesWithUsers = this.legalEntityWithUsersReader.load();
         this.jobProfileTemplates = this.jobProfileReader.load();
-        this.productGroupSeedTemplates = this.productGroupSeedReader.load();
+        loadProductGroups();
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_ACCESS_CONTROL)) {
             this.setupBankWithEntitlementsAdminAndProducts();
             this.setupAccessControlForUsers();
@@ -94,6 +95,13 @@ public class AccessControlSetup extends BaseSetup {
             || this.globalProperties.getBoolean(PROPERTY_INGEST_APPROVALS_FOR_CONTACTS)) {
             this.prepareJobProfiles();
         }
+    }
+
+    private void loadProductGroups() {
+        this.productGroupSeedTemplates = this.productGroupSeedReader.load();
+        this.productGroupAssignmentValidator.verify(this.legalEntitiesWithUsers, this.productGroupSeedTemplates);
+        this.productGroupEnricher.enrichLegalEntitiesWithUsers(
+            this.legalEntitiesWithUsers, this.productGroupSeedTemplates);
     }
 
     private void setupBankWithEntitlementsAdminAndProducts() {
@@ -130,6 +138,7 @@ public class AccessControlSetup extends BaseSetup {
             UserContext userContext = userContextService.getUserContextBasedOnMSAByExternalUserId(user, legalEntity);
             legalEntitiesUserContextMap.put(userContext.getExternalLegalEntityId(), userContext);
         });
+
         return legalEntitiesUserContextMap;
     }
 
@@ -139,15 +148,20 @@ public class AccessControlSetup extends BaseSetup {
         this.loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
         this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
+        AtomicBoolean isOnce = new AtomicBoolean(true);
+
         legalEntitiesUserContextMap.values()
             .forEach(userContext -> {
-                ingestDataGroupArrangementsForServiceAgreement(userContext.getInternalServiceAgreementId(),
-                    userContext.getExternalServiceAgreementId(),
-                    userContext.getExternalLegalEntityId(),
-                    legalEntityWithUsers.getCategory().isRetail());
-
                 boolean isRetail = legalEntityWithUsers.getCategory().isRetail();
-                ingestFunctionGroups(userContext.getExternalServiceAgreementId(), isRetail);
+                if (isOnce.get()) {
+                    ingestDataGroupArrangementsForServiceAgreement(userContext.getInternalServiceAgreementId(),
+                        userContext.getExternalServiceAgreementId(),
+                        userContext.getExternalLegalEntityId(),
+                        legalEntityWithUsers.getCategory().isRetail());
+                    ingestFunctionGroups(userContext.getExternalServiceAgreementId(), isRetail);
+                    isOnce.getAndSet(false);
+                }
+
                 assignPermissions(userContext.getUser(),
                     userContext.getInternalServiceAgreementId(),
                     userContext.getExternalServiceAgreementId(),
@@ -180,17 +194,13 @@ public class AccessControlSetup extends BaseSetup {
                     externalLegalEntityId, productGroupSeed);
 
                 productGroupSeed.setExternalServiceAgreementId(externalServiceAgreementId);
-                this.accessGroupsConfigurator
-                    .ingestDataGroupForArrangements(productGroupSeed, arrangementIds);
-
-                productGroupService.saveAssignedProductGroup(productGroupSeed);
+                this.accessGroupsConfigurator.ingestDataGroupForArrangements(productGroupSeed, arrangementIds);
 
                 ingestTransactions(arrangementIds, isRetail);
                 ingestBalanceHistory(arrangementIds);
             } else {
                 productGroupSeed.setId(existingDataGroup.getId());
                 productGroupSeed.setExternalServiceAgreementId(externalServiceAgreementId);
-                productGroupService.storeInCache(productGroupSeed);
                 productGroupService.saveAssignedProductGroup(productGroupSeed);
             }
         });
@@ -250,20 +260,12 @@ public class AccessControlSetup extends BaseSetup {
 
         this.jobProfileService.getAssignedJobProfiles(externalServiceAgreementId).forEach(jobProfile -> {
             if (jobProfileService.isJobProfileForUserRole(jobProfile, user.getRole(), isRetail)) {
-                Set<String> dataGroupIds = this.productGroupService
-                    .getAssignedProductGroups(externalServiceAgreementId)
-                    .stream()
-                    .map(DbsEntity::getId)
-                    .filter(Objects::nonNull)
-                    .collect(Collectors.toSet());
+                List<String> dataGroupIds = this.productGroupService
+                    .findAssignedProductGroupsIds(externalServiceAgreementId, user);
 
                 this.permissionsConfigurator.assignPermissions(
-                    user.getExternalId(),
-                    internalServiceAgreementId,
-                    jobProfile.getId(),
-                    new ArrayList<>(dataGroupIds));
+                    user.getExternalId(),internalServiceAgreementId, jobProfile.getId(), dataGroupIds);
             }
         });
     }
-
 }

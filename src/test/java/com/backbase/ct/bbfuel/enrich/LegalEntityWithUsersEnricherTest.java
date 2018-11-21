@@ -1,5 +1,6 @@
 package com.backbase.ct.bbfuel.enrich;
 
+import static com.backbase.ct.bbfuel.service.factory.LegalEntityWithUsersFactory.createLegalEntityWithUsers;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
@@ -7,7 +8,6 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 
 import com.backbase.ct.bbfuel.dto.LegalEntityWithUsers;
-import com.backbase.ct.bbfuel.dto.User;
 import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,13 +19,6 @@ public class LegalEntityWithUsersEnricherTest {
 
     @InjectMocks
     private LegalEntityWithUsersEnricher subject;
-
-    private static LegalEntityWithUsers createLegalEntityWithUsers(String userExternalId) {
-        LegalEntityWithUsers le = new LegalEntityWithUsers();
-        le.setUsers(singletonList(User.builder().externalId(userExternalId).build()));
-
-        return le;
-    }
 
     @Test
     public void testEnrich() {

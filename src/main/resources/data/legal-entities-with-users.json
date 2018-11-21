@@ -128,7 +128,8 @@
       },
       {
         "externalId": "jan_verschoor",
-        "role": "employee"
+        "role": "employee",
+        "productGroupNames": ["Payroll"]
       },
       {
         "externalId": "iris_schipper",
@@ -136,7 +137,8 @@
       },
       {
         "externalId": "joe_santorelli",
-        "role": "employee"
+        "role": "employee",
+        "productGroupNames": ["Portland", "International Trade", "Finance International"]
       }
     ]
   },

@@ -1,13 +1,14 @@
 package com.backbase.ct.bbfuel.service;
 
 import static com.backbase.ct.bbfuel.dto.entitlement.JobProfile.PROFILE_ROLE_ADMIN;
+import static com.backbase.ct.bbfuel.service.factory.TestData.EXTERNAL_SERVICE_AGREEMENT_ID_1;
+import static com.backbase.ct.bbfuel.service.factory.TestData.EXTERNAL_SERVICE_AGREEMENT_ID_2;
 import static java.util.Arrays.asList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 
 import com.backbase.ct.bbfuel.dto.entitlement.JobProfile;
-import com.github.javafaker.Faker;
 import java.util.List;
 import org.junit.Rule;
 import org.junit.Test;
@@ -22,9 +23,6 @@ public class JobProfileServiceTest {
     private static final String APPROVAL_LEVEL_B = "B";
     private static final String APPROVAL_LEVEL_C = "C";
     private static final List<String> APPROVAL_LEVELS = asList(APPROVAL_LEVEL_A, APPROVAL_LEVEL_B, APPROVAL_LEVEL_C);
-    private static final Faker FAKER = new Faker();
-    private static final String EXTERNAL_SERVICE_AGREEMENT_ID_1 = FAKER.numerify("EXT_SA_######");
-    private static final String EXTERNAL_SERVICE_AGREEMENT_ID_2 = FAKER.numerify("EXT_SA_######");
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();

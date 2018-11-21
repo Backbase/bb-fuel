@@ -2,8 +2,10 @@ package com.backbase.ct.bbfuel.input;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.nullValue;
 
 import com.backbase.ct.bbfuel.dto.LegalEntityWithUsers;
+import com.backbase.ct.bbfuel.dto.User;
 import com.backbase.ct.bbfuel.enrich.LegalEntityWithUsersEnricher;
 import java.util.List;
 import org.junit.Test;
@@ -25,10 +27,16 @@ public class LegalEntityWithUsersReaderTest {
     public void testLoad() {
         List<LegalEntityWithUsers> legalEntities = subject.load();
         assertThat(legalEntities, hasSize(13));
+        LegalEntityWithUsers greenBicycleFactory = legalEntities.get(7);
         assertThat("GBF should have admin user ids",
-            legalEntities.get(7).getAdminUserExternalIds(), hasSize(2));
+            greenBicycleFactory.getAdminUserExternalIds(), hasSize(2));
         assertThat("GBF should have one manager",
-            legalEntities.get(7).filterUserExternalIdsOnRole("manager"), hasSize(1));
+            greenBicycleFactory.filterUserExternalIdsOnRole("manager"), hasSize(1));
+        List<String> productGroupsOfJan = greenBicycleFactory.getUsers().stream()
+            .filter(user -> "jan_verschoor".equals(user.getExternalId()))
+            .findFirst().orElse(new User()).getProductGroupNames();
+        assertThat(productGroupsOfJan, hasSize(1));
+        assertThat(greenBicycleFactory.getUsers().get(0).getProductGroupNames(), nullValue());
     }
 
     @Test

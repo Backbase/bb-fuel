@@ -4,6 +4,7 @@ import static com.backbase.ct.bbfuel.data.CommonConstants.EXTERNAL_ROOT_LEGAL_EN
 import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 import static org.apache.http.HttpStatus.SC_CREATED;
 
+import com.backbase.buildingblocks.presentation.errors.BadRequestException;
 import com.backbase.ct.bbfuel.client.legalentity.LegalEntityIntegrationRestClient;
 import com.backbase.ct.bbfuel.client.legalentity.LegalEntityPresentationRestClient;
 import com.backbase.integration.legalentity.rest.spec.v2.legalentities.LegalEntitiesPostRequestBody;
@@ -30,8 +31,10 @@ public class LegalEntityService {
         if (response.statusCode() == SC_BAD_REQUEST &&
             response.then()
                 .extract()
-                .as(com.backbase.presentation.legalentity.rest.spec.v2.legalentities.exceptions.BadRequestException.class)
-                .getErrorCode()
+                .as(BadRequestException.class)
+                .getErrors()
+                .get(0)
+                .getMessage()
                 .matches("legalEntity.save.error.message.(.*)_ALREADY_EXISTS")) {
 
             LOGGER.info("Legal entity [{}] already exists, skipped ingesting this legal entity",

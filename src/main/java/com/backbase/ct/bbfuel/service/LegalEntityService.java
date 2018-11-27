@@ -32,10 +32,8 @@ public class LegalEntityService {
             response.then()
                 .extract()
                 .as(BadRequestException.class)
-                .getErrors()
-                .get(0)
                 .getMessage()
-                .matches("legalEntity.save.error.message.(.*)_ALREADY_EXISTS")) {
+                .matches("Legal Entity with given external Id already exists")) {
 
             LOGGER.info("Legal entity [{}] already exists, skipped ingesting this legal entity",
                 legalEntity.getExternalId());

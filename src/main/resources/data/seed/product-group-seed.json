@@ -163,7 +163,7 @@
       "Transport"
     ],
     "productIds": [
-      "1", "2", "4", "6"
+      "1", "2", "5", "7"
     ],
     "numberOfArrangements": {
       "min": 5,
@@ -208,7 +208,7 @@
       "Current Account"
     ],
     "productIds": [
-      "1", "2", "3", "4", "5", "6"
+      "1", "2", "3", "5", "6", "7"
     ],
     "numberOfArrangements": {
       "min": 5,

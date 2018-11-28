@@ -19,15 +19,15 @@ import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.config.fun
 import java.math.BigDecimal;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class LimitsConfigurator {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(LimitsConfigurator.class);
     private GlobalProperties globalProperties = GlobalProperties.getInstance();
 
     private LoginRestClient loginRestClient = new LoginRestClient();
@@ -84,7 +84,7 @@ public class LimitsConfigurator {
                     .extract()
                     .path("uuid");
 
-                LOGGER.info("Transactional limit [{}] created for {} privilege on function group {} and function {}",
+                log.info("Transactional limit [{}] created for {} privilege on function group {} and function {}",
                     limitId, privilege, existingAdminFunctionGroupId, paymentsFunction.getFunctionId());
             }
         }

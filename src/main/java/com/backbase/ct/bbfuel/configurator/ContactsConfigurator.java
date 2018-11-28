@@ -12,15 +12,13 @@ import com.backbase.ct.bbfuel.client.contact.ContactIntegrationRestClient;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
 import com.backbase.dbs.integration.external.inbound.contact.rest.spec.v2.contacts.ContactsBulkIngestionPostRequestBody;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ContactsConfigurator {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(ContactsConfigurator.class);
     private static GlobalProperties globalProperties = GlobalProperties.getInstance();
     private final ContactIntegrationRestClient contactIntegrationRestClient;
 
@@ -38,7 +36,7 @@ public class ContactsConfigurator {
             .then()
             .statusCode(SC_CREATED);
 
-        LOGGER.info("Contacts [{}] ingested for user [{}]", contactsBulkIngestionPostRequestBody.getContacts()
+        log.info("Contacts [{}] ingested for user [{}]", contactsBulkIngestionPostRequestBody.getContacts()
             .size(), externalUserId);
     }
 }

@@ -11,14 +11,12 @@ import com.backbase.integration.user.rest.spec.v2.users.EntitlementsAdminPostReq
 import com.backbase.integration.user.rest.spec.v2.users.UsersPostRequestBody;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 public class UserIntegrationRestClient extends AbstractRestClient {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserIntegrationRestClient.class);
 
     private static final String ENTITLEMENTS = globalProperties
         .getString(CommonConstants.PROPERTY_ACCESS_CONTROL_BASE_URI);
@@ -41,10 +39,10 @@ public class UserIntegrationRestClient extends AbstractRestClient {
                 .as(BadRequestException.class)
             .getErrorCode()
             .equals("user.access.fetch.data.error.message.USER_ALREADY_ENTITLEMENTS_ADMIN")) {
-            LOGGER.warn("Entitlements admin [{}] already exists under legal entity [{}], skipped ingesting this entitlements admin",
+            log.warn("Entitlements admin [{}] already exists under legal entity [{}], skipped ingesting this entitlements admin",
                     externalUserId, externalLegalEntityId);
         } else if (response.statusCode() == SC_OK) {
-            LOGGER.info("Entitlements admin [{}] ingested under legal entity [{}]",
+            log.info("Entitlements admin [{}] ingested under legal entity [{}]",
                 externalUserId, externalLegalEntityId);
         } else {
             response.then()
@@ -61,9 +59,9 @@ public class UserIntegrationRestClient extends AbstractRestClient {
                 .as(BadRequestException.class)
                 .getMessage()
                 .equals("User already exists")) {
-            LOGGER.info("User [{}] already exists, skipped ingesting this user", user.getExternalId());
+            log.info("User [{}] already exists, skipped ingesting this user", user.getExternalId());
         } else if (response.statusCode() == SC_CREATED) {
-            LOGGER.info("User [{}] ingested under legal entity [{}]",
+            log.info("User [{}] ingested under legal entity [{}]",
                 user.getExternalId(), user.getLegalEntityExternalId());
         } else {
             response.then()

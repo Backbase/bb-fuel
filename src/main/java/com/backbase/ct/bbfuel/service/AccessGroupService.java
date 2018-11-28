@@ -16,15 +16,13 @@ import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.functiong
 import io.restassured.response.Response;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AccessGroupService {
-
-    private final static Logger LOGGER = LoggerFactory.getLogger(AccessGroupService.class);
 
     private final AccessGroupPresentationRestClient accessGroupPresentationRestClient;
 
@@ -55,7 +53,7 @@ public class AccessGroupService {
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException(String.format("No existing function group found by service agreement [%s] and name [%s]", externalServiceAgreementId, functionGroupName)));
 
-            LOGGER.info("Function group \"{}\" [{}] already exists, skipped ingesting this function group",
+            log.info("Function group \"{}\" [{}] already exists, skipped ingesting this function group",
                 existingFunctionGroup.getName(), existingFunctionGroup.getId());
 
             return existingFunctionGroup.getId();
@@ -67,7 +65,7 @@ public class AccessGroupService {
                 .as(DataGroupPostResponseBody.class)
                 .getId();
 
-            LOGGER.info("Function group \"{}\" [{}] ingested under service agreement [{}])",
+            log.info("Function group \"{}\" [{}] ingested under service agreement [{}])",
                 functionGroupName, functionGroupId, externalServiceAgreementId);
 
             return functionGroupId;
@@ -107,11 +105,10 @@ public class AccessGroupService {
                 .as(DataGroupPostResponseBody.class)
                 .getId();
 
-            LOGGER.info("Data group \"{}\" [{}] ingested under service agreement [{}]",
+            log.info("Data group \"{}\" [{}] ingested under service agreement [{}]",
                 dataGroupName, dataGroupId, externalServiceAgreementId);
 
             return dataGroupId;
         }
     }
-
 }

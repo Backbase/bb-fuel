@@ -12,14 +12,12 @@ import com.backbase.integration.arrangement.rest.spec.v2.balancehistory.BalanceH
 import com.backbase.integration.arrangement.rest.spec.v2.products.ProductsPostRequestBody;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 public class ArrangementsIntegrationRestClient extends AbstractRestClient {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(ArrangementsIntegrationRestClient.class);
 
     private static final String PRODUCT_SUMMARY = globalProperties
         .getString(CommonConstants.PROPERTY_PRODUCT_SUMMARY_BASE_URI);
@@ -57,9 +55,9 @@ public class ArrangementsIntegrationRestClient extends AbstractRestClient {
                 .get(0)
                 .getKey()
                 .equals("account.api.product.alreadyExists")) {
-            LOGGER.info("Product [{}] already exists, skipped ingesting this product", product.getProductKindName());
+            log.info("Product [{}] already exists, skipped ingesting this product", product.getProductKindName());
         } else if (response.statusCode() == SC_CREATED) {
-            LOGGER.info("Product [{}] ingested", product.getProductKindName());
+            log.info("Product [{}] ingested", product.getProductKindName());
         } else {
             response.then()
                 .statusCode(SC_CREATED);

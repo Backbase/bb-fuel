@@ -17,15 +17,15 @@ import com.backbase.dbs.messages.presentation.rest.spec.v4.messagecenter.DraftsP
 import com.backbase.dbs.messages.presentation.rest.spec.v4.messagecenter.DraftsPostResponseBody;
 import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MessagesConfigurator {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(MessagesConfigurator.class);
     private static GlobalProperties globalProperties = GlobalProperties.getInstance();
 
     private final LoginRestClient loginRestClient;
@@ -72,7 +72,7 @@ public class MessagesConfigurator {
                 .then()
                 .statusCode(SC_ACCEPTED);
 
-            LOGGER.info("Conversation ingested with subject [{}] for user [{}]", draftsPostRequestBody.getSubject(),
+            log.info("Conversation ingested with subject [{}] for user [{}]", draftsPostRequestBody.getSubject(),
                 externalUserId);
         });
     }

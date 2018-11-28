@@ -18,15 +18,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ActionsConfigurator {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(ActionsConfigurator.class);
     private static GlobalProperties globalProperties = GlobalProperties.getInstance();
 
     private LoginRestClient loginRestClient = new LoginRestClient();
@@ -55,7 +53,7 @@ public class ActionsConfigurator {
                 .then()
                 .statusCode(SC_ACCEPTED);
 
-            LOGGER.info("Action ingested with specification id [{}] for arrangement [{}]",
+            log.info("Action ingested with specification id [{}] for arrangement [{}]",
                 actionRecipesPostRequestBody.getSpecificationId(), actionRecipesPostRequestBody.getArrangementId());
         });
     }

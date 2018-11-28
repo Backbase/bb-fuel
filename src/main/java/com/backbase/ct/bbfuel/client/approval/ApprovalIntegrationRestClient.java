@@ -27,14 +27,10 @@ import com.backbase.dbs.approval.integration.spec.IntegrationPostPolicyResponse;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ApprovalIntegrationRestClient extends AbstractRestClient {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(ApprovalIntegrationRestClient.class);
 
     private static final String APPROVALS_BASE_URI = globalProperties.getString(PROPERTY_APPROVALS_BASE_URI);
     private static final String SERVICE_VERSION = "v2";

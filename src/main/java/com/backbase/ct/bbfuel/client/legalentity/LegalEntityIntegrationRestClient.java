@@ -8,14 +8,10 @@ import com.backbase.integration.legalentity.rest.spec.v2.legalentities.LegalEnti
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementGetResponseBody;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
 public class LegalEntityIntegrationRestClient extends AbstractRestClient {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(LegalEntityIntegrationRestClient.class);
 
     private static final String ENTITLEMENTS = globalProperties
         .getString(CommonConstants.PROPERTY_ACCESS_CONTROL_BASE_URI);

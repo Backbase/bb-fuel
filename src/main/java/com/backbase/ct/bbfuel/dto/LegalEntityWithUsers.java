@@ -39,12 +39,12 @@ public class LegalEntityWithUsers {
         return Collections.emptyList();
     }
 
-    public List<String> filterUserExternalIdsOnRole(String role) {
-        return filterUserExternalIds(user -> role.equals(user.getRole()));
+    public List<String> filterUserExternalIdsOnJobProfile(String jobProfileName) {
+        return filterUserExternalIds(user -> user.getJobProfileNames().contains(jobProfileName));
     }
 
     public List<String> getAdminUserExternalIds() {
-        return filterUserExternalIdsOnRole(JobProfile.PROFILE_ROLE_ADMIN);
+        return filterUserExternalIdsOnJobProfile(JobProfile.JOB_PROFILE_NAME_ADMIN);
     }
 
     public List<String> getUserExternalIds() {

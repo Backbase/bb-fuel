@@ -1,6 +1,5 @@
 package com.backbase.ct.bbfuel.service;
 
-import static com.backbase.ct.bbfuel.dto.entitlement.JobProfile.PROFILE_ROLE_ADMIN;
 import static java.util.Collections.synchronizedMap;
 import static org.apache.commons.lang.StringUtils.deleteWhitespace;
 
@@ -10,20 +9,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 /**
  * A simple local service with no integration at all.
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class JobProfileService {
 
     public static final String ADMIN_FUNCTION_GROUP_NAME = "Admin";
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(JobProfileService.class);
 
     private Map<String, List<JobProfile>> assignedJobProfiles = new HashMap<>();
 
@@ -43,27 +40,8 @@ public class JobProfileService {
     /**
      * Admin is a special case for job profile.
      */
-    public boolean isJobProfileForAdmin(JobProfile jobProfile) {
-        return ADMIN_FUNCTION_GROUP_NAME.equalsIgnoreCase(jobProfile.getJobProfileName())
-            && jobProfile.getRoles().contains(PROFILE_ROLE_ADMIN);
-    }
-
-    /**
-     * Evaluate jobProfile roles, its name and isRetail property to given rol and isRetailCustomer.
-     */
-    public boolean isJobProfileForUserRole(JobProfile jobProfile, String role, boolean isRetailCustomer) {
-        List<String> roles = jobProfile.getRoles();
-
-        if (roles == null || roles.isEmpty()) {
-            LOGGER.warn("No roles configured for this profile {}", jobProfile.getJobProfileName());
-            return false;
-        } else if (isRetailCustomer) {
-            return (jobProfile.getIsRetail() && roles.contains(role))
-            || (!jobProfile.getIsRetail() // admin profile is shared between retail and business
-                && ADMIN_FUNCTION_GROUP_NAME.equalsIgnoreCase(jobProfile.getJobProfileName())
-                && roles.contains(role));
-        }
-        return !jobProfile.getIsRetail() && roles.contains(role);
+    private boolean isJobProfileForAdmin(JobProfile jobProfile) {
+        return ADMIN_FUNCTION_GROUP_NAME.equalsIgnoreCase(jobProfile.getJobProfileName());
     }
 
     public List<JobProfile> getAssignedJobProfiles(String externalServiceAgreementId) {

@@ -1,6 +1,6 @@
 package com.backbase.ct.bbfuel.enrich;
 
-import static com.backbase.ct.bbfuel.dto.entitlement.JobProfile.PROFILE_ROLE_ADMIN;
+import static com.backbase.ct.bbfuel.dto.entitlement.JobProfile.JOB_PROFILE_NAME_ADMIN;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
@@ -25,22 +25,10 @@ public class JobProfileEnricherTest {
         JobProfile jobProfile = new JobProfile();
         List<JobProfile> jobProfiles = singletonList(jobProfile);
 
-        assertThat(jobProfile.getRoles(), nullValue());
+        assertThat(jobProfile.getIsRetail(), nullValue());
         subject.enrich(jobProfiles);
-        assertThat(jobProfile.getRoles(), hasSize(1));
-        assertThat(jobProfile.getRoles().get(0), is(PROFILE_ROLE_ADMIN));
+        assertThat(jobProfile.getIsRetail(), is(false));
         subject.enrich(jobProfiles);
-        assertThat(jobProfile.getRoles(), hasSize(1));
+        assertThat(jobProfile.getIsRetail(), is(false));
     }
-
-    @Test
-    public void testEnrichmentDoesNotAdd() {
-        JobProfile jobProfile = JobProfile.builder().roles(singletonList(PROFILE_ROLE_ADMIN)).build();
-        List<JobProfile> jobProfiles = singletonList(jobProfile);
-
-        subject.enrich(jobProfiles);
-        assertThat(jobProfile.getRoles(), hasSize(1));
-        assertThat(jobProfile.getRoles().get(0), is(PROFILE_ROLE_ADMIN));
-    }
-
 }

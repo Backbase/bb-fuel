@@ -13,6 +13,6 @@ import lombok.NoArgsConstructor;
 public class User {
     private String externalId;
     private String fullName;
-    private String role;
+    private List<String> jobProfileNames;
     private List<String> productGroupNames;
 }

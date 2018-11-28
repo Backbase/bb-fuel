@@ -30,8 +30,8 @@ public class LegalEntityWithUsersReaderTest {
         LegalEntityWithUsers greenBicycleFactory = legalEntities.get(7);
         assertThat("GBF should have admin user ids",
             greenBicycleFactory.getAdminUserExternalIds(), hasSize(2));
-        assertThat("GBF should have one manager",
-            greenBicycleFactory.filterUserExternalIdsOnRole("manager"), hasSize(1));
+        assertThat("GBF should have managers",
+            greenBicycleFactory.filterUserExternalIdsOnJobProfile("Manager"), hasSize(2));
         List<String> productGroupsOfJan = greenBicycleFactory.getUsers().stream()
             .filter(user -> "jan_verschoor".equals(user.getExternalId()))
             .findFirst().orElse(new User()).getProductGroupNames();

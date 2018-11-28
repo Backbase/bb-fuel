@@ -1,9 +1,6 @@
 package com.backbase.ct.bbfuel.enrich;
 
-import static com.backbase.ct.bbfuel.dto.entitlement.JobProfile.PROFILE_ROLE_ADMIN;
-
 import com.backbase.ct.bbfuel.dto.entitlement.JobProfile;
-import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Component;
 
@@ -11,20 +8,19 @@ import org.springframework.stereotype.Component;
 public class JobProfileEnricher {
 
     /**
-     * Check if roles are filled and add admin to it if not.
+     * Enrich each job profile.
+     * @param jobProfiles a list of job profiles
      */
     public void enrich(List<JobProfile> jobProfiles) {
-        jobProfiles.forEach(this::enrichCategories);
+        jobProfiles.forEach(this::enrich);
     }
 
-    private void enrichCategories(JobProfile jobProfile) {
-        if (jobProfile.getRoles() == null) {
-            jobProfile.setRoles(new ArrayList<>());
-        }
-        if (jobProfile.getRoles().isEmpty()) {
-            jobProfile.getRoles().add(PROFILE_ROLE_ADMIN);
-        }
-
+    /**
+     * Set isRetail to false if not set.
+     *
+     * @param jobProfile job profile
+     */
+    private void enrich(JobProfile jobProfile) {
         if (jobProfile.getIsRetail() == null) {
             jobProfile.setIsRetail(false);
         }

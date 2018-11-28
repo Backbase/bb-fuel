@@ -1,13 +1,11 @@
 [
   {
     "jobProfileName": "Admin",
-    "roles": ["admin"],
     "approvalLevel": "C"
   },
   {
     "jobProfileName": "Retail User",
     "isRetail": "true",
-    "roles": ["admin", "retail"],
     "permissions": [
       {
         "businessFunction": "Contacts",
@@ -33,7 +31,6 @@
   {
     "jobProfileName": "Retail User",
     "isRetail": "true",
-    "roles": ["admin", "retail"],
     "permissions": [
       {
         "businessFunction": "Contacts",
@@ -58,7 +55,6 @@
   },
   {
     "jobProfileName": "Manager",
-    "roles": ["admin", "manager"],
     "approvalLevel": "B",
     "permissions": [
       {
@@ -284,7 +280,6 @@
   },
   {
     "jobProfileName": "Finance Employee",
-    "roles": ["admin", "employee"],
     "approvalLevel": "A",
     "permissions": [
       {

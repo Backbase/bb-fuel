@@ -34,16 +34,20 @@ public class ProductSummaryPresentationRestClient extends AbstractRestClient {
             .get(getPath(ENDPOINT_ARRANGEMENTS));
     }
 
+    private static ProductSummaryQueryParameters createProductSummaryQueryParameters(String function, String resource) {
+        return new ProductSummaryQueryParameters()
+            .withBusinessFunction(function)
+            .withResourceName(resource)
+            .withPrivilege(PRIVILEGE_CREATE)
+            .withDebitAccount(true)
+            .withCreditAccount(true)
+            .withSize(999)
+            .withOrderBy("name");
+    }
+
     public List<ArrangementsByBusinessFunctionGetResponseBody> getSepaCtArrangements() {
         ArrangementsByBusinessFunctionGetResponseBody[] arrangements = getProductSummaryContextArrangements(
-            new ProductSummaryQueryParameters()
-                .withBusinessFunction(SEPA_CT_FUNCTION_NAME)
-                .withResourceName(PAYMENTS_RESOURCE_NAME)
-                .withPrivilege(PRIVILEGE_CREATE)
-                .withDebitAccount(true)
-                .withCreditAccount(true)
-                .withSize(999)
-                .withOrderBy("name"))
+            createProductSummaryQueryParameters(SEPA_CT_FUNCTION_NAME, PAYMENTS_RESOURCE_NAME))
             .then()
             .statusCode(SC_OK)
             .extract()
@@ -51,22 +55,15 @@ public class ProductSummaryPresentationRestClient extends AbstractRestClient {
 
         // Make sure the Regex is in sync with payment-order-presentation-service/src/main/resources/application.yml (property: sepacountries)
         return Arrays.stream(arrangements)
-            .filter(arrangement -> arrangement.getIBAN() != null)
-            .filter(arrangement -> arrangement.getIBAN()
+            .filter(arrangement -> arrangement.getIBAN() != null && arrangement.getIBAN()
                 .matches(
                     "^(AT|BE|BG|CH|CY|CZ|DE|DK|EE|ES|FI|FR|GB|GI|GR|HR|HU|IE|IS|IT|LI|LT|LU|LV|MC|MT|NL|NO|PL|PT|RO|SE|SI|SK|SM)[a-zA-Z0-9_.-]*"))
             .collect(Collectors.toList());
     }
 
     public List<ArrangementsByBusinessFunctionGetResponseBody> getUsDomesticWireArrangements() {
-        return Arrays.asList(getProductSummaryContextArrangements(new ProductSummaryQueryParameters()
-            .withBusinessFunction(US_DOMESTIC_WIRE_FUNCTION_NAME)
-            .withResourceName(PAYMENTS_RESOURCE_NAME)
-            .withPrivilege(PRIVILEGE_CREATE)
-            .withDebitAccount(true)
-            .withCreditAccount(true)
-            .withSize(999)
-            .withOrderBy("name"))
+        return Arrays.asList(getProductSummaryContextArrangements(
+            createProductSummaryQueryParameters(US_DOMESTIC_WIRE_FUNCTION_NAME, PAYMENTS_RESOURCE_NAME))
             .then()
             .statusCode(SC_OK)
             .extract()
@@ -93,5 +90,4 @@ public class ProductSummaryPresentationRestClient extends AbstractRestClient {
             .queryParam("searchTerm", queryParameters.getSearchTerm())
             .get(getPath(ENDPOINT_CONTEXT_ARRANGEMENTS));
     }
-
 }

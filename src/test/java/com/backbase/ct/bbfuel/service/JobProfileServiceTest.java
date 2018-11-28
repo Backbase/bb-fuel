@@ -1,6 +1,5 @@
 package com.backbase.ct.bbfuel.service;
 
-import static com.backbase.ct.bbfuel.dto.entitlement.JobProfile.PROFILE_ROLE_ADMIN;
 import static com.backbase.ct.bbfuel.service.factory.TestData.EXTERNAL_SERVICE_AGREEMENT_ID_1;
 import static com.backbase.ct.bbfuel.service.factory.TestData.EXTERNAL_SERVICE_AGREEMENT_ID_2;
 import static java.util.Arrays.asList;
@@ -15,10 +14,6 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 public class JobProfileServiceTest {
-
-    private static final String PROFILE_ROLE_EMPLOYEE = "employee";
-    private static final String PROFILE_ROLE_MANAGER = "manager";
-    private static final String PROFILE_ROLE_RETAIL = "retail";
     private static final String APPROVAL_LEVEL_A = "A";
     private static final String APPROVAL_LEVEL_B = "B";
     private static final String APPROVAL_LEVEL_C = "C";
@@ -51,92 +46,28 @@ public class JobProfileServiceTest {
     }
 
     private static JobProfile createJobProfile(
-        String name, String approvalLevel, boolean isRetailProfile, List<String> roles) {
+        String name, String approvalLevel, boolean isRetailProfile) {
         return JobProfile.builder()
             .jobProfileName(name)
             .approvalLevel(approvalLevel)
             .isRetail(isRetailProfile)
-            .roles(roles).build();
+            .build();
     }
 
     private static JobProfile createAdminProfile() {
-        return createJobProfile("Admin", APPROVAL_LEVEL_C, false,
-            asList(PROFILE_ROLE_ADMIN, PROFILE_ROLE_MANAGER));
+        return createJobProfile("Admin", APPROVAL_LEVEL_C, false);
     }
 
     private static JobProfile createManagerProfile() {
-        return createJobProfile("Manager", APPROVAL_LEVEL_B, false,
-            asList(PROFILE_ROLE_ADMIN, PROFILE_ROLE_MANAGER));
+        return createJobProfile("Manager", APPROVAL_LEVEL_B, false);
     }
 
     private static JobProfile createFinanceEmployeeProfile() {
-        return createJobProfile("Finance employee", APPROVAL_LEVEL_A, false,
-            asList(PROFILE_ROLE_ADMIN, PROFILE_ROLE_EMPLOYEE));
+        return createJobProfile("Finance employee", APPROVAL_LEVEL_A, false);
     }
 
     private static JobProfile createRetailUserProfile() {
-        return createJobProfile("Retail User", null,true,
-            asList(PROFILE_ROLE_ADMIN, PROFILE_ROLE_RETAIL));
-    }
-
-    private void verifyBusinessProfiles(String role, boolean isRetail, boolean[] expectedValues) {
-        String reasonMessage = (isRetail ? "Retail user with " : "Business user with ")
-                + role + " role should %s profile with approval level %s";
-        int counter = 0;
-        JobProfile profile = createFinanceEmployeeProfile();
-        boolean isAssignable = this.subject.isJobProfileForUserRole(profile, role, isRetail);
-        assertThat(String.format(reasonMessage, (expectedValues[counter] ? "have" : "not have"),
-            profile.getApprovalLevel()), isAssignable, is(expectedValues[counter++]));
-
-        profile = createManagerProfile();
-        isAssignable = this.subject.isJobProfileForUserRole(profile, role, isRetail);
-        assertThat(String.format(reasonMessage, (expectedValues[counter] ? "have" : "not have"),
-            profile.getApprovalLevel()), isAssignable, is(expectedValues[counter++]));
-
-        // admin profile is shared for both retail and business
-        profile = createAdminProfile();
-        isAssignable = this.subject.isJobProfileForUserRole(profile, role, isRetail);
-        assertThat(String.format(reasonMessage, (expectedValues[counter] ? "have" : "not have"),
-            profile.getApprovalLevel()), isAssignable, is(expectedValues[counter]));
-    }
-
-    private void verifyRetailProfile(String role, boolean isRetail, boolean expectedValue) {
-        String reasonMessage = (isRetail ? "Retail user with " : "Business user with ")
-            + role + " role should %s retail profile";
-        JobProfile profile = createRetailUserProfile();
-        boolean isAssignable = this.subject.isJobProfileForUserRole(profile, role, isRetail);
-        assertThat(String.format(reasonMessage, (expectedValue ? "have" : "not have")),
-            isAssignable, is(expectedValue));
-    }
-
-    @Test
-    public void testBusinessManagerRole() {
-        verifyBusinessProfiles(PROFILE_ROLE_MANAGER, false, new boolean[] {false, true, true});
-        verifyRetailProfile(PROFILE_ROLE_MANAGER, false, false);
-    }
-
-    @Test
-    public void testBusinessAdminRole() {
-        verifyBusinessProfiles(PROFILE_ROLE_ADMIN, false, new boolean[] {true, true, true});
-        verifyRetailProfile(PROFILE_ROLE_ADMIN, false, false);
-    }
-
-    @Test
-    public void testBusinessEmployeeRole() {
-        verifyBusinessProfiles(PROFILE_ROLE_EMPLOYEE, false, new boolean[] {true, false, false});
-        verifyRetailProfile(PROFILE_ROLE_EMPLOYEE, false, false);
-    }
-
-    @Test
-    public void testRetailAdminRole() {
-        verifyBusinessProfiles(PROFILE_ROLE_ADMIN, true, new boolean[] {false, false, true});
-        verifyRetailProfile(PROFILE_ROLE_ADMIN, true, true);
-    }
-
-    @Test
-    public void testRetailUserRole() {
-        verifyBusinessProfiles(PROFILE_ROLE_RETAIL, true, new boolean[] {false, false, false});
-        verifyRetailProfile(PROFILE_ROLE_RETAIL, true, true);
+        return createJobProfile("Retail User", null,true);
     }
 
     @Test

@@ -34,23 +34,23 @@
     "users": [
       {
         "externalId": "U0001001",
-        "role": "employee"
+        "jobProfileNames": ["Finance Employee"]
       },
       {
         "externalId": "U0001002",
-        "role": "employee"
+        "jobProfileNames": ["Finance Employee"]
       },
       {
         "externalId": "U0001003",
-        "role": "employee"
+        "jobProfileNames": ["Finance Employee"]
       },
       {
         "externalId": "U0001004",
-        "role": "manager"
+        "jobProfileNames": ["Manager"]
       },
       {
         "externalId": "U0001005",
-        "role": "admin"
+        "jobProfileNames": ["Admin"]
       }
     ]
   },
@@ -112,32 +112,32 @@
     "users": [
       {
         "externalId": "robin_green",
-        "role": "admin"
+        "jobProfileNames": ["Admin", "Manager", "Finance Employee"]
       },
       {
         "externalId": "paddy_brian",
-        "role": "admin"
+        "jobProfileNames": ["Admin"]
       },
       {
         "externalId": "sarah_lee",
-        "role": "manager"
+        "jobProfileNames": ["Manager"]
       },
       {
         "externalId": "alex_wong",
-        "role": "employee"
+        "jobProfileNames": ["Finance Employee"]
       },
       {
         "externalId": "jan_verschoor",
-        "role": "employee",
+        "jobProfileNames": ["Finance Employee"],
         "productGroupNames": ["Payroll"]
       },
       {
         "externalId": "iris_schipper",
-        "role": "employee"
+        "jobProfileNames": ["Finance Employee"]
       },
       {
         "externalId": "joe_santorelli",
-        "role": "employee",
+        "jobProfileNames": ["Finance Employee"],
         "productGroupNames": ["Portland", "International Trade", "Finance International"]
       }
     ]
@@ -148,7 +148,7 @@
     "users": [
       {
         "externalId": "U0001031",
-        "role": "admin"
+        "jobProfileNames": ["Admin"]
       }
     ]
   },
@@ -159,11 +159,11 @@
     "users": [
       {
         "externalId": "U0001032",
-        "role": "support"
+        "jobProfileNames": ["Support Employee"]
       },
       {
         "externalId": "U0001033",
-        "role": "employee"
+        "jobProfileNames": ["Finance Employee"]
       }
     ]
   },
@@ -174,7 +174,7 @@
     "users": [
       {
         "externalId": "U0001034",
-        "role": "employee"
+        "jobProfileNames": ["Finance Employee"]
       }
     ]
   },
@@ -185,11 +185,11 @@
     "users": [
       {
         "externalId": "U0001035",
-        "role": "support"
+        "jobProfileNames": ["Support Employee"]
       },
       {
         "externalId": "U0001036",
-        "role": "employee"
+        "jobProfileNames": ["Finance Employee"]
       }
     ]
   },
@@ -200,7 +200,7 @@
     "users": [
       {
         "externalId": "U0001037",
-        "role": "employee"
+        "jobProfileNames": ["Finance Employee"]
       }
     ]
   }

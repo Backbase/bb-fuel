@@ -8,6 +8,7 @@ import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_TRANSA
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
 import static com.backbase.ct.bbfuel.enrich.LegalEntityWithUsersEnricher.createRootLegalEntityWithAdmin;
 
+import com.backbase.ct.bbfuel.IngestException;
 import com.backbase.ct.bbfuel.client.accessgroup.AccessGroupPresentationRestClient;
 import com.backbase.ct.bbfuel.client.accessgroup.UserContextPresentationRestClient;
 import com.backbase.ct.bbfuel.client.user.UserPresentationRestClient;
@@ -27,6 +28,7 @@ import com.backbase.ct.bbfuel.enrich.ProductGroupSeedEnricher;
 import com.backbase.ct.bbfuel.input.JobProfileReader;
 import com.backbase.ct.bbfuel.input.LegalEntityWithUsersReader;
 import com.backbase.ct.bbfuel.input.ProductGroupSeedReader;
+import com.backbase.ct.bbfuel.input.validation.JobProfileAssignmentValidator;
 import com.backbase.ct.bbfuel.input.validation.ProductGroupAssignmentValidator;
 import com.backbase.ct.bbfuel.service.JobProfileService;
 import com.backbase.ct.bbfuel.service.ProductGroupService;
@@ -35,6 +37,8 @@ import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.datagroup
 import com.backbase.presentation.user.rest.spec.v2.users.LegalEntityByUserGetResponseBody;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
@@ -56,6 +60,7 @@ public class AccessControlSetup extends BaseSetup {
     private final TransactionsConfigurator transactionsConfigurator;
     private final LegalEntityWithUsersReader legalEntityWithUsersReader;
     private final JobProfileService jobProfileService;
+    private final JobProfileAssignmentValidator jobProfileAssignmentValidator;
     private final ProductGroupService productGroupService;
     private final ProductGroupAssignmentValidator productGroupAssignmentValidator;
     private final ProductGroupSeedEnricher productGroupEnricher;
@@ -73,11 +78,15 @@ public class AccessControlSetup extends BaseSetup {
     }
 
     public List<LegalEntityWithUsers> getLegalEntitiesWithUsersExcludingSupport() {
+        return getLegalEntitiesWithUsersNotHavingAnyOf(Arrays.asList(JobProfile.JOB_PROFILE_NAME_SUPPORT));
+    }
+
+    public List<LegalEntityWithUsers> getLegalEntitiesWithUsersNotHavingAnyOf(List<String> jobProfileNames) {
         return getLegalEntitiesWithUsers()
             .stream()
             .filter(legalEntities -> legalEntities.getUsers()
                 .stream()
-                .noneMatch(user -> "support".equals(user.getRole())))
+                .noneMatch(user -> Collections.disjoint(user.getJobProfileNames(), jobProfileNames)))
             .collect(Collectors.toList());
     }
 
@@ -85,8 +94,7 @@ public class AccessControlSetup extends BaseSetup {
      * Legal entities, job profiles and product groups are loaded from files.
      */
     public void initiate() {
-        this.legalEntitiesWithUsers = this.legalEntityWithUsersReader.load();
-        this.jobProfileTemplates = this.jobProfileReader.load();
+        loadUsersAndJobProfiles();
         loadProductGroups();
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_ACCESS_CONTROL)) {
             this.setupBankWithEntitlementsAdminAndProducts();
@@ -95,6 +103,12 @@ public class AccessControlSetup extends BaseSetup {
             || this.globalProperties.getBoolean(PROPERTY_INGEST_APPROVALS_FOR_CONTACTS)) {
             this.prepareJobProfiles();
         }
+    }
+
+    private void loadUsersAndJobProfiles() {
+        this.legalEntitiesWithUsers = this.legalEntityWithUsersReader.load();
+        this.jobProfileTemplates = this.jobProfileReader.load();
+        this.jobProfileAssignmentValidator.verify(this.legalEntitiesWithUsers, this.jobProfileTemplates);
     }
 
     private void loadProductGroups() {
@@ -258,14 +272,17 @@ public class AccessControlSetup extends BaseSetup {
     private void assignPermissions(User user, String internalServiceAgreementId,
         String externalServiceAgreementId, boolean isRetail) {
 
-        this.jobProfileService.getAssignedJobProfiles(externalServiceAgreementId).forEach(jobProfile -> {
-            if (jobProfileService.isJobProfileForUserRole(jobProfile, user.getRole(), isRetail)) {
-                List<String> dataGroupIds = this.productGroupService
-                    .findAssignedProductGroupsIds(externalServiceAgreementId, user);
+        List<JobProfile> jobProfiles = this.jobProfileService.getAssignedJobProfiles(externalServiceAgreementId);
+        user.getJobProfileNames().forEach(jobProfileName -> {
+            JobProfile jobProfile = jobProfiles.stream()
+                .filter(profile -> jobProfileName.equals(profile.getJobProfileName()))
+                .findFirst()
+                .orElseThrow(() -> new IngestException("jobProfileName not found for " + jobProfileName));
+            List<String> dataGroupIds = this.productGroupService
+                .findAssignedProductGroupsIds(externalServiceAgreementId, user);
 
-                this.permissionsConfigurator.assignPermissions(
-                    user.getExternalId(),internalServiceAgreementId, jobProfile.getId(), dataGroupIds);
-            }
+            this.permissionsConfigurator.assignPermissions(
+                user.getExternalId(), internalServiceAgreementId, jobProfile.getId(), dataGroupIds);
         });
     }
 }

@@ -22,7 +22,9 @@ import com.backbase.ct.bbfuel.configurator.PaymentsConfigurator;
 import com.backbase.ct.bbfuel.dto.LegalEntityWithUsers;
 import com.backbase.ct.bbfuel.dto.User;
 import com.backbase.ct.bbfuel.dto.UserContext;
+import com.backbase.ct.bbfuel.dto.entitlement.JobProfile;
 import com.backbase.ct.bbfuel.service.UserContextService;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -140,17 +142,12 @@ public class CapabilitiesDataSetup extends BaseSetup {
 
     private void ingestActionsPerUser() {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_ACTIONS)) {
-            List<String> externalUserIds = this.accessControlSetup.getLegalEntitiesWithUsersExcludingSupport()
+            List<String> externalUserIds = this.accessControlSetup
+                .getLegalEntitiesWithUsersNotHavingAnyOf(Arrays.asList(
+                    JobProfile.JOB_PROFILE_NAME_SUPPORT, JobProfile.JOB_PROFILE_NAME_FINANCE_EMPLOYEE))
                 .stream()
-                .filter(legalEntities -> legalEntities.getUsers()
-                    .stream()
-                    // TODO: Check job profile of user for "create" permission on "Manage Action Recipes"
-                    .noneMatch(user -> "employee".equals(user.getRole())))
-                .collect(Collectors.toList())
-                .stream()
-                .map(LegalEntityWithUsers::getUsers)
+                .map(LegalEntityWithUsers::getUserExternalIds)
                 .flatMap(List::stream)
-                .map(User::getExternalId)
                 .collect(Collectors.toList());
 
             externalUserIds.forEach(this.actionsConfigurator::ingestActions);

@@ -16,11 +16,14 @@ import lombok.EqualsAndHashCode;
 @AllArgsConstructor
 public class JobProfile extends DbsEntity {
 
-    public static final String PROFILE_ROLE_ADMIN = "admin";
+    public static final String JOB_PROFILE_NAME_ADMIN = "Admin";
+
+    public static final String JOB_PROFILE_NAME_SUPPORT = "Support Employee";
+
+    public static final String JOB_PROFILE_NAME_FINANCE_EMPLOYEE = "Finance Employee";
 
     private String jobProfileName;
     private String approvalLevel;
-    private List<String> roles;
     private Boolean isRetail;
     private List<Permission> permissions;
 
@@ -30,9 +33,6 @@ public class JobProfile extends DbsEntity {
 
     public JobProfile(JobProfile source) {
         copyProperties(source, this);
-        if (source.getRoles() != null) {
-            this.setRoles(new ArrayList<>(source.getRoles()));
-        }
         if (source.getPermissions() != null) {
             this.setPermissions(Arrays.asList(
                 source.getPermissions().toArray(new Permission[0]).clone()));

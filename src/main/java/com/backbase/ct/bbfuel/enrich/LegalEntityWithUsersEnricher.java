@@ -1,6 +1,7 @@
 package com.backbase.ct.bbfuel.enrich;
 
 import static com.backbase.ct.bbfuel.util.CommonHelpers.splitDelimitedWordToSingleCapatilizedWords;
+import static java.util.Arrays.asList;
 
 import com.backbase.ct.bbfuel.dto.Category;
 import com.backbase.ct.bbfuel.dto.LegalEntityWithUsers;
@@ -35,10 +36,10 @@ public class LegalEntityWithUsersEnricher {
     /**
      * Create user with admin role, fake fullName and given externalId.
      */
-    public static User createAdminUser(String externalId) {
+    private static User createAdminUser(String externalId) {
         return User.builder()
             .externalId(externalId)
-            .role(JobProfile.PROFILE_ROLE_ADMIN)
+            .jobProfileNames(asList(JobProfile.JOB_PROFILE_NAME_ADMIN))
             .fullName(buildFakerFullName()).build();
     }
 
@@ -48,7 +49,7 @@ public class LegalEntityWithUsersEnricher {
     }
 
     /**
-     * Give names to LE and its users if not set. Give users the admin role if not set.
+     * Give names to LE and its users if not set. Give users the admin job profile if not set.
      */
     public void enrich(List<LegalEntityWithUsers> legalEntityWithUsers) {
         legalEntityWithUsers.forEach(le -> {
@@ -74,7 +75,7 @@ public class LegalEntityWithUsersEnricher {
     }
 
     /**
-     * Assign the admin role when not explicitly set. When fullName is not set do the following:
+     * Assign the admin job profile when not explicitly set. When fullName is not set do the following:
      * If externalId contains one or more separators (._) convert it by capitalizing each word and split with a space.
      * Otherwise fake up the first and last name.
      */
@@ -86,8 +87,8 @@ public class LegalEntityWithUsersEnricher {
                 user.setFullName(buildFakerFullName());
             }
         }
-        if (StringUtils.isEmpty(user.getRole())) {
-            user.setRole(JobProfile.PROFILE_ROLE_ADMIN);
+        if (user.getJobProfileNames() == null) {
+            user.setJobProfileNames(asList(JobProfile.JOB_PROFILE_NAME_ADMIN));
         }
     }
 }

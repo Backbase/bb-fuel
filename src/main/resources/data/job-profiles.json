@@ -45,6 +45,16 @@
         ]
       },
       {
+        "businessFunction": "Manage Topics",
+        "privileges": [
+          "execute",
+          "view",
+          "create",
+          "edit",
+          "delete"
+        ]
+      },
+      {
         "businessFunction": "SEPA CT",
         "privileges": [
           "view",
@@ -326,6 +336,16 @@
         ]
       },
       {
+        "businessFunction": "Manage Topics",
+        "privileges": [
+          "execute",
+          "view",
+          "create",
+          "edit",
+          "delete"
+        ]
+      },
+      {
         "businessFunction": "Manage Function Groups",
         "privileges": [
           "view",
@@ -506,6 +526,16 @@
         "privileges": [
           "view",
           "create",
+          "delete"
+        ]
+      },
+      {
+        "businessFunction": "Manage Topics",
+        "privileges": [
+          "execute",
+          "view",
+          "create",
+          "edit",
           "delete"
         ]
       },

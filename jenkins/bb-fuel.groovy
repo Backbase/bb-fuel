@@ -24,6 +24,7 @@ pipeline {
         choice(name: 'PERFORMANCE_TEST_DATA', choices: 'retail\nbusiness', description: 'Retail or business performance test data setup')
         choice(name: 'INFRA_BASE_URI', choices: 'infra.backbase.test:8080\neditorial.backbase.test:8080', description: '')
         string(name: 'BB_FUEL_VERSION', defaultValue: 'latest', description: '')
+        booleanParam(name: 'PRERELEASE', defaultValue: false, description: 'Only applicable if BB_FUEL_VERSION = latest')
         string(name: 'ADDITIONAL_ARGUMENTS', defaultValue: '', description: 'Additional command line arguments')
     }
 
@@ -40,6 +41,7 @@ pipeline {
                     loadData(
                             environmentName: params.ENVIRONMENT_NAME,
                             bbFuelVersion: params.BB_FUEL_VERSION,
+                            prerelease: params.PRERELEASE,
                             additionalArguments: "-Dinfra.base.uri=http://${params.ENVIRONMENT_NAME}-${params.INFRA_BASE_URI} " +
                                     "-Dingest.access.control=${params.INGEST_ACCESS_CONTROL} " +
                                     "-Dingest.custom.service.agreements=${params.INGEST_CUSTOM_SERVICE_AGREEMENTS} " +

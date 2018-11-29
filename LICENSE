@@ -38,4 +38,23 @@ Licensee shall defend, indemnify and hold harmless Backbase and its officers, di
 This Agreement is governed by and interpreted in accordance with the laws of the Netherlands, and Licensee hereby consents to the exclusive jurisdiction and venue of the District Court of Amsterdam.
 
 
-[Exhibit A– THIRD PARTY COMPONENTS]
+Exhibit A– THIRD PARTY COMPONENTS
+
+Backbase bb-fuel depends on the following third-party products (and version):
+* Apache ActiveMQ (5.14.5)
+* Apache Commons Configuration (1.10)
+* Apache Commons Lang (3.1)
+* FasterXML (2.8)
+* Google Guava (24.0-jre)
+* H2 (1.4.197)
+* Hamcrest (1.3)
+* iban4j (3.2.1)
+* Java Faker (1.4.197)
+* Junit (4.12)
+* Lombok (1.16.22)
+* Mockito (1.10.19)
+* Modelmapper (0.7.5)
+* REST Assured (3.0.7)
+* SLF4J (1.7.25)
+* Spring Boot (1.5.15.RELEASE)
+* Spring Framework (4.3.18.RELEASE)

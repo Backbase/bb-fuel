@@ -49,7 +49,8 @@ Optional fields in the data structure:
 - `legalEntityName`
 - `legalEntityType`
 - `user.fullName`
-- `user.role`
+- `user.jobProfileNames`
+- `user.productGroupNames`
 
 Mandatory fields:
 - `user.externalId` - string representing User id.

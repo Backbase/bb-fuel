@@ -9,8 +9,10 @@ import io.restassured.response.Response;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 @Slf4j
+@Service
 @RequiredArgsConstructor
 public class PermissionsConfigurator {
 
@@ -37,9 +39,8 @@ public class PermissionsConfigurator {
             response.then()
                 .statusCode(SC_OK);
 
-            log
-                .info("Permission assigned for service agreement [{}], user [{}], function group [{}], data groups {}",
-                    internalServiceAgreementId, externalUserId, functionGroupId, dataGroupIds);
+            log.info("Permission assigned for service agreement [{}], user [{}], function group [{}], data groups {}",
+                internalServiceAgreementId, externalUserId, functionGroupId, dataGroupIds);
         }
     }
 }

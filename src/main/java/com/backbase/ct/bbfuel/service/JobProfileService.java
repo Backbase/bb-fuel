@@ -20,8 +20,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class JobProfileService {
 
-    public static final String ADMIN_FUNCTION_GROUP_NAME = "Admin";
-
     private Map<String, List<JobProfile>> assignedJobProfiles = new HashMap<>();
 
     private Map<String, String> functionGroupCache = synchronizedMap(new HashMap<>());
@@ -32,16 +30,9 @@ public class JobProfileService {
     }
 
     public boolean isJobProfileForBranch(boolean isRetail, JobProfile template) {
-        return (this.isJobProfileForAdmin(template)
+        return (JobProfile.JOB_PROFILE_NAME_ADMIN.equalsIgnoreCase(template.getJobProfileName())
             || (template.getIsRetail() && isRetail
             || (!isRetail && !template.getIsRetail())));
-    }
-
-    /**
-     * Admin is a special case for job profile.
-     */
-    private boolean isJobProfileForAdmin(JobProfile jobProfile) {
-        return ADMIN_FUNCTION_GROUP_NAME.equalsIgnoreCase(jobProfile.getJobProfileName());
     }
 
     public List<JobProfile> getAssignedJobProfiles(String externalServiceAgreementId) {

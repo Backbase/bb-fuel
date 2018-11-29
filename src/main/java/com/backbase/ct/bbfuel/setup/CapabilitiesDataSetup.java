@@ -23,6 +23,7 @@ import com.backbase.ct.bbfuel.dto.LegalEntityWithUsers;
 import com.backbase.ct.bbfuel.dto.User;
 import com.backbase.ct.bbfuel.dto.UserContext;
 import com.backbase.ct.bbfuel.dto.entitlement.JobProfile;
+import com.backbase.ct.bbfuel.service.LegalEntityWithUsersService;
 import com.backbase.ct.bbfuel.service.UserContextService;
 import java.util.Arrays;
 import java.util.List;

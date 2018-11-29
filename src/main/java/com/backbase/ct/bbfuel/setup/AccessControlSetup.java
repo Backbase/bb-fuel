@@ -31,6 +31,7 @@ import com.backbase.ct.bbfuel.input.ProductGroupSeedReader;
 import com.backbase.ct.bbfuel.input.validation.JobProfileAssignmentValidator;
 import com.backbase.ct.bbfuel.input.validation.ProductGroupAssignmentValidator;
 import com.backbase.ct.bbfuel.service.JobProfileService;
+import com.backbase.ct.bbfuel.service.LegalEntityWithUsersService;
 import com.backbase.ct.bbfuel.service.ProductGroupService;
 import com.backbase.ct.bbfuel.service.UserContextService;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.datagroups.DataGroupsGetResponseBody;
@@ -59,6 +60,7 @@ public class AccessControlSetup extends BaseSetup {
     private final PermissionsConfigurator permissionsConfigurator;
     private final TransactionsConfigurator transactionsConfigurator;
     private final LegalEntityWithUsersReader legalEntityWithUsersReader;
+    private final LegalEntityWithUsersService legalEntityWithUsersService;
     private final JobProfileService jobProfileService;
     private final JobProfileAssignmentValidator jobProfileAssignmentValidator;
     private final ProductGroupService productGroupService;
@@ -78,16 +80,12 @@ public class AccessControlSetup extends BaseSetup {
     }
 
     public List<LegalEntityWithUsers> getLegalEntitiesWithUsersExcludingSupport() {
-        return getLegalEntitiesWithUsersNotHavingAnyOf(Arrays.asList(JobProfile.JOB_PROFILE_NAME_SUPPORT));
+        return legalEntityWithUsersService.filterLegalEntitiesNotHavingSupportEmployees(getLegalEntitiesWithUsers());
     }
 
     public List<LegalEntityWithUsers> getLegalEntitiesWithUsersNotHavingAnyOf(List<String> jobProfileNames) {
-        return getLegalEntitiesWithUsers()
-            .stream()
-            .filter(legalEntities -> legalEntities.getUsers()
-                .stream()
-                .noneMatch(user -> Collections.disjoint(user.getJobProfileNames(), jobProfileNames)))
-            .collect(Collectors.toList());
+        return legalEntityWithUsersService.filterLegalEntitiesNotHavingAssignedJobProfiles(
+            getLegalEntitiesWithUsers(), jobProfileNames);
     }
 
     /**

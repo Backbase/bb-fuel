@@ -1,8 +1,15 @@
 import groovy.json.JsonSlurperClassic
 
 def call(Map params) {
+    def bbFuelTagName
+    if ("${params.prerelease}".toBoolean() && params.bbFuelVersion == 'latest') {
+        bbFuelTagName = getLatestPreReleaseTagName()
+    } else {
+        bbFuelTagName = getBbFuelTagName(params.bbFuelVersion)
+    }
+
     cleanWs()
-    downloadArtifact(params.bbFuelVersion)
+    downloadArtifact(bbFuelTagName)
 
     withEnv(["JAVA_HOME=${tool name: "${env.JDK_TOOL_NAME}"}", "PATH+MAVEN=${tool name: "${env.MAVEN_TOOL_NAME}"}/bin:${env.JAVA_HOME}/bin"]) {
         sh "java -Denvironment.name=${params.environmentName} " +
@@ -11,15 +18,9 @@ def call(Map params) {
     }
 }
 
-def downloadArtifact(version) {
-    def bbFuelTagName
-    if ("${params.prerelease}".toBoolean() && params.bbFuelVersion == 'latest') {
-        bbFuelTagName = getLatestPreReleaseTagName()
-    } else {
-        bbFuelTagName = getBbFuelTagName(version)
-    }
+def downloadArtifact(tagName) {
 
-    sh  "curl -X GET -s https://api.github.com/repos/backbase/bb-fuel/releases/tags/${bbFuelTagName} | grep browser_download_url | cut -d '\"' -f 4 | wget -qi -"
+    sh  "curl -X GET -s https://api.github.com/repos/backbase/bb-fuel/releases/tags/${tagName} | grep browser_download_url | cut -d '\"' -f 4 | wget -qi -"
 }
 
 def getBbFuelTagName(version) {

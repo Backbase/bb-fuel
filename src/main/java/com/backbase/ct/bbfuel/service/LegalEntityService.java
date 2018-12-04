@@ -32,6 +32,8 @@ public class LegalEntityService {
             response.then()
                 .extract()
                 .as(BadRequestException.class)
+                .getErrors()
+                .get(0)
                 .getMessage()
                 .matches("Legal Entity with given external Id already exists")) {
 

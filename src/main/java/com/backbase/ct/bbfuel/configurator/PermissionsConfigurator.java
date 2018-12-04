@@ -56,6 +56,8 @@ public class PermissionsConfigurator {
             response.then()
                 .extract()
                 .as(BadRequestException.class)
+                .getErrors()
+                .get(0)
                 .getMessage()
                 .equals("dataAccessGroup.assign.error.message.E_ASSIGNED")) {
 

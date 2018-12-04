@@ -37,8 +37,10 @@ public class UserIntegrationRestClient extends AbstractRestClient {
 
         if (response.statusCode() == SC_BAD_REQUEST
             && response.then()
-                .extract()
-                .as(BadRequestException.class)
+            .extract()
+            .as(BadRequestException.class)
+            .getErrors()
+            .get(0)
             .getMessage()
             .equals("User is already entitlements admin")) {
             LOGGER.warn("Entitlements admin [{}] already exists under legal entity [{}], skipped ingesting this entitlements admin",
@@ -59,6 +61,8 @@ public class UserIntegrationRestClient extends AbstractRestClient {
             response.then()
                 .extract()
                 .as(BadRequestException.class)
+                .getErrors()
+                .get(0)
                 .getMessage()
                 .equals("User already exists")) {
             LOGGER.info("User [{}] already exists, skipped ingesting this user", user.getExternalId());

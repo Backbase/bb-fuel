@@ -40,6 +40,8 @@ public class AccessGroupService {
             response.then()
                 .extract()
                 .as(BadRequestException.class)
+                .getErrors()
+                .get(0)
                 .getMessage()
                 .equals("Function Group with given name already exists")) {
 
@@ -83,6 +85,8 @@ public class AccessGroupService {
             response.then()
                 .extract()
                 .as(BadRequestException.class)
+                .getErrors()
+                .get(0)
                 .getMessage()
                 .equals("Function Group with given name already exists")) {
 

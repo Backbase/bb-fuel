@@ -3,9 +3,9 @@ package com.backbase.ct.bbfuel.configurator;
 import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 import static org.apache.http.HttpStatus.SC_OK;
 
+import com.backbase.buildingblocks.presentation.errors.BadRequestException;
 import com.backbase.ct.bbfuel.client.accessgroup.AccessGroupIntegrationRestClient;
 import com.backbase.ct.bbfuel.client.accessgroup.AccessGroupPresentationRestClient;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.exceptions.BadRequestException;
 import io.restassured.response.Response;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -56,7 +56,7 @@ public class PermissionsConfigurator {
             response.then()
                 .extract()
                 .as(BadRequestException.class)
-                .getErrorCode()
+                .getMessage()
                 .equals("dataAccessGroup.assign.error.message.E_ASSIGNED")) {
 
             LOGGER.info("Data groups already assigned to service agreement [{}], user [{}], function group [{}], skipped assigning data group ids {}",

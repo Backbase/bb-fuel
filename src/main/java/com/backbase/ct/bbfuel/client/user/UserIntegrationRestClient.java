@@ -4,9 +4,9 @@ import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 import static org.apache.http.HttpStatus.SC_CREATED;
 import static org.apache.http.HttpStatus.SC_OK;
 
+import com.backbase.buildingblocks.presentation.errors.BadRequestException;
 import com.backbase.ct.bbfuel.client.common.AbstractRestClient;
 import com.backbase.ct.bbfuel.data.CommonConstants;
-import com.backbase.integration.user.rest.spec.v2.users.BadRequestException;
 import com.backbase.integration.user.rest.spec.v2.users.EntitlementsAdminPostRequestBody;
 import com.backbase.integration.user.rest.spec.v2.users.UsersPostRequestBody;
 import io.restassured.http.ContentType;
@@ -39,8 +39,8 @@ public class UserIntegrationRestClient extends AbstractRestClient {
             && response.then()
                 .extract()
                 .as(BadRequestException.class)
-            .getErrorCode()
-            .equals("user.access.fetch.data.error.message.USER_ALREADY_ENTITLEMENTS_ADMIN")) {
+            .getMessage()
+            .equals("User is already entitlements admin")) {
             LOGGER.warn("Entitlements admin [{}] already exists under legal entity [{}], skipped ingesting this entitlements admin",
                     externalUserId, externalLegalEntityId);
         } else if (response.statusCode() == SC_OK) {

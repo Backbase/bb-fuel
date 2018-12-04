@@ -9,7 +9,7 @@ import com.backbase.dbs.approval.integration.spec.IntegrationDeletePolicyAssignm
 import com.backbase.dbs.approval.integration.spec.IntegrationPolicyAssignmentRequest;
 import com.backbase.dbs.approval.integration.spec.IntegrationPolicyAssignmentRequestBounds;
 import com.backbase.dbs.approval.integration.spec.IntegrationPolicyItemDto;
-import com.backbase.dbs.approval.integration.spec.IntegrationPostApprovalTypeRequest;
+import com.backbase.dbs.approval.spec.PostApprovalTypeRequest;
 import com.backbase.dbs.approval.integration.spec.IntegrationPostBulkApprovalTypeAssignmentRequest;
 import com.backbase.dbs.approval.integration.spec.IntegrationPostPolicyAssignmentBulkRequest;
 import com.backbase.dbs.approval.integration.spec.IntegrationPostPolicyRequest;
@@ -21,8 +21,8 @@ public class ApprovalsDataGenerator {
 
     private static Random random = new Random();
 
-    public static IntegrationPostApprovalTypeRequest createPostApprovalTypeRequest(String name, Integer rank) {
-        return new IntegrationPostApprovalTypeRequest()
+    public static PostApprovalTypeRequest createPostApprovalTypeRequest(String name, Integer rank) {
+        return new PostApprovalTypeRequest()
             .withName(name)
             .withDescription(name)
             .withRank(rank);

@@ -7,6 +7,7 @@ import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_BALANC
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_TRANSACTIONS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
 import static com.backbase.ct.bbfuel.enrich.LegalEntityWithUsersEnricher.createRootLegalEntityWithAdmin;
+import static java.util.Collections.singletonList;
 
 import com.backbase.ct.bbfuel.client.accessgroup.AccessGroupPresentationRestClient;
 import com.backbase.ct.bbfuel.client.accessgroup.UserContextPresentationRestClient;
@@ -35,6 +36,7 @@ import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.datagroup
 import com.backbase.presentation.user.rest.spec.v2.users.LegalEntityByUserGetResponseBody;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
@@ -106,6 +108,9 @@ public class AccessControlSetup extends BaseSetup {
 
     private void setupBankWithEntitlementsAdminAndProducts() {
         LegalEntityWithUsers rootBank = createRootLegalEntityWithAdmin(rootEntitlementsAdmin);
+        this.productGroupEnricher.enrichLegalEntitiesWithUsers(
+            singletonList(rootBank), this.productGroupSeedTemplates);
+
         this.legalEntitiesAndUsersConfigurator.ingestLegalEntityWithUsers(rootBank);
         this.productSummaryConfigurator.ingestProducts();
         assembleFunctionDataGroupsAndPermissions(rootBank);
@@ -264,7 +269,7 @@ public class AccessControlSetup extends BaseSetup {
                     .findAssignedProductGroupsIds(externalServiceAgreementId, user);
 
                 this.permissionsConfigurator.assignPermissions(
-                    user.getExternalId(),internalServiceAgreementId, jobProfile.getId(), dataGroupIds);
+                    user.getExternalId(), internalServiceAgreementId, jobProfile.getId(), dataGroupIds);
             }
         });
     }

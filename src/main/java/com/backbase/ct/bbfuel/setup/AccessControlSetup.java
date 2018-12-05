@@ -106,7 +106,7 @@ public class AccessControlSetup extends BaseSetup {
             this.legalEntitiesWithUsers, this.productGroupSeedTemplates);
     }
 
-    private void setupBankWithEntitgilementsAdminAndProducts() {
+    private void setupBankWithEntitlementsAdminAndProducts() {
         LegalEntityWithUsers rootBank = createRootLegalEntityWithAdmin(rootEntitlementsAdmin);
         this.productGroupEnricher.enrichLegalEntitiesWithUsers(
             singletonList(rootBank), this.productGroupSeedTemplates);

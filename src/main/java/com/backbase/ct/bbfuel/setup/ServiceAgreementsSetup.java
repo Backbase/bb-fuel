@@ -105,7 +105,7 @@ public class ServiceAgreementsSetup extends BaseSetup {
 
                 this.permissionsConfigurator.assignPermissions(
                     externalUserId,
-                    internalServiceAgreementId,
+                    externalServiceAgreementId,
                     // TODO assess impact for different job profiles
                     this.adminFunctionGroupId,
                     dataGroupIds);

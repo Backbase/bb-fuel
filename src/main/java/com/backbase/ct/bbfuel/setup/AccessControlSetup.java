@@ -168,7 +168,6 @@ public class AccessControlSetup extends BaseSetup {
                 }
 
                 assignPermissions(userContext.getUser(),
-                    userContext.getInternalServiceAgreementId(),
                     userContext.getExternalServiceAgreementId(),
                     isRetail);
             });
@@ -260,7 +259,7 @@ public class AccessControlSetup extends BaseSetup {
         }
     }
 
-    private void assignPermissions(User user, String internalServiceAgreementId,
+    private void assignPermissions(User user,
         String externalServiceAgreementId, boolean isRetail) {
 
         this.jobProfileService.getAssignedJobProfiles(externalServiceAgreementId).forEach(jobProfile -> {
@@ -269,7 +268,7 @@ public class AccessControlSetup extends BaseSetup {
                     .findAssignedProductGroupsIds(externalServiceAgreementId, user);
 
                 this.permissionsConfigurator.assignPermissions(
-                    user.getExternalId(), internalServiceAgreementId, jobProfile.getId(), dataGroupIds);
+                    user.getExternalId(), externalServiceAgreementId, jobProfile.getId(), dataGroupIds);
             }
         });
     }

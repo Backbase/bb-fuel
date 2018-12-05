@@ -86,7 +86,7 @@ public class AccessGroupIntegrationRestClient extends AbstractRestClient {
     public Response assignPermissions(IntegrationAssignUserPermissions body) {
         return requestSpec()
             .contentType(ContentType.JSON)
-            .body(body)
+            .body(singletonList(body))
             .put(getPath(ENDPOINT_USERS_PERMISSIONS));
     }
 

@@ -62,7 +62,7 @@ public class ServiceAgreementsSetup extends BaseSetup {
 
             setupFunctionDataGroups(internalServiceAgreementId, externalServiceAgreementId,
                 serviceAgreementPostRequestBody.getParticipants());
-            setupPermissions(internalServiceAgreementId, externalServiceAgreementId, serviceAgreementPostRequestBody.getParticipants());
+            setupPermissions(externalServiceAgreementId, serviceAgreementPostRequestBody.getParticipants());
         });
     }
 
@@ -95,7 +95,7 @@ public class ServiceAgreementsSetup extends BaseSetup {
             .ingestAdminFunctionGroup(externalServiceAgreementId).getId();
     }
 
-    private void setupPermissions(String internalServiceAgreementId, String externalServiceAgreementId, Set<Participant> participants) {
+    private void setupPermissions(String externalServiceAgreementId, Set<Participant> participants) {
         for (Participant participant : participants) {
             Set<String> externalUserIds = participant.getUsers();
 

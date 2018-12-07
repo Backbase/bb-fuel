@@ -2,6 +2,7 @@ package com.backbase.ct.bbfuel.setup;
 
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
 import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 
 import com.backbase.ct.bbfuel.client.accessgroup.ServiceAgreementsPresentationRestClient;
 import com.backbase.ct.bbfuel.client.accessgroup.UserContextPresentationRestClient;
@@ -12,9 +13,13 @@ import com.backbase.ct.bbfuel.configurator.ServiceAgreementsConfigurator;
 import com.backbase.ct.bbfuel.data.CommonConstants;
 import com.backbase.ct.bbfuel.service.ProductGroupService;
 import com.backbase.ct.bbfuel.util.ParserUtil;
+import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.IntegrationIdentifier;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.Participant;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementPostRequestBody;
+import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.users.permissions.IntegrationFunctionGroupDataGroup;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -103,12 +108,17 @@ public class ServiceAgreementsSetup extends BaseSetup {
                 List<String> dataGroupIds = this.productGroupService
                     .findAssignedProductGroupsIds(externalServiceAgreementId);
 
+                List<IntegrationIdentifier> dataGroupIdentifiers = new ArrayList<>();
+                dataGroupIds.forEach(dataGroupId -> dataGroupIdentifiers.add(new IntegrationIdentifier().withIdIdentifier(dataGroupId)));
+
                 this.permissionsConfigurator.assignPermissions(
                     externalUserId,
                     externalServiceAgreementId,
                     // TODO assess impact for different job profiles
-                    this.adminFunctionGroupId,
-                    dataGroupIds);
+                    singletonList(new IntegrationFunctionGroupDataGroup()
+                        .withFunctionGroupIdentifier(
+                            new IntegrationIdentifier().withIdIdentifier(this.adminFunctionGroupId))
+                        .withDataGroupIdentifiers(dataGroupIdentifiers)));
             }
         }
     }

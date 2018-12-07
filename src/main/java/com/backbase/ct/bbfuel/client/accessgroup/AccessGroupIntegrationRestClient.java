@@ -93,23 +93,14 @@ public class AccessGroupIntegrationRestClient extends AbstractRestClient {
     public Response assignPermissions(
         String externalUserId,
         String externalServiceAgreementId,
-        String functionGroupId,
-        List<String> dataGroupIds) {
+        List<IntegrationFunctionGroupDataGroup> functionGroupDataGroups) {
 
-        IntegrationIdentifier functionGroupIdentifier = new IntegrationIdentifier()
-            .withIdIdentifier(functionGroupId);
-
-        List<IntegrationIdentifier> dataGroupIdentifiers = new ArrayList<>();
-        dataGroupIds.forEach(dataGroupId -> dataGroupIdentifiers.add(new IntegrationIdentifier()
-            .withIdIdentifier(dataGroupId)));
 
 
         return assignPermissions(new IntegrationAssignUserPermissions()
             .withExternalUserId(externalUserId)
             .withExternalServiceAgreementId(externalServiceAgreementId)
-            .withFunctionGroupDataGroups(singletonList(new IntegrationFunctionGroupDataGroup()
-                .withFunctionGroupIdentifier(functionGroupIdentifier)
-                .withDataGroupIdentifiers(dataGroupIdentifiers))));
+            .withFunctionGroupDataGroups(functionGroupDataGroups));
     }
 
     @Override

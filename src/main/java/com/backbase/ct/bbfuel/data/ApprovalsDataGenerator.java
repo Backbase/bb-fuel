@@ -68,7 +68,7 @@ public class ApprovalsDataGenerator {
     }
 
     public static IntegrationPostPolicyRequest createPostPolicyRequestWithZeroPolicyItems() {
-        String name = "0 approver";
+        String name = "0 approvers";
 
         return new IntegrationPostPolicyRequest()
             .withName(name)

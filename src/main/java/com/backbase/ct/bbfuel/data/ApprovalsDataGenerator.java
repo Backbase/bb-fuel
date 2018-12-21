@@ -41,12 +41,11 @@ public class ApprovalsDataGenerator {
             .withJobProfileId(jobProfileId);
     }
 
-    public static IntegrationPostPolicyRequest createPostPolicyRequest(List<IntegrationPolicyItemDto> policyItems) {
-        String name = randomAlphabetic(15);
-
+    public static IntegrationPostPolicyRequest createPostPolicyRequest(String policyName,
+        List<IntegrationPolicyItemDto> policyItems) {
         return new IntegrationPostPolicyRequest()
-            .withName(name)
-            .withDescription(name)
+            .withName(policyName)
+            .withDescription(policyName)
             .withAllowSelf(true)
             .withItems(policyItems);
     }
@@ -69,7 +68,7 @@ public class ApprovalsDataGenerator {
     }
 
     public static IntegrationPostPolicyRequest createPostPolicyRequestWithZeroPolicyItems() {
-        String name = randomAlphabetic(15);
+        String name = "0 approver";
 
         return new IntegrationPostPolicyRequest()
             .withName(name)

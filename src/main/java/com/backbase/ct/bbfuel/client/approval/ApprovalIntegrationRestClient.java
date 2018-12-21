@@ -124,8 +124,8 @@ public class ApprovalIntegrationRestClient extends AbstractRestClient {
             .as(IntegrationPostBulkApprovalTypeAssignmentResponse.class);
     }
 
-    public String createPolicy(List<IntegrationPolicyItemDto> policyItems) {
-        return createPolicy(createPostPolicyRequest(policyItems))
+    public String createPolicy(String policyName, List<IntegrationPolicyItemDto> policyItems) {
+        return createPolicy(createPostPolicyRequest(policyName, policyItems))
             .then()
             .statusCode(SC_CREATED)
             .extract()

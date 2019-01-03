@@ -5,11 +5,11 @@ import static com.backbase.ct.bbfuel.data.AccessGroupsDataGenerator.generateFunc
 import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 import static org.apache.http.HttpStatus.SC_CREATED;
 
+import com.backbase.buildingblocks.presentation.errors.BadRequestException;
 import com.backbase.ct.bbfuel.client.accessgroup.AccessGroupIntegrationRestClient;
 import com.backbase.ct.bbfuel.client.accessgroup.AccessGroupPresentationRestClient;
 import com.backbase.ct.bbfuel.client.accessgroup.ServiceAgreementsIntegrationRestClient;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.datagroups.DataGroupPostResponseBody;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.exceptions.BadRequestException;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.Permission;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.datagroups.DataGroupsGetResponseBody;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.functiongroups.FunctionGroupsGetResponseBody;
@@ -40,8 +40,10 @@ public class AccessGroupService {
             response.then()
                 .extract()
                 .as(BadRequestException.class)
-                .getErrorCode()
-                .matches("functionGroup.save.error.message.(.*)_ALREADY_EXISTS")) {
+                .getErrors()
+                .get(0)
+                .getMessage()
+                .equals("Function Group with given name already exists")) {
 
             String internalServiceAgreementId = serviceAgreementsIntegrationRestClient
                 .retrieveServiceAgreementByExternalId(externalServiceAgreementId)
@@ -83,8 +85,10 @@ public class AccessGroupService {
             response.then()
                 .extract()
                 .as(BadRequestException.class)
-                .getErrorCode()
-                .matches("dataAccessGroup.save.error.message.(.*)_ALREADY_EXISTS")) {
+                .getErrors()
+                .get(0)
+                .getMessage()
+                .equals("Function Group with given name already exists")) {
 
             String internalServiceAgreementId = serviceAgreementsIntegrationRestClient
                 .retrieveServiceAgreementByExternalId(externalServiceAgreementId)

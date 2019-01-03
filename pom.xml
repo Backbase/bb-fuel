@@ -9,7 +9,7 @@
 
     <groupId>com.backbase.ct</groupId>
     <artifactId>bb-fuel</artifactId>
-    <version>1.8.15-SNAPSHOT</version>
+    <version>1.8.17-SNAPSHOT</version>
     <name>Backbase :: Capability Testing :: bb-fuel</name>
 
     <scm>
@@ -38,7 +38,7 @@
             <dependency>
                 <groupId>com.backbase.dbs</groupId>
                 <artifactId>banking-services-bom</artifactId>
-                <version>2.13.1</version>
+                <version>2.14.0</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

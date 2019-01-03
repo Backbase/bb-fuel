@@ -7,6 +7,7 @@ import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_BALANC
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_TRANSACTIONS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
 import static com.backbase.ct.bbfuel.enrich.LegalEntityWithUsersEnricher.createRootLegalEntityWithAdmin;
+import static java.util.Collections.singletonList;
 
 import com.backbase.ct.bbfuel.client.accessgroup.AccessGroupPresentationRestClient;
 import com.backbase.ct.bbfuel.client.accessgroup.UserContextPresentationRestClient;
@@ -31,10 +32,13 @@ import com.backbase.ct.bbfuel.input.validation.ProductGroupAssignmentValidator;
 import com.backbase.ct.bbfuel.service.JobProfileService;
 import com.backbase.ct.bbfuel.service.ProductGroupService;
 import com.backbase.ct.bbfuel.service.UserContextService;
+import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.IntegrationIdentifier;
+import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.users.permissions.IntegrationFunctionGroupDataGroup;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.datagroups.DataGroupsGetResponseBody;
 import com.backbase.presentation.user.rest.spec.v2.users.LegalEntityByUserGetResponseBody;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
@@ -106,6 +110,9 @@ public class AccessControlSetup extends BaseSetup {
 
     private void setupBankWithEntitlementsAdminAndProducts() {
         LegalEntityWithUsers rootBank = createRootLegalEntityWithAdmin(rootEntitlementsAdmin);
+        this.productGroupEnricher.enrichLegalEntitiesWithUsers(
+            singletonList(rootBank), this.productGroupSeedTemplates);
+
         this.legalEntitiesAndUsersConfigurator.ingestLegalEntityWithUsers(rootBank);
         this.productSummaryConfigurator.ingestProducts();
         assembleFunctionDataGroupsAndPermissions(rootBank);
@@ -163,7 +170,6 @@ public class AccessControlSetup extends BaseSetup {
                 }
 
                 assignPermissions(userContext.getUser(),
-                    userContext.getInternalServiceAgreementId(),
                     userContext.getExternalServiceAgreementId(),
                     isRetail);
             });
@@ -255,17 +261,28 @@ public class AccessControlSetup extends BaseSetup {
         }
     }
 
-    private void assignPermissions(User user, String internalServiceAgreementId,
+    private void assignPermissions(User user,
         String externalServiceAgreementId, boolean isRetail) {
+        List<IntegrationFunctionGroupDataGroup> functionGroupDataGroups = new ArrayList<>();
 
         this.jobProfileService.getAssignedJobProfiles(externalServiceAgreementId).forEach(jobProfile -> {
             if (jobProfileService.isJobProfileForUserRole(jobProfile, user.getRole(), isRetail)) {
+
                 List<String> dataGroupIds = this.productGroupService
                     .findAssignedProductGroupsIds(externalServiceAgreementId, user);
+                List<IntegrationIdentifier> dataGroupIdentifiers = new ArrayList<>();
 
-                this.permissionsConfigurator.assignPermissions(
-                    user.getExternalId(),internalServiceAgreementId, jobProfile.getId(), dataGroupIds);
+                dataGroupIds.forEach(dataGroupId -> dataGroupIdentifiers.add(new IntegrationIdentifier().withIdIdentifier(dataGroupId)));
+
+                functionGroupDataGroups.add(new IntegrationFunctionGroupDataGroup()
+                    .withFunctionGroupIdentifier(
+                        new IntegrationIdentifier().withIdIdentifier(jobProfile.getId()))
+                    .withDataGroupIdentifiers(dataGroupIdentifiers));
             }
         });
+        this.permissionsConfigurator.assignPermissions(
+            user.getExternalId(), externalServiceAgreementId, functionGroupDataGroups);
+
+
     }
 }

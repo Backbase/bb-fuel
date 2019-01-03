@@ -102,18 +102,18 @@ public class ApprovalsConfigurator {
     private void createPolicies() {
         policyZeroId = approvalIntegrationRestClient.createZeroApprovalPolicy();
 
-        policyAId = approvalIntegrationRestClient.createPolicy(singletonList(
+        policyAId = approvalIntegrationRestClient.createPolicy("1 approver A", singletonList(
             createPolicyItemDto(approvalTypeAId, 1)));
 
         LOGGER.info("Policy with approval type A [{}] created", policyAId);
 
-        policyABId = approvalIntegrationRestClient.createPolicy(asList(
+        policyABId = approvalIntegrationRestClient.createPolicy("2 approvers A+B", asList(
             createPolicyItemDto(approvalTypeAId, 1),
             createPolicyItemDto(approvalTypeBId, 1)));
 
         LOGGER.info("Policy with approval types A and B [{}] created", policyABId);
 
-        policyABCId = approvalIntegrationRestClient.createPolicy(asList(
+        policyABCId = approvalIntegrationRestClient.createPolicy("3 approvers A+B+C", asList(
             createPolicyItemDto(approvalTypeAId, 1),
             createPolicyItemDto(approvalTypeBId, 1),
             createPolicyItemDto(approvalTypeCId, 1)));

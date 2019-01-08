@@ -2,6 +2,8 @@ package com.backbase.ct.bbfuel.configurator;
 
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_MESSAGES_MAX;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_MESSAGES_MIN;
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_MESSAGE_TOPICS_MAX;
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_MESSAGE_TOPICS_MIN;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
 import static org.apache.http.HttpStatus.SC_ACCEPTED;
 import static org.apache.http.HttpStatus.SC_OK;
@@ -38,17 +40,26 @@ public class MessagesConfigurator {
     public void ingestConversations(String externalUserId) {
         int randomAmount = CommonHelpers
                 .generateRandomNumberInRange(globalProperties.getInt(PROPERTY_MESSAGES_MIN),
-                        globalProperties.getInt(PROPERTY_MESSAGES_MAX));
+                    globalProperties.getInt(PROPERTY_MESSAGES_MAX));
+
+        int randomTopicsAmount = CommonHelpers
+                .generateRandomNumberInRange(globalProperties.getInt(PROPERTY_MESSAGE_TOPICS_MIN),
+                    globalProperties.getInt(PROPERTY_MESSAGE_TOPICS_MAX));
 
         loginRestClient.login(USER_ADMIN, USER_ADMIN);
 
         List<String> topicIds = new ArrayList<>();
-        String topicId = messagesPresentationRestClient.postTopic(MessagesDataGenerator.generateTopicPostRequestBody())
-                .then()
-                .statusCode(SC_ACCEPTED)
-                .extract()
-                .path("id");
-        topicIds.add(topicId);
+
+        IntStream.range(0, randomTopicsAmount).forEach(randomNumber -> {
+            String topicId = messagesPresentationRestClient.postTopic(MessagesDataGenerator
+                    .generateTopicPostRequestBody())
+                    .then()
+                    .statusCode(SC_ACCEPTED)
+                    .extract()
+                    .path("id");
+            topicIds.add(topicId);
+            LOGGER.info("Topic ingested with id [{}] for subscriber [admin]", topicId);
+        });
 
         IntStream.range(0, randomAmount).forEach(randomNumber -> {
 

@@ -29,7 +29,7 @@ public class MessagesDataGenerator {
 
     public static TopicsPostRequestBody generateTopicPostRequestBody() {
         return new TopicsPostRequestBody()
-                .withName(faker.lorem().word())
+                .withName(faker.lorem().sentence(2, 2))
                 .withSubscribers(asSet("admin"));
     }
 

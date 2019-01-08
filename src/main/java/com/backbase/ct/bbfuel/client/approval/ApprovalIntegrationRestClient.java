@@ -17,8 +17,8 @@ import com.backbase.dbs.approval.integration.spec.IntegrationDeletePolicyAssignm
 import com.backbase.dbs.approval.integration.spec.IntegrationDeletePolicyAssignmentResponse;
 import com.backbase.dbs.approval.integration.spec.IntegrationPolicyAssignmentRequest;
 import com.backbase.dbs.approval.integration.spec.IntegrationPolicyItemDto;
-import com.backbase.dbs.approval.integration.spec.IntegrationPostApprovalTypeRequest;
-import com.backbase.dbs.approval.integration.spec.IntegrationPostApprovalTypeResponse;
+import com.backbase.dbs.approval.spec.PostApprovalTypeRequest;
+import com.backbase.dbs.approval.spec.PostApprovalTypeResponse;
 import com.backbase.dbs.approval.integration.spec.IntegrationPostBulkApprovalTypeAssignmentRequest;
 import com.backbase.dbs.approval.integration.spec.IntegrationPostBulkApprovalTypeAssignmentResponse;
 import com.backbase.dbs.approval.integration.spec.IntegrationPostPolicyAssignmentBulkRequest;
@@ -52,7 +52,7 @@ public class ApprovalIntegrationRestClient extends AbstractRestClient {
         setInitialPath(composeInitialPath());
     }
 
-    public Response createApprovalType(IntegrationPostApprovalTypeRequest body) {
+    public Response createApprovalType(PostApprovalTypeRequest body) {
         return requestSpec()
             .contentType(ContentType.JSON)
             .body(body)
@@ -110,7 +110,7 @@ public class ApprovalIntegrationRestClient extends AbstractRestClient {
             .then()
             .statusCode(SC_CREATED)
             .extract()
-            .as(IntegrationPostApprovalTypeResponse.class)
+            .as(PostApprovalTypeResponse.class)
             .getApprovalType()
             .getId();
     }
@@ -124,8 +124,8 @@ public class ApprovalIntegrationRestClient extends AbstractRestClient {
             .as(IntegrationPostBulkApprovalTypeAssignmentResponse.class);
     }
 
-    public String createPolicy(List<IntegrationPolicyItemDto> policyItems) {
-        return createPolicy(createPostPolicyRequest(policyItems))
+    public String createPolicy(String policyName, List<IntegrationPolicyItemDto> policyItems) {
+        return createPolicy(createPostPolicyRequest(policyName, policyItems))
             .then()
             .statusCode(SC_CREATED)
             .extract()

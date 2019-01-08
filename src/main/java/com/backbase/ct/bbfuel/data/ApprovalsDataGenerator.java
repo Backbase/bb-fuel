@@ -9,7 +9,7 @@ import com.backbase.dbs.approval.integration.spec.IntegrationDeletePolicyAssignm
 import com.backbase.dbs.approval.integration.spec.IntegrationPolicyAssignmentRequest;
 import com.backbase.dbs.approval.integration.spec.IntegrationPolicyAssignmentRequestBounds;
 import com.backbase.dbs.approval.integration.spec.IntegrationPolicyItemDto;
-import com.backbase.dbs.approval.integration.spec.IntegrationPostApprovalTypeRequest;
+import com.backbase.dbs.approval.spec.PostApprovalTypeRequest;
 import com.backbase.dbs.approval.integration.spec.IntegrationPostBulkApprovalTypeAssignmentRequest;
 import com.backbase.dbs.approval.integration.spec.IntegrationPostPolicyAssignmentBulkRequest;
 import com.backbase.dbs.approval.integration.spec.IntegrationPostPolicyRequest;
@@ -21,8 +21,8 @@ public class ApprovalsDataGenerator {
 
     private static Random random = new Random();
 
-    public static IntegrationPostApprovalTypeRequest createPostApprovalTypeRequest(String name, Integer rank) {
-        return new IntegrationPostApprovalTypeRequest()
+    public static PostApprovalTypeRequest createPostApprovalTypeRequest(String name, Integer rank) {
+        return new PostApprovalTypeRequest()
             .withName(name)
             .withDescription(name)
             .withRank(rank);
@@ -41,12 +41,11 @@ public class ApprovalsDataGenerator {
             .withJobProfileId(jobProfileId);
     }
 
-    public static IntegrationPostPolicyRequest createPostPolicyRequest(List<IntegrationPolicyItemDto> policyItems) {
-        String name = randomAlphabetic(15);
-
+    public static IntegrationPostPolicyRequest createPostPolicyRequest(String policyName,
+        List<IntegrationPolicyItemDto> policyItems) {
         return new IntegrationPostPolicyRequest()
-            .withName(name)
-            .withDescription(name)
+            .withName(policyName)
+            .withDescription(policyName)
             .withAllowSelf(true)
             .withItems(policyItems);
     }
@@ -69,7 +68,7 @@ public class ApprovalsDataGenerator {
     }
 
     public static IntegrationPostPolicyRequest createPostPolicyRequestWithZeroPolicyItems() {
-        String name = randomAlphabetic(15);
+        String name = "0 approvers";
 
         return new IntegrationPostPolicyRequest()
             .withName(name)

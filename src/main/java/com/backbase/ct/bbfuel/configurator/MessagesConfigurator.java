@@ -1,5 +1,11 @@
 package com.backbase.ct.bbfuel.configurator;
 
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_MESSAGES_MAX;
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_MESSAGES_MIN;
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
+import static org.apache.http.HttpStatus.SC_ACCEPTED;
+import static org.apache.http.HttpStatus.SC_OK;
+
 import com.backbase.ct.bbfuel.client.common.LoginRestClient;
 import com.backbase.ct.bbfuel.client.messagecenter.MessagesPresentationRestClient;
 import com.backbase.ct.bbfuel.data.MessagesDataGenerator;
@@ -9,20 +15,13 @@ import com.backbase.dbs.messages.presentation.rest.spec.v4.messagecenter.Convers
 import com.backbase.dbs.messages.presentation.rest.spec.v4.messagecenter.ConversationsGetResponseBody;
 import com.backbase.dbs.messages.presentation.rest.spec.v4.messagecenter.DraftsPostRequestBody;
 import com.backbase.dbs.messages.presentation.rest.spec.v4.messagecenter.DraftsPostResponseBody;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.IntStream;
-
-import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_MESSAGES_MAX;
-import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_MESSAGES_MIN;
-import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
-import static org.apache.http.HttpStatus.SC_ACCEPTED;
-import static org.apache.http.HttpStatus.SC_OK;
 
 @Service
 @RequiredArgsConstructor

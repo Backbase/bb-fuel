@@ -1,15 +1,14 @@
 package com.backbase.ct.bbfuel.data;
 
+import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
+import static org.hibernate.validator.internal.util.CollectionHelper.asSet;
+
 import com.backbase.dbs.messages.presentation.rest.spec.v4.messagecenter.ConversationDraftsPostRequestBody;
 import com.backbase.dbs.messages.presentation.rest.spec.v4.messagecenter.DraftsPostRequestBody;
 import com.backbase.dbs.messages.presentation.rest.spec.v4.messagecenter.TopicsPostRequestBody;
 import com.github.javafaker.Faker;
-import org.apache.commons.codec.binary.Base64;
-
 import java.util.List;
-
-import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
-import static org.hibernate.validator.internal.util.CollectionHelper.asSet;
+import org.apache.commons.codec.binary.Base64;
 
 public class MessagesDataGenerator {
 

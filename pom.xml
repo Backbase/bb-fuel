@@ -9,7 +9,7 @@
 
     <groupId>com.backbase.ct</groupId>
     <artifactId>bb-fuel</artifactId>
-    <version>1.8.17</version>
+    <version>1.8.18-SNAPSHOT</version>
     <name>Backbase :: Capability Testing :: bb-fuel</name>
 
     <scm>

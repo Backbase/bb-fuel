@@ -5,9 +5,9 @@ import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_MESSAGES_MIN;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_MESSAGE_TOPICS_MAX;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_MESSAGE_TOPICS_MIN;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
+import static java.util.Collections.singleton;
 import static org.apache.http.HttpStatus.SC_ACCEPTED;
 import static org.apache.http.HttpStatus.SC_OK;
-import static org.hibernate.validator.internal.util.CollectionHelper.asSet;
 
 import com.backbase.ct.bbfuel.client.common.LoginRestClient;
 import com.backbase.ct.bbfuel.client.messagecenter.MessagesPresentationRestClient;
@@ -49,7 +49,7 @@ public class MessagesConfigurator {
 
         IntStream.range(0, howManyTopics).forEach(number -> {
             String topicId = messagesPresentationRestClient.postTopic(MessagesDataGenerator
-                .generateTopicPostRequestBody(asSet(rootEntitlementsAdmin)))
+                .generateTopicPostRequestBody(singleton(rootEntitlementsAdmin)))
                 .then()
                 .statusCode(SC_ACCEPTED)
                 .extract()

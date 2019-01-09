@@ -27,36 +27,36 @@ public class MessagesPresentationRestClient extends AbstractRestClient {
 
     public Response postDraft(DraftsPostRequestBody body) {
         return requestSpec()
-                .contentType(ContentType.JSON)
-                .body(body)
-                .post(getPath(ENDPOINT_DRAFTS));
+            .contentType(ContentType.JSON)
+            .body(body)
+            .post(getPath(ENDPOINT_DRAFTS));
     }
 
     public Response sendDraftRequest(String draftId) {
         return requestSpec()
-                .contentType(ContentType.JSON)
-                .body("{}")
-                .post(String.format(getPath(ENDPOINT_SEND_DRAFT_REQUEST), draftId));
+            .contentType(ContentType.JSON)
+            .body("{}")
+            .post(String.format(getPath(ENDPOINT_SEND_DRAFT_REQUEST), draftId));
     }
 
     public Response postConversationDraft(ConversationDraftsPostRequestBody draft, String conversationId) {
         return requestSpec()
-                .contentType(ContentType.JSON)
-                .body(draft)
-                .post(String.format(getPath(ENDPOINT_CONVERSATION_DRAFTS), conversationId));
+            .contentType(ContentType.JSON)
+            .body(draft)
+            .post(String.format(getPath(ENDPOINT_CONVERSATION_DRAFTS), conversationId));
     }
 
     public Response getConversations() {
         return requestSpec()
-                .contentType(ContentType.JSON)
-                .get(getPath(ENDPOINT_CONVERSATIONS));
+            .contentType(ContentType.JSON)
+            .get(getPath(ENDPOINT_CONVERSATIONS));
     }
 
     public Response postTopic(TopicsPostRequestBody topicsPostRequestBody) {
         return requestSpec()
-                .contentType(ContentType.JSON)
-                .body(topicsPostRequestBody)
-                .post(getPath(ENDPOINT_TOPICS));
+            .contentType(ContentType.JSON)
+            .body(topicsPostRequestBody)
+            .post(getPath(ENDPOINT_TOPICS));
     }
 
     @Override

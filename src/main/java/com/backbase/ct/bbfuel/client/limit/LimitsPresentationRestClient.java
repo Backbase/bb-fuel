@@ -1,14 +1,20 @@
 package com.backbase.ct.bbfuel.client.limit;
 
 import com.backbase.ct.bbfuel.client.common.AbstractRestClient;
+import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
 import com.backbase.presentation.limit.rest.spec.v2.limits.PeriodicLimitsPostRequestBody;
 import com.backbase.presentation.limit.rest.spec.v2.limits.TransactionalLimitsPostRequestBody;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import javax.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class LimitsPresentationRestClient extends AbstractRestClient {
+
+    private final BbFuelConfiguration config;
 
     private static final String SERVICE_VERSION = "v2";
     private static final String LIMITS_PRESENTATION_SERVICE = "limits-presentation-service";
@@ -16,8 +22,10 @@ public class LimitsPresentationRestClient extends AbstractRestClient {
     private static final String ENDPOINT_PERIODIC = ENDPOINT_LIMITS + "/periodic";
     private static final String ENDPOINT_TRANSACTIONAL = ENDPOINT_LIMITS + "/transactional";
 
-    public LimitsPresentationRestClient() {
-        super(SERVICE_VERSION);
+    @PostConstruct
+    public void init() {
+        setBaseUri(config.getPlatform().getGateway());
+        setVersion(SERVICE_VERSION);
         setInitialPath(composeInitialPath());
     }
 
@@ -37,7 +45,7 @@ public class LimitsPresentationRestClient extends AbstractRestClient {
 
     @Override
     protected String composeInitialPath() {
-        return getGatewayURI() + SLASH + LIMITS_PRESENTATION_SERVICE;
+        return LIMITS_PRESENTATION_SERVICE;
     }
 
 }

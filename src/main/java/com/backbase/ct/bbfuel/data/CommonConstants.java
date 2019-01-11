@@ -9,17 +9,9 @@ public final class CommonConstants {
     public static final String PROPERTY_CONFIGURATION_SWITCHER = "use.local.configurations";
 
     // Environment
-    public static final String PROPERTY_LOGIN_PATH = "login.path";
     public static final String PROPERTIES_FILE_NAME = "data.properties";
     public static final String ENVIRONMENT_PROPERTIES_FILE_NAME = "environment.properties";
     public static final String LOCAL_PROPERTIES_FILE_NAME = "local.properties";
-    public static final String PROPERTY_INFRA_BASE_URI = "infra.base.uri";
-    public static final String PROPERTY_GATEWAY_PATH = "gateway.path";
-    public static final String PROPERTY_ACCESS_CONTROL_BASE_URI = "access.control.base.uri";
-    public static final String PROPERTY_PRODUCT_SUMMARY_BASE_URI = "product.summary.base.uri";
-    public static final String PROPERTY_TRANSACTIONS_BASE_URI = "transactions.base.uri";
-    public static final String PROPERTY_CONTACT_MANAGER_BASE_URI = "contact.manager.base.uri";
-    public static final String PROPERTY_APPROVALS_BASE_URI = "approvals.base.uri";
     public static final String PROPERTY_HEALTH_CHECK_TIMEOUT_IN_MINUTES = "healthcheck.timeout.in.minutes";
     public static final String PROPERTY_LOG_ALL_REQUESTS_RESPONSES = "log.all.requests.responses";
     public static final String PROPERTY_MULTI_TENANCY_ENVIRONMENT = "multi.tenancy.environment";

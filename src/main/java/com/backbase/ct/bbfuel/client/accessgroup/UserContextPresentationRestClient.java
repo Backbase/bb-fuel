@@ -5,6 +5,7 @@ import static org.apache.http.HttpStatus.SC_NO_CONTENT;
 import static org.apache.http.HttpStatus.SC_OK;
 
 import com.backbase.ct.bbfuel.client.common.AbstractRestClient;
+import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementGetResponseBody;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.usercontext.UserContextPostRequestBody;
 import com.backbase.presentation.legalentity.rest.spec.v2.legalentities.LegalEntitiesGetResponseBody;
@@ -14,10 +15,16 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class UserContextPresentationRestClient extends AbstractRestClient {
+
+    private final BbFuelConfiguration config;
 
     private static final String SERVICE_VERSION = "v2";
     private static final String ACCESS_GROUP_PRESENTATION_SERVICE = "accessgroup-presentation-service";
@@ -27,8 +34,10 @@ public class UserContextPresentationRestClient extends AbstractRestClient {
     private static final String ENDPOINT_USER_CONTEXT_LEGAL_ENTITIES_BY_SERVICE_AGREEMENT_ID =
         ENDPOINT_USER_CONTEXT_SERVICE_AGREEMENTS + "/%s/legalentities";
 
-    public UserContextPresentationRestClient() {
-        super(SERVICE_VERSION);
+    @PostConstruct
+    public void init() {
+        setBaseUri(config.getPlatform().getGateway());
+        setVersion(SERVICE_VERSION);
         setInitialPath(composeInitialPath());
     }
 
@@ -46,7 +55,7 @@ public class UserContextPresentationRestClient extends AbstractRestClient {
 
     @Override
     protected String composeInitialPath() {
-        return getGatewayURI() + SLASH + ACCESS_GROUP_PRESENTATION_SERVICE;
+        return ACCESS_GROUP_PRESENTATION_SERVICE;
     }
 
     private Response postUserContext(UserContextPostRequestBody userContextPostRequestBody) {

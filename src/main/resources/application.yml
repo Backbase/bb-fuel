@@ -2,8 +2,6 @@ spring:
   application:
     name: bb-fuel
     version: @project.version@
-#  activemq:
-#    broker-url: ${activemq.url:tcp://${environment.name}-infra.backbase.test:51616}
 
 logging:
   secured:
@@ -13,18 +11,29 @@ logging:
     org.springframework: WARN
     com.backbase.ct.bbfuel: DEBUG
 
-sso:
-  jwt:
-    internal:
-      signature:
-        key:
-          type: ENV
-          value: SIG_SECRET_KEY
+sso.jwt.internal.signature.key:
+  type: ENV
+  value: SIG_SECRET_KEY
 
-security:
-  basic:
-    enabled: false
+security.basic.enabled: false
 
-eureka:
-  client:
-    enabled: false
+eureka.client.enabled: false
+
+bb-fuel:
+  environment:
+    name: lingering-sonic-21
+    domain: backbase.test:8080
+  platform:
+    infra: ${bb-fuel.environment.name}-infra
+    registry: http://${bb-fuel.platform.infra}.${bb-fuel.environment.domain}/eureka
+    gateway: http://${bb-fuel.platform.infra}.${bb-fuel.environment.domain}/gateway/api
+    auth: ${bb-fuel.platform.gateway}/auth/login
+  dbs:
+    approvals: http://${bb-fuel.environment.name}-approvals.${bb-fuel.environment.domain}/approval-integration-service
+    transactions: http://${bb-fuel.environment.name}-transactions.${bb-fuel.environment.domain}/transactions-integration-service
+    contactmanager: http://${bb-fuel.environment.name}-contactmanager.${bb-fuel.environment.domain}/contactmanager-integration-service
+    messages: http://${bb-fuel.environment.name}-messages.${bb-fuel.environment.domain}/messages-integration-service
+    user: http://${bb-fuel.environment.name}-entitlements.${bb-fuel.environment.domain}/user-integration-service
+    legalentity: http://${bb-fuel.environment.name}-entitlements.${bb-fuel.environment.domain}/legalentity-integration-service
+    accessgroup: http://${bb-fuel.environment.name}-entitlements.${bb-fuel.environment.domain}/accessgroup-integration-service
+    arrangements: http://${bb-fuel.environment.name}-productsummary.${bb-fuel.environment.domain}/arrangements-integration-service

@@ -4,19 +4,27 @@ import static java.util.Arrays.asList;
 import static org.apache.http.HttpStatus.SC_OK;
 
 import com.backbase.ct.bbfuel.client.common.AbstractRestClient;
+import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
 import com.backbase.presentation.categories.management.rest.spec.v2.categories.id.CategoryGetResponseBody;
 import java.util.List;
+import javax.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class CategoriesPresentationRestClient extends AbstractRestClient {
+
+    private final BbFuelConfiguration config;
 
     private static final String SERVICE_VERSION = "v2";
     private static final String CATEGORIES_MANAGEMENT_PRESENTATION_SERVICE = "categories-management-presentation-service";
     private static final String ENDPOINT_CATEGORIES = "/categories";
 
-    public CategoriesPresentationRestClient() {
-        super(SERVICE_VERSION);
+    @PostConstruct
+    public void init() {
+        setBaseUri(config.getPlatform().getGateway());
+        setVersion(SERVICE_VERSION);
         setInitialPath(composeInitialPath());
     }
 
@@ -31,7 +39,7 @@ public class CategoriesPresentationRestClient extends AbstractRestClient {
 
     @Override
     protected String composeInitialPath() {
-        return getGatewayURI() + SLASH + CATEGORIES_MANAGEMENT_PRESENTATION_SERVICE;
+        return CATEGORIES_MANAGEMENT_PRESENTATION_SERVICE;
     }
 
 }

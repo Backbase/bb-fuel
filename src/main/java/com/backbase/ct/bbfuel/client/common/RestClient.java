@@ -30,6 +30,8 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.apache.http.client.utils.URIBuilder;
 
 /**
@@ -56,6 +58,7 @@ import org.apache.http.client.utils.URIBuilder;
  *  capabilityRestClient.requestSpec();
  * </pre>
  */
+@NoArgsConstructor
 public class RestClient {
 
     private GlobalProperties globalProperties = GlobalProperties.getInstance();
@@ -68,19 +71,11 @@ public class RestClient {
     private URI baseURI = null;
     private RestAssuredConfig restAssuredConfig;
     private String initialPath = "";
+    @Setter
     private String version;
 
     private static Map<String, String> cookiesJar = new LinkedHashMap<>();
     private final ResponseParserRegistrar responseParserRegistrar = new ResponseParserRegistrar();
-
-    RestClient(String baseUri) {
-        setBaseUri(baseUri);
-    }
-
-    RestClient(String baseUri, String version) {
-        setBaseUri(baseUri);
-        this.version = version;
-    }
 
     public RestClient setInitialPath(String initialPath) {
         this.initialPath = initialPath;
@@ -158,7 +153,7 @@ public class RestClient {
         cookiesJar.putAll(cookies);
     }
 
-    private void setBaseUri(String baseUri) {
+    protected void setBaseUri(String baseUri) {
         try {
             this.baseURI = new URI(baseUri);
         } catch (URISyntaxException e) {

@@ -4,15 +4,21 @@ import static java.util.Arrays.asList;
 import static org.apache.http.HttpStatus.SC_OK;
 
 import com.backbase.ct.bbfuel.client.common.AbstractRestClient;
+import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.datagroups.DataGroupsGetResponseBody;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.functiongroups.FunctionGroupsGetResponseBody;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.users.UsersGetResponseBody;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class AccessGroupPresentationRestClient extends AbstractRestClient {
+
+    private final BbFuelConfiguration config;
 
     private static final String SERVICE_VERSION = "v2";
     private static final String ACCESS_GROUP_PRESENTATION_SERVICE = "accessgroup-presentation-service";
@@ -23,8 +29,10 @@ public class AccessGroupPresentationRestClient extends AbstractRestClient {
     private static final String ENDPOINT_DATA_BY_SERVICE_AGREEMENT_ID_AND_TYPE =
         ENDPOINT_ACCESS_GROUPS + "/data-groups?serviceAgreementId=%s&type=%s";
 
-    public AccessGroupPresentationRestClient() {
-        super(SERVICE_VERSION);
+    @PostConstruct
+    public void init() {
+        setBaseUri(config.getPlatform().getGateway());
+        setVersion(SERVICE_VERSION);
         setInitialPath(composeInitialPath());
     }
 
@@ -102,7 +110,7 @@ public class AccessGroupPresentationRestClient extends AbstractRestClient {
 
     @Override
     protected String composeInitialPath() {
-        return getGatewayURI() + SLASH + ACCESS_GROUP_PRESENTATION_SERVICE;
+        return ACCESS_GROUP_PRESENTATION_SERVICE;
     }
 
 }

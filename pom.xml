@@ -20,7 +20,7 @@
     </scm>
 
     <properties>
-        <mainClass>com.backbase.ct.bbfuel.Application</mainClass>
+        <mainClass>com.backbase.ct.bbfuel.BbFuelApplication</mainClass>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <rest-assured.version>3.0.7</rest-assured.version>

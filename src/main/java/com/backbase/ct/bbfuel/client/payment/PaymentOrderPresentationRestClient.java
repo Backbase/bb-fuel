@@ -1,20 +1,28 @@
 package com.backbase.ct.bbfuel.client.payment;
 
 import com.backbase.ct.bbfuel.client.common.AbstractRestClient;
+import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
 import com.backbase.dbs.presentation.paymentorder.rest.spec.v2.paymentorders.InitiatePaymentOrder;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import javax.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class PaymentOrderPresentationRestClient extends AbstractRestClient {
+
+    private final BbFuelConfiguration config;
 
     private static final String SERVICE_VERSION = "v2";
     private static final String PAYMENT_ORDER_PRESENTATION_SERVICE = "payment-order-presentation-service";
     private static final String ENDPOINT_PAYMENT_ORDERS = "/payment-orders";
 
-    public PaymentOrderPresentationRestClient() {
-        super(SERVICE_VERSION);
+    @PostConstruct
+    public void init() {
+        setBaseUri(config.getPlatform().getGateway());
+        setVersion(SERVICE_VERSION);
         setInitialPath(composeInitialPath());
     }
 
@@ -27,7 +35,7 @@ public class PaymentOrderPresentationRestClient extends AbstractRestClient {
 
     @Override
     protected String composeInitialPath() {
-        return getGatewayURI() + SLASH + PAYMENT_ORDER_PRESENTATION_SERVICE;
+        return PAYMENT_ORDER_PRESENTATION_SERVICE;
     }
 
 }

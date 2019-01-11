@@ -1,24 +1,28 @@
 package com.backbase.ct.bbfuel.client.contact;
 
 import com.backbase.ct.bbfuel.client.common.AbstractRestClient;
+import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
 import com.backbase.ct.bbfuel.data.CommonConstants;
 import com.backbase.dbs.integration.external.inbound.contact.rest.spec.v2.contacts.ContactsBulkIngestionPostRequestBody;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import javax.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class ContactIntegrationRestClient extends AbstractRestClient {
 
-    private static final String CONTACT_MANAGER = globalProperties
-        .getString(CommonConstants.PROPERTY_CONTACT_MANAGER_BASE_URI);
+    private final BbFuelConfiguration config;
+
     private static final String SERVICE_VERSION = "v2";
-    private static final String CONTACT_INTEGRATION_SERVICE = "contact-integration-service";
     private static final String ENDPOINT_CONTACTS = "/contacts/bulk";
 
-    public ContactIntegrationRestClient() {
-        super(CONTACT_MANAGER, SERVICE_VERSION);
-        setInitialPath(composeInitialPath());
+    @PostConstruct
+    public void init() {
+        setBaseUri(config.getDbs().getContactmanager());
+        setVersion(SERVICE_VERSION);
     }
 
     public Response ingestContacts(ContactsBulkIngestionPostRequestBody body) {
@@ -30,7 +34,7 @@ public class ContactIntegrationRestClient extends AbstractRestClient {
 
     @Override
     protected String composeInitialPath() {
-        return CONTACT_INTEGRATION_SERVICE;
+        return "";
     }
 
 }

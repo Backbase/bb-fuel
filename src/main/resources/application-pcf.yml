@@ -1,0 +1,23 @@
+# Unlike autoconfig, in PCF services are deployed to their own application server instance and have no context path (root).
+# Each service has it's own route which can be configured below.
+# As a rule of thumb, routes contain the name of the space and org to avoid collisions.
+pcf:
+  space: approvals
+  org: backbase
+  domain: apps.pcf-v21.backbasepcf.com
+  uri: ${pcf.space}-${pcf.org}.${pcf.domain}
+
+bb-fuel:
+  platform:
+    registry: http://registry-${pcf.uri}/eureka
+    gateway: http://gateway-${pcf.uri}/api
+    auth: ${bb-fuel.platform.gateway}/auth/login
+  dbs:
+    approvals: http://approval-integration-service-${pcf.uri}
+    transactions: http://transactions-integration-service-${pcf.uri}
+    contactmanager: http://contactmanager-integration-service-${pcf.uri}
+    messages: http://messages-integration-service-${pcf.uri}
+    user: http://user-integration-service-${pcf.uri}
+    legalentity: http://legalentity-integration-service-${pcf.uri}
+    accessgroup: http://accessgroup-integration-service-${pcf.uri}
+    arrangements: http://arrangements-integration-service-${pcf.uri}

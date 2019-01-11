@@ -7,16 +7,22 @@ import static com.backbase.ct.bbfuel.data.CommonConstants.US_DOMESTIC_WIRE_FUNCT
 import static org.apache.http.HttpStatus.SC_OK;
 
 import com.backbase.ct.bbfuel.client.common.AbstractRestClient;
+import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
 import com.backbase.ct.bbfuel.dto.ProductSummaryQueryParameters;
 import com.backbase.presentation.productsummary.rest.spec.v2.productsummary.ArrangementsByBusinessFunctionGetResponseBody;
 import io.restassured.response.Response;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class ProductSummaryPresentationRestClient extends AbstractRestClient {
+
+    private final BbFuelConfiguration config;
 
     private static final String SERVICE_VERSION = "v2";
     private static final String PRODUCT_SUMMARY_PRESENTATION_SERVICE = "product-summary-presentation-service";
@@ -24,8 +30,10 @@ public class ProductSummaryPresentationRestClient extends AbstractRestClient {
     private static final String ENDPOINT_ARRANGEMENTS = ENDPOINT_PRODUCT_SUMMARY + "/arrangements";
     private static final String ENDPOINT_CONTEXT_ARRANGEMENTS = ENDPOINT_PRODUCT_SUMMARY + "/context/arrangements";
 
-    public ProductSummaryPresentationRestClient() {
-        super(SERVICE_VERSION);
+    @PostConstruct
+    public void init() {
+        setBaseUri(config.getPlatform().getGateway());
+        setVersion(SERVICE_VERSION);
         setInitialPath(composeInitialPath());
     }
 
@@ -75,7 +83,7 @@ public class ProductSummaryPresentationRestClient extends AbstractRestClient {
 
     @Override
     protected String composeInitialPath() {
-        return getGatewayURI() + SLASH + PRODUCT_SUMMARY_PRESENTATION_SERVICE;
+        return PRODUCT_SUMMARY_PRESENTATION_SERVICE;
     }
 
     private Response getProductSummaryContextArrangements(ProductSummaryQueryParameters queryParameters) {

@@ -1,19 +1,22 @@
 package com.backbase.ct.bbfuel.client.common;
 
-import com.backbase.ct.bbfuel.data.CommonConstants;
+import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
 import io.restassured.response.ValidatableResponse;
 import java.util.HashMap;
 import java.util.Map;
+import javax.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class LoginRestClient extends AbstractRestClient {
 
-    private static final String LOGIN = globalProperties.getString(CommonConstants.PROPERTY_LOGIN_PATH);
+    private final BbFuelConfiguration config;
 
-    public LoginRestClient() {
-        super();
-        setInitialPath(composeInitialPath());
+    @PostConstruct
+    public void init() {
+        setBaseUri(config.getPlatform().getAuth());
     }
 
     public void login(String username, String password) {
@@ -30,7 +33,7 @@ public class LoginRestClient extends AbstractRestClient {
 
     @Override
     protected String composeInitialPath() {
-        return USE_LOCAL ? LOGIN : getGatewayURI() + LOGIN;
+        return "";
     }
 
 }

@@ -5,9 +5,8 @@ import static org.apache.http.HttpStatus.SC_CREATED;
 import static org.apache.http.HttpStatus.SC_OK;
 
 import com.backbase.buildingblocks.presentation.errors.BadRequestException;
-import com.backbase.ct.bbfuel.client.common.AbstractRestClient;
+import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
-import com.backbase.ct.bbfuel.data.CommonConstants;
 import com.backbase.integration.user.rest.spec.v2.users.EntitlementsAdminPostRequestBody;
 import com.backbase.integration.user.rest.spec.v2.users.UsersPostRequestBody;
 import io.restassured.http.ContentType;
@@ -15,15 +14,12 @@ import io.restassured.response.Response;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class UserIntegrationRestClient extends AbstractRestClient {
+public class UserIntegrationRestClient extends RestClient {
 
     private final BbFuelConfiguration config;
 
@@ -74,11 +70,6 @@ public class UserIntegrationRestClient extends AbstractRestClient {
             response.then()
                 .statusCode(SC_CREATED);
         }
-    }
-
-    @Override
-    protected String composeInitialPath() {
-        return "";
     }
 
     private Response ingestEntitlementsAdminUnderLE(String externalUserId, String externalLegalEntityId) {

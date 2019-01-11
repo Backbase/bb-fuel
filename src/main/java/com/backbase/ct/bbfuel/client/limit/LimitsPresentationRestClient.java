@@ -1,6 +1,6 @@
 package com.backbase.ct.bbfuel.client.limit;
 
-import com.backbase.ct.bbfuel.client.common.AbstractRestClient;
+import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
 import com.backbase.presentation.limit.rest.spec.v2.limits.PeriodicLimitsPostRequestBody;
 import com.backbase.presentation.limit.rest.spec.v2.limits.TransactionalLimitsPostRequestBody;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class LimitsPresentationRestClient extends AbstractRestClient {
+public class LimitsPresentationRestClient extends RestClient {
 
     private final BbFuelConfiguration config;
 
@@ -26,7 +26,7 @@ public class LimitsPresentationRestClient extends AbstractRestClient {
     public void init() {
         setBaseUri(config.getPlatform().getGateway());
         setVersion(SERVICE_VERSION);
-        setInitialPath(composeInitialPath());
+        setInitialPath(LIMITS_PRESENTATION_SERVICE);
     }
 
     public Response createPeriodicLimit(PeriodicLimitsPostRequestBody periodicLimitsPostRequestBody) {
@@ -41,11 +41,6 @@ public class LimitsPresentationRestClient extends AbstractRestClient {
             .contentType(ContentType.JSON)
             .body(transactionalLimitsPostRequestBody)
             .post(getPath(ENDPOINT_TRANSACTIONAL));
-    }
-
-    @Override
-    protected String composeInitialPath() {
-        return LIMITS_PRESENTATION_SERVICE;
     }
 
 }

@@ -6,7 +6,7 @@ import static com.backbase.ct.bbfuel.data.CommonConstants.SEPA_CT_FUNCTION_NAME;
 import static com.backbase.ct.bbfuel.data.CommonConstants.US_DOMESTIC_WIRE_FUNCTION_NAME;
 import static org.apache.http.HttpStatus.SC_OK;
 
-import com.backbase.ct.bbfuel.client.common.AbstractRestClient;
+import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
 import com.backbase.ct.bbfuel.dto.ProductSummaryQueryParameters;
 import com.backbase.presentation.productsummary.rest.spec.v2.productsummary.ArrangementsByBusinessFunctionGetResponseBody;
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class ProductSummaryPresentationRestClient extends AbstractRestClient {
+public class ProductSummaryPresentationRestClient extends RestClient {
 
     private final BbFuelConfiguration config;
 
@@ -34,7 +34,7 @@ public class ProductSummaryPresentationRestClient extends AbstractRestClient {
     public void init() {
         setBaseUri(config.getPlatform().getGateway());
         setVersion(SERVICE_VERSION);
-        setInitialPath(composeInitialPath());
+        setInitialPath(PRODUCT_SUMMARY_PRESENTATION_SERVICE);
     }
 
     public Response getProductSummaryArrangements() {
@@ -79,11 +79,6 @@ public class ProductSummaryPresentationRestClient extends AbstractRestClient {
             .statusCode(SC_OK)
             .extract()
             .as(ArrangementsByBusinessFunctionGetResponseBody[].class));
-    }
-
-    @Override
-    protected String composeInitialPath() {
-        return PRODUCT_SUMMARY_PRESENTATION_SERVICE;
     }
 
     private Response getProductSummaryContextArrangements(ProductSummaryQueryParameters queryParameters) {

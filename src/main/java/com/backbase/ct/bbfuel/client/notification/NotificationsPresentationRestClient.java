@@ -1,6 +1,6 @@
 package com.backbase.ct.bbfuel.client.notification;
 
-import com.backbase.ct.bbfuel.client.common.AbstractRestClient;
+import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
 import com.backbase.dbs.presentation.notifications.rest.spec.v2.notifications.NotificationsPostRequestBody;
 import io.restassured.http.ContentType;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class NotificationsPresentationRestClient extends AbstractRestClient {
+public class NotificationsPresentationRestClient extends RestClient {
 
     private final BbFuelConfiguration config;
 
@@ -23,7 +23,7 @@ public class NotificationsPresentationRestClient extends AbstractRestClient {
     public void init() {
         setBaseUri(config.getPlatform().getGateway());
         setVersion(SERVICE_VERSION);
-        setInitialPath(composeInitialPath());
+        setInitialPath(NOTIFICATIONS_PRESENTATION_SERVICE);
     }
 
     public Response createNotification(NotificationsPostRequestBody body) {
@@ -31,11 +31,6 @@ public class NotificationsPresentationRestClient extends AbstractRestClient {
             .contentType(ContentType.JSON)
             .body(body)
             .post(getPath(ENDPOINT_NOTIFICATIONS));
-    }
-
-    @Override
-    protected String composeInitialPath() {
-        return NOTIFICATIONS_PRESENTATION_SERVICE;
     }
 
 }

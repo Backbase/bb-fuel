@@ -1,6 +1,6 @@
 package com.backbase.ct.bbfuel.client.action;
 
-import com.backbase.ct.bbfuel.client.common.AbstractRestClient;
+import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
 import com.backbase.dbs.actions.actionrecipes.presentation.rest.spec.v2.actionrecipes.ActionRecipesPostRequestBody;
 import io.restassured.http.ContentType;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class ActionRecipesPresentationRestClient extends AbstractRestClient {
+public class ActionRecipesPresentationRestClient extends RestClient {
 
     private final BbFuelConfiguration config;
 
@@ -23,7 +23,7 @@ public class ActionRecipesPresentationRestClient extends AbstractRestClient {
     public void init() {
         setBaseUri(config.getPlatform().getGateway());
         setVersion(SERVICE_VERSION);
-        setInitialPath(composeInitialPath());
+        setInitialPath(ACTIONRECIPES_PRESENTATION_SERVICE);
     }
 
     public Response createActionRecipe(ActionRecipesPostRequestBody actionRecipesPostRequestBody) {
@@ -31,11 +31,6 @@ public class ActionRecipesPresentationRestClient extends AbstractRestClient {
             .contentType(ContentType.JSON)
             .body(actionRecipesPostRequestBody)
             .post(getPath(ENDPOINT_ACTION_RECIPES));
-    }
-
-    @Override
-    protected String composeInitialPath() {
-        return ACTIONRECIPES_PRESENTATION_SERVICE;
     }
 
 }

@@ -61,12 +61,13 @@ import org.apache.http.client.utils.URIBuilder;
 @NoArgsConstructor
 public class RestClient {
 
-    private GlobalProperties globalProperties = GlobalProperties.getInstance();
     private static final String PARAMETER_NAME = "CONNECTION_MANAGER_TIMEOUT";
     private static final int TIMEOUT_VALUE = 10000;
     private static final String DEFAULT_HEALTH_PATH = "/production-support/health";
     private static final String SERVER_STATUS_UP = "UP";
     private static final String TENANT_HEADER_NAME = "X-TID";
+
+    protected static GlobalProperties globalProperties = GlobalProperties.getInstance();
 
     private URI baseURI = null;
     private RestAssuredConfig restAssuredConfig;

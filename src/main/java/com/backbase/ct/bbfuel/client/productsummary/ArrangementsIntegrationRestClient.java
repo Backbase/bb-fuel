@@ -4,9 +4,8 @@ import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 import static org.apache.http.HttpStatus.SC_CREATED;
 
 import com.backbase.buildingblocks.presentation.errors.BadRequestException;
-import com.backbase.ct.bbfuel.client.common.AbstractRestClient;
+import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
-import com.backbase.ct.bbfuel.data.CommonConstants;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBody;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostResponseBody;
 import com.backbase.integration.arrangement.rest.spec.v2.balancehistory.BalanceHistoryPostRequestBody;
@@ -16,15 +15,12 @@ import io.restassured.response.Response;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class ArrangementsIntegrationRestClient extends AbstractRestClient {
+public class ArrangementsIntegrationRestClient extends RestClient {
 
     private final BbFuelConfiguration config;
 
@@ -75,11 +71,6 @@ public class ArrangementsIntegrationRestClient extends AbstractRestClient {
             .contentType(ContentType.JSON)
             .body(balanceHistoryPostRequestBody)
             .post(getPath(ENDPOINT_BALANCE_HISTORY));
-    }
-
-    @Override
-    protected String composeInitialPath() {
-        return "";
     }
 
     private Response ingestProduct(ProductsPostRequestBody body) {

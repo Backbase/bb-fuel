@@ -19,21 +19,22 @@ security.basic.enabled: false
 
 eureka.client.enabled: false
 
+environment:
+  name: lingering-sonic-21
+  domain: backbase.test:8080
+
 bb-fuel:
-  environment:
-    name: lingering-sonic-21
-    domain: backbase.test:8080
   platform:
-    infra: ${bb-fuel.environment.name}-infra
-    registry: http://${bb-fuel.platform.infra}.${bb-fuel.environment.domain}/eureka
-    gateway: http://${bb-fuel.platform.infra}.${bb-fuel.environment.domain}/gateway/api
+    infra: ${environment.name}-infra
+    registry: http://${bb-fuel.platform.infra}.${environment.domain}/eureka
+    gateway: http://${bb-fuel.platform.infra}.${environment.domain}/gateway/api
     auth: ${bb-fuel.platform.gateway}/auth/login
   dbs:
-    approvals: http://${bb-fuel.environment.name}-approvals.${bb-fuel.environment.domain}/approval-integration-service
-    transactions: http://${bb-fuel.environment.name}-transactions.${bb-fuel.environment.domain}/transactions-integration-service
-    contactmanager: http://${bb-fuel.environment.name}-contactmanager.${bb-fuel.environment.domain}/contactmanager-integration-service
-    messages: http://${bb-fuel.environment.name}-messages.${bb-fuel.environment.domain}/messages-integration-service
-    user: http://${bb-fuel.environment.name}-entitlements.${bb-fuel.environment.domain}/user-integration-service
-    legalentity: http://${bb-fuel.environment.name}-entitlements.${bb-fuel.environment.domain}/legalentity-integration-service
-    accessgroup: http://${bb-fuel.environment.name}-entitlements.${bb-fuel.environment.domain}/accessgroup-integration-service
-    arrangements: http://${bb-fuel.environment.name}-productsummary.${bb-fuel.environment.domain}/arrangements-integration-service
+    approvals: http://${environment.name}-approvals.${environment.domain}/approval-integration-service
+    transactions: http://${environment.name}-transactions.${environment.domain}/transactions-integration-service
+    contactmanager: http://${environment.name}-contactmanager.${environment.domain}/contactmanager-integration-service
+    messages: http://${environment.name}-messages.${environment.domain}/messages-integration-service
+    user: http://${environment.name}-entitlements.${environment.domain}/user-integration-service
+    legalentity: http://${environment.name}-entitlements.${environment.domain}/legalentity-integration-service
+    accessgroup: http://${environment.name}-entitlements.${environment.domain}/accessgroup-integration-service
+    arrangements: http://${environment.name}-productsummary.${environment.domain}/arrangements-integration-service

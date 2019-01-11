@@ -2,24 +2,19 @@ package com.backbase.ct.bbfuel.client.legalentity;
 
 import static org.apache.http.HttpStatus.SC_OK;
 
-import com.backbase.ct.bbfuel.client.common.AbstractRestClient;
+import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
-import com.backbase.ct.bbfuel.data.CommonConstants;
 import com.backbase.integration.legalentity.rest.spec.v2.legalentities.LegalEntitiesPostRequestBody;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementGetResponseBody;
-import com.netflix.discovery.converters.Auto;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class LegalEntityIntegrationRestClient extends AbstractRestClient {
+public class LegalEntityIntegrationRestClient extends RestClient {
 
     private final BbFuelConfiguration config;
 
@@ -48,11 +43,6 @@ public class LegalEntityIntegrationRestClient extends AbstractRestClient {
             .statusCode(SC_OK)
             .extract()
             .as(ServiceAgreementGetResponseBody.class);
-    }
-
-    @Override
-    protected String composeInitialPath() {
-        return "";
     }
 
 }

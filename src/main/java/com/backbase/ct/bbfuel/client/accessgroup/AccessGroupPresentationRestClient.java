@@ -3,7 +3,7 @@ package com.backbase.ct.bbfuel.client.accessgroup;
 import static java.util.Arrays.asList;
 import static org.apache.http.HttpStatus.SC_OK;
 
-import com.backbase.ct.bbfuel.client.common.AbstractRestClient;
+import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.datagroups.DataGroupsGetResponseBody;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.functiongroups.FunctionGroupsGetResponseBody;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class AccessGroupPresentationRestClient extends AbstractRestClient {
+public class AccessGroupPresentationRestClient extends RestClient {
 
     private final BbFuelConfiguration config;
 
@@ -33,7 +33,7 @@ public class AccessGroupPresentationRestClient extends AbstractRestClient {
     public void init() {
         setBaseUri(config.getPlatform().getGateway());
         setVersion(SERVICE_VERSION);
-        setInitialPath(composeInitialPath());
+        setInitialPath(ACCESS_GROUP_PRESENTATION_SERVICE);
     }
 
     public List<FunctionGroupsGetResponseBody> retrieveFunctionGroupsByServiceAgreement(String internalServiceAgreementId) {
@@ -106,11 +106,6 @@ public class AccessGroupPresentationRestClient extends AbstractRestClient {
             .statusCode(SC_OK)
             .extract()
             .as(UsersGetResponseBody[].class));
-    }
-
-    @Override
-    protected String composeInitialPath() {
-        return ACCESS_GROUP_PRESENTATION_SERVICE;
     }
 
 }

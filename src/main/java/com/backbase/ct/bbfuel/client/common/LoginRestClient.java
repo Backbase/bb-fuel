@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class LoginRestClient extends AbstractRestClient {
+public class LoginRestClient extends RestClient {
 
     private final BbFuelConfiguration config;
 
@@ -29,11 +29,6 @@ public class LoginRestClient extends AbstractRestClient {
 
         Map<String, String> cookies = new HashMap<>(response.extract().cookies());
         setUpCookies(cookies);
-    }
-
-    @Override
-    protected String composeInitialPath() {
-        return "";
     }
 
 }

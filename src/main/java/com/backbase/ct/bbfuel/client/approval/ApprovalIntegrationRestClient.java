@@ -10,7 +10,7 @@ import static org.apache.http.HttpStatus.SC_CREATED;
 import static org.apache.http.HttpStatus.SC_NO_CONTENT;
 import static org.apache.http.HttpStatus.SC_OK;
 
-import com.backbase.ct.bbfuel.client.common.AbstractRestClient;
+import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
 import com.backbase.dbs.approval.integration.spec.IntegrationApprovalTypeAssignmentDto;
 import com.backbase.dbs.approval.integration.spec.IntegrationDeletePolicyAssignmentRequest;
@@ -28,12 +28,11 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class ApprovalIntegrationRestClient extends AbstractRestClient {
+public class ApprovalIntegrationRestClient extends RestClient {
 
     private final BbFuelConfiguration config;
 
@@ -158,11 +157,6 @@ public class ApprovalIntegrationRestClient extends AbstractRestClient {
             .statusCode(SC_OK)
             .extract()
             .as(IntegrationDeletePolicyAssignmentResponse.class);
-    }
-
-    @Override
-    protected String composeInitialPath() {
-        return "";
     }
 
 }

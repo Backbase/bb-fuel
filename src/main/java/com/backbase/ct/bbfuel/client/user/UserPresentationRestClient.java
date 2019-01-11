@@ -2,18 +2,17 @@ package com.backbase.ct.bbfuel.client.user;
 
 import static org.apache.http.HttpStatus.SC_OK;
 
-import com.backbase.ct.bbfuel.client.common.AbstractRestClient;
+import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
 import com.backbase.presentation.user.rest.spec.v2.users.LegalEntityByUserGetResponseBody;
 import com.backbase.presentation.user.rest.spec.v2.users.UserGetResponseBody;
 import javax.annotation.PostConstruct;
-import javax.annotation.RegEx;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class UserPresentationRestClient extends AbstractRestClient {
+public class UserPresentationRestClient extends RestClient {
 
     private final BbFuelConfiguration config;
 
@@ -27,7 +26,7 @@ public class UserPresentationRestClient extends AbstractRestClient {
     public void init() {
         setBaseUri(config.getPlatform().getGateway());
         setVersion(SERVICE_VERSION);
-        setInitialPath(composeInitialPath());
+        setInitialPath(USER_PRESENTATION_SERVICE);
     }
 
     public LegalEntityByUserGetResponseBody retrieveLegalEntityByExternalUserId(String externalUserId) {
@@ -46,11 +45,6 @@ public class UserPresentationRestClient extends AbstractRestClient {
             .statusCode(SC_OK)
             .extract()
             .as(UserGetResponseBody.class);
-    }
-
-    @Override
-    protected String composeInitialPath() {
-        return USER_PRESENTATION_SERVICE;
     }
 
 }

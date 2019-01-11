@@ -1,20 +1,18 @@
 package com.backbase.ct.bbfuel.client.transaction;
 
-import com.backbase.ct.bbfuel.client.common.AbstractRestClient;
+import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
-import com.backbase.ct.bbfuel.data.CommonConstants;
 import com.backbase.integration.transaction.external.rest.spec.v2.transactions.TransactionsPostRequestBody;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.validation.ReportAsSingleViolation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class TransactionsIntegrationRestClient extends AbstractRestClient {
+public class TransactionsIntegrationRestClient extends RestClient {
 
     private final BbFuelConfiguration config;
 
@@ -32,11 +30,6 @@ public class TransactionsIntegrationRestClient extends AbstractRestClient {
             .contentType(ContentType.JSON)
             .body(transactionsPostRequestBodies)
             .post(getPath(ENDPOINT_TRANSACTIONS));
-    }
-
-    @Override
-    protected String composeInitialPath() {
-        return "";
     }
 
 }

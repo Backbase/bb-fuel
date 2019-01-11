@@ -3,7 +3,7 @@ package com.backbase.ct.bbfuel.client.legalentity;
 import static java.util.Arrays.asList;
 import static org.apache.http.HttpStatus.SC_OK;
 
-import com.backbase.ct.bbfuel.client.common.AbstractRestClient;
+import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementGetResponseBody;
 import com.backbase.presentation.legalentity.rest.spec.v2.legalentities.LegalEntitiesGetResponseBody;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class LegalEntityPresentationRestClient extends AbstractRestClient {
+public class LegalEntityPresentationRestClient extends RestClient {
 
     private final BbFuelConfiguration config;
 
@@ -32,7 +32,7 @@ public class LegalEntityPresentationRestClient extends AbstractRestClient {
     public void init() {
         setBaseUri(config.getPlatform().getGateway());
         setVersion(SERVICE_VERSION);
-        setInitialPath(composeInitialPath());
+        setInitialPath(LEGAL_ENTITY_PRESENTATION_SERVICE);
     }
 
     public List<LegalEntitiesGetResponseBody> retrieveLegalEntities() {
@@ -65,11 +65,6 @@ public class LegalEntityPresentationRestClient extends AbstractRestClient {
             .statusCode(SC_OK)
             .extract()
             .as(ServiceAgreementGetResponseBody.class);
-    }
-
-    @Override
-    protected String composeInitialPath() {
-        return LEGAL_ENTITY_PRESENTATION_SERVICE;
     }
 
 }

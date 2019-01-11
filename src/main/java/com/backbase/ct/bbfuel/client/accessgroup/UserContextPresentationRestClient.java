@@ -4,7 +4,7 @@ import static java.util.Arrays.asList;
 import static org.apache.http.HttpStatus.SC_NO_CONTENT;
 import static org.apache.http.HttpStatus.SC_OK;
 
-import com.backbase.ct.bbfuel.client.common.AbstractRestClient;
+import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementGetResponseBody;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.usercontext.UserContextPostRequestBody;
@@ -17,12 +17,11 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class UserContextPresentationRestClient extends AbstractRestClient {
+public class UserContextPresentationRestClient extends RestClient {
 
     private final BbFuelConfiguration config;
 
@@ -38,7 +37,7 @@ public class UserContextPresentationRestClient extends AbstractRestClient {
     public void init() {
         setBaseUri(config.getPlatform().getGateway());
         setVersion(SERVICE_VERSION);
-        setInitialPath(composeInitialPath());
+        setInitialPath(ACCESS_GROUP_PRESENTATION_SERVICE);
     }
 
     public void selectContextBasedOnMasterServiceAgreement() {
@@ -51,11 +50,6 @@ public class UserContextPresentationRestClient extends AbstractRestClient {
             .withLegalEntityId(legalEntityId))
             .then()
             .statusCode(SC_NO_CONTENT);
-    }
-
-    @Override
-    protected String composeInitialPath() {
-        return ACCESS_GROUP_PRESENTATION_SERVICE;
     }
 
     private Response postUserContext(UserContextPostRequestBody userContextPostRequestBody) {

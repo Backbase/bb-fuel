@@ -1,6 +1,6 @@
 package com.backbase.ct.bbfuel.client.messagecenter;
 
-import com.backbase.ct.bbfuel.client.common.AbstractRestClient;
+import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
 import com.backbase.dbs.messages.presentation.rest.spec.v4.messagecenter.ConversationDraftsPostRequestBody;
 import com.backbase.dbs.messages.presentation.rest.spec.v4.messagecenter.DraftsPostRequestBody;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class MessagesPresentationRestClient extends AbstractRestClient {
+public class MessagesPresentationRestClient extends RestClient {
 
     private final BbFuelConfiguration config;
 
@@ -30,7 +30,7 @@ public class MessagesPresentationRestClient extends AbstractRestClient {
     public void init() {
         setBaseUri(config.getPlatform().getGateway());
         setVersion(SERVICE_VERSION);
-        setInitialPath(composeInitialPath());
+        setInitialPath(MESSAGES_PRESENTATION_SERVICE);
     }
 
     public Response postDraft(DraftsPostRequestBody body) {
@@ -65,11 +65,6 @@ public class MessagesPresentationRestClient extends AbstractRestClient {
             .contentType(ContentType.JSON)
             .body(topicsPostRequestBody)
             .post(getPath(ENDPOINT_TOPICS));
-    }
-
-    @Override
-    protected String composeInitialPath() {
-        return MESSAGES_PRESENTATION_SERVICE;
     }
 
 }

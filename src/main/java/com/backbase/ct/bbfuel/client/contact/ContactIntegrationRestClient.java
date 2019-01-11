@@ -1,8 +1,7 @@
 package com.backbase.ct.bbfuel.client.contact;
 
-import com.backbase.ct.bbfuel.client.common.AbstractRestClient;
+import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
-import com.backbase.ct.bbfuel.data.CommonConstants;
 import com.backbase.dbs.integration.external.inbound.contact.rest.spec.v2.contacts.ContactsBulkIngestionPostRequestBody;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
@@ -12,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class ContactIntegrationRestClient extends AbstractRestClient {
+public class ContactIntegrationRestClient extends RestClient {
 
     private final BbFuelConfiguration config;
 
@@ -30,11 +29,6 @@ public class ContactIntegrationRestClient extends AbstractRestClient {
             .contentType(ContentType.JSON)
             .body(body)
             .post(getPath(ENDPOINT_CONTACTS));
-    }
-
-    @Override
-    protected String composeInitialPath() {
-        return "";
     }
 
 }

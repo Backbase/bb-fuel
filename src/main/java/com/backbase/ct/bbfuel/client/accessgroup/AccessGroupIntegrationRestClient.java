@@ -4,10 +4,8 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.apache.http.HttpStatus.SC_OK;
 
-import com.backbase.ct.bbfuel.client.common.AbstractRestClient;
+import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
-import com.backbase.ct.bbfuel.data.CommonConstants;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.IntegrationIdentifier;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.config.functions.FunctionsGetResponseBody;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.datagroups.DataGroupPostRequestBody;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.functiongroups.FunctionGroupPostRequestBody;
@@ -15,19 +13,15 @@ import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.users.perm
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.users.permissions.IntegrationFunctionGroupDataGroup;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class AccessGroupIntegrationRestClient extends AbstractRestClient {
+public class AccessGroupIntegrationRestClient extends RestClient {
 
     private final BbFuelConfiguration config;
 
@@ -102,11 +96,6 @@ public class AccessGroupIntegrationRestClient extends AbstractRestClient {
             .withExternalUserId(externalUserId)
             .withExternalServiceAgreementId(externalServiceAgreementId)
             .withFunctionGroupDataGroups(functionGroupDataGroups));
-    }
-
-    @Override
-    protected String composeInitialPath() {
-        return "";
     }
 
 }

@@ -62,7 +62,7 @@ public class JobProfileJsonGenerator {
 
     @Test
     public void generateJsonFileForBusinessBanking() {
-        generateJsonFileFromCsvFile("dbs-mock-data-jobprofile-business", 3);
+        generateJsonFileFromCsvFile("dbs-mock-data-jobprofiles", 3);
     }
 
     @Test

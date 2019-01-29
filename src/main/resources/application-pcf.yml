@@ -5,7 +5,7 @@ pcf:
   space: approvals
   org: backbase
   domain: apps.pcf-v21.backbasepcf.com
-  uri: ${pcf.space}-${pcf.org}.${pcf.domain}
+  uri: ${pcf.space}.${pcf.domain}
 
 bb-fuel:
   platform:

@@ -1,11 +1,13 @@
 # Unlike autoconfig, in PCF services are deployed to their own application server instance and have no context path (root).
-# Each service has it's own route which can be configured below.
-# As a rule of thumb, routes contain the name of the space and org to avoid collisions.
+# Each capability' integration service has it's own route which can be configured below.
+# Presentation services are accessed via the gateway and do not require any configuration.
+# Remember to include the name of the space in the route to avoid collisions.
+
 pcf:
+  # Change name of space:
   space: approvals
-  org: backbase
   domain: apps.pcf-v21.backbasepcf.com
-  uri: ${pcf.space}-${pcf.org}.${pcf.domain}
+  uri: ${pcf.space}.${pcf.domain}
 
 bb-fuel:
   platform:

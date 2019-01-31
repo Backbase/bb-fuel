@@ -1,34 +1,8 @@
-spring:
-  application:
-    name: bb-fuel
-    version: @project.version@
-
-logging:
-  secured:
-    enabled: false
-  level:
-    com.backbase: WARN
-    org.springframework: WARN
-    com.backbase.ct.bbfuel: DEBUG
-
-sso.jwt.internal.signature.key:
-  type: ENV
-  value: SIG_SECRET_KEY
-
-security.basic.enabled: false
-
-eureka.client.enabled: false
-
-environment:
-  # Change name of env:
-  name: your-env-00
-  domain: backbase.test:8080
-
 bb-fuel:
   platform:
-    infra: ${environment.name}-infra
-    registry: http://${bb-fuel.platform.infra}.${environment.domain}/registry/eureka
-    gateway: http://${bb-fuel.platform.infra}.${environment.domain}/gateway/api
+    infra: http://localhost:8080
+    registry: ${bb-fuel.platform.infra}/registry/eureka
+    gateway: http://${bb-fuel.platform.infra}/gateway/api
     auth: ${bb-fuel.platform.gateway}/auth/login
   dbs:
     approvals: http://${environment.name}-approvals.${environment.domain}/approval-integration-service

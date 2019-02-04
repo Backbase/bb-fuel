@@ -2,14 +2,14 @@ bb-fuel:
   platform:
     infra: http://localhost:8080
     registry: ${bb-fuel.platform.infra}/registry/eureka
-    gateway: http://${bb-fuel.platform.infra}/gateway/api
+    gateway: ${bb-fuel.platform.infra}/gateway/api
     auth: ${bb-fuel.platform.gateway}/auth/login
   dbs:
-    approvals: http://${environment.name}-approvals.${environment.domain}/approval-integration-service
-    transactions: http://${environment.name}-transactions.${environment.domain}/transactions-integration-service
-    contactmanager: http://${environment.name}-contactmanager.${environment.domain}/contactmanager-integration-service
-    messages: http://${environment.name}-messages.${environment.domain}/messages-integration-service
-    user: http://${environment.name}-entitlements.${environment.domain}/user-integration-service
-    legalentity: http://${environment.name}-entitlements.${environment.domain}/legalentity-integration-service
-    accessgroup: http://${environment.name}-entitlements.${environment.domain}/accessgroup-integration-service
-    arrangements: http://${environment.name}-productsummary.${environment.domain}/arrangements-integration-service
+    approvals: http://localhost:8090/approval-integration-service
+    transactions: http://localhost:8083/transactions-integration-service
+    contactmanager: http://localhost:8081/contactmanager-integration-service
+    messages: http://localhost:8084/messages-integration-service
+    user: http://localhost:8086/user-integration-service
+    legalentity: http://localhost:8086/legalentity-integration-service
+    accessgroup: http://localhost:8086/accessgroup-integration-service
+    arrangements: http://localhost:8082/arrangements-integration-service

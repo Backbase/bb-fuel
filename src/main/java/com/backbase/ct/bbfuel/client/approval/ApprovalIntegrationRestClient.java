@@ -27,6 +27,7 @@ import com.backbase.dbs.approval.spec.PostApprovalTypeResponse;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -44,6 +45,7 @@ public class ApprovalIntegrationRestClient extends RestClient {
     private static final String POLICY_ASSIGNMENTS = "/policy-assignments";
     private static final String POLICY_ASSIGNMENTS_BULK = POLICY_ASSIGNMENTS + "/bulk";
 
+    @PostConstruct
     public void init() {
         setBaseUri(config.getDbs().getApprovals());
         setVersion(SERVICE_VERSION);

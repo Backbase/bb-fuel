@@ -7,7 +7,7 @@ bb-fuel:
   dbs:
     approvals: http://localhost:8090/approval-integration-service
     transactions: http://localhost:8083/transactions-integration-service
-    contactmanager: http://localhost:8081/contactmanager-integration-service
+    contactmanager: http://localhost:8081/contact-integration-service
     messages: http://localhost:8084/messages-integration-service
     user: http://localhost:8086/user-integration-service
     legalentity: http://localhost:8086/legalentity-integration-service

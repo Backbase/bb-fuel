@@ -33,7 +33,7 @@ bb-fuel:
   dbs:
     approvals: http://${environment.name}-approvals.${environment.domain}/approval-integration-service
     transactions: http://${environment.name}-transactions.${environment.domain}/transactions-integration-service
-    contactmanager: http://${environment.name}-contactmanager.${environment.domain}/contactmanager-integration-service
+    contactmanager: http://${environment.name}-contactmanager.${environment.domain}/contact-integration-service
     messages: http://${environment.name}-messages.${environment.domain}/messages-integration-service
     user: http://${environment.name}-entitlements.${environment.domain}/user-integration-service
     legalentity: http://${environment.name}-entitlements.${environment.domain}/legalentity-integration-service

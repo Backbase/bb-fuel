@@ -20,13 +20,11 @@ security.basic.enabled: false
 eureka.client.enabled: false
 
 environment:
-  # Change name of env:
-  name: your-env-00
   domain: backbase.test:8080
 
 bb-fuel:
   platform:
-    infra: ${environment.name}-infra
+    infra: ${environment.name}-${infra.base:infra}
     registry: http://${bb-fuel.platform.infra}.${environment.domain}/registry/eureka
     gateway: http://${bb-fuel.platform.infra}.${environment.domain}/gateway/api
     auth: ${bb-fuel.platform.gateway}/auth/login

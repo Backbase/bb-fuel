@@ -47,11 +47,12 @@ Note: Alter the properties accordingly to your environment (each property can be
 ```
 java -Denvironment.name=your-env-00 -jar bb-fuel-{version}-boot.jar
 ```
-Note: replace `your-env-00` with the name of your environment. You can omit this property if you've 
+Note: replace `your-env-00` with the name of your environment.
+Alternatively you can add `environment.name` property to `application.yml` before building bb-fuel. 
 
 - For environments based on local:
 ```
-java -Dspring.profiles.active=pcf -jar bb-fuel-{version}-boot.jar
+java -Dspring.profiles.active=local -jar bb-fuel-{version}-boot.jar
 ```
 
 - For environments based on PCF:
@@ -60,6 +61,7 @@ java -Dspring.profiles.active=pcf -Dpcf.space=NAME_OF_YOUR_SPACE -jar bb-fuel-{v
 
 ```
 Note: replace `NAME_OF_YOUR_SPACE` with the name of your space in PCF. It requires your routes to include the space name like: http://${service}-${space}.${domain}
+Alternatively you can add `pcf.space` property to `application-pcf.yml` before building bb-fuel.
 
 ## Properties for ingesting data
 The following properties can be set to custom values for different purposes: [data.properties](src/main/resources/data.properties)
@@ -102,8 +104,7 @@ bb-fuel supports multiple DBS versions. See below which version maps to the requ
 
 | DBS version | bb-fuel minimal [version](https://github.com/backbase/bb-fuel/releases) |
 |-------------|-------------------------------------------------------------------------|
-| 2.14.1 PCF  | 2.0.0+                                                                  |
-| 2.14.1      | 1.8.20+                                                                 |
+| 2.14.1      | 1.8.20+ & 2.0.0+                                                        |
 | 2.14.0      | 1.8.17+                                                                 |
 | 2.13.2      | 1.8.8+                                                                  |
 | 2.13.1      | 1.6.0+                                                                  |
@@ -120,6 +121,8 @@ bb-fuel supports multiple DBS versions. See below which version maps to the requ
 | 2.10.1      | [2.10.1 tag](https://github.com/backbase/bb-fuel/releases/tag/2.10.1)   |
 | 2.10.0      | [2.10.0 tag](https://github.com/backbase/bb-fuel/releases/tag/2.10.0)   |
 
+Note: Starting version 2.0.0 PCF is added as supported platform.
+
 ## Contributing
 You are welcome to provide bug fixes and new features in the form of pull requests. If you'd like to contribute, please be mindful of the following guidelines:
 
@@ -132,6 +135,7 @@ You are welcome to provide bug fixes and new features in the form of pull reques
 - [Kwo Ding](https://github.com/kwoding) (author)
 - [Mark Bertels](marinus@backbase.com)
 - [Richard Blank](richardb@backbase.com)
+- [Pim Hazebroek](pimh@backbase.com)
 
 # License
 Copyright (c) 2019 Backbase B.V.

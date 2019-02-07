@@ -1,11 +1,9 @@
 # Unlike autoconfig, in PCF services are deployed to their own application server instance and have no context path (root).
-# Each capability' integration service has it's own route which can be configured below.
+# Each capability specific integration service has its own route which can be configured below.
 # Presentation services are accessed via the gateway and do not require any configuration.
 # Remember to include the name of the space in the route to avoid collisions.
 
 pcf:
-  # Change name of space:
-  space: approvals
   domain: apps.pcf-v21.backbasepcf.com
   uri: ${pcf.space}.${pcf.domain}
 

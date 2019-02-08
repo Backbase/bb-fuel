@@ -30,9 +30,9 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.apache.http.client.utils.URIBuilder;
 
 /**
  * Usage example:
@@ -69,6 +69,7 @@ public class RestClient {
 
     protected static GlobalProperties globalProperties = GlobalProperties.getInstance();
 
+    @Getter
     private URI baseURI = null;
     private RestAssuredConfig restAssuredConfig;
     private String initialPath = "";
@@ -93,19 +94,6 @@ public class RestClient {
 
     public String getPath(String endpoint) {
         return version + endpoint;
-    }
-
-    public String getBaseURIWithoutPort() {
-        String baseAPI;
-
-        URI uri;
-        try {
-            uri = new URIBuilder().setScheme(baseURI.getScheme()).setHost(baseURI.getHost()).build();
-        } catch (URISyntaxException e) {
-            throw new RuntimeException("An error occurred while constructing base uri without port", e);
-        }
-        baseAPI = uri.toString();
-        return baseAPI;
     }
 
     /**
@@ -164,10 +152,6 @@ public class RestClient {
 
     private Map<String, String> getCookies() {
         return cookiesJar;
-    }
-
-    private URI getBaseURI() {
-        return baseURI;
     }
 
     /**

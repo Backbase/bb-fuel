@@ -35,6 +35,7 @@ public class AccessGroupIntegrationRestClient extends RestClient {
 
     @PostConstruct
     public void init() {
+//        setName("accessgroup-integration-service");
         setBaseUri(config.getDbs().getAccessgroup());
         setVersion(SERVICE_VERSION);
     }

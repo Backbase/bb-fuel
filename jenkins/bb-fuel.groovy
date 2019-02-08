@@ -5,8 +5,8 @@ pipeline {
 
     parameters {
         choice(name: 'SPRING_PROFILES_ACTIVE', choices: 'aws', 'pcf', description: 'Select the profile to operate.\nAWS (default):\nRequires environment name (PCF space will be ignored)\n\nPCF: \nRequires space name (environment name will be ignored)')
-        string(name: 'ENVIRONMENT_NAME', defaultValue: 'env-name-00', description: 'Autoconfig environment name, example: frosty-snow-99\nRead before running: https://stash.backbase.com/projects/CT/repos/bb-fuel/browse/README.md')
-        string(name: 'PCF_SPACE', defaultValue: 'your-space', description: 'PCF Space name, example: approvals\nRead before running: https://stash.backbase.com/projects/CT/repos/bb-fuel/browse/README.md')
+        string(name: 'ENVIRONMENT_NAME', defaultValue: 'env-name-00', description: 'Autoconfig environment name, example: frosty-snow-99\nRead before running: https://github.com/Backbase/bb-fuel/blob/master/README.md')
+        string(name: 'PCF_SPACE', defaultValue: 'your-space', description: 'PCF Space name, example: approvals\nRead before running: https://github.com/Backbase/bb-fuel/blob/master/README.md')
         booleanParam(name: 'INGEST_ACCESS_CONTROL', defaultValue: true, description: 'Ingest access control setup')
         booleanParam(name: 'INGEST_CUSTOM_SERVICE_AGREEMENTS', defaultValue: false, description: 'Ingest custom service agreements')
         booleanParam(name: 'INGEST_BALANCE_HISTORY', defaultValue: false, description: 'Ingest balance history per arrangement (only applicable when INGEST_ACCESS_CONTROL = true)\n' +

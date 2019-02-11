@@ -6,17 +6,23 @@ import static com.backbase.ct.bbfuel.data.CommonConstants.SEPA_CT_FUNCTION_NAME;
 import static com.backbase.ct.bbfuel.data.CommonConstants.US_DOMESTIC_WIRE_FUNCTION_NAME;
 import static org.apache.http.HttpStatus.SC_OK;
 
-import com.backbase.ct.bbfuel.client.common.AbstractRestClient;
+import com.backbase.ct.bbfuel.client.common.RestClient;
+import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
 import com.backbase.ct.bbfuel.dto.ProductSummaryQueryParameters;
 import com.backbase.presentation.productsummary.rest.spec.v2.productsummary.ArrangementsByBusinessFunctionGetResponseBody;
 import io.restassured.response.Response;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ProductSummaryPresentationRestClient extends AbstractRestClient {
+@RequiredArgsConstructor
+public class ProductSummaryPresentationRestClient extends RestClient {
+
+    private final BbFuelConfiguration config;
 
     private static final String SERVICE_VERSION = "v2";
     private static final String PRODUCT_SUMMARY_PRESENTATION_SERVICE = "product-summary-presentation-service";
@@ -24,9 +30,11 @@ public class ProductSummaryPresentationRestClient extends AbstractRestClient {
     private static final String ENDPOINT_ARRANGEMENTS = ENDPOINT_PRODUCT_SUMMARY + "/arrangements";
     private static final String ENDPOINT_CONTEXT_ARRANGEMENTS = ENDPOINT_PRODUCT_SUMMARY + "/context/arrangements";
 
-    public ProductSummaryPresentationRestClient() {
-        super(SERVICE_VERSION);
-        setInitialPath(composeInitialPath());
+    @PostConstruct
+    public void init() {
+        setBaseUri(config.getPlatform().getGateway());
+        setVersion(SERVICE_VERSION);
+        setInitialPath(PRODUCT_SUMMARY_PRESENTATION_SERVICE);
     }
 
     public Response getProductSummaryArrangements() {
@@ -71,11 +79,6 @@ public class ProductSummaryPresentationRestClient extends AbstractRestClient {
             .statusCode(SC_OK)
             .extract()
             .as(ArrangementsByBusinessFunctionGetResponseBody[].class));
-    }
-
-    @Override
-    protected String composeInitialPath() {
-        return getGatewayURI() + SLASH + PRODUCT_SUMMARY_PRESENTATION_SERVICE;
     }
 
     private Response getProductSummaryContextArrangements(ProductSummaryQueryParameters queryParameters) {

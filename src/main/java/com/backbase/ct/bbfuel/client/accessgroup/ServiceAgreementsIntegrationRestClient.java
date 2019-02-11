@@ -2,29 +2,32 @@ package com.backbase.ct.bbfuel.client.accessgroup;
 
 import static org.apache.http.HttpStatus.SC_OK;
 
-import com.backbase.ct.bbfuel.client.common.AbstractRestClient;
-import com.backbase.ct.bbfuel.data.CommonConstants;
+import com.backbase.ct.bbfuel.client.common.RestClient;
+import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementGet;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementPostRequestBody;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementPutRequestBody;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import javax.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ServiceAgreementsIntegrationRestClient extends AbstractRestClient {
+@RequiredArgsConstructor
+public class ServiceAgreementsIntegrationRestClient extends RestClient {
 
-    private static final String ENTITLEMENTS = globalProperties
-        .getString(CommonConstants.PROPERTY_ACCESS_CONTROL_BASE_URI);
+    private final BbFuelConfiguration config;
+
     private static final String SERVICE_VERSION = "v2";
-    private static final String ACCESS_GROUP_INTEGRATION_SERVICE = "accessgroup-integration-service";
     private static final String ENDPOINT_ACCESS_GROUPS = "/accessgroups";
     private static final String ENDPOINT_SERVICE_AGREEMENTS = ENDPOINT_ACCESS_GROUPS + "/serviceagreements";
     private static final String ENDPOINT_SERVICE_AGREEMENTS_BY_ID = ENDPOINT_SERVICE_AGREEMENTS + "/%s";
 
-    public ServiceAgreementsIntegrationRestClient() {
-        super(ENTITLEMENTS, SERVICE_VERSION);
-        setInitialPath(composeInitialPath());
+    @PostConstruct
+    public void init() {
+        setBaseUri(config.getDbs().getAccessgroup());
+        setVersion(SERVICE_VERSION);
     }
 
     public Response ingestServiceAgreement(ServiceAgreementPostRequestBody body) {
@@ -48,11 +51,6 @@ public class ServiceAgreementsIntegrationRestClient extends AbstractRestClient {
             .statusCode(SC_OK)
             .extract()
             .as(ServiceAgreementGet.class);
-    }
-
-    @Override
-    protected String composeInitialPath() {
-        return ACCESS_GROUP_INTEGRATION_SERVICE;
     }
 
 }

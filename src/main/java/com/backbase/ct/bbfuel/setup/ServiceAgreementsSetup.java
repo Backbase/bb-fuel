@@ -6,6 +6,7 @@ import static java.util.Collections.singletonList;
 
 import com.backbase.ct.bbfuel.client.accessgroup.ServiceAgreementsPresentationRestClient;
 import com.backbase.ct.bbfuel.client.accessgroup.UserContextPresentationRestClient;
+import com.backbase.ct.bbfuel.client.common.LoginRestClient;
 import com.backbase.ct.bbfuel.client.user.UserPresentationRestClient;
 import com.backbase.ct.bbfuel.configurator.AccessGroupsConfigurator;
 import com.backbase.ct.bbfuel.configurator.PermissionsConfigurator;
@@ -33,6 +34,7 @@ public class ServiceAgreementsSetup extends BaseSetup {
     private final UserContextPresentationRestClient userContextPresentationRestClient;
     private final ServiceAgreementsConfigurator serviceAgreementsConfigurator;
     private final ServiceAgreementsPresentationRestClient serviceAgreementsPresentationRestClient;
+    private final LoginRestClient loginRestClient;
     private final AccessGroupsConfigurator accessGroupsConfigurator;
     private final PermissionsConfigurator permissionsConfigurator;
     private final UserPresentationRestClient userPresentationRestClient;

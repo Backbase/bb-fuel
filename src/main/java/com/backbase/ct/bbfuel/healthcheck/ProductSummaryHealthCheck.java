@@ -7,10 +7,16 @@ import com.backbase.ct.bbfuel.data.CommonConstants;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
 import java.util.Arrays;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class ProductSummaryHealthCheck {
+
+    private final ArrangementsIntegrationRestClient arrangementsIntegrationRestClient;
+
+    private final ProductSummaryPresentationRestClient productSummaryPresentationRestClient;
 
     private GlobalProperties globalProperties = GlobalProperties.getInstance();
 
@@ -21,8 +27,8 @@ public class ProductSummaryHealthCheck {
 
         if (healthCheckTimeOutInMinutes > 0) {
             List<RestClient> restClients = Arrays.asList(
-                new ArrangementsIntegrationRestClient(),
-                new ProductSummaryPresentationRestClient());
+                arrangementsIntegrationRestClient,
+                productSummaryPresentationRestClient);
 
             healthCheck.checkServicesHealth(restClients);
         }

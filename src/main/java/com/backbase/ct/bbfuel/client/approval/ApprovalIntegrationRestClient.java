@@ -6,40 +6,38 @@ import static com.backbase.ct.bbfuel.data.ApprovalsDataGenerator.createPostBulkA
 import static com.backbase.ct.bbfuel.data.ApprovalsDataGenerator.createPostPolicyAssignmentBulkRequest;
 import static com.backbase.ct.bbfuel.data.ApprovalsDataGenerator.createPostPolicyRequest;
 import static com.backbase.ct.bbfuel.data.ApprovalsDataGenerator.createPostPolicyRequestWithZeroPolicyItems;
-import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_APPROVALS_BASE_URI;
 import static org.apache.http.HttpStatus.SC_CREATED;
 import static org.apache.http.HttpStatus.SC_NO_CONTENT;
 import static org.apache.http.HttpStatus.SC_OK;
 
-import com.backbase.ct.bbfuel.client.common.AbstractRestClient;
+import com.backbase.ct.bbfuel.client.common.RestClient;
+import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
 import com.backbase.dbs.approval.integration.spec.IntegrationApprovalTypeAssignmentDto;
 import com.backbase.dbs.approval.integration.spec.IntegrationDeletePolicyAssignmentRequest;
 import com.backbase.dbs.approval.integration.spec.IntegrationDeletePolicyAssignmentResponse;
 import com.backbase.dbs.approval.integration.spec.IntegrationPolicyAssignmentRequest;
 import com.backbase.dbs.approval.integration.spec.IntegrationPolicyItemDto;
-import com.backbase.dbs.approval.spec.PostApprovalTypeRequest;
-import com.backbase.dbs.approval.spec.PostApprovalTypeResponse;
 import com.backbase.dbs.approval.integration.spec.IntegrationPostBulkApprovalTypeAssignmentRequest;
 import com.backbase.dbs.approval.integration.spec.IntegrationPostBulkApprovalTypeAssignmentResponse;
 import com.backbase.dbs.approval.integration.spec.IntegrationPostPolicyAssignmentBulkRequest;
 import com.backbase.dbs.approval.integration.spec.IntegrationPostPolicyRequest;
 import com.backbase.dbs.approval.integration.spec.IntegrationPostPolicyResponse;
+import com.backbase.dbs.approval.spec.PostApprovalTypeRequest;
+import com.backbase.dbs.approval.spec.PostApprovalTypeResponse;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import javax.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ApprovalIntegrationRestClient extends AbstractRestClient {
+@RequiredArgsConstructor
+public class ApprovalIntegrationRestClient extends RestClient {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ApprovalIntegrationRestClient.class);
+    private final BbFuelConfiguration config;
 
-    private static final String APPROVALS_BASE_URI = globalProperties.getString(PROPERTY_APPROVALS_BASE_URI);
     private static final String SERVICE_VERSION = "v2";
-
-    private static final String APPROVAL_INTEGRATION_SERVICE = "approval-integration-service";
     private static final String APPROVAL_TYPES = "/approval-types";
     private static final String APPROVAL_TYPE_ASSIGNMENTS = "/approval-type-assignments";
     private static final String APPROVAL_TYPE_ASSIGNMENTS_BULK = APPROVAL_TYPE_ASSIGNMENTS + "/bulk";
@@ -47,9 +45,10 @@ public class ApprovalIntegrationRestClient extends AbstractRestClient {
     private static final String POLICY_ASSIGNMENTS = "/policy-assignments";
     private static final String POLICY_ASSIGNMENTS_BULK = POLICY_ASSIGNMENTS + "/bulk";
 
-    public ApprovalIntegrationRestClient() {
-        super(APPROVALS_BASE_URI, SERVICE_VERSION);
-        setInitialPath(composeInitialPath());
+    @PostConstruct
+    public void init() {
+        setBaseUri(config.getDbs().getApprovals());
+        setVersion(SERVICE_VERSION);
     }
 
     public Response createApprovalType(PostApprovalTypeRequest body) {
@@ -160,11 +159,6 @@ public class ApprovalIntegrationRestClient extends AbstractRestClient {
             .statusCode(SC_OK)
             .extract()
             .as(IntegrationDeletePolicyAssignmentResponse.class);
-    }
-
-    @Override
-    protected String composeInitialPath() {
-        return APPROVAL_INTEGRATION_SERVICE;
     }
 
 }

@@ -5,31 +5,32 @@ import static org.apache.http.HttpStatus.SC_CREATED;
 import static org.apache.http.HttpStatus.SC_OK;
 
 import com.backbase.buildingblocks.presentation.errors.BadRequestException;
-import com.backbase.ct.bbfuel.client.common.AbstractRestClient;
-import com.backbase.ct.bbfuel.data.CommonConstants;
+import com.backbase.ct.bbfuel.client.common.RestClient;
+import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
 import com.backbase.integration.user.rest.spec.v2.users.EntitlementsAdminPostRequestBody;
 import com.backbase.integration.user.rest.spec.v2.users.UsersPostRequestBody;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import javax.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
-public class UserIntegrationRestClient extends AbstractRestClient {
+@RequiredArgsConstructor
+public class UserIntegrationRestClient extends RestClient {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserIntegrationRestClient.class);
+    private final BbFuelConfiguration config;
 
-    private static final String ENTITLEMENTS = globalProperties
-        .getString(CommonConstants.PROPERTY_ACCESS_CONTROL_BASE_URI);
     private static final String SERVICE_VERSION = "v2";
-    private static final String USER_INTEGRATION_SERVICE = "user-integration-service";
     private static final String ENDPOINT_USERS = "/users";
     private static final String ENDPOINT_ENTITLEMENTS_ADMIN = ENDPOINT_USERS + "/entitlementsAdmin";
 
-    public UserIntegrationRestClient() {
-        super(ENTITLEMENTS, SERVICE_VERSION);
-        setInitialPath(composeInitialPath());
+    @PostConstruct
+    public void init() {
+        setBaseUri(config.getDbs().getUser());
+        setVersion(SERVICE_VERSION);
     }
 
     public void ingestEntitlementsAdminUnderLEAndLogResponse(String externalUserId, String externalLegalEntityId) {
@@ -41,10 +42,10 @@ public class UserIntegrationRestClient extends AbstractRestClient {
             .as(BadRequestException.class)
             .getMessage()
             .equals("User is already entitlements admin")) {
-            LOGGER.warn("Entitlements admin [{}] already exists under legal entity [{}], skipped ingesting this entitlements admin",
+            log.warn("Entitlements admin [{}] already exists under legal entity [{}], skipped ingesting this entitlements admin",
                     externalUserId, externalLegalEntityId);
         } else if (response.statusCode() == SC_OK) {
-            LOGGER.info("Entitlements admin [{}] ingested under legal entity [{}]",
+            log.info("Entitlements admin [{}] ingested under legal entity [{}]",
                 externalUserId, externalLegalEntityId);
         } else {
             response.then()
@@ -61,19 +62,14 @@ public class UserIntegrationRestClient extends AbstractRestClient {
                 .as(BadRequestException.class)
                 .getMessage()
                 .equals("User already exists")) {
-            LOGGER.info("User [{}] already exists, skipped ingesting this user", user.getExternalId());
+            log.info("User [{}] already exists, skipped ingesting this user", user.getExternalId());
         } else if (response.statusCode() == SC_CREATED) {
-            LOGGER.info("User [{}] ingested under legal entity [{}]",
+            log.info("User [{}] ingested under legal entity [{}]",
                 user.getExternalId(), user.getLegalEntityExternalId());
         } else {
             response.then()
                 .statusCode(SC_CREATED);
         }
-    }
-
-    @Override
-    protected String composeInitialPath() {
-        return USER_INTEGRATION_SERVICE;
     }
 
     private Response ingestEntitlementsAdminUnderLE(String externalUserId, String externalLegalEntityId) {

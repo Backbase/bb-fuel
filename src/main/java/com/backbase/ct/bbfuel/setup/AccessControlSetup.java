@@ -11,6 +11,7 @@ import static java.util.Collections.singletonList;
 
 import com.backbase.ct.bbfuel.client.accessgroup.AccessGroupPresentationRestClient;
 import com.backbase.ct.bbfuel.client.accessgroup.UserContextPresentationRestClient;
+import com.backbase.ct.bbfuel.client.common.LoginRestClient;
 import com.backbase.ct.bbfuel.client.user.UserPresentationRestClient;
 import com.backbase.ct.bbfuel.configurator.AccessGroupsConfigurator;
 import com.backbase.ct.bbfuel.configurator.LegalEntitiesAndUsersConfigurator;
@@ -64,6 +65,7 @@ public class AccessControlSetup extends BaseSetup {
     private final ProductGroupAssignmentValidator productGroupAssignmentValidator;
     private final ProductGroupSeedEnricher productGroupEnricher;
     private final UserContextService userContextService;
+    private final LoginRestClient loginRestClient;
 
     private final JobProfileReader jobProfileReader;
     private final ProductGroupSeedReader productGroupSeedReader;

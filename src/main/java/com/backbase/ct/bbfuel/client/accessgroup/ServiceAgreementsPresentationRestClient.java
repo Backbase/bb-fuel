@@ -2,14 +2,20 @@ package com.backbase.ct.bbfuel.client.accessgroup;
 
 import static org.apache.http.HttpStatus.SC_OK;
 
-import com.backbase.ct.bbfuel.client.common.AbstractRestClient;
+import com.backbase.ct.bbfuel.client.common.RestClient;
+import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementGetResponseBody;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import javax.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ServiceAgreementsPresentationRestClient extends AbstractRestClient {
+@RequiredArgsConstructor
+public class ServiceAgreementsPresentationRestClient extends RestClient {
+
+    private final BbFuelConfiguration config;
 
     private static final String SERVICE_VERSION = "v2";
     private static final String ACCESS_GROUP_PRESENTATION_SERVICE = "accessgroup-presentation-service";
@@ -19,9 +25,11 @@ public class ServiceAgreementsPresentationRestClient extends AbstractRestClient 
     private static final String ENDPOINT_SERVICE_AGREEMENTS_BY_CREATOR_ID =
         ENDPOINT_SERVICE_AGREEMENTS + "?creatorId=%s";
 
-    public ServiceAgreementsPresentationRestClient() {
-        super(SERVICE_VERSION);
-        setInitialPath(composeInitialPath());
+    @PostConstruct
+    public void init() {
+        setBaseUri(config.getPlatform().getGateway());
+        setVersion(SERVICE_VERSION);
+        setInitialPath(ACCESS_GROUP_PRESENTATION_SERVICE);
     }
 
     public Response retrieveServiceAgreementByCreatorLegalEntityId(String internalCreatorLegalEntityId) {
@@ -38,11 +46,6 @@ public class ServiceAgreementsPresentationRestClient extends AbstractRestClient 
             .statusCode(SC_OK)
             .extract()
             .as(ServiceAgreementGetResponseBody.class);
-    }
-
-    @Override
-    protected String composeInitialPath() {
-        return getGatewayURI() + SLASH + ACCESS_GROUP_PRESENTATION_SERVICE;
     }
 
 }

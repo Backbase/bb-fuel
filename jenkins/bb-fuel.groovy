@@ -4,7 +4,7 @@ pipeline {
     agent any
 
     parameters {
-        choice(name: 'SPRING_PROFILES_ACTIVE', choices: 'aws', 'pcf', description: 'Select the profile to operate.\nAWS (default):\nRequires environment name (PCF space will be ignored)\n\nPCF: \nRequires space name (environment name will be ignored)')
+        choice(name: 'SPRING_PROFILES_ACTIVE', choices: 'aws\npcf', description: 'Select the profile to operate.\nAWS (default):\nRequires environment name (PCF space will be ignored)\n\nPCF: \nRequires space name (environment name will be ignored)')
         string(name: 'ENVIRONMENT_NAME', defaultValue: 'env-name-00', description: 'Autoconfig environment name, example: frosty-snow-99\nRead before running: https://github.com/Backbase/bb-fuel/blob/master/README.md')
         string(name: 'PCF_SPACE', defaultValue: 'your-space', description: 'PCF Space name, example: approvals\nRead before running: https://github.com/Backbase/bb-fuel/blob/master/README.md')
         booleanParam(name: 'INGEST_ACCESS_CONTROL', defaultValue: true, description: 'Ingest access control setup')

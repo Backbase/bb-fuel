@@ -24,7 +24,7 @@ environment:
 
 bb-fuel:
   platform:
-    infra: ${environment.name}-${infra.base:infra}
+    infra: ${environment.name}-${infra.base:infra}.${environment.domain}
     registry: http://${bb-fuel.platform.infra}/registry/eureka
     gateway: ${bb-fuel.platform.infra}/gateway/api
     auth: ${bb-fuel.platform.gateway}/auth/login

@@ -30,7 +30,7 @@ bb-fuel:
     auth: ${bb-fuel.platform.gateway}/auth/login
   dbs:
     approvals: http://${environment.name}-approvals.${environment.domain}/approval-integration-service
-    transactions: http://${environment.name}-transactions.${environment.domain}/transactions-integration-service
+    transactions: http://${environment.name}-transactions.${environment.domain}/transaction-integration-service
     contactmanager: http://${environment.name}-contactmanager.${environment.domain}/contact-integration-service
     messages: http://${environment.name}-messages.${environment.domain}/messages-integration-service
     user: http://${environment.name}-entitlements.${environment.domain}/user-integration-service

@@ -6,7 +6,7 @@ bb-fuel:
     auth: ${bb-fuel.platform.gateway}/auth/login
   dbs:
     approvals: http://localhost:8090/approval-integration-service
-    transactions: http://localhost:8083/transactions-integration-service
+    transactions: http://localhost:8083/transaction-integration-service
     contactmanager: http://localhost:8081/contact-integration-service
     messages: http://localhost:8084/messages-integration-service
     user: http://localhost:8086/user-integration-service

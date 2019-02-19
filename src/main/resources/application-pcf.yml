@@ -14,7 +14,7 @@ bb-fuel:
     auth: ${bb-fuel.platform.gateway}/auth/login
   dbs:
     approvals: http://approval-integration-service-${pcf.uri}
-    transactions: http://transactions-integration-service-${pcf.uri}
+    transactions: http://transaction-integration-service-${pcf.uri}
     contactmanager: http://contactmanager-integration-service-${pcf.uri}
     messages: http://messages-integration-service-${pcf.uri}
     user: http://user-integration-service-${pcf.uri}

@@ -28,14 +28,14 @@ public class HealthCheck {
                         // Wait between retries to avoid network storm.
                         if (restClient.isUp()) {
                             LOGGER.info(
-                                "[" + restClient.getInitialPath() + "] online after " + (System.currentTimeMillis()
+                                "[" + restClient.getBaseURI() + "] online after " + (System.currentTimeMillis()
                                     - startTime) + " milliseconds");
                             return;
                         } else {
-                            LOGGER.info("[" + restClient.getInitialPath() + "] not available");
+                            LOGGER.info("[" + restClient.getBaseURI() + "] not available");
                         }
                     } catch (Exception ex) {
-                        LOGGER.info("[" + restClient.getInitialPath() + "] not available");
+                        LOGGER.info("[" + restClient.getBaseURI() + "] not available");
                     }
 
                     try {

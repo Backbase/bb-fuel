@@ -1,5 +1,8 @@
 package com.backbase.ct.bbfuel.util;
 
+import static com.backbase.ct.bbfuel.data.CommonConstants.ENVIRONMENT_PROPERTIES_FILE_NAME;
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTIES_FILE_NAME;
+
 import com.backbase.ct.bbfuel.data.CommonConstants;
 import org.apache.commons.configuration.CompositeConfiguration;
 import org.apache.commons.configuration.ConfigurationException;
@@ -33,13 +36,8 @@ public class GlobalProperties {
         configuration.addConfiguration(new SystemConfiguration());
         configuration.addConfiguration(new EnvironmentConfiguration());
         try {
-            configuration.addConfiguration(new PropertiesConfiguration(CommonConstants.PROPERTIES_FILE_NAME));
-            if (getBoolean(CommonConstants.PROPERTY_CONFIGURATION_SWITCHER)) {
-                configuration.addConfiguration(new PropertiesConfiguration(CommonConstants.LOCAL_PROPERTIES_FILE_NAME));
-                return;
-            }
-            configuration
-                .addConfiguration(new PropertiesConfiguration(CommonConstants.ENVIRONMENT_PROPERTIES_FILE_NAME));
+            configuration.addConfiguration(new PropertiesConfiguration(PROPERTIES_FILE_NAME));
+            configuration.addConfiguration(new PropertiesConfiguration(ENVIRONMENT_PROPERTIES_FILE_NAME));
         } catch (ConfigurationException ignored) {
         }
     }

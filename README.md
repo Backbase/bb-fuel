@@ -23,6 +23,11 @@ bb-fuel is a Backbase DBS data loader tool for test and demo data. It can ingest
 
 It is based on REST and relies on DBS service specs.
 
+BB-Fuel supports the following environments:
+- Local (based on start.backbase.com)
+- AWS (default)
+- PCF
+
 ## Data setup (read before running)
 - [Base setup](docs/BASE_SETUP.md)
 - [Capability data setup](docs/CAPABILITY_DATA_SETUP.md)
@@ -31,19 +36,33 @@ It is based on REST and relies on DBS service specs.
 All builds can be found [here](https://github.com/backbase/bb-fuel/releases)
 
 1. Prerequisites:
-- Environment should be based on one of these configurations: [environment.properties](src/main/resources/environment.properties) or [local.properties](src/main/resources/local.properties)
+- Environment should be based on one of these configurations: 
+-- [application.yml](src/main/resources/application.yml)
+-- [application-local.yml](src/main/resources/application-local.yml)
+-- [application-pcf.yml](src/main/resources/application-pcf.yml)
+Note: Alter the properties accordingly to your environment (each property can be set via command line or build the project with your custom properties with `mvn clean package`)
 - Environment should contain at least the Entitlements and ProductSummary capabilities.
-- Note: Alter the properties accordingly to your environment if necessary (each property can be set via command line or build the project with your custom properties with `mvn clean package`)
 
 2. Run bb-fuel as follows:
-- For environments based on this configuration: [environment.properties](src/main/resources/environment.properties)
+- For environments based on AWS (default):
 ```
 java -Denvironment.name=your-env-00 -jar bb-fuel-{version}-boot.jar
 ```
-- For environments based on this configuration: [local.properties](src/main/resources/local.properties) which is based on the [Blade](https://start.backbase.com/) environment setup:
+Note: replace `your-env-00` with the name of your environment.
+Alternatively you can add `environment.name` property to `application.yml` before building bb-fuel. 
+
+- For environments based on local:
 ```
-java -Duse.local.configurations=true -jar bb-fuel-{version}-boot.jar
+java -Dspring.profiles.active=local -jar bb-fuel-{version}-boot.jar
 ```
+
+- For environments based on PCF:
+```
+java -Dspring.profiles.active=pcf -Dpcf.space=NAME_OF_YOUR_SPACE -jar bb-fuel-{version}-boot.jar
+
+```
+Note: replace `NAME_OF_YOUR_SPACE` with the name of your space in PCF. It requires your routes to include the space name like: http://${service}-${space}.${domain}
+Alternatively you can add `pcf.space` property to `application-pcf.yml` before building bb-fuel.
 
 ## Properties for ingesting data
 The following properties can be set to custom values for different purposes: [data.properties](src/main/resources/data.properties)
@@ -86,7 +105,8 @@ bb-fuel supports multiple DBS versions. See below which version maps to the requ
 
 | DBS version | bb-fuel minimal [version](https://github.com/backbase/bb-fuel/releases) |
 |-------------|-------------------------------------------------------------------------|
-| 2.14.0      | 1.8.17+                                                                  |
+| 2.14.1      | 1.8.20+ & 2.0.0+                                                        |
+| 2.14.0      | 1.8.17+                                                                 |
 | 2.13.2      | 1.8.8+                                                                  |
 | 2.13.1      | 1.6.0+                                                                  |
 | 2.13.0      | 1.6.0+                                                                  |
@@ -102,18 +122,21 @@ bb-fuel supports multiple DBS versions. See below which version maps to the requ
 | 2.10.1      | [2.10.1 tag](https://github.com/backbase/bb-fuel/releases/tag/2.10.1)   |
 | 2.10.0      | [2.10.0 tag](https://github.com/backbase/bb-fuel/releases/tag/2.10.0)   |
 
+Note: Starting version 2.0.0 PCF is added as supported platform.
+
 ## Contributing
 You are welcome to provide bug fixes and new features in the form of pull requests. If you'd like to contribute, please be mindful of the following guidelines:
 
 - All changes should be tested on a [Blade](https://start.backbase.com/) environment (or a similar environment setup) based on the latest versions.
 - Please make one change/feature per pull request.
 - Use descriptive commit messages which will be used for release notes.
-- Try to avoid reformats of files that change the indentation, tabs to spaces etc., as this makes reviewing diffs much more difficult.
+- Try to avoid reformat of files that change the indentation, tabs to spaces etc., as this makes reviewing diffs much more difficult.
 
 ## Contributors
 - [Kwo Ding](https://github.com/kwoding) (author)
 - [Mark Bertels](marinus@backbase.com)
 - [Richard Blank](richardb@backbase.com)
+- [Pim Hazebroek](pimh@backbase.com)
 
 # License
 Copyright (c) 2019 Backbase B.V.

@@ -16,7 +16,6 @@ public class ActionsDataGenerator {
     private static Random random = new Random();
 
     public static ActionRecipesPostRequestBody generateActionRecipesPostRequestBody(String internalArrangementId) {
-        // Defined in: https://stash.backbase.com/projects/ACT/repos/actionrecipes-presentation-service/browse/src/main/resources/recipe_specifications_schema.yml
         List<String> specificationIds = asList("1", "4");
 
         return new ActionRecipesPostRequestBody()

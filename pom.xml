@@ -9,7 +9,7 @@
 
     <groupId>com.backbase.ct</groupId>
     <artifactId>bb-fuel</artifactId>
-    <version>1.8.19-SNAPSHOT</version>
+    <version>2.0.6-SNAPSHOT</version>
     <name>Backbase :: Capability Testing :: bb-fuel</name>
 
     <scm>
@@ -20,7 +20,7 @@
     </scm>
 
     <properties>
-        <mainClass>com.backbase.ct.bbfuel.Application</mainClass>
+        <mainClass>com.backbase.ct.bbfuel.BbFuelApplication</mainClass>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <rest-assured.version>3.0.7</rest-assured.version>
@@ -38,7 +38,7 @@
             <dependency>
                 <groupId>com.backbase.dbs</groupId>
                 <artifactId>banking-services-bom</artifactId>
-                <version>2.14.0</version>
+                <version>2.14.1</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

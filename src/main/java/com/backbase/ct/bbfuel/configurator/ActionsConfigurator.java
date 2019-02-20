@@ -29,7 +29,7 @@ public class ActionsConfigurator {
     private static final Logger LOGGER = LoggerFactory.getLogger(ActionsConfigurator.class);
     private static GlobalProperties globalProperties = GlobalProperties.getInstance();
 
-    private LoginRestClient loginRestClient = new LoginRestClient();
+    private final LoginRestClient loginRestClient;
     private final UserContextPresentationRestClient userContextPresentationRestClient;
     private final ProductSummaryPresentationRestClient productSummaryPresentationRestClient;
     private final ActionRecipesPresentationRestClient actionRecipesPresentationRestClient ;

@@ -13,6 +13,7 @@ import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ROOT_ENTITLEM
 import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
 
 import com.backbase.ct.bbfuel.client.accessgroup.UserContextPresentationRestClient;
+import com.backbase.ct.bbfuel.client.common.LoginRestClient;
 import com.backbase.ct.bbfuel.configurator.ActionsConfigurator;
 import com.backbase.ct.bbfuel.configurator.ApprovalsConfigurator;
 import com.backbase.ct.bbfuel.configurator.BillPayConfigurator;
@@ -36,6 +37,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
 
     private final UserContextService userContextService;
     private final UserContextPresentationRestClient userContextPresentationRestClient;
+    private final LoginRestClient loginRestClient;
     private final AccessControlSetup accessControlSetup;
     private final ApprovalsConfigurator approvalsConfigurator;
     private final LimitsConfigurator limitsConfigurator;

@@ -30,7 +30,9 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import org.apache.http.client.utils.URIBuilder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * Usage example:
@@ -56,31 +58,26 @@ import org.apache.http.client.utils.URIBuilder;
  *  capabilityRestClient.requestSpec();
  * </pre>
  */
+@NoArgsConstructor
 public class RestClient {
 
-    private GlobalProperties globalProperties = GlobalProperties.getInstance();
     private static final String PARAMETER_NAME = "CONNECTION_MANAGER_TIMEOUT";
     private static final int TIMEOUT_VALUE = 10000;
     private static final String DEFAULT_HEALTH_PATH = "/production-support/health";
     private static final String SERVER_STATUS_UP = "UP";
     private static final String TENANT_HEADER_NAME = "X-TID";
 
+    protected static GlobalProperties globalProperties = GlobalProperties.getInstance();
+
+    @Getter
     private URI baseURI = null;
     private RestAssuredConfig restAssuredConfig;
     private String initialPath = "";
+    @Setter
     private String version;
 
     private static Map<String, String> cookiesJar = new LinkedHashMap<>();
     private final ResponseParserRegistrar responseParserRegistrar = new ResponseParserRegistrar();
-
-    RestClient(String baseUri) {
-        setBaseUri(baseUri);
-    }
-
-    RestClient(String baseUri, String version) {
-        setBaseUri(baseUri);
-        this.version = version;
-    }
 
     public RestClient setInitialPath(String initialPath) {
         this.initialPath = initialPath;
@@ -97,19 +94,6 @@ public class RestClient {
 
     public String getPath(String endpoint) {
         return version + endpoint;
-    }
-
-    public String getBaseURIWithoutPort() {
-        String baseAPI;
-
-        URI uri;
-        try {
-            uri = new URIBuilder().setScheme(baseURI.getScheme()).setHost(baseURI.getHost()).build();
-        } catch (URISyntaxException e) {
-            throw new RuntimeException("An error occurred while constructing base uri without port", e);
-        }
-        baseAPI = uri.toString();
-        return baseAPI;
     }
 
     /**
@@ -158,7 +142,7 @@ public class RestClient {
         cookiesJar.putAll(cookies);
     }
 
-    private void setBaseUri(String baseUri) {
+    protected void setBaseUri(String baseUri) {
         try {
             this.baseURI = new URI(baseUri);
         } catch (URISyntaxException e) {
@@ -168,10 +152,6 @@ public class RestClient {
 
     private Map<String, String> getCookies() {
         return cookiesJar;
-    }
-
-    private URI getBaseURI() {
-        return baseURI;
     }
 
     /**

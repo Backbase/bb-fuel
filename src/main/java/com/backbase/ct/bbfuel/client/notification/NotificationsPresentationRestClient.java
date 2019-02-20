@@ -1,21 +1,29 @@
 package com.backbase.ct.bbfuel.client.notification;
 
-import com.backbase.ct.bbfuel.client.common.AbstractRestClient;
+import com.backbase.ct.bbfuel.client.common.RestClient;
+import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
 import com.backbase.dbs.presentation.notifications.rest.spec.v2.notifications.NotificationsPostRequestBody;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import javax.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
-public class NotificationsPresentationRestClient extends AbstractRestClient {
+@RequiredArgsConstructor
+public class NotificationsPresentationRestClient extends RestClient {
+
+    private final BbFuelConfiguration config;
 
     private static final String SERVICE_VERSION = "v2";
     private static final String NOTIFICATIONS_PRESENTATION_SERVICE = "notifications-presentation-service";
     private static final String ENDPOINT_NOTIFICATIONS = "/notifications";
 
-    public NotificationsPresentationRestClient() {
-        super(SERVICE_VERSION);
-        setInitialPath(composeInitialPath());
+    @PostConstruct
+    public void init() {
+        setBaseUri(config.getPlatform().getGateway());
+        setVersion(SERVICE_VERSION);
+        setInitialPath(NOTIFICATIONS_PRESENTATION_SERVICE);
     }
 
     public Response createNotification(NotificationsPostRequestBody body) {
@@ -23,11 +31,6 @@ public class NotificationsPresentationRestClient extends AbstractRestClient {
             .contentType(ContentType.JSON)
             .body(body)
             .post(getPath(ENDPOINT_NOTIFICATIONS));
-    }
-
-    @Override
-    protected String composeInitialPath() {
-        return getGatewayURI() + SLASH + NOTIFICATIONS_PRESENTATION_SERVICE;
     }
 
 }

@@ -3,21 +3,29 @@ package com.backbase.ct.bbfuel.client.pfm;
 import static java.util.Arrays.asList;
 import static org.apache.http.HttpStatus.SC_OK;
 
-import com.backbase.ct.bbfuel.client.common.AbstractRestClient;
+import com.backbase.ct.bbfuel.client.common.RestClient;
+import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
 import com.backbase.presentation.categories.management.rest.spec.v2.categories.id.CategoryGetResponseBody;
 import java.util.List;
+import javax.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CategoriesPresentationRestClient extends AbstractRestClient {
+@RequiredArgsConstructor
+public class CategoriesPresentationRestClient extends RestClient {
+
+    private final BbFuelConfiguration config;
 
     private static final String SERVICE_VERSION = "v2";
     private static final String CATEGORIES_MANAGEMENT_PRESENTATION_SERVICE = "categories-management-presentation-service";
     private static final String ENDPOINT_CATEGORIES = "/categories";
 
-    public CategoriesPresentationRestClient() {
-        super(SERVICE_VERSION);
-        setInitialPath(composeInitialPath());
+    @PostConstruct
+    public void init() {
+        setBaseUri(config.getPlatform().getGateway());
+        setVersion(SERVICE_VERSION);
+        setInitialPath(CATEGORIES_MANAGEMENT_PRESENTATION_SERVICE);
     }
 
     public List<CategoryGetResponseBody> retrieveCategories() {
@@ -27,11 +35,6 @@ public class CategoriesPresentationRestClient extends AbstractRestClient {
             .statusCode(SC_OK)
             .extract()
             .as(CategoryGetResponseBody[].class));
-    }
-
-    @Override
-    protected String composeInitialPath() {
-        return getGatewayURI() + SLASH + CATEGORIES_MANAGEMENT_PRESENTATION_SERVICE;
     }
 
 }

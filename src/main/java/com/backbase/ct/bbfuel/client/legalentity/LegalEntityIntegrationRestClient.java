@@ -2,32 +2,31 @@ package com.backbase.ct.bbfuel.client.legalentity;
 
 import static org.apache.http.HttpStatus.SC_OK;
 
-import com.backbase.ct.bbfuel.client.common.AbstractRestClient;
-import com.backbase.ct.bbfuel.data.CommonConstants;
+import com.backbase.ct.bbfuel.client.common.RestClient;
+import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
 import com.backbase.integration.legalentity.rest.spec.v2.legalentities.LegalEntitiesPostRequestBody;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementGetResponseBody;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import javax.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
-public class LegalEntityIntegrationRestClient extends AbstractRestClient {
+@RequiredArgsConstructor
+public class LegalEntityIntegrationRestClient extends RestClient {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(LegalEntityIntegrationRestClient.class);
+    private final BbFuelConfiguration config;
 
-    private static final String ENTITLEMENTS = globalProperties
-        .getString(CommonConstants.PROPERTY_ACCESS_CONTROL_BASE_URI);
     private static final String SERVICE_VERSION = "v2";
-    private static final String LEGAL_ENTITY_INTEGRATION_SERVICE = "legalentity-integration-service";
     private static final String ENDPOINT_LEGAL_ENTITIES = "/legalentities";
     private static final String ENDPOINT_SERVICE_AGREEMENTS_MASTER =
         ENDPOINT_LEGAL_ENTITIES + "/%s/serviceagreements/master";
 
-    public LegalEntityIntegrationRestClient() {
-        super(ENTITLEMENTS, SERVICE_VERSION);
-        setInitialPath(composeInitialPath());
+    @PostConstruct
+    public void init() {
+        setBaseUri(config.getDbs().getLegalentity());
+        setVersion(SERVICE_VERSION);
     }
 
     public Response ingestLegalEntity(LegalEntitiesPostRequestBody body) {
@@ -44,11 +43,6 @@ public class LegalEntityIntegrationRestClient extends AbstractRestClient {
             .statusCode(SC_OK)
             .extract()
             .as(ServiceAgreementGetResponseBody.class);
-    }
-
-    @Override
-    protected String composeInitialPath() {
-        return LEGAL_ENTITY_INTEGRATION_SERVICE;
     }
 
 }

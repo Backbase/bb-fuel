@@ -62,17 +62,6 @@ Note: each approval type will be assigned to a separate (new) function group wit
 
 Note: this approval type will be assigned to a separate (new) function group with the contacts function.
 
-### Server configuration
-These parameters should be configured in the `application.yml` file in the approval-integration-service.
-```
-backbase:
-  security:
-    mtls:
-      enabled: false
-    public:
-      paths: /**
-```
-
 ## Limits setup
 Periodic limit per service agreement, for function group "Admin":
 

@@ -30,7 +30,7 @@ public class LimitsConfigurator {
     private static final Logger LOGGER = LoggerFactory.getLogger(LimitsConfigurator.class);
     private GlobalProperties globalProperties = GlobalProperties.getInstance();
 
-    private LoginRestClient loginRestClient = new LoginRestClient();
+    private final LoginRestClient loginRestClient;
     private final UserContextPresentationRestClient userContextPresentationRestClient;
     private final AccessGroupPresentationRestClient accessGroupPresentationRestClient;
     private final AccessGroupIntegrationRestClient accessGroupIntegrationRestClient;

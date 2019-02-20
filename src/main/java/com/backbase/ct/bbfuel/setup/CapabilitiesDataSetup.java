@@ -1,6 +1,7 @@
 package com.backbase.ct.bbfuel.setup;
 
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_ACTIONS;
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_BILLPAY;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_CONTACTS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_PAYMENTS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_CONTACTS;
@@ -14,6 +15,7 @@ import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
 import com.backbase.ct.bbfuel.client.accessgroup.UserContextPresentationRestClient;
 import com.backbase.ct.bbfuel.configurator.ActionsConfigurator;
 import com.backbase.ct.bbfuel.configurator.ApprovalsConfigurator;
+import com.backbase.ct.bbfuel.configurator.BillPayConfigurator;
 import com.backbase.ct.bbfuel.configurator.ContactsConfigurator;
 import com.backbase.ct.bbfuel.configurator.LimitsConfigurator;
 import com.backbase.ct.bbfuel.configurator.MessagesConfigurator;
@@ -42,10 +44,11 @@ public class CapabilitiesDataSetup extends BaseSetup {
     private final PaymentsConfigurator paymentsConfigurator;
     private final MessagesConfigurator messagesConfigurator;
     private final ActionsConfigurator actionsConfigurator;
+    private final BillPayConfigurator billpayConfigurator;
     private String rootEntitlementsAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
 
     /**
-     * Ingest data with services of projects APPR, PO, LIM, NOT, CON, MC and ACT.
+     * Ingest data with services of projects APPR, PO, LIM, NOT, CON, MC, ACT and BPAY.
      */
     @Override
     public void initiate() {
@@ -56,6 +59,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
         this.ingestContactsPerUser();
         this.ingestConversationsPerUser();
         this.ingestActionsPerUser();
+        this.ingestBillPayUsers();
     }
 
     private void ingestApprovals() {
@@ -154,6 +158,17 @@ public class CapabilitiesDataSetup extends BaseSetup {
                 .collect(Collectors.toList());
 
             externalUserIds.forEach(this.actionsConfigurator::ingestActions);
+        }
+    }
+    
+    private void ingestBillPayUsers() {
+        if (this.globalProperties.getBoolean(PROPERTY_INGEST_BILLPAY)) {
+            this.accessControlSetup.getLegalEntitiesWithUsersExcludingSupport()
+                            .stream()
+                            .map(LegalEntityWithUsers::getUserExternalIds)
+                            .flatMap(List::stream)
+                            .collect(Collectors.toList())
+                            .forEach(this.billpayConfigurator::ingestBillPayUser);
         }
     }
 }

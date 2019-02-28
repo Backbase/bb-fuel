@@ -8,6 +8,7 @@
 - Notifications on global target group
 - Messages per user
 - Actions per user for SEPA CT and/or US Wire arrangements
+- Bill Pay enrolment per user
 
 Note: This can be rerun on an existing environment which already contains data by setting the property `ingest.access.control` to `false`
 

@@ -1,6 +1,7 @@
 package com.backbase.ct.bbfuel;
 
 import com.backbase.ct.bbfuel.healthcheck.AccessControlHealthCheck;
+import com.backbase.ct.bbfuel.healthcheck.BillPayHealthCheck;
 import com.backbase.ct.bbfuel.healthcheck.ProductSummaryHealthCheck;
 import com.backbase.ct.bbfuel.healthcheck.TransactionsHealthCheck;
 import com.backbase.ct.bbfuel.setup.AccessControlSetup;
@@ -28,6 +29,7 @@ public class Runner implements ApplicationRunner {
     private final AccessControlHealthCheck accessControlHealthCheck;
     private final ProductSummaryHealthCheck productSummaryHealthCheck;
     private final TransactionsHealthCheck transactionsHealthCheck;
+    private final BillPayHealthCheck billPayHealthCheck;
 
     @Override
     public void run(ApplicationArguments args) {
@@ -64,6 +66,7 @@ public class Runner implements ApplicationRunner {
         accessControlHealthCheck.checkAccessControlServicesHealth();
         productSummaryHealthCheck.checkProductSummaryServicesHealth();
         transactionsHealthCheck.checkTransactionsServicesHealth();
+        billPayHealthCheck.checkBillPayServicesHealth();
     }
 
     private void setupAccessControl() throws IOException {

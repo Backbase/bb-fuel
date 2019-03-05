@@ -22,20 +22,21 @@ public class HealthCheck {
 
         restClients.parallelStream()
             .forEach(restClient -> {
+                String serviceUri = restClient.getBaseURI().toString() + "/" + restClient.getInitialPath();
                 long startTime = System.currentTimeMillis();
                 while (System.currentTimeMillis() - startTime < timeOutInMillis) {
                     try {
                         // Wait between retries to avoid network storm.
                         if (restClient.isUp()) {
                             LOGGER.info(
-                                "[" + restClient.getBaseURI() + "] online after " + (System.currentTimeMillis()
+                                "[" + serviceUri + "] online after " + (System.currentTimeMillis()
                                     - startTime) + " milliseconds");
                             return;
                         } else {
-                            LOGGER.info("[" + restClient.getBaseURI() + "] not available");
+                            LOGGER.info("[" + serviceUri + "] not available");
                         }
                     } catch (Exception ex) {
-                        LOGGER.info("[" + restClient.getBaseURI() + "] not available");
+                        LOGGER.info("[" + serviceUri + "] not available");
                     }
 
                     try {
@@ -45,7 +46,7 @@ public class HealthCheck {
                         Thread.currentThread().interrupt();
                     }
                 }
-                throw new IllegalStateException("[" + restClient.getInitialPath() + "] timed out");
+                throw new IllegalStateException("[" + serviceUri + "] timed out");
             });
     }
 }

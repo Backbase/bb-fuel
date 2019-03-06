@@ -61,6 +61,7 @@ public final class CommonConstants {
     public static final String PROPERTY_ACTIONS_MIN = "actions.min";
     public static final String PROPERTY_ACTIONS_MAX = "actions.max";
     public static final String PROPERTY_INGEST_ACTIONS = "ingest.actions";
+    public static final String PROPERTY_INGEST_BILLPAY = "ingest.billpay";
 
     // Product summary
     public static final String PROPERTY_PRODUCTS_JSON_LOCATION = "products.json";

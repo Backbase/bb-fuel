@@ -32,7 +32,6 @@ public class ServiceAgreementsIntegrationRestClient extends RestClient {
         setVersion(SERVICE_VERSION);
     }
 
-
     public Response ingestServiceAgreement(ServiceAgreementPostRequestBody body) {
         return requestSpec()
             .contentType(ContentType.JSON)

@@ -33,12 +33,11 @@ public class UserIntegrationRestClient extends RestClient {
         Response response = ingestUser(user);
 
         if (response.statusCode() == SC_BAD_REQUEST
-            &&
-            response.then()
-                .extract()
-                .as(BadRequestException.class)
-                .getMessage()
-                .equals("User already exists")) {
+            && response.then()
+            .extract()
+            .as(BadRequestException.class)
+            .getMessage()
+            .equals("User already exists")) {
             log.info("User [{}] already exists, skipped ingesting this user", user.getExternalId());
         } else if (response.statusCode() == SC_CREATED) {
             log.info("User [{}] ingested under legal entity [{}]",

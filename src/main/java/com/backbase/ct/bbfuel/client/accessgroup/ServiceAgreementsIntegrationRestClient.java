@@ -55,7 +55,7 @@ public class ServiceAgreementsIntegrationRestClient extends RestClient {
             .extract()
             .as(ServiceAgreementGet.class);
     }
-    
+
     public Response addServiceAgreementAdminsBulk(List<UserServiceAgreementPair> listOfUsers) {
         return requestSpec()
             .contentType(ContentType.JSON)

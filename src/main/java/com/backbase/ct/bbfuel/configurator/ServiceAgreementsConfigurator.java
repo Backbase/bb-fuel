@@ -1,11 +1,5 @@
 package com.backbase.ct.bbfuel.configurator;
 
-import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
-import static com.backbase.ct.bbfuel.data.ServiceAgreementsDataGenerator.generateServiceAgreementPostRequestBody;
-import static com.backbase.ct.bbfuel.data.ServiceAgreementsDataGenerator.generateServiceAgreementPutRequestBody;
-import static org.apache.http.HttpStatus.SC_CREATED;
-import static org.apache.http.HttpStatus.SC_OK;
-
 import com.backbase.ct.bbfuel.client.accessgroup.ServiceAgreementsIntegrationRestClient;
 import com.backbase.ct.bbfuel.client.accessgroup.UserContextPresentationRestClient;
 import com.backbase.ct.bbfuel.client.common.LoginRestClient;
@@ -14,10 +8,6 @@ import com.backbase.ct.bbfuel.client.user.UserPresentationRestClient;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.Participant;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementPostResponseBody;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Set;
-
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.UserServiceAgreementPair;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementGetResponseBody;
 import lombok.RequiredArgsConstructor;
@@ -25,13 +15,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Set;
+
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
+import static com.backbase.ct.bbfuel.data.ServiceAgreementsDataGenerator.generateServiceAgreementPostRequestBody;
+import static com.backbase.ct.bbfuel.data.ServiceAgreementsDataGenerator.generateServiceAgreementPutRequestBody;
+import static org.apache.http.HttpStatus.SC_CREATED;
+import static org.apache.http.HttpStatus.SC_OK;
+
 @Service
 @RequiredArgsConstructor
 public class ServiceAgreementsConfigurator {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceAgreementsConfigurator.class);
     private GlobalProperties globalProperties = GlobalProperties.getInstance();
-
     private final LoginRestClient loginRestClient;
     private final UserPresentationRestClient userPresentationRestClient;
     private final LegalEntityIntegrationRestClient legalEntityIntegrationRestClient;
@@ -45,12 +43,12 @@ public class ServiceAgreementsConfigurator {
         enrichParticipantsWithExternalId(participants);
 
         String serviceAgreementId = serviceAgreementsIntegrationRestClient
-            .ingestServiceAgreement(generateServiceAgreementPostRequestBody(participants))
-            .then()
-            .statusCode(SC_CREATED)
-            .extract()
-            .as(ServiceAgreementPostResponseBody.class)
-            .getId();
+                .ingestServiceAgreement(generateServiceAgreementPostRequestBody(participants))
+                .then()
+                .statusCode(SC_CREATED)
+                .extract()
+                .as(ServiceAgreementPostResponseBody.class)
+                .getId();
 
         if (LOGGER.isInfoEnabled()) {
             LOGGER.info("Service agreement ingested for participants {}", new ArrayList<>(participants));
@@ -61,13 +59,13 @@ public class ServiceAgreementsConfigurator {
 
     public void updateMasterServiceAgreementWithExternalIdByLegalEntity(String externalLegalEntityId) {
         String internalServiceAgreementId = legalEntityIntegrationRestClient
-            .getMasterServiceAgreementOfLegalEntity(externalLegalEntityId)
-            .getId();
+                .getMasterServiceAgreementOfLegalEntity(externalLegalEntityId)
+                .getId();
 
         serviceAgreementsIntegrationRestClient
-            .updateServiceAgreement(internalServiceAgreementId, generateServiceAgreementPutRequestBody())
-            .then()
-            .statusCode(SC_OK);
+                .updateServiceAgreement(internalServiceAgreementId, generateServiceAgreementPutRequestBody())
+                .then()
+                .statusCode(SC_OK);
 
         LOGGER.info("Service agreement [{}] updated with external id", internalServiceAgreementId);
     }
@@ -75,21 +73,24 @@ public class ServiceAgreementsConfigurator {
     private void enrichParticipantsWithExternalId(Set<Participant> participants) {
         for (Participant participant : participants) {
             String externalAdminUserId = participant.getAdmins()
-                .iterator()
-                .next();
+                    .iterator()
+                    .next();
 
             String externalLegalEntityId = userPresentationRestClient
-                .retrieveLegalEntityByExternalUserId(externalAdminUserId)
-                .getExternalId();
+                    .retrieveLegalEntityByExternalUserId(externalAdminUserId)
+                    .getExternalId();
 
             participant.setExternalId(externalLegalEntityId);
         }
     }
 
-    public void setEntitlementsAdminUnderMsa(String user, String externalLeId){
-        ServiceAgreementGetResponseBody msa = legalEntityIntegrationRestClient.getMasterServiceAgreementOfLegalEntity(externalLeId);
-        serviceAgreementsIntegrationRestClient.addServiceAgreementAdminsBulk(Collections.singletonList(new UserServiceAgreementPair()
-                .withExternalUserId(user)
-        .withExternalServiceAgreementId(msa.getExternalId())));
+    public void setEntitlementsAdminUnderMsa(String user, String externalLeId) {
+        ServiceAgreementGetResponseBody msa = legalEntityIntegrationRestClient
+                .getMasterServiceAgreementOfLegalEntity(externalLeId);
+        serviceAgreementsIntegrationRestClient
+                .addServiceAgreementAdminsBulk(Collections.singletonList
+                        (new UserServiceAgreementPair()
+                                .withExternalUserId(user)
+                                .withExternalServiceAgreementId(msa.getExternalId())));
     }
 }

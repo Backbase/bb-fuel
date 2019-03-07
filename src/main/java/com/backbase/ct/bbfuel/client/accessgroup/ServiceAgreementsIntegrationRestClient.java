@@ -1,8 +1,5 @@
 package com.backbase.ct.bbfuel.client.accessgroup;
 
-import static java.util.Arrays.asList;
-import static org.apache.http.HttpStatus.SC_OK;
-
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementGet;
@@ -11,18 +8,18 @@ import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagr
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.UserServiceAgreementPair;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
+
+import static org.apache.http.HttpStatus.SC_OK;
 
 @Component
 @RequiredArgsConstructor
 public class ServiceAgreementsIntegrationRestClient extends RestClient {
-
     private final BbFuelConfiguration config;
-
     private static final String SERVICE_VERSION = "v2";
     private static final String ENDPOINT_ACCESS_GROUPS = "/accessgroups";
     private static final String ENDPOINT_SERVICE_AGREEMENTS = ENDPOINT_ACCESS_GROUPS + "/serviceagreements";
@@ -37,25 +34,25 @@ public class ServiceAgreementsIntegrationRestClient extends RestClient {
 
     public Response ingestServiceAgreement(ServiceAgreementPostRequestBody body) {
         return requestSpec()
-            .contentType(ContentType.JSON)
-            .body(body)
-            .post(getPath(ENDPOINT_SERVICE_AGREEMENTS));
+                .contentType(ContentType.JSON)
+                .body(body)
+                .post(getPath(ENDPOINT_SERVICE_AGREEMENTS));
     }
 
     public Response updateServiceAgreement(String internalServiceAgreementId, ServiceAgreementPutRequestBody body) {
         return requestSpec()
-            .contentType(ContentType.JSON)
-            .body(body)
-            .put(getPath(String.format(ENDPOINT_SERVICE_AGREEMENTS_BY_ID, internalServiceAgreementId)));
+                .contentType(ContentType.JSON)
+                .body(body)
+                .put(getPath(String.format(ENDPOINT_SERVICE_AGREEMENTS_BY_ID, internalServiceAgreementId)));
     }
 
     public ServiceAgreementGet retrieveServiceAgreementByExternalId(String externalServiceAgreementId) {
         return requestSpec()
-            .get(getPath(String.format(ENDPOINT_SERVICE_AGREEMENTS_BY_ID, externalServiceAgreementId)))
-            .then()
-            .statusCode(SC_OK)
-            .extract()
-            .as(ServiceAgreementGet.class);
+                .get(getPath(String.format(ENDPOINT_SERVICE_AGREEMENTS_BY_ID, externalServiceAgreementId)))
+                .then()
+                .statusCode(SC_OK)
+                .extract()
+                .as(ServiceAgreementGet.class);
     }
 
     public Response addServiceAgreementAdminsBulk(List<UserServiceAgreementPair> listOfUsers) {

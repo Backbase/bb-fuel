@@ -15,7 +15,11 @@ import com.backbase.ct.bbfuel.util.GlobalProperties;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.Participant;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementPostResponseBody;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Set;
+
+import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.UserServiceAgreementPair;
+import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementGetResponseBody;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,5 +84,12 @@ public class ServiceAgreementsConfigurator {
 
             participant.setExternalId(externalLegalEntityId);
         }
+    }
+
+    public void setEntitlementsAdminUnderMsa(String user, String externalLeId){
+        ServiceAgreementGetResponseBody msa = legalEntityIntegrationRestClient.getMasterServiceAgreementOfLegalEntity(externalLeId);
+        serviceAgreementsIntegrationRestClient.addServiceAgreementAdminsBulk(Collections.singletonList(new UserServiceAgreementPair()
+                .withExternalUserId(user)
+        .withExternalServiceAgreementId(msa.getExternalId())));
     }
 }

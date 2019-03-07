@@ -1,5 +1,8 @@
 package com.backbase.ct.bbfuel.configurator;
 
+import static com.backbase.ct.bbfuel.data.CommonConstants.EXTERNAL_ROOT_LEGAL_ENTITY_ID;
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
+
 import com.backbase.ct.bbfuel.client.accessgroup.UserContextPresentationRestClient;
 import com.backbase.ct.bbfuel.client.common.LoginRestClient;
 import com.backbase.ct.bbfuel.client.user.UserIntegrationRestClient;
@@ -12,12 +15,10 @@ import com.backbase.integration.legalentity.rest.spec.v2.legalentities.LegalEnti
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import static com.backbase.ct.bbfuel.data.CommonConstants.EXTERNAL_ROOT_LEGAL_ENTITY_ID;
-import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
-
 @Service
 @RequiredArgsConstructor
 public class LegalEntitiesAndUsersConfigurator {
+
     private GlobalProperties globalProperties = GlobalProperties.getInstance();
     private final LoginRestClient loginRestClient;
     private final UserContextPresentationRestClient userContextPresentationRestClient;
@@ -39,25 +40,25 @@ public class LegalEntitiesAndUsersConfigurator {
 
     private void ingestRootLegalEntityAndEntitlementsAdmin(LegalEntityWithUsers root) {
         String externalLegalEntityId = this.legalEntityService
-                .ingestLegalEntity(LegalEntitiesAndUsersDataGenerator
-                        .generateRootLegalEntitiesPostRequestBody(EXTERNAL_ROOT_LEGAL_ENTITY_ID));
+            .ingestLegalEntity(LegalEntitiesAndUsersDataGenerator
+                .generateRootLegalEntitiesPostRequestBody(EXTERNAL_ROOT_LEGAL_ENTITY_ID));
         this.serviceAgreementsConfigurator
-                .updateMasterServiceAgreementWithExternalIdByLegalEntity(externalLegalEntityId);
+            .updateMasterServiceAgreementWithExternalIdByLegalEntity(externalLegalEntityId);
 
         User admin = root.getUsers().get(0);
         this.userIntegrationRestClient.ingestUserAndLogResponse(LegalEntitiesAndUsersDataGenerator
-                .generateUsersPostRequestBody(admin, EXTERNAL_ROOT_LEGAL_ENTITY_ID));
+            .generateUsersPostRequestBody(admin, EXTERNAL_ROOT_LEGAL_ENTITY_ID));
         this.serviceAgreementsConfigurator
-                .setEntitlementsAdminUnderMsa(admin.getExternalId(), EXTERNAL_ROOT_LEGAL_ENTITY_ID);
+            .setEntitlementsAdminUnderMsa(admin.getExternalId(), EXTERNAL_ROOT_LEGAL_ENTITY_ID);
     }
 
     private void ingestLegalEntityAndUsers(LegalEntityWithUsers legalEntityWithUsers) {
         final LegalEntitiesPostRequestBody requestBody = LegalEntitiesAndUsersDataGenerator
-                .composeLegalEntitiesPostRequestBody(
-                        legalEntityWithUsers.getLegalEntityExternalId(),
-                        legalEntityWithUsers.getLegalEntityName(),
-                        legalEntityWithUsers.getParentLegalEntityExternalId(),
-                        legalEntityWithUsers.getLegalEntityType());
+            .composeLegalEntitiesPostRequestBody(
+                legalEntityWithUsers.getLegalEntityExternalId(),
+                legalEntityWithUsers.getLegalEntityName(),
+                legalEntityWithUsers.getParentLegalEntityExternalId(),
+                legalEntityWithUsers.getLegalEntityType());
 
         this.loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
         this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
@@ -65,9 +66,9 @@ public class LegalEntitiesAndUsersConfigurator {
         String externalLegalEntityId = this.legalEntityService.ingestLegalEntity(requestBody);
 
         legalEntityWithUsers.getUsers().parallelStream()
-                .forEach(
-                        user -> this.userIntegrationRestClient
-                                .ingestUserAndLogResponse(LegalEntitiesAndUsersDataGenerator
-                                        .generateUsersPostRequestBody(user, externalLegalEntityId)));
+            .forEach(
+                user -> this.userIntegrationRestClient
+                    .ingestUserAndLogResponse(LegalEntitiesAndUsersDataGenerator
+                        .generateUsersPostRequestBody(user, externalLegalEntityId)));
     }
 }

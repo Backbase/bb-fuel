@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 public class LegalEntitiesAndUsersConfigurator {
 
     private GlobalProperties globalProperties = GlobalProperties.getInstance();
-
     private final LoginRestClient loginRestClient;
     private final UserContextPresentationRestClient userContextPresentationRestClient;
     private final UserIntegrationRestClient userIntegrationRestClient;
@@ -40,16 +39,17 @@ public class LegalEntitiesAndUsersConfigurator {
     }
 
     private void ingestRootLegalEntityAndEntitlementsAdmin(LegalEntityWithUsers root) {
-        String externalLegalEntityId = this.legalEntityService.ingestLegalEntity(LegalEntitiesAndUsersDataGenerator
-            .generateRootLegalEntitiesPostRequestBody(EXTERNAL_ROOT_LEGAL_ENTITY_ID));
+        String externalLegalEntityId = this.legalEntityService
+            .ingestLegalEntity(LegalEntitiesAndUsersDataGenerator
+                .generateRootLegalEntitiesPostRequestBody(EXTERNAL_ROOT_LEGAL_ENTITY_ID));
         this.serviceAgreementsConfigurator
             .updateMasterServiceAgreementWithExternalIdByLegalEntity(externalLegalEntityId);
 
         User admin = root.getUsers().get(0);
         this.userIntegrationRestClient.ingestUserAndLogResponse(LegalEntitiesAndUsersDataGenerator
             .generateUsersPostRequestBody(admin, EXTERNAL_ROOT_LEGAL_ENTITY_ID));
-        this.userIntegrationRestClient.ingestEntitlementsAdminUnderLEAndLogResponse(admin.getExternalId(),
-            EXTERNAL_ROOT_LEGAL_ENTITY_ID);
+        this.serviceAgreementsConfigurator
+            .setEntitlementsAdminUnderMsa(admin.getExternalId(), EXTERNAL_ROOT_LEGAL_ENTITY_ID);
     }
 
     private void ingestLegalEntityAndUsers(LegalEntityWithUsers legalEntityWithUsers) {

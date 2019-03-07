@@ -14,7 +14,10 @@ import com.backbase.ct.bbfuel.client.user.UserPresentationRestClient;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.Participant;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementPostResponseBody;
+import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.UserServiceAgreementPair;
+import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementGetResponseBody;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -27,7 +30,6 @@ public class ServiceAgreementsConfigurator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceAgreementsConfigurator.class);
     private GlobalProperties globalProperties = GlobalProperties.getInstance();
-
     private final LoginRestClient loginRestClient;
     private final UserPresentationRestClient userPresentationRestClient;
     private final LegalEntityIntegrationRestClient legalEntityIntegrationRestClient;
@@ -80,5 +82,15 @@ public class ServiceAgreementsConfigurator {
 
             participant.setExternalId(externalLegalEntityId);
         }
+    }
+
+    public void setEntitlementsAdminUnderMsa(String user, String externalLeId) {
+        ServiceAgreementGetResponseBody msa = legalEntityIntegrationRestClient
+            .getMasterServiceAgreementOfLegalEntity(externalLeId);
+        serviceAgreementsIntegrationRestClient
+            .addServiceAgreementAdminsBulk(Collections.singletonList(
+                new UserServiceAgreementPair()
+                    .withExternalUserId(user)
+                    .withExternalServiceAgreementId(msa.getExternalId())));
     }
 }

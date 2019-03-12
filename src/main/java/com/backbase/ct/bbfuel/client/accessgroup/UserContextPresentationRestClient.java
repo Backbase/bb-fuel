@@ -1,6 +1,5 @@
 package com.backbase.ct.bbfuel.client.accessgroup;
 
-import static java.util.Arrays.asList;
 import static org.apache.http.HttpStatus.SC_NO_CONTENT;
 import static org.apache.http.HttpStatus.SC_OK;
 
@@ -8,12 +7,10 @@ import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementGetResponseBody;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.usercontext.UserContextPostRequestBody;
-import com.backbase.presentation.legalentity.rest.spec.v2.legalentities.LegalEntitiesGetResponseBody;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -30,8 +27,6 @@ public class UserContextPresentationRestClient extends RestClient {
     private static final String ENDPOINT_ACCESS_GROUPS = "/accessgroups";
     private static final String ENDPOINT_USER_CONTEXT = ENDPOINT_ACCESS_GROUPS + "/usercontext";
     private static final String ENDPOINT_USER_CONTEXT_SERVICE_AGREEMENTS = ENDPOINT_USER_CONTEXT + "/serviceagreements";
-    private static final String ENDPOINT_USER_CONTEXT_LEGAL_ENTITIES_BY_SERVICE_AGREEMENT_ID =
-        ENDPOINT_USER_CONTEXT_SERVICE_AGREEMENTS + "/%s/legalentities";
 
     @PostConstruct
     public void init() {
@@ -43,11 +38,8 @@ public class UserContextPresentationRestClient extends RestClient {
     public void selectContextBasedOnMasterServiceAgreement() {
         ServiceAgreementGetResponseBody masterServiceAgreement = getMasterServiceAgreementForUserContext();
 
-        String legalEntityId = getLegalEntitiesForServiceAgreements(masterServiceAgreement.getId()).get(0).getId();
-
         postUserContext(new UserContextPostRequestBody()
-            .withServiceAgreementId(masterServiceAgreement.getId())
-            .withLegalEntityId(legalEntityId))
+            .withServiceAgreementId(masterServiceAgreement.getId()))
             .then()
             .statusCode(SC_NO_CONTENT);
     }
@@ -70,17 +62,6 @@ public class UserContextPresentationRestClient extends RestClient {
         return requestSpec()
             .contentType(ContentType.JSON)
             .get(getPath(ENDPOINT_USER_CONTEXT_SERVICE_AGREEMENTS));
-    }
-
-    public List<LegalEntitiesGetResponseBody> getLegalEntitiesForServiceAgreements(String serviceAgreementId) {
-        return asList(requestSpec()
-            .contentType(ContentType.JSON)
-            .get(String
-                .format(getPath(ENDPOINT_USER_CONTEXT_LEGAL_ENTITIES_BY_SERVICE_AGREEMENT_ID), serviceAgreementId))
-            .then()
-            .statusCode(SC_OK)
-            .extract()
-            .as(LegalEntitiesGetResponseBody[].class));
     }
 
     public ServiceAgreementGetResponseBody getMasterServiceAgreementForUserContext() {

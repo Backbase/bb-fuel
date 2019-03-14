@@ -25,4 +25,9 @@ public class PlatformConfig {
      */
     private String auth;
 
+    /**
+     * URI to token-converter-service.
+     */
+    private String tokenconverter;
+
 }

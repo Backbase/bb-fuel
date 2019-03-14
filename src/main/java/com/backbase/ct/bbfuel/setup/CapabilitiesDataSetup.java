@@ -103,8 +103,6 @@ public class CapabilitiesDataSetup extends BaseSetup {
 
     private void ingestBankNotifications() {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_NOTIFICATIONS)) {
-            this.loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
-            this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
             this.notificationsConfigurator.ingestNotifications();
         }
     }

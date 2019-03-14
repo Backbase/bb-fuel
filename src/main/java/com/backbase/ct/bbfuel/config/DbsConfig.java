@@ -50,4 +50,9 @@ public class DbsConfig {
      */
     private String arrangements;
 
+    /**
+     * URI to notifications.
+     */
+    private String notifications;
+
 }

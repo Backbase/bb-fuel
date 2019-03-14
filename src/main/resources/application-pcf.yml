@@ -12,6 +12,7 @@ bb-fuel:
     registry: http://registry-${pcf.uri}/eureka
     gateway: http://gateway-${pcf.uri}/api
     auth: ${bb-fuel.platform.gateway}/auth/login
+    tokenconverter: http://token-converter-service-${pcf.uri}
   dbs:
     approvals: http://approval-integration-service-${pcf.uri}
     transactions: http://transaction-integration-service-${pcf.uri}
@@ -21,3 +22,4 @@ bb-fuel:
     legalentity: http://legalentity-integration-service-${pcf.uri}
     accessgroup: http://accessgroup-integration-service-${pcf.uri}
     arrangements: http://arrangements-integration-service-${pcf.uri}
+    notifications: http://notifications-presentation-service-${pcf.uri}

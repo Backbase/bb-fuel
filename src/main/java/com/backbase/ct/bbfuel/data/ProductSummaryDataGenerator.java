@@ -25,6 +25,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
+import java.util.Set;
+import java.util.LinkedHashSet;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.IntStream;
 import org.apache.commons.lang.time.DateUtils;
@@ -136,9 +138,12 @@ public class ProductSummaryDataGenerator {
             " " + currency + " " + bic.substring(0, 3) + accountNumber.substring(accountNumber.length() - 3);
         String fullArrangementName = currentAccountName + arrangementNameSuffix;
 
+        Set<String> legalEntityIds = new LinkedHashSet<String>(){};
+        legalEntityIds.add(externalLegalEntityId);
+
         ArrangementsPostRequestBody arrangementsPostRequestBody = new ArrangementsPostRequestBody()
             .withId(UUID.randomUUID().toString())
-            .withLegalEntityId(externalLegalEntityId)
+            .withLegalEntityIds(legalEntityIds)
             .withProductId(String.valueOf(productId))
             .withName(fullArrangementName)
             .withAlias(faker.lorem().characters(10))

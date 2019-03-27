@@ -5,7 +5,7 @@ import static org.apache.http.HttpStatus.SC_OK;
 
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
-import com.backbase.presentation.categories.management.rest.spec.v2.categories.id.CategoryGetResponseBody;
+import com.backbase.presentation.categories.management.rest.spec.v2.categories.SubCategory;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -28,13 +28,13 @@ public class CategoriesPresentationRestClient extends RestClient {
         setInitialPath(CATEGORIES_MANAGEMENT_PRESENTATION_SERVICE);
     }
 
-    public List<CategoryGetResponseBody> retrieveCategories() {
+    public List<SubCategory> retrieveCategories() {
         return asList(requestSpec()
             .get(getPath(ENDPOINT_CATEGORIES))
             .then()
             .statusCode(SC_OK)
             .extract()
-            .as(CategoryGetResponseBody[].class));
+            .as(SubCategory[].class));
     }
 
 }

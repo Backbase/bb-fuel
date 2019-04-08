@@ -3,9 +3,8 @@ package com.backbase.ct.bbfuel.client.tokenconverter;
 
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
-import org.springframework.stereotype.Component;
-
 import javax.annotation.PostConstruct;
+import org.springframework.stereotype.Component;
 
 @Component
 public class InternalTokenRestClient extends RestClient {
@@ -29,13 +28,13 @@ public class InternalTokenRestClient extends RestClient {
 
     public String getAuthorisationHeaderForInternalRequest() {
         return requestSpec()
-                .header(CONTENT_TYPE_HEADER_NAME, CONTENT_TYPE_HEADER_VALUE)
-                .body(HARDCODED_BODY)
-                .post(INTERNAL_TOKEN_POST_URL)
-                .then()
-                .extract()
-                .body()
-                .jsonPath().getString(INTERNAL_TOKEN_JSON_PATH);
+            .header(CONTENT_TYPE_HEADER_NAME, CONTENT_TYPE_HEADER_VALUE)
+            .body(HARDCODED_BODY)
+            .post(INTERNAL_TOKEN_POST_URL)
+            .then()
+            .extract()
+            .body()
+            .jsonPath().getString(INTERNAL_TOKEN_JSON_PATH);
     }
 
     private String getProperTokenConverterServiceUri() {

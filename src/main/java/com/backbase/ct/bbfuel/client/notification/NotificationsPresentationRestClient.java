@@ -1,18 +1,17 @@
 package com.backbase.ct.bbfuel.client.notification;
 
+import static org.apache.http.HttpHeaders.AUTHORIZATION;
+
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.client.tokenconverter.InternalTokenRestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
 import com.backbase.dbs.presentation.notifications.rest.spec.v2.notifications.NotificationsPostRequestBody;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
-
-import static org.apache.http.HttpHeaders.AUTHORIZATION;
 
 @Component
 @RequiredArgsConstructor
@@ -38,7 +37,7 @@ public class NotificationsPresentationRestClient extends RestClient {
         return requestSpec()
             .contentType(ContentType.JSON)
             .header(AUTHORIZATION, String.format(INTERNAL_TOKEN,
-                    internalTokenRestClient.getAuthorisationHeaderForInternalRequest()))
+                internalTokenRestClient.getAuthorisationHeaderForInternalRequest()))
             .body(body)
             .post(getPath(ENDPOINT_NOTIFICATIONS));
     }

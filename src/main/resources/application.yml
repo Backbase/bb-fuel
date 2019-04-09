@@ -28,6 +28,7 @@ bb-fuel:
     registry: ${bb-fuel.platform.infra}/registry/eureka
     gateway: ${bb-fuel.platform.infra}/gateway/api
     auth: ${bb-fuel.platform.gateway}/auth/login
+    tokenconverter: ${bb-fuel.platform.infra}/bb-authentication-token-converter-service
   dbs:
     approvals: http://${environment.name}-approvals.${environment.domain}/approval-integration-service
     transactions: http://${environment.name}-transactions.${environment.domain}/transaction-integration-service
@@ -37,3 +38,4 @@ bb-fuel:
     legalentity: http://${environment.name}-entitlements.${environment.domain}/legalentity-integration-service
     accessgroup: http://${environment.name}-entitlements.${environment.domain}/accessgroup-integration-service
     arrangements: http://${environment.name}-productsummary.${environment.domain}/arrangements-integration-service
+    notifications: http://${environment.name}-notifications.${environment.domain}/notifications-presentation-service

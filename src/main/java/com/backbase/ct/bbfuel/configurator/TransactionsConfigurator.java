@@ -13,7 +13,7 @@ import com.backbase.ct.bbfuel.data.TransactionsDataGenerator;
 import com.backbase.ct.bbfuel.util.CommonHelpers;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
 import com.backbase.integration.transaction.external.rest.spec.v2.transactions.TransactionsPostRequestBody;
-import com.backbase.presentation.categories.management.rest.spec.v2.categories.id.CategoryGetResponseBody;
+import com.backbase.presentation.categories.management.rest.spec.v2.categories.SubCategory;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -38,7 +38,7 @@ public class TransactionsConfigurator {
 
     public void ingestTransactionsByArrangement(String externalArrangementId, boolean isRetail) {
         List<TransactionsPostRequestBody> transactions = Collections.synchronizedList(new ArrayList<>());
-        List<CategoryGetResponseBody> retailCategories = new ArrayList<>();
+        List<SubCategory> retailCategories = new ArrayList<>();
 
         if (globalProperties.getBoolean(PROPERTY_USE_PFM_CATEGORIES_FOR_TRANSACTIONS)) {
             loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
@@ -50,7 +50,7 @@ public class TransactionsConfigurator {
             .generateRandomNumberInRange(globalProperties.getInt(CommonConstants.PROPERTY_TRANSACTIONS_MIN),
                 globalProperties.getInt(CommonConstants.PROPERTY_TRANSACTIONS_MAX));
 
-        List<CategoryGetResponseBody> finalCategories = new ArrayList<>(retailCategories);
+        List<SubCategory> finalCategories = new ArrayList<>(retailCategories);
 
         IntStream.range(0, randomAmount).parallel()
             .forEach(randomNumber -> transactions.add(

@@ -9,7 +9,7 @@ import static java.util.Arrays.asList;
 import com.backbase.ct.bbfuel.util.CommonHelpers;
 import com.backbase.integration.transaction.external.rest.spec.v2.transactions.TransactionsPostRequestBody;
 import com.backbase.integration.transaction.external.rest.spec.v2.transactions.TransactionsPostRequestBody.CreditDebitIndicator;
-import com.backbase.presentation.categories.management.rest.spec.v2.categories.id.CategoryGetResponseBody;
+import com.backbase.presentation.categories.management.rest.spec.v2.categories.SubCategory;
 import com.github.javafaker.Faker;
 import java.util.Date;
 import java.util.List;
@@ -89,7 +89,7 @@ public class TransactionsDataGenerator {
     );
 
     public static TransactionsPostRequestBody generateTransactionsPostRequestBody(String externalArrangementId,
-        boolean isRetail, List<CategoryGetResponseBody> categories) {
+        boolean isRetail, List<SubCategory> categories) {
         CreditDebitIndicator creditDebitIndicator = getRandomFromEnumValues(CreditDebitIndicator.values());
 
         String finalCategory;
@@ -98,12 +98,12 @@ public class TransactionsDataGenerator {
             if (!categories.isEmpty()) {
                 CREDIT_RETAIL_CATEGORIES = categories.stream()
                     .filter(category -> "INCOME".equals(category.getCategoryType()))
-                    .map(CategoryGetResponseBody::getCategoryName)
+                    .map(SubCategory::getCategoryName)
                     .collect(Collectors.toList());
 
                 CREDIT_RETAIL_CATEGORIES = categories.stream()
                     .filter(category -> "EXPENSE".equals(category.getCategoryType()))
-                    .map(CategoryGetResponseBody::getCategoryName)
+                    .map(SubCategory::getCategoryName)
                     .collect(Collectors.toList());
             }
 

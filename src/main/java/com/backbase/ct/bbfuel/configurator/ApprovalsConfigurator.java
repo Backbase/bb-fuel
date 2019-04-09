@@ -70,7 +70,8 @@ public class ApprovalsConfigurator {
         createPolicies();
     }
 
-    public void setupAccessControlAndPerformApprovalAssignments(String externalServiceAgreementId, String externalLegalEntityId,
+    public void setupAccessControlAndPerformApprovalAssignments(String externalServiceAgreementId,
+        String externalLegalEntityId,
         int numberOfUsers) {
         loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
         userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
@@ -81,21 +82,24 @@ public class ApprovalsConfigurator {
             setupAccessControlAndAssignApprovalTypes(externalServiceAgreementId);
         }
         if (isPaymentsApprovalsEnabled) {
-            assignPaymentsPolicies(externalServiceAgreementId, externalLegalEntityId, numberOfUsers);
+            assignPaymentsPolicies(externalServiceAgreementId, numberOfUsers);
         }
         if (isContactsApprovalsEnabled) {
-            assignContactsPolicies(externalServiceAgreementId, externalLegalEntityId);
+            assignContactsPolicies(externalServiceAgreementId);
         }
     }
 
     private void createApprovalTypes() {
-        approvalTypeAId = approvalIntegrationRestClient.createApprovalType("A", generateRandomNumberInRange(1, 100));
+        approvalTypeAId = approvalIntegrationRestClient.createApprovalType("A",
+            generateRandomNumberInRange(1, 100));
         LOGGER.info("Approval type A [{}] created", approvalTypeAId);
 
-        approvalTypeBId = approvalIntegrationRestClient.createApprovalType("B", generateRandomNumberInRange(100, 200));
+        approvalTypeBId = approvalIntegrationRestClient.createApprovalType("B",
+            generateRandomNumberInRange(100, 200));
         LOGGER.info("Approval type B [{}] created", approvalTypeBId);
 
-        approvalTypeCId = approvalIntegrationRestClient.createApprovalType("C", generateRandomNumberInRange(200, 300));
+        approvalTypeCId = approvalIntegrationRestClient.createApprovalType("C",
+            generateRandomNumberInRange(200, 300));
         LOGGER.info("Approval type C [{}] created", approvalTypeCId);
     }
 
@@ -121,8 +125,7 @@ public class ApprovalsConfigurator {
         LOGGER.info("Policy with approval types A, B and C [{}] created", policyABCId);
     }
 
-    private void assignPaymentsPolicies(String externalServiceAgreementId, String externalLegalEntityId,
-        int numberOfUsers) {
+    private void assignPaymentsPolicies(String externalServiceAgreementId, int numberOfUsers) {
         List<IntegrationPolicyAssignmentRequest> listOfAssignments = new ArrayList<>();
 
         for (String functionName : PAYMENTS_FUNCTIONS) {
@@ -130,14 +133,9 @@ public class ApprovalsConfigurator {
 
             if (numberOfUsers < 3) {
                 generatedItems = getPaymentsPolicyAssignmentsBasedOnZeroApprovalPolicyOnly(
-                    externalServiceAgreementId,
-                    externalLegalEntityId,
-                    functionName);
+                    externalServiceAgreementId, functionName);
             } else {
-                generatedItems = getPaymentsPolicyAssignments(
-                    externalServiceAgreementId,
-                    externalLegalEntityId,
-                    functionName);
+                generatedItems = getPaymentsPolicyAssignments(externalServiceAgreementId, functionName);
             }
 
             listOfAssignments.addAll(generatedItems);
@@ -148,9 +146,9 @@ public class ApprovalsConfigurator {
         LOGGER.info("Policies assigned: {}", listOfAssignments);
     }
 
-    private void assignContactsPolicies(String externalServiceAgreementId, String externalLegalEntityId) {
+    private void assignContactsPolicies(String externalServiceAgreementId) {
         List<IntegrationPolicyAssignmentRequest> listOfAssignments = getContactsPolicyAssignments(
-            externalServiceAgreementId, externalLegalEntityId);
+            externalServiceAgreementId);
 
         approvalIntegrationRestClient.assignPolicies(listOfAssignments);
 
@@ -159,7 +157,6 @@ public class ApprovalsConfigurator {
 
     private List<IntegrationPolicyAssignmentRequest> getPaymentsPolicyAssignments(
         String externalServiceAgreementId,
-        String externalLegalEntityId,
         String paymentsFunction) {
         String currencyCode = SEPA_CT_FUNCTION_NAME.equals(paymentsFunction) ? "EUR" : "USD";
 
@@ -186,7 +183,6 @@ public class ApprovalsConfigurator {
 
             policyAssignmentRequests.add(createPolicyAssignmentRequest(
                 externalServiceAgreementId,
-                externalLegalEntityId,
                 PAYMENTS_RESOURCE_NAME,
                 paymentsFunction,
                 singletonList(createPolicyAssignmentRequestBounds(policyId, upperBound))));
@@ -197,22 +193,17 @@ public class ApprovalsConfigurator {
 
     private List<IntegrationPolicyAssignmentRequest> getPaymentsPolicyAssignmentsBasedOnZeroApprovalPolicyOnly(
         String externalServiceAgreementId,
-        String externalLegalEntityId,
         String paymentsFunction) {
         return singletonList(createPolicyAssignmentRequest(
             externalServiceAgreementId,
-            externalLegalEntityId,
             PAYMENTS_RESOURCE_NAME,
             paymentsFunction,
             singletonList(createPolicyAssignmentRequestBounds(policyZeroId, null))));
     }
 
-    private List<IntegrationPolicyAssignmentRequest> getContactsPolicyAssignments(
-        String externalServiceAgreementId,
-        String externalLegalEntityId) {
+    private List<IntegrationPolicyAssignmentRequest> getContactsPolicyAssignments(String externalServiceAgreementId) {
         return singletonList(createPolicyAssignmentRequest(
             externalServiceAgreementId,
-            externalLegalEntityId,
             CONTACTS_RESOURCE_NAME,
             CONTACTS_FUNCTION_NAME,
             singletonList(createPolicyAssignmentRequestBounds(policyAId, null))));

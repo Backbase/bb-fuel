@@ -1,6 +1,5 @@
 package com.backbase.ct.bbfuel.client.approval;
 
-import static com.backbase.ct.bbfuel.data.ApprovalsDataGenerator.createDeletePolicyAssignmentRequest;
 import static com.backbase.ct.bbfuel.data.ApprovalsDataGenerator.createPostApprovalTypeRequest;
 import static com.backbase.ct.bbfuel.data.ApprovalsDataGenerator.createPostBulkApprovalTypesAssignmentRequest;
 import static com.backbase.ct.bbfuel.data.ApprovalsDataGenerator.createPostPolicyAssignmentBulkRequest;
@@ -13,7 +12,6 @@ import static org.apache.http.HttpStatus.SC_OK;
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
 import com.backbase.dbs.approval.integration.spec.IntegrationApprovalTypeAssignmentDto;
-import com.backbase.dbs.approval.integration.spec.IntegrationDeletePolicyAssignmentRequest;
 import com.backbase.dbs.approval.integration.spec.IntegrationDeletePolicyAssignmentResponse;
 import com.backbase.dbs.approval.integration.spec.IntegrationPolicyAssignmentRequest;
 import com.backbase.dbs.approval.integration.spec.IntegrationPolicyItemDto;
@@ -91,13 +89,6 @@ public class ApprovalIntegrationRestClient extends RestClient {
             .post(getPath(POLICY_ASSIGNMENTS_BULK));
     }
 
-    public Response deletePolicyAssignment(IntegrationDeletePolicyAssignmentRequest body) {
-        return requestSpec()
-            .contentType(ContentType.JSON)
-            .body(body)
-            .delete(getPath(POLICY_ASSIGNMENTS));
-    }
-
     public Response deletePolicy(String policyId) {
         return requestSpec()
             .contentType(ContentType.JSON)
@@ -150,11 +141,14 @@ public class ApprovalIntegrationRestClient extends RestClient {
     }
 
     public IntegrationDeletePolicyAssignmentResponse deletePolicyAssignment(String externalServiceAgreementId,
-        String externalLegalEntityId,
         String resource,
         String function) {
-        return deletePolicyAssignment(
-            createDeletePolicyAssignmentRequest(externalServiceAgreementId, externalLegalEntityId, resource, function))
+        return requestSpec()
+            .contentType(ContentType.JSON)
+            .queryParam("externalServiceAgreementId", externalServiceAgreementId)
+            .queryParam("resource", resource)
+            .queryParam("function", function)
+            .delete(getPath(POLICY_ASSIGNMENTS))
             .then()
             .statusCode(SC_OK)
             .extract()

@@ -3,7 +3,6 @@ package com.backbase.ct.bbfuel.data;
 import static java.util.Collections.emptyList;
 
 import com.backbase.dbs.approval.integration.spec.IntegrationApprovalTypeAssignmentDto;
-import com.backbase.dbs.approval.integration.spec.IntegrationDeletePolicyAssignmentRequest;
 import com.backbase.dbs.approval.integration.spec.IntegrationPolicyAssignmentRequest;
 import com.backbase.dbs.approval.integration.spec.IntegrationPolicyAssignmentRequestBounds;
 import com.backbase.dbs.approval.integration.spec.IntegrationPolicyItemDto;
@@ -67,13 +66,11 @@ public class ApprovalsDataGenerator {
     }
 
     public static IntegrationPolicyAssignmentRequest createPolicyAssignmentRequest(String externalServiceAgreementId,
-        String externalLegalEntityId,
         String resource,
         String function,
         List<IntegrationPolicyAssignmentRequestBounds> integrationPolicyAssignmentRequestBounds) {
         return new IntegrationPolicyAssignmentRequest()
             .withExternalServiceAgreementId(externalServiceAgreementId)
-            .withExternalLegalEntityId(externalLegalEntityId)
             .withResource(resource)
             .withFunction(function)
             .withBounds(integrationPolicyAssignmentRequestBounds);
@@ -84,14 +81,5 @@ public class ApprovalsDataGenerator {
         return new IntegrationPolicyAssignmentRequestBounds()
             .withPolicyId(policyId)
             .withUpperBound(upperBound);
-    }
-
-    public static IntegrationDeletePolicyAssignmentRequest createDeletePolicyAssignmentRequest(
-        String externalServiceAgreementId, String externalLegalEntityId, String resource, String function) {
-        return new IntegrationDeletePolicyAssignmentRequest()
-            .withExternalServiceAgreementId(externalServiceAgreementId)
-            .withExternalLegalEntityId(externalLegalEntityId)
-            .withResource(resource)
-            .withFunction(function);
     }
 }

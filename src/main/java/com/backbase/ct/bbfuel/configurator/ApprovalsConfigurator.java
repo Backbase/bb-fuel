@@ -6,8 +6,11 @@ import static com.backbase.ct.bbfuel.data.ApprovalsDataGenerator.createPolicyAss
 import static com.backbase.ct.bbfuel.data.ApprovalsDataGenerator.createPolicyItemDto;
 import static com.backbase.ct.bbfuel.data.CommonConstants.CONTACTS_FUNCTION_NAME;
 import static com.backbase.ct.bbfuel.data.CommonConstants.CONTACTS_RESOURCE_NAME;
+import static com.backbase.ct.bbfuel.data.CommonConstants.NOTIFICATIONS_FUNCTION_NAME;
+import static com.backbase.ct.bbfuel.data.CommonConstants.NOTIFICATIONS_RESOURCE_NAME;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PAYMENTS_RESOURCE_NAME;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_CONTACTS;
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_NOTIFICATIONS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_PAYMENTS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
 import static com.backbase.ct.bbfuel.data.CommonConstants.SEPA_CT_FUNCTION_NAME;
@@ -77,8 +80,10 @@ public class ApprovalsConfigurator {
         userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
         boolean isPaymentsApprovalsEnabled = globalProperties.getBoolean(PROPERTY_INGEST_APPROVALS_FOR_PAYMENTS);
         boolean isContactsApprovalsEnabled = globalProperties.getBoolean(PROPERTY_INGEST_APPROVALS_FOR_CONTACTS);
+        boolean isNotificationsApprovalsEnabled = globalProperties
+            .getBoolean(PROPERTY_INGEST_APPROVALS_FOR_NOTIFICATIONS);
 
-        if (isPaymentsApprovalsEnabled || isContactsApprovalsEnabled) {
+        if (isPaymentsApprovalsEnabled || isContactsApprovalsEnabled || isNotificationsApprovalsEnabled) {
             setupAccessControlAndAssignApprovalTypes(externalServiceAgreementId);
         }
         if (isPaymentsApprovalsEnabled) {
@@ -86,6 +91,9 @@ public class ApprovalsConfigurator {
         }
         if (isContactsApprovalsEnabled) {
             assignContactsPolicies(externalServiceAgreementId);
+        }
+        if (isNotificationsApprovalsEnabled) {
+            assignNotificationsPolicies(externalServiceAgreementId);
         }
     }
 
@@ -155,6 +163,15 @@ public class ApprovalsConfigurator {
         LOGGER.info("Policies assigned: {}", listOfAssignments);
     }
 
+    private void assignNotificationsPolicies(String externalServiceAgreementId) {
+        List<IntegrationPolicyAssignmentRequest> listOfAssignments =
+            getNotificationsPolicyAssignmentsBasedOnZeroApprovalPolicyOnly(externalServiceAgreementId);
+
+        approvalIntegrationRestClient.assignPolicies(listOfAssignments);
+
+        LOGGER.info("Policies assigned: {}", listOfAssignments);
+    }
+
     private List<IntegrationPolicyAssignmentRequest> getPaymentsPolicyAssignments(
         String externalServiceAgreementId,
         String paymentsFunction) {
@@ -207,6 +224,15 @@ public class ApprovalsConfigurator {
             CONTACTS_RESOURCE_NAME,
             CONTACTS_FUNCTION_NAME,
             singletonList(createPolicyAssignmentRequestBounds(policyAId, null))));
+    }
+
+    private List<IntegrationPolicyAssignmentRequest> getNotificationsPolicyAssignmentsBasedOnZeroApprovalPolicyOnly(
+        String externalServiceAgreementId) {
+        return singletonList(createPolicyAssignmentRequest(
+            externalServiceAgreementId,
+            NOTIFICATIONS_RESOURCE_NAME,
+            NOTIFICATIONS_FUNCTION_NAME,
+            singletonList(createPolicyAssignmentRequestBounds(policyZeroId, null))));
     }
 
     /**

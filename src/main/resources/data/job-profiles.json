@@ -526,7 +526,8 @@
         "privileges": [
           "view",
           "create",
-          "delete"
+          "delete",
+          "approve"
         ]
       },
       {

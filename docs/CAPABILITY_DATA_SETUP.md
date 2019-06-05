@@ -71,7 +71,7 @@ Periodic limit per service agreement, for function group "Admin":
 - Functions SEPA CT, US Domestic Wire and US Foreign Wire
 
 ## Notifications setup
-Global notifications are only created be the bank manager using approvals
+Global notifications are only created by the bank manager using approvals
 In this setup Zero approval policy is configured.
 
 To properly setup notifications: 

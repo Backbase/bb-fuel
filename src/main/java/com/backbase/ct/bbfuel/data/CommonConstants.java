@@ -26,7 +26,9 @@ public final class CommonConstants {
     public static final String US_FOREIGN_WIRE_FUNCTION_NAME = "US Foreign Wire";
     public static final String PAYMENTS_RESOURCE_NAME = "Payments";
     public static final String CONTACTS_RESOURCE_NAME = "Contacts";
+    public static final String NOTIFICATIONS_RESOURCE_NAME = "Notifications";
     public static final String CONTACTS_FUNCTION_NAME = CONTACTS_RESOURCE_NAME;
+    public static final String NOTIFICATIONS_FUNCTION_NAME = "Manage Notifications";
     public static final String PRIVILEGE_CREATE = "create";
     public static final String PROPERTY_INGEST_ACCESS_CONTROL = "ingest.access.control";
     public static final String PROPERTY_INGEST_CUSTOM_SERVICE_AGREEMENTS = "ingest.custom.service.agreements";
@@ -46,6 +48,7 @@ public final class CommonConstants {
     public static final String PROPERTY_INGEST_NOTIFICATIONS = "ingest.notifications";
     public static final String PROPERTY_INGEST_APPROVALS_FOR_PAYMENTS = "ingest.approvals.for.payments";
     public static final String PROPERTY_INGEST_APPROVALS_FOR_CONTACTS = "ingest.approvals.for.contacts";
+    public static final String PROPERTY_INGEST_APPROVALS_FOR_NOTIFICATIONS = "ingest.approvals.for.notifications";
     public static final String PROPERTY_INGEST_LIMITS = "ingest.limits";
     public static final String PROPERTY_CONTACTS_MIN = "contacts.min";
     public static final String PROPERTY_CONTACTS_MAX = "contacts.max";

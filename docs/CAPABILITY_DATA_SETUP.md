@@ -5,7 +5,7 @@
 - Limits (see description below)
 - Contacts with multiple accounts per user
 - Payments per user
-- Notifications on global target group
+- Notifications on global target group (see description below)
 - Messages per user
 - Actions per user for SEPA CT and/or US Wire arrangements
 - Bill Pay enrolment per user
@@ -69,3 +69,20 @@ Periodic limit per service agreement, for function group "Admin":
 - Transactional limit with amount of 1,000,000
 - Privileges "create" and "approve"
 - Functions SEPA CT, US Domestic Wire and US Foreign Wire
+
+## Notifications setup
+Global notifications are only created by the bank manager using approvals
+In this setup Zero approval policy is configured.
+
+To properly setup notifications: 
+- ```ingest.access.control=true```
+- ```ingest.approvals.for.notifications=true``` (unless approvals flow for notifications is disabled)
+- ```ingest.notifications=true```
+
+It is also possible to disable approvals flow on notifications-presentation-service:
+```
+backbase:
+  notifications:
+    approval:
+      enabled: false
+```

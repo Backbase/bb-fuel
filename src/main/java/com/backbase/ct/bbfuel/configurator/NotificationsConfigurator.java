@@ -2,6 +2,8 @@ package com.backbase.ct.bbfuel.configurator;
 
 import static org.apache.http.HttpStatus.SC_CREATED;
 
+import com.backbase.ct.bbfuel.client.accessgroup.UserContextPresentationRestClient;
+import com.backbase.ct.bbfuel.client.common.LoginRestClient;
 import com.backbase.ct.bbfuel.client.notification.NotificationsPresentationRestClient;
 import com.backbase.ct.bbfuel.data.CommonConstants;
 import com.backbase.ct.bbfuel.data.NotificationsDataGenerator;
@@ -22,8 +24,18 @@ public class NotificationsConfigurator {
     private static GlobalProperties globalProperties = GlobalProperties.getInstance();
 
     private final NotificationsPresentationRestClient notificationsPresentationRestClient;
+    private final LoginRestClient loginRestClient;
+    private final UserContextPresentationRestClient userContextPresentationRestClient;
 
-    public void ingestNotifications() {
+    /**
+     * Create global notifications. Requires also either ingest.approvals.for.notifications=true or disabled approval
+     * flow on notifications service.
+     *
+     * @param externalUserId - external user ID of notifications manager with create and approve permissions
+     */
+    public void ingestNotifications(String externalUserId) {
+        loginRestClient.login(externalUserId, externalUserId);
+        userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
         int randomAmount = CommonHelpers
             .generateRandomNumberInRange(globalProperties.getInt(CommonConstants.PROPERTY_NOTIFICATIONS_MIN),
                 globalProperties.getInt(CommonConstants.PROPERTY_NOTIFICATIONS_MAX));

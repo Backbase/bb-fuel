@@ -1,9 +1,10 @@
 package com.backbase.ct.bbfuel.setup;
 
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_ACTIONS;
-import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_BILLPAY;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_CONTACTS;
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_NOTIFICATIONS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_PAYMENTS;
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_BILLPAY;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_CONTACTS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_LIMITS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_MESSAGES;
@@ -11,6 +12,7 @@ import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_NOTIFI
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_PAYMENTS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
 import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
+import static java.util.Collections.singletonList;
 
 import com.backbase.ct.bbfuel.client.accessgroup.UserContextPresentationRestClient;
 import com.backbase.ct.bbfuel.client.common.LoginRestClient;
@@ -66,7 +68,8 @@ public class CapabilitiesDataSetup extends BaseSetup {
 
     private void ingestApprovals() {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_APPROVALS_FOR_PAYMENTS)
-            || this.globalProperties.getBoolean(PROPERTY_INGEST_APPROVALS_FOR_CONTACTS)) {
+            || this.globalProperties.getBoolean(PROPERTY_INGEST_APPROVALS_FOR_CONTACTS)
+            || this.globalProperties.getBoolean(PROPERTY_INGEST_APPROVALS_FOR_NOTIFICATIONS)) {
             this.loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
             this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
@@ -102,8 +105,18 @@ public class CapabilitiesDataSetup extends BaseSetup {
     }
 
     private void ingestBankNotifications() {
+        LegalEntityWithUsers fallbackLegalEntityWithAdminUser = new LegalEntityWithUsers();
+        fallbackLegalEntityWithAdminUser
+            .setUsers(singletonList(User.builder().externalId(rootEntitlementsAdmin).build()));
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_NOTIFICATIONS)) {
-            this.notificationsConfigurator.ingestNotifications();
+            List<User> users = this.accessControlSetup.getLegalEntitiesWithUsersExcludingSupport()
+                .stream()
+                .findFirst()
+                .orElse(fallbackLegalEntityWithAdminUser).getUsers();
+            UserContext userContext = getRandomUserContextBasedOnMsaByExternalUserId(users);
+            this.notificationsConfigurator.ingestNotifications(
+                userContext.getExternalUserId()
+            );
         }
     }
 
@@ -160,15 +173,15 @@ public class CapabilitiesDataSetup extends BaseSetup {
             externalUserIds.forEach(this.actionsConfigurator::ingestActions);
         }
     }
-    
+
     private void ingestBillPayUsers() {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_BILLPAY)) {
             this.accessControlSetup.getLegalEntitiesWithUsersExcludingSupport()
-                            .stream()
-                            .map(LegalEntityWithUsers::getUserExternalIds)
-                            .flatMap(List::stream)
-                            .collect(Collectors.toList())
-                            .forEach(this.billpayConfigurator::ingestBillPayUser);
+                .stream()
+                .map(LegalEntityWithUsers::getUserExternalIds)
+                .flatMap(List::stream)
+                .collect(Collectors.toList())
+                .forEach(this.billpayConfigurator::ingestBillPayUser);
         }
     }
 }

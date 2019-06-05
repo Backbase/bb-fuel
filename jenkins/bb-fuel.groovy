@@ -53,7 +53,7 @@ pipeline {
                                     "-Duse.pfm.categories.for.transactions=${params.USE_PFM_CATEGORIES_FOR_TRANSACTIONS} " +
                                     "-Dingest.approvals.for.payments=${params.INGEST_APPROVALS_FOR_PAYMENTS} " +
                                     "-Dingest.approvals.for.contacts=${params.INGEST_APPROVALS_FOR_CONTACTS} " +
-                                    "-Dingest.approvals.for.contacts=${params.INGEST_APPROVALS_FOR_NOTIFICATIONS} " +
+                                    "-Dingest.approvals.for.notifications=${params.INGEST_APPROVALS_FOR_NOTIFICATIONS} " +
                                     "-Dingest.limits=${params.INGEST_LIMITS} " +
                                     "-Dingest.contacts=${params.INGEST_CONTACTS} " +
                                     "-Dingest.notifications=${params.INGEST_NOTIFICATIONS} " +

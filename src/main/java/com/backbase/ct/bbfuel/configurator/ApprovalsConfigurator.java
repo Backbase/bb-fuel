@@ -4,11 +4,14 @@ import static com.backbase.ct.bbfuel.data.ApprovalsDataGenerator.createApprovalT
 import static com.backbase.ct.bbfuel.data.ApprovalsDataGenerator.createPolicyAssignmentRequest;
 import static com.backbase.ct.bbfuel.data.ApprovalsDataGenerator.createPolicyAssignmentRequestBounds;
 import static com.backbase.ct.bbfuel.data.ApprovalsDataGenerator.createPolicyItemDto;
+import static com.backbase.ct.bbfuel.data.CommonConstants.BATCH_RESOURCE_NAME;
+import static com.backbase.ct.bbfuel.data.CommonConstants.BATCH_SEPA_CT_FUNCTION_NAME;
 import static com.backbase.ct.bbfuel.data.CommonConstants.CONTACTS_FUNCTION_NAME;
 import static com.backbase.ct.bbfuel.data.CommonConstants.CONTACTS_RESOURCE_NAME;
 import static com.backbase.ct.bbfuel.data.CommonConstants.NOTIFICATIONS_FUNCTION_NAME;
 import static com.backbase.ct.bbfuel.data.CommonConstants.NOTIFICATIONS_RESOURCE_NAME;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PAYMENTS_RESOURCE_NAME;
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_BATCHES;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_CONTACTS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_NOTIFICATIONS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_PAYMENTS;
@@ -82,8 +85,10 @@ public class ApprovalsConfigurator {
         boolean isContactsApprovalsEnabled = globalProperties.getBoolean(PROPERTY_INGEST_APPROVALS_FOR_CONTACTS);
         boolean isNotificationsApprovalsEnabled = globalProperties
             .getBoolean(PROPERTY_INGEST_APPROVALS_FOR_NOTIFICATIONS);
+        boolean isBatchApprovalsEnabled = globalProperties.getBoolean(PROPERTY_INGEST_APPROVALS_FOR_BATCHES);
 
-        if (isPaymentsApprovalsEnabled || isContactsApprovalsEnabled || isNotificationsApprovalsEnabled) {
+        if (isPaymentsApprovalsEnabled || isContactsApprovalsEnabled || isNotificationsApprovalsEnabled
+            || isBatchApprovalsEnabled) {
             setupAccessControlAndAssignApprovalTypes(externalServiceAgreementId);
         }
         if (isPaymentsApprovalsEnabled) {
@@ -94,6 +99,9 @@ public class ApprovalsConfigurator {
         }
         if (isNotificationsApprovalsEnabled) {
             assignNotificationsPolicies(externalServiceAgreementId);
+        }
+        if (isBatchApprovalsEnabled) {
+            assignBatchPolicies(externalServiceAgreementId, numberOfUsers);
         }
     }
 
@@ -172,6 +180,20 @@ public class ApprovalsConfigurator {
         LOGGER.info("Policies assigned: {}", listOfAssignments);
     }
 
+    private void assignBatchPolicies(String externalServiceAgreementId, int numberOfUsers) {
+        List<IntegrationPolicyAssignmentRequest> generatedItems;
+
+        if (numberOfUsers < 3) {
+            generatedItems = getBatchPolicyAssignmentsBasedOnZeroApprovalPolicyOnly(externalServiceAgreementId);
+        } else {
+            generatedItems = getBatchPolicyAssignments(externalServiceAgreementId);
+        }
+
+        approvalIntegrationRestClient.assignPolicies(generatedItems);
+
+        LOGGER.info("Policies assigned: {}", generatedItems);
+    }
+
     private List<IntegrationPolicyAssignmentRequest> getPaymentsPolicyAssignments(
         String externalServiceAgreementId,
         String paymentsFunction) {
@@ -233,6 +255,37 @@ public class ApprovalsConfigurator {
             NOTIFICATIONS_RESOURCE_NAME,
             NOTIFICATIONS_FUNCTION_NAME,
             singletonList(createPolicyAssignmentRequestBounds(policyZeroId, null))));
+    }
+
+    private List<IntegrationPolicyAssignmentRequest> getBatchPolicyAssignmentsBasedOnZeroApprovalPolicyOnly(
+        String externalServiceAgreementId) {
+        return singletonList(createPolicyAssignmentRequest(
+            externalServiceAgreementId,
+            BATCH_RESOURCE_NAME,
+            BATCH_SEPA_CT_FUNCTION_NAME,
+            singletonList(createPolicyAssignmentRequestBounds(policyZeroId, null))));
+    }
+
+    private List<IntegrationPolicyAssignmentRequest> getBatchPolicyAssignments(
+        String externalServiceAgreementId) {
+
+        List<IntegrationPolicyAssignmentRequest> policyAssignmentRequests = new ArrayList<>();
+        ArrayList<String> policies = new ArrayList<>();
+
+        policies.add(policyZeroId);
+        policies.add(policyAId);
+        policies.add(policyABId);
+        policies.add(policyABCId);
+
+        for (String policy : policies) {
+            policyAssignmentRequests.add(createPolicyAssignmentRequest(
+                externalServiceAgreementId,
+                BATCH_RESOURCE_NAME,
+                BATCH_SEPA_CT_FUNCTION_NAME,
+                singletonList(createPolicyAssignmentRequestBounds(policy, null))));
+        }
+
+        return policyAssignmentRequests;
     }
 
     /**

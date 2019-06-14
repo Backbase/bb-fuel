@@ -20,7 +20,7 @@ Note: This can be rerun on an existing environment which already contains data b
 - Possible to use the PFM categories by setting the property `use.pfm.categories.for.transactions` to `true`
 
 ## Approvals setup
-Approvals configuration can be ingested for payments and contacts based on master service agreements.
+Approvals configuration can be ingested for payments, contacts, notifications and batches based on master service agreements.
 
 ### Approval types
 - Approval type A with rank 1
@@ -35,7 +35,7 @@ Approvals configuration can be ingested for payments and contacts based on maste
 
 In case of less than 3 users under a legal entity as defined in [legal-entities-with-users.json](../src/main/resources/data/legal-entities-with-users.json), only a zero approval policy unbounded is applied
 
-### Payments: users
+### Payments and batches: users
 - For each set of 4 users (sorted by name ASC) per legal entity defined in [legal-entities-with-users.json](../src/main/resources/data/legal-entities-with-users.json) will have the following setup:
 - User no. 1: approval type A
 - User no. 2: approval type B
@@ -53,9 +53,9 @@ Example:
 
 In case of less than 3 users under a legal entity as defined in [legal-entities-with-users.json](../src/main/resources/data/legal-entities-with-users.json), no approval types will be assigned to users
 
-Note: each approval type will be assigned to a separate (new) function group with the payments function.
+Note: each approval type will be assigned to a separate (new) function group with the payments and batch function.
 
-### Contacts: policies
+### Contacts and notifications: policies
 - Policy with approval type A (1 approval required)
 
 ### Contacts: users

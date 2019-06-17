@@ -87,8 +87,8 @@ public class ApprovalsConfigurator {
             .getBoolean(PROPERTY_INGEST_APPROVALS_FOR_NOTIFICATIONS);
         boolean isBatchApprovalsEnabled = globalProperties.getBoolean(PROPERTY_INGEST_APPROVALS_FOR_BATCHES);
 
-        if (isPaymentsApprovalsEnabled || isContactsApprovalsEnabled || isNotificationsApprovalsEnabled
-            || isBatchApprovalsEnabled) {
+        if (isPaymentsApprovalsEnabled || isContactsApprovalsEnabled
+            || isNotificationsApprovalsEnabled || isBatchApprovalsEnabled) {
             setupAccessControlAndAssignApprovalTypes(externalServiceAgreementId);
         }
         if (isPaymentsApprovalsEnabled) {
@@ -266,23 +266,69 @@ public class ApprovalsConfigurator {
             singletonList(createPolicyAssignmentRequestBounds(policyZeroId, null))));
     }
 
+//    private List<IntegrationPolicyAssignmentRequest> getBatchPolicyAssignments(
+//        String externalServiceAgreementId) {
+//
+//        List<IntegrationPolicyAssignmentRequest> policyAssignmentRequests = new ArrayList<>();
+//        ArrayList<String> policies = new ArrayList<>();
+//
+//        policies.add(policyZeroId);
+//        policies.add(policyAId);
+//        policies.add(policyABId);
+//        policies.add(policyABCId);
+//
+//        for (String policy : policies) {
+//            policyAssignmentRequests.add(createPolicyAssignmentRequest(
+//                externalServiceAgreementId,
+//                BATCH_RESOURCE_NAME,
+//                BATCH_SEPA_CT_FUNCTION_NAME,
+//                singletonList(createPolicyAssignmentRequestBounds(policy, null))));
+//        }
+//
+//        return policyAssignmentRequests;
+//    }
+
+
+// TODO
+    // Trials for the batch policy assignments
+
     private List<IntegrationPolicyAssignmentRequest> getBatchPolicyAssignments(
         String externalServiceAgreementId) {
 
+        String currencyCode = "EUR";
+
         List<IntegrationPolicyAssignmentRequest> policyAssignmentRequests = new ArrayList<>();
-        ArrayList<String> policies = new ArrayList<>();
+        Map<String, Currency> policyBoundMap = new HashMap<>();
 
-        policies.add(policyZeroId);
-        policies.add(policyAId);
-        policies.add(policyABId);
-        policies.add(policyABCId);
+        policyBoundMap.put(policyZeroId, null);
 
-        for (String policy : policies) {
+        policyBoundMap.put(policyAId, null);
+
+        policyBoundMap.put(policyABId, null);
+
+//        policyBoundMap.put(policyZeroId, new Currency()
+//            .withCurrencyCode(currencyCode)
+//            .withAmount(UPPER_BOUND_HUNDRED));
+//
+//        policyBoundMap.put(policyAId, new Currency()
+//            .withCurrencyCode(currencyCode)
+//            .withAmount(UPPER_BOUND_THOUSAND));
+//
+//        policyBoundMap.put(policyABId, new Currency()
+//            .withCurrencyCode(currencyCode)
+//            .withAmount(UPPER_BOUND_HUNDRED_THOUSAND));
+
+        policyBoundMap.put(policyABCId, null);
+
+        for (Map.Entry<String, Currency> entry : policyBoundMap.entrySet()) {
+            String policyId = entry.getKey();
+            Currency upperBound = entry.getValue();
+
             policyAssignmentRequests.add(createPolicyAssignmentRequest(
                 externalServiceAgreementId,
                 BATCH_RESOURCE_NAME,
                 BATCH_SEPA_CT_FUNCTION_NAME,
-                singletonList(createPolicyAssignmentRequestBounds(policy, null))));
+                singletonList(createPolicyAssignmentRequestBounds(policyId, null))));
         }
 
         return policyAssignmentRequests;

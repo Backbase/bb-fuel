@@ -148,8 +148,8 @@ public class ApprovalsConfigurator {
             List<IntegrationPolicyAssignmentRequest> generatedItems;
 
             if (numberOfUsers < 3) {
-                generatedItems = getPaymentsPolicyAssignmentsBasedOnZeroApprovalPolicyOnly(
-                    externalServiceAgreementId, functionName);
+                generatedItems = getPolicyAssignmentsBasedOnZeroApprovalPolicyOnly(
+                    externalServiceAgreementId, PAYMENTS_RESOURCE_NAME, functionName);
             } else {
                 generatedItems = getPaymentsPolicyAssignments(externalServiceAgreementId, functionName);
             }
@@ -163,8 +163,9 @@ public class ApprovalsConfigurator {
     }
 
     private void assignContactsPolicies(String externalServiceAgreementId) {
-        List<IntegrationPolicyAssignmentRequest> listOfAssignments = getContactsPolicyAssignments(
-            externalServiceAgreementId);
+        List<IntegrationPolicyAssignmentRequest> listOfAssignments = getPolicyAssignments(
+            externalServiceAgreementId,
+            CONTACTS_RESOURCE_NAME, CONTACTS_FUNCTION_NAME);
 
         approvalIntegrationRestClient.assignPolicies(listOfAssignments);
 
@@ -173,7 +174,8 @@ public class ApprovalsConfigurator {
 
     private void assignNotificationsPolicies(String externalServiceAgreementId) {
         List<IntegrationPolicyAssignmentRequest> listOfAssignments =
-            getNotificationsPolicyAssignmentsBasedOnZeroApprovalPolicyOnly(externalServiceAgreementId);
+            getPolicyAssignmentsBasedOnZeroApprovalPolicyOnly(externalServiceAgreementId,
+                NOTIFICATIONS_RESOURCE_NAME, NOTIFICATIONS_FUNCTION_NAME);
 
         approvalIntegrationRestClient.assignPolicies(listOfAssignments);
 
@@ -184,9 +186,11 @@ public class ApprovalsConfigurator {
         List<IntegrationPolicyAssignmentRequest> generatedItems;
 
         if (numberOfUsers < 3) {
-            generatedItems = getBatchPolicyAssignmentsBasedOnZeroApprovalPolicyOnly(externalServiceAgreementId);
+            generatedItems = getPolicyAssignmentsBasedOnZeroApprovalPolicyOnly(externalServiceAgreementId,
+                BATCH_RESOURCE_NAME, BATCH_SEPA_CT_FUNCTION_NAME);
         } else {
-            generatedItems = getBatchPolicyAssignments(externalServiceAgreementId);
+            generatedItems = getPolicyAssignments(externalServiceAgreementId,
+                BATCH_RESOURCE_NAME, BATCH_SEPA_CT_FUNCTION_NAME);
         }
 
         approvalIntegrationRestClient.assignPolicies(generatedItems);
@@ -230,108 +234,22 @@ public class ApprovalsConfigurator {
         return policyAssignmentRequests;
     }
 
-    private List<IntegrationPolicyAssignmentRequest> getPaymentsPolicyAssignmentsBasedOnZeroApprovalPolicyOnly(
-        String externalServiceAgreementId,
-        String paymentsFunction) {
+    private List<IntegrationPolicyAssignmentRequest> getPolicyAssignmentsBasedOnZeroApprovalPolicyOnly(
+        String externalServiceAgreementId, String resource, String businessFunction) {
         return singletonList(createPolicyAssignmentRequest(
             externalServiceAgreementId,
-            PAYMENTS_RESOURCE_NAME,
-            paymentsFunction,
+            resource,
+            businessFunction,
             singletonList(createPolicyAssignmentRequestBounds(policyZeroId, null))));
     }
 
-    private List<IntegrationPolicyAssignmentRequest> getContactsPolicyAssignments(String externalServiceAgreementId) {
+    private List<IntegrationPolicyAssignmentRequest> getPolicyAssignments(
+        String externalServiceAgreementId, String resource, String businessFunction) {
         return singletonList(createPolicyAssignmentRequest(
             externalServiceAgreementId,
-            CONTACTS_RESOURCE_NAME,
-            CONTACTS_FUNCTION_NAME,
+            resource,
+            businessFunction,
             singletonList(createPolicyAssignmentRequestBounds(policyAId, null))));
-    }
-
-    private List<IntegrationPolicyAssignmentRequest> getNotificationsPolicyAssignmentsBasedOnZeroApprovalPolicyOnly(
-        String externalServiceAgreementId) {
-        return singletonList(createPolicyAssignmentRequest(
-            externalServiceAgreementId,
-            NOTIFICATIONS_RESOURCE_NAME,
-            NOTIFICATIONS_FUNCTION_NAME,
-            singletonList(createPolicyAssignmentRequestBounds(policyZeroId, null))));
-    }
-
-    private List<IntegrationPolicyAssignmentRequest> getBatchPolicyAssignmentsBasedOnZeroApprovalPolicyOnly(
-        String externalServiceAgreementId) {
-        return singletonList(createPolicyAssignmentRequest(
-            externalServiceAgreementId,
-            BATCH_RESOURCE_NAME,
-            BATCH_SEPA_CT_FUNCTION_NAME,
-            singletonList(createPolicyAssignmentRequestBounds(policyZeroId, null))));
-    }
-
-//    private List<IntegrationPolicyAssignmentRequest> getBatchPolicyAssignments(
-//        String externalServiceAgreementId) {
-//
-//        List<IntegrationPolicyAssignmentRequest> policyAssignmentRequests = new ArrayList<>();
-//        ArrayList<String> policies = new ArrayList<>();
-//
-//        policies.add(policyZeroId);
-//        policies.add(policyAId);
-//        policies.add(policyABId);
-//        policies.add(policyABCId);
-//
-//        for (String policy : policies) {
-//            policyAssignmentRequests.add(createPolicyAssignmentRequest(
-//                externalServiceAgreementId,
-//                BATCH_RESOURCE_NAME,
-//                BATCH_SEPA_CT_FUNCTION_NAME,
-//                singletonList(createPolicyAssignmentRequestBounds(policy, null))));
-//        }
-//
-//        return policyAssignmentRequests;
-//    }
-
-
-// TODO
-    // Trials for the batch policy assignments
-
-    private List<IntegrationPolicyAssignmentRequest> getBatchPolicyAssignments(
-        String externalServiceAgreementId) {
-
-        String currencyCode = "EUR";
-
-        List<IntegrationPolicyAssignmentRequest> policyAssignmentRequests = new ArrayList<>();
-        Map<String, Currency> policyBoundMap = new HashMap<>();
-
-        policyBoundMap.put(policyZeroId, null);
-
-        policyBoundMap.put(policyAId, null);
-
-        policyBoundMap.put(policyABId, null);
-
-//        policyBoundMap.put(policyZeroId, new Currency()
-//            .withCurrencyCode(currencyCode)
-//            .withAmount(UPPER_BOUND_HUNDRED));
-//
-//        policyBoundMap.put(policyAId, new Currency()
-//            .withCurrencyCode(currencyCode)
-//            .withAmount(UPPER_BOUND_THOUSAND));
-//
-//        policyBoundMap.put(policyABId, new Currency()
-//            .withCurrencyCode(currencyCode)
-//            .withAmount(UPPER_BOUND_HUNDRED_THOUSAND));
-
-        policyBoundMap.put(policyABCId, null);
-
-        for (Map.Entry<String, Currency> entry : policyBoundMap.entrySet()) {
-            String policyId = entry.getKey();
-            Currency upperBound = entry.getValue();
-
-            policyAssignmentRequests.add(createPolicyAssignmentRequest(
-                externalServiceAgreementId,
-                BATCH_RESOURCE_NAME,
-                BATCH_SEPA_CT_FUNCTION_NAME,
-                singletonList(createPolicyAssignmentRequestBounds(policyId, null))));
-        }
-
-        return policyAssignmentRequests;
     }
 
     /**

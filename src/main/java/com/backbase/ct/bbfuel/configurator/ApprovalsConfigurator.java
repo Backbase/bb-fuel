@@ -39,6 +39,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -92,7 +93,7 @@ public class ApprovalsConfigurator {
             setupAccessControlAndAssignApprovalTypes(externalServiceAgreementId);
         }
         if (isPaymentsApprovalsEnabled) {
-            assignPaymentsPolicies(externalServiceAgreementId, numberOfUsers);
+            assignCurrencyBoundPolicies(externalServiceAgreementId, numberOfUsers, PAYMENTS_RESOURCE_NAME, PAYMENTS_FUNCTIONS);
         }
         if (isContactsApprovalsEnabled) {
             assignContactsPolicies(externalServiceAgreementId);
@@ -101,7 +102,8 @@ public class ApprovalsConfigurator {
             assignNotificationsPolicies(externalServiceAgreementId);
         }
         if (isBatchApprovalsEnabled) {
-            assignBatchPolicies(externalServiceAgreementId, numberOfUsers);
+            assignCurrencyBoundPolicies(externalServiceAgreementId, numberOfUsers, BATCH_RESOURCE_NAME,
+                asList(BATCH_SEPA_CT_FUNCTION_NAME));
         }
     }
 
@@ -141,35 +143,32 @@ public class ApprovalsConfigurator {
         LOGGER.info("Policy with approval types A, B and C [{}] created", policyABCId);
     }
 
-    private void assignPaymentsPolicies(String externalServiceAgreementId, int numberOfUsers) {
+    private void assignCurrencyBoundPolicies(String externalServiceAgreementId, int numberOfUsers, String resource,
+        List<String> businessFunctions) {
         List<IntegrationPolicyAssignmentRequest> listOfAssignments = new ArrayList<>();
 
-        for (String functionName : PAYMENTS_FUNCTIONS) {
+        for (String functionName : businessFunctions) {
             List<IntegrationPolicyAssignmentRequest> generatedItems;
 
             if (numberOfUsers < 3) {
                 generatedItems = getPolicyAssignmentsBasedOnZeroApprovalPolicyOnly(
-                    externalServiceAgreementId, PAYMENTS_RESOURCE_NAME, functionName);
+                    externalServiceAgreementId, resource, functionName);
             } else {
-                generatedItems = getPaymentsPolicyAssignments(externalServiceAgreementId, functionName);
+                generatedItems = getCurrencyPolicyAssignments(externalServiceAgreementId, resource,
+                    functionName, functionName.contains("SEPA") ? "EUR" : "USD");
             }
-
             listOfAssignments.addAll(generatedItems);
         }
-
+        LOGGER.info("Assigning policies: {}", ReflectionToStringBuilder.toString(listOfAssignments));
         approvalIntegrationRestClient.assignPolicies(listOfAssignments);
-
-        LOGGER.info("Policies assigned: {}", listOfAssignments);
     }
 
     private void assignContactsPolicies(String externalServiceAgreementId) {
         List<IntegrationPolicyAssignmentRequest> listOfAssignments = getPolicyAssignments(
-            externalServiceAgreementId,
-            CONTACTS_RESOURCE_NAME, CONTACTS_FUNCTION_NAME);
+            externalServiceAgreementId, CONTACTS_RESOURCE_NAME, CONTACTS_FUNCTION_NAME);
 
+        LOGGER.info("Assigning policies: {}", ReflectionToStringBuilder.toString(listOfAssignments));
         approvalIntegrationRestClient.assignPolicies(listOfAssignments);
-
-        LOGGER.info("Policies assigned: {}", listOfAssignments);
     }
 
     private void assignNotificationsPolicies(String externalServiceAgreementId) {
@@ -177,31 +176,15 @@ public class ApprovalsConfigurator {
             getPolicyAssignmentsBasedOnZeroApprovalPolicyOnly(externalServiceAgreementId,
                 NOTIFICATIONS_RESOURCE_NAME, NOTIFICATIONS_FUNCTION_NAME);
 
+        LOGGER.info("Assigning policies: {}", ReflectionToStringBuilder.toString(listOfAssignments));
         approvalIntegrationRestClient.assignPolicies(listOfAssignments);
-
-        LOGGER.info("Policies assigned: {}", listOfAssignments);
     }
 
-    private void assignBatchPolicies(String externalServiceAgreementId, int numberOfUsers) {
-        List<IntegrationPolicyAssignmentRequest> generatedItems;
-
-        if (numberOfUsers < 3) {
-            generatedItems = getPolicyAssignmentsBasedOnZeroApprovalPolicyOnly(externalServiceAgreementId,
-                BATCH_RESOURCE_NAME, BATCH_SEPA_CT_FUNCTION_NAME);
-        } else {
-            generatedItems = getPolicyAssignments(externalServiceAgreementId,
-                BATCH_RESOURCE_NAME, BATCH_SEPA_CT_FUNCTION_NAME);
-        }
-
-        approvalIntegrationRestClient.assignPolicies(generatedItems);
-
-        LOGGER.info("Policies assigned: {}", generatedItems);
-    }
-
-    private List<IntegrationPolicyAssignmentRequest> getPaymentsPolicyAssignments(
+    private List<IntegrationPolicyAssignmentRequest> getCurrencyPolicyAssignments(
         String externalServiceAgreementId,
-        String paymentsFunction) {
-        String currencyCode = SEPA_CT_FUNCTION_NAME.equals(paymentsFunction) ? "EUR" : "USD";
+        String resource,
+        String businessFunction,
+        String currencyCode) {
 
         List<IntegrationPolicyAssignmentRequest> policyAssignmentRequests = new ArrayList<>();
         Map<String, Currency> policyBoundMap = new HashMap<>();
@@ -226,8 +209,8 @@ public class ApprovalsConfigurator {
 
             policyAssignmentRequests.add(createPolicyAssignmentRequest(
                 externalServiceAgreementId,
-                PAYMENTS_RESOURCE_NAME,
-                paymentsFunction,
+                resource,
+                businessFunction,
                 singletonList(createPolicyAssignmentRequestBounds(policyId, upperBound))));
         }
 

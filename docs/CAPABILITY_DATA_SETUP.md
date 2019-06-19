@@ -55,7 +55,7 @@ In case of less than 3 users under a legal entity as defined in [legal-entities-
 
 Note: each approval type will be assigned to a separate (new) function group with the payments and batch function.
 
-### Contacts and notifications: policies
+### Contacts: policies
 - Policy with approval type A (1 approval required)
 
 ### Contacts: users

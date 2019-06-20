@@ -1,6 +1,7 @@
 package com.backbase.ct.bbfuel.setup;
 
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_ACTIONS;
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_BATCHES;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_CONTACTS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_NOTIFICATIONS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_PAYMENTS;
@@ -69,7 +70,8 @@ public class CapabilitiesDataSetup extends BaseSetup {
     private void ingestApprovals() {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_APPROVALS_FOR_PAYMENTS)
             || this.globalProperties.getBoolean(PROPERTY_INGEST_APPROVALS_FOR_CONTACTS)
-            || this.globalProperties.getBoolean(PROPERTY_INGEST_APPROVALS_FOR_NOTIFICATIONS)) {
+            || this.globalProperties.getBoolean(PROPERTY_INGEST_APPROVALS_FOR_NOTIFICATIONS)
+            || this.globalProperties.getBoolean(PROPERTY_INGEST_APPROVALS_FOR_BATCHES)) {
             this.loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
             this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 

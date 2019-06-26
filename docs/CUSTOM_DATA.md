@@ -1,16 +1,29 @@
 # Custom data
 
-## How to run with custom data
+## How to run with custom data (outside the classpath)
+You must have a folder (e.g. `/path/to/custom/resources/folder/`) that contains one or more custom `json` files.
+You set all new locations (or just the ones that you are interested in) like this: 
 ```
-java -Denvironment.name=your-env-00 -cp /path/to/custom/resources/folder/:bb-fuel-jar-with-dependencies.jar com.backbase.testing.bb-fuel.Runner
+java -Denvironment.name=your-env-00 \
+-Dcustom.path=/path/to/custom/resources/folder \
+-Djob.profiles.json=${custom.path}/job-profiles.json \
+-Dproducts.json=${custom.path}/products.json \
+-Dproduct.group.seed.json=${custom.path}/product-group-seed.json \
+-Dservice.agreements.json=${custom.path}/service-agreements.json \
+-Dlegal.entities.with.users.json=${custom.path}/legal-entities-with-users.json \
+-jar bb-fuel-{version}-boot.jar
 ```
-`/path/to/custom/resources/folder/` must contain the custom `json` files
+
+An alternative approach is when you have copied the `data.properties` from the jar you can configure properties above and put it in the current directory or in the user home directory.
+```
+java -Denvironment.name=your-env-00 bb-fuel-{version}-boot.jar
+```
 
 ## Built-in custom data setup
 ### How to run with performance test data setup
 Based on [gatling-performance-simulations](https://stash.backbase.com/projects/CT/repos/gatling-performance-simulations/browse):
 ```
-java -Denvironment.name=your-env-00 -Dlegal.entities.with.users.json.location=data/performance/performance-test-legal-entities-with-users-{retail or business}.json bb-fuel-{version}-boot.jar
+java -Denvironment.name=your-env-00 -Dlegal.entities.with.users.json=data/performance/performance-test-legal-entities-with-users-{retail or business}.json bb-fuel-{version}-boot.jar
 ```
 
 ### How to run on multi-tenancy environments
@@ -27,7 +40,7 @@ java -Denvironment.name=your-env-00 \
 
 Repeat for each tenant according to the LDAP configuration as follows:
 
-| tenant.id | root.entitlements.admin | legal.entities.with.users.json.location |
+| tenant.id | root.entitlements.admin | legal.entities.with.users.json |
 |-----------|-------------------------|-----------------------------------------|
 | tenant_a  | user001_t1              | data/multitenancy/tenant_a.json         |
 | tenant_b  | user006_t2              | data/multitenancy/tenant_b.json         |
@@ -42,7 +55,7 @@ Example for the `legal-entities-with-users.json` (other files are: `serviceagree
 
 1. Create json file named `legal-entities-with-users.json` with custom legal entities and assigned custom user list conforming existing format (in this case conforming: [legal-entities-with-users.json](../src/main/resources/data/legal-entities-with-users.json))
 
-By default if customizable fields have not been provided, system will generate randomized values for it. Full names will be derived from externalId if this field contains dot(s) or underscore(s) (just set the full name if do not want this feature).
+By default if customizable fields have not been provided, system will generate randomized values for it. Full names will be derived from externalId if this field contains dot(s) or underscore(s) (just set the full name if you do not want this feature).
 Optional fields in the data structure:
 - `legalEntityExternalId`
 - `parentLegalEntityExternalId`
@@ -86,4 +99,4 @@ Example:
 ```
 2. Place `legal-entities-with-users.json` in a folder named `data`
 
-Note: it is also possible to name/place the json file differently with the specific properties: `legal.entities.with.users.json.location` and `serviceagreements.json.location`
+Note: it is also possible to name/place the json file differently with the specific properties: `legal.entities.with.users.json` and `service.agreements.json`

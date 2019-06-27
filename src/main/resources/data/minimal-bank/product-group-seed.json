@@ -1,0 +1,46 @@
+[
+  {
+    "productGroupName": "Retail Accounts",
+    "isRetail": true,
+    "currencies": [
+      "EUR"
+    ],
+    "currentAccountNames": [
+      "Current Account",
+      "Savings Account"
+    ],
+    "productIds": [
+      "1"
+    ],
+    "numberOfArrangements": {
+      "min": 1,
+      "max": 2
+    },
+    "numberOfDebitCards": {
+      "min": 2,
+      "max": 3
+    }
+  },
+  {
+    "productGroupName": "Business Accounts",
+    "isRetail": false,
+    "currencies": [
+      "EUR"
+    ],
+    "currentAccountNames": [
+      "Current Account",
+      "Savings Account"
+    ],
+    "productIds": [
+      "1"
+    ],
+    "numberOfArrangements": {
+      "min": 1,
+      "max": 2
+    },
+    "numberOfDebitCards": {
+      "min": 2,
+      "max": 3
+    }
+  }
+]

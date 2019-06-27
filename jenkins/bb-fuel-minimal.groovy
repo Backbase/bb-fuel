@@ -11,7 +11,7 @@ pipeline {
         booleanParam(name: 'INGEST_CUSTOM_SERVICE_AGREEMENTS', defaultValue: false, description: 'Ingest custom service agreements')
         booleanParam(name: 'INGEST_BALANCE_HISTORY', defaultValue: false, description: 'Ingest balance history per arrangement (only applicable when INGEST_ACCESS_CONTROL = true)\n' +
                 'Only enable when strictly necessary (long running job)')
-        booleanParam(name: 'INGEST_TRANSACTIONS', defaultValue: false, description: 'Ingest transactions per arrangement (only applicable when INGEST_ACCESS_CONTROL = true)')
+        booleanParam(name: 'INGEST_TRANSACTIONS', defaultValue: true, description: 'Ingest transactions per arrangement (only applicable when INGEST_ACCESS_CONTROL = true)\nBB-Fuel Minimal ingests just 1 transactions per arrangement!')
         booleanParam(name: 'USE_PFM_CATEGORIES_FOR_TRANSACTIONS', defaultValue: false, description: 'Use PFM categories for transactions (only applicable when INGEST_TRANSACTIONS = true)')
         booleanParam(name: 'INGEST_APPROVALS_FOR_PAYMENTS', defaultValue: false, description: 'Ingest approvals for payments')
         booleanParam(name: 'INGEST_APPROVALS_FOR_CONTACTS', defaultValue: false, description: 'Ingest approvals for contacts')
@@ -29,7 +29,7 @@ pipeline {
         choice(name: 'INFRA_BASE_URI', choices: 'infra.backbase.test:8080\neditorial.backbase.test:8080', description: '')
         string(name: 'BB_FUEL_VERSION', defaultValue: 'latest', description: '')
         booleanParam(name: 'PRERELEASE', defaultValue: false, description: 'Only applicable if BB_FUEL_VERSION = latest')
-        string(name: 'ADDITIONAL_ARGUMENTS', defaultValue: '', description: 'Additional command line arguments')
+        string(name: 'ADDITIONAL_ARGUMENTS', defaultValue: '-Dtransactions.min=1 -Dtransactions.max=1 -Djob.profiles.json=data/minimal-bank/job-profiles.json -Dproducts.json=data/minimal-bank/products.json -Dproduct.group.seed.json=data/minimal-bank/seed/product-group-seed.json -Dlegal.entities.with.users.json=data/minimal-bank/legal-entities-with-users.json', description: 'Additional command line arguments for BB-FUEL Minimal')
     }
 
     stages {

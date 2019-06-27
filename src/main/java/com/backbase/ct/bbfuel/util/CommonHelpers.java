@@ -8,7 +8,7 @@ import org.apache.commons.lang.StringUtils;
 public class CommonHelpers {
 
     public static int generateRandomNumberInRange(int min, int max) {
-        if (min >= max) {
+        if (min > max) {
             throw new IllegalArgumentException("max must be greater than min");
         }
         return ThreadLocalRandom.current().nextInt((max - min) + 1) + min;

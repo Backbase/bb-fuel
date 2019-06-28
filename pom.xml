@@ -67,6 +67,16 @@
             <artifactId>arrangement-integration-spec</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.backbase.buildingblocks</groupId>
+            <artifactId>building-blocks-common</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>internal-jwt</artifactId>
+                    <groupId>com.backbase.buildingblocks</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
             <groupId>com.backbase.dbs.pfm</groupId>
             <artifactId>categories-management-presentation-spec</artifactId>
         </dependency>
@@ -136,6 +146,16 @@
             <version>${rest-assured.version}</version>
         </dependency>
         <dependency>
+            <groupId>com.backbase.buildingblocks</groupId>
+            <artifactId>service-sdk-starter-security</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>internal-jwt</artifactId>
+                    <groupId>com.backbase.buildingblocks</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
             <groupId>com.backbase.dbs.transaction</groupId>
             <artifactId>transaction-integration-external-inbound-spec</artifactId>
         </dependency>
@@ -198,26 +218,6 @@
                     <mainClass>${mainClass}</mainClass>
                     <layout>JAR</layout>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>properties-maven-plugin</artifactId>
-                <version>1.0.0</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>set-system-properties</goal>
-                        </goals>
-                        <configuration>
-                            <properties>
-                                <property>
-                                    <name>SIG_SECRET_KEY</name>
-                                    <value>JWTSecretKeyDontUseInProduction!</value>
-                                </property>
-                            </properties>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>

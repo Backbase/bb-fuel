@@ -7,6 +7,8 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.StaticWebApplicationContext;
 
 /**
  * This is the main configuration class.
@@ -38,4 +40,12 @@ public class BbFuelConfiguration {
         return builder.build();
     }
 
+    /**
+     * Needed to satisfy the com.backbase.buildingblocks.eureka.ManagementMetadataProviderAutoConfiguration.
+     * @return a web app context
+     */
+    @Bean
+    public WebApplicationContext webApplicationContext() {
+        return new StaticWebApplicationContext();
+    }
 }

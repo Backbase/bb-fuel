@@ -33,27 +33,26 @@ public class ProductSummaryDataGenerator {
     private static GlobalProperties globalProperties = GlobalProperties.getInstance();
     private static final ProductReader productReader = new ProductReader();
     private static Faker faker = new Faker();
-    private static final List<CountryCode> IBAN_COUNTRY_CODES;
+    private static final List<CountryCode> SEPA_COUNTRY_CODES;
     private static final int WEEKS_IN_A_QUARTER = 13;
     private static final int DAYS_IN_A_WEEK = 7;
     private static final String EUR = "EUR";
 
     static {
-        List<String> allowed = asList("AT", "BE", "BG", "CH", "CY", "CZ", "DE", "DK", "EE", "ES", "FI", "FR", "GB",
-            "GI", "GR", "HR",
-            "HU", "IE", "IS", "IT", "LI", "LT", "LU", "LV", "MC", "MT", "NL", "PL", "PT", "RO", "SE", "SI", "SK",
-            "SM");
-        IBAN_COUNTRY_CODES = new ArrayList<>();
+        List<String> allowed = asList("AD", "AT", "BE", "BG", "CH", "CY", "CZ", "DE", "DK", "EE", "ES", "FI", "FR",
+            "GB", "GI", "GR", "HR", "HU", "IE", "IS", "IT", "LI", "LT", "LU", "LV", "MC", "MT", "NL", "NO", "PL", "PT",
+            "RO", "SE", "SI", "SK", "SM", "VA");
+        SEPA_COUNTRY_CODES = new ArrayList<>();
         CountryCode[] values = CountryCode.values();
         for (CountryCode code : values) {
             if (allowed.contains(code.name())) {
-                IBAN_COUNTRY_CODES.add(code);
+                SEPA_COUNTRY_CODES.add(code);
             }
         }
     }
 
     static String generateRandomIban() {
-        return Iban.random(getRandomFromList(IBAN_COUNTRY_CODES)).toString();
+        return Iban.random(getRandomFromList(SEPA_COUNTRY_CODES)).toString();
     }
 
     public static List<ProductsPostRequestBody> getProductsFromFile() {

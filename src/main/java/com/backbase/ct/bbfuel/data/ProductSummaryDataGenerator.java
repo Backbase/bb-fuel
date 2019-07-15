@@ -2,11 +2,7 @@ package com.backbase.ct.bbfuel.data;
 
 import static com.backbase.ct.bbfuel.util.CommonHelpers.generateRandomAmountInRange;
 import static com.backbase.ct.bbfuel.util.CommonHelpers.generateRandomNumberInRange;
-import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromEnumValues;
 import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
-import static com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.AccountHolderCountry;
-import static com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.Currency;
-import static com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBodyParent.Currency.EUR;
 import static java.lang.String.valueOf;
 import static java.util.Arrays.asList;
 import static org.apache.commons.collections.ListUtils.synchronizedList;
@@ -21,11 +17,11 @@ import com.backbase.integration.arrangement.rest.spec.v2.products.ProductsPostRe
 import com.github.javafaker.Faker;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
-import java.util.Collections;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.IntStream;
 import org.apache.commons.lang.time.DateUtils;
@@ -37,26 +33,27 @@ public class ProductSummaryDataGenerator {
     private static GlobalProperties globalProperties = GlobalProperties.getInstance();
     private static final ProductReader productReader = new ProductReader();
     private static Faker faker = new Faker();
-    private static final List<CountryCode> COUNTRY_CODES;
+    private static final List<CountryCode> IBAN_COUNTRY_CODES;
     private static final int WEEKS_IN_A_QUARTER = 13;
     private static final int DAYS_IN_A_WEEK = 7;
+    private static final String EUR = "EUR";
 
     static {
         List<String> allowed = asList("AT", "BE", "BG", "CH", "CY", "CZ", "DE", "DK", "EE", "ES", "FI", "FR", "GB",
             "GI", "GR", "HR",
             "HU", "IE", "IS", "IT", "LI", "LT", "LU", "LV", "MC", "MT", "NL", "PL", "PT", "RO", "SE", "SI", "SK",
             "SM");
-        COUNTRY_CODES = new ArrayList<>();
+        IBAN_COUNTRY_CODES = new ArrayList<>();
         CountryCode[] values = CountryCode.values();
         for (CountryCode code : values) {
             if (allowed.contains(code.name())) {
-                COUNTRY_CODES.add(code);
+                IBAN_COUNTRY_CODES.add(code);
             }
         }
     }
 
     static String generateRandomIban() {
-        return Iban.random(getRandomFromList(COUNTRY_CODES)).toString();
+        return Iban.random(getRandomFromList(IBAN_COUNTRY_CODES)).toString();
     }
 
     public static List<ProductsPostRequestBody> getProductsFromFile() {
@@ -90,7 +87,7 @@ public class ProductSummaryDataGenerator {
                 : randomCurrencyIndex;
 
             String currentAccountName = productGroupSeed.getCurrentAccountNames().get(currentAccountNameIndex);
-            Currency currency = productGroupSeed.getCurrencies().get(currencyIndex);
+            String currency = productGroupSeed.getCurrencies().get(currencyIndex);
             ArrangementsPostRequestBody arrangementsPostRequestBody = getArrangementsPostRequestBody(
                 externalLegalEntityId, currentAccountName, currency, 1);
 
@@ -116,7 +113,7 @@ public class ProductSummaryDataGenerator {
         List<ArrangementsPostRequestBody> arrangementsPostRequestBodies = synchronizedList(new ArrayList<>());
 
         IntStream.range(0, numberOfArrangements).parallel().forEach(randomNumber -> {
-            Currency currency = getRandomFromList(productGroupSeed.getCurrencies());
+            String currency = getRandomFromList(productGroupSeed.getCurrencies());
             String productId = getRandomFromList(productGroupSeed.getProductIds());
             String arrangementName = getProductTypeNameFromProductsInputFile(productId);
             ArrangementsPostRequestBody arrangementsPostRequestBody = getArrangementsPostRequestBody(
@@ -129,9 +126,10 @@ public class ProductSummaryDataGenerator {
     }
 
     private static ArrangementsPostRequestBody getArrangementsPostRequestBody(String externalLegalEntityId,
-        String currentAccountName, Currency currency, int productId) {
-        String accountNumber = currency == EUR
-            ? generateRandomIban() : valueOf(generateRandomNumberInRange(0, 999999999));
+        String currentAccountName, String currency, int productId) {
+        String accountNumber = EUR.equals(currency)
+            ? generateRandomIban()
+            : valueOf(generateRandomNumberInRange(0, 999999999));
         String bic = faker.finance().bic();
         String arrangementNameSuffix =
             " " + currency + " " + bic.substring(0, 3) + accountNumber.substring(accountNumber.length() - 3);
@@ -161,11 +159,11 @@ public class ProductSummaryDataGenerator {
             .withAccountHolderStreetName(faker.address().streetAddress())
             .withPostCode(faker.address().zipCode())
             .withTown(faker.address().city())
-            .withAccountHolderCountry(getRandomFromEnumValues(AccountHolderCountry.values()))
+            .withAccountHolderCountry(faker.address().countryCode())
             .withCountrySubDivision(faker.address().state())
             .withBIC(bic);
 
-        if (currency.equals(EUR)) {
+        if (EUR.equals(currency)) {
             arrangementsPostRequestBody
                 .withIBAN(accountNumber)
                 .withBBAN(accountNumber.substring(3).replaceAll("[a-zA-Z]", ""));
@@ -201,5 +199,4 @@ public class ProductSummaryDataGenerator {
             .withBalance(generateRandomAmountInRange(1000000L, 1999999L))
             .withUpdatedDate(updatedDate);
     }
-
 }

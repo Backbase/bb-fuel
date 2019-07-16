@@ -26,7 +26,7 @@
         <rest-assured.version>3.0.7</rest-assured.version>
         <jackson-databind.version>2.8.11</jackson-databind.version>
         <commons-configuration.version>1.10</commons-configuration.version>
-        <javafaker.version>0.13</javafaker.version>
+        <javafaker.version>0.18</javafaker.version>
         <iban4j.version>3.2.1</iban4j.version>
         <junit.version>4.12</junit.version>
         <maven-assembly-plugin.version>2.4.1</maven-assembly-plugin.version>

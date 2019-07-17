@@ -30,14 +30,17 @@ public class TransactionsDataGenerator {
     );
 
     private static final List<String> TRANSACTION_TYPES = asList(
-        "SEPA CT",
-        "SEPA DD",
-        "BACS (UK)",
-        "Faster payment (UK)",
-        "CHAPS (UK)",
-        "International payment",
-        "Loan redemption",
-        "Interest settlement"
+        "ATM",
+        "ACH",
+        "Bill Payment",
+        "Cash",
+        "Cheques",
+        "Credit/Debit Card",
+        "Check",
+        "Deposit",
+        "Fee",
+        "POS",
+        "Withdrawal"
     );
     private static final List<String> DEBIT_BUSINESS_CATEGORIES = asList(
         "Suppliers",

@@ -39,9 +39,9 @@ public class ProductSummaryDataGenerator {
     private static final String EUR = "EUR";
 
     static {
-        List<String> allowed = asList("AD", "AT", "BE", "BG", "CH", "CY", "CZ", "DE", "DK", "EE", "ES", "FI", "FR",
-            "GB", "GI", "GR", "HR", "HU", "IE", "IS", "IT", "LI", "LT", "LU", "LV", "MC", "MT", "NL", "PL", "PT",
-            "RO", "SE", "SI", "SK", "SM", "VA");
+        List<String> allowed = asList("AT", "BE", "BG", "CH", "CY", "CZ", "DE", "DK", "EE", "ES", "FI", "FR", "GB",
+            "GI", "GR", "HR", "HU", "IE", "IS", "IT", "LI", "LT", "LU", "LV", "MC", "MT", "NL", "PL", "PT", "RO", "SE",
+            "SI", "SK", "SM");
         SEPA_COUNTRY_CODES = new ArrayList<>();
         CountryCode[] values = CountryCode.values();
         for (CountryCode code : values) {

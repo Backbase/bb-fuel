@@ -1,5 +1,6 @@
 package com.backbase.ct.bbfuel.client.productsummary;
 
+import static com.backbase.ct.bbfuel.data.CommonConstants.ACH_DEBIT_FUNCTION_NAME;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PAYMENTS_RESOURCE_NAME;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PRIVILEGE_CREATE;
 import static com.backbase.ct.bbfuel.data.CommonConstants.SEPA_CT_FUNCTION_NAME;
@@ -69,6 +70,21 @@ public class ProductSummaryPresentationRestClient extends RestClient {
     public List<ArrangementsByBusinessFunctionGetResponseBody> getUsDomesticWireArrangements() {
         return Arrays.asList(getProductSummaryContextArrangements(new ProductSummaryQueryParameters()
             .withBusinessFunction(US_DOMESTIC_WIRE_FUNCTION_NAME)
+            .withResourceName(PAYMENTS_RESOURCE_NAME)
+            .withPrivilege(PRIVILEGE_CREATE)
+            .withDebitAccount(true)
+            .withCreditAccount(true)
+            .withSize(999)
+            .withOrderBy("name"))
+            .then()
+            .statusCode(SC_OK)
+            .extract()
+            .as(ArrangementsByBusinessFunctionGetResponseBody[].class));
+    }
+
+    public List<ArrangementsByBusinessFunctionGetResponseBody> getAchDebitArrangements() {
+        return Arrays.asList(getProductSummaryContextArrangements(new ProductSummaryQueryParameters()
+            .withBusinessFunction(ACH_DEBIT_FUNCTION_NAME)
             .withResourceName(PAYMENTS_RESOURCE_NAME)
             .withPrivilege(PRIVILEGE_CREATE)
             .withDebitAccount(true)

@@ -22,6 +22,7 @@ public final class CommonConstants {
     static final String EXTERNAL_LEGAL_ENTITY_ID_PREFIX = "C00000";
     public static final String EXTERNAL_ROOT_LEGAL_ENTITY_ID = EXTERNAL_LEGAL_ENTITY_ID_PREFIX + "0";
     public static final String SEPA_CT_FUNCTION_NAME = "SEPA CT";
+    public static final String ACH_DEBIT_FUNCTION_NAME = "ACH Debit";
     public static final String US_DOMESTIC_WIRE_FUNCTION_NAME = "US Domestic Wire";
     public static final String US_FOREIGN_WIRE_FUNCTION_NAME = "US Foreign Wire";
     public static final String PAYMENTS_RESOURCE_NAME = "Payments";
@@ -75,5 +76,5 @@ public final class CommonConstants {
     // Payments
     public static final String PAYMENT_TYPE_SEPA_CREDIT_TRANSFER = "SEPA_CREDIT_TRANSFER";
     public static final String PAYMENT_TYPE_US_DOMESTIC_WIRE = "US_DOMESTIC_WIRE";
-
+    public static final String PAYMENT_TYPE_ACH_DEBIT = "ACH_DEBIT";
 }

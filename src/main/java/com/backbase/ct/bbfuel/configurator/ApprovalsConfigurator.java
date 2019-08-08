@@ -4,7 +4,6 @@ import static com.backbase.ct.bbfuel.data.ApprovalsDataGenerator.createApprovalT
 import static com.backbase.ct.bbfuel.data.ApprovalsDataGenerator.createPolicyAssignmentRequest;
 import static com.backbase.ct.bbfuel.data.ApprovalsDataGenerator.createPolicyAssignmentRequestBounds;
 import static com.backbase.ct.bbfuel.data.ApprovalsDataGenerator.createPolicyItemDto;
-import static com.backbase.ct.bbfuel.data.CommonConstants.ACH_DEBIT_FUNCTION_NAME;
 import static com.backbase.ct.bbfuel.data.CommonConstants.BATCH_RESOURCE_NAME;
 import static com.backbase.ct.bbfuel.data.CommonConstants.BATCH_SEPA_CT_FUNCTION_NAME;
 import static com.backbase.ct.bbfuel.data.CommonConstants.CONTACTS_FUNCTION_NAME;
@@ -18,6 +17,7 @@ import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROV
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_PAYMENTS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
 import static com.backbase.ct.bbfuel.data.CommonConstants.SEPA_CT_FUNCTION_NAME;
+import static com.backbase.ct.bbfuel.data.CommonConstants.ACH_DEBIT_FUNCTION_NAME;
 import static com.backbase.ct.bbfuel.data.CommonConstants.US_DOMESTIC_WIRE_FUNCTION_NAME;
 import static com.backbase.ct.bbfuel.data.CommonConstants.US_FOREIGN_WIRE_FUNCTION_NAME;
 import static com.backbase.ct.bbfuel.util.CommonHelpers.generateRandomNumberInRange;
@@ -50,6 +50,14 @@ import org.springframework.stereotype.Service;
 public class ApprovalsConfigurator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ApprovalsConfigurator.class);
+    private GlobalProperties globalProperties = GlobalProperties.getInstance();
+
+    private final LoginRestClient loginRestClient;
+    private final UserContextPresentationRestClient userContextPresentationRestClient;
+    private final ApprovalIntegrationRestClient approvalIntegrationRestClient;
+    private final JobProfileService jobProfileService;
+
+    private String rootEntitlementsAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
     private static final List<String> PAYMENTS_FUNCTIONS = asList(
         SEPA_CT_FUNCTION_NAME,
         US_DOMESTIC_WIRE_FUNCTION_NAME,
@@ -58,12 +66,6 @@ public class ApprovalsConfigurator {
     private static final BigDecimal UPPER_BOUND_HUNDRED = new BigDecimal("100.0");
     private static final BigDecimal UPPER_BOUND_THOUSAND = new BigDecimal("1000.0");
     private static final BigDecimal UPPER_BOUND_HUNDRED_THOUSAND = new BigDecimal("100000.0");
-    private final LoginRestClient loginRestClient;
-    private final UserContextPresentationRestClient userContextPresentationRestClient;
-    private final ApprovalIntegrationRestClient approvalIntegrationRestClient;
-    private final JobProfileService jobProfileService;
-    private GlobalProperties globalProperties = GlobalProperties.getInstance();
-    private String rootEntitlementsAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
     private String approvalTypeAId;
     private String approvalTypeBId;
     private String approvalTypeCId;

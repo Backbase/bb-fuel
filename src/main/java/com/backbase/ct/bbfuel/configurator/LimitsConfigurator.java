@@ -1,8 +1,8 @@
 package com.backbase.ct.bbfuel.configurator;
 
-import static com.backbase.ct.bbfuel.data.CommonConstants.ACH_DEBIT_FUNCTION_NAME;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
 import static com.backbase.ct.bbfuel.data.CommonConstants.SEPA_CT_FUNCTION_NAME;
+import static com.backbase.ct.bbfuel.data.CommonConstants.ACH_DEBIT_FUNCTION_NAME;
 import static com.backbase.ct.bbfuel.data.CommonConstants.US_DOMESTIC_WIRE_FUNCTION_NAME;
 import static com.backbase.ct.bbfuel.data.CommonConstants.US_FOREIGN_WIRE_FUNCTION_NAME;
 import static com.backbase.ct.bbfuel.data.LimitsDataGenerator.createTransactionalLimitsPostRequestBodyForPrivilege;
@@ -29,16 +29,17 @@ import org.springframework.stereotype.Service;
 public class LimitsConfigurator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LimitsConfigurator.class);
-    private static final List<String> PRIVILEGES = asList("create", "approve");
-    private static final String ADMIN_FUNCTION_GROUP_NAME = "Admin";
+    private GlobalProperties globalProperties = GlobalProperties.getInstance();
+
     private final LoginRestClient loginRestClient;
     private final UserContextPresentationRestClient userContextPresentationRestClient;
     private final AccessGroupPresentationRestClient accessGroupPresentationRestClient;
     private final AccessGroupIntegrationRestClient accessGroupIntegrationRestClient;
     private final ServiceAgreementsPresentationRestClient serviceAgreementsPresentationRestClient;
     private final LimitsPresentationRestClient limitsPresentationRestClient;
-    private GlobalProperties globalProperties = GlobalProperties.getInstance();
     private String rootEntitlementsAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
+    private static final List<String> PRIVILEGES = asList("create", "approve");
+    private static final String ADMIN_FUNCTION_GROUP_NAME = "Admin";
 
     public void ingestLimits(String internalServiceAgreementId) {
         BigDecimal limitAmount = new BigDecimal("1000000.0");

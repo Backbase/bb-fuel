@@ -70,6 +70,16 @@
         ]
       },
       {
+        "businessFunction": "ACH Debit",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "cancel"
+        ]
+      },
+      {
         "businessFunction": "Product Summary",
         "privileges": [
           "view",

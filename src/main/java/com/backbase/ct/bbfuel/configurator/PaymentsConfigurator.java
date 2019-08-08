@@ -31,11 +31,12 @@ public class PaymentsConfigurator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PaymentsConfigurator.class);
     private static GlobalProperties globalProperties = GlobalProperties.getInstance();
+
+    private Random random = new Random();
     private final PaymentOrderPresentationRestClient paymentOrderPresentationRestClient;
     private final LoginRestClient loginRestClient;
     private final ProductSummaryPresentationRestClient productSummaryPresentationRestClient;
     private final UserContextPresentationRestClient userContextPresentationRestClient;
-    private Random random = new Random();
 
     public void ingestPaymentOrders(String externalUserId) {
         final List<String> PAYMENT_TYPES = Arrays

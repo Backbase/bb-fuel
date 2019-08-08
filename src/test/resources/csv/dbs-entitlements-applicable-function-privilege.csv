@@ -106,3 +106,11 @@
 112,Manage Identities,Identities,view,0,1034,2
 113,Manage Identities,Identities,create,0,1034,3
 114,Manage Identities,Identities,edit,0,1034,4
+115,ACH Debit,Payments,view,0,1046,2
+116,ACH Debit,Payments,create,1,1046,3
+117,ACH Debit,Payments,edit,0,1046,4
+118,ACH Debit,Payments,delete,0,1046,5
+119,ACH Debit,Payments,approve,0,1046,6
+120,ACH Debit,Payments,cancel,0,1046,7
+
+

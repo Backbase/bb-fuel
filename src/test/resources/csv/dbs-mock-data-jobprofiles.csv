@@ -27,6 +27,7 @@ Approval Level: C;US Billpay Enrolment;Y;Y;-;-;-;-;-
 ;Assign Users;-;Y;Y;Y;-;-;-
 ;US Foreign Wire;-;Y;Y;Y;Y;Y;Y
 ;US Billpay Payees-Search;Y;Y;-;-;-;-;-
+;ACH Debit;-;Y;Y;Y;Y;Y;Y
 ;;;;;;;;
 Manager;;Execute;View;Create;Edit;Delete;Approve;Cancel
 Approval Level: B;US Billpay Enrolment;Y;Y;-;-;-;-;-
@@ -57,6 +58,7 @@ Approval Level: B;US Billpay Enrolment;Y;Y;-;-;-;-;-
 ;Assign Users;-;Y;N;N;-;-;-
 ;US Foreign Wire;-;Y;Y;Y;Y;Y;Y
 ;US Billpay Payees-Search;Y;Y;-;-;-;-;-
+;ACH Debit;-;Y;Y;Y;Y;Y;Y
 ;;;;;;;;
 Finance Employee;;Execute;View;Create;Edit;Delete;Approve;Cancel
 Approval Level: A;US Billpay Enrolment;Y;Y;-;-;-;-;-
@@ -87,3 +89,4 @@ Approval Level: A;US Billpay Enrolment;Y;Y;-;-;-;-;-
 ;Assign Users;-;Y;N;N;-;-;-
 ;US Foreign Wire;-;Y;Y;Y;Y;Y;N
 ;US Billpay Payees-Search;Y;Y;-;-;-;-;-
+;ACH Debit;-;Y;Y;Y;Y;Y;N

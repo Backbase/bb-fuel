@@ -188,6 +188,17 @@
         ]
       },
       {
+        "businessFunction": "ACH Debit",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
         "businessFunction": "US Billpay Accounts",
         "privileges": [
           "view"
@@ -372,6 +383,16 @@
       },
       {
         "businessFunction": "SEPA CT",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve"
+        ]
+      },
+      {
+        "businessFunction": "ACH Debit",
         "privileges": [
           "view",
           "create",

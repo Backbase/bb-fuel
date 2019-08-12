@@ -51,7 +51,7 @@ public class PaymentsConfigurator {
         List<ArrangementsByBusinessFunctionGetResponseBody> achDebitArrangements = productSummaryPresentationRestClient
             .getAchDebitArrangements();
         List<ArrangementsByBusinessFunctionGetResponseBody> usForeignWireArrangements = productSummaryPresentationRestClient
-            .getAchDebitArrangements();
+            .getUsForeignWireArrangements();
 
         int randomAmount = CommonHelpers
             .generateRandomNumberInRange(globalProperties.getInt(CommonConstants.PROPERTY_PAYMENTS_MIN),

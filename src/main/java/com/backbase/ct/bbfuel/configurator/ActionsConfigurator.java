@@ -32,18 +32,19 @@ public class ActionsConfigurator {
     private final LoginRestClient loginRestClient;
     private final UserContextPresentationRestClient userContextPresentationRestClient;
     private final ProductSummaryPresentationRestClient productSummaryPresentationRestClient;
-    private final ActionRecipesPresentationRestClient actionRecipesPresentationRestClient ;
+    private final ActionRecipesPresentationRestClient actionRecipesPresentationRestClient;
 
     public void ingestActions(String externalUserId) {
         List<ArrangementsByBusinessFunctionGetResponseBody> arrangements = new ArrayList<>();
         int randomAmount = generateRandomNumberInRange(globalProperties.getInt(PROPERTY_ACTIONS_MIN),
-                globalProperties.getInt(PROPERTY_ACTIONS_MAX));
+            globalProperties.getInt(PROPERTY_ACTIONS_MAX));
 
         loginRestClient.login(externalUserId, externalUserId);
         userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
         arrangements.addAll(productSummaryPresentationRestClient.getSepaCtArrangements());
         arrangements.addAll(productSummaryPresentationRestClient.getUsDomesticWireArrangements());
+        arrangements.addAll(productSummaryPresentationRestClient.getAchDebitArrangements());
 
         IntStream.range(0, randomAmount).parallel().forEach(randomNumber -> {
             String internalArrangementId = getRandomFromList(arrangements).getId();

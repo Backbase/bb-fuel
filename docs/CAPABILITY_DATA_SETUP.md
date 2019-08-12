@@ -7,7 +7,7 @@
 - Payments per user
 - Notifications on global target group (see description below)
 - Messages per user
-- Actions per user for SEPA CT and/or US Wire arrangements
+- Actions per user for SEPA CT, ACH Debit and/or US Wire arrangements
 - Bill Pay enrolment per user
 
 Note: This can be rerun on an existing environment which already contains data by setting the property `ingest.access.control` to `false`
@@ -68,7 +68,7 @@ Periodic limit per service agreement, for function group "Admin":
 
 - Transactional limit with amount of 1,000,000
 - Privileges "create" and "approve"
-- Functions SEPA CT, US Domestic Wire and US Foreign Wire
+- Functions SEPA CT, ACH Debit, US Domestic Wire and US Foreign Wire
 
 ## Notifications setup
 Global notifications are only created by the bank manager using approvals

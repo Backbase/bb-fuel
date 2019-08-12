@@ -208,5 +208,6 @@ public class JobProfileJsonGenerator {
         + ";Manage Job Profiles;-;Y;Y;Y;Y;Y;-\n"
         + ";Manage Users in Service Agreement;-;Y;N;N;-;-;-\n"
         + ";US Foreign Wire;-;Y;Y;Y;Y;Y;Y\n"
-        + ";US Billpay Payees-Search;Y;Y;-;-;-;-;-";
+        + ";US Billpay Payees-Search;Y;Y;-;-;-;-;-\n"
+        + ";ACH Debit;-;Y;Y;Y;Y;Y;Y";
 }

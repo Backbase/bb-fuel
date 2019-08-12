@@ -2,6 +2,7 @@ package com.backbase.ct.bbfuel.configurator;
 
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
 import static com.backbase.ct.bbfuel.data.CommonConstants.SEPA_CT_FUNCTION_NAME;
+import static com.backbase.ct.bbfuel.data.CommonConstants.ACH_DEBIT_FUNCTION_NAME;
 import static com.backbase.ct.bbfuel.data.CommonConstants.US_DOMESTIC_WIRE_FUNCTION_NAME;
 import static com.backbase.ct.bbfuel.data.CommonConstants.US_FOREIGN_WIRE_FUNCTION_NAME;
 import static com.backbase.ct.bbfuel.data.LimitsDataGenerator.createTransactionalLimitsPostRequestBodyForPrivilege;
@@ -54,7 +55,8 @@ public class LimitsConfigurator {
             .retrieveFunctions(asList(
                 SEPA_CT_FUNCTION_NAME,
                 US_DOMESTIC_WIRE_FUNCTION_NAME,
-                US_FOREIGN_WIRE_FUNCTION_NAME));
+                US_FOREIGN_WIRE_FUNCTION_NAME,
+                ACH_DEBIT_FUNCTION_NAME));
 
         for (FunctionsGetResponseBody paymentsFunction : paymentsFunctions) {
             String currency = SEPA_CT_FUNCTION_NAME.equals(paymentsFunction.getName()) ? "EUR" : "USD";

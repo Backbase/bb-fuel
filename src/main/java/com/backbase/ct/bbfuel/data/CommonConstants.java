@@ -76,5 +76,6 @@ public final class CommonConstants {
     // Payments
     public static final String PAYMENT_TYPE_SEPA_CREDIT_TRANSFER = "SEPA_CREDIT_TRANSFER";
     public static final String PAYMENT_TYPE_US_DOMESTIC_WIRE = "US_DOMESTIC_WIRE";
+    public static final String PAYMENT_TYPE_US_FOREIGN_WIRE = "US_FOREIGN_WIRE";
     public static final String PAYMENT_TYPE_ACH_DEBIT = "ACH_DEBIT";
 }

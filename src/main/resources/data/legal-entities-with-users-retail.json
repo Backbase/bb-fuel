@@ -1,5 +1,13 @@
 [
   {
+    "category": "RETAIL",
+    "users": [
+      {
+        "externalId": "admin"
+      },
+    ]
+  },
+  {
   	"category": "RETAIL",
     "users": [
       {
@@ -20,97 +28,6 @@
     "users": [
       {
         "externalId": "manager"
-      }
-    ]
-  },
-  {
-    	"category": "RETAIL",
-    "users": [
-      {
-        "externalId": "U0000010"
-      },
-      {
-        "externalId": "U0000011"
-      }
-    ]
-  },
-  {
-    	"category": "RETAIL",
-    "users": [
-      {
-        "externalId": "U0001001",
-        "role": "employee"
-      },
-      {
-        "externalId": "U0001002",
-        "role": "employee"
-      },
-      {
-        "externalId": "U0001003",
-        "role": "employee"
-      },
-      {
-        "externalId": "U0001004",
-        "role": "manager"
-      },
-      {
-        "externalId": "U0001005",
-        "role": "admin"
-      }
-    ]
-  },
-  {
-    	"category": "RETAIL",
-    "users": [
-      {
-        "externalId": "U0001021"
-      },
-      {
-        "externalId": "U0001022"
-      },
-      {
-        "externalId": "U0001023"
-      },
-      {
-        "externalId": "U0001024"
-      },
-      {
-        "externalId": "U0001025"
-      },
-      {
-        "externalId": "U0001026"
-      },
-      {
-        "externalId": "U0001027"
-      },
-      {
-        "externalId": "U0001028"
-      },
-      {
-        "externalId": "U0001029"
-      },
-      {
-        "externalId": "U0001030"
-      }
-    ]
-  },
-  {
-    	"category": "RETAIL",
-    "users": [
-      {
-        "externalId": "U0001011"
-      },
-      {
-        "externalId": "U0001012"
-      },
-      {
-        "externalId": "U0001013"
-      },
-      {
-        "externalId": "U0001014"
-      },
-      {
-        "externalId": "U0001015"
       }
     ]
   }

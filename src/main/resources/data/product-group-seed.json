@@ -198,25 +198,25 @@
     }
   },
   {
-    "productGroupName": "General EUR/USD",
+    "productGroupName": "General Accounts USD",
     "isRetail": true,
     "currencies": [
-      "EUR",
       "USD"
     ],
     "currentAccountNames": [
-      "Current Account"
+      "Current Account",
+      "Joint Account"
     ],
     "productIds": [
-      "1", "2", "3", "5", "6", "7"
+      "1", "2", "4"
     ],
     "numberOfArrangements": {
-      "min": 5,
-      "max": 8
+      "min": 2,
+      "max": 4
     },
     "numberOfDebitCards": {
-      "min": 2,
-      "max": 3
+      "min": 0,
+      "max": 0
     }
   }
 ]

@@ -139,7 +139,7 @@ public class ProductSummaryDataGenerator {
             .withLegalEntityIds(Collections.singleton(externalLegalEntityId))
             .withProductId(String.valueOf(productId))
             .withName(fullArrangementName)
-            .withBankAlias(faker.lorem().characters(10))
+            .withBankAlias(fullArrangementName)
             .withBookedBalance(generateRandomAmountInRange(10000L, 9999999L))
             .withAvailableBalance(generateRandomAmountInRange(10000L, 9999999L))
             .withCreditLimit(generateRandomAmountInRange(10000L, 999999L))

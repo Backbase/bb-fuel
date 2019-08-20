@@ -1,0 +1,159 @@
+[
+  {
+    "amount": 3.99,
+    "category": "Food Drinks",
+    "counterPartyCountry": "US",
+    "counterPartyName": "McDonald's",
+    "creditDebitIndicator": "DBIT",
+    "currency": "USD",
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment"
+  },
+  {
+    "amount": 14.99,
+    "category": "Hobbies Entertainment",
+    "counterPartyCountry": "PL",
+    "counterPartyName": "Spotify",
+    "creditDebitIndicator": "CRDT",
+    "currency": "USD",
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment"
+  },
+  {
+    "amount": 1199.99,
+    "category": "Shopping",
+    "counterPartyCountry": "PL",
+    "counterPartyName": "Best Buy",
+    "creditDebitIndicator": "DBIT",
+    "currency": "USD",
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment"
+  },
+  {
+    "amount": 4000.00,
+    "category": "Income",
+    "counterPartyCountry": "PL",
+    "counterPartyName": "Monthly Salary",
+    "creditDebitIndicator": "DBIT",
+    "currency": "USD",
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment"
+  },
+  {
+    "amount": 239.99,
+    "category": "Shopping",
+    "counterPartyCountry": "PL",
+    "counterPartyName": "Amazon",
+    "creditDebitIndicator": "CRDT",
+    "currency": "USD",
+    "description": "Happy Birthday Gift",
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment"
+  },
+  {
+    "amount": 80.00,
+    "category": "Bills Utilities",
+    "counterPartyCountry": "PL",
+    "counterPartyName": "AT&T",
+    "creditDebitIndicator": "CRDT",
+    "currency": "USD",
+    "description": "Happy Birthday Gift",
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment"
+  },
+  {
+    "amount": 160.00,
+    "category": "Shopping",
+    "counterPartyCountry": "PL",
+    "counterPartyName": "Nike",
+    "creditDebitIndicator": "DBIT",
+    "currency": "USD",
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment"
+  },
+  {
+    "amount": 1500.00,
+    "category": "Bills Utilities",
+    "counterPartyCountry": "PL",
+    "counterPartyName": "Home Rent",
+    "creditDebitIndicator": "CRDT",
+    "currency": "USD",
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment"
+  },
+  {
+    "amount": 76.00,
+    "category": "Bills Utilities",
+    "counterPartyCountry": "PL",
+    "counterPartyName": "NextEra Energy",
+    "creditDebitIndicator": "CRDT",
+    "currency": "USD",
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment"
+  },
+  {
+    "amount": 4.45,
+    "category": "Food Drinks",
+    "counterPartyCountry": "PL",
+    "counterPartyName": "Starbucks",
+    "creditDebitIndicator": "DBIT",
+    "currency": "USD",
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment"
+  },
+  {
+    "amount": 76.00,
+    "category": "Bills Utilities",
+    "counterPartyCountry": "PL",
+    "counterPartyName": "NextEra Energy",
+    "creditDebitIndicator": "CRDT",
+    "currency": "USD",
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment"
+  },
+  {
+    "amount": 90.00,
+    "category": "Shopping",
+    "counterPartyCountry": "PL",
+    "counterPartyName": "Under Armour",
+    "creditDebitIndicator": "DBIT",
+    "currency": "USD",
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment"
+  },
+  {
+    "amount": 56.87,
+    "category": "Health Beauty",
+    "counterPartyCountry": "PL",
+    "counterPartyName": "Harmon Face Values",
+    "creditDebitIndicator": "DBIT",
+    "currency": "USD",
+    "instructedCurrency": "USD",
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment"
+  },
+  {
+    "amount": 12.99,
+    "category": "Hobbies Entertainment",
+    "counterPartyCountry": "PL",
+    "counterPartyName": "Netflix",
+    "creditDebitIndicator": "DBIT",
+    "currency": "USD",
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment"
+  }
+]

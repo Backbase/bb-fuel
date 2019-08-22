@@ -43,7 +43,7 @@ public class ProductSummaryPresentationRestClient extends RestClient {
             .get(getPath(ENDPOINT_ARRANGEMENTS));
     }
 
-    public List<ArrangementsByBusinessFunctionGetResponseBody>  getSepaCtArrangements() {
+    public List<ArrangementsByBusinessFunctionGetResponseBody> getSepaCtArrangements() {
         ArrangementsByBusinessFunctionGetResponseBody[] arrangements = getProductSummaryContextArrangements(
             new ProductSummaryQueryParameters()
                 .withBusinessFunction(SEPA_CT_FUNCTION_NAME)

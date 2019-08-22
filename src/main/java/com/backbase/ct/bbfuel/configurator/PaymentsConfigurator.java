@@ -19,7 +19,6 @@ import com.backbase.dbs.presentation.paymentorder.rest.spec.v2.paymentorders.Ini
 import com.backbase.presentation.productsummary.rest.spec.v2.productsummary.ArrangementsByBusinessFunctionGetResponseBody;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -36,11 +35,11 @@ public class PaymentsConfigurator {
     private final LoginRestClient loginRestClient;
     private final ProductSummaryPresentationRestClient productSummaryPresentationRestClient;
     private final UserContextPresentationRestClient userContextPresentationRestClient;
-    private Random random = new Random();
 
     public void ingestPaymentOrders(String externalUserId) {
         final List<String> PAYMENT_TYPES = Arrays
-            .asList(PAYMENT_TYPE_SEPA_CREDIT_TRANSFER, PAYMENT_TYPE_US_DOMESTIC_WIRE, PAYMENT_TYPE_ACH_DEBIT, PAYMENT_TYPE_US_FOREIGN_WIRE);
+            .asList(PAYMENT_TYPE_SEPA_CREDIT_TRANSFER, PAYMENT_TYPE_US_DOMESTIC_WIRE,
+                PAYMENT_TYPE_ACH_DEBIT, PAYMENT_TYPE_US_FOREIGN_WIRE);
 
         loginRestClient.login(externalUserId, externalUserId);
         userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
@@ -56,30 +55,35 @@ public class PaymentsConfigurator {
         int randomAmount = CommonHelpers
             .generateRandomNumberInRange(globalProperties.getInt(CommonConstants.PROPERTY_PAYMENTS_MIN),
                 globalProperties.getInt(CommonConstants.PROPERTY_PAYMENTS_MAX));
-        IntStream.range(0, randomAmount).parallel().forEach(randomNumber -> {
-            String paymentType = getRandomFromList(PAYMENT_TYPES);
-            ArrangementsByBusinessFunctionGetResponseBody randomArrangement;
 
-            if (PAYMENT_TYPE_SEPA_CREDIT_TRANSFER.equals(paymentType)) {
-                randomArrangement = getRandomFromList(sepaCtArrangements);
-            } else if (PAYMENT_TYPE_US_DOMESTIC_WIRE.equals(paymentType)) {
-                randomArrangement = getRandomFromList(usDomesticWireArrangements);
-            } else if (PAYMENT_TYPE_US_FOREIGN_WIRE.equals(paymentType)){
-                randomArrangement = getRandomFromList(usForeignWireArrangements);
-            } else if (PAYMENT_TYPE_ACH_DEBIT.equals(paymentType)){
-                randomArrangement = getRandomFromList(achDebitArrangements);
-            } else {
-                throw new IllegalArgumentException("Unknown payment type " + paymentType);
-            }
+        if (sepaCtArrangements.size() != 0 && usDomesticWireArrangements.size() != 0 &&
+            usForeignWireArrangements.size() != 0 && achDebitArrangements.size() != 0) {
 
-            InitiatePaymentOrder initiatePaymentOrder = PaymentsDataGenerator
-                .generateInitiatePaymentOrder(randomArrangement.getId(), paymentType);
-            paymentOrderPresentationRestClient.initiatePaymentOrder(initiatePaymentOrder)
-                .then()
-                .statusCode(SC_ACCEPTED);
+            IntStream.range(0, randomAmount).parallel().forEach(randomNumber -> {
+                String paymentType = getRandomFromList(PAYMENT_TYPES);
+                ArrangementsByBusinessFunctionGetResponseBody randomArrangement;
 
-            LOGGER.info("Payment order ingested for debtor account [{}] for user [{}]",
-                initiatePaymentOrder.getDebtorAccount().getIdentification().getIdentification(), externalUserId);
-        });
+                if (PAYMENT_TYPE_SEPA_CREDIT_TRANSFER.equals(paymentType)) {
+                    randomArrangement = getRandomFromList(sepaCtArrangements);
+                } else if (PAYMENT_TYPE_US_DOMESTIC_WIRE.equals(paymentType)) {
+                    randomArrangement = getRandomFromList(usDomesticWireArrangements);
+                } else if (PAYMENT_TYPE_US_FOREIGN_WIRE.equals(paymentType)) {
+                    randomArrangement = getRandomFromList(usForeignWireArrangements);
+                } else if (PAYMENT_TYPE_ACH_DEBIT.equals(paymentType)) {
+                    randomArrangement = getRandomFromList(achDebitArrangements);
+                } else {
+                    throw new IllegalArgumentException("Unknown payment type " + paymentType);
+                }
+
+                InitiatePaymentOrder initiatePaymentOrder = PaymentsDataGenerator
+                    .generateInitiatePaymentOrder(randomArrangement.getId(), paymentType);
+                paymentOrderPresentationRestClient.initiatePaymentOrder(initiatePaymentOrder)
+                    .then()
+                    .statusCode(SC_ACCEPTED);
+
+                LOGGER.info("Payment order ingested for debtor account [{}] for user [{}]",
+                    initiatePaymentOrder.getDebtorAccount().getIdentification().getIdentification(), externalUserId);
+            });
+        }
     }
 }

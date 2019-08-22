@@ -10,6 +10,7 @@ import com.backbase.ct.bbfuel.client.pfm.CategoriesPresentationRestClient;
 import com.backbase.ct.bbfuel.client.transaction.TransactionsIntegrationRestClient;
 import com.backbase.ct.bbfuel.data.CommonConstants;
 import com.backbase.ct.bbfuel.data.TransactionsDataGenerator;
+import com.backbase.ct.bbfuel.input.TransactionsReader;
 import com.backbase.ct.bbfuel.util.CommonHelpers;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
 import com.backbase.integration.transaction.external.rest.spec.v2.transactions.TransactionsPostRequestBody;
@@ -29,6 +30,8 @@ public class TransactionsConfigurator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TransactionsConfigurator.class);
     private static GlobalProperties globalProperties = GlobalProperties.getInstance();
+
+    private final TransactionsReader reader = new TransactionsReader();
 
     private final TransactionsIntegrationRestClient transactionsIntegrationRestClient;
     private final CategoriesPresentationRestClient categoriesPresentationRestClient;
@@ -52,10 +55,15 @@ public class TransactionsConfigurator {
 
         List<SubCategory> finalCategories = new ArrayList<>(retailCategories);
 
-        IntStream.range(0, randomAmount).parallel()
-            .forEach(randomNumber -> transactions.add(
-                TransactionsDataGenerator.generateTransactionsPostRequestBody(externalArrangementId, isRetail, finalCategories)));
-
+        if (isRetail) {
+            IntStream.range(0, randomAmount).parallel()
+                    .forEach(randomNumber -> transactions.add(
+                            reader.loadSingle(externalArrangementId)));
+        } else {
+            IntStream.range(0, randomAmount).parallel()
+                    .forEach(randomNumber -> transactions.add(
+                            TransactionsDataGenerator.generateTransactionsPostRequestBody(externalArrangementId, isRetail, finalCategories)));
+        }
         transactionsIntegrationRestClient.ingestTransactions(transactions)
             .then()
             .statusCode(SC_CREATED);

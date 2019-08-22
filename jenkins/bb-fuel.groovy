@@ -23,6 +23,7 @@ pipeline {
         booleanParam(name: 'INGEST_PAYMENTS', defaultValue: false, description: 'Ingest payments per user')
         booleanParam(name: 'INGEST_MESSAGES', defaultValue: false, description: 'Ingest messages per user')
         booleanParam(name: 'INGEST_ACTIONS', defaultValue: false, description: 'Ingest actions per user')
+        booleanParam(name: 'INGEST_BILLPAY', defaultValue: false, description: 'Enrol users into Bill Pay')
         booleanParam(name: 'USE_PERFORMANCE_TEST_DATA_SETUP', defaultValue: false, description: 'Use performance test data setup\n' +
                 'Only enable when strictly necessary (long running job)')
         choice(name: 'PERFORMANCE_TEST_DATA', choices: 'retail\nbusiness', description: 'Retail or business performance test data setup')
@@ -62,6 +63,7 @@ pipeline {
                                     "-Dingest.payments=${params.INGEST_PAYMENTS} " +
                                     "-Dingest.messages=${params.INGEST_MESSAGES} " +
                                     "-Dingest.actions=${params.INGEST_ACTIONS} " +
+                                    "-Dingest.billpay=${params.INGEST_BILLPAY} " +
                                     customLegalEntitiesWithUsersJson +
                                     "${params.ADDITIONAL_ARGUMENTS}"
                     )

@@ -65,16 +65,6 @@
         ]
       },
       {
-        "businessFunction": "ACH Credit Transfer",
-        "privileges": [
-          "view",
-          "create",
-          "edit",
-          "delete",
-          "approve"
-        ]
-      },
-      {
         "businessFunction": "ACH Debit",
         "privileges": [
           "view",
@@ -421,6 +411,16 @@
         "privileges": [
           "execute",
           "view"
+        ]
+      },
+      {
+        "businessFunction": "ACH Credit Transfer",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve"
         ]
       },
       {

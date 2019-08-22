@@ -3,7 +3,6 @@ package com.backbase.ct.bbfuel.configurator;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PAYMENT_TYPE_ACH_DEBIT;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PAYMENT_TYPE_SEPA_CREDIT_TRANSFER;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PAYMENT_TYPE_US_DOMESTIC_WIRE;
-import static com.backbase.ct.bbfuel.data.CommonConstants.PAYMENT_TYPE_US_FOREIGN_WIRE;
 import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
 import static org.apache.http.HttpStatus.SC_ACCEPTED;
 
@@ -40,7 +39,7 @@ public class PaymentsConfigurator {
 
     public void ingestPaymentOrders(String externalUserId) {
         final List<String> PAYMENT_TYPES = Arrays
-            .asList(PAYMENT_TYPE_SEPA_CREDIT_TRANSFER, PAYMENT_TYPE_US_DOMESTIC_WIRE, PAYMENT_TYPE_ACH_DEBIT, PAYMENT_TYPE_US_FOREIGN_WIRE);
+            .asList(PAYMENT_TYPE_SEPA_CREDIT_TRANSFER, PAYMENT_TYPE_US_DOMESTIC_WIRE, PAYMENT_TYPE_ACH_DEBIT);
 
         loginRestClient.login(externalUserId, externalUserId);
         userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
@@ -50,8 +49,6 @@ public class PaymentsConfigurator {
             .getUsDomesticWireArrangements();
         List<ArrangementsByBusinessFunctionGetResponseBody> achDebitArrangements = productSummaryPresentationRestClient
             .getAchDebitArrangements();
-        List<ArrangementsByBusinessFunctionGetResponseBody> usForeignWireArrangements = productSummaryPresentationRestClient
-            .getUsForeignWireArrangements();
 
         int randomAmount = CommonHelpers
             .generateRandomNumberInRange(globalProperties.getInt(CommonConstants.PROPERTY_PAYMENTS_MIN),
@@ -62,14 +59,10 @@ public class PaymentsConfigurator {
 
             if (PAYMENT_TYPE_SEPA_CREDIT_TRANSFER.equals(paymentType)) {
                 randomArrangement = getRandomFromList(sepaCtArrangements);
-            } else if (PAYMENT_TYPE_US_DOMESTIC_WIRE.equals(paymentType)) {
-                randomArrangement = getRandomFromList(usDomesticWireArrangements);
-            } else if (PAYMENT_TYPE_US_FOREIGN_WIRE.equals(paymentType)){
-                randomArrangement = getRandomFromList(usForeignWireArrangements);
-            } else if (PAYMENT_TYPE_ACH_DEBIT.equals(paymentType)){
+            } else if (PAYMENT_TYPE_ACH_DEBIT.equals(paymentType)) {
                 randomArrangement = getRandomFromList(achDebitArrangements);
             } else {
-                throw new IllegalArgumentException("Unknown payment type " + paymentType);
+                randomArrangement = getRandomFromList(usDomesticWireArrangements);
             }
 
             InitiatePaymentOrder initiatePaymentOrder = PaymentsDataGenerator

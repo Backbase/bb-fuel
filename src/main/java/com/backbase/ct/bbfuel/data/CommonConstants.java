@@ -81,4 +81,7 @@ public final class CommonConstants {
 
     // Transactions
     public static final String PROPERTY_TRANSACTIONS_DATA_JSON = "transactions.data.json";
+
+    // Arrangements
+    public static final String PROPERTY_ARRANGEMENTS_DATA_JSON = "arrangements.data.json";
 }

@@ -10,6 +10,7 @@ import com.backbase.ct.bbfuel.client.productsummary.ArrangementsIntegrationRestC
 import com.backbase.ct.bbfuel.data.ProductSummaryDataGenerator;
 import com.backbase.ct.bbfuel.dto.ArrangementId;
 import com.backbase.ct.bbfuel.dto.entitlement.ProductGroupSeed;
+import com.backbase.ct.bbfuel.input.ArrangementsReader;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBody;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostResponseBody;
 import com.backbase.integration.arrangement.rest.spec.v2.balancehistory.BalanceHistoryPostRequestBody;
@@ -28,10 +29,29 @@ public class ProductSummaryConfigurator {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductSummaryConfigurator.class);
     private final ArrangementsIntegrationRestClient arrangementsIntegrationRestClient;
 
+    private final ArrangementsReader reader = new ArrangementsReader();
+
     public void ingestProducts() {
         List<ProductsPostRequestBody> products = ProductSummaryDataGenerator.getProductsFromFile();
         products.stream().parallel()
             .forEach(arrangementsIntegrationRestClient::ingestProductAndLogResponse);
+    }
+
+    public List<ArrangementId> ingestRetailArrangements(String externalLegalEntityId) {
+        List<ArrangementsPostRequestBody> arrangements = synchronizedList(new ArrayList<>());
+        List<ArrangementId> arrangementIds = synchronizedList(new ArrayList<>());
+
+        arrangements.addAll(reader.load(externalLegalEntityId));
+
+        arrangements.parallelStream().forEach(arrangement -> {
+            ArrangementsPostResponseBody arrangementsPostResponseBody = arrangementsIntegrationRestClient
+                    .ingestArrangement(arrangement);
+            LOGGER.info("Arrangement [{}] ingested for product [{}] under legal entity [{}]",
+                    arrangement.getName(), arrangement.getProductId(), externalLegalEntityId);
+            arrangementIds.add(new ArrangementId(arrangementsPostResponseBody.getId(), arrangement.getId()));
+        });
+
+        return arrangementIds;
     }
 
     public List<ArrangementId> ingestArrangements(String externalLegalEntityId, ProductGroupSeed productGroupSeed) {

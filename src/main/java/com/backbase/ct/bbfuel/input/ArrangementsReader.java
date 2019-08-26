@@ -3,7 +3,6 @@ package com.backbase.ct.bbfuel.input;
 import com.backbase.ct.bbfuel.data.CommonConstants;
 import com.backbase.ct.bbfuel.util.ParserUtil;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBody;
-import com.github.javafaker.Faker;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -19,7 +18,7 @@ public class ArrangementsReader extends BaseReader {
 
         try {
             ArrangementsPostRequestBody[] parsedArrangements = ParserUtil.convertJsonToObject(globalProperties.getString(
-                    CommonConstants.PROPERTY_ARRANGEMENTS_DATA_JSON),
+                    CommonConstants.PROPERTY_PRODUCTS_DATA_JSON),
                     ArrangementsPostRequestBody[].class);
 
             for (ArrangementsPostRequestBody arrangement: parsedArrangements) {

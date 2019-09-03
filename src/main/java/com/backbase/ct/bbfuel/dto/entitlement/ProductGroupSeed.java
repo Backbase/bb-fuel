@@ -20,7 +20,9 @@ public class ProductGroupSeed extends DbsEntity {
     private Boolean isRetail;
     private List<String> currencies;
     private List<String> currentAccountNames;
+    private List<String> savingAccountNames;
     private List<String> productIds;
+    private List<String> nonCurrentAccountProductIds;
     private AmountRange numberOfArrangements;
     private AmountRange numberOfDebitCards;
 
@@ -37,8 +39,14 @@ public class ProductGroupSeed extends DbsEntity {
         if (source.getCurrentAccountNames() != null) {
             this.setCurrentAccountNames(new ArrayList<>(source.getCurrentAccountNames()));
         }
+        if (source.getSavingAccountNames() != null) {
+            this.setSavingAccountNames(new ArrayList<>(source.getSavingAccountNames()));
+        }
         if (source.getProductIds() != null) {
             this.setProductIds(new ArrayList<>(source.getProductIds()));
+        }
+        if (source.getNonCurrentAccountProductIds() != null) {
+            this.setNonCurrentAccountProductIds(new ArrayList<>(source.getNonCurrentAccountProductIds()));
         }
     }
 }

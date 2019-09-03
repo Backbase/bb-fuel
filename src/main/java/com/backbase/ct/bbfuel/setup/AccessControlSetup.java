@@ -200,14 +200,8 @@ public class AccessControlSetup extends BaseSetup {
                 .orElse(null);
 
             if (existingDataGroup == null) {
-                List<ArrangementId> arrangementIds;
-                if (isRetail) {
-                    arrangementIds = this.productSummaryConfigurator.ingestRetailArrangements(
-                            externalLegalEntityId);
-                } else {
-                    arrangementIds = this.productSummaryConfigurator.ingestArrangements(
-                            externalLegalEntityId, productGroupSeed);
-                }
+                List<ArrangementId> arrangementIds = this.productSummaryConfigurator.ingestArrangements(
+                        externalLegalEntityId, productGroupSeed);
 
                 productGroupSeed.setExternalServiceAgreementId(externalServiceAgreementId);
                 this.accessGroupsConfigurator.ingestDataGroupForArrangements(productGroupSeed, arrangementIds);

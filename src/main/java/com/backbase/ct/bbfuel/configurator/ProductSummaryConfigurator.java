@@ -37,10 +37,13 @@ public class ProductSummaryConfigurator {
     public List<ArrangementId> ingestArrangements(String externalLegalEntityId, ProductGroupSeed productGroupSeed) {
         List<ArrangementsPostRequestBody> arrangements = synchronizedList(new ArrayList<>());
         List<ArrangementId> arrangementIds = synchronizedList(new ArrayList<>());
+        List<String> productIds = productGroupSeed.getProductIds();
 
         int numberOfArrangements = productGroupSeed.getNumberOfArrangements().getRandomNumberInRange();
         int tenPercentOfTotal = (int) Math.round(numberOfArrangements * 0.1);
-        int numberOfNonCurrentAccounts = tenPercentOfTotal > 0 ? tenPercentOfTotal : 0;
+        int minNumberOfNonCurrentAccounts = (productIds.contains(String.valueOf(1)) && productIds.size() > 1)
+            || (!productIds.contains(String.valueOf(1)) && !productIds.isEmpty()) ? 1 : 0;
+        int numberOfNonCurrentAccounts = tenPercentOfTotal > 0 ? tenPercentOfTotal : minNumberOfNonCurrentAccounts;
 
         if (productGroupSeed.getProductIds().contains(String.valueOf(1))) {
             arrangements.addAll(generateCurrentAccountArrangementsPostRequestBodies(

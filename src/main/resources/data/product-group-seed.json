@@ -226,20 +226,13 @@
     ],
     "currentAccountNames": [
       "Current Account",
-      "Joint Account"
-    ],
-    "savingAccountNames": [
       "Savings Account"
     ],
     "productIds": [
-      "1"
+      "1","2", "4"
     ],
-    "nonCurrentAccountProductIds": [
-      "2", "4"
-    ],
-
     "numberOfArrangements": {
-      "min": 2,
+      "min": 3,
       "max": 4
     },
     "numberOfDebitCards": {

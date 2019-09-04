@@ -7,7 +7,8 @@
     "creditDebitIndicator": "DBIT",
     "currency": "USD",
     "reference": "czyo9c2n7z",
-    "type": "POS"
+    "type": "POS",
+    "typeGroup": "Payment"
   },
   {
     "amount": 14.99,
@@ -119,7 +120,7 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Withdraw"
+    "typeGroup": "Payment"
   },
   {
     "amount": 85,

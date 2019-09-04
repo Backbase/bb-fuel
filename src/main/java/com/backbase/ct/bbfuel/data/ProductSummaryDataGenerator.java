@@ -113,8 +113,7 @@ public class ProductSummaryDataGenerator {
 
         IntStream.range(0, numberOfArrangements).parallel().forEach(randomNumber -> {
             String currency = getRandomFromList(productGroupSeed.getCurrencies());
-            String productId = getRandomFromList(productGroupSeed.getNonCurrentAccountProductIds() != null ?
-                    productGroupSeed.getNonCurrentAccountProductIds() : productGroupSeed.getProductIds());
+            String productId = getRandomFromList(productGroupSeed.getProductIds());
             String arrangementName = getProductTypeNameFromProductsInputFile(productId);
             ArrangementsPostRequestBody arrangementsPostRequestBody = getArrangementsPostRequestBody(
                 externalLegalEntityId, arrangementName, currency, Integer.valueOf(productId));

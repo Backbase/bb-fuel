@@ -414,6 +414,16 @@
         ]
       },
       {
+        "businessFunction": "ACH Credit Transfer",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve"
+        ]
+      },
+      {
         "businessFunction": "Product Summary",
         "privileges": [
           "view",

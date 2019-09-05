@@ -5,7 +5,6 @@ import static com.backbase.ct.bbfuel.data.ApprovalsDataGenerator.createPolicyAss
 import static com.backbase.ct.bbfuel.data.ApprovalsDataGenerator.createPolicyAssignmentRequestBounds;
 import static com.backbase.ct.bbfuel.data.ApprovalsDataGenerator.createPolicyItemDto;
 import static com.backbase.ct.bbfuel.data.CommonConstants.BATCH_RESOURCE_NAME;
-import static com.backbase.ct.bbfuel.data.CommonConstants.BATCH_SEPA_CT_FUNCTION_NAME;
 import static com.backbase.ct.bbfuel.data.CommonConstants.CONTACTS_FUNCTION_NAME;
 import static com.backbase.ct.bbfuel.data.CommonConstants.CONTACTS_RESOURCE_NAME;
 import static com.backbase.ct.bbfuel.data.CommonConstants.NOTIFICATIONS_FUNCTION_NAME;
@@ -16,10 +15,9 @@ import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROV
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_NOTIFICATIONS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_PAYMENTS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
-import static com.backbase.ct.bbfuel.data.CommonConstants.SEPA_CT_FUNCTION_NAME;
-import static com.backbase.ct.bbfuel.data.CommonConstants.ACH_DEBIT_FUNCTION_NAME;
-import static com.backbase.ct.bbfuel.data.CommonConstants.US_DOMESTIC_WIRE_FUNCTION_NAME;
-import static com.backbase.ct.bbfuel.data.CommonConstants.US_FOREIGN_WIRE_FUNCTION_NAME;
+import static com.backbase.ct.bbfuel.service.PaymentsFunctionService.BATCH_FUNCTIONS;
+import static com.backbase.ct.bbfuel.service.PaymentsFunctionService.PAYMENTS_FUNCTIONS;
+import static com.backbase.ct.bbfuel.service.PaymentsFunctionService.determineCurrencyForFunction;
 import static com.backbase.ct.bbfuel.util.CommonHelpers.generateRandomNumberInRange;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
@@ -58,11 +56,6 @@ public class ApprovalsConfigurator {
     private final JobProfileService jobProfileService;
 
     private String rootEntitlementsAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
-    private static final List<String> PAYMENTS_FUNCTIONS = asList(
-        SEPA_CT_FUNCTION_NAME,
-        US_DOMESTIC_WIRE_FUNCTION_NAME,
-        US_FOREIGN_WIRE_FUNCTION_NAME,
-        ACH_DEBIT_FUNCTION_NAME);
     private static final BigDecimal UPPER_BOUND_HUNDRED = new BigDecimal("100.0");
     private static final BigDecimal UPPER_BOUND_THOUSAND = new BigDecimal("1000.0");
     private static final BigDecimal UPPER_BOUND_HUNDRED_THOUSAND = new BigDecimal("100000.0");
@@ -79,9 +72,7 @@ public class ApprovalsConfigurator {
         createPolicies();
     }
 
-    public void setupAccessControlAndPerformApprovalAssignments(String externalServiceAgreementId,
-        String externalLegalEntityId,
-        int numberOfUsers) {
+    public void setupAccessControlAndPerformApprovalAssignments(String externalServiceAgreementId, int numberOfUsers) {
         loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
         userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
         boolean isPaymentsApprovalsEnabled = globalProperties.getBoolean(PROPERTY_INGEST_APPROVALS_FOR_PAYMENTS);
@@ -95,8 +86,8 @@ public class ApprovalsConfigurator {
             setupAccessControlAndAssignApprovalTypes(externalServiceAgreementId);
         }
         if (isPaymentsApprovalsEnabled) {
-            assignCurrencyBoundPolicies(externalServiceAgreementId, numberOfUsers, PAYMENTS_RESOURCE_NAME,
-                PAYMENTS_FUNCTIONS);
+            assignCurrencyBoundPolicies(externalServiceAgreementId, numberOfUsers,
+                PAYMENTS_RESOURCE_NAME, PAYMENTS_FUNCTIONS);
         }
         if (isContactsApprovalsEnabled) {
             assignContactsPolicies(externalServiceAgreementId);
@@ -105,8 +96,8 @@ public class ApprovalsConfigurator {
             assignNotificationsPolicies(externalServiceAgreementId);
         }
         if (isBatchApprovalsEnabled) {
-            assignCurrencyBoundPolicies(externalServiceAgreementId, numberOfUsers, BATCH_RESOURCE_NAME,
-                asList(BATCH_SEPA_CT_FUNCTION_NAME));
+            assignCurrencyBoundPolicies(externalServiceAgreementId, numberOfUsers,
+                BATCH_RESOURCE_NAME, BATCH_FUNCTIONS);
         }
     }
 
@@ -158,28 +149,30 @@ public class ApprovalsConfigurator {
                     externalServiceAgreementId, resource, functionName);
             } else {
                 generatedItems = getCurrencyPolicyAssignments(externalServiceAgreementId, resource,
-                    functionName, functionName.contains("SEPA") ? "EUR" : "USD");
+                    functionName, determineCurrencyForFunction(functionName));
             }
             listOfAssignments.addAll(generatedItems);
         }
-        LOGGER.info("Assigning policies: {}", ReflectionToStringBuilder.toString(listOfAssignments));
-        approvalIntegrationRestClient.assignPolicies(listOfAssignments);
+        assignPolicies(listOfAssignments);
     }
 
     private void assignContactsPolicies(String externalServiceAgreementId) {
-        List<IntegrationPolicyAssignmentRequest> listOfAssignments = getPolicyAssignments(
-            externalServiceAgreementId, CONTACTS_RESOURCE_NAME, CONTACTS_FUNCTION_NAME);
-
-        LOGGER.info("Assigning policies: {}", ReflectionToStringBuilder.toString(listOfAssignments));
-        approvalIntegrationRestClient.assignPolicies(listOfAssignments);
+        assignPolicies(
+            getPolicyAssignments(
+                externalServiceAgreementId, CONTACTS_RESOURCE_NAME, CONTACTS_FUNCTION_NAME));
     }
 
     private void assignNotificationsPolicies(String externalServiceAgreementId) {
-        List<IntegrationPolicyAssignmentRequest> listOfAssignments =
+        assignPolicies(
             getPolicyAssignmentsBasedOnZeroApprovalPolicyOnly(externalServiceAgreementId,
-                NOTIFICATIONS_RESOURCE_NAME, NOTIFICATIONS_FUNCTION_NAME);
+                NOTIFICATIONS_RESOURCE_NAME, NOTIFICATIONS_FUNCTION_NAME));
 
-        LOGGER.info("Assigning policies: {}", ReflectionToStringBuilder.toString(listOfAssignments));
+    }
+
+    private void assignPolicies(List<IntegrationPolicyAssignmentRequest> listOfAssignments) {
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info("Assigning policies: {}", ReflectionToStringBuilder.toString(listOfAssignments));
+        }
         approvalIntegrationRestClient.assignPolicies(listOfAssignments);
     }
 

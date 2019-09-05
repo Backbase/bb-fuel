@@ -83,7 +83,6 @@ public class CapabilitiesDataSetup extends BaseSetup {
 
                 this.approvalsConfigurator.setupAccessControlAndPerformApprovalAssignments(
                     userContext.getExternalServiceAgreementId(),
-                    userContext.getExternalLegalEntityId(),
                     users.size());
             });
         }

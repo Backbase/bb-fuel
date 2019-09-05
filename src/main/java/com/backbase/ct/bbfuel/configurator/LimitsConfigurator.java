@@ -1,11 +1,10 @@
 package com.backbase.ct.bbfuel.configurator;
 
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
-import static com.backbase.ct.bbfuel.data.CommonConstants.SEPA_CT_FUNCTION_NAME;
-import static com.backbase.ct.bbfuel.data.CommonConstants.ACH_DEBIT_FUNCTION_NAME;
-import static com.backbase.ct.bbfuel.data.CommonConstants.US_DOMESTIC_WIRE_FUNCTION_NAME;
-import static com.backbase.ct.bbfuel.data.CommonConstants.US_FOREIGN_WIRE_FUNCTION_NAME;
 import static com.backbase.ct.bbfuel.data.LimitsDataGenerator.createTransactionalLimitsPostRequestBodyForPrivilege;
+import static com.backbase.ct.bbfuel.service.PaymentsFunctionService.BATCH_FUNCTIONS;
+import static com.backbase.ct.bbfuel.service.PaymentsFunctionService.PAYMENTS_FUNCTIONS;
+import static com.backbase.ct.bbfuel.service.PaymentsFunctionService.determineCurrencyForFunction;
 import static java.util.Arrays.asList;
 import static org.apache.http.HttpStatus.SC_CREATED;
 
@@ -19,6 +18,8 @@ import com.backbase.ct.bbfuel.util.GlobalProperties;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.config.functions.FunctionsGetResponseBody;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,14 +53,11 @@ public class LimitsConfigurator {
             .getExternalId();
 
         List<FunctionsGetResponseBody> paymentsFunctions = accessGroupIntegrationRestClient
-            .retrieveFunctions(asList(
-                SEPA_CT_FUNCTION_NAME,
-                US_DOMESTIC_WIRE_FUNCTION_NAME,
-                US_FOREIGN_WIRE_FUNCTION_NAME,
-                ACH_DEBIT_FUNCTION_NAME));
+            .retrieveFunctions(Stream.concat(
+                PAYMENTS_FUNCTIONS.stream(), BATCH_FUNCTIONS.stream())
+                .collect(Collectors.toList()));
 
         for (FunctionsGetResponseBody paymentsFunction : paymentsFunctions) {
-            String currency = SEPA_CT_FUNCTION_NAME.equals(paymentsFunction.getName()) ? "EUR" : "USD";
 
             String existingAdminFunctionGroupId = accessGroupPresentationRestClient
                 .retrieveFunctionGroupsByServiceAgreement(internalServiceAgreementId)
@@ -78,7 +76,7 @@ public class LimitsConfigurator {
                         internalServiceAgreementId,
                         existingAdminFunctionGroupId,
                         paymentsFunction.getFunctionId(),
-                        currency,
+                        determineCurrencyForFunction(paymentsFunction.getName()),
                         privilege,
                         limitAmount))
                     .then()

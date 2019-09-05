@@ -201,7 +201,7 @@ public class AccessControlSetup extends BaseSetup {
 
             if (existingDataGroup == null) {
                 List<ArrangementId> arrangementIds = this.productSummaryConfigurator.ingestArrangements(
-                        externalLegalEntityId, productGroupSeed);
+                    externalLegalEntityId, productGroupSeed);
 
                 productGroupSeed.setExternalServiceAgreementId(externalServiceAgreementId);
                 this.accessGroupsConfigurator.ingestDataGroupForArrangements(productGroupSeed, arrangementIds);

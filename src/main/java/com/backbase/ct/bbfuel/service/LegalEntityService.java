@@ -11,15 +11,13 @@ import com.backbase.integration.legalentity.rest.spec.v2.legalentities.LegalEnti
 import com.backbase.presentation.legalentity.rest.spec.v2.legalentities.LegalEntitiesGetResponseBody;
 import io.restassured.response.Response;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class LegalEntityService {
-
-    private final static Logger LOGGER = LoggerFactory.getLogger(LegalEntityService.class);
 
     private final LegalEntityPresentationRestClient legalEntityPresentationRestClient;
 
@@ -37,7 +35,7 @@ public class LegalEntityService {
                 .getMessage()
                 .matches("Legal Entity with given external Id already exists")) {
 
-            LOGGER.info("Legal entity [{}] already exists, skipped ingesting this legal entity",
+            log.info("Legal entity [{}] already exists, skipped ingesting this legal entity",
                 legalEntity.getExternalId());
 
             if (legalEntity.getParentExternalId() == null) {
@@ -60,7 +58,7 @@ public class LegalEntityService {
             response.then()
                 .statusCode(SC_CREATED);
 
-            LOGGER.info("Legal entity [{}] ingested", legalEntity.getExternalId());
+            log.info("Legal entity [{}] ingested", legalEntity.getExternalId());
 
             return legalEntity.getExternalId();
         }

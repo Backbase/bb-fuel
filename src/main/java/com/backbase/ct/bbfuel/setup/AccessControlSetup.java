@@ -253,7 +253,7 @@ public class AccessControlSetup extends BaseSetup {
         if (this.jobProfileService.getAssignedJobProfiles(externalServiceAgreementId) == null) {
             jobProfileTemplates.forEach(template -> {
                 if (!jobProfileService.isJobProfileForBranch(isRetail, template)) {
-                    logger.info("Job profile template [{}] does not apply to this legal entity [isRetail: {}]",
+                    log.info("Job profile template [{}] does not apply to this legal entity [isRetail: {}]",
                         template.getJobProfileName(), isRetail);
                     return;
                 }

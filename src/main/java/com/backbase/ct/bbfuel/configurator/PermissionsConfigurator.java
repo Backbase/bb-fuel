@@ -13,15 +13,13 @@ import io.restassured.response.Response;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PermissionsConfigurator {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(PermissionsConfigurator.class);
 
     private final AccessGroupIntegrationRestClient accessGroupIntegrationRestClient;
 
@@ -47,7 +45,7 @@ public class PermissionsConfigurator {
                     .map(IntegrationIdentifier::getIdIdentifier).collect(
                         Collectors.toList());
 
-                LOGGER.info(
+                log.info(
                     "Data groups already assigned to service agreement [{}], user [{}], function group [{}], skipped assigning data group ids {}",
                     externalServiceAgreementId, externalUserId, functionGroupDataGroup.getFunctionGroupIdentifier(),
                     ids);
@@ -71,7 +69,7 @@ public class PermissionsConfigurator {
                 List<String> ids = functionGroupDataGroup.getDataGroupIdentifiers().stream()
                     .map(IntegrationIdentifier::getIdIdentifier).collect(
                         Collectors.toList());
-                LOGGER.info(
+                log.info(
                     "Failed assigning data groups to service agreement [{}], user [{}], function group [{}], with data group ids {}",
                     externalServiceAgreementId, externalUserId, functionGroupDataGroup.getFunctionGroupIdentifier(),
                     ids);

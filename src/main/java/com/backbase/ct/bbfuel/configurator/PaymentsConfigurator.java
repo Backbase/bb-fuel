@@ -21,15 +21,14 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PaymentsConfigurator {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(PaymentsConfigurator.class);
     private static GlobalProperties globalProperties = GlobalProperties.getInstance();
     private final PaymentOrderPresentationRestClient paymentOrderPresentationRestClient;
     private final LoginRestClient loginRestClient;
@@ -75,7 +74,7 @@ public class PaymentsConfigurator {
                     .then()
                     .statusCode(SC_ACCEPTED);
 
-                LOGGER.info("Payment order ingested for debtor account [{}] for user [{}]",
+                log.info("Payment order ingested for debtor account [{}] for user [{}]",
                     initiatePaymentOrder.getDebtorAccount().getIdentification().getIdentification(), externalUserId);
             });
         }

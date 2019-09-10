@@ -42,7 +42,7 @@ public class JobProfileReader extends BaseReader {
             jobProfiles = asList(parsedJobProfiles);
             jobProfileEnricher.enrich(jobProfiles);
         } catch (IOException e) {
-            logger.error("Failed parsing file with entities", e);
+            log.error("Failed parsing file with entities", e);
             throw new InvalidInputException(e.getMessage(), e);
         }
         return jobProfiles;

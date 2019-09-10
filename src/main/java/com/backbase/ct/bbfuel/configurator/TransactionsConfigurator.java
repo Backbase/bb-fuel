@@ -20,15 +20,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class TransactionsConfigurator {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TransactionsConfigurator.class);
     private static GlobalProperties globalProperties = GlobalProperties.getInstance();
 
     private final TransactionsReader reader = new TransactionsReader();
@@ -68,6 +67,6 @@ public class TransactionsConfigurator {
             .then()
             .statusCode(SC_CREATED);
 
-        LOGGER.info("Transactions [{}] ingested for arrangement [{}]", randomAmount, externalArrangementId);
+        log.info("Transactions [{}] ingested for arrangement [{}]", randomAmount, externalArrangementId);
     }
 }

@@ -37,7 +37,7 @@ public class LegalEntityWithUsersReader extends BaseReader {
             entities = asList(parsedEntities);
             legalEntityWithUsersEnricher.enrich(entities);
         } catch(IOException e) {
-            logger.error("Failed parsing file with entities", e);
+            log.error("Failed parsing file with entities", e);
             throw new InvalidInputException(e.getMessage(), e);
         }
         return entities;

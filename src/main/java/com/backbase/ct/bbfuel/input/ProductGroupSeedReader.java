@@ -38,7 +38,7 @@ public class ProductGroupSeedReader extends BaseReader {
             validate(parsedProductGroupSeeds);
             productGroupSeeds = asList(parsedProductGroupSeeds);
         } catch (IOException e) {
-            logger.error("Failed parsing file with entities", e);
+            log.error("Failed parsing file with entities", e);
             throw new InvalidInputException(e.getMessage(), e);
         }
         return productGroupSeeds;

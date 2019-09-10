@@ -20,15 +20,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ServiceAgreementsConfigurator {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ServiceAgreementsConfigurator.class);
     private GlobalProperties globalProperties = GlobalProperties.getInstance();
     private final LoginRestClient loginRestClient;
     private final UserPresentationRestClient userPresentationRestClient;
@@ -50,8 +49,8 @@ public class ServiceAgreementsConfigurator {
             .as(ServiceAgreementPostResponseBody.class)
             .getId();
 
-        if (LOGGER.isInfoEnabled()) {
-            LOGGER.info("Service agreement ingested for participants {}", new ArrayList<>(participants));
+        if (log.isInfoEnabled()) {
+            log.info("Service agreement ingested for participants {}", new ArrayList<>(participants));
         }
 
         return serviceAgreementId;
@@ -67,7 +66,7 @@ public class ServiceAgreementsConfigurator {
             .then()
             .statusCode(SC_OK);
 
-        LOGGER.info("Service agreement [{}] updated with external id", internalServiceAgreementId);
+        log.info("Service agreement [{}] updated with external id", internalServiceAgreementId);
     }
 
     private void enrichParticipantsWithExternalId(Set<Participant> participants) {

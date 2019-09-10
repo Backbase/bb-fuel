@@ -12,16 +12,15 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class Runner implements ApplicationRunner {
-    private static final Logger LOGGER = LoggerFactory.getLogger(Runner.class);
 
     private final AccessControlSetup accessControlSetup;
     private final ServiceAgreementsSetup serviceAgreementsSetup;
@@ -37,7 +36,7 @@ public class Runner implements ApplicationRunner {
             doIt();
             System.exit(0);
         } catch (IOException e) {
-            LOGGER.error("Failed setting up access", e);
+            log.error("Failed setting up access", e);
             System.exit(1);
         }
     }
@@ -48,9 +47,9 @@ public class Runner implements ApplicationRunner {
      * @throws IOException when setupAccessControl throws it
      */
     private void doIt() throws IOException {
-        if (LOGGER.isInfoEnabled()) {
+        if (log.isInfoEnabled()) {
             String environment = GlobalProperties.getInstance().getString("environment.name");
-            LOGGER.info("Ingesting data into {}", (environment == null ? "environment" : environment));
+            log.info("Ingesting data into {}", (environment == null ? "environment" : environment));
         }
         performHealthChecks();
 
@@ -81,6 +80,6 @@ public class Runner implements ApplicationRunner {
     private void logDuration(Instant start) {
         Instant end = Instant.now();
         long totalSeconds = Duration.between(start, end).getSeconds();
-        LOGGER.info("Time to ingest data was {} minutes and {} seconds", totalSeconds / 60, totalSeconds % 60);
+        log.info("Time to ingest data was {} minutes and {} seconds", totalSeconds / 60, totalSeconds % 60);
     }
 }

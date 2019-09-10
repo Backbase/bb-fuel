@@ -17,15 +17,14 @@ import com.backbase.integration.arrangement.rest.spec.v2.products.ProductsPostRe
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ProductSummaryConfigurator {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ProductSummaryConfigurator.class);
     private final ArrangementsIntegrationRestClient arrangementsIntegrationRestClient;
 
     public void ingestProducts() {
@@ -61,7 +60,7 @@ public class ProductSummaryConfigurator {
         arrangements.parallelStream().forEach(arrangement -> {
             ArrangementsPostResponseBody arrangementsPostResponseBody = arrangementsIntegrationRestClient
                 .ingestArrangement(arrangement);
-            LOGGER.info("Arrangement [{}] ingested for product [{}] under legal entity [{}]",
+            log.info("Arrangement [{}] ingested for product [{}] under legal entity [{}]",
                 arrangement.getName(), arrangement.getProductId(), externalLegalEntityId);
             arrangementIds.add(new ArrangementId(arrangementsPostResponseBody.getId(), arrangement.getId()));
         });
@@ -79,7 +78,7 @@ public class ProductSummaryConfigurator {
                     .then()
                     .statusCode(SC_CREATED);
 
-                LOGGER.info("Balance history item ingested for arrangement [{}] with updated date [{}]",
+                log.info("Balance history item ingested for arrangement [{}] with updated date [{}]",
                     externalArrangementId, balanceHistoryPostRequestBody.getUpdatedDate());
             });
     }

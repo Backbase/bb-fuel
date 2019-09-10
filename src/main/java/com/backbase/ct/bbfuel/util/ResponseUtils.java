@@ -20,8 +20,8 @@ public class ResponseUtils {
             .getMessage();
     }
 
-    public static boolean isBadRequestExceptionMatching(Response response, String withMessage) {
-        return response.statusCode() == SC_BAD_REQUEST && getBadRequestMessage(response).matches(withMessage);
+    public static boolean isBadRequestExceptionMatching(Response response, String messageRegex) {
+        return response.statusCode() == SC_BAD_REQUEST && getBadRequestMessage(response).matches(messageRegex);
     }
 
     public static boolean isBadRequestException(Response response, String withMessage) {

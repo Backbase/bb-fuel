@@ -3,6 +3,7 @@ package com.backbase.ct.bbfuel.configurator;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PAYMENT_TYPE_ACH_DEBIT;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PAYMENT_TYPE_SEPA_CREDIT_TRANSFER;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PAYMENT_TYPE_US_DOMESTIC_WIRE;
+import static com.backbase.ct.bbfuel.data.CommonConstants.PAYMENT_TYPE_US_FOREIGN_WIRE;
 import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
 import static org.apache.http.HttpStatus.SC_ACCEPTED;
 
@@ -39,7 +40,7 @@ public class PaymentsConfigurator {
 
     public void ingestPaymentOrders(String externalUserId) {
         final List<String> PAYMENT_TYPES = Arrays
-            .asList(PAYMENT_TYPE_SEPA_CREDIT_TRANSFER, PAYMENT_TYPE_US_DOMESTIC_WIRE, PAYMENT_TYPE_ACH_DEBIT);
+            .asList(PAYMENT_TYPE_SEPA_CREDIT_TRANSFER, PAYMENT_TYPE_US_DOMESTIC_WIRE, PAYMENT_TYPE_ACH_DEBIT, PAYMENT_TYPE_US_FOREIGN_WIRE);
 
         loginRestClient.login(externalUserId, externalUserId);
         userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
@@ -49,13 +50,15 @@ public class PaymentsConfigurator {
             .getUsDomesticWireArrangements();
         List<ArrangementsByBusinessFunctionGetResponseBody> achDebitArrangements = productSummaryPresentationRestClient
             .getAchDebitArrangements();
+        List<ArrangementsByBusinessFunctionGetResponseBody> usForeignWireArrangements = productSummaryPresentationRestClient
+            .getUSForeignWireArrangements();
 
         int randomAmount = CommonHelpers
             .generateRandomNumberInRange(globalProperties.getInt(CommonConstants.PROPERTY_PAYMENTS_MIN),
                 globalProperties.getInt(CommonConstants.PROPERTY_PAYMENTS_MAX));
 
         if (sepaCtArrangements.size() != 0 && usDomesticWireArrangements.size() != 0
-            && achDebitArrangements.size() != 0) {
+            && achDebitArrangements.size() != 0 && usForeignWireArrangements.size() !=0) {
 
             IntStream.range(0, randomAmount).parallel().forEach(randomNumber -> {
                 String paymentType = getRandomFromList(PAYMENT_TYPES);
@@ -65,6 +68,8 @@ public class PaymentsConfigurator {
                     randomArrangement = getRandomFromList(sepaCtArrangements);
                 } else if (PAYMENT_TYPE_ACH_DEBIT.equals(paymentType)) {
                     randomArrangement = getRandomFromList(achDebitArrangements);
+                } else if (PAYMENT_TYPE_US_FOREIGN_WIRE.equals(paymentType)) {
+                    randomArrangement = getRandomFromList(usForeignWireArrangements);
                 } else {
                     randomArrangement = getRandomFromList(usDomesticWireArrangements);
                 }

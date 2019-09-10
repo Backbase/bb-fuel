@@ -7,6 +7,7 @@ import static org.apache.http.HttpStatus.SC_CREATED;
 import com.backbase.buildingblocks.presentation.errors.BadRequestException;
 import com.backbase.ct.bbfuel.client.legalentity.LegalEntityIntegrationRestClient;
 import com.backbase.ct.bbfuel.client.legalentity.LegalEntityPresentationRestClient;
+import com.backbase.ct.bbfuel.util.ResponseUtils;
 import com.backbase.integration.legalentity.rest.spec.v2.legalentities.LegalEntitiesPostRequestBody;
 import com.backbase.presentation.legalentity.rest.spec.v2.legalentities.LegalEntitiesGetResponseBody;
 import io.restassured.response.Response;
@@ -26,14 +27,7 @@ public class LegalEntityService {
     public String ingestLegalEntity(LegalEntitiesPostRequestBody legalEntity) {
         Response response = legalEntityIntegrationRestClient.ingestLegalEntity(legalEntity);
 
-        if (response.statusCode() == SC_BAD_REQUEST &&
-            response.then()
-                .extract()
-                .as(BadRequestException.class)
-                .getErrors()
-                .get(0)
-                .getMessage()
-                .matches("Legal Entity with given external Id already exists")) {
+        if (ResponseUtils.isBadRequestExceptionMatching(response, "Legal Entity with given external Id already exists")) {
 
             log.info("Legal entity [{}] already exists, skipped ingesting this legal entity",
                 legalEntity.getExternalId());

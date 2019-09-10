@@ -1,11 +1,13 @@
 package com.backbase.ct.bbfuel.client.user;
 
+import static com.backbase.ct.bbfuel.util.ResponseUtils.isBadRequestException;
 import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 import static org.apache.http.HttpStatus.SC_CREATED;
 
 import com.backbase.buildingblocks.presentation.errors.BadRequestException;
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
+import com.backbase.ct.bbfuel.util.ResponseUtils;
 import com.backbase.integration.user.rest.spec.v2.users.UsersPostRequestBody;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
@@ -32,12 +34,7 @@ public class UserIntegrationRestClient extends RestClient {
     public void ingestUserAndLogResponse(UsersPostRequestBody user) {
         Response response = ingestUser(user);
 
-        if (response.statusCode() == SC_BAD_REQUEST
-            && response.then()
-            .extract()
-            .as(BadRequestException.class)
-            .getMessage()
-            .equals("User already exists")) {
+        if (isBadRequestException(response, "User already exists")) {
             log.info("User [{}] already exists, skipped ingesting this user", user.getExternalId());
         } else if (response.statusCode() == SC_CREATED) {
             log.info("User [{}] ingested under legal entity [{}]",

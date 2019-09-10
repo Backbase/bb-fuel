@@ -2,6 +2,7 @@ package com.backbase.ct.bbfuel.service;
 
 import static com.backbase.ct.bbfuel.data.AccessGroupsDataGenerator.generateDataGroupPostRequestBody;
 import static com.backbase.ct.bbfuel.data.AccessGroupsDataGenerator.generateFunctionGroupPostRequestBody;
+import static com.backbase.ct.bbfuel.util.ResponseUtils.isBadRequestException;
 import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 import static org.apache.http.HttpStatus.SC_CREATED;
 
@@ -9,6 +10,7 @@ import com.backbase.buildingblocks.presentation.errors.BadRequestException;
 import com.backbase.ct.bbfuel.client.accessgroup.AccessGroupIntegrationRestClient;
 import com.backbase.ct.bbfuel.client.accessgroup.AccessGroupPresentationRestClient;
 import com.backbase.ct.bbfuel.client.accessgroup.ServiceAgreementsIntegrationRestClient;
+import com.backbase.ct.bbfuel.util.ResponseUtils;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.datagroups.DataGroupPostResponseBody;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.Permission;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.datagroups.DataGroupsGetResponseBody;
@@ -34,14 +36,7 @@ public class AccessGroupService {
         Response response = accessGroupIntegrationRestClient.ingestFunctionGroup(
             generateFunctionGroupPostRequestBody(externalServiceAgreementId, functionGroupName, permissions));
 
-        if (response.statusCode() == SC_BAD_REQUEST &&
-            response.then()
-                .extract()
-                .as(BadRequestException.class)
-                .getErrors()
-                .get(0)
-                .getMessage()
-                .equals("Function Group with given name already exists")) {
+        if (isBadRequestException(response, "Function Group with given name already exists")) {
 
             String internalServiceAgreementId = serviceAgreementsIntegrationRestClient
                 .retrieveServiceAgreementByExternalId(externalServiceAgreementId)
@@ -79,14 +74,7 @@ public class AccessGroupService {
         Response response = accessGroupIntegrationRestClient.ingestDataGroup(
             generateDataGroupPostRequestBody(externalServiceAgreementId, dataGroupName, type, internalArrangementIds));
 
-        if (response.statusCode() == SC_BAD_REQUEST &&
-            response.then()
-                .extract()
-                .as(BadRequestException.class)
-                .getErrors()
-                .get(0)
-                .getMessage()
-                .equals("Function Group with given name already exists")) {
+        if (isBadRequestException(response, "Function Group with given name already exists")) {
 
             String internalServiceAgreementId = serviceAgreementsIntegrationRestClient
                 .retrieveServiceAgreementByExternalId(externalServiceAgreementId)
@@ -115,5 +103,4 @@ public class AccessGroupService {
             return dataGroupId;
         }
     }
-
 }

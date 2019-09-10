@@ -12,8 +12,10 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.time.DateUtils;
 
+@Slf4j
 public class TransactionsReader extends BaseReader {
 
     private static Faker faker = new Faker();

@@ -45,8 +45,10 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class AccessControlSetup extends BaseSetup {
@@ -253,7 +255,7 @@ public class AccessControlSetup extends BaseSetup {
         if (this.jobProfileService.getAssignedJobProfiles(externalServiceAgreementId) == null) {
             jobProfileTemplates.forEach(template -> {
                 if (!jobProfileService.isJobProfileForBranch(isRetail, template)) {
-                    logger.info("Job profile template [{}] does not apply to this legal entity [isRetail: {}]",
+                    log.info("Job profile template [{}] does not apply to this legal entity [isRetail: {}]",
                         template.getJobProfileName(), isRetail);
                     return;
                 }

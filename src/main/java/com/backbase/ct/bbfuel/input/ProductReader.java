@@ -5,7 +5,6 @@ import static java.util.Arrays.asList;
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toList;
 
-import com.backbase.ct.bbfuel.enrich.JobProfileEnricher;
 import com.backbase.ct.bbfuel.util.ParserUtil;
 import com.backbase.integration.arrangement.rest.spec.v2.products.ProductsPostRequestBody;
 import java.io.IOException;
@@ -14,10 +13,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class ProductReader extends BaseReader {
@@ -39,7 +40,7 @@ public class ProductReader extends BaseReader {
             validate(parsedProducts);
             products = asList(parsedProducts);
         } catch (IOException e) {
-            logger.error("Failed parsing file with entities", e);
+            log.error("Failed parsing file with entities", e);
             throw new InvalidInputException(e.getMessage(), e);
         }
         return products;

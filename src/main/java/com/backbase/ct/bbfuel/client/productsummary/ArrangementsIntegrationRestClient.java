@@ -1,11 +1,13 @@
 package com.backbase.ct.bbfuel.client.productsummary;
 
+import static com.backbase.ct.bbfuel.util.ResponseUtils.isBadRequestExceptionWithErrorKey;
 import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 import static org.apache.http.HttpStatus.SC_CREATED;
 
 import com.backbase.buildingblocks.presentation.errors.BadRequestException;
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
+import com.backbase.ct.bbfuel.util.ResponseUtils;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBody;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostResponseBody;
 import com.backbase.integration.arrangement.rest.spec.v2.balancehistory.BalanceHistoryPostRequestBody;
@@ -49,14 +51,7 @@ public class ArrangementsIntegrationRestClient extends RestClient {
     public void ingestProductAndLogResponse(ProductsPostRequestBody product) {
         Response response = ingestProduct(product);
 
-        if (response.statusCode() == SC_BAD_REQUEST &&
-            response.then()
-                .extract()
-                .as(BadRequestException.class)
-                .getErrors()
-                .get(0)
-                .getKey()
-                .equals("account.api.product.alreadyExists")) {
+        if (isBadRequestExceptionWithErrorKey(response, "account.api.product.alreadyExists")) {
             log.info("Product [{}] already exists, skipped ingesting this product", product.getProductKindName());
         } else if (response.statusCode() == SC_CREATED) {
             log.info("Product [{}] ingested", product.getProductKindName());

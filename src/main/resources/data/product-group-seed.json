@@ -199,6 +199,7 @@
   },
   {
     "productGroupName": "General EUR/USD",
+    "isRetail": true,
     "currencies": [
       "EUR",
       "USD"
@@ -216,28 +217,6 @@
     "numberOfDebitCards": {
       "min": 2,
       "max": 3
-    }
-  },
-  {
-    "productGroupName": "Retail Accounts U.S",
-    "isRetail": true,
-    "currencies": [
-      "USD"
-    ],
-    "currentAccountNames": [
-      "Current Account",
-      "Savings Account"
-    ],
-    "productIds": [
-      "1","2", "4"
-    ],
-    "numberOfArrangements": {
-      "min": 3,
-      "max": 4
-    },
-    "numberOfDebitCards": {
-      "min": 0,
-      "max": 0
     }
   }
 ]

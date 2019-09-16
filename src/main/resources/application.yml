@@ -19,26 +19,28 @@ security.basic.enabled: false
 
 eureka.client.enabled: false
 
+
 environment:
-  domain: backbase.test:8080
+  name: 81.f5
+  domain: backbase.test
 
 bb-fuel:
   platform:
-    infra: http://${environment.name}-${infra.base:infra}.${environment.domain}
-    registry: ${bb-fuel.platform.infra}/registry/eureka
-    gateway: ${bb-fuel.platform.infra}/gateway/api
-    auth: ${bb-fuel.platform.gateway}/auth/login
-    tokenconverter: ${bb-fuel.platform.infra}/bb-authentication-token-converter-service
+    infra: http://edge.${environment.name}.${environment.domain}
+    registry: http://registry.${environment.name}.${environment.domain}
+    gateway: http://${bb-fuel.platform.infra}/api
+    auth: http://${bb-fuel.platform.gateway}/auth/login
+    tokenconverter: http://tokenconverter.${environment.name}.${environment.domain}
   dbs:
-    approvals: http://${environment.name}-approvals.${environment.domain}/approval-integration-service
-    transactions: http://${environment.name}-transactions.${environment.domain}/transaction-integration-service
-    contactmanager: http://${environment.name}-contactmanager.${environment.domain}/contact-integration-service
-    messages: http://${environment.name}-messages.${environment.domain}/messages-integration-service
-    user: http://${environment.name}-entitlements.${environment.domain}/user-integration-service
-    legalentity: http://${environment.name}-entitlements.${environment.domain}/legalentity-integration-service
-    accessgroup: http://${environment.name}-entitlements.${environment.domain}/accessgroup-integration-service
-    arrangements: http://${environment.name}-productsummary.${environment.domain}/arrangements-integration-service
-    notifications: http://${environment.name}-notifications.${environment.domain}/notifications-presentation-service
+    approvals: http://approvals.${environment.name}.${environment.domain}
+    transactions: http://transactions.${environment.name}.${environment.domain}
+    contactmanager: http://contactmanager.${environment.name}.${environment.domain}
+    messages: http://messages.${environment.name}.${environment.domain}
+    user: http://user.${environment.name}.${environment.domain}
+    legalentity: http://legalentity.${environment.name}.${environment.domain}
+    accessgroup: http://accessgroup.${environment.name}.${environment.domain}
+    arrangements: http://arrangements.${environment.name}.${environment.domain}
+    notifications: http://notifications.${environment.name}.${environment.domain}
 
 backbase:
   activemq:

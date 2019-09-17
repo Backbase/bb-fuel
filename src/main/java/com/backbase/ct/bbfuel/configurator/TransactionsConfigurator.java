@@ -1,6 +1,5 @@
 package com.backbase.ct.bbfuel.configurator;
 
-import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_USE_PFM_CATEGORIES_FOR_TRANSACTIONS;
 import static org.apache.http.HttpStatus.SC_CREATED;
 
@@ -36,14 +35,13 @@ public class TransactionsConfigurator {
     private final CategoriesPresentationRestClient categoriesPresentationRestClient;
     private final LoginRestClient loginRestClient;
     private final UserContextPresentationRestClient userContextPresentationRestClient;
-    private String rootEntitlementsAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
 
     public void ingestTransactionsByArrangement(String externalArrangementId, boolean isRetail) {
         List<TransactionsPostRequestBody> transactions = Collections.synchronizedList(new ArrayList<>());
         List<SubCategory> retailCategories = new ArrayList<>();
 
         if (globalProperties.getBoolean(PROPERTY_USE_PFM_CATEGORIES_FOR_TRANSACTIONS)) {
-            loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
+            loginRestClient.loginBankAdmin();
             userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
             retailCategories = categoriesPresentationRestClient.retrieveCategories();
         }

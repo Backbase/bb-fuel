@@ -1,5 +1,7 @@
 package com.backbase.ct.bbfuel.client.common;
 
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
+
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
 import io.restassured.response.ValidatableResponse;
 import java.util.HashMap;
@@ -17,6 +19,11 @@ public class LoginRestClient extends RestClient {
     @PostConstruct
     public void init() {
         setBaseUri(config.getPlatform().getAuth());
+    }
+
+    public void loginBankAdmin() {
+        String admin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
+        login(admin, admin);
     }
 
     public void login(String username, String password) {

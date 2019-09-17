@@ -1,11 +1,17 @@
 package com.backbase.ct.bbfuel.util;
 
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_MULTI_TENANCY_ENVIRONMENT;
+
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import org.apache.commons.lang.StringUtils;
 
 public class CommonHelpers {
+
+    public static boolean isMultiTenancyEnvironment() {
+        return  GlobalProperties.getInstance().getBoolean(PROPERTY_MULTI_TENANCY_ENVIRONMENT);
+    }
 
     public static int generateRandomNumberInRange(int min, int max) {
         if (min > max) {

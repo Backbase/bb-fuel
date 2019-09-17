@@ -1,11 +1,13 @@
 package com.backbase.ct.bbfuel.enrich;
 
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
 import static com.backbase.ct.bbfuel.util.CommonHelpers.splitDelimitedWordToSingleCapatilizedWords;
 
 import com.backbase.ct.bbfuel.dto.Category;
 import com.backbase.ct.bbfuel.dto.LegalEntityWithUsers;
 import com.backbase.ct.bbfuel.dto.User;
 import com.backbase.ct.bbfuel.dto.entitlement.JobProfile;
+import com.backbase.ct.bbfuel.util.GlobalProperties;
 import com.github.javafaker.Faker;
 import java.util.List;
 import org.apache.commons.lang.StringUtils;
@@ -26,10 +28,12 @@ public class LegalEntityWithUsersEnricher {
     /**
      * Create the root Legal Entity and admin user with given externalUserId.
      */
-    public static LegalEntityWithUsers createRootLegalEntityWithAdmin(String externalUserId) {
+    public static LegalEntityWithUsers createRootLegalEntityWithAdmin() {
         return LegalEntityWithUsers.builder()
             .category(Category.ROOT)
-            .user(createAdminUser(externalUserId)).build();
+            .user(
+                createAdminUser(GlobalProperties.getInstance().getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN)))
+            .build();
     }
 
     /**

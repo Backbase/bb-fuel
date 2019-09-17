@@ -1,5 +1,8 @@
 package com.backbase.ct.bbfuel;
 
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_LEGAL_ENTITIES_WITH_USERS_JSON;
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_MULTI_TENANCY_ENVIRONMENT;
+
 import com.backbase.ct.bbfuel.healthcheck.AccessControlHealthCheck;
 import com.backbase.ct.bbfuel.healthcheck.BillPayHealthCheck;
 import com.backbase.ct.bbfuel.healthcheck.ProductSummaryHealthCheck;
@@ -7,12 +10,14 @@ import com.backbase.ct.bbfuel.healthcheck.TransactionsHealthCheck;
 import com.backbase.ct.bbfuel.setup.AccessControlSetup;
 import com.backbase.ct.bbfuel.setup.CapabilitiesDataSetup;
 import com.backbase.ct.bbfuel.setup.ServiceAgreementsSetup;
+import com.backbase.ct.bbfuel.util.CommonHelpers;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
@@ -54,11 +59,28 @@ public class Runner implements ApplicationRunner {
         performHealthChecks();
 
         Instant start = Instant.now();
-
-        setupAccessControl();
-        ingestCapabilityData();
-
+        ingestEnvironment();
         logDuration(start);
+    }
+
+    private void ingestEnvironment() throws IOException {
+        int rounds = 1;
+        String legalEntityFile = GlobalProperties.getInstance().getString(PROPERTY_LEGAL_ENTITIES_WITH_USERS_JSON);
+        String[] tenants = StringUtils.split(legalEntityFile);
+        if (CommonHelpers.isMultiTenancyEnvironment()) {
+            if (tenants.length < 2) {
+                log.error("Your multi-tenant environment needs at least 2 tenants, you configured only #{}: {}={}",
+                    tenants.length, PROPERTY_LEGAL_ENTITIES_WITH_USERS_JSON, legalEntityFile);
+                return;
+            }
+            rounds = tenants.length;
+        }
+
+        for (int i = 0; i < rounds; i++) {
+            GlobalProperties.getInstance().setProperty(PROPERTY_LEGAL_ENTITIES_WITH_USERS_JSON, tenants[i]);
+            setupAccessControl();
+            ingestCapabilityData();
+        }
     }
 
     private void performHealthChecks() {
@@ -81,5 +103,10 @@ public class Runner implements ApplicationRunner {
         Instant end = Instant.now();
         long totalSeconds = Duration.between(start, end).getSeconds();
         log.info("Time to ingest data was {} minutes and {} seconds", totalSeconds / 60, totalSeconds % 60);
+    }
+
+    private void accept(String legel) throws IOException {
+        setupAccessControl();
+        ingestCapabilityData();
     }
 }

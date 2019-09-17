@@ -14,7 +14,6 @@ import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROV
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_CONTACTS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_NOTIFICATIONS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_PAYMENTS;
-import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
 import static com.backbase.ct.bbfuel.service.PaymentsFunctionService.BATCH_FUNCTIONS;
 import static com.backbase.ct.bbfuel.service.PaymentsFunctionService.PAYMENTS_FUNCTIONS;
 import static com.backbase.ct.bbfuel.service.PaymentsFunctionService.determineCurrencyForFunction;
@@ -54,7 +53,6 @@ public class ApprovalsConfigurator {
     private final ApprovalIntegrationRestClient approvalIntegrationRestClient;
     private final JobProfileService jobProfileService;
 
-    private String rootEntitlementsAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
     private static final BigDecimal UPPER_BOUND_HUNDRED = new BigDecimal("100.0");
     private static final BigDecimal UPPER_BOUND_THOUSAND = new BigDecimal("1000.0");
     private static final BigDecimal UPPER_BOUND_HUNDRED_THOUSAND = new BigDecimal("100000.0");
@@ -72,7 +70,7 @@ public class ApprovalsConfigurator {
     }
 
     public void setupAccessControlAndPerformApprovalAssignments(String externalServiceAgreementId, int numberOfUsers) {
-        loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
+        loginRestClient.loginBankAdmin();
         userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
         boolean isPaymentsApprovalsEnabled = globalProperties.getBoolean(PROPERTY_INGEST_APPROVALS_FOR_PAYMENTS);
         boolean isContactsApprovalsEnabled = globalProperties.getBoolean(PROPERTY_INGEST_APPROVALS_FOR_CONTACTS);

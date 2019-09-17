@@ -50,7 +50,6 @@ public class CapabilitiesDataSetup extends BaseSetup {
     private final MessagesConfigurator messagesConfigurator;
     private final ActionsConfigurator actionsConfigurator;
     private final BillPayConfigurator billpayConfigurator;
-    private String rootEntitlementsAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
 
     /**
      * Ingest data with services of projects APPR, PO, LIM, NOT, CON, MC, ACT and BPAY.
@@ -72,7 +71,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
             || this.globalProperties.getBoolean(PROPERTY_INGEST_APPROVALS_FOR_CONTACTS)
             || this.globalProperties.getBoolean(PROPERTY_INGEST_APPROVALS_FOR_NOTIFICATIONS)
             || this.globalProperties.getBoolean(PROPERTY_INGEST_APPROVALS_FOR_BATCHES)) {
-            this.loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
+            this.loginRestClient.loginBankAdmin();
             this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
             this.approvalsConfigurator.setupApprovalTypesAndPolicies();
@@ -108,7 +107,9 @@ public class CapabilitiesDataSetup extends BaseSetup {
     private void ingestBankNotifications() {
         LegalEntityWithUsers fallbackLegalEntityWithAdminUser = new LegalEntityWithUsers();
         fallbackLegalEntityWithAdminUser
-            .setUsers(singletonList(User.builder().externalId(rootEntitlementsAdmin).build()));
+            .setUsers(singletonList(User.builder()
+                .externalId(globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN))
+                .build()));
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_NOTIFICATIONS)) {
             List<User> users = this.accessControlSetup.getLegalEntitiesWithUsersExcludingSupport()
                 .stream()
@@ -146,7 +147,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
 
     private void ingestConversationsPerUser() {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_MESSAGES)) {
-            this.loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
+            this.loginRestClient.loginBankAdmin();
             this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
             this.accessControlSetup.getLegalEntitiesWithUsersExcludingSupport().stream()
                 .map(LegalEntityWithUsers::getUserExternalIds)

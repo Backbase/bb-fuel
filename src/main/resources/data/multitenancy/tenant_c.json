@@ -2,6 +2,10 @@
   {
     "users": [
       {
+        "externalId": "user011_t1",
+        "role": "admin"
+      },
+      {
         "externalId": "user012_t3"
       },
       {

@@ -21,12 +21,12 @@ eureka.client.enabled: false
 
 
 environment:
-  name: 88.f5
+  name:
   domain: backbase.test
 
 bb-fuel:
   platform:
-    infra: edge.${environment.name}.${environment.domain}
+    infra: http://edge.${environment.name}.${environment.domain}
     registry: registry.${environment.name}.${environment.domain}
     gateway: ${bb-fuel.platform.infra}/api
     auth: ${bb-fuel.platform.gateway}/auth/login

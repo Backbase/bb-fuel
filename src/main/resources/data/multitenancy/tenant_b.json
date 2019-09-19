@@ -3,7 +3,7 @@
     "tenantId": "tenant_b",
     "users": [
       {
-        "externalId": "user006_t1",
+        "externalId": "user006_t2",
         "role": "admin"
       },
       {

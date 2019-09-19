@@ -31,25 +31,31 @@ Based on [multi-tenancy LDAP configuration in Autoconfig environments](https://s
 
 ```
 java -Denvironment.name=your-env-00 \
--Dlegal.entities.with.users.json=data/multitenancy/tenant_a.json \
 -Dmulti.tenancy.environment=true \
--Dtenant.id=tenant_a \
--Droot.entitlements.admin=user001_t1 \
 -jar bb-fuel-{version}-boot.jar
 ```
 
-Repeat for each tenant according to the LDAP configuration as follows:
+This will ingest the following:
 
-| tenant.id | root.entitlements.admin | legal.entities.with.users.json |
-|-----------|-------------------------|-----------------------------------------|
-| tenant_a  | user001_t1              | data/multitenancy/tenant_a.json         |
-| tenant_b  | user006_t2              | data/multitenancy/tenant_b.json         |
-| tenant_c  | user011_t3              | data/multitenancy/tenant_c.json         |
-| tenant_d  | user016_t4              | data/multitenancy/tenant_d.json         |
-| tenant_e  | user021_t5              | data/multitenancy/tenant_e.json         |
+| tenant.id | root.entitlements.admin | legal.entities.with.users.json  |
+|-----------|-------------------------|---------------------------------|
+| tenant_a  | user001_t1              | data/multitenancy/tenant_a.json |
+| tenant_b  | user006_t2              | data/multitenancy/tenant_b.json |
+| tenant_c  | user011_t3              | data/multitenancy/tenant_c.json |
+| tenant_d  | user016_t4              | data/multitenancy/tenant_d.json |
+| tenant_e  | user021_t5              | data/multitenancy/tenant_e.json |
 
-Note: this is a simple multi-tenancy setup example
-
+Note: this default is a simple multi-tenancy setup example. If you want a different setup you can override the default property `multi.tenancy.legal.entities.with.users.json`
+and configure it with multiple json files by separating them with a semi-colon (;). Note that in each file you have to define the tenantId
+and the root admin user for that tenant, e.g.:
+```  {
+    "tenantId": "tenant_a",
+    "users": [
+      {
+        "externalId": "user001_t1",
+        "role": "admin"
+      }, ... 
+```
 ## How to create custom data
 Example for the `legal-entities-with-users.json` (other files are: `serviceagreements.json` and `products.json`):
 
@@ -61,6 +67,7 @@ Optional fields in the data structure:
 - `parentLegalEntityExternalId`
 - `legalEntityName`
 - `legalEntityType`
+- `tenantId`
 - `user.fullName`
 - `user.role`
 

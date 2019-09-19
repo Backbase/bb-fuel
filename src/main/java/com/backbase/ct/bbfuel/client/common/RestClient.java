@@ -2,11 +2,11 @@ package com.backbase.ct.bbfuel.client.common;
 
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_LOG_ALL_REQUESTS_RESPONSES;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_MULTI_TENANCY_ENVIRONMENT;
-import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_TENANT_ID;
 import static io.restassured.config.HttpClientConfig.httpClientConfig;
 import static org.apache.http.HttpStatus.SC_OK;
 
 import com.backbase.ct.bbfuel.util.GlobalProperties;
+import com.backbase.ct.bbfuel.util.MultiTenancyService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -132,7 +132,7 @@ public class RestClient {
         requestSpec.cookies(getCookies());
 
         if (globalProperties.getBoolean(PROPERTY_MULTI_TENANCY_ENVIRONMENT)) {
-            requestSpec.header(TENANT_HEADER_NAME, globalProperties.getString(PROPERTY_TENANT_ID));
+            requestSpec.header(TENANT_HEADER_NAME, MultiTenancyService.getTenantId());
         }
 
         return requestSpec;

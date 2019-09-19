@@ -1,8 +1,7 @@
 package com.backbase.ct.bbfuel.client.common;
 
-import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
-
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
+import com.backbase.ct.bbfuel.service.LegalEntityService;
 import io.restassured.response.ValidatableResponse;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,6 +14,7 @@ import org.springframework.stereotype.Component;
 public class LoginRestClient extends RestClient {
 
     private final BbFuelConfiguration config;
+    private final LegalEntityService legalEntityService;
 
     @PostConstruct
     public void init() {
@@ -22,7 +22,7 @@ public class LoginRestClient extends RestClient {
     }
 
     public void loginBankAdmin() {
-        String admin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
+        String admin = legalEntityService.getRootAdmin();
         login(admin, admin);
     }
 

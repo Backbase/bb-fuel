@@ -1,5 +1,6 @@
 [
   {
+    "tenantId": "tenant_a",
     "users": [
       {
         "externalId": "user001_t1",

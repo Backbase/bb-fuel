@@ -11,7 +11,6 @@ import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_LIMITS
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_MESSAGES;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_NOTIFICATIONS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_PAYMENTS;
-import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
 import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
 import static java.util.Collections.singletonList;
 
@@ -28,6 +27,7 @@ import com.backbase.ct.bbfuel.configurator.PaymentsConfigurator;
 import com.backbase.ct.bbfuel.dto.LegalEntityWithUsers;
 import com.backbase.ct.bbfuel.dto.User;
 import com.backbase.ct.bbfuel.dto.UserContext;
+import com.backbase.ct.bbfuel.service.LegalEntityService;
 import com.backbase.ct.bbfuel.service.UserContextService;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -50,6 +50,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
     private final MessagesConfigurator messagesConfigurator;
     private final ActionsConfigurator actionsConfigurator;
     private final BillPayConfigurator billpayConfigurator;
+    private final LegalEntityService legalEntityService;
 
     /**
      * Ingest data with services of projects APPR, PO, LIM, NOT, CON, MC, ACT and BPAY.
@@ -108,7 +109,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
         LegalEntityWithUsers fallbackLegalEntityWithAdminUser = new LegalEntityWithUsers();
         fallbackLegalEntityWithAdminUser
             .setUsers(singletonList(User.builder()
-                .externalId(globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN))
+                .externalId(legalEntityService.getRootAdmin())
                 .build()));
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_NOTIFICATIONS)) {
             List<User> users = this.accessControlSetup.getLegalEntitiesWithUsersExcludingSupport()

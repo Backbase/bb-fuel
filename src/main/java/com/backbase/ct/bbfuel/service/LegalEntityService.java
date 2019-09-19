@@ -11,7 +11,9 @@ import com.backbase.ct.bbfuel.util.ResponseUtils;
 import com.backbase.integration.legalentity.rest.spec.v2.legalentities.LegalEntitiesPostRequestBody;
 import com.backbase.presentation.legalentity.rest.spec.v2.legalentities.LegalEntitiesGetResponseBody;
 import io.restassured.response.Response;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,10 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class LegalEntityService {
+
+    @Setter
+    @Getter
+    private String rootAdmin;
 
     private final LegalEntityPresentationRestClient legalEntityPresentationRestClient;
 

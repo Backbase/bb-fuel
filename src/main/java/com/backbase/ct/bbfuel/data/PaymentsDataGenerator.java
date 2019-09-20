@@ -1,5 +1,6 @@
 package com.backbase.ct.bbfuel.data;
 
+import static com.backbase.ct.bbfuel.data.CommonConstants.PAYMENT_TYPE_ACH_DEBIT;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PAYMENT_TYPE_SEPA_CREDIT_TRANSFER;
 import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromEnumValues;
 import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
@@ -44,14 +45,16 @@ public class PaymentsDataGenerator {
         Schedule schedule = null;
         Bank creditorBank = null;
         Bank correspondentBank = null;
-        Currency currency = new Currency().withAmount(CommonHelpers.generateRandomAmountInRange(1000L, 99999L));
+        Currency currency = new Currency().withAmount(CommonHelpers.generateRandomAmountInRange(1000L, 99999L))
+            .withCurrencyCode(generateCurrencyCode(paymentType));
         Identification identification;
 
         if (paymentMode.equals(IdentifiedPaymentOrder.PaymentMode.RECURRING)) {
             schedule = new Schedule()
                 .withStartDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()))
                 .withEvery(getRandomFromEnumValues(Schedule.Every.values()))
-                .withNonWorkingDayExecutionStrategy(getRandomFromEnumValues(Schedule.NonWorkingDayExecutionStrategy.values()))
+                .withNonWorkingDayExecutionStrategy(
+                    getRandomFromEnumValues(Schedule.NonWorkingDayExecutionStrategy.values()))
                 .withTransferFrequency(
                     getRandomFromEnumValues(Schedule.TransferFrequency.values()))
                 .withOn(CommonHelpers.generateRandomNumberInRange(1, 7))
@@ -59,12 +62,10 @@ public class PaymentsDataGenerator {
         }
 
         if (PAYMENT_TYPE_SEPA_CREDIT_TRANSFER.equals(paymentType)) {
-            currency.setCurrencyCode("EUR");
             identification = generateIbanIdentification();
         } else {
             creditorBank = generateCreditorBank();
             correspondentBank = generateCorrespondentBank();
-            currency.setCurrencyCode("USD");
             identification = generateBbanIdentification();
         }
 
@@ -131,5 +132,15 @@ public class PaymentsDataGenerator {
                 .withTown(faker.address().city())
                 .withCountry(faker.address().countryCode())
                 .withCountrySubDivision(faker.address().state()));
+    }
+
+    private static String generateCurrencyCode(String paymentType) {
+        if (PAYMENT_TYPE_SEPA_CREDIT_TRANSFER.equals(paymentType)) {
+            return "EUR";
+        }
+        if (PAYMENT_TYPE_ACH_DEBIT.equals(paymentType) && random.nextBoolean()) {
+            return "CAD";
+        }
+        return "USD";
     }
 }

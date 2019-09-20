@@ -35,7 +35,7 @@ import com.backbase.ct.bbfuel.service.JobProfileService;
 import com.backbase.ct.bbfuel.service.LegalEntityService;
 import com.backbase.ct.bbfuel.service.ProductGroupService;
 import com.backbase.ct.bbfuel.service.UserContextService;
-import com.backbase.ct.bbfuel.util.MultiTenancyService;
+import com.backbase.ct.bbfuel.config.MultiTenancyConfig;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.IntegrationIdentifier;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.users.permissions.IntegrationFunctionGroupDataGroup;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.datagroups.DataGroupsGetResponseBody;
@@ -102,7 +102,7 @@ public class AccessControlSetup extends BaseSetup {
         this.legalEntitiesWithUsers = this.legalEntityWithUsersReader.load(legalEntityWithUsersResource);
         this.jobProfileTemplates = this.jobProfileReader.load();
         loadProductGroups();
-        if (MultiTenancyService.isMultiTenancyEnvironment()) {
+        if (MultiTenancyConfig.isMultiTenancyEnvironment()) {
             // tenant admin user is in the first LE of the m10y file
             LegalEntityWithUsers tenant = legalEntitiesWithUsers.get(0);
             User admin = tenant.getUsers().stream()
@@ -110,7 +110,7 @@ public class AccessControlSetup extends BaseSetup {
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Legal entity does not have a bank admin"));
             legalEntityService.setRootAdmin(admin.getExternalId());
-            MultiTenancyService.setTenantId(tenant.getTenantId());
+            MultiTenancyConfig.setTenantId(tenant.getTenantId());
             tenant.getUsers().remove(admin);
         } else {
             legalEntityService.setRootAdmin(globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN));

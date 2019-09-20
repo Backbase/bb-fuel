@@ -11,7 +11,7 @@ import com.backbase.ct.bbfuel.setup.AccessControlSetup;
 import com.backbase.ct.bbfuel.setup.CapabilitiesDataSetup;
 import com.backbase.ct.bbfuel.setup.ServiceAgreementsSetup;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
-import com.backbase.ct.bbfuel.util.MultiTenancyService;
+import com.backbase.ct.bbfuel.config.MultiTenancyConfig;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
@@ -67,7 +67,7 @@ public class Runner implements ApplicationRunner {
         int rounds = 1;
         String[] tenants = new String[]{
             GlobalProperties.getInstance().getString(PROPERTY_LEGAL_ENTITIES_WITH_USERS_JSON)};
-        if (MultiTenancyService.isMultiTenancyEnvironment()) {
+        if (MultiTenancyConfig.isMultiTenancyEnvironment()) {
             String legalEntityResource = GlobalProperties.getInstance().getString(PROPERTY_M10Y_LEGAL_ENTITIES_WITH_USERS_JSON);
             tenants = StringUtils.split(legalEntityResource, ";");
             if (tenants.length < 2) {

@@ -6,7 +6,7 @@ import static io.restassured.config.HttpClientConfig.httpClientConfig;
 import static org.apache.http.HttpStatus.SC_OK;
 
 import com.backbase.ct.bbfuel.util.GlobalProperties;
-import com.backbase.ct.bbfuel.util.MultiTenancyService;
+import com.backbase.ct.bbfuel.config.MultiTenancyConfig;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -132,7 +132,7 @@ public class RestClient {
         requestSpec.cookies(getCookies());
 
         if (globalProperties.getBoolean(PROPERTY_MULTI_TENANCY_ENVIRONMENT)) {
-            requestSpec.header(TENANT_HEADER_NAME, MultiTenancyService.getTenantId());
+            requestSpec.header(TENANT_HEADER_NAME, MultiTenancyConfig.getTenantId());
         }
 
         return requestSpec;

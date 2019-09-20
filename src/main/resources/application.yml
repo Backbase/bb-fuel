@@ -21,7 +21,7 @@ eureka.client.enabled: false
 
 
 environment:
-  name:
+  name: 13.f5
   domain: backbase.test
 
 bb-fuel:
@@ -34,7 +34,7 @@ bb-fuel:
   dbs:
     approvals: http://approvals.${environment.name}.${environment.domain}/approval-integration-service
     transactions: http://transactions.${environment.name}.${environment.domain}/transaction-integration-service
-    contactmanager: http://contactmanager.${environment.name}.${environment.domain}/contact-integration-service
+    contactmanager: http://contacts.${environment.name}.${environment.domain}/contact-integration-service
     messages: http://messages.${environment.name}.${environment.domain}/messages-integration-service
     user: http://user.${environment.name}.${environment.domain}/user-integration-service
     legalentity: http://legalentity.${environment.name}.${environment.domain}/legalentity-integration-service

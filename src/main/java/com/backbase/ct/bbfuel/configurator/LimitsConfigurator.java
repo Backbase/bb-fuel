@@ -1,6 +1,5 @@
 package com.backbase.ct.bbfuel.configurator;
 
-import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
 import static com.backbase.ct.bbfuel.data.LimitsDataGenerator.createTransactionalLimitsPostRequestBodyForPrivilege;
 import static com.backbase.ct.bbfuel.service.PaymentsFunctionService.BATCH_FUNCTIONS;
 import static com.backbase.ct.bbfuel.service.PaymentsFunctionService.PAYMENTS_FUNCTIONS;
@@ -14,7 +13,6 @@ import com.backbase.ct.bbfuel.client.accessgroup.ServiceAgreementsPresentationRe
 import com.backbase.ct.bbfuel.client.accessgroup.UserContextPresentationRestClient;
 import com.backbase.ct.bbfuel.client.common.LoginRestClient;
 import com.backbase.ct.bbfuel.client.limit.LimitsPresentationRestClient;
-import com.backbase.ct.bbfuel.util.GlobalProperties;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.config.functions.FunctionsGetResponseBody;
 import java.math.BigDecimal;
 import java.util.List;
@@ -29,22 +27,19 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class LimitsConfigurator {
 
-    private GlobalProperties globalProperties = GlobalProperties.getInstance();
-
     private final LoginRestClient loginRestClient;
     private final UserContextPresentationRestClient userContextPresentationRestClient;
     private final AccessGroupPresentationRestClient accessGroupPresentationRestClient;
     private final AccessGroupIntegrationRestClient accessGroupIntegrationRestClient;
     private final ServiceAgreementsPresentationRestClient serviceAgreementsPresentationRestClient;
     private final LimitsPresentationRestClient limitsPresentationRestClient;
-    private String rootEntitlementsAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
     private static final List<String> PRIVILEGES = asList("create", "approve");
     private static final String ADMIN_FUNCTION_GROUP_NAME = "Admin";
 
     public void ingestLimits(String internalServiceAgreementId) {
         BigDecimal limitAmount = new BigDecimal("1000000.0");
 
-        loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
+        loginRestClient.loginBankAdmin();
         userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
         String externalServiceAgreementId = serviceAgreementsPresentationRestClient

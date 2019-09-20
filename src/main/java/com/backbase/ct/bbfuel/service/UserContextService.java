@@ -1,7 +1,5 @@
 package com.backbase.ct.bbfuel.service;
 
-import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
-
 import com.backbase.ct.bbfuel.client.accessgroup.ServiceAgreementsPresentationRestClient;
 import com.backbase.ct.bbfuel.client.accessgroup.UserContextPresentationRestClient;
 import com.backbase.ct.bbfuel.client.common.LoginRestClient;
@@ -33,15 +31,13 @@ public class UserContextService {
 
     private final LegalEntityPresentationRestClient legalEntityPresentationRestClient;
 
-    private String rootEntitlementsAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
-
     public UserContext getUserContextBasedOnMSAByExternalUserId(User user) {
         return getUserContextBasedOnMSAByExternalUserId(user, null);
     }
 
     public UserContext getUserContextBasedOnMSAByExternalUserId(User user,
         LegalEntityByUserGetResponseBody legalEntity) {
-        this.loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
+        this.loginRestClient.loginBankAdmin();
         this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
         String internalUserId = this.userPresentationRestClient.getUserByExternalId(user.getExternalId()).getId();

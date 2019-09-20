@@ -32,8 +32,10 @@ import com.backbase.ct.bbfuel.input.LegalEntityWithUsersReader;
 import com.backbase.ct.bbfuel.input.ProductGroupSeedReader;
 import com.backbase.ct.bbfuel.input.validation.ProductGroupAssignmentValidator;
 import com.backbase.ct.bbfuel.service.JobProfileService;
+import com.backbase.ct.bbfuel.service.LegalEntityService;
 import com.backbase.ct.bbfuel.service.ProductGroupService;
 import com.backbase.ct.bbfuel.service.UserContextService;
+import com.backbase.ct.bbfuel.config.MultiTenancyConfig;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.IntegrationIdentifier;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.users.permissions.IntegrationFunctionGroupDataGroup;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.datagroups.DataGroupsGetResponseBody;
@@ -44,7 +46,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -52,6 +56,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class AccessControlSetup extends BaseSetup {
+
 
     private final UserContextPresentationRestClient userContextPresentationRestClient;
     private final AccessGroupPresentationRestClient accessGroupPresentationRestClient;
@@ -69,17 +74,16 @@ public class AccessControlSetup extends BaseSetup {
     private final ProductGroupSeedEnricher productGroupEnricher;
     private final UserContextService userContextService;
     private final LoginRestClient loginRestClient;
-
     private final JobProfileReader jobProfileReader;
     private final ProductGroupSeedReader productGroupSeedReader;
-    private String rootEntitlementsAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
+    private final LegalEntityService legalEntityService;
+    @Getter
     private List<LegalEntityWithUsers> legalEntitiesWithUsers;
+    @Setter
     private List<JobProfile> jobProfileTemplates;
     private List<ProductGroupSeed> productGroupSeedTemplates;
-
-    public List<LegalEntityWithUsers> getLegalEntitiesWithUsers() {
-        return this.legalEntitiesWithUsers;
-    }
+    @Setter
+    private String legalEntityWithUsersResource;
 
     public List<LegalEntityWithUsers> getLegalEntitiesWithUsersExcludingSupport() {
         return getLegalEntitiesWithUsers()
@@ -94,9 +98,23 @@ public class AccessControlSetup extends BaseSetup {
      * Legal entities, job profiles and product groups are loaded from files.
      */
     public void initiate() {
-        this.legalEntitiesWithUsers = this.legalEntityWithUsersReader.load();
+        log.info("Loading legal entities with users {}", legalEntityWithUsersResource);
+        this.legalEntitiesWithUsers = this.legalEntityWithUsersReader.load(legalEntityWithUsersResource);
         this.jobProfileTemplates = this.jobProfileReader.load();
         loadProductGroups();
+        if (MultiTenancyConfig.isMultiTenancyEnvironment()) {
+            // tenant admin user is in the first LE of the m10y file
+            LegalEntityWithUsers tenant = legalEntitiesWithUsers.get(0);
+            User admin = tenant.getUsers().stream()
+                .filter(user -> user.getRole().equalsIgnoreCase("admin"))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Legal entity does not have a bank admin"));
+            legalEntityService.setRootAdmin(admin.getExternalId());
+            MultiTenancyConfig.setTenantId(tenant.getTenantId());
+            tenant.getUsers().remove(admin);
+        } else {
+            legalEntityService.setRootAdmin(globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN));
+        }
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_ACCESS_CONTROL)) {
             this.setupBankWithEntitlementsAdminAndProducts();
             this.setupAccessControlForUsers();
@@ -115,7 +133,7 @@ public class AccessControlSetup extends BaseSetup {
     }
 
     private void setupBankWithEntitlementsAdminAndProducts() {
-        LegalEntityWithUsers rootBank = createRootLegalEntityWithAdmin(rootEntitlementsAdmin);
+        LegalEntityWithUsers rootBank = createRootLegalEntityWithAdmin(legalEntityService.getRootAdmin());
         this.productGroupEnricher.enrichLegalEntitiesWithUsers(
             singletonList(rootBank), this.productGroupSeedTemplates);
 
@@ -135,7 +153,7 @@ public class AccessControlSetup extends BaseSetup {
         LegalEntityWithUsers legalEntityWithUsers) {
 
         Multimap<String, UserContext> legalEntitiesUserContextMap = ArrayListMultimap.create();
-        this.loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
+        this.loginRestClient.loginBankAdmin();
         this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
         legalEntityWithUsers.getUsers().forEach(user -> {
@@ -158,7 +176,7 @@ public class AccessControlSetup extends BaseSetup {
     private void assembleFunctionDataGroupsAndPermissions(LegalEntityWithUsers legalEntityWithUsers) {
         Multimap<String, UserContext> legalEntitiesUserContextMap =
             createLegalEntitiesUserContextMap(legalEntityWithUsers);
-        this.loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
+        this.loginRestClient.loginBankAdmin();
         this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
         AtomicBoolean isOnce = new AtomicBoolean(true);

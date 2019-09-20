@@ -1,7 +1,6 @@
 package com.backbase.ct.bbfuel.configurator;
 
 import static com.backbase.ct.bbfuel.data.CommonConstants.EXTERNAL_ROOT_LEGAL_ENTITY_ID;
-import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
 
 import com.backbase.ct.bbfuel.client.accessgroup.UserContextPresentationRestClient;
 import com.backbase.ct.bbfuel.client.common.LoginRestClient;
@@ -10,7 +9,6 @@ import com.backbase.ct.bbfuel.data.LegalEntitiesAndUsersDataGenerator;
 import com.backbase.ct.bbfuel.dto.LegalEntityWithUsers;
 import com.backbase.ct.bbfuel.dto.User;
 import com.backbase.ct.bbfuel.service.LegalEntityService;
-import com.backbase.ct.bbfuel.util.GlobalProperties;
 import com.backbase.integration.legalentity.rest.spec.v2.legalentities.LegalEntitiesPostRequestBody;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,13 +17,11 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class LegalEntitiesAndUsersConfigurator {
 
-    private GlobalProperties globalProperties = GlobalProperties.getInstance();
     private final LoginRestClient loginRestClient;
     private final UserContextPresentationRestClient userContextPresentationRestClient;
     private final UserIntegrationRestClient userIntegrationRestClient;
     private final LegalEntityService legalEntityService;
     private final ServiceAgreementsConfigurator serviceAgreementsConfigurator;
-    private String rootEntitlementsAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
 
     /**
      * Dispatch the creation of legal entity depending whether given legalEntityWithUsers is a root entity.
@@ -60,7 +56,7 @@ public class LegalEntitiesAndUsersConfigurator {
                 legalEntityWithUsers.getParentLegalEntityExternalId(),
                 legalEntityWithUsers.getLegalEntityType());
 
-        this.loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
+        this.loginRestClient.loginBankAdmin();
         this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
         String externalLegalEntityId = this.legalEntityService.ingestLegalEntity(requestBody);

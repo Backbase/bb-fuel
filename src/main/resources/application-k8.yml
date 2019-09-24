@@ -21,7 +21,6 @@ eureka.client.enabled: false
 
 
 environment:
-  name: 13.f5
   domain: backbase.test
 
 bb-fuel:

@@ -58,7 +58,7 @@ public class ProductSummaryPresentationRestClient extends RestClient {
             .extract()
             .as(ArrangementsByBusinessFunctionGetResponseBody[].class);
 
-        // Make sure the Regex is in sync with payment-order-presentation-service/src/main/resources/application.yml (property: sepacountries)
+        // Make sure the Regex is in sync with payment-order-presentation-service/src/main/resources/application-k8s.yml (property: sepacountries)
         return Arrays.stream(arrangements)
             .filter(arrangement -> arrangement.getIBAN() != null)
             .filter(arrangement -> arrangement.getIBAN()

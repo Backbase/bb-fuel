@@ -47,7 +47,7 @@ pipeline {
                             environmentName: params.ENVIRONMENT_NAME,
                             bbFuelVersion: params.BB_FUEL_VERSION,
                             prerelease: params.PRERELEASE,
-                            additionalArguments: "-Dbb-fuel.platform.infra=http://${params.ENVIRONMENT_NAME}-${params.INFRA_BASE_URI} " +
+                            additionalArguments: "-Dbb-fuel.platform.infra=${params.infra} " +
                                     "-Dingest.access.control=${params.INGEST_ACCESS_CONTROL} " +
                                     "-Dingest.custom.service.agreements=${params.INGEST_CUSTOM_SERVICE_AGREEMENTS} " +
                                     "-Dingest.balance.history=${params.INGEST_BALANCE_HISTORY} " +

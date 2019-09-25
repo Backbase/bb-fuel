@@ -37,6 +37,10 @@ public class PaymentsDataGenerator {
             "241078875", "244183631", "244077129", "241076097", "244273826", "044204370", "243278534", "242086361",
             "241273188", "244077815", "241075153", "073911870", "303184610", "303986151", "263277887", "103101848",
             "103101013", "303986096");
+    private static List<String> bicCodes = Arrays
+        .asList("CHASUS33XXX", "BOFAUS3NXXX", "MIDLGB22XXX", "BARCGB22XXX", "ABNANL2AXXX", "CITIUS33XXX", "WFBIUS6SXXX",
+            "NWBKGB2LXXX", "COBADEFFXXX", "BNPAFRPPXXX", "POALILITXXX", "LOYDGB2LXXX", "NTSBDEB1XXX", "DEUTDEDBPAL",
+            "AXISINBB002");
 
     public static InitiatePaymentOrder generateInitiatePaymentOrder(String debtorArrangementId, String paymentType) {
         IdentifiedPaymentOrder.PaymentMode paymentMode = IdentifiedPaymentOrder.PaymentMode.values()[random
@@ -51,7 +55,8 @@ public class PaymentsDataGenerator {
             schedule = new Schedule()
                 .withStartDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()))
                 .withEvery(getRandomFromEnumValues(Schedule.Every.values()))
-                .withNonWorkingDayExecutionStrategy(getRandomFromEnumValues(Schedule.NonWorkingDayExecutionStrategy.values()))
+                .withNonWorkingDayExecutionStrategy(
+                    getRandomFromEnumValues(Schedule.NonWorkingDayExecutionStrategy.values()))
                 .withTransferFrequency(
                     getRandomFromEnumValues(Schedule.TransferFrequency.values()))
                 .withOn(CommonHelpers.generateRandomNumberInRange(1, 7))
@@ -123,6 +128,7 @@ public class PaymentsDataGenerator {
         return new Bank()
             .withBankBranchCode(getRandomFromList(branchCodes))
             .withName(faker.name().fullName())
+            .withBic(getRandomFromList(bicCodes))
             .withPostalAddress(new PostalAddress()
                 .withAddressLine1(faker.address().streetAddress())
                 .withAddressLine2(faker.address().secondaryAddress())

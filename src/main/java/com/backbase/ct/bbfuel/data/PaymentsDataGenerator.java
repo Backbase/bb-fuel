@@ -1,7 +1,6 @@
 package com.backbase.ct.bbfuel.data;
 
 import static com.backbase.ct.bbfuel.data.CommonConstants.PAYMENT_TYPE_SEPA_CREDIT_TRANSFER;
-import static com.backbase.ct.bbfuel.data.CommonConstants.PAYMENT_TYPE_US_FOREIGN_WIRE;
 import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromEnumValues;
 import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
 
@@ -67,10 +66,6 @@ public class PaymentsDataGenerator {
         if (PAYMENT_TYPE_SEPA_CREDIT_TRANSFER.equals(paymentType)) {
             currency.setCurrencyCode("EUR");
             identification = generateIbanIdentification();
-        } else if (PAYMENT_TYPE_US_FOREIGN_WIRE.equals(paymentType)) {
-            creditorBank = generateCreditorBankWithBicCode();
-            currency.setCurrencyCode("USD");
-            identification = generateBbanIdentification();
         } else {
             creditorBank = generateCreditorBank();
             correspondentBank = generateCorrespondentBank();
@@ -130,20 +125,6 @@ public class PaymentsDataGenerator {
     }
 
     private static Bank generateCreditorBank() {
-        return new Bank()
-            .withBankBranchCode(getRandomFromList(branchCodes))
-            .withName(faker.name().fullName())
-            .withPostalAddress(new PostalAddress()
-                .withAddressLine1(faker.address().streetAddress())
-                .withAddressLine2(faker.address().secondaryAddress())
-                .withStreetName(faker.address().streetAddress())
-                .withPostCode(faker.address().zipCode())
-                .withTown(faker.address().city())
-                .withCountry(faker.address().countryCode())
-                .withCountrySubDivision(faker.address().state()));
-    }
-
-    private static Bank generateCreditorBankWithBicCode() {
         return new Bank()
             .withBankBranchCode(getRandomFromList(branchCodes))
             .withName(faker.name().fullName())

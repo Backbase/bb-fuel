@@ -1,6 +1,5 @@
 package com.backbase.ct.bbfuel.setup;
 
-import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 
@@ -20,7 +19,6 @@ import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagr
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.users.permissions.IntegrationFunctionGroupDataGroup;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -41,7 +39,6 @@ public class ServiceAgreementsSetup extends BaseSetup {
     private final AccessControlSetup accessControlSetup;
     private final ProductGroupService productGroupService;
     private String adminFunctionGroupId;
-    private String rootEntitlementsAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
 
     @Override
     public void initiate() throws IOException {
@@ -55,7 +52,7 @@ public class ServiceAgreementsSetup extends BaseSetup {
     }
 
     private void ingestCustomServiceAgreements(List<ServiceAgreementPostRequestBody> serviceAgreementPostRequestBodies) {
-        this.loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
+        this.loginRestClient.loginBankAdmin();
         this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
         serviceAgreementPostRequestBodies.forEach(serviceAgreementPostRequestBody -> {

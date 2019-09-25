@@ -26,10 +26,12 @@ public class LegalEntityWithUsersEnricher {
     /**
      * Create the root Legal Entity and admin user with given externalUserId.
      */
-    public static LegalEntityWithUsers createRootLegalEntityWithAdmin(String externalUserId) {
+    public static LegalEntityWithUsers createRootLegalEntityWithAdmin(String rootAdmin) {
         return LegalEntityWithUsers.builder()
             .category(Category.ROOT)
-            .user(createAdminUser(externalUserId)).build();
+            .user(
+                createAdminUser(rootAdmin))
+            .build();
     }
 
     /**

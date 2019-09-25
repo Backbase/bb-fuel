@@ -1,0 +1,46 @@
+[
+  {
+    "productGroupName": "General EUR/USD",
+    "currencies": [
+      "EUR",
+      "USD"
+    ],
+    "currentAccountNames": [
+      "Current Account"
+    ],
+    "productIds": [
+      "1", "2", "3", "5", "6", "7"
+    ],
+    "numberOfArrangements": {
+      "min": 5,
+      "max": 8
+    },
+    "numberOfDebitCards": {
+      "min": 2,
+      "max": 3
+    }
+  },
+  {
+    "productGroupName": "Retail Accounts U.S",
+    "isRetail": true,
+    "currencies": [
+      "USD"
+    ],
+    "currentAccountNames": [
+      "Current Account",
+      "Joint Account",
+      "Savings Account"
+    ],
+    "productIds": [
+      "1","2", "4"
+    ],
+    "numberOfArrangements": {
+      "min": 3,
+      "max": 4
+    },
+    "numberOfDebitCards": {
+      "min": 0,
+      "max": 0
+    }
+  }
+]

@@ -1,6 +1,11 @@
 [
   {
+    "tenantId": "tenant_a",
     "users": [
+      {
+        "externalId": "user001_t1",
+        "role": "admin"
+      },
       {
         "externalId": "user002_t1"
       },

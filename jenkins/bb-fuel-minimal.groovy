@@ -4,7 +4,7 @@ pipeline {
     agent any
 
     parameters {
-        choice(name: 'SPRING_PROFILES_ACTIVE', choices: 'aws\npcf', description: 'Select the profile to operate.\nAWS (default):\nRequires environment name (PCF space will be ignored)\n\nPCF: \nRequires space name (environment name will be ignored)')
+        choice(name: 'SPRING_PROFILES_ACTIVE', choices: 'aws\npcf\nk8s', description: 'Select the profile to operate.\nAWS (default):\nRequires environment name (PCF space will be ignored)\n\nPCF: \nRequires space name (environment name will be ignored)\n\nK8S: \nRun on kubernetes environment')
         string(name: 'ENVIRONMENT_NAME', defaultValue: 'env-name-00', description: 'Autoconfig environment name, example: frosty-snow-99\nRead before running: https://github.com/Backbase/bb-fuel/blob/master/README.md')
         string(name: 'PCF_SPACE', defaultValue: 'your-space', description: 'PCF Space name, example: approvals\nRead before running: https://github.com/Backbase/bb-fuel/blob/master/README.md')
         booleanParam(name: 'INGEST_ACCESS_CONTROL', defaultValue: true, description: 'Ingest access control setup')
@@ -26,7 +26,7 @@ pipeline {
         booleanParam(name: 'USE_PERFORMANCE_TEST_DATA_SETUP', defaultValue: false, description: 'Use performance test data setup\n' +
                 'Only enable when strictly necessary (long running job)')
         choice(name: 'PERFORMANCE_TEST_DATA', choices: 'retail\nbusiness', description: 'Retail or business performance test data setup')
-        choice(name: 'INFRA_BASE_URI', choices: 'infra.backbase.test:8080\neditorial.backbase.test:8080', description: '')
+        choice(name: 'INFRA_BASE_URI', choices: 'infra.backbase.test:8080\neditorial.backbase.test:8080\nbackbase.test', description: '')
         string(name: 'BB_FUEL_VERSION', defaultValue: 'latest', description: '')
         booleanParam(name: 'PRERELEASE', defaultValue: false, description: 'Only applicable if BB_FUEL_VERSION = latest')
         string(name: 'ADDITIONAL_ARGUMENTS', defaultValue: '-Dtransactions.min=0 -Dtransactions.max=0 -Djob.profiles.json=data/minimal-bank/job-profiles.json -Dproducts.json=data/minimal-bank/products.json -Dproduct.group.seed.json=data/minimal-bank/product-group-seed.json -Dlegal.entities.with.users.json=data/minimal-bank/legal-entities-with-users.json', description: 'Additional command line arguments for BB-FUEL Minimal')

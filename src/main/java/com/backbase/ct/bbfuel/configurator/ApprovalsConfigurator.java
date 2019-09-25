@@ -14,7 +14,6 @@ import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROV
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_CONTACTS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_NOTIFICATIONS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_PAYMENTS;
-import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
 import static com.backbase.ct.bbfuel.service.PaymentsFunctionService.BATCH_FUNCTIONS;
 import static com.backbase.ct.bbfuel.service.PaymentsFunctionService.PAYMENTS_FUNCTIONS;
 import static com.backbase.ct.bbfuel.service.PaymentsFunctionService.determineCurrencyForFunction;
@@ -38,16 +37,15 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ApprovalsConfigurator {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ApprovalsConfigurator.class);
     private GlobalProperties globalProperties = GlobalProperties.getInstance();
 
     private final LoginRestClient loginRestClient;
@@ -55,7 +53,6 @@ public class ApprovalsConfigurator {
     private final ApprovalIntegrationRestClient approvalIntegrationRestClient;
     private final JobProfileService jobProfileService;
 
-    private String rootEntitlementsAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
     private static final BigDecimal UPPER_BOUND_HUNDRED = new BigDecimal("100.0");
     private static final BigDecimal UPPER_BOUND_THOUSAND = new BigDecimal("1000.0");
     private static final BigDecimal UPPER_BOUND_HUNDRED_THOUSAND = new BigDecimal("100000.0");
@@ -73,7 +70,7 @@ public class ApprovalsConfigurator {
     }
 
     public void setupAccessControlAndPerformApprovalAssignments(String externalServiceAgreementId, int numberOfUsers) {
-        loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
+        loginRestClient.loginBankAdmin();
         userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
         boolean isPaymentsApprovalsEnabled = globalProperties.getBoolean(PROPERTY_INGEST_APPROVALS_FOR_PAYMENTS);
         boolean isContactsApprovalsEnabled = globalProperties.getBoolean(PROPERTY_INGEST_APPROVALS_FOR_CONTACTS);
@@ -104,15 +101,15 @@ public class ApprovalsConfigurator {
     private void createApprovalTypes() {
         approvalTypeAId = approvalIntegrationRestClient.createApprovalType("A",
             generateRandomNumberInRange(1, 100));
-        LOGGER.info("Approval type A [{}] created", approvalTypeAId);
+        log.info("Approval type A [{}] created", approvalTypeAId);
 
         approvalTypeBId = approvalIntegrationRestClient.createApprovalType("B",
             generateRandomNumberInRange(100, 200));
-        LOGGER.info("Approval type B [{}] created", approvalTypeBId);
+        log.info("Approval type B [{}] created", approvalTypeBId);
 
         approvalTypeCId = approvalIntegrationRestClient.createApprovalType("C",
             generateRandomNumberInRange(200, 300));
-        LOGGER.info("Approval type C [{}] created", approvalTypeCId);
+        log.info("Approval type C [{}] created", approvalTypeCId);
     }
 
     private void createPolicies() {
@@ -121,20 +118,20 @@ public class ApprovalsConfigurator {
         policyAId = approvalIntegrationRestClient.createPolicy("1 approver A", singletonList(
             createPolicyItemDto(approvalTypeAId, 1)));
 
-        LOGGER.info("Policy with approval type A [{}] created", policyAId);
+        log.info("Policy with approval type A [{}] created", policyAId);
 
         policyABId = approvalIntegrationRestClient.createPolicy("2 approvers A+B", asList(
             createPolicyItemDto(approvalTypeAId, 1),
             createPolicyItemDto(approvalTypeBId, 1)));
 
-        LOGGER.info("Policy with approval types A and B [{}] created", policyABId);
+        log.info("Policy with approval types A and B [{}] created", policyABId);
 
         policyABCId = approvalIntegrationRestClient.createPolicy("3 approvers A+B+C", asList(
             createPolicyItemDto(approvalTypeAId, 1),
             createPolicyItemDto(approvalTypeBId, 1),
             createPolicyItemDto(approvalTypeCId, 1)));
 
-        LOGGER.info("Policy with approval types A, B and C [{}] created", policyABCId);
+        log.info("Policy with approval types A, B and C [{}] created", policyABCId);
     }
 
     private void assignCurrencyBoundPolicies(String externalServiceAgreementId, int numberOfUsers, String resource,
@@ -170,8 +167,8 @@ public class ApprovalsConfigurator {
     }
 
     private void assignPolicies(List<IntegrationPolicyAssignmentRequest> listOfAssignments) {
-        if (LOGGER.isInfoEnabled()) {
-            LOGGER.info("Assigning policies: {}", ReflectionToStringBuilder.toString(listOfAssignments));
+        if (log.isInfoEnabled()) {
+            log.info("Assigning policies: {}", ReflectionToStringBuilder.toString(listOfAssignments));
         }
         approvalIntegrationRestClient.assignPolicies(listOfAssignments);
     }
@@ -246,7 +243,7 @@ public class ApprovalsConfigurator {
             .collect(Collectors.toList());
 
         if (!referencedApprovalLevels.containsAll(asList("A", "B", "C"))) {
-            LOGGER.info("No approval type assignments needed as the agreement belongs to retail {}",
+            log.info("No approval type assignments needed as the agreement belongs to retail {}",
                 referencedApprovalLevels);
             return;
         }

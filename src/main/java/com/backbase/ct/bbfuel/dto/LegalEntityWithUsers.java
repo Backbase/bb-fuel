@@ -24,6 +24,7 @@ public class LegalEntityWithUsers {
     private String parentLegalEntityExternalId;
     private String legalEntityName;
     private String legalEntityType;
+    private String tenantId;
     private Category category;
 
     private @Singular List<User> users;

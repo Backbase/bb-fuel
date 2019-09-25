@@ -4,7 +4,6 @@ import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_MESSAGES_MAX;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_MESSAGES_MIN;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_MESSAGE_TOPICS_MAX;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_MESSAGE_TOPICS_MIN;
-import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
 import static java.util.Collections.singleton;
 import static org.apache.http.HttpStatus.SC_ACCEPTED;
 import static org.apache.http.HttpStatus.SC_OK;
@@ -12,6 +11,7 @@ import static org.apache.http.HttpStatus.SC_OK;
 import com.backbase.ct.bbfuel.client.common.LoginRestClient;
 import com.backbase.ct.bbfuel.client.messagecenter.MessagesPresentationRestClient;
 import com.backbase.ct.bbfuel.data.MessagesDataGenerator;
+import com.backbase.ct.bbfuel.service.LegalEntityService;
 import com.backbase.ct.bbfuel.util.CommonHelpers;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
 import com.backbase.dbs.messages.presentation.rest.spec.v4.messagecenter.ConversationDraftsPostResponseBody;
@@ -22,19 +22,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MessagesConfigurator {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(MessagesConfigurator.class);
     private static GlobalProperties globalProperties = GlobalProperties.getInstance();
     private final LoginRestClient loginRestClient;
     private final MessagesPresentationRestClient messagesPresentationRestClient;
-    private String rootEntitlementsAdmin = globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN);
+    private final LegalEntityService legalEntityService;
 
     public void ingestConversations(String externalUserId) {
         int howManyMessages = CommonHelpers.generateRandomNumberInRange(globalProperties.getInt(PROPERTY_MESSAGES_MIN),
@@ -43,20 +42,20 @@ public class MessagesConfigurator {
         int howManyTopics = CommonHelpers.generateRandomNumberInRange(
             globalProperties.getInt(PROPERTY_MESSAGE_TOPICS_MIN),globalProperties.getInt(PROPERTY_MESSAGE_TOPICS_MAX));
 
-        loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
+        loginRestClient.loginBankAdmin();
 
         List<String> topicIds = new ArrayList<>();
-
+        String bankAdmin = legalEntityService.getRootAdmin();
         IntStream.range(0, howManyTopics).forEach(number -> {
             String topicId = messagesPresentationRestClient.postTopic(MessagesDataGenerator
-                .generateTopicPostRequestBody(singleton(rootEntitlementsAdmin)))
+                .generateTopicPostRequestBody(singleton(bankAdmin)))
                 .then()
                 .statusCode(SC_ACCEPTED)
                 .extract()
                 .path("id");
             topicIds.add(topicId);
 
-            LOGGER.info("Topic ingested with id [{}] for subscriber [{}]", topicId, rootEntitlementsAdmin);
+            log.info("Topic ingested with id [{}] for subscriber [{}]", topicId, bankAdmin);
         });
 
         IntStream.range(0, howManyMessages).forEach(number -> {
@@ -74,7 +73,7 @@ public class MessagesConfigurator {
                 .then()
                 .statusCode(SC_ACCEPTED);
 
-            loginRestClient.login(rootEntitlementsAdmin, rootEntitlementsAdmin);
+            loginRestClient.loginBankAdmin();
             String conversationId = messagesPresentationRestClient.getConversations()
                 .then()
                 .statusCode(SC_OK)
@@ -95,7 +94,7 @@ public class MessagesConfigurator {
                 .then()
                 .statusCode(SC_ACCEPTED);
 
-            LOGGER.info("Conversation ingested with subject [{}] for user [{}]", draftsPostRequestBody.getSubject(),
+            log.info("Conversation ingested with subject [{}] for user [{}]", draftsPostRequestBody.getSubject(),
                 externalUserId);
         });
     }

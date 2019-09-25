@@ -20,17 +20,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Convenience class to generate json file from specs in Excel (converted to csv).
  */
+@Slf4j
 public class JobProfileJsonGenerator {
-    private static final Logger LOGGER = LoggerFactory.getLogger(JobProfileJsonGenerator.class);
-
     private Set<String> availableBusinessFunctions;
 
     /**
@@ -49,7 +47,7 @@ public class JobProfileJsonGenerator {
             });
             this.availableBusinessFunctions = businessFunctions;
         } catch (IOException | URISyntaxException e) {
-            LOGGER.error("Failed reading file", e);
+            log.error("Failed reading file", e);
             fail("Cannot read file " + e.getMessage());
         }
     }

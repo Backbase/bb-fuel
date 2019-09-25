@@ -5,14 +5,13 @@ import com.backbase.ct.bbfuel.data.CommonConstants;
 import com.backbase.ct.bbfuel.util.CommonHelpers;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 public class HealthCheck {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(HealthCheck.class);
     private GlobalProperties globalProperties = GlobalProperties.getInstance();
 
     public void checkServicesHealth(List<RestClient> restClients) {
@@ -28,21 +27,20 @@ public class HealthCheck {
                     try {
                         // Wait between retries to avoid network storm.
                         if (restClient.isUp()) {
-                            LOGGER.info(
-                                "[" + serviceUri + "] online after " + (System.currentTimeMillis()
-                                    - startTime) + " milliseconds");
+                            log.info("[{}] online after {} milliseconds", serviceUri,
+                                    System.currentTimeMillis() - startTime);
                             return;
                         } else {
-                            LOGGER.info("[" + serviceUri + "] not available");
+                            log.info("[{}] not available", serviceUri);
                         }
                     } catch (Exception ex) {
-                        LOGGER.info("[" + serviceUri + "] not available");
+                        log.info("[{}] not available: {}", serviceUri, ex.getMessage());
                     }
 
                     try {
                         Thread.sleep(10000);
                     } catch (InterruptedException e) {
-                        LOGGER.info("Sleep cancelled", e);
+                        log.info("Sleep cancelled", e);
                         Thread.currentThread().interrupt();
                     }
                 }

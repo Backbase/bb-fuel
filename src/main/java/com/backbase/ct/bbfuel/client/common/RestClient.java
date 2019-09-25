@@ -1,11 +1,10 @@
 package com.backbase.ct.bbfuel.client.common;
 
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_LOG_ALL_REQUESTS_RESPONSES;
-import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_MULTI_TENANCY_ENVIRONMENT;
-import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_TENANT_ID;
 import static io.restassured.config.HttpClientConfig.httpClientConfig;
 import static org.apache.http.HttpStatus.SC_OK;
 
+import com.backbase.ct.bbfuel.config.MultiTenancyConfig;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -118,21 +117,18 @@ public class RestClient {
             .httpClient(httpClientConfig().setParam(PARAMETER_NAME, TIMEOUT_VALUE));
 
         RequestSpecification requestSpec = new TestSpecificationImpl(
-            new RequestSpecificationImpl(getBaseURI().toString(),
-                getBaseURI().getPort(), getInitialPath(), RestAssured.DEFAULT_AUTH, Collections.emptyList(), null,
+            new RequestSpecificationImpl(getBaseURI().toString(), getBaseURI().getPort(),
+                getInitialPath(), RestAssured.DEFAULT_AUTH, Collections.emptyList(), null,
                 RestAssured.DEFAULT_URL_ENCODING_ENABLED, restAssuredConfig, logRepository, null),
-            new ResponseSpecificationImpl(RestAssured.DEFAULT_BODY_ROOT_PATH, null, this.responseParserRegistrar,
-                restAssuredConfig, logRepository)).
-            getRequestSpecification();
+            new ResponseSpecificationImpl(RestAssured.DEFAULT_BODY_ROOT_PATH, null,
+                this.responseParserRegistrar, restAssuredConfig, logRepository))
+            .getRequestSpecification();
 
         setLoggingFilters(requestSpec);
-
         requestSpec.queryParam("_csrf", getCookies().get("XSRF-TOKEN"));
-
         requestSpec.cookies(getCookies());
-
-        if (globalProperties.getBoolean(PROPERTY_MULTI_TENANCY_ENVIRONMENT)) {
-            requestSpec.header(TENANT_HEADER_NAME, globalProperties.getString(PROPERTY_TENANT_ID));
+        if (MultiTenancyConfig.isMultiTenancyEnvironment()) {
+            requestSpec.header(TENANT_HEADER_NAME, MultiTenancyConfig.getTenantId());
         }
 
         return requestSpec;

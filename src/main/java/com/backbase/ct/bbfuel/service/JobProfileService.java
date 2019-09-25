@@ -10,20 +10,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 /**
  * A simple local service with no integration at all.
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class JobProfileService {
 
     public static final String ADMIN_FUNCTION_GROUP_NAME = "Admin";
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(JobProfileService.class);
 
     private Map<String, List<JobProfile>> assignedJobProfiles = new HashMap<>();
 
@@ -55,7 +53,7 @@ public class JobProfileService {
         List<String> roles = jobProfile.getRoles();
 
         if (roles == null || roles.isEmpty()) {
-            LOGGER.warn("No roles configured for this profile {}", jobProfile.getJobProfileName());
+            log.warn("No roles configured for this profile {}", jobProfile.getJobProfileName());
             return false;
         } else if (isRetailCustomer) {
             return (jobProfile.getIsRetail() && roles.contains(role))

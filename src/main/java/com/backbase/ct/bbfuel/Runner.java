@@ -1,5 +1,8 @@
 package com.backbase.ct.bbfuel;
 
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_LEGAL_ENTITIES_WITH_USERS_JSON;
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_M10Y_LEGAL_ENTITIES_WITH_USERS_JSON;
+
 import com.backbase.ct.bbfuel.healthcheck.AccessControlHealthCheck;
 import com.backbase.ct.bbfuel.healthcheck.BillPayHealthCheck;
 import com.backbase.ct.bbfuel.healthcheck.ProductSummaryHealthCheck;
@@ -8,20 +11,21 @@ import com.backbase.ct.bbfuel.setup.AccessControlSetup;
 import com.backbase.ct.bbfuel.setup.CapabilitiesDataSetup;
 import com.backbase.ct.bbfuel.setup.ServiceAgreementsSetup;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
+import com.backbase.ct.bbfuel.config.MultiTenancyConfig;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class Runner implements ApplicationRunner {
-    private static final Logger LOGGER = LoggerFactory.getLogger(Runner.class);
 
     private final AccessControlSetup accessControlSetup;
     private final ServiceAgreementsSetup serviceAgreementsSetup;
@@ -37,7 +41,7 @@ public class Runner implements ApplicationRunner {
             doIt();
             System.exit(0);
         } catch (IOException e) {
-            LOGGER.error("Failed setting up access", e);
+            log.error("Failed setting up access", e);
             System.exit(1);
         }
     }
@@ -48,18 +52,37 @@ public class Runner implements ApplicationRunner {
      * @throws IOException when setupAccessControl throws it
      */
     private void doIt() throws IOException {
-        if (LOGGER.isInfoEnabled()) {
+        if (log.isInfoEnabled()) {
             String environment = GlobalProperties.getInstance().getString("environment.name");
-            LOGGER.info("Ingesting data into {}", (environment == null ? "environment" : environment));
+            log.info("Ingesting data into {}", (environment == null ? "environment" : environment));
         }
         performHealthChecks();
 
         Instant start = Instant.now();
-
-        setupAccessControl();
-        ingestCapabilityData();
-
+        ingestEnvironment();
         logDuration(start);
+    }
+
+    private void ingestEnvironment() throws IOException {
+        int rounds = 1;
+        String[] tenants = new String[]{
+            GlobalProperties.getInstance().getString(PROPERTY_LEGAL_ENTITIES_WITH_USERS_JSON)};
+        if (MultiTenancyConfig.isMultiTenancyEnvironment()) {
+            String legalEntityResource = GlobalProperties.getInstance().getString(PROPERTY_M10Y_LEGAL_ENTITIES_WITH_USERS_JSON);
+            tenants = StringUtils.split(legalEntityResource, ";");
+            if (tenants.length < 2) {
+                log.error("Your multi-tenant environment needs at least 2 tenants, you configured only #{}: {}={}",
+                    tenants.length, PROPERTY_M10Y_LEGAL_ENTITIES_WITH_USERS_JSON, legalEntityResource);
+                return;
+            }
+            rounds = tenants.length;
+        }
+
+        for (int i = 0; i < rounds; i++) {
+            accessControlSetup.setLegalEntityWithUsersResource(tenants[i]);
+            setupAccessControl();
+            ingestCapabilityData();
+        }
     }
 
     private void performHealthChecks() {
@@ -81,6 +104,6 @@ public class Runner implements ApplicationRunner {
     private void logDuration(Instant start) {
         Instant end = Instant.now();
         long totalSeconds = Duration.between(start, end).getSeconds();
-        LOGGER.info("Time to ingest data was {} minutes and {} seconds", totalSeconds / 60, totalSeconds % 60);
+        log.info("Time to ingest data was {} minutes and {} seconds", totalSeconds / 60, totalSeconds % 60);
     }
 }

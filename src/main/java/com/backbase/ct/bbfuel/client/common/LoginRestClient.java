@@ -1,12 +1,11 @@
 package com.backbase.ct.bbfuel.client.common;
 
 import static com.backbase.ct.bbfuel.data.CommonConstants.ACCESS_TOKEN;
-import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_IDENTITY_BASE_URI;
+import static com.backbase.ct.bbfuel.data.CommonConstants.IDENTITY_AUTH;
+import static com.backbase.ct.bbfuel.data.CommonConstants.IDENTITY_TOKEN_PATH;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_IDENTITY_CLIENT;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_IDENTITY_FEATURE_TOGGLE;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_IDENTITY_REALM;
-import static com.backbase.ct.bbfuel.data.CommonConstants.IDENTITY_AUTH;
-import static com.backbase.ct.bbfuel.data.CommonConstants.IDENTITY_TOKEN_PATH;
 import static org.apache.http.HttpStatus.SC_OK;
 
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
@@ -27,10 +26,10 @@ public class LoginRestClient extends RestClient {
 
     @PostConstruct
     public void init() {
-        if (!this.globalProperties.getBoolean(PROPERTY_IDENTITY_FEATURE_TOGGLE)) {
-            setBaseUri(config.getPlatform().getAuth());
+        if (this.globalProperties.getBoolean(PROPERTY_IDENTITY_FEATURE_TOGGLE)) {
+            setBaseUri(config.getPlatform().getIdentity());
         } else {
-            setBaseUri(this.globalProperties.getString(PROPERTY_IDENTITY_BASE_URI));
+            setBaseUri(config.getPlatform().getAuth());
         }
     }
 

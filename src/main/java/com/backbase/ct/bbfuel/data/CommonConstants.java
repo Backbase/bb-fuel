@@ -86,7 +86,6 @@ public final class CommonConstants {
 
     // Identity
     public static final String PROPERTY_IDENTITY_FEATURE_TOGGLE = "identity.feature.toggle";
-    public static final String PROPERTY_IDENTITY_BASE_URI = "identity.base.uri";
     public static final String PROPERTY_IDENTITY_REALM = "identity.realm";
     public static final String PROPERTY_IDENTITY_CLIENT = "identity.client";
     public static final String IDENTITY_AUTH = "/auth/realms";

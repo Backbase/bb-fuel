@@ -4,6 +4,7 @@ environment:
 bb-fuel:
   platform:
     registry: http://registry.${environment.name}.${environment.domain}
+    identity: http://bbiam.${environment.name}.${environment.domain}
     gateway: http://edge.${environment.name}.${environment.domain}/api
     auth: http://edge.${environment.name}.${environment.domain}/auth/login
     tokenconverter: http://tokenconverter.${environment.name}.${environment.domain}

@@ -21,10 +21,12 @@ eureka.client.enabled: false
 
 environment:
   domain: backbase.test:8080
+  domain-identity: backbase.test:8180
 
 bb-fuel:
   platform:
     infra: http://${environment.name}-${infra.base:infra}.${environment.domain}
+    identity: http://${environment.name}-bbiam.${environment.domain-identity}
     registry: ${bb-fuel.platform.infra}/registry/eureka
     gateway: ${bb-fuel.platform.infra}/gateway/api
     auth: ${bb-fuel.platform.gateway}/auth/login

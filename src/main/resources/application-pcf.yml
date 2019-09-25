@@ -10,6 +10,7 @@ pcf:
 bb-fuel:
   platform:
     registry: http://registry-${pcf.uri}/eureka
+    identity: http://bbiam-${pcf.uri}
     gateway: http://gateway-${pcf.uri}/api
     auth: ${bb-fuel.platform.gateway}/auth/login
     tokenconverter: http://token-converter-service-${pcf.uri}

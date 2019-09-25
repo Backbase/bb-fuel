@@ -26,6 +26,7 @@ It is based on REST and relies on DBS service specs.
 BB-Fuel supports the following environments:
 - Local (based on start.backbase.com)
 - AWS (default)
+- K8s
 - PCF
 
 ## Data setup (read before running)
@@ -44,7 +45,7 @@ Note: Alter the properties accordingly to your environment (each property can be
 - Environment should contain at least the Entitlements and ProductSummary capabilities.
 
 2. Run bb-fuel as follows:
-- For environments based on AWS (default):
+- For environments based on AWS (default) or Kubernetes:
 ```
 java -Denvironment.name=your-env-00 -jar bb-fuel-{version}-boot.jar
 ```
@@ -105,7 +106,7 @@ bb-fuel supports multiple DBS versions. See below which version maps to the requ
 
 | DBS version | bb-fuel minimal [version](https://github.com/backbase/bb-fuel/releases) |
 |-------------|-------------------------------------------------------------------------|
-| 2.16.3      | 2.3.30                                                                  |
+| 2.16.3      | 2.4.0                                                                  |
 | 2.16.2      | 2.3.29                                                                  |
 | 2.16.1      | 2.3.18                                                                  |
 | 2.16.0      | 2.3.12                                                                  |
@@ -129,6 +130,7 @@ bb-fuel supports multiple DBS versions. See below which version maps to the requ
 | 2.10.1      | [2.10.1 tag](https://github.com/backbase/bb-fuel/releases/tag/2.10.1)   |
 | 2.10.0      | [2.10.0 tag](https://github.com/backbase/bb-fuel/releases/tag/2.10.0)   |
 
+Note: Starting version 2.4.0 Kubernetes is added as supported platform.
 Note: Starting version 2.0 PCF is added as supported platform.
 
 ## Contributing

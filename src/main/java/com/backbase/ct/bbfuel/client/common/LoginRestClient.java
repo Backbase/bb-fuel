@@ -39,21 +39,13 @@ public class LoginRestClient extends RestClient {
     }
 
     public void login(String username, String password) {
-        if (!this.globalProperties.getBoolean(PROPERTY_IDENTITY_FEATURE_TOGGLE)) {
-            ValidatableResponse response = requestSpec().param("username", username)
-                .param("password", password)
-                .param("submit", "Login")
-                .post("")
-                .then()
-                .statusCode(SC_OK);
+        ValidatableResponse response;
+        Map<String, String> cookies;
 
-            response.assertThat().statusCode(200);
-            Map<String, String> cookies = new HashMap<>(response.extract().cookies());
-            setUpCookies(cookies);
-        } else {
+        if (this.globalProperties.getBoolean(PROPERTY_IDENTITY_FEATURE_TOGGLE)) {
             String path =
                 IDENTITY_AUTH + "/" + this.globalProperties.getString(PROPERTY_IDENTITY_REALM) + IDENTITY_TOKEN_PATH;
-            ValidatableResponse response = requestSpec()
+            response = requestSpec()
                 .param("client_id", this.globalProperties.getString(PROPERTY_IDENTITY_CLIENT))
                 .param("username", username)
                 .param("password", password)
@@ -64,10 +56,20 @@ public class LoginRestClient extends RestClient {
 
             String token = response.extract().jsonPath().get(ACCESS_TOKEN);
 
-            Map<String, String> cookies = new HashMap<>(response.extract().cookies());
+            cookies = new HashMap<>(response.extract().cookies());
             cookies.put("Authorization", token);
-            setUpCookies(cookies);
+
+        } else {
+            response = requestSpec().param("username", username)
+                .param("password", password)
+                .param("submit", "Login")
+                .post("")
+                .then()
+                .statusCode(SC_OK);
+
+            cookies = new HashMap<>(response.extract().cookies());
         }
+        setUpCookies(cookies);
     }
 
 }

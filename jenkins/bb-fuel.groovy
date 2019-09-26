@@ -40,6 +40,8 @@ pipeline {
         stage('load data') {
             steps {
                 script {
+                    currentBuild.displayName = "#${BUILD_NUMBER} - env: ${params.ENVIRONMENT_NAME}"
+                    currentBuild.description = "env: ${params.ENVIRONMENT_NAME}\ntype: ${params.SPRING_PROFILES_ACTIVE}\nbb-fuel-version: ${params.BB_FUEL_VERSION}"
                     def customLegalEntitiesWithUsersJson = ""
 
                     if ("${params.USE_PERFORMANCE_TEST_DATA_SETUP}".toBoolean()) {

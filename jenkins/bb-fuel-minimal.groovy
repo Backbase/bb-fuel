@@ -27,6 +27,9 @@ pipeline {
                 'Only enable when strictly necessary (long running job)')
         choice(name: 'PERFORMANCE_TEST_DATA', choices: 'retail\nbusiness', description: 'Retail or business performance test data setup')
         choice(name: 'INFRA_BASE_URI', choices: 'infra.backbase.test:8080\neditorial.backbase.test:8080', description: '')
+        booleanParam(name: 'IDENTITY_FEATURE_TOGGLE', defaultValue: false, description: 'Use identity')
+        string(name: 'IDENTITY_REALM', defaultValue: 'backbase', description: 'Identity realm')
+        string(name: 'IDENTITY_CLIENT', defaultValue: 'hybrid-flow', description: 'Identity client')
         string(name: 'BB_FUEL_VERSION', defaultValue: 'latest', description: '')
         booleanParam(name: 'PRERELEASE', defaultValue: false, description: 'Only applicable if BB_FUEL_VERSION = latest')
         string(name: 'ADDITIONAL_ARGUMENTS', defaultValue: '-Dtransactions.min=0 -Dtransactions.max=0 -Djob.profiles.json=data/minimal-bank/job-profiles.json -Dproducts.json=data/minimal-bank/products.json -Dproduct.group.seed.json=data/minimal-bank/product-group-seed.json -Dlegal.entities.with.users.json=data/minimal-bank/legal-entities-with-users.json', description: 'Additional command line arguments for BB-FUEL Minimal')
@@ -36,6 +39,8 @@ pipeline {
         stage('load data') {
             steps {
                 script {
+                    currentBuild.displayName = "#${BUILD_NUMBER} - env: ${params.ENVIRONMENT_NAME}"
+                    currentBuild.description = "env: ${params.ENVIRONMENT_NAME}\ntype: ${params.SPRING_PROFILES_ACTIVE}\nbb-fuel-version: ${params.BB_FUEL_VERSION}"
                     def customLegalEntitiesWithUsersJson = ""
 
                     if ("${params.USE_PERFORMANCE_TEST_DATA_SETUP}".toBoolean()) {
@@ -62,6 +67,9 @@ pipeline {
                                     "-Dingest.payments=${params.INGEST_PAYMENTS} " +
                                     "-Dingest.messages=${params.INGEST_MESSAGES} " +
                                     "-Dingest.actions=${params.INGEST_ACTIONS} " +
+                                    "-Didentity.feature.toggle=${params.IDENTITY_FEATURE_TOGGLE} " +
+                                    "-Didentity.realm=${params.IDENTITY_REALM} " +
+                                    "-Didentity.client=${params.IDENTITY_CLIENT} " +
                                     customLegalEntitiesWithUsersJson +
                                     "${params.ADDITIONAL_ARGUMENTS}"
                     )

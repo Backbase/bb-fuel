@@ -1,6 +1,7 @@
 bb-fuel:
   platform:
     infra: http://localhost:8080
+    identity: http://localhost:8180
     registry: ${bb-fuel.platform.infra}/registry/eureka
     gateway: ${bb-fuel.platform.infra}/gateway/api
     auth: ${bb-fuel.platform.gateway}/auth/login

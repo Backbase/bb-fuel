@@ -83,4 +83,12 @@ public final class CommonConstants {
 
     // Transactions
     public static final String PROPERTY_TRANSACTIONS_DATA_JSON = "transactions.data.json";
+
+    // Identity
+    public static final String PROPERTY_IDENTITY_FEATURE_TOGGLE = "identity.feature.toggle";
+    public static final String PROPERTY_IDENTITY_REALM = "identity.realm";
+    public static final String PROPERTY_IDENTITY_CLIENT = "identity.client";
+    public static final String IDENTITY_AUTH = "/auth/realms";
+    public static final String IDENTITY_TOKEN_PATH = "/protocol/openid-connect/token";
+    public static final String ACCESS_TOKEN = "access_token";
 }

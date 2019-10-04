@@ -30,4 +30,9 @@ public class PlatformConfig {
      */
     private String tokenconverter;
 
+    /**
+     * URI to identity.
+     */
+    private String identity;
+
 }

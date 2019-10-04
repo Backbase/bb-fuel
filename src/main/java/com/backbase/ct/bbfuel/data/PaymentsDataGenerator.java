@@ -39,14 +39,13 @@ public class PaymentsDataGenerator {
             "241273188", "244077815", "241075153", "073911870", "303184610", "303986151", "263277887", "103101848",
             "103101013", "303986096");
 
-    public static InitiatePaymentOrder generateInitiatePaymentOrder(String debtorArrangementId, String paymentType) {
+    public static InitiatePaymentOrder generateInitiatePaymentOrder(String debtorArrangementId, String debtorarrangementCurrency, String paymentType) {
         IdentifiedPaymentOrder.PaymentMode paymentMode = IdentifiedPaymentOrder.PaymentMode.values()[random
             .nextInt(IdentifiedPaymentOrder.PaymentMode.values().length)];
         Schedule schedule = null;
         Bank creditorBank = null;
         Bank correspondentBank = null;
-        Currency currency = new Currency().withAmount(CommonHelpers.generateRandomAmountInRange(1000L, 99999L))
-            .withCurrencyCode(generateCurrencyCode(paymentType));
+        Currency currency = new Currency().withAmount(CommonHelpers.generateRandomAmountInRange(1000L, 99999L));
         Identification identification;
 
         if (paymentMode.equals(IdentifiedPaymentOrder.PaymentMode.RECURRING)) {
@@ -62,10 +61,16 @@ public class PaymentsDataGenerator {
         }
 
         if (PAYMENT_TYPE_SEPA_CREDIT_TRANSFER.equals(paymentType)) {
+            currency.setCurrencyCode("EUR");
             identification = generateIbanIdentification();
+        } else if (PAYMENT_TYPE_ACH_DEBIT.equals(paymentType)) {
+            creditorBank = generateCreditorBank();
+            currency.setCurrencyCode(debtorarrangementCurrency);
+            identification = generateBbanIdentification();
         } else {
             creditorBank = generateCreditorBank();
             correspondentBank = generateCorrespondentBank();
+            currency.setCurrencyCode("USD");
             identification = generateBbanIdentification();
         }
 
@@ -132,15 +137,5 @@ public class PaymentsDataGenerator {
                 .withTown(faker.address().city())
                 .withCountry(faker.address().countryCode())
                 .withCountrySubDivision(faker.address().state()));
-    }
-
-    private static String generateCurrencyCode(String paymentType) {
-        if (PAYMENT_TYPE_SEPA_CREDIT_TRANSFER.equals(paymentType)) {
-            return "EUR";
-        }
-        if (PAYMENT_TYPE_ACH_DEBIT.equals(paymentType) && random.nextBoolean()) {
-            return "CAD";
-        }
-        return "USD";
     }
 }

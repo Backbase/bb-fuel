@@ -53,8 +53,8 @@ public class PaymentsConfigurator {
             .generateRandomNumberInRange(globalProperties.getInt(CommonConstants.PROPERTY_PAYMENTS_MIN),
                 globalProperties.getInt(CommonConstants.PROPERTY_PAYMENTS_MAX));
 
-        if (sepaCtArrangements.size() != 0 && usDomesticWireArrangements.size() != 0
-            && achDebitArrangements.size() != 0) {
+        if (!sepaCtArrangements.isEmpty() && !usDomesticWireArrangements.isEmpty()
+            && !achDebitArrangements.isEmpty()) {
 
             IntStream.range(0, randomAmount).parallel().forEach(randomNumber -> {
                 String paymentType = getRandomFromList(PAYMENT_TYPES);
@@ -69,7 +69,7 @@ public class PaymentsConfigurator {
                 }
 
                 InitiatePaymentOrder initiatePaymentOrder = PaymentsDataGenerator
-                    .generateInitiatePaymentOrder(randomArrangement.getId(), paymentType);
+                    .generateInitiatePaymentOrder(randomArrangement.getId(), randomArrangement.getCurrency(), paymentType);
                 paymentOrderPresentationRestClient.initiatePaymentOrder(initiatePaymentOrder)
                     .then()
                     .statusCode(SC_ACCEPTED);

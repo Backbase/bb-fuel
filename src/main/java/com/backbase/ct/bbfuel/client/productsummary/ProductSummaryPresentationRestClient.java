@@ -84,7 +84,7 @@ public class ProductSummaryPresentationRestClient extends RestClient {
     }
 
     public List<ArrangementsByBusinessFunctionGetResponseBody> getAchDebitArrangements() {
-        return Arrays.asList(getProductSummaryContextArrangements(new ProductSummaryQueryParameters()
+        return Arrays.stream(getProductSummaryContextArrangements(new ProductSummaryQueryParameters()
             .withBusinessFunction(ACH_DEBIT_FUNCTION_NAME)
             .withResourceName(PAYMENTS_RESOURCE_NAME)
             .withPrivilege(PRIVILEGE_CREATE)
@@ -95,7 +95,12 @@ public class ProductSummaryPresentationRestClient extends RestClient {
             .then()
             .statusCode(SC_OK)
             .extract()
-            .as(ArrangementsByBusinessFunctionGetResponseBody[].class));
+            .as(ArrangementsByBusinessFunctionGetResponseBody[].class))
+                .filter(arrangement -> isValidCurrencyForAchDebit(arrangement.getCurrency())).collect(Collectors.toList());
+    }
+
+    private static boolean isValidCurrencyForAchDebit(String currency) {
+        return currency.equals("USD") || currency.equals("CAD");
     }
 
     public List<ArrangementsByBusinessFunctionGetResponseBody> getUSForeignWireArrangements() {

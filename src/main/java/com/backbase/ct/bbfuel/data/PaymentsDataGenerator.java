@@ -1,5 +1,6 @@
 package com.backbase.ct.bbfuel.data;
 
+import static com.backbase.ct.bbfuel.data.CommonConstants.PAYMENT_TYPE_ACH_DEBIT;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PAYMENT_TYPE_SEPA_CREDIT_TRANSFER;
 import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromEnumValues;
 import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
@@ -42,7 +43,7 @@ public class PaymentsDataGenerator {
             "NWBKGB2LXXX", "COBADEFFXXX", "BNPAFRPPXXX", "POALILITXXX", "LOYDGB2LXXX", "NTSBDEB1XXX", "DEUTDEDBPAL",
             "AXISINBB002");
 
-    public static InitiatePaymentOrder generateInitiatePaymentOrder(String debtorArrangementId, String paymentType) {
+    public static InitiatePaymentOrder generateInitiatePaymentOrder(String debtorArrangementId, String debtorarrangementCurrency, String paymentType) {
         IdentifiedPaymentOrder.PaymentMode paymentMode = IdentifiedPaymentOrder.PaymentMode.values()[random
             .nextInt(IdentifiedPaymentOrder.PaymentMode.values().length)];
         Schedule schedule = null;
@@ -66,6 +67,10 @@ public class PaymentsDataGenerator {
         if (PAYMENT_TYPE_SEPA_CREDIT_TRANSFER.equals(paymentType)) {
             currency.setCurrencyCode("EUR");
             identification = generateIbanIdentification();
+        } else if (PAYMENT_TYPE_ACH_DEBIT.equals(paymentType)) {
+            creditorBank = generateCreditorBank();
+            currency.setCurrencyCode(debtorarrangementCurrency);
+            identification = generateBbanIdentification();
         } else {
             creditorBank = generateCreditorBank();
             correspondentBank = generateCorrespondentBank();

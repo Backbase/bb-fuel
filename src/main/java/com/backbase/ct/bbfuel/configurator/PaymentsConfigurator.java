@@ -78,7 +78,7 @@ public class PaymentsConfigurator {
                 }
 
                 InitiatePaymentOrder initiatePaymentOrder = PaymentsDataGenerator
-                    .generateInitiatePaymentOrder(randomArrangement.getId(), paymentType);
+                    .generateInitiatePaymentOrder(randomArrangement.getId(), randomArrangement.getCurrency(), paymentType);
                 paymentOrderPresentationRestClient.initiatePaymentOrder(initiatePaymentOrder)
                     .then()
                     .statusCode(SC_ACCEPTED);

@@ -82,8 +82,6 @@ public class AccessControlSetup extends BaseSetup {
     @Setter
     private List<JobProfile> jobProfileTemplates;
     private List<ProductGroupSeed> productGroupSeedTemplates;
-    @Setter
-    private String legalEntityWithUsersResource;
 
     public List<LegalEntityWithUsers> getLegalEntitiesWithUsersExcludingSupport() {
         return getLegalEntitiesWithUsers()
@@ -95,9 +93,9 @@ public class AccessControlSetup extends BaseSetup {
     }
 
     /**
-     * Legal entities, job profiles and product groups are loaded from files.
+     * Prepare the environment before ingesting the entities.
      */
-    public void initiate() {
+    public void prepare(String legalEntityWithUsersResource) {
         log.info("Loading legal entities with users {}", legalEntityWithUsersResource);
         this.legalEntitiesWithUsers = this.legalEntityWithUsersReader.load(legalEntityWithUsersResource);
         this.jobProfileTemplates = this.jobProfileReader.load();
@@ -115,6 +113,12 @@ public class AccessControlSetup extends BaseSetup {
         } else {
             legalEntityService.setRootAdmin(globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN));
         }
+    }
+
+    /**
+     * Legal entities, job profiles and product groups are loaded from files.
+     */
+    public void initiate() {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_ACCESS_CONTROL)) {
             this.setupBankWithEntitlementsAdminAndProducts();
             this.setupAccessControlForUsers();

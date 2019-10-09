@@ -11,19 +11,19 @@ java -Denvironment.name=your-env-00 \
 -Dproduct.group.seed.json=${custom.path}/product-group-seed.json \
 -Dservice.agreements.json=${custom.path}/service-agreements.json \
 -Dlegal.entities.with.users.json=${custom.path}/legal-entities-with-users.json \
--jar bb-fuel-{version}-boot.jar
+-jar bb-fuel-{version}-exec.jar
 ```
 
 An alternative approach is when you have copied the `data.properties` from the jar you can configure properties above and put it in the current directory or in the user home directory.
 ```
-java -Denvironment.name=your-env-00 bb-fuel-{version}-boot.jar
+java -Denvironment.name=your-env-00 bb-fuel-{version}-exec.jar
 ```
 
 ## Built-in custom data setup
 ### How to run with performance test data setup
 Based on [gatling-performance-simulations](https://stash.backbase.com/projects/CT/repos/gatling-performance-simulations/browse):
 ```
-java -Denvironment.name=your-env-00 -Dlegal.entities.with.users.json=data/performance/performance-test-legal-entities-with-users-{retail or business}.json bb-fuel-{version}-boot.jar
+java -Denvironment.name=your-env-00 -Dlegal.entities.with.users.json=data/performance/performance-test-legal-entities-with-users-{retail or business}.json bb-fuel-{version}-exec.jar
 ```
 
 ### How to run on multi-tenancy environments
@@ -32,7 +32,7 @@ Based on [multi-tenancy LDAP configuration in Autoconfig environments](https://s
 ```
 java -Denvironment.name=your-env-00 \
 -Dmulti.tenancy.environment=true \
--jar bb-fuel-{version}-boot.jar
+-jar bb-fuel-{version}-exec.jar
 ```
 
 This will ingest the following:

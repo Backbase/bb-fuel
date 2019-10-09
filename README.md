@@ -47,19 +47,19 @@ Note: Alter the properties accordingly to your environment (each property can be
 2. Run bb-fuel as follows:
 - For environments based on AWS (default) or Kubernetes:
 ```
-java -Denvironment.name=your-env-00 -jar bb-fuel-{version}-boot.jar
+java -Denvironment.name=your-env-00 -jar bb-fuel-{version}-exec.jar
 ```
 Note: replace `your-env-00` with the name of your environment.
 Alternatively you can add `environment.name` property to `application.yml` before building bb-fuel. 
 
 - For environments based on local:
 ```
-java -Dspring.profiles.active=local -jar bb-fuel-{version}-boot.jar
+java -Dspring.profiles.active=local -jar bb-fuel-{version}-exec.jar
 ```
 
 - For environments based on PCF:
 ```
-java -Dspring.profiles.active=pcf -Dpcf.space=NAME_OF_YOUR_SPACE -jar bb-fuel-{version}-boot.jar
+java -Dspring.profiles.active=pcf -Dpcf.space=NAME_OF_YOUR_SPACE -jar bb-fuel-{version}-exec.jar
 
 ```
 Note: replace `NAME_OF_YOUR_SPACE` with the name of your space in PCF. It requires your routes to include the space name like: http://${service}-${space}.${domain}
@@ -70,7 +70,7 @@ The following properties can be set to custom values for different purposes: [da
 
 Example:
 ```
-java -Denvironment.name=your-env-00 -Dingest.transactions=true -Dtransactions.min=20 -Dtransactions.max=50 -jar bb-fuel-{version}-boot.jar
+java -Denvironment.name=your-env-00 -Dingest.transactions=true -Dtransactions.min=20 -Dtransactions.max=50 -jar bb-fuel-{version}-exec.jar
 ```
 
 ### Health check
@@ -106,7 +106,7 @@ bb-fuel supports multiple DBS versions. See below which version maps to the requ
 
 | DBS version | bb-fuel minimal [version](https://github.com/backbase/bb-fuel/releases) |
 |-------------|-------------------------------------------------------------------------|
-| 2.16.4      | 2.4.2                                                                   |
+| 2.16.4      | 2.4.3                                                                   |
 | 2.16.3      | 2.4.0                                                                   |
 | 2.16.2      | 2.3.29                                                                  |
 | 2.16.1      | 2.3.18                                                                  |

@@ -16,7 +16,7 @@ deploy:
   api_key: ${GITHUB_TOKEN}
   tag_name: $TAG
   file:
-    - target/$TAG-boot.jar
+    - target/$TAG-exec.jar
     - target/$TAG-import.jar
   on:
     repo: Backbase/bb-fuel

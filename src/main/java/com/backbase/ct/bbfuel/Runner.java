@@ -15,6 +15,7 @@ import com.backbase.ct.bbfuel.config.MultiTenancyConfig;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -56,7 +57,6 @@ public class Runner implements ApplicationRunner {
             String environment = GlobalProperties.getInstance().getString("environment.name");
             log.info("Ingesting data into {}", (environment == null ? "environment" : environment));
         }
-        performHealthChecks();
 
         Instant start = Instant.now();
         ingestEnvironment();
@@ -64,22 +64,22 @@ public class Runner implements ApplicationRunner {
     }
 
     private void ingestEnvironment() throws IOException {
-        int rounds = 1;
         String[] tenants = new String[]{
             GlobalProperties.getInstance().getString(PROPERTY_LEGAL_ENTITIES_WITH_USERS_JSON)};
         if (MultiTenancyConfig.isMultiTenancyEnvironment()) {
-            String legalEntityResource = GlobalProperties.getInstance().getString(PROPERTY_M10Y_LEGAL_ENTITIES_WITH_USERS_JSON);
+            String legalEntityResource = GlobalProperties.getInstance()
+                .getString(PROPERTY_M10Y_LEGAL_ENTITIES_WITH_USERS_JSON);
             tenants = StringUtils.split(legalEntityResource, ";");
             if (tenants.length < 2) {
                 log.error("Your multi-tenant environment needs at least 2 tenants, you configured only #{}: {}={}",
                     tenants.length, PROPERTY_M10Y_LEGAL_ENTITIES_WITH_USERS_JSON, legalEntityResource);
                 return;
             }
-            rounds = tenants.length;
         }
 
-        for (int i = 0; i < rounds; i++) {
-            accessControlSetup.setLegalEntityWithUsersResource(tenants[i]);
+        for (String tenant : tenants) {
+            accessControlSetup.prepare(tenant);
+            performHealthChecks();
             setupAccessControl();
             ingestCapabilityData();
         }

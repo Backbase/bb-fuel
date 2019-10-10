@@ -14,7 +14,7 @@ def call(Map params) {
     withEnv(["JAVA_HOME=${tool name: "${env.JDK_TOOL_NAME}"}", "PATH+MAVEN=${tool name: "${env.MAVEN_TOOL_NAME}"}/bin:${env.JAVA_HOME}/bin"]) {
         sh "java -Denvironment.name=${params.environmentName} " +
                 "${params.additionalArguments} " +
-                "-jar ${bbFuelTagName}-exec.jar"
+                "-jar ${bbFuelTagName}-boot.jar"
     }
 }
 

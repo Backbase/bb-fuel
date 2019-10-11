@@ -17,4 +17,3 @@ bb-fuel:
     legalentity: http://legalentity.${environment.name}.${environment.domain}
     accessgroup: http://accessgroup.${environment.name}.${environment.domain}
     arrangements: http://arrangements.${environment.name}.${environment.domain}
-    notifications: http://notifications.${environment.name}.${environment.domain}

@@ -9,12 +9,12 @@ bb-fuel:
     auth: http://edge.${environment.name}.${environment.domain}/api/auth/login
     tokenconverter: http://tokenconverter.${environment.name}.${environment.domain}
   dbs:
-    approvals: http://approvals.${environment.name}.${environment.domain}/approval-integration-service
-    transactions: http://transactions.${environment.name}.${environment.domain}/transaction-integration-service
-    contactmanager: http://contacts.${environment.name}.${environment.domain}/contact-integration-service
-    messages: http://messages.${environment.name}.${environment.domain}/messages-integration-service
-    user: http://user.${environment.name}.${environment.domain}/user-integration-service
-    legalentity: http://legalentity.${environment.name}.${environment.domain}/legalentity-integration-service
-    accessgroup: http://accessgroup.${environment.name}.${environment.domain}/accessgroup-integration-service
-    arrangements: http://arrangements.${environment.name}.${environment.domain}/arrangements-integration-service
-    notifications: http://notifications.${environment.name}.${environment.domain}/notifications-presentation-service
+    approvals: http://approvals.${environment.name}.${environment.domain}
+    transactions: http://transactions.${environment.name}.${environment.domain}
+    contactmanager: http://contacts.${environment.name}.${environment.domain}
+    messages: http://messages.${environment.name}.${environment.domain}
+    user: http://user.${environment.name}.${environment.domain}
+    legalentity: http://legalentity.${environment.name}.${environment.domain}
+    accessgroup: http://accessgroup.${environment.name}.${environment.domain}
+    arrangements: http://arrangements.${environment.name}.${environment.domain}
+    notifications: http://notifications.${environment.name}.${environment.domain}

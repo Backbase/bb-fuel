@@ -13,6 +13,8 @@ import org.springframework.stereotype.Component;
 public class HealthCheck {
 
     private GlobalProperties globalProperties = GlobalProperties.getInstance();
+    private static final String ACTUATOR = "/actuator";
+    private static final String INFO = "/info";
 
     public void checkServicesHealth(List<RestClient> restClients) {
         long healthCheckTimeOutInMinutes = globalProperties
@@ -21,7 +23,7 @@ public class HealthCheck {
 
         restClients.parallelStream()
             .forEach(restClient -> {
-                String serviceUri = restClient.getBaseURI().toString() + "/" + restClient.getInitialPath();
+                String serviceUri = restClient.getBaseURI().toString() + "/" + restClient.getInitialPath() + ACTUATOR + INFO;
                 long startTime = System.currentTimeMillis();
                 while (System.currentTimeMillis() - startTime < timeOutInMillis) {
                     try {

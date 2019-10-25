@@ -34,7 +34,7 @@ pipeline {
         string(name: 'BB_FUEL_VERSION', defaultValue: 'latest', description: '')
         booleanParam(name: 'PRERELEASE', defaultValue: false, description: 'Only applicable if BB_FUEL_VERSION = latest')
         string(name: 'ADDITIONAL_ARGUMENTS', defaultValue: '', description: 'Additional command line arguments')
-        booleanParam(name: 'MULTI_TENANCY_ENVIRONMENT', defaultValue: true, description: 'Enable multi tenancy')
+        booleanParam(name: 'MULTI_TENANCY_ENVIRONMENT', defaultValue: false, description: 'Enable multi tenancy')
     }
 
     stages {

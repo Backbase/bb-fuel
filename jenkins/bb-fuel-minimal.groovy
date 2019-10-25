@@ -33,7 +33,7 @@ pipeline {
         string(name: 'BB_FUEL_VERSION', defaultValue: 'latest', description: '')
         booleanParam(name: 'PRERELEASE', defaultValue: false, description: 'Only applicable if BB_FUEL_VERSION = latest')
         string(name: 'ADDITIONAL_ARGUMENTS', defaultValue: '-Dtransactions.min=0 -Dtransactions.max=0 -Djob.profiles.json=data/minimal-bank/job-profiles.json -Dproducts.json=data/minimal-bank/products.json -Dproduct.group.seed.json=data/minimal-bank/product-group-seed.json -Dlegal.entities.with.users.json=data/minimal-bank/legal-entities-with-users.json', description: 'Additional command line arguments for BB-FUEL Minimal')
-        booleanParam(name: 'MULTI_TENANCY_ENVIRONMENT', defaultValue: true, description: 'Enable multi tenancy')
+        booleanParam(name: 'MULTI_TENANCY_ENVIRONMENT', defaultValue: false, description: 'Enable multi tenancy')
     }
 
     stages {

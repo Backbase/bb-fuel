@@ -9,6 +9,7 @@ public final class CommonConstants {
     public static final String PROPERTIES_FILE_NAME = "data.properties";
     public static final String ENVIRONMENT_PROPERTIES_FILE_NAME = "environment.properties";
     public static final String PROPERTY_HEALTH_CHECK_TIMEOUT_IN_MINUTES = "healthcheck.timeout.in.minutes";
+    public static final String PROPERTY_HEALTH_CHECK_USE_ACTUATOR = "healthcheck.use.actuator";
     public static final String PROPERTY_LOG_ALL_REQUESTS_RESPONSES = "log.all.requests.responses";
     public static final String PROPERTY_MULTI_TENANCY_ENVIRONMENT = "multi.tenancy.environment";
     public static final String PROPERTY_TENANT_ID = "tenant.id";

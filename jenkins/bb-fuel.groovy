@@ -33,6 +33,7 @@ pipeline {
         string(name: 'IDENTITY_CLIENT', defaultValue: 'hybrid-flow', description: 'Identity client')
         string(name: 'BB_FUEL_VERSION', defaultValue: 'latest', description: '')
         booleanParam(name: 'PRERELEASE', defaultValue: false, description: 'Only applicable if BB_FUEL_VERSION = latest')
+        booleanParam(name: 'HEALTHCHECK_USE_ACTUATOR', defaultValue: true, description: 'Healthcheck endpoint is changed since 2.17.0 release')
         string(name: 'ADDITIONAL_ARGUMENTS', defaultValue: '', description: 'Additional command line arguments')
         booleanParam(name: 'MULTI_TENANCY_ENVIRONMENT', defaultValue: false, description: 'Enable multi tenancy')
     }
@@ -74,6 +75,7 @@ pipeline {
                                     "-Didentity.realm=${params.IDENTITY_REALM} " +
                                     "-Didentity.client=${params.IDENTITY_CLIENT} " +
                                     "-Dmulti.tenancy.environment=${params.ENVIRONMENT_MULTI_TENANCY} " +
+                                    "-Dhealthcheck.use.actuator=${params.HEALTHCHECK_USE_ACTUATOR} " +
                                     customLegalEntitiesWithUsersJson +
                                     "${params.ADDITIONAL_ARGUMENTS}"
                     )

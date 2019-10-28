@@ -12,6 +12,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class HealthCheck {
 
+    private static final String ACTUATOR = "/actuator";
+    private static final String INFO = "/info";
     private GlobalProperties globalProperties = GlobalProperties.getInstance();
 
     public void checkServicesHealth(List<RestClient> restClients) {
@@ -21,14 +23,20 @@ public class HealthCheck {
 
         restClients.parallelStream()
             .forEach(restClient -> {
-                String serviceUri = restClient.getBaseURI().toString() + "/" + restClient.getInitialPath();
+                String serviceUri;
+                if (globalProperties.getBoolean(CommonConstants.PROPERTY_HEALTH_CHECK_USE_ACTUATOR)) {
+                    serviceUri =
+                        restClient.getBaseURI().toString() + "/" + restClient.getInitialPath() + ACTUATOR + INFO;
+                } else {
+                    serviceUri = restClient.getBaseURI().toString() + "/" + restClient.getInitialPath();
+                }
                 long startTime = System.currentTimeMillis();
                 while (System.currentTimeMillis() - startTime < timeOutInMillis) {
                     try {
                         // Wait between retries to avoid network storm.
                         if (restClient.isUp()) {
                             log.info("[{}] online after {} milliseconds", serviceUri,
-                                    System.currentTimeMillis() - startTime);
+                                System.currentTimeMillis() - startTime);
                             return;
                         } else {
                             log.info("[{}] not available", serviceUri);

@@ -74,7 +74,7 @@ pipeline {
                                     "-Didentity.feature.toggle=${params.IDENTITY_FEATURE_TOGGLE} " +
                                     "-Didentity.realm=${params.IDENTITY_REALM} " +
                                     "-Didentity.client=${params.IDENTITY_CLIENT} " +
-                                    "-Dmulti.tenancy.environment=${params.ENVIRONMENT_MULTI_TENANCY} " +
+                                    "-Dmulti.tenancy.environment=${params.MULTI_TENANCY_ENVIRONMENT} " +
                                     "-Dhealthcheck.use.actuator=${params.HEALTHCHECK_USE_ACTUATOR} " +
                                     customLegalEntitiesWithUsersJson +
                                     "${params.ADDITIONAL_ARGUMENTS}"

@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class HealthCheck {
 
     private static final String ACTUATOR = "/actuator";
-    private static final String INFO = "/info";
+    private static final String HEALTH = "/health";
     private GlobalProperties globalProperties = GlobalProperties.getInstance();
 
     public void checkServicesHealth(List<RestClient> restClients) {
@@ -26,7 +26,7 @@ public class HealthCheck {
                 String serviceUri;
                 if (globalProperties.getBoolean(CommonConstants.PROPERTY_HEALTH_CHECK_USE_ACTUATOR)) {
                     serviceUri =
-                        restClient.getBaseURI().toString() + "/" + restClient.getInitialPath() + ACTUATOR + INFO;
+                        restClient.getBaseURI().toString() + "/" + restClient.getInitialPath() + ACTUATOR + HEALTH;
                 } else {
                     serviceUri = restClient.getBaseURI().toString() + "/" + restClient.getInitialPath();
                 }

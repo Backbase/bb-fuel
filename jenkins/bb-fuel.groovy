@@ -35,6 +35,7 @@ pipeline {
         booleanParam(name: 'PRERELEASE', defaultValue: false, description: 'Only applicable if BB_FUEL_VERSION = latest')
         booleanParam(name: 'HEALTHCHECK_USE_ACTUATOR', defaultValue: true, description: 'Healthcheck endpoint is changed since 2.17.0 release')
         string(name: 'ADDITIONAL_ARGUMENTS', defaultValue: '', description: 'Additional command line arguments')
+        booleanParam(name: 'MULTI_TENANCY_ENVIRONMENT', defaultValue: false, description: 'Enable multi tenancy')
     }
 
     stages {
@@ -73,6 +74,7 @@ pipeline {
                                     "-Didentity.feature.toggle=${params.IDENTITY_FEATURE_TOGGLE} " +
                                     "-Didentity.realm=${params.IDENTITY_REALM} " +
                                     "-Didentity.client=${params.IDENTITY_CLIENT} " +
+                                    "-Dmulti.tenancy.environment=${params.MULTI_TENANCY_ENVIRONMENT} " +
                                     "-Dhealthcheck.use.actuator=${params.HEALTHCHECK_USE_ACTUATOR} " +
                                     customLegalEntitiesWithUsersJson +
                                     "${params.ADDITIONAL_ARGUMENTS}"

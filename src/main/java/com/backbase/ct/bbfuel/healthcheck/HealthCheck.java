@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class HealthCheck {
 
-    private static final String ACTUATOR_HEALTH = "/actuator/health";
     private GlobalProperties globalProperties = GlobalProperties.getInstance();
 
     public void checkServicesHealth(List<RestClient> restClients) {
@@ -22,13 +21,7 @@ public class HealthCheck {
 
         restClients.parallelStream()
             .forEach(restClient -> {
-                String serviceUri;
-                if (globalProperties.getBoolean(CommonConstants.PROPERTY_HEALTH_CHECK_USE_ACTUATOR)) {
-                    serviceUri =
-                        restClient.getBaseURI().toString() + "/" + restClient.getInitialPath() + ACTUATOR_HEALTH;
-                } else {
-                    serviceUri = restClient.getBaseURI().toString() + "/" + restClient.getInitialPath();
-                }
+                String serviceUri = restClient.getBaseURI().toString() + "/" + restClient.getInitialPath();
                 long startTime = System.currentTimeMillis();
                 while (System.currentTimeMillis() - startTime < timeOutInMillis) {
                     try {

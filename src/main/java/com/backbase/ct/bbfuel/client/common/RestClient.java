@@ -5,6 +5,7 @@ import static io.restassured.config.HttpClientConfig.httpClientConfig;
 import static org.apache.http.HttpStatus.SC_OK;
 
 import com.backbase.ct.bbfuel.config.MultiTenancyConfig;
+import com.backbase.ct.bbfuel.data.CommonConstants;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -62,7 +63,8 @@ public class RestClient {
 
     private static final String PARAMETER_NAME = "CONNECTION_MANAGER_TIMEOUT";
     private static final int TIMEOUT_VALUE = 10000;
-    private static final String DEFAULT_HEALTH_PATH = "/production-support/health";
+    private static final String PRODUCTION_SUPPORT_HEALTH_PATH = "/production-support/health";
+    private static final String ACTUATOR_HEALTH_PATH = "/actuator/health";
     private static final String SERVER_STATUS_UP = "UP";
     private static final String TENANT_HEADER_NAME = "X-TID";
 
@@ -156,7 +158,9 @@ public class RestClient {
     private Response getHealth() {
         return requestSpec()
             .contentType(ContentType.JSON)
-            .get(DEFAULT_HEALTH_PATH);
+            .get(globalProperties.getBoolean(CommonConstants.PROPERTY_HEALTH_CHECK_USE_ACTUATOR)
+                ? ACTUATOR_HEALTH_PATH
+                : PRODUCTION_SUPPORT_HEALTH_PATH);
     }
 
     private void setLoggingFilters(RequestSpecification requestSpec) {

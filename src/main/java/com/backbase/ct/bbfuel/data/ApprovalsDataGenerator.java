@@ -5,11 +5,11 @@ import static java.util.Collections.emptyList;
 import com.backbase.dbs.approval.integration.spec.IntegrationApprovalTypeAssignmentDto;
 import com.backbase.dbs.approval.integration.spec.IntegrationPolicyAssignmentRequest;
 import com.backbase.dbs.approval.integration.spec.IntegrationPolicyAssignmentRequestBounds;
-import com.backbase.dbs.approval.integration.spec.IntegrationPolicyItemDto;
 import com.backbase.dbs.approval.integration.spec.IntegrationPostBulkApprovalTypeAssignmentRequest;
 import com.backbase.dbs.approval.integration.spec.IntegrationPostPolicyAssignmentBulkRequest;
-import com.backbase.dbs.approval.integration.spec.IntegrationPostPolicyRequest;
+import com.backbase.dbs.approval.spec.CreatePolicyItemDto;
 import com.backbase.dbs.approval.spec.PostApprovalTypeRequest;
+import com.backbase.dbs.approval.spec.PostPolicyRequest;
 import com.backbase.rest.spec.common.types.Currency;
 import java.util.List;
 
@@ -35,25 +35,25 @@ public class ApprovalsDataGenerator {
             .withJobProfileId(jobProfileId);
     }
 
-    public static IntegrationPostPolicyRequest createPostPolicyRequest(String policyName,
-        List<IntegrationPolicyItemDto> policyItems) {
-        return new IntegrationPostPolicyRequest()
+    public static PostPolicyRequest createPostPolicyRequest(String policyName,
+        List<CreatePolicyItemDto> policyItems) {
+        return new PostPolicyRequest()
             .withName(policyName)
             .withDescription(policyName)
             .withItems(policyItems);
     }
 
-    public static IntegrationPolicyItemDto createPolicyItemDto(String approvalTypeId, int numberOfApprovals) {
-        IntegrationPolicyItemDto policyItem = new IntegrationPolicyItemDto();
+    public static CreatePolicyItemDto createPolicyItemDto(String approvalTypeId, int numberOfApprovals) {
+        CreatePolicyItemDto policyItem = new CreatePolicyItemDto();
         policyItem.setApprovalTypeId(approvalTypeId);
         policyItem.setNumberOfApprovals(numberOfApprovals);
         return policyItem;
     }
 
-    public static IntegrationPostPolicyRequest createPostPolicyRequestWithZeroPolicyItems() {
+    public static PostPolicyRequest createPostPolicyRequestWithZeroPolicyItems() {
         String name = "0 approvers";
 
-        return new IntegrationPostPolicyRequest()
+        return new PostPolicyRequest()
             .withName(name)
             .withDescription(name)
             .withItems(emptyList());

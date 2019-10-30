@@ -29,7 +29,7 @@ public class ProductSummaryConfigurator {
 
     public void ingestProducts() {
         List<ProductsPostRequestBody> products = ProductSummaryDataGenerator.getProductsFromFile();
-        products.stream().parallel()
+        products.stream()
             .forEach(arrangementsIntegrationRestClient::ingestProductAndLogResponse);
     }
 

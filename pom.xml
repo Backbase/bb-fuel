@@ -4,7 +4,7 @@
     <parent>
         <artifactId>backbase-integration-starter-parent</artifactId>
         <groupId>com.backbase.buildingblocks</groupId>
-        <version>9.0.0</version>
+        <version>9.0.2</version>
     </parent>
 
     <groupId>com.backbase.ct</groupId>

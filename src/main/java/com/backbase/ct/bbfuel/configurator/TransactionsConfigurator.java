@@ -53,11 +53,11 @@ public class TransactionsConfigurator {
         List<SubCategory> finalCategories = new ArrayList<>(retailCategories);
 
         if (isRetail) {
-            IntStream.range(0, randomAmount)
+            IntStream.range(0, randomAmount).parallel()
                     .forEach(randomNumber -> transactions.add(
                             reader.loadSingle(externalArrangementId)));
         } else {
-            IntStream.range(0, randomAmount)
+            IntStream.range(0, randomAmount).parallel()
                     .forEach(randomNumber -> transactions.add(
                             TransactionsDataGenerator.generateTransactionsPostRequestBody(externalArrangementId, isRetail, finalCategories)));
         }

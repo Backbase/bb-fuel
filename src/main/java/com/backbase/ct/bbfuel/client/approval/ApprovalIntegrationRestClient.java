@@ -14,14 +14,14 @@ import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
 import com.backbase.dbs.approval.integration.spec.IntegrationApprovalTypeAssignmentDto;
 import com.backbase.dbs.approval.integration.spec.IntegrationDeletePolicyAssignmentResponse;
 import com.backbase.dbs.approval.integration.spec.IntegrationPolicyAssignmentRequest;
-import com.backbase.dbs.approval.integration.spec.IntegrationPolicyItemDto;
 import com.backbase.dbs.approval.integration.spec.IntegrationPostBulkApprovalTypeAssignmentRequest;
 import com.backbase.dbs.approval.integration.spec.IntegrationPostBulkApprovalTypeAssignmentResponse;
 import com.backbase.dbs.approval.integration.spec.IntegrationPostPolicyAssignmentBulkRequest;
-import com.backbase.dbs.approval.integration.spec.IntegrationPostPolicyRequest;
-import com.backbase.dbs.approval.integration.spec.IntegrationPostPolicyResponse;
+import com.backbase.dbs.approval.spec.CreatePolicyItemDto;
 import com.backbase.dbs.approval.spec.PostApprovalTypeRequest;
 import com.backbase.dbs.approval.spec.PostApprovalTypeResponse;
+import com.backbase.dbs.approval.spec.PostPolicyRequest;
+import com.backbase.dbs.approval.spec.PostPolicyResponse;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import java.util.List;
@@ -75,7 +75,7 @@ public class ApprovalIntegrationRestClient extends RestClient {
             .delete(getPath(APPROVAL_TYPE_ASSIGNMENTS + "/" + jobProfileId));
     }
 
-    public Response createPolicy(IntegrationPostPolicyRequest body) {
+    public Response createPolicy(PostPolicyRequest body) {
         return requestSpec()
             .contentType(ContentType.JSON)
             .body(body)
@@ -114,12 +114,12 @@ public class ApprovalIntegrationRestClient extends RestClient {
             .as(IntegrationPostBulkApprovalTypeAssignmentResponse.class);
     }
 
-    public String createPolicy(String policyName, List<IntegrationPolicyItemDto> policyItems) {
+    public String createPolicy(String policyName, List<CreatePolicyItemDto> policyItems) {
         return createPolicy(createPostPolicyRequest(policyName, policyItems))
             .then()
             .statusCode(SC_CREATED)
             .extract()
-            .as(IntegrationPostPolicyResponse.class)
+            .as(PostPolicyResponse.class)
             .getPolicy()
             .getId();
     }
@@ -129,7 +129,7 @@ public class ApprovalIntegrationRestClient extends RestClient {
             .then()
             .statusCode(SC_CREATED)
             .extract()
-            .as(IntegrationPostPolicyResponse.class)
+            .as(PostPolicyResponse.class)
             .getPolicy()
             .getId();
     }

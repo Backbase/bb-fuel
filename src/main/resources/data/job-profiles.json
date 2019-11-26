@@ -65,6 +65,16 @@
         ]
       },
       {
+        "businessFunction": "SEPA CT - Intracompany",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "cancel"
+        ]
+      },
+      {
         "businessFunction": "ACH Debit",
         "privileges": [
           "view",
@@ -105,17 +115,6 @@
         ]
       },
       {
-        "businessFunction": "US Domestic Wire",
-        "privileges": [
-          "view",
-          "create",
-          "edit",
-          "delete",
-          "approve",
-          "cancel"
-        ]
-      },
-      {
         "businessFunction": "US Billpay Payees",
         "privileges": [
           "view",
@@ -136,6 +135,23 @@
         ]
       },
       {
+        "businessFunction": "US Billpay Payees-Search",
+        "privileges": [
+          "execute"
+        ]
+      },
+      {
+        "businessFunction": "US Domestic Wire",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
         "businessFunction": "US Foreign Wire",
         "privileges": [
           "view",
@@ -147,9 +163,25 @@
         ]
       },
       {
-        "businessFunction": "US Billpay Payees-Search",
+        "businessFunction": "US Domestic Wire - Intracompany",
         "privileges": [
-          "execute"
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "US Foreign Wire - Intracompany",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
         ]
       }
     ]
@@ -227,6 +259,17 @@
         ]
       },
       {
+        "businessFunction": "US Domestic Wire - Intracompany",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
         "businessFunction": "Manage Users",
         "privileges": [
           "view"
@@ -252,17 +295,6 @@
         ]
       },
       {
-        "businessFunction": "Intra Company Payments",
-        "privileges": [
-          "view",
-          "create",
-          "edit",
-          "delete",
-          "approve",
-          "cancel"
-        ]
-      },
-      {
         "businessFunction": "Manage Service Agreements",
         "privileges": [
           "view"
@@ -276,6 +308,17 @@
       },
       {
         "businessFunction": "SEPA CT",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "SEPA CT - Intracompany",
         "privileges": [
           "view",
           "create",
@@ -394,6 +437,17 @@
         ]
       },
       {
+        "businessFunction": "US Foreign Wire - Intracompany",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
         "businessFunction": "US Billpay Payees-Search",
         "privileges": [
           "execute"
@@ -415,6 +469,16 @@
       },
       {
         "businessFunction": "ACH Credit Transfer",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve"
+        ]
+      },
+      {
+        "businessFunction": "ACH Credit - Intracompany",
         "privileges": [
           "view",
           "create",
@@ -462,6 +526,16 @@
         ]
       },
       {
+        "businessFunction": "US Domestic Wire - Intracompany",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve"
+        ]
+      },
+      {
         "businessFunction": "Manage Users",
         "privileges": [
           "view"
@@ -474,17 +548,6 @@
           "create",
           "edit",
           "delete"
-        ]
-      },
-      {
-        "businessFunction": "Intra Company Payments",
-        "privileges": [
-          "view",
-          "create",
-          "edit",
-          "delete",
-          "approve",
-          "cancel"
         ]
       },
       {
@@ -501,6 +564,16 @@
       },
       {
         "businessFunction": "SEPA CT",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve"
+        ]
+      },
+      {
+        "businessFunction": "SEPA CT - Intracompany",
         "privileges": [
           "view",
           "create",
@@ -589,6 +662,16 @@
       },
       {
         "businessFunction": "US Foreign Wire",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve"
+        ]
+      },
+      {
+        "businessFunction": "US Foreign Wire - Intracompany",
         "privileges": [
           "view",
           "create",

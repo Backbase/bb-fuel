@@ -1,13 +1,13 @@
 package com.backbase.ct.bbfuel.client.productsummary;
 
 import static com.backbase.ct.bbfuel.util.ResponseUtils.isBadRequestExceptionWithErrorKey;
-import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 import static org.apache.http.HttpStatus.SC_CREATED;
+import static org.apache.http.HttpStatus.SC_OK;
 
-import com.backbase.buildingblocks.presentation.errors.BadRequestException;
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
-import com.backbase.ct.bbfuel.util.ResponseUtils;
+import com.backbase.integration.arrangement.rest.spec.v2.State;
+import com.backbase.integration.arrangement.rest.spec.v2.arrangement.IntegrationStateId;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBody;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostResponseBody;
 import com.backbase.integration.arrangement.rest.spec.v2.balancehistory.BalanceHistoryPostRequestBody;
@@ -18,6 +18,9 @@ import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Slf4j
 @Component
@@ -30,6 +33,8 @@ public class ArrangementsIntegrationRestClient extends RestClient {
     private static final String ENDPOINT_ARRANGEMENTS = "/arrangements";
     private static final String ENDPOINT_PRODUCTS = "/products";
     private static final String ENDPOINT_BALANCE_HISTORY = "/balance-history";
+    private static final String ENDPOINT_ARRANGEMENT_STATE = "/arrangement-state";
+
 
     @PostConstruct
     public void init() {
@@ -46,6 +51,27 @@ public class ArrangementsIntegrationRestClient extends RestClient {
             .statusCode(SC_CREATED)
             .extract()
             .as(ArrangementsPostResponseBody.class);
+    }
+
+    public IntegrationStateId ingestArrangementState(State body) {
+        return requestSpec()
+                .contentType(ContentType.JSON)
+                .body(body)
+                .post(getPath(ENDPOINT_ARRANGEMENT_STATE))
+                .then()
+                .statusCode(SC_CREATED)
+                .extract()
+                .as(IntegrationStateId.class);
+    }
+
+    public StateListResponse getArrangementStates() {
+        return requestSpec()
+                .contentType(ContentType.JSON)
+                .get(getPath(ENDPOINT_ARRANGEMENT_STATE))
+                .then()
+                .statusCode(SC_OK)
+                .extract()
+                .as(StateListResponse.class);
     }
 
     public void ingestProductAndLogResponse(ProductsPostRequestBody product) {

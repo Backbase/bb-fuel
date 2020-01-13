@@ -2,18 +2,23 @@ package com.backbase.ct.bbfuel.data;
 
 import static com.backbase.ct.bbfuel.util.CommonHelpers.generateRandomAmountInRange;
 import static com.backbase.ct.bbfuel.util.CommonHelpers.generateRandomNumberInRange;
+import static com.backbase.ct.bbfuel.util.CommonHelpers.generateRandomString;
 import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
 import static java.lang.String.valueOf;
 import static java.util.Arrays.asList;
 import static org.apache.commons.collections.ListUtils.synchronizedList;
 
+import com.backbase.ct.bbfuel.client.productsummary.ArrangementsIntegrationRestClient;
 import com.backbase.ct.bbfuel.dto.entitlement.ProductGroupSeed;
 import com.backbase.ct.bbfuel.input.ProductReader;
+import com.backbase.ct.bbfuel.util.CommonHelpers;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
+import com.backbase.integration.arrangement.rest.spec.v2.State;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBody;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.DebitCard;
 import com.backbase.integration.arrangement.rest.spec.v2.balancehistory.BalanceHistoryPostRequestBody;
 import com.backbase.integration.arrangement.rest.spec.v2.products.ProductsPostRequestBody;
+import com.backbase.presentation.productsummary.rest.spec.v2.product.StateItemQ;
 import com.github.javafaker.Faker;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -104,6 +109,15 @@ public class ProductSummaryDataGenerator {
             arrangementsPostRequestBodies.add(arrangementsPostRequestBody);
         });
 
+        return arrangementsPostRequestBodies;
+    }
+
+    public static List<ArrangementsPostRequestBody> generateCurrentAccountArrangementsPostRequestBodiesWithStates
+            (List<ArrangementsPostRequestBody> arrangementsPostRequestBodies, List<String> externalStateIds) {
+        int size = Math.min(externalStateIds.size(), arrangementsPostRequestBodies.size());
+            for (int i = 0; i < size; i++) {
+                arrangementsPostRequestBodies.get(i).withStateId(externalStateIds.get(i));
+            }
         return arrangementsPostRequestBodies;
     }
 

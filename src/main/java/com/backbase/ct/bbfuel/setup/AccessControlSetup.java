@@ -82,6 +82,7 @@ public class AccessControlSetup extends BaseSetup {
     @Setter
     private List<JobProfile> jobProfileTemplates;
     private List<ProductGroupSeed> productGroupSeedTemplates;
+    private List<String> externalStateIds;
 
     public List<LegalEntityWithUsers> getLegalEntitiesWithUsersExcludingSupport() {
         return getLegalEntitiesWithUsers()
@@ -113,6 +114,7 @@ public class AccessControlSetup extends BaseSetup {
         } else {
             legalEntityService.setRootAdmin(globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN));
         }
+        externalStateIds = this.productSummaryConfigurator.ingestArrangementCustomStateAndGetExternalIds();
     }
 
     /**
@@ -225,7 +227,7 @@ public class AccessControlSetup extends BaseSetup {
 
             if (existingDataGroup == null) {
                 List<ArrangementId> arrangementIds = this.productSummaryConfigurator.ingestArrangements(
-                    externalLegalEntityId, productGroupSeed);
+                    externalLegalEntityId, productGroupSeed, externalStateIds);
 
                 productGroupSeed.setExternalServiceAgreementId(externalServiceAgreementId);
                 this.accessGroupsConfigurator.ingestDataGroupForArrangements(productGroupSeed, arrangementIds);
@@ -310,7 +312,5 @@ public class AccessControlSetup extends BaseSetup {
         });
         this.permissionsConfigurator.assignPermissions(
             user.getExternalId(), externalServiceAgreementId, functionGroupDataGroups);
-
-
     }
 }

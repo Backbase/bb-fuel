@@ -115,9 +115,10 @@ public class ProductSummaryDataGenerator {
     public static List<ArrangementsPostRequestBody> generateCurrentAccountArrangementsPostRequestBodiesWithStates
             (List<ArrangementsPostRequestBody> arrangementsPostRequestBodies, List<String> externalStateIds) {
         int size = Math.min(externalStateIds.size(), arrangementsPostRequestBodies.size());
-            for (int i = 0; i < size; i++) {
-                arrangementsPostRequestBodies.get(i).withStateId(externalStateIds.get(i));
-            }
+        for (int i = 0; i < size; i++) {
+            arrangementsPostRequestBodies.get(i).withStateId(externalStateIds.get(i));
+        }
+
         return arrangementsPostRequestBodies;
     }
 

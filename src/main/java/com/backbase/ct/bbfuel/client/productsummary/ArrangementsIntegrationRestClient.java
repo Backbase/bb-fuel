@@ -19,9 +19,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
-import java.util.List;
-
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -51,27 +48,6 @@ public class ArrangementsIntegrationRestClient extends RestClient {
             .statusCode(SC_CREATED)
             .extract()
             .as(ArrangementsPostResponseBody.class);
-    }
-
-    public IntegrationStateId ingestArrangementState(State body) {
-        return requestSpec()
-                .contentType(ContentType.JSON)
-                .body(body)
-                .post(getPath(ENDPOINT_ARRANGEMENT_STATE))
-                .then()
-                .statusCode(SC_CREATED)
-                .extract()
-                .as(IntegrationStateId.class);
-    }
-
-    public StateListResponse getArrangementStates() {
-        return requestSpec()
-                .contentType(ContentType.JSON)
-                .get(getPath(ENDPOINT_ARRANGEMENT_STATE))
-                .then()
-                .statusCode(SC_OK)
-                .extract()
-                .as(StateListResponse.class);
     }
 
     public void ingestProductAndLogResponse(ProductsPostRequestBody product) {

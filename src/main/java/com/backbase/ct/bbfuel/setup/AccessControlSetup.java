@@ -113,7 +113,6 @@ public class AccessControlSetup extends BaseSetup {
         } else {
             legalEntityService.setRootAdmin(globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN));
         }
-        this.productSummaryConfigurator.ingestArrangementCustomState();
     }
 
     /**

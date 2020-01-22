@@ -11,7 +11,6 @@ import com.backbase.ct.bbfuel.client.productsummary.ArrangementsIntegrationRestC
 import com.backbase.ct.bbfuel.data.ProductSummaryDataGenerator;
 import com.backbase.ct.bbfuel.dto.ArrangementId;
 import com.backbase.ct.bbfuel.dto.entitlement.ProductGroupSeed;
-import com.backbase.integration.arrangement.rest.spec.v2.State;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBody;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostResponseBody;
 import com.backbase.integration.arrangement.rest.spec.v2.balancehistory.BalanceHistoryPostRequestBody;
@@ -19,7 +18,6 @@ import com.backbase.integration.arrangement.rest.spec.v2.products.ProductsPostRe
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +28,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ProductSummaryConfigurator {
 
-    private static final List<String> ARRANGEMENT_STATES = Arrays.asList("Active", "Closed", "Inactive", "Custom");
+    private static final List<String> ARRANGEMENT_STATES = Arrays.asList("Active", "Closed", "Inactive");
 
     private final ArrangementsIntegrationRestClient arrangementsIntegrationRestClient;
 
@@ -73,17 +71,6 @@ public class ProductSummaryConfigurator {
         });
 
         return arrangementIds;
-    }
-
-    public void ingestArrangementCustomState() {
-            State stateWithRandomState = new State()
-                    .withExternalStateId(ARRANGEMENT_STATES.get(3))
-                    .withState(ARRANGEMENT_STATES.get(3));
-            List<String> externalIds = arrangementsIntegrationRestClient.getArrangementStates().getStates().stream()
-                    .map(State::getExternalStateId).collect(Collectors.toList());
-            if(!externalIds.contains(ARRANGEMENT_STATES.get(3))) {
-                arrangementsIntegrationRestClient.ingestArrangementState(stateWithRandomState);
-            }
     }
 
     public void ingestBalanceHistory(String externalArrangementId) {

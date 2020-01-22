@@ -4,8 +4,6 @@ import static com.backbase.ct.bbfuel.data.ProductSummaryDataGenerator.generateBa
 import static com.backbase.ct.bbfuel.data.ProductSummaryDataGenerator.generateCurrentAccountArrangementsPostRequestBodies;
 import static com.backbase.ct.bbfuel.data.ProductSummaryDataGenerator.generateCurrentAccountArrangementsPostRequestBodiesWithStates;
 import static com.backbase.ct.bbfuel.data.ProductSummaryDataGenerator.generateNonCurrentAccountArrangementsPostRequestBodies;
-import static com.backbase.ct.bbfuel.util.CommonHelpers.generateRandomNumberInRange;
-import static com.backbase.ct.bbfuel.util.CommonHelpers.generateRandomString;
 import static java.util.Collections.synchronizedList;
 import static org.apache.http.HttpStatus.SC_CREATED;
 
@@ -19,6 +17,7 @@ import com.backbase.integration.arrangement.rest.spec.v2.arrangements.Arrangemen
 import com.backbase.integration.arrangement.rest.spec.v2.balancehistory.BalanceHistoryPostRequestBody;
 import com.backbase.integration.arrangement.rest.spec.v2.products.ProductsPostRequestBody;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,6 +30,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ProductSummaryConfigurator {
 
+    private static final List<String> ARRANGEMENT_STATES = Arrays.asList("Active", "Closed", "Inactive", "Custom");
+
     private final ArrangementsIntegrationRestClient arrangementsIntegrationRestClient;
 
     public void ingestProducts() {
@@ -39,8 +40,7 @@ public class ProductSummaryConfigurator {
             .forEach(arrangementsIntegrationRestClient::ingestProductAndLogResponse);
     }
 
-    public List<ArrangementId> ingestArrangements(String externalLegalEntityId, ProductGroupSeed productGroupSeed,
-                                                  List<String> externalStateIds) {
+    public List<ArrangementId> ingestArrangements(String externalLegalEntityId, ProductGroupSeed productGroupSeed) {
         List<ArrangementsPostRequestBody> arrangements = synchronizedList(new ArrayList<>());
         List<ArrangementId> arrangementIds = synchronizedList(new ArrayList<>());
         List<String> productIds = productGroupSeed.getProductIds();
@@ -54,7 +54,7 @@ public class ProductSummaryConfigurator {
         if (productGroupSeed.getProductIds().contains(String.valueOf(1))) {
             List<ArrangementsPostRequestBody> arrangementsPostRequestBodies = generateCurrentAccountArrangementsPostRequestBodies(
                     externalLegalEntityId, productGroupSeed, numberOfArrangements - numberOfNonCurrentAccounts);
-            arrangements.addAll(generateCurrentAccountArrangementsPostRequestBodiesWithStates(arrangementsPostRequestBodies, externalStateIds));
+            arrangements.addAll(generateCurrentAccountArrangementsPostRequestBodiesWithStates(arrangementsPostRequestBodies, ARRANGEMENT_STATES));
             productGroupSeed.getProductIds().remove(String.valueOf(1));
         }
 
@@ -75,14 +75,15 @@ public class ProductSummaryConfigurator {
         return arrangementIds;
     }
 
-    public List<String> ingestArrangementCustomStateAndGetExternalIds() {
+    public void ingestArrangementCustomState() {
             State stateWithRandomState = new State()
-                    .withExternalStateId(generateRandomString(generateRandomNumberInRange(2, 10)))
-                    .withState(generateRandomString(6));
-            arrangementsIntegrationRestClient.ingestArrangementState(stateWithRandomState);
-
-            return arrangementsIntegrationRestClient.getArrangementStates().getStates().stream()
+                    .withExternalStateId(ARRANGEMENT_STATES.get(3))
+                    .withState(ARRANGEMENT_STATES.get(3));
+            List<String> externalIds = arrangementsIntegrationRestClient.getArrangementStates().getStates().stream()
                     .map(State::getExternalStateId).collect(Collectors.toList());
+            if(!externalIds.contains(ARRANGEMENT_STATES.get(3))) {
+                arrangementsIntegrationRestClient.ingestArrangementState(stateWithRandomState);
+            }
     }
 
     public void ingestBalanceHistory(String externalArrangementId) {

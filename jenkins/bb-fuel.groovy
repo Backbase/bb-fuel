@@ -30,7 +30,8 @@ pipeline {
         choice(name: 'INFRA_BASE_URI', choices: 'infra.backbase.test:8080\neditorial.backbase.test:8080\nbackbase.test', description: '')
         booleanParam(name: 'IDENTITY_FEATURE_TOGGLE', defaultValue: false, description: 'Use identity')
         string(name: 'IDENTITY_REALM', defaultValue: 'backbase', description: 'Identity realm')
-        string(name: 'IDENTITY_CLIENT', defaultValue: 'hybrid-flow', description: 'Identity client')
+        string(name: 'IDENTITY_CLIENT', defaultValue: 'hybrid-flow', description: 'Identity client. hybrid-flow for AWS\n' +
+                'bb-tooling-client for K8S')
         string(name: 'BB_FUEL_VERSION', defaultValue: 'latest', description: '')
         booleanParam(name: 'PRERELEASE', defaultValue: false, description: 'Only applicable if BB_FUEL_VERSION = latest')
         booleanParam(name: 'HEALTHCHECK_USE_ACTUATOR', defaultValue: true, description: 'Should be false if BOM version <= 2.16.4')

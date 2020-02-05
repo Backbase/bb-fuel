@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 
 public class CommonHelpers {
@@ -43,9 +42,5 @@ public class CommonHelpers {
 
     public static <T extends Enum> T getRandomFromEnumValues(T[] values) {
         return values[ThreadLocalRandom.current().nextInt(values.length)];
-    }
-
-    public static String generateRandomString(int length) {
-        return RandomStringUtils.randomAlphabetic(length);
     }
 }

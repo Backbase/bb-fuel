@@ -106,7 +106,8 @@ bb-fuel supports multiple DBS versions. See below which version maps to the requ
 
 | DBS version | bb-fuel minimal [version](https://github.com/backbase/bb-fuel/releases) |
 |-------------|-------------------------------------------------------------------------|
-| 2.17.1      | 2.5.2                                                                   |
+| 2.17.2      | 2.5.4                                                                   |
+| 2.17.1      | 2.5.3                                                                   |
 | 2.17.0      | 2.5.0                                                                   |
 | 2.16.4      | 2.4.9                                                                   |
 | 2.16.3      | 2.4.0                                                                   |
@@ -148,10 +149,9 @@ You are welcome to provide bug fixes and new features in the form of pull reques
 - [Kwo Ding](https://github.com/kwoding) (author)
 - [Mark Bertels](marinus@backbase.com)
 - [Richard Blank](richardb@backbase.com)
-- [Pim Hazebroek](pimh@backbase.com)
 
 # License
-Copyright (c) 2019 Backbase B.V.
+Copyright (c) 2020 Backbase B.V.
 
 This Backbase License Agreement (“Agreement”) sets forth the terms and conditions of Your use of the Software that is provided together with this license. If You continue to download the Software, You agree that Your use of the Software, and the use of the Software by any natural or legal person you distribute the Software to, will be covered by this license Agreement. Any third party software that is provided with the Software is included for use at Your option subject to the terms of the license applicable to that software. If You choose to use such software, then such use shall be governed by such third party's license agreement (See Annex A to these terms for an overview of third party software) and not by this Agreement.
 

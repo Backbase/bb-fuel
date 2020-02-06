@@ -112,7 +112,7 @@ bb-fuel supports multiple DBS versions. See below which version maps to the requ
 | 2.16.4      | 2.4.9                                                                   |
 | 2.16.3      | 2.4.0                                                                   |
 | 2.16.2      | 2.3.29                                                                  |
-| 2.16.1      | 2.3.18                                                                  |
+| 2.16.1      | 2.3.17                                                                  |
 | 2.16.0      | 2.3.12                                                                  |
 | 2.15.1      | 2.3.1                                                                   |
 | 2.15.0      | 2.3.0+                                                                  |

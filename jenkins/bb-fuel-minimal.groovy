@@ -5,7 +5,7 @@ pipeline {
 
     parameters {
         choice(name: 'SPRING_PROFILES_ACTIVE', choices: 'k8s\naws\npcf', description: 'Select the profile to operate.\nK8s (default):\nKubernetes requires environment name\n\nAWS: \n Requires environment name\n\nPCF: \nRequires space name (environment name will be ignored)')
-        string(name: 'ENVIRONMENT_NAME', defaultValue: '00.dbs', description: 'Kubernetes example: 42.dbs\n\nAutoconfig example: frosty-snow-99\nRead before running: https://github.com/Backbase/bb-fuel/blob/master/README.md')
+        string(name: 'ENVIRONMENT_NAME', defaultValue: '00.dbs', description: 'K8S example: 42.dbs\n\nAutoconfig example: frosty-snow-99\nRead before running: https://github.com/Backbase/bb-fuel/blob/master/README.md')
         string(name: 'PCF_SPACE', defaultValue: 'your-space', description: 'Required only for PCF. Space name, example: approvals\nRead before running: https://github.com/Backbase/bb-fuel/blob/master/README.md')
         booleanParam(name: 'INGEST_ACCESS_CONTROL', defaultValue: true, description: 'Ingest access control setup')
         booleanParam(name: 'INGEST_CUSTOM_SERVICE_AGREEMENTS', defaultValue: false, description: 'Ingest custom service agreements')

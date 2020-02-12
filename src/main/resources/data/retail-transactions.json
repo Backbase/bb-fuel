@@ -8,7 +8,8 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "INTERNATIONAL MEDICAL CORPS #5898 CHARLESTON SC"
   },
   {
     "amount": 14.99,
@@ -19,7 +20,8 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "IRC AND PARTNERS #2154 BEAUFORT SC"
   },
   {
     "amount": 1199.99,
@@ -31,7 +33,7 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "Anniversary Gift"
+    "description": "AECOM INTERNATIONAL DEVELOPMENT, INC. #3267 BELTON SC"
   },
   {
     "amount": 4000,
@@ -42,7 +44,8 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "CREATIVE ASSOCIATES INTERNATIONAL, INC. #2154 MEMPHIS TN"
   },
   {
     "amount": 239.99,
@@ -54,7 +57,7 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "Happy Birthday Gift"
+    "description": "UNAIDS JOINT UNITED NATIONS PROGRAMME ON HIV/AIDS #3267 BISHOPVILLE SC"
   },
   {
     "amount": 80,
@@ -65,7 +68,8 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "INTERNATIONAL RELIEF AND DEVELOPMENT, INC. #5898 BISHOPVILLE SC"
   },
   {
     "amount": 160,
@@ -76,7 +80,8 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "MANAGEMENT SYSTEMS INTERNATIONAL, INC. #2154 NEW YORK NY"
   },
   {
     "amount": 1500,
@@ -87,7 +92,8 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "JSI RESEARCH AND TRAINING INSTITUTE,INC. #3267 CHARLESTON SC"
   },
   {
     "amount": 71,
@@ -98,7 +104,8 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "SAVE THE CHILDREN #5898 BEAUFORT SC"
   },
   {
     "amount": 76,
@@ -109,7 +116,8 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "INTERNATIONAL MEDICAL CORPS #2154 BELTON SC"
   },
   {
     "amount": 250,
@@ -131,7 +139,8 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "AECOM INTERNATIONAL DEVELOPMENT, INC. #5898 MEMPHIS TN"
   },
   {
     "amount": 4.45,
@@ -142,7 +151,8 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "UNIVERSITY RESEARCH CO., LLC #2154 BISHOPVILLE SC"
   },
   {
     "amount": 76,
@@ -153,7 +163,8 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "CREATIVE ASSOCIATES INTERNATIONAL, INC. #3267 BISHOPVILLE SC"
   },
   {
     "amount": 90,
@@ -164,7 +175,8 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "UNAIDS JOINT UNITED NATIONS PROGRAMME ON HIV/AIDS #5898 NEW YORK NY"
   },
   {
     "amount": 56.87,
@@ -175,7 +187,8 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "INTERNATIONAL RELIEF AND DEVELOPMENT, INC. #2154 CHARLESTON SC"
   },
   {
     "amount": 12.99,
@@ -186,7 +199,8 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "MANAGEMENT SYSTEMS INTERNATIONAL, INC. #3267 BEAUFORT SC"
   },
   {
     "amount": 36.39,
@@ -197,7 +211,8 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "JSI RESEARCH AND TRAINING INSTITUTE,INC. #5898 BELTON SC"
   },
   {
     "amount": 400,
@@ -219,7 +234,8 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "INTERNATIONAL MEDICAL CORPS #3267 MEMPHIS TN"
   },
   {
     "amount": 90,
@@ -230,7 +246,8 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "FAMILY DOLLAR #5898 #3267 CHARLESTON SC"
   },
   {
     "amount": 159,
@@ -241,7 +258,8 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "KROGER FUEL #5387 #2154 BELTON SC"
   },
   {
     "amount": 202.95,
@@ -252,7 +270,8 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "CAPTAIN JJ FISH AND CH #2154 BISHOPVILLE SC"
   },
   {
     "amount": 295,
@@ -274,7 +293,8 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "FEDEXOFFICE 00007500 #3267 BISHOPVILLE SC"
   },
   {
     "amount": 35,
@@ -285,7 +305,8 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "SQ *NEW LIFE HOLINESS CHU #3267 BISHOPVILLE SC"
   },
   {
     "amount": 3.75,
@@ -296,7 +317,8 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "COMCAST OF MEMPHIS 800-CO #5898 BISHOPVILLE SC"
   },
   {
     "amount": 249.99,
@@ -318,7 +340,8 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "FAMILY DOLLAR #5898 #2154 NEW YORK NY"
   },
   {
     "amount": 112.05,
@@ -329,7 +352,8 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "MURPHY EXPRESS #8674 #3267 CHARLESTON SC"
   },
   {
     "amount": 24.47,
@@ -340,7 +364,8 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "JSI RESEARCH AND TRAINING INSTITUTE,INC. #2154 MEMPHIS TN"
   },
   {
     "amount": 149,
@@ -351,7 +376,8 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "INTERNATIONAL RELIEF AND DEVELOPMENT, INC. #3267 BELTON SC"
   },
   {
     "amount": 20,
@@ -362,7 +388,8 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "SQ *NEW LIFE HOLINESS CHU #3267 BISHOPVILLE SC"
   },
   {
     "amount": 125,
@@ -373,7 +400,8 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "JO-ANN STORE #2156 #5898 MEMPHIS TN"
   },
   {
     "amount": 35,
@@ -384,7 +412,8 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "FEDEXOFFICE 00007502 #3267 BISHOPVILLE SC"
   },
   {
     "amount": 97.5,
@@ -395,7 +424,8 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "FAMILY DOLLAR #5900 #2154 NEW YORK NY"
   },
   {
     "amount": 120,
@@ -407,7 +437,7 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "Full Body Massage 2 hours"
+    "description": "MURPHY EXPRESS #8676 #3267 CHARLESTON SC"
   },
   {
     "amount": 156.75,
@@ -419,7 +449,7 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "Room renovation"
+    "description": "KROGER FUEL #5389 #5898 BEAUFORT SC"
   },
   {
     "amount": 87.65,
@@ -442,7 +472,7 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "iCloud subscription"
+    "description": "CAPTAIN JJ FISH AND CH #2154 BELTON SC"
   },
   {
     "amount": 29.99,
@@ -453,7 +483,8 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "IRC AND PARTNERS #5898 BISHOPVILLE SC"
   },
   {
     "amount": 48,
@@ -475,7 +506,8 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "AECOM INTERNATIONAL DEVELOPMENT, INC. #2154 BISHOPVILLE SC"
   },
   {
     "amount": 300,
@@ -486,7 +518,8 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "UNIVERSITY RESEARCH CO., LLC #3267 NEW YORK NY"
   },
   {
     "amount": 35.49,
@@ -498,7 +531,7 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "Airport Transfer"
+    "description": "CREATIVE ASSOCIATES INTERNATIONAL, INC. #5898 CHARLESTON SC"
   },
   {
     "amount": 213,
@@ -509,7 +542,8 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "UNAIDS JOINT UNITED NATIONS PROGRAMME ON HIV/AIDS #2154 BEAUFORT SC"
   },
   {
     "amount": 17.13,
@@ -520,7 +554,8 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "MURPHY EXPRESS #8674 #3267 CHARLESTON SC"
   },
   {
     "amount": 450,
@@ -532,7 +567,7 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "Credit card payment"
+    "description": "KROGER FUEL #5387 #5898 BEAUFORT SC"
   },
   {
     "amount": 150,
@@ -543,7 +578,8 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "CAPTAIN JJ FISH AND CH #2154 BELTON SC"
   },
   {
     "amount": 27.54,
@@ -554,7 +590,8 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "JO-ANN STORE #2155 #5898 MEMPHIS TN"
   },
   {
     "amount": 18.75,
@@ -565,7 +602,8 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "CAPTAIN JJ FISH AND CH #2154 BISHOPVILLE SC"
   },
   {
     "amount": 14.5,
@@ -576,7 +614,8 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "FEDEXOFFICE 00007501 #3267 BISHOPVILLE SC"
   },
   {
     "amount": 66.8,
@@ -587,7 +626,8 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "SQ *NEW LIFE HOLINESS CHU #3267 BISHOPVILLE SC"
   },
   {
     "amount": 8.95,
@@ -598,7 +638,8 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "COMCAST OF MEMPHIS 800-CO #5898 BISHOPVILLE SC"
   },
   {
     "amount": 22.5,
@@ -609,7 +650,8 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "FAMILY DOLLAR #5899 #2154 NEW YORK NY"
   },
   {
     "amount": 345.95,
@@ -642,7 +684,8 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "KROGER FUEL #5388 #5898 BEAUFORT SC"
   },
   {
     "amount": 44.59,
@@ -653,7 +696,8 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "MURPHY EXPRESS #8675 #3267 CHARLESTON SC"
   },
   {
     "amount": 5.99,
@@ -664,7 +708,8 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "CAPTAIN JJ FISH AND CH #2154 BELTON SC"
   },
   {
     "amount": 12.54,
@@ -675,7 +720,8 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "CAPTAIN JJ FISH AND CH #2154 BISHOPVILLE SC"
   },
   {
     "amount": 24.5,
@@ -686,7 +732,8 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "FEDEXOFFICE 00007502 #3267 BISHOPVILLE SC"
   },
   {
     "amount": 13.1,
@@ -697,7 +744,8 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "SQ *NEW LIFE HOLINESS CHU #3267 BISHOPVILLE SC"
   },
   {
     "amount": 67.5,
@@ -709,7 +757,7 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "Surf Lessons"
+    "description": "CAPTAIN JJ FISH AND CH #2154 BELTON SC"
   },
   {
     "amount": 54.5,
@@ -720,7 +768,8 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "JO-ANN STORE #2157 #5898 MEMPHIS TN"
   },
   {
     "amount": 100,
@@ -742,7 +791,8 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "CAPTAIN JJ FISH AND CH #2154 BISHOPVILLE SC"
   },
   {
     "amount": 119.98,
@@ -754,7 +804,7 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "Rolling Stones concert"
+    "description": "FEDEXOFFICE 00007503 #3267 BISHOPVILLE SC"
   },
   {
     "amount": 49.95,
@@ -765,7 +815,8 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "SQ *NEW LIFE HOLINESS CHU #3267 BISHOPVILLE SC"
   },
   {
     "amount": 11.99,
@@ -776,6 +827,7 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "COMCAST OF MEMPHIS 800-CO #5898 BISHOPVILLE SC"
   }
 ]

@@ -11,7 +11,7 @@ pipeline {
         booleanParam(name: 'INGEST_CUSTOM_SERVICE_AGREEMENTS', defaultValue: false, description: 'Ingest custom service agreements')
         booleanParam(name: 'INGEST_BALANCE_HISTORY', defaultValue: false, description: 'Ingest balance history per arrangement (only applicable on the first run when INGEST_ACCESS_CONTROL = true)\n' +
                 'Only enable when strictly necessary (long running job)')
-        booleanParam(name: 'INGEST_TRANSACTIONS', defaultValue: false, description: 'Ingest transactions per arrangement (only applicable on the first run when INGEST_ACCESS_CONTROL = true)')
+        booleanParam(name: 'INGEST_TRANSACTIONS', defaultValue: true, description: 'Ingest transactions per arrangement (only applicable on the first run when INGEST_ACCESS_CONTROL = true)')
         booleanParam(name: 'USE_PFM_CATEGORIES_FOR_TRANSACTIONS', defaultValue: false, description: 'Use PFM categories for transactions (only applicable when INGEST_TRANSACTIONS = true)')
         booleanParam(name: 'INGEST_APPROVALS_FOR_PAYMENTS', defaultValue: false, description: 'Ingest approvals for payments')
         booleanParam(name: 'INGEST_APPROVALS_FOR_CONTACTS', defaultValue: false, description: 'Ingest approvals for contacts')

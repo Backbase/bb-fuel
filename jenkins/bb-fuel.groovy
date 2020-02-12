@@ -4,14 +4,14 @@ pipeline {
     agent any
 
     parameters {
-        choice(name: 'SPRING_PROFILES_ACTIVE', choices: 'aws\nk8s\npcf', description: 'Select the profile to operate.\nAWS (default):\nRequires environment name\n\nK8s: \nKubernetes requires environment name\n\nPCF: \nRequires space name (environment name will be ignored)')
-        string(name: 'ENVIRONMENT_NAME', defaultValue: 'env-name-00', description: 'Autoconfig environment name, example: frosty-snow-99. Or Kubernetes environment name , e.g. 42-master\nRead before running: https://github.com/Backbase/bb-fuel/blob/master/README.md')
+        choice(name: 'SPRING_PROFILES_ACTIVE', choices: 'k8s\naws\npcf', description: 'Select the profile to operate.\nK8s (default):\nKubernetes requires environment name\n\nAWS: \n Requires environment name\n\nPCF: \nRequires space name (environment name will be ignored)')
+        string(name: 'ENVIRONMENT_NAME', defaultValue: '00.dbs', description: 'K8S example: 42.dbs\n\nAutoconfig example: frosty-snow-99\nRead before running: https://github.com/Backbase/bb-fuel/blob/master/README.md')
         string(name: 'PCF_SPACE', defaultValue: 'your-space', description: 'Required only for PCF. Space name, example: approvals\nRead before running: https://github.com/Backbase/bb-fuel/blob/master/README.md')
         booleanParam(name: 'INGEST_ACCESS_CONTROL', defaultValue: true, description: 'Ingest access control setup')
-        booleanParam(name: 'INGEST_CUSTOM_SERVICE_AGREEMENTS', defaultValue: false, description: 'Ingest custom service agreements')
-        booleanParam(name: 'INGEST_BALANCE_HISTORY', defaultValue: false, description: 'Ingest balance history per arrangement (only applicable when INGEST_ACCESS_CONTROL = true)\n' +
+        booleanParam(name: 'INGEST_CUSTOM_SERVICE_AGREEMENTS', defaultValue: true, description: 'Ingest custom service agreements')
+        booleanParam(name: 'INGEST_BALANCE_HISTORY', defaultValue: false, description: 'Ingest balance history per arrangement (only applicable on the first run when INGEST_ACCESS_CONTROL = true)\n' +
                 'Only enable when strictly necessary (long running job)')
-        booleanParam(name: 'INGEST_TRANSACTIONS', defaultValue: false, description: 'Ingest transactions per arrangement (only applicable when INGEST_ACCESS_CONTROL = true)')
+        booleanParam(name: 'INGEST_TRANSACTIONS', defaultValue: false, description: 'Ingest transactions per arrangement (only applicable on the first run when INGEST_ACCESS_CONTROL = true)')
         booleanParam(name: 'USE_PFM_CATEGORIES_FOR_TRANSACTIONS', defaultValue: false, description: 'Use PFM categories for transactions (only applicable when INGEST_TRANSACTIONS = true)')
         booleanParam(name: 'INGEST_APPROVALS_FOR_PAYMENTS', defaultValue: false, description: 'Ingest approvals for payments')
         booleanParam(name: 'INGEST_APPROVALS_FOR_CONTACTS', defaultValue: false, description: 'Ingest approvals for contacts')
@@ -27,11 +27,10 @@ pipeline {
         booleanParam(name: 'USE_PERFORMANCE_TEST_DATA_SETUP', defaultValue: false, description: 'Use performance test data setup\n' +
                 'Only enable when strictly necessary (long running job)')
         choice(name: 'PERFORMANCE_TEST_DATA', choices: 'retail\nbusiness', description: 'Retail or business performance test data setup')
-        choice(name: 'INFRA_BASE_URI', choices: 'infra.backbase.test:8080\neditorial.backbase.test:8080\nbackbase.test', description: '')
+        choice(name: 'INFRA_BASE_URI', choices: 'backbase.test\ninfra.backbase.test:8080\neditorial.backbase.test:8080', description: 'Select the base URI.\nK8S: backbase.test\n\nAWS dbs-microservices: infra.backbase.test:8080\n\nAWS dbs-cx6.1-editorial: editorial.backbase.test:8080')
         booleanParam(name: 'IDENTITY_FEATURE_TOGGLE', defaultValue: false, description: 'Use identity')
         string(name: 'IDENTITY_REALM', defaultValue: 'backbase', description: 'Identity realm')
-        string(name: 'IDENTITY_CLIENT', defaultValue: 'hybrid-flow', description: 'Identity client. hybrid-flow for AWS\n' +
-                'bb-tooling-client for K8S')
+        string(name: 'IDENTITY_CLIENT', defaultValue: 'bb-tooling-client', description: 'AWS: hybrid-flow\nK8S: bb-tooling-client')
         string(name: 'BB_FUEL_VERSION', defaultValue: 'latest', description: '')
         booleanParam(name: 'PRERELEASE', defaultValue: false, description: 'Only applicable if BB_FUEL_VERSION = latest')
         booleanParam(name: 'HEALTHCHECK_USE_ACTUATOR', defaultValue: true, description: 'Should be false if BOM version <= 2.16.4')

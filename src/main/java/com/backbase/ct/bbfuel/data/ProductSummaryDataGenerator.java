@@ -17,6 +17,7 @@ import com.backbase.integration.arrangement.rest.spec.v2.products.ProductsPostRe
 import com.github.javafaker.Faker;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
@@ -73,7 +74,6 @@ public class ProductSummaryDataGenerator {
     public static List<ArrangementsPostRequestBody> generateCurrentAccountArrangementsPostRequestBodies(
         String externalLegalEntityId, ProductGroupSeed productGroupSeed, int numberOfArrangements) {
         List<ArrangementsPostRequestBody> arrangementsPostRequestBodies = synchronizedList(new ArrayList<>());
-
         IntStream.range(0, numberOfArrangements).parallel().forEach(randomNumber -> {
             int randomCurrentAccountIndex = ThreadLocalRandom.current().nextInt(productGroupSeed.getCurrentAccountNames().size());
             // To support specific currency - account name map such as in the International Trade product group example
@@ -106,17 +106,7 @@ public class ProductSummaryDataGenerator {
 
         return arrangementsPostRequestBodies;
     }
-
-    public static List<ArrangementsPostRequestBody> generateCurrentAccountArrangementsPostRequestBodiesWithStates
-            (List<ArrangementsPostRequestBody> arrangementsPostRequestBodies, List<String> externalStateIds) {
-        int size = Math.min(externalStateIds.size(), arrangementsPostRequestBodies.size());
-        for (int i = 0; i < size; i++) {
-            arrangementsPostRequestBodies.get(i).withStateId(externalStateIds.get(i));
-        }
-
-        return arrangementsPostRequestBodies;
-    }
-
+    
     public static List<ArrangementsPostRequestBody> generateNonCurrentAccountArrangementsPostRequestBodies(
         String externalLegalEntityId, ProductGroupSeed productGroupSeed, int numberOfArrangements) {
         List<ArrangementsPostRequestBody> arrangementsPostRequestBodies = synchronizedList(new ArrayList<>());
@@ -136,6 +126,7 @@ public class ProductSummaryDataGenerator {
 
     private static ArrangementsPostRequestBody getArrangementsPostRequestBody(String externalLegalEntityId,
         String currentAccountName, String currency, int productId) {
+        List<String> arrangementStateExternalIds = Arrays.asList("Active", "Closed", "Inactive", null);
         String accountNumber = EUR.equals(currency)
             ? generateRandomIban()
             : valueOf(generateRandomNumberInRange(0, 999999999));
@@ -143,34 +134,34 @@ public class ProductSummaryDataGenerator {
         String arrangementNameSuffix =
             " " + currency + " " + bic.substring(0, 3) + accountNumber.substring(accountNumber.length() - 3);
         String fullArrangementName = currentAccountName + arrangementNameSuffix;
-
         ArrangementsPostRequestBody arrangementsPostRequestBody = new ArrangementsPostRequestBody()
-            .withId(UUID.randomUUID().toString())
-            .withLegalEntityIds(Collections.singleton(externalLegalEntityId))
-            .withProductId(String.valueOf(productId))
-            .withName(fullArrangementName)
-            .withBankAlias(fullArrangementName)
-            .withBookedBalance(generateRandomAmountInRange(10000L, 9999999L))
-            .withAvailableBalance(generateRandomAmountInRange(10000L, 9999999L))
-            .withCreditLimit(generateRandomAmountInRange(10000L, 999999L))
-            .withCurrency(currency)
-            .withExternalTransferAllowed(true)
-            .withUrgentTransferAllowed(true)
-            .withAccruedInterest(BigDecimal.valueOf(ThreadLocalRandom.current().nextInt(10)))
-            .withNumber(String.format("%s", ThreadLocalRandom.current().nextInt(9999)))
-            .withPrincipalAmount(generateRandomAmountInRange(10000L, 999999L))
-            .withCurrentInvestmentValue(generateRandomAmountInRange(10000L, 999999L))
-            .withDebitAccount(productId == 1 || productId == 2)
-            .withCreditAccount(productId == 1 || productId == 2)
-            .withAccountHolderName(faker.name().fullName())
-            .withAccountHolderAddressLine1(faker.address().streetAddress())
-            .withAccountHolderAddressLine2(faker.address().secondaryAddress())
-            .withAccountHolderStreetName(faker.address().streetAddress())
-            .withPostCode(faker.address().zipCode())
-            .withTown(faker.address().city())
-            .withAccountHolderCountry(faker.address().countryCode())
-            .withCountrySubDivision(faker.address().state())
-            .withBIC(bic);
+                .withId(UUID.randomUUID().toString())
+                .withLegalEntityIds(Collections.singleton(externalLegalEntityId))
+                .withProductId(String.valueOf(productId))
+                .withName(fullArrangementName)
+                .withBankAlias(fullArrangementName)
+                .withBookedBalance(generateRandomAmountInRange(10000L, 9999999L))
+                .withAvailableBalance(generateRandomAmountInRange(10000L, 9999999L))
+                .withCreditLimit(generateRandomAmountInRange(10000L, 999999L))
+                .withCurrency(currency)
+                .withExternalTransferAllowed(true)
+                .withUrgentTransferAllowed(true)
+                .withAccruedInterest(BigDecimal.valueOf(ThreadLocalRandom.current().nextInt(10)))
+                .withNumber(String.format("%s", ThreadLocalRandom.current().nextInt(9999)))
+                .withPrincipalAmount(generateRandomAmountInRange(10000L, 999999L))
+                .withCurrentInvestmentValue(generateRandomAmountInRange(10000L, 999999L))
+                .withDebitAccount(productId == 1 || productId == 2)
+                .withCreditAccount(productId == 1 || productId == 2)
+                .withAccountHolderName(faker.name().fullName())
+                .withAccountHolderAddressLine1(faker.address().streetAddress())
+                .withAccountHolderAddressLine2(faker.address().secondaryAddress())
+                .withAccountHolderStreetName(faker.address().streetAddress())
+                .withPostCode(faker.address().zipCode())
+                .withTown(faker.address().city())
+                .withAccountHolderCountry(faker.address().countryCode())
+                .withCountrySubDivision(faker.address().state())
+                .withBIC(bic)
+                .withStateId(getRandomFromList(arrangementStateExternalIds));
 
         if (EUR.equals(currency)) {
             arrangementsPostRequestBody

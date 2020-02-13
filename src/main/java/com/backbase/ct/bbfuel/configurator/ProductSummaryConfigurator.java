@@ -2,7 +2,6 @@ package com.backbase.ct.bbfuel.configurator;
 
 import static com.backbase.ct.bbfuel.data.ProductSummaryDataGenerator.generateBalanceHistoryPostRequestBodies;
 import static com.backbase.ct.bbfuel.data.ProductSummaryDataGenerator.generateCurrentAccountArrangementsPostRequestBodies;
-import static com.backbase.ct.bbfuel.data.ProductSummaryDataGenerator.generateCurrentAccountArrangementsPostRequestBodiesWithStates;
 import static com.backbase.ct.bbfuel.data.ProductSummaryDataGenerator.generateNonCurrentAccountArrangementsPostRequestBodies;
 import static java.util.Collections.synchronizedList;
 import static org.apache.http.HttpStatus.SC_CREATED;
@@ -16,7 +15,6 @@ import com.backbase.integration.arrangement.rest.spec.v2.arrangements.Arrangemen
 import com.backbase.integration.arrangement.rest.spec.v2.balancehistory.BalanceHistoryPostRequestBody;
 import com.backbase.integration.arrangement.rest.spec.v2.products.ProductsPostRequestBody;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
@@ -27,8 +25,6 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class ProductSummaryConfigurator {
-
-    private static final List<String> ARRANGEMENT_STATES = Arrays.asList("Active", "Closed", "Inactive");
 
     private final ArrangementsIntegrationRestClient arrangementsIntegrationRestClient;
 
@@ -50,9 +46,8 @@ public class ProductSummaryConfigurator {
         int numberOfNonCurrentAccounts = tenPercentOfTotal > 0 ? tenPercentOfTotal : minNumberOfNonCurrentAccounts;
 
         if (productGroupSeed.getProductIds().contains(String.valueOf(1))) {
-            List<ArrangementsPostRequestBody> arrangementsPostRequestBodies = generateCurrentAccountArrangementsPostRequestBodies(
-                    externalLegalEntityId, productGroupSeed, numberOfArrangements - numberOfNonCurrentAccounts);
-            arrangements.addAll(generateCurrentAccountArrangementsPostRequestBodiesWithStates(arrangementsPostRequestBodies, ARRANGEMENT_STATES));
+            arrangements.addAll(generateCurrentAccountArrangementsPostRequestBodies(
+                    externalLegalEntityId, productGroupSeed, numberOfArrangements - numberOfNonCurrentAccounts));
             productGroupSeed.getProductIds().remove(String.valueOf(1));
         }
 

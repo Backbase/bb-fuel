@@ -42,5 +42,4 @@ public class CommonHelpers {
     public static <T extends Enum> T getRandomFromEnumValues(T[] values) {
         return values[ThreadLocalRandom.current().nextInt(values.length)];
     }
-
 }

@@ -5,11 +5,11 @@ import static com.backbase.ct.bbfuel.util.CommonHelpers.generateRandomNumberInRa
 import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
 import static java.lang.String.valueOf;
 import static java.util.Arrays.asList;
+import static java.util.Collections.unmodifiableList;
 import static org.apache.commons.collections.ListUtils.synchronizedList;
 
 import com.backbase.ct.bbfuel.dto.entitlement.ProductGroupSeed;
 import com.backbase.ct.bbfuel.input.ProductReader;
-import com.backbase.ct.bbfuel.util.GlobalProperties;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBody;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.DebitCard;
 import com.backbase.integration.arrangement.rest.spec.v2.balancehistory.BalanceHistoryPostRequestBody;
@@ -30,7 +30,8 @@ import org.iban4j.Iban;
 
 public class ProductSummaryDataGenerator {
 
-    private static GlobalProperties globalProperties = GlobalProperties.getInstance();
+    // initial product summary default states plus null to comply with the optional part of it
+    private static final List<String> ARRANGEMENT_STATES = unmodifiableList(asList("Active", "Closed", "Inactive", null));
     private static final ProductReader productReader = new ProductReader();
     private static Faker faker = new Faker();
     private static final List<CountryCode> SEPA_COUNTRY_CODES;
@@ -73,7 +74,6 @@ public class ProductSummaryDataGenerator {
     public static List<ArrangementsPostRequestBody> generateCurrentAccountArrangementsPostRequestBodies(
         String externalLegalEntityId, ProductGroupSeed productGroupSeed, int numberOfArrangements) {
         List<ArrangementsPostRequestBody> arrangementsPostRequestBodies = synchronizedList(new ArrayList<>());
-
         IntStream.range(0, numberOfArrangements).parallel().forEach(randomNumber -> {
             int randomCurrentAccountIndex = ThreadLocalRandom.current().nextInt(productGroupSeed.getCurrentAccountNames().size());
             // To support specific currency - account name map such as in the International Trade product group example
@@ -106,7 +106,7 @@ public class ProductSummaryDataGenerator {
 
         return arrangementsPostRequestBodies;
     }
-
+    
     public static List<ArrangementsPostRequestBody> generateNonCurrentAccountArrangementsPostRequestBodies(
         String externalLegalEntityId, ProductGroupSeed productGroupSeed, int numberOfArrangements) {
         List<ArrangementsPostRequestBody> arrangementsPostRequestBodies = synchronizedList(new ArrayList<>());
@@ -133,7 +133,6 @@ public class ProductSummaryDataGenerator {
         String arrangementNameSuffix =
             " " + currency + " " + bic.substring(0, 3) + accountNumber.substring(accountNumber.length() - 3);
         String fullArrangementName = currentAccountName + arrangementNameSuffix;
-
         ArrangementsPostRequestBody arrangementsPostRequestBody = new ArrangementsPostRequestBody()
             .withId(UUID.randomUUID().toString())
             .withLegalEntityIds(Collections.singleton(externalLegalEntityId))
@@ -160,7 +159,8 @@ public class ProductSummaryDataGenerator {
             .withTown(faker.address().city())
             .withAccountHolderCountry(faker.address().countryCode())
             .withCountrySubDivision(faker.address().state())
-            .withBIC(bic);
+            .withBIC(bic)
+            .withStateId(getRandomFromList(ARRANGEMENT_STATES));
 
         if (EUR.equals(currency)) {
             arrangementsPostRequestBody

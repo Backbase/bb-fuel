@@ -47,7 +47,6 @@ public class ProductSummaryConfigurator {
         if (productGroupSeed.getProductIds().contains(String.valueOf(1))) {
             arrangements.addAll(generateCurrentAccountArrangementsPostRequestBodies(
                 externalLegalEntityId, productGroupSeed, numberOfArrangements - numberOfNonCurrentAccounts));
-
             productGroupSeed.getProductIds().remove(String.valueOf(1));
         }
 

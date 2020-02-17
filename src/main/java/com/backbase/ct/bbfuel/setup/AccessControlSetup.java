@@ -310,7 +310,5 @@ public class AccessControlSetup extends BaseSetup {
         });
         this.permissionsConfigurator.assignPermissions(
             user.getExternalId(), externalServiceAgreementId, functionGroupDataGroups);
-
-
     }
 }

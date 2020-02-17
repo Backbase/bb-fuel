@@ -16,7 +16,6 @@ import com.backbase.integration.arrangement.rest.spec.v2.balancehistory.BalanceH
 import com.backbase.integration.arrangement.rest.spec.v2.products.ProductsPostRequestBody;
 import java.util.ArrayList;
 import java.util.List;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -47,7 +46,7 @@ public class ProductSummaryConfigurator {
 
         if (productGroupSeed.getProductIds().contains(String.valueOf(1))) {
             arrangements.addAll(generateCurrentAccountArrangementsPostRequestBodies(
-                    externalLegalEntityId, productGroupSeed, numberOfArrangements - numberOfNonCurrentAccounts));
+                externalLegalEntityId, productGroupSeed, numberOfArrangements - numberOfNonCurrentAccounts));
             productGroupSeed.getProductIds().remove(String.valueOf(1));
         }
 

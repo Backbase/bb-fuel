@@ -5,11 +5,11 @@ import static com.backbase.ct.bbfuel.util.CommonHelpers.generateRandomNumberInRa
 import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
 import static java.lang.String.valueOf;
 import static java.util.Arrays.asList;
+import static java.util.Collections.unmodifiableList;
 import static org.apache.commons.collections.ListUtils.synchronizedList;
 
 import com.backbase.ct.bbfuel.dto.entitlement.ProductGroupSeed;
 import com.backbase.ct.bbfuel.input.ProductReader;
-import com.backbase.ct.bbfuel.util.GlobalProperties;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBody;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.DebitCard;
 import com.backbase.integration.arrangement.rest.spec.v2.balancehistory.BalanceHistoryPostRequestBody;
@@ -17,7 +17,6 @@ import com.backbase.integration.arrangement.rest.spec.v2.products.ProductsPostRe
 import com.github.javafaker.Faker;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
@@ -31,7 +30,8 @@ import org.iban4j.Iban;
 
 public class ProductSummaryDataGenerator {
 
-    private static GlobalProperties globalProperties = GlobalProperties.getInstance();
+    // initial product summary default states plus null to comply with the optional part of it
+    private static final List<String> ARRANGEMENT_STATES = unmodifiableList(asList("Active", "Closed", "Inactive", null));
     private static final ProductReader productReader = new ProductReader();
     private static Faker faker = new Faker();
     private static final List<CountryCode> SEPA_COUNTRY_CODES;
@@ -126,7 +126,6 @@ public class ProductSummaryDataGenerator {
 
     private static ArrangementsPostRequestBody getArrangementsPostRequestBody(String externalLegalEntityId,
         String currentAccountName, String currency, int productId) {
-        List<String> arrangementStateExternalIds = Arrays.asList("Active", "Closed", "Inactive", null);
         String accountNumber = EUR.equals(currency)
             ? generateRandomIban()
             : valueOf(generateRandomNumberInRange(0, 999999999));
@@ -135,33 +134,33 @@ public class ProductSummaryDataGenerator {
             " " + currency + " " + bic.substring(0, 3) + accountNumber.substring(accountNumber.length() - 3);
         String fullArrangementName = currentAccountName + arrangementNameSuffix;
         ArrangementsPostRequestBody arrangementsPostRequestBody = new ArrangementsPostRequestBody()
-                .withId(UUID.randomUUID().toString())
-                .withLegalEntityIds(Collections.singleton(externalLegalEntityId))
-                .withProductId(String.valueOf(productId))
-                .withName(fullArrangementName)
-                .withBankAlias(fullArrangementName)
-                .withBookedBalance(generateRandomAmountInRange(10000L, 9999999L))
-                .withAvailableBalance(generateRandomAmountInRange(10000L, 9999999L))
-                .withCreditLimit(generateRandomAmountInRange(10000L, 999999L))
-                .withCurrency(currency)
-                .withExternalTransferAllowed(true)
-                .withUrgentTransferAllowed(true)
-                .withAccruedInterest(BigDecimal.valueOf(ThreadLocalRandom.current().nextInt(10)))
-                .withNumber(String.format("%s", ThreadLocalRandom.current().nextInt(9999)))
-                .withPrincipalAmount(generateRandomAmountInRange(10000L, 999999L))
-                .withCurrentInvestmentValue(generateRandomAmountInRange(10000L, 999999L))
-                .withDebitAccount(productId == 1 || productId == 2)
-                .withCreditAccount(productId == 1 || productId == 2)
-                .withAccountHolderName(faker.name().fullName())
-                .withAccountHolderAddressLine1(faker.address().streetAddress())
-                .withAccountHolderAddressLine2(faker.address().secondaryAddress())
-                .withAccountHolderStreetName(faker.address().streetAddress())
-                .withPostCode(faker.address().zipCode())
-                .withTown(faker.address().city())
-                .withAccountHolderCountry(faker.address().countryCode())
-                .withCountrySubDivision(faker.address().state())
-                .withBIC(bic)
-                .withStateId(getRandomFromList(arrangementStateExternalIds));
+            .withId(UUID.randomUUID().toString())
+            .withLegalEntityIds(Collections.singleton(externalLegalEntityId))
+            .withProductId(String.valueOf(productId))
+            .withName(fullArrangementName)
+            .withBankAlias(fullArrangementName)
+            .withBookedBalance(generateRandomAmountInRange(10000L, 9999999L))
+            .withAvailableBalance(generateRandomAmountInRange(10000L, 9999999L))
+            .withCreditLimit(generateRandomAmountInRange(10000L, 999999L))
+            .withCurrency(currency)
+            .withExternalTransferAllowed(true)
+            .withUrgentTransferAllowed(true)
+            .withAccruedInterest(BigDecimal.valueOf(ThreadLocalRandom.current().nextInt(10)))
+            .withNumber(String.format("%s", ThreadLocalRandom.current().nextInt(9999)))
+            .withPrincipalAmount(generateRandomAmountInRange(10000L, 999999L))
+            .withCurrentInvestmentValue(generateRandomAmountInRange(10000L, 999999L))
+            .withDebitAccount(productId == 1 || productId == 2)
+            .withCreditAccount(productId == 1 || productId == 2)
+            .withAccountHolderName(faker.name().fullName())
+            .withAccountHolderAddressLine1(faker.address().streetAddress())
+            .withAccountHolderAddressLine2(faker.address().secondaryAddress())
+            .withAccountHolderStreetName(faker.address().streetAddress())
+            .withPostCode(faker.address().zipCode())
+            .withTown(faker.address().city())
+            .withAccountHolderCountry(faker.address().countryCode())
+            .withCountrySubDivision(faker.address().state())
+            .withBIC(bic)
+            .withStateId(getRandomFromList(ARRANGEMENT_STATES));
 
         if (EUR.equals(currency)) {
             arrangementsPostRequestBody

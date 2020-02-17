@@ -3,7 +3,6 @@ package com.backbase.ct.bbfuel.util;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-
 import org.apache.commons.lang.StringUtils;
 
 public class CommonHelpers {

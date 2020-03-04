@@ -9,7 +9,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "IN-N-OUT BURGER #239AMERICAN FO"
+    "description": "IN-N-OUT BURGER #239AMERICAN FO",
+    "billingStatus": "BILLED"
   },
   {
     "amount": 14.99,

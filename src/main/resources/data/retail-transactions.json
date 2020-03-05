@@ -49,7 +49,7 @@
     "type": "POS",
     "typeGroup": "Payment",
     "description": "Travel",
-    "billingStatus": "UNBILLED"
+    "billingStatus": "BILLED"
   },
   {
     "amount": 239.99,
@@ -62,7 +62,7 @@
     "type": "POS",
     "typeGroup": "Payment",
     "description": "BEER BAR 65000000764SALT LAKE C",
-    "billingStatus": "UNBILLED"
+    "billingStatus": "BILLED"
   },
   {
     "amount": 80,
@@ -75,7 +75,7 @@
     "type": "POS",
     "typeGroup": "Payment",
     "description": "X",
-    "billingStatus": "UNBILLED"
+    "billingStatus": "BILLED"
   },
   {
     "amount": 160,
@@ -139,6 +139,7 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
+    "description": "AECOM INTERNATIONAL DEVELOPMENT, INC. #5898 MEMPHIS TN",
     "billingStatus": "PENDING"
   },
   {
@@ -152,7 +153,7 @@
     "type": "POS",
     "typeGroup": "Payment",
     "description": "AECOM INTERNATIONAL DEVELOPMENT, INC. #5898 MEMPHIS TN",
-    "billingStatus": "BILLED"
+    "billingStatus": "UNBILLED"
   },
   {
     "amount": 4.45,
@@ -164,8 +165,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "UNIVERSITY RESEARCH CO., LLC #2154 BISHOPVILLE SC",
-    "billingStatus": "BILLED"
+    "description": "IN-N-OUT BURGER #239AMERICAN FO",
+    "billingStatus": "UNBILLED"
   },
   {
     "amount": 76,
@@ -178,7 +179,7 @@
     "type": "POS",
     "typeGroup": "Payment",
     "description": "CREATIVE ASSOCIATES INTERNATIONAL, INC. #3267 BISHOPVILLE SC",
-    "billingStatus": "BILLED"
+    "billingStatus": "UNBILLED"
   },
   {
     "amount": 90,
@@ -242,6 +243,7 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
+    "description": "AECOM INTERNATIONAL DEVELOPMENT, INC. #5898 MEMPHIS TN",
     "billingStatus": "BILLED"
   },
   {
@@ -306,6 +308,7 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
+    "description": "AECOM INTERNATIONAL DEVELOPMENT, INC. #5898 MEMPHIS TN",
     "billingStatus": "PENDING"
   },
   {
@@ -344,7 +347,7 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "COMCAST OF MEMPHIS 800-CO #5898 BISHOPVILLE SC",
+    "description": "IN-N-OUT BURGER #239AMERICAN FO",
     "billingStatus": "UNBILLED"
   },
   {
@@ -357,6 +360,7 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
+    "description": "FAMILY DOLLAR #5898 #2154 NEW YORK NY",
     "billingStatus": "UNBILLED"
   },
   {
@@ -434,7 +438,7 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "JO-ANN STORE #2156 #5898 MEMPHIS TN",
+    "description": "IN-N-OUT BURGER #239AMERICAN FO",
     "billingStatus": "BILLED"
   },
   {
@@ -499,6 +503,7 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
+    "description": "FAMILY DOLLAR #5898 #2154 NEW YORK NY",
     "billingStatus": "BILLED"
   },
   {
@@ -537,6 +542,7 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
+    "description": "FAMILY DOLLAR #5898 #2154 NEW YORK NY",
     "billingStatus": "BILLED"
   },
   {
@@ -640,7 +646,7 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "JO-ANN STORE #2155 #5898 MEMPHIS TN",
+    "description": "IN-N-OUT BURGER #239AMERICAN FO",
     "billingStatus": "BILLED"
   },
   {
@@ -653,7 +659,7 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "CAPTAIN JJ FISH AND CH #2154 BISHOPVILLE SC",
+    "description": "IN-N-OUT BURGER #239AMERICAN FO",
     "billingStatus": "BILLED"
   },
   {
@@ -666,7 +672,7 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "FEDEXOFFICE 00007501 #3267 BISHOPVILLE SC",
+    "description": "IN-N-OUT BURGER #239AMERICAN FO",
     "billingStatus": "BILLED"
   },
   {
@@ -679,7 +685,7 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "SQ *NEW LIFE HOLINESS CHU #3267 BISHOPVILLE SC",
+    "description": "IN-N-OUT BURGER #239AMERICAN FO",
     "billingStatus": "BILLED"
   },
   {
@@ -692,7 +698,7 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "COMCAST OF MEMPHIS 800-CO #5898 BISHOPVILLE SC",
+    "description": "IN-N-OUT BURGER #239AMERICAN FO",
     "billingStatus": "BILLED"
   },
   {
@@ -718,6 +724,7 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
+    "description": "FAMILY DOLLAR #5898 #2154 NEW YORK NY",
     "billingStatus": "BILLED"
   },
   {
@@ -730,6 +737,7 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
+    "description": "FAMILY DOLLAR #5898 #2154 NEW YORK NY",
     "billingStatus": "BILLED"
   },
   {
@@ -768,7 +776,7 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "CAPTAIN JJ FISH AND CH #2154 BELTON SC",
+    "description": "IN-N-OUT BURGER #239AMERICAN FO",
     "billingStatus": "BILLED"
   },
   {
@@ -781,7 +789,7 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "CAPTAIN JJ FISH AND CH #2154 BISHOPVILLE SC",
+    "description": "IN-N-OUT BURGER #239AMERICAN FO",
     "billingStatus": "BILLED"
   },
   {
@@ -846,6 +854,7 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
+    "description": "FAMILY DOLLAR #5898 #2154 NEW YORK NY",
     "billingStatus": "BILLED"
   },
   {

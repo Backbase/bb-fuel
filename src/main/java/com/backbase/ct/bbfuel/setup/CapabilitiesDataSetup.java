@@ -6,6 +6,7 @@ import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROV
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_NOTIFICATIONS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_PAYMENTS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_BILLPAY;
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_BILLPAY_ACCOUNTS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_CONTACTS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_LIMITS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_MESSAGES;
@@ -14,8 +15,12 @@ import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_PAYMEN
 import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
 import static java.util.Collections.singletonList;
 
+import com.backbase.billpay.integration.enrolment.Account;
+import com.backbase.billpay.integration.enrolment.Account.AccountType;
 import com.backbase.ct.bbfuel.client.accessgroup.UserContextPresentationRestClient;
 import com.backbase.ct.bbfuel.client.common.LoginRestClient;
+import com.backbase.ct.bbfuel.client.productsummary.AccountsIntegrationRestClient;
+import com.backbase.ct.bbfuel.client.user.UserPresentationRestClient;
 import com.backbase.ct.bbfuel.configurator.ActionsConfigurator;
 import com.backbase.ct.bbfuel.configurator.ApprovalsConfigurator;
 import com.backbase.ct.bbfuel.configurator.BillPayConfigurator;
@@ -29,6 +34,8 @@ import com.backbase.ct.bbfuel.dto.User;
 import com.backbase.ct.bbfuel.dto.UserContext;
 import com.backbase.ct.bbfuel.service.LegalEntityService;
 import com.backbase.ct.bbfuel.service.UserContextService;
+import com.backbase.integration.account.spec.v2.arrangements.ArrangementItem;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +47,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
 
     private final UserContextService userContextService;
     private final UserContextPresentationRestClient userContextPresentationRestClient;
+    private final UserPresentationRestClient userPresentationRestClient;
     private final LoginRestClient loginRestClient;
     private final AccessControlSetup accessControlSetup;
     private final ApprovalsConfigurator approvalsConfigurator;
@@ -51,6 +59,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
     private final ActionsConfigurator actionsConfigurator;
     private final BillPayConfigurator billpayConfigurator;
     private final LegalEntityService legalEntityService;
+    private final AccountsIntegrationRestClient accountsIntegrationRestClient;
 
     /**
      * Ingest data with services of projects APPR, PO, LIM, NOT, CON, MC, ACT and BPAY.
@@ -179,12 +188,34 @@ public class CapabilitiesDataSetup extends BaseSetup {
 
     private void ingestBillPayUsers() {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_BILLPAY)) {
-            this.accessControlSetup.getLegalEntitiesWithUsersExcludingSupport()
-                .stream()
-                .map(LegalEntityWithUsers::getUserExternalIds)
-                .flatMap(List::stream)
-                .collect(Collectors.toList())
-                .forEach(this.billpayConfigurator::ingestBillPayUser);
+            this.accessControlSetup.getLegalEntitiesWithUsersExcludingSupport().forEach((le) -> {
+
+                List<Account> accounts = new ArrayList<>();
+                String externalUserId = le.getUserExternalIds().get(0);
+                loginRestClient.login(externalUserId, externalUserId);
+                String externalLegalEntityId = this.userPresentationRestClient.
+                    retrieveLegalEntityByExternalUserId(externalUserId)
+                    .getExternalId();
+                List<ArrangementItem> arrangementItems = accountsIntegrationRestClient
+                    .getArrangements(externalLegalEntityId);
+
+                arrangementItems.forEach((arrangement) -> {
+                    accounts.add(mapBillPayAccount(arrangement));
+                });
+                le.getUserExternalIds().forEach((user) -> {
+                    billpayConfigurator.ingestBillPayUser(user);
+                    if (this.globalProperties.getBoolean(PROPERTY_INGEST_BILLPAY_ACCOUNTS)) {
+                        billpayConfigurator.ingestBillPayAccounts(user, accounts);
+                    }
+                });
+            });
         }
+    }
+
+    private Account mapBillPayAccount(ArrangementItem arrangement) {
+        return new Account()
+            .withAccountNumber(arrangement.getBBAN())
+            .withRoutingNumber(arrangement.getBankBranchCode())
+            .withAccountType(AccountType.CHECKING);
     }
 }

@@ -51,4 +51,8 @@ public class LegalEntityWithUsers {
     public List<String> getUserExternalIds() {
         return filterUserExternalIds(alwaysTrue());
     }
+
+    public String getLegalEntityExternalId() {
+        return legalEntityExternalId;
+    }
 }

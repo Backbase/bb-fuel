@@ -55,4 +55,14 @@ public class DbsConfig {
      */
     private String notifications;
 
+    /**
+     *  URI to billpay mockbank
+     */
+    private String billpay;
+
+    /**
+     * URI to accounts
+     */
+    private String accounts;
+
 }

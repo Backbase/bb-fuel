@@ -41,6 +41,8 @@ bb-fuel:
     accessgroup: http://${environment.name}-entitlements.${environment.domain}/accessgroup-integration-service
     arrangements: http://${environment.name}-productsummary.${environment.domain}/arrangements-integration-service
     notifications: http://${environment.name}-notifications.${environment.domain}/notifications-presentation-service
+    billpay: http://${environment.name}-billpay.${environment.domain}/billpay-mockbank
+    accounts: http://${environment.name}-productsummary.${environment.domain}/account-integration-service
 
 backbase:
   activemq:

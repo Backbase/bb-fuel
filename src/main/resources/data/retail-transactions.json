@@ -3,61 +3,66 @@
     "amount": 3.99,
     "category": "Food Drinks",
     "counterPartyCountry": "US",
-    "counterPartyName": "McDonalds",
+    "counterPartyName": "In N Out Burger",
     "creditDebitIndicator": "DBIT",
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "INTERNATIONAL MEDICAL CORPS #5898 CHARLESTON SC"
+    "description": "IN-N-OUT BURGER #239AMERICAN FO",
+    "billingStatus": "BILLED"
   },
   {
     "amount": 14.99,
-    "category": "Hobbies Entertainment",
+    "category": "Gas",
     "counterPartyCountry": "US",
-    "counterPartyName": "Spotify",
+    "counterPartyName": "Murphy USA",
     "creditDebitIndicator": "DBIT",
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "IRC AND PARTNERS #2154 BEAUFORT SC"
+    "description": "Gas",
+    "billingStatus": "BILLED"
   },
   {
     "amount": 1199.99,
-    "category": "Shopping",
+    "category": "Television",
     "counterPartyCountry": "US",
-    "counterPartyName": "Best Buy",
+    "counterPartyName": "Comcast",
     "creditDebitIndicator": "DBIT",
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "AECOM INTERNATIONAL DEVELOPMENT, INC. #3267 BELTON SC"
+    "description": "Television",
+    "billingStatus": "BILLED"
   },
   {
     "amount": 4000,
-    "category": "Income",
+    "category": "Travel",
     "counterPartyCountry": "US",
-    "counterPartyName": "Monthly Salary",
+    "counterPartyName": "Cheap Campers",
     "creditDebitIndicator": "CRDT",
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "CREATIVE ASSOCIATES INTERNATIONAL, INC. #2154 MEMPHIS TN"
+    "description": "Travel",
+    "billingStatus": "BILLED"
   },
   {
     "amount": 239.99,
-    "category": "Shopping",
+    "category": "Alcohol & Bars",
     "counterPartyCountry": "US",
-    "counterPartyName": "Amazon",
+    "counterPartyName": "Salt Lake",
     "creditDebitIndicator": "DBIT",
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "UNAIDS JOINT UNITED NATIONS PROGRAMME ON HIV/AIDS #3267 BISHOPVILLE SC"
+    "description": "BEER BAR 65000000764SALT LAKE C",
+    "billingStatus": "BILLED"
   },
   {
     "amount": 80,
@@ -69,7 +74,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "INTERNATIONAL RELIEF AND DEVELOPMENT, INC. #5898 BISHOPVILLE SC"
+    "description": "X",
+    "billingStatus": "BILLED"
   },
   {
     "amount": 160,
@@ -81,7 +87,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "MANAGEMENT SYSTEMS INTERNATIONAL, INC. #2154 NEW YORK NY"
+    "description": "MANAGEMENT SYSTEMS INTERNATIONAL, INC. #2154 NEW YORK NY",
+    "billingStatus": "PENDING"
   },
   {
     "amount": 1500,
@@ -93,7 +100,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "JSI RESEARCH AND TRAINING INSTITUTE,INC. #3267 CHARLESTON SC"
+    "description": "JSI RESEARCH AND TRAINING INSTITUTE,INC. #3267 CHARLESTON SC",
+    "billingStatus": "PENDING"
   },
   {
     "amount": 71,
@@ -105,7 +113,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "SAVE THE CHILDREN #5898 BEAUFORT SC"
+    "description": "SAVE THE CHILDREN #5898 BEAUFORT SC",
+    "billingStatus": "PENDING"
   },
   {
     "amount": 76,
@@ -117,7 +126,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "INTERNATIONAL MEDICAL CORPS #2154 BELTON SC"
+    "description": "INTERNATIONAL MEDICAL CORPS #2154 BELTON SC",
+    "billingStatus": "PENDING"
   },
   {
     "amount": 250,
@@ -128,7 +138,9 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "AECOM INTERNATIONAL DEVELOPMENT, INC. #5898 MEMPHIS TN",
+    "billingStatus": "PENDING"
   },
   {
     "amount": 85,
@@ -140,7 +152,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "AECOM INTERNATIONAL DEVELOPMENT, INC. #5898 MEMPHIS TN"
+    "description": "AECOM INTERNATIONAL DEVELOPMENT, INC. #5898 MEMPHIS TN",
+    "billingStatus": "UNBILLED"
   },
   {
     "amount": 4.45,
@@ -152,7 +165,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "UNIVERSITY RESEARCH CO., LLC #2154 BISHOPVILLE SC"
+    "description": "IN-N-OUT BURGER #239AMERICAN FO",
+    "billingStatus": "UNBILLED"
   },
   {
     "amount": 76,
@@ -164,7 +178,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "CREATIVE ASSOCIATES INTERNATIONAL, INC. #3267 BISHOPVILLE SC"
+    "description": "CREATIVE ASSOCIATES INTERNATIONAL, INC. #3267 BISHOPVILLE SC",
+    "billingStatus": "UNBILLED"
   },
   {
     "amount": 90,
@@ -176,7 +191,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "UNAIDS JOINT UNITED NATIONS PROGRAMME ON HIV/AIDS #5898 NEW YORK NY"
+    "description": "UNAIDS JOINT UNITED NATIONS PROGRAMME ON HIV/AIDS #5898 NEW YORK NY",
+    "billingStatus": "BILLED"
   },
   {
     "amount": 56.87,
@@ -188,7 +204,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "INTERNATIONAL RELIEF AND DEVELOPMENT, INC. #2154 CHARLESTON SC"
+    "description": "INTERNATIONAL RELIEF AND DEVELOPMENT, INC. #2154 CHARLESTON SC",
+    "billingStatus": "BILLED"
   },
   {
     "amount": 12.99,
@@ -200,7 +217,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "MANAGEMENT SYSTEMS INTERNATIONAL, INC. #3267 BEAUFORT SC"
+    "description": "MANAGEMENT SYSTEMS INTERNATIONAL, INC. #3267 BEAUFORT SC",
+    "billingStatus": "BILLED"
   },
   {
     "amount": 36.39,
@@ -212,7 +230,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "JSI RESEARCH AND TRAINING INSTITUTE,INC. #5898 BELTON SC"
+    "description": "JSI RESEARCH AND TRAINING INSTITUTE,INC. #5898 BELTON SC",
+    "billingStatus": "BILLED"
   },
   {
     "amount": 400,
@@ -223,7 +242,9 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "AECOM INTERNATIONAL DEVELOPMENT, INC. #5898 MEMPHIS TN",
+    "billingStatus": "BILLED"
   },
   {
     "amount": 54,
@@ -235,7 +256,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "INTERNATIONAL MEDICAL CORPS #3267 MEMPHIS TN"
+    "description": "INTERNATIONAL MEDICAL CORPS #3267 MEMPHIS TN",
+    "billingStatus": "BILLED"
   },
   {
     "amount": 90,
@@ -247,7 +269,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "FAMILY DOLLAR #5898 #3267 CHARLESTON SC"
+    "description": "FAMILY DOLLAR #5898 #3267 CHARLESTON SC",
+    "billingStatus": "BILLED"
   },
   {
     "amount": 159,
@@ -259,7 +282,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "KROGER FUEL #5387 #2154 BELTON SC"
+    "description": "KROGER FUEL #5387 #2154 BELTON SC",
+    "billingStatus": "PENDING"
   },
   {
     "amount": 202.95,
@@ -271,7 +295,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "CAPTAIN JJ FISH AND CH #2154 BISHOPVILLE SC"
+    "description": "CAPTAIN JJ FISH AND CH #2154 BISHOPVILLE SC",
+    "billingStatus": "PENDING"
   },
   {
     "amount": 295,
@@ -282,7 +307,9 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "AECOM INTERNATIONAL DEVELOPMENT, INC. #5898 MEMPHIS TN",
+    "billingStatus": "PENDING"
   },
   {
     "amount": 43,
@@ -294,7 +321,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "FEDEXOFFICE 00007500 #3267 BISHOPVILLE SC"
+    "description": "FEDEXOFFICE 00007500 #3267 BISHOPVILLE SC",
+    "billingStatus": "PENDING"
   },
   {
     "amount": 35,
@@ -306,7 +334,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "SQ *NEW LIFE HOLINESS CHU #3267 BISHOPVILLE SC"
+    "description": "SQ *NEW LIFE HOLINESS CHU #3267 BISHOPVILLE SC",
+    "billingStatus": "PENDING"
   },
   {
     "amount": 3.75,
@@ -318,7 +347,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "COMCAST OF MEMPHIS 800-CO #5898 BISHOPVILLE SC"
+    "description": "IN-N-OUT BURGER #239AMERICAN FO",
+    "billingStatus": "UNBILLED"
   },
   {
     "amount": 249.99,
@@ -329,7 +359,9 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "FAMILY DOLLAR #5898 #2154 NEW YORK NY",
+    "billingStatus": "UNBILLED"
   },
   {
     "amount": 10,
@@ -341,7 +373,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "FAMILY DOLLAR #5898 #2154 NEW YORK NY"
+    "description": "FAMILY DOLLAR #5898 #2154 NEW YORK NY",
+    "billingStatus": "UNBILLED"
   },
   {
     "amount": 112.05,
@@ -353,7 +386,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "MURPHY EXPRESS #8674 #3267 CHARLESTON SC"
+    "description": "MURPHY EXPRESS #8674 #3267 CHARLESTON SC",
+    "billingStatus": "UNBILLED"
   },
   {
     "amount": 24.47,
@@ -365,7 +399,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "JSI RESEARCH AND TRAINING INSTITUTE,INC. #2154 MEMPHIS TN"
+    "description": "JSI RESEARCH AND TRAINING INSTITUTE,INC. #2154 MEMPHIS TN",
+    "billingStatus": "UNBILLED"
   },
   {
     "amount": 149,
@@ -377,7 +412,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "INTERNATIONAL RELIEF AND DEVELOPMENT, INC. #3267 BELTON SC"
+    "description": "INTERNATIONAL RELIEF AND DEVELOPMENT, INC. #3267 BELTON SC",
+    "billingStatus": "UNBILLED"
   },
   {
     "amount": 20,
@@ -389,7 +425,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "SQ *NEW LIFE HOLINESS CHU #3267 BISHOPVILLE SC"
+    "description": "SQ *NEW LIFE HOLINESS CHU #3267 BISHOPVILLE SC",
+    "billingStatus": "BILLED"
   },
   {
     "amount": 125,
@@ -401,7 +438,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "JO-ANN STORE #2156 #5898 MEMPHIS TN"
+    "description": "IN-N-OUT BURGER #239AMERICAN FO",
+    "billingStatus": "BILLED"
   },
   {
     "amount": 35,
@@ -413,7 +451,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "FEDEXOFFICE 00007502 #3267 BISHOPVILLE SC"
+    "description": "FEDEXOFFICE 00007502 #3267 BISHOPVILLE SC",
+    "billingStatus": "BILLED"
   },
   {
     "amount": 97.5,
@@ -425,7 +464,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "FAMILY DOLLAR #5900 #2154 NEW YORK NY"
+    "description": "FAMILY DOLLAR #5900 #2154 NEW YORK NY",
+    "billingStatus": "BILLED"
   },
   {
     "amount": 120,
@@ -437,7 +477,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "MURPHY EXPRESS #8676 #3267 CHARLESTON SC"
+    "description": "MURPHY EXPRESS #8676 #3267 CHARLESTON SC",
+    "billingStatus": "BILLED"
   },
   {
     "amount": 156.75,
@@ -449,7 +490,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "KROGER FUEL #5389 #5898 BEAUFORT SC"
+    "description": "KROGER FUEL #5389 #5898 BEAUFORT SC",
+    "billingStatus": "BILLED"
   },
   {
     "amount": 87.65,
@@ -460,7 +502,9 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "FAMILY DOLLAR #5898 #2154 NEW YORK NY",
+    "billingStatus": "BILLED"
   },
   {
     "amount": 4.99,
@@ -472,7 +516,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "CAPTAIN JJ FISH AND CH #2154 BELTON SC"
+    "description": "CAPTAIN JJ FISH AND CH #2154 BELTON SC",
+    "billingStatus": "BILLED"
   },
   {
     "amount": 29.99,
@@ -484,7 +529,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "IRC AND PARTNERS #5898 BISHOPVILLE SC"
+    "description": "IRC AND PARTNERS #5898 BISHOPVILLE SC",
+    "billingStatus": "BILLED"
   },
   {
     "amount": 48,
@@ -495,7 +541,9 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "FAMILY DOLLAR #5898 #2154 NEW YORK NY",
+    "billingStatus": "BILLED"
   },
   {
     "amount": 500,
@@ -507,7 +555,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "AECOM INTERNATIONAL DEVELOPMENT, INC. #2154 BISHOPVILLE SC"
+    "description": "AECOM INTERNATIONAL DEVELOPMENT, INC. #2154 BISHOPVILLE SC",
+    "billingStatus": "BILLED"
   },
   {
     "amount": 300,
@@ -519,7 +568,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "UNIVERSITY RESEARCH CO., LLC #3267 NEW YORK NY"
+    "description": "UNIVERSITY RESEARCH CO., LLC #3267 NEW YORK NY",
+    "billingStatus": "BILLED"
   },
   {
     "amount": 35.49,
@@ -531,7 +581,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "CREATIVE ASSOCIATES INTERNATIONAL, INC. #5898 CHARLESTON SC"
+    "description": "CREATIVE ASSOCIATES INTERNATIONAL, INC. #5898 CHARLESTON SC",
+    "billingStatus": "BILLED"
   },
   {
     "amount": 213,
@@ -543,7 +594,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "UNAIDS JOINT UNITED NATIONS PROGRAMME ON HIV/AIDS #2154 BEAUFORT SC"
+    "description": "UNAIDS JOINT UNITED NATIONS PROGRAMME ON HIV/AIDS #2154 BEAUFORT SC",
+    "billingStatus": "BILLED"
   },
   {
     "amount": 17.13,
@@ -555,7 +607,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "MURPHY EXPRESS #8674 #3267 CHARLESTON SC"
+    "description": "MURPHY EXPRESS #8674 #3267 CHARLESTON SC",
+    "billingStatus": "BILLED"
   },
   {
     "amount": 450,
@@ -567,7 +620,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "KROGER FUEL #5387 #5898 BEAUFORT SC"
+    "description": "KROGER FUEL #5387 #5898 BEAUFORT SC",
+    "billingStatus": "BILLED"
   },
   {
     "amount": 150,
@@ -579,7 +633,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "CAPTAIN JJ FISH AND CH #2154 BELTON SC"
+    "description": "CAPTAIN JJ FISH AND CH #2154 BELTON SC",
+    "billingStatus": "BILLED"
   },
   {
     "amount": 27.54,
@@ -591,7 +646,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "JO-ANN STORE #2155 #5898 MEMPHIS TN"
+    "description": "IN-N-OUT BURGER #239AMERICAN FO",
+    "billingStatus": "BILLED"
   },
   {
     "amount": 18.75,
@@ -603,7 +659,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "CAPTAIN JJ FISH AND CH #2154 BISHOPVILLE SC"
+    "description": "IN-N-OUT BURGER #239AMERICAN FO",
+    "billingStatus": "BILLED"
   },
   {
     "amount": 14.5,
@@ -615,7 +672,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "FEDEXOFFICE 00007501 #3267 BISHOPVILLE SC"
+    "description": "IN-N-OUT BURGER #239AMERICAN FO",
+    "billingStatus": "BILLED"
   },
   {
     "amount": 66.8,
@@ -627,7 +685,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "SQ *NEW LIFE HOLINESS CHU #3267 BISHOPVILLE SC"
+    "description": "IN-N-OUT BURGER #239AMERICAN FO",
+    "billingStatus": "BILLED"
   },
   {
     "amount": 8.95,
@@ -639,7 +698,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "COMCAST OF MEMPHIS 800-CO #5898 BISHOPVILLE SC"
+    "description": "IN-N-OUT BURGER #239AMERICAN FO",
+    "billingStatus": "BILLED"
   },
   {
     "amount": 22.5,
@@ -651,7 +711,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "FAMILY DOLLAR #5899 #2154 NEW YORK NY"
+    "description": "FAMILY DOLLAR #5899 #2154 NEW YORK NY",
+    "billingStatus": "BILLED"
   },
   {
     "amount": 345.95,
@@ -662,7 +723,9 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "FAMILY DOLLAR #5898 #2154 NEW YORK NY",
+    "billingStatus": "BILLED"
   },
   {
     "amount": 25,
@@ -673,7 +736,9 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "FAMILY DOLLAR #5898 #2154 NEW YORK NY",
+    "billingStatus": "BILLED"
   },
   {
     "amount": 10.83,
@@ -685,7 +750,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "KROGER FUEL #5388 #5898 BEAUFORT SC"
+    "description": "KROGER FUEL #5388 #5898 BEAUFORT SC",
+    "billingStatus": "BILLED"
   },
   {
     "amount": 44.59,
@@ -697,7 +763,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "MURPHY EXPRESS #8675 #3267 CHARLESTON SC"
+    "description": "MURPHY EXPRESS #8675 #3267 CHARLESTON SC",
+    "billingStatus": "BILLED"
   },
   {
     "amount": 5.99,
@@ -709,7 +776,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "CAPTAIN JJ FISH AND CH #2154 BELTON SC"
+    "description": "IN-N-OUT BURGER #239AMERICAN FO",
+    "billingStatus": "BILLED"
   },
   {
     "amount": 12.54,
@@ -721,7 +789,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "CAPTAIN JJ FISH AND CH #2154 BISHOPVILLE SC"
+    "description": "IN-N-OUT BURGER #239AMERICAN FO",
+    "billingStatus": "BILLED"
   },
   {
     "amount": 24.5,
@@ -733,7 +802,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "FEDEXOFFICE 00007502 #3267 BISHOPVILLE SC"
+    "description": "FEDEXOFFICE 00007502 #3267 BISHOPVILLE SC",
+    "billingStatus": "BILLED"
   },
   {
     "amount": 13.1,
@@ -745,7 +815,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "SQ *NEW LIFE HOLINESS CHU #3267 BISHOPVILLE SC"
+    "description": "SQ *NEW LIFE HOLINESS CHU #3267 BISHOPVILLE SC",
+    "billingStatus": "BILLED"
   },
   {
     "amount": 67.5,
@@ -757,7 +828,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "CAPTAIN JJ FISH AND CH #2154 BELTON SC"
+    "description": "CAPTAIN JJ FISH AND CH #2154 BELTON SC",
+    "billingStatus": "BILLED"
   },
   {
     "amount": 54.5,
@@ -769,7 +841,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "JO-ANN STORE #2157 #5898 MEMPHIS TN"
+    "description": "JO-ANN STORE #2157 #5898 MEMPHIS TN",
+    "billingStatus": "BILLED"
   },
   {
     "amount": 100,
@@ -780,7 +853,9 @@
     "currency": "USD",
     "reference": "czyo9c2n7z",
     "type": "POS",
-    "typeGroup": "Payment"
+    "typeGroup": "Payment",
+    "description": "FAMILY DOLLAR #5898 #2154 NEW YORK NY",
+    "billingStatus": "BILLED"
   },
   {
     "amount": 19.99,
@@ -792,7 +867,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "CAPTAIN JJ FISH AND CH #2154 BISHOPVILLE SC"
+    "description": "CAPTAIN JJ FISH AND CH #2154 BISHOPVILLE SC",
+    "billingStatus": "BILLED"
   },
   {
     "amount": 119.98,
@@ -804,7 +880,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "FEDEXOFFICE 00007503 #3267 BISHOPVILLE SC"
+    "description": "FEDEXOFFICE 00007503 #3267 BISHOPVILLE SC",
+    "billingStatus": "BILLED"
   },
   {
     "amount": 49.95,
@@ -816,7 +893,8 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "SQ *NEW LIFE HOLINESS CHU #3267 BISHOPVILLE SC"
+    "description": "SQ *NEW LIFE HOLINESS CHU #3267 BISHOPVILLE SC",
+    "billingStatus": "BILLED"
   },
   {
     "amount": 11.99,
@@ -828,6 +906,7 @@
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
-    "description": "COMCAST OF MEMPHIS 800-CO #5898 BISHOPVILLE SC"
+    "description": "COMCAST OF MEMPHIS 800-CO #5898 BISHOPVILLE SC",
+    "billingStatus": "BILLED"
   }
 ]

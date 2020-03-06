@@ -24,9 +24,7 @@ public class TransactionsReader extends BaseReader {
         return getRandomFromList(load(globalProperties.getString(CommonConstants.PROPERTY_TRANSACTIONS_DATA_JSON)))
                 .withId(UUID.randomUUID().toString())
                 .withArrangementId(externalArrangementId)
-                .withBookingDate(DateUtils.addDays(new Date(), generateRandomNumberInRange(-180, 0)))
-                .withDescription(faker.lorem().characters(10));
-
+                .withBookingDate(DateUtils.addDays(new Date(), generateRandomNumberInRange(-180, 0)));
     }
 
     private List<TransactionsPostRequestBody> load(String uri) {

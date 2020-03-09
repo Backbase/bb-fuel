@@ -1,17 +1,13 @@
 package com.backbase.ct.bbfuel.client.billpay;
 
-import static org.apache.http.HttpStatus.SC_OK;
 
 import com.backbase.billpay.integration.rest.spec.v2.billpay.enroluser.UserByIdPutRequestBody;
-import com.backbase.billpay.integration.rest.spec.v2.billpay.enroluser.UserByIdPutResponseBody;
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 @Component

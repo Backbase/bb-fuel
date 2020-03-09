@@ -50,7 +50,7 @@ public class BillPayConfigurator {
         }
     }
 
-    public void ingestBillPayAccounts(String subscriberId, List<Account> accounts) {
+    private void ingestBillPayAccounts(String subscriberId, List<Account> accounts) {
         loginRestClient.login(subscriberId, subscriberId);
         userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
         UserByIdPutRequestBody request = new UserByIdPutRequestBody()

@@ -43,7 +43,6 @@ public class CapabilitiesDataSetup extends BaseSetup {
 
     private final UserContextService userContextService;
     private final UserContextPresentationRestClient userContextPresentationRestClient;
-    private final UserPresentationRestClient userPresentationRestClient;
     private final LoginRestClient loginRestClient;
     private final AccessControlSetup accessControlSetup;
     private final ApprovalsConfigurator approvalsConfigurator;
@@ -55,7 +54,6 @@ public class CapabilitiesDataSetup extends BaseSetup {
     private final ActionsConfigurator actionsConfigurator;
     private final BillPayConfigurator billpayConfigurator;
     private final LegalEntityService legalEntityService;
-    private final AccountsIntegrationRestClient accountsIntegrationRestClient;
 
     /**
      * Ingest data with services of projects APPR, PO, LIM, NOT, CON, MC, ACT and BPAY.

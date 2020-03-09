@@ -5,6 +5,7 @@ import static org.apache.http.HttpStatus.SC_NO_CONTENT;
 import static org.apache.http.HttpStatus.SC_OK;
 
 import com.backbase.billpay.integration.enrolment.Account;
+import com.backbase.billpay.integration.enrolment.Account.AccountType;
 import com.backbase.billpay.integration.enrolment.Address;
 import com.backbase.billpay.integration.enrolment.Subscriber;
 import com.backbase.billpay.integration.rest.spec.v2.billpay.enroluser.UserByIdPutRequestBody;
@@ -19,6 +20,7 @@ import com.backbase.ct.bbfuel.util.CommonHelpers;
 import com.backbase.integration.account.spec.v2.arrangements.ArrangementItem;
 import io.restassured.response.Response;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import lombok.RequiredArgsConstructor;
@@ -106,10 +108,9 @@ public class BillPayConfigurator {
     }
 
     public Account mapBillPayAccount(ArrangementItem arrangement) {
-        Random random = new Random();
         return new Account()
             .withAccountNumber(arrangement.getBBAN())
             .withRoutingNumber(arrangement.getBankBranchCode())
-            .withAccountType(CommonHelpers.getRandomAccountType());
+            .withAccountType(CommonHelpers.getRandomFromList(Arrays.asList(AccountType.values())));
     }
 }

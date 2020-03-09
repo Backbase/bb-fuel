@@ -5,7 +5,6 @@ import static org.apache.http.HttpStatus.SC_NO_CONTENT;
 import static org.apache.http.HttpStatus.SC_OK;
 
 import com.backbase.billpay.integration.enrolment.Account;
-import com.backbase.billpay.integration.enrolment.Account.AccountType;
 import com.backbase.billpay.integration.enrolment.Address;
 import com.backbase.billpay.integration.enrolment.Subscriber;
 import com.backbase.billpay.integration.rest.spec.v2.billpay.enroluser.UserByIdPutRequestBody;
@@ -16,6 +15,7 @@ import com.backbase.ct.bbfuel.client.common.LoginRestClient;
 import com.backbase.ct.bbfuel.client.productsummary.AccountsIntegrationRestClient;
 import com.backbase.ct.bbfuel.client.user.UserPresentationRestClient;
 import com.backbase.ct.bbfuel.dto.LegalEntityWithUsers;
+import com.backbase.ct.bbfuel.util.CommonHelpers;
 import com.backbase.integration.account.spec.v2.arrangements.ArrangementItem;
 import io.restassured.response.Response;
 import java.util.ArrayList;
@@ -110,6 +110,6 @@ public class BillPayConfigurator {
         return new Account()
             .withAccountNumber(arrangement.getBBAN())
             .withRoutingNumber(arrangement.getBankBranchCode())
-            .withAccountType(AccountType.values()[random.nextInt(AccountType.values().length)]);
+            .withAccountType(CommonHelpers.getRandomAccountType());
     }
 }

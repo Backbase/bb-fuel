@@ -1,7 +1,9 @@
 package com.backbase.ct.bbfuel.util;
 
+import com.backbase.billpay.integration.enrolment.Account.AccountType;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import org.apache.commons.lang.StringUtils;
 
@@ -41,5 +43,10 @@ public class CommonHelpers {
 
     public static <T extends Enum> T getRandomFromEnumValues(T[] values) {
         return values[ThreadLocalRandom.current().nextInt(values.length)];
+    }
+
+    public static AccountType getRandomAccountType() {
+        Random random = new Random();
+        return AccountType.values()[random.nextInt(AccountType.values().length)];
     }
 }

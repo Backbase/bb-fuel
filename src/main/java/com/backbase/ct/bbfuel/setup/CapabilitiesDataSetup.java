@@ -17,8 +17,6 @@ import static java.util.Collections.singletonList;
 
 import com.backbase.ct.bbfuel.client.accessgroup.UserContextPresentationRestClient;
 import com.backbase.ct.bbfuel.client.common.LoginRestClient;
-import com.backbase.ct.bbfuel.client.productsummary.AccountsIntegrationRestClient;
-import com.backbase.ct.bbfuel.client.user.UserPresentationRestClient;
 import com.backbase.ct.bbfuel.configurator.ActionsConfigurator;
 import com.backbase.ct.bbfuel.configurator.ApprovalsConfigurator;
 import com.backbase.ct.bbfuel.configurator.BillPayConfigurator;

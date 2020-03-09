@@ -6,6 +6,7 @@ import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROV
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_NOTIFICATIONS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_PAYMENTS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_BILLPAY;
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_BILLPAY_ACCOUNTS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_CONTACTS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_LIMITS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_MESSAGES;
@@ -179,12 +180,9 @@ public class CapabilitiesDataSetup extends BaseSetup {
 
     private void ingestBillPayUsers() {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_BILLPAY)) {
-            this.accessControlSetup.getLegalEntitiesWithUsersExcludingSupport()
-                .stream()
-                .map(LegalEntityWithUsers::getUserExternalIds)
-                .flatMap(List::stream)
-                .collect(Collectors.toList())
-                .forEach(this.billpayConfigurator::ingestBillPayUser);
+            this.accessControlSetup.getLegalEntitiesWithUsersExcludingSupport().forEach((le) -> {
+                billpayConfigurator.ingestBillPayUserAndAccounts(le, this.globalProperties.getBoolean(PROPERTY_INGEST_BILLPAY_ACCOUNTS));
+            });
         }
     }
 }

@@ -57,6 +57,10 @@
             <artifactId>accessgroup-presentation-spec</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.backbase.dbs.account</groupId>
+            <artifactId>account-integration-spec</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.backbase.dbs.actions</groupId>
             <artifactId>actionrecipes-presentation-spec</artifactId>
         </dependency>
@@ -67,6 +71,10 @@
         <dependency>
             <groupId>com.backbase.dbs.arrangement</groupId>
             <artifactId>arrangement-integration-spec</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.backbase.dbs.billpay</groupId>
+            <artifactId>billpay-integration-external-provider-outbound-spec</artifactId>
         </dependency>
         <dependency>
             <groupId>com.backbase.buildingblocks</groupId>

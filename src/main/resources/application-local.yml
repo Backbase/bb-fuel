@@ -16,3 +16,5 @@ bb-fuel:
     accessgroup: http://localhost:8086/accessgroup-integration-service
     arrangements: http://localhost:8082/arrangements-integration-service
     notifications: http://localhost:8082/notifications-presentation-service
+    billpay: http://localhost:8006/billpay-service
+    accounts: http://localhost:8082/account-integration-service

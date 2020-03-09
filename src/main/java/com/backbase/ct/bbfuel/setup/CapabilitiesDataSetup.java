@@ -15,7 +15,6 @@ import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_PAYMEN
 import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
 import static java.util.Collections.singletonList;
 
-import com.backbase.billpay.integration.enrolment.Account;
 import com.backbase.ct.bbfuel.client.accessgroup.UserContextPresentationRestClient;
 import com.backbase.ct.bbfuel.client.common.LoginRestClient;
 import com.backbase.ct.bbfuel.client.productsummary.AccountsIntegrationRestClient;
@@ -33,9 +32,6 @@ import com.backbase.ct.bbfuel.dto.User;
 import com.backbase.ct.bbfuel.dto.UserContext;
 import com.backbase.ct.bbfuel.service.LegalEntityService;
 import com.backbase.ct.bbfuel.service.UserContextService;
-import com.backbase.ct.bbfuel.util.CommonHelpers;
-import com.backbase.integration.account.spec.v2.arrangements.ArrangementItem;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -189,27 +185,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
     private void ingestBillPayUsers() {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_BILLPAY)) {
             this.accessControlSetup.getLegalEntitiesWithUsersExcludingSupport().forEach((le) -> {
-
-                List<Account> accounts = new ArrayList<>();
-                if (this.globalProperties.getBoolean(PROPERTY_INGEST_BILLPAY_ACCOUNTS)) {
-                    String externalUserId = le.getUserExternalIds().get(0);
-                    loginRestClient.login(externalUserId, externalUserId);
-                    String externalLegalEntityId = this.userPresentationRestClient.
-                        retrieveLegalEntityByExternalUserId(externalUserId)
-                        .getExternalId();
-                    List<ArrangementItem> arrangementItems = accountsIntegrationRestClient
-                        .getArrangements(externalLegalEntityId);
-
-                    arrangementItems.forEach((arrangement) -> {
-                        accounts.add(CommonHelpers.mapBillPayAccount(arrangement));
-                    });
-                }
-                le.getUserExternalIds().forEach((user) -> {
-                    billpayConfigurator.ingestBillPayUser(user);
-                    if (this.globalProperties.getBoolean(PROPERTY_INGEST_BILLPAY_ACCOUNTS)) {
-                        billpayConfigurator.ingestBillPayAccounts(user, accounts);
-                    }
-                });
+                billpayConfigurator.ingestBillPayUserAndAccounts(le, this.globalProperties.getBoolean(PROPERTY_INGEST_BILLPAY_ACCOUNTS));
             });
         }
     }

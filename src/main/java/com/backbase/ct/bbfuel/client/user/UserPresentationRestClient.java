@@ -17,6 +17,7 @@ public class UserPresentationRestClient extends RestClient {
     private final BbFuelConfiguration config;
 
     private static final String SERVICE_VERSION = "v2";
+    private static final String SERVICE = "client-api";
     private static final String USER_PRESENTATION_SERVICE = "user-presentation-service";
     private static final String ENDPOINT_USERS = "/users";
     private static final String ENDPOINT_EXTERNAL_ID_LEGAL_ENTITIES = ENDPOINT_USERS + "/externalId/%s/legalentities";
@@ -26,7 +27,7 @@ public class UserPresentationRestClient extends RestClient {
     public void init() {
         setBaseUri(config.getPlatform().getGateway());
         setVersion(SERVICE_VERSION);
-        setInitialPath(USER_PRESENTATION_SERVICE);
+        setInitialPath(USER_PRESENTATION_SERVICE + "/" + SERVICE);
     }
 
     public LegalEntityByUserGetResponseBody retrieveLegalEntityByExternalUserId(String externalUserId) {

@@ -1,13 +1,10 @@
 package com.backbase.ct.bbfuel.client.user;
 
 import static com.backbase.ct.bbfuel.util.ResponseUtils.isBadRequestException;
-import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 import static org.apache.http.HttpStatus.SC_CREATED;
 
-import com.backbase.buildingblocks.presentation.errors.BadRequestException;
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
-import com.backbase.ct.bbfuel.util.ResponseUtils;
 import com.backbase.integration.user.rest.spec.v2.users.UsersPostRequestBody;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
@@ -23,11 +20,13 @@ public class UserIntegrationRestClient extends RestClient {
 
     private final BbFuelConfiguration config;
     private static final String SERVICE_VERSION = "v2";
+    private static final String CLIENT_API = "client-api";
     private static final String ENDPOINT_USERS = "/users";
 
     @PostConstruct
     public void init() {
         setBaseUri(config.getDbs().getUser());
+        setInitialPath(CLIENT_API);
         setVersion(SERVICE_VERSION);
     }
 

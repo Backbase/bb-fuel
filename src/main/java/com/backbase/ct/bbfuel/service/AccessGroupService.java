@@ -16,8 +16,11 @@ import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.datagroup
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.functiongroups.FunctionGroupsGetResponseBody;
 import io.restassured.response.Response;
 import java.util.List;
+import java.util.stream.Stream;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -90,11 +93,12 @@ public class AccessGroupService {
             return existingDataGroup.getId();
 
         } else {
-            String dataGroupId = response.then()
+            String dataGroupId = Stream.of(response.then()
                 .statusCode(SC_MULTI_STATUS)
                 .extract()
-                .as(BatchResponseItem.class)
-                .getResourceId();
+                .as(BatchResponseItem[].class))
+                    .filter(batchResponseItem -> StringUtils.isNotEmpty(batchResponseItem.getResourceId()))
+                    .findFirst().get().getResourceId();
 
             log.info("Data group \"{}\" [{}] ingested under service agreement [{}]",
                 dataGroupName, dataGroupId, externalServiceAgreementId);

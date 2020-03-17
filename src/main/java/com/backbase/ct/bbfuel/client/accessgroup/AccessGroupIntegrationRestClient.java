@@ -13,6 +13,8 @@ import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.users.perm
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.users.permissions.IntegrationFunctionGroupDataGroup;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
@@ -31,7 +33,7 @@ public class AccessGroupIntegrationRestClient extends RestClient {
     private static final String ENDPOINT_FUNCTION = ENDPOINT_ACCESS_GROUPS + "/function-groups";
     private static final String ENDPOINT_USERS_PERMISSIONS =
         ENDPOINT_ACCESS_GROUPS + "/users/permissions/user-permissions";
-    private static final String ENDPOINT_DATA = ENDPOINT_ACCESS_GROUPS + "/data-groups";
+    private static final String ENDPOINT_DATA = ENDPOINT_ACCESS_GROUPS + "/data-groups/batch";
 
     @PostConstruct
     public void init() {
@@ -46,7 +48,7 @@ public class AccessGroupIntegrationRestClient extends RestClient {
             .post(getPath(ENDPOINT_FUNCTION));
     }
 
-    public Response ingestDataGroup(IntegrationDataGroupCreate body) {
+    public Response ingestDataGroup(IntegrationDataGroupCreate... body) {
         return requestSpec()
             .contentType(ContentType.JSON)
             .body(body)

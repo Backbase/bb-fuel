@@ -1,10 +1,10 @@
 package com.backbase.ct.bbfuel.data;
 
 import static java.util.Arrays.asList;
-
 import com.backbase.presentation.limit.rest.spec.v2.limits.AmountRequiredTransactionalLimitsBound;
+import com.backbase.presentation.limit.rest.spec.v2.limits.CreateLimitRequestBody;
 import com.backbase.presentation.limit.rest.spec.v2.limits.Entity;
-import com.backbase.presentation.limit.rest.spec.v2.limits.TransactionalLimitsPostRequestBody;
+
 import java.math.BigDecimal;
 
 public class LimitsDataGenerator {
@@ -14,14 +14,14 @@ public class LimitsDataGenerator {
     private static final String FUNCTION_ENTITY = "FUN";
     private static final String PRIVILEGE_ENTITY = "PRV";
 
-    public static TransactionalLimitsPostRequestBody createTransactionalLimitsPostRequestBodyForPrivilege(
+    public static CreateLimitRequestBody createTransactionalLimitsPostRequestBodyForPrivilege(
         String internalServiceAgreementId,
         String functionGroupId,
         String functionId,
         String currency,
         String privilege,
         BigDecimal limitAmount) {
-        return new TransactionalLimitsPostRequestBody()
+        return new CreateLimitRequestBody()
             .withUserBBID(null)
             .withEntities(asList(
                 new Entity()

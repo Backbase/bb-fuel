@@ -31,7 +31,7 @@ public class AccessGroupIntegrationRestClient extends RestClient {
     private static final String ENDPOINT_FUNCTION = ENDPOINT_ACCESS_GROUPS + "/function-groups";
     private static final String ENDPOINT_USERS_PERMISSIONS =
         ENDPOINT_ACCESS_GROUPS + "/users/permissions/user-permissions";
-    private static final String ENDPOINT_DATA = ENDPOINT_ACCESS_GROUPS + "/data-groups";
+    private static final String ENDPOINT_DATA = ENDPOINT_ACCESS_GROUPS + "/data-groups/batch";
 
     @PostConstruct
     public void init() {

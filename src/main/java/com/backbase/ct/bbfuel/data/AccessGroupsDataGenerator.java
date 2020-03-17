@@ -1,10 +1,13 @@
 package com.backbase.ct.bbfuel.data;
 
+import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
 
 import com.backbase.ct.bbfuel.dto.entitlement.JobProfile;
+import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.IntegrationItemIdentifier;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.config.functions.FunctionsGetResponseBody;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.datagroups.DataGroupPostRequestBody;
+import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.datagroups.IntegrationDataGroupCreate;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.IntegrationPrivilege;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.Permission;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.Privilege;
@@ -23,14 +26,17 @@ public class AccessGroupsDataGenerator {
             .withPermissions(permissions);
     }
 
-    public static DataGroupPostRequestBody generateDataGroupPostRequestBody(String externalServiceAgreementId,
+    public static IntegrationDataGroupCreate generateDataGroupPostRequestBody(String externalServiceAgreementId,
         String dataGroupName, String type, List<String> items) {
-        return new DataGroupPostRequestBody()
+        List<IntegrationItemIdentifier> dataItems = new ArrayList();
+        items.forEach(item -> dataItems.add(new IntegrationItemIdentifier().withInternalIdIdentifier(item)));
+
+        return new IntegrationDataGroupCreate()
             .withName(dataGroupName)
             .withDescription(dataGroupName)
             .withExternalServiceAgreementId(externalServiceAgreementId)
             .withType(type)
-            .withItems(items);
+            .withDataItems(dataItems);
     }
 
     public static Permission createPermission(String functionId, List<Privilege> privileges) {

@@ -8,6 +8,7 @@ import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.config.functions.FunctionsGetResponseBody;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.datagroups.DataGroupPostRequestBody;
+import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.datagroups.IntegrationDataGroupCreate;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.functiongroups.FunctionGroupPostRequestBody;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.users.permissions.IntegrationAssignUserPermissions;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.users.permissions.IntegrationFunctionGroupDataGroup;
@@ -31,7 +32,7 @@ public class AccessGroupIntegrationRestClient extends RestClient {
     private static final String ENDPOINT_FUNCTION = ENDPOINT_ACCESS_GROUPS + "/function-groups";
     private static final String ENDPOINT_USERS_PERMISSIONS =
         ENDPOINT_ACCESS_GROUPS + "/users/permissions/user-permissions";
-    private static final String ENDPOINT_DATA = ENDPOINT_ACCESS_GROUPS + "/data-groups/batch";
+    private static final String ENDPOINT_DATA = ENDPOINT_ACCESS_GROUPS + "/data-groups";
 
     @PostConstruct
     public void init() {
@@ -46,7 +47,7 @@ public class AccessGroupIntegrationRestClient extends RestClient {
             .post(getPath(ENDPOINT_FUNCTION));
     }
 
-    public Response ingestDataGroup(DataGroupPostRequestBody body) {
+    public Response ingestDataGroup(IntegrationDataGroupCreate body) {
         return requestSpec()
             .contentType(ContentType.JSON)
             .body(body)

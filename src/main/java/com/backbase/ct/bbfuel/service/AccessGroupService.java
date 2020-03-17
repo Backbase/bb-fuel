@@ -3,16 +3,15 @@ package com.backbase.ct.bbfuel.service;
 import static com.backbase.ct.bbfuel.data.AccessGroupsDataGenerator.generateDataGroupPostRequestBody;
 import static com.backbase.ct.bbfuel.data.AccessGroupsDataGenerator.generateFunctionGroupPostRequestBody;
 import static com.backbase.ct.bbfuel.util.ResponseUtils.isBadRequestException;
-import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 import static org.apache.http.HttpStatus.SC_CREATED;
+import static org.apache.http.HttpStatus.SC_MULTI_STATUS;
 
-import com.backbase.buildingblocks.presentation.errors.BadRequestException;
 import com.backbase.ct.bbfuel.client.accessgroup.AccessGroupIntegrationRestClient;
 import com.backbase.ct.bbfuel.client.accessgroup.AccessGroupPresentationRestClient;
 import com.backbase.ct.bbfuel.client.accessgroup.ServiceAgreementsIntegrationRestClient;
-import com.backbase.ct.bbfuel.util.ResponseUtils;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.datagroups.DataGroupPostResponseBody;
+import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.BatchResponseItem;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.Permission;
+import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.functiongroups.FunctionGroupPostResponseBody;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.datagroups.DataGroupsGetResponseBody;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.functiongroups.FunctionGroupsGetResponseBody;
 import io.restassured.response.Response;
@@ -59,7 +58,7 @@ public class AccessGroupService {
             String functionGroupId = response.then()
                 .statusCode(SC_CREATED)
                 .extract()
-                .as(DataGroupPostResponseBody.class)
+                .as(FunctionGroupPostResponseBody.class)
                 .getId();
 
             log.info("Function group \"{}\" [{}] ingested under service agreement [{}])",
@@ -92,10 +91,10 @@ public class AccessGroupService {
 
         } else {
             String dataGroupId = response.then()
-                .statusCode(SC_CREATED)
+                .statusCode(SC_MULTI_STATUS)
                 .extract()
-                .as(DataGroupPostResponseBody.class)
-                .getId();
+                .as(BatchResponseItem.class)
+                .getResourceId();
 
             log.info("Data group \"{}\" [{}] ingested under service agreement [{}]",
                 dataGroupName, dataGroupId, externalServiceAgreementId);

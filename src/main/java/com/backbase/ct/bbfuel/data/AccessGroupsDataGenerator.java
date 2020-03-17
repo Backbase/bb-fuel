@@ -1,12 +1,10 @@
 package com.backbase.ct.bbfuel.data;
 
-import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
 
 import com.backbase.ct.bbfuel.dto.entitlement.JobProfile;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.IntegrationItemIdentifier;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.config.functions.FunctionsGetResponseBody;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.datagroups.DataGroupPostRequestBody;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.datagroups.IntegrationDataGroupCreate;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.IntegrationPrivilege;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.Permission;

@@ -14,7 +14,6 @@ import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.users.perm
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;

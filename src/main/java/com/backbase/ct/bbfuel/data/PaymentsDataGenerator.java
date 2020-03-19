@@ -10,9 +10,9 @@ import com.backbase.dbs.presentation.paymentorder.rest.spec.v2.paymentorders.Acc
 import com.backbase.dbs.presentation.paymentorder.rest.spec.v2.paymentorders.Bank;
 import com.backbase.dbs.presentation.paymentorder.rest.spec.v2.paymentorders.Identification;
 import com.backbase.dbs.presentation.paymentorder.rest.spec.v2.paymentorders.IdentifiedPaymentOrder;
-import com.backbase.dbs.presentation.paymentorder.rest.spec.v2.paymentorders.InitiateCreditTransaction;
-import com.backbase.dbs.presentation.paymentorder.rest.spec.v2.paymentorders.InitiateCreditorAccount;
+import com.backbase.dbs.presentation.paymentorder.rest.spec.v2.paymentorders.InitiateCounterpartyAccount;
 import com.backbase.dbs.presentation.paymentorder.rest.spec.v2.paymentorders.InitiatePaymentOrder;
+import com.backbase.dbs.presentation.paymentorder.rest.spec.v2.paymentorders.InitiateTransaction;
 import com.backbase.dbs.presentation.paymentorder.rest.spec.v2.paymentorders.InvolvedParty;
 import com.backbase.dbs.presentation.paymentorder.rest.spec.v2.paymentorders.PostalAddress;
 import com.backbase.dbs.presentation.paymentorder.rest.spec.v2.paymentorders.Schedule;
@@ -20,7 +20,6 @@ import com.backbase.rest.spec.common.types.Currency;
 import com.github.javafaker.Faker;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -43,11 +42,12 @@ public class PaymentsDataGenerator {
             "NWBKGB2LXXX", "COBADEFFXXX", "BNPAFRPPXXX", "POALILITXXX", "LOYDGB2LXXX", "NTSBDEB1XXX", "DEUTDEDBPAL",
             "AXISINBB002");
 
-    public static InitiatePaymentOrder generateInitiatePaymentOrder(String debtorArrangementId, String debtorarrangementCurrency, String paymentType) {
+    public static InitiatePaymentOrder generateInitiatePaymentOrder(String originatorArrangementId,
+        String originatorArrangementCurrency, String paymentType) {
         IdentifiedPaymentOrder.PaymentMode paymentMode = IdentifiedPaymentOrder.PaymentMode.values()[random
             .nextInt(IdentifiedPaymentOrder.PaymentMode.values().length)];
         Schedule schedule = null;
-        Bank creditorBank = null;
+        Bank counterpartyBank = null;
         Bank correspondentBank = null;
         Currency currency = new Currency().withAmount(CommonHelpers.generateRandomAmountInRange(1000L, 99999L));
         Identification identification;
@@ -68,21 +68,21 @@ public class PaymentsDataGenerator {
             currency.setCurrencyCode("EUR");
             identification = generateIbanIdentification();
         } else if (PAYMENT_TYPE_ACH_DEBIT.equals(paymentType)) {
-            creditorBank = generateCreditorBank();
-            currency.setCurrencyCode(debtorarrangementCurrency);
+            counterpartyBank = generateCounterpartyBank();
+            currency.setCurrencyCode(originatorArrangementCurrency);
             identification = generateBbanIdentification();
         } else {
-            creditorBank = generateCreditorBank();
+            counterpartyBank = generateCounterpartyBank();
             correspondentBank = generateCorrespondentBank();
             currency.setCurrencyCode("USD");
             identification = generateBbanIdentification();
         }
 
         return new InitiatePaymentOrder()
-            .withDebtorAccount(new AccountIdentification()
+            .withOriginatorAccount(new AccountIdentification()
                 .withName(faker.lorem().sentence(3, 0).replace(".", ""))
                 .withIdentification(new Identification().withSchemeName(Identification.SchemeName.ID)
-                    .withIdentification(debtorArrangementId)))
+                    .withIdentification(originatorArrangementId)))
             .withBatchBooking(false)
             .withInstructionPriority(IdentifiedPaymentOrder.InstructionPriority.values()[random
                 .nextInt(IdentifiedPaymentOrder.InstructionPriority.values().length)])
@@ -90,14 +90,14 @@ public class PaymentsDataGenerator {
             .withPaymentType(paymentType)
             .withRequestedExecutionDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()))
             .withSchedule(schedule)
-            .withCreditTransferTransactionInformation(Collections.singletonList(new InitiateCreditTransaction()
+            .withTransferTransactionInformation(new InitiateTransaction()
                 .withEndToEndIdentification(faker.lorem().characters(10))
-                .withCreditorAccount(new InitiateCreditorAccount()
+                .withCounterpartyAccount(new InitiateCounterpartyAccount()
                     .withName(faker.lorem().sentence(3, 0).replace(".", ""))
                     .withIdentification(identification))
                 .withInstructedAmount(currency)
                 .withRemittanceInformation(faker.lorem().sentence(3, 0).replace(".", ""))
-                .withCreditor(new InvolvedParty()
+                .withCounterparty(new InvolvedParty()
                     .withName(faker.name().fullName())
                     .withPostalAddress(new PostalAddress()
                         .withAddressLine1(faker.address().streetAddress())
@@ -107,8 +107,8 @@ public class PaymentsDataGenerator {
                         .withTown(faker.address().city())
                         .withCountry(faker.address().countryCode())
                         .withCountrySubDivision(faker.address().state())))
-                .withCreditorBank(creditorBank)
-                .withCorrespondentBank(correspondentBank)));
+                .withCounterpartyBank(counterpartyBank)
+                .withCorrespondentBank(correspondentBank));
     }
 
     private static Identification generateIbanIdentification() {
@@ -129,7 +129,7 @@ public class PaymentsDataGenerator {
             .withName(faker.name().fullName());
     }
 
-    private static Bank generateCreditorBank() {
+    private static Bank generateCounterpartyBank() {
         return new Bank()
             .withBankBranchCode(getRandomFromList(branchCodes))
             .withName(faker.name().fullName())

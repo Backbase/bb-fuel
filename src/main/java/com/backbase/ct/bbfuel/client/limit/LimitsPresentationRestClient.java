@@ -20,6 +20,8 @@ public class LimitsPresentationRestClient extends RestClient {
     private static final String CLIENT_API = "client-api";
     private static final String LIMITS_PRESENTATION_SERVICE = "limits-presentation-service";
     private static final String ENDPOINT_LIMITS = "/limits";
+    private static final String ENDPOINT_PERIODIC = ENDPOINT_LIMITS + "/periodic";
+    private static final String ENDPOINT_TRANSACTIONAL = ENDPOINT_LIMITS + "/transactional";
 
     @PostConstruct
     public void init() {
@@ -28,11 +30,18 @@ public class LimitsPresentationRestClient extends RestClient {
         setInitialPath(LIMITS_PRESENTATION_SERVICE + "/" + CLIENT_API);
     }
 
+    public Response createPeriodicLimit(CreateLimitRequestBody periodicLimitsPostRequestBody) {
+        return requestSpec()
+            .contentType(ContentType.JSON)
+            .body(periodicLimitsPostRequestBody)
+            .post(getPath(ENDPOINT_PERIODIC));
+    }
+
     public Response createTransactionalLimit(CreateLimitRequestBody transactionalLimitsPostRequestBody) {
         return requestSpec()
             .contentType(ContentType.JSON)
             .body(transactionalLimitsPostRequestBody)
-            .post(getPath(ENDPOINT_LIMITS));
+            .post(getPath(ENDPOINT_TRANSACTIONAL));
     }
 
 }

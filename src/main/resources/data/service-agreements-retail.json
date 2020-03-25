@@ -5,7 +5,7 @@
         "admins": [
           "admin"
         ],
-        "sharingUsers": false,
+        "sharingUsers": true,
         "sharingAccounts": false
       }
     ]
@@ -16,7 +16,7 @@
         "admins": [
           "user"
         ],
-        "sharingUsers": false,
+        "sharingUsers": true,
         "sharingAccounts": false
       }
     ]
@@ -27,7 +27,7 @@
         "admins": [
           "designer"
         ],
-        "sharingUsers": false,
+        "sharingUsers": true,
         "sharingAccounts": false
       }
     ]
@@ -38,7 +38,7 @@
         "admins": [
           "manager"
         ],
-        "sharingUsers": false,
+        "sharingUsers": true,
         "sharingAccounts": false
       }
     ]

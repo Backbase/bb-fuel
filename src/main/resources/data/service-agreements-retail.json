@@ -1,0 +1,18 @@
+[
+  {
+    "participants": [
+      {
+        "admins": [
+          "admin"
+        ],
+        "users": [
+          "user",
+          "designer",
+          "manager"
+        ],
+        "sharingUsers": true,
+        "sharingAccounts": false
+      }
+    ]
+  }
+]

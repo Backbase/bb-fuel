@@ -5,12 +5,40 @@
         "admins": [
           "admin"
         ],
-        "users": [
-          "user",
-          "designer",
+        "sharingUsers": false,
+        "sharingAccounts": false
+      }
+    ]
+  },
+  {
+    "participants": [
+      {
+        "admins": [
+          "user"
+        ],
+        "sharingUsers": false,
+        "sharingAccounts": false
+      }
+    ]
+  },
+  {
+    "participants": [
+      {
+        "admins": [
+          "designer"
+        ],
+        "sharingUsers": false,
+        "sharingAccounts": false
+      }
+    ]
+  },
+  {
+    "participants": [
+      {
+        "admins": [
           "manager"
         ],
-        "sharingUsers": true,
+        "sharingUsers": false,
         "sharingAccounts": false
       }
     ]

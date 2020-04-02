@@ -20,7 +20,6 @@ import com.backbase.dbs.presentation.paymentorder.rest.spec.v2.paymentorders.Ini
 import com.backbase.presentation.productsummary.rest.spec.v2.productsummary.ArrangementsByBusinessFunctionGetResponseBody;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +35,6 @@ public class PaymentsConfigurator {
     private final LoginRestClient loginRestClient;
     private final ProductSummaryPresentationRestClient productSummaryPresentationRestClient;
     private final UserContextPresentationRestClient userContextPresentationRestClient;
-    private Random random = new Random();
 
     public void ingestPaymentOrders(String externalUserId) {
         final List<String> ootbPaymentTypes = Arrays
@@ -83,8 +81,8 @@ public class PaymentsConfigurator {
                     .then()
                     .statusCode(SC_ACCEPTED);
 
-                log.info("Payment order ingested for debtor account [{}] for user [{}]",
-                    initiatePaymentOrder.getDebtorAccount().getIdentification().getIdentification(), externalUserId);
+                log.info("Payment order ingested for originator account [{}] for user [{}]",
+                    initiatePaymentOrder.getOriginatorAccount().getIdentification().getIdentification(), externalUserId);
             });
         }
     }

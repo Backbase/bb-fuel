@@ -16,11 +16,13 @@ public class ContactIntegrationRestClient extends RestClient {
     private final BbFuelConfiguration config;
 
     private static final String SERVICE_VERSION = "v2";
+    private static final String CLIENT_API = "service-api";
     private static final String ENDPOINT_CONTACTS = "/contacts/bulk";
 
     @PostConstruct
     public void init() {
         setBaseUri(config.getDbs().getContactmanager());
+        setInitialPath(CLIENT_API);
         setVersion(SERVICE_VERSION);
     }
 
@@ -30,5 +32,4 @@ public class ContactIntegrationRestClient extends RestClient {
             .body(body)
             .post(getPath(ENDPOINT_CONTACTS));
     }
-
 }

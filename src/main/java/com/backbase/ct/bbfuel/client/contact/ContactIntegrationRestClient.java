@@ -16,7 +16,7 @@ public class ContactIntegrationRestClient extends RestClient {
     private final BbFuelConfiguration config;
 
     private static final String SERVICE_VERSION = "v2";
-    private static final String CLIENT_API = "service-api";
+    private static final String CLIENT_API = "client-api";
     private static final String ENDPOINT_CONTACTS = "/contacts/bulk";
 
     @PostConstruct

@@ -1,5 +1,6 @@
 package com.backbase.ct.bbfuel.input;
 
+import static com.backbase.ct.bbfuel.util.CommonHelpers.generateRandomAmountInRange;
 import static com.backbase.ct.bbfuel.util.CommonHelpers.generateRandomNumberInRange;
 import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
 import static java.util.Arrays.asList;
@@ -24,7 +25,8 @@ public class TransactionsReader extends BaseReader {
         return getRandomFromList(load(globalProperties.getString(CommonConstants.PROPERTY_TRANSACTIONS_DATA_JSON)))
                 .withId(UUID.randomUUID().toString())
                 .withArrangementId(externalArrangementId)
-                .withBookingDate(DateUtils.addDays(new Date(), generateRandomNumberInRange(-180, 0)));
+                .withBookingDate(DateUtils.addDays(new Date(), generateRandomNumberInRange(-180, 0)))
+                .withCheckSerialNumber(generateRandomAmountInRange(0, 1000));
     }
 
     private List<TransactionsPostRequestBody> load(String uri) {

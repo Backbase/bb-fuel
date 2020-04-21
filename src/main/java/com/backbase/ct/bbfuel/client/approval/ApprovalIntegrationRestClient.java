@@ -36,7 +36,7 @@ public class ApprovalIntegrationRestClient extends RestClient {
     private final BbFuelConfiguration config;
 
     private static final String SERVICE_VERSION = "v2";
-    private static final String CLIENT_API = "client-api";
+    private static final String CLIENT_API = "integration-api";
     private static final String APPROVAL_TYPES = "/approval-types";
     private static final String APPROVAL_TYPE_ASSIGNMENTS = "/approval-type-assignments";
     private static final String APPROVAL_TYPE_ASSIGNMENTS_BULK = APPROVAL_TYPE_ASSIGNMENTS + "/bulk";

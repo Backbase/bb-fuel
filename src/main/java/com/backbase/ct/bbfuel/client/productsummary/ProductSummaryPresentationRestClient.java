@@ -28,21 +28,14 @@ public class ProductSummaryPresentationRestClient extends RestClient {
 
     private static final String SERVICE_VERSION = "v2";
     private static final String CLIENT_API = "/client-api";
-    private static final String PRODUCT_SUMMARY_PRESENTATION_SERVICE = "product-summary-presentation-service";
     private static final String ENDPOINT_PRODUCT_SUMMARY = "/productsummary";
-    private static final String ENDPOINT_ARRANGEMENTS = ENDPOINT_PRODUCT_SUMMARY + "/arrangements";
     private static final String ENDPOINT_CONTEXT_ARRANGEMENTS = ENDPOINT_PRODUCT_SUMMARY + "/context/arrangements";
 
     @PostConstruct
     public void init() {
         setBaseUri(config.getPlatform().getGateway());
         setVersion(SERVICE_VERSION);
-        setInitialPath(PRODUCT_SUMMARY_PRESENTATION_SERVICE + CLIENT_API);
-    }
-
-    public Response getProductSummaryArrangements() {
-        return requestSpec()
-            .get(getPath(ENDPOINT_ARRANGEMENTS));
+        setInitialPath(config.getDbsServiceNames().getProducts() + CLIENT_API);
     }
 
     public List<ArrangementsByBusinessFunctionGetResponseBody> getSepaCtArrangements() {

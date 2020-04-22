@@ -9,10 +9,10 @@ bb-fuel:
     auth: http://edge.${environment.name}.${environment.domain}/api/auth/login
     tokenconverter: http://tokenconverter.${environment.name}.${environment.domain}
   dbs:
-    approvals: http://approvals.${environment.name}.${environment.domain}/integration-api
+    approvals: http://approvals.${environment.name}.${environment.domain}/client-api
     transactions: http://transactions.${environment.name}.${environment.domain}
-    contactmanager: http://contacts.${environment.name}.${environment.domain}/integration-api
-    messages: http://messagecenter.${environment.name}.${environment.domain}/integration-api
+    contactmanager: http://contacts.${environment.name}.${environment.domain}/client-api
+    messages: http://messagecenter.${environment.name}.${environment.domain}/client-api
     user: http://user.${environment.name}.${environment.domain}
     legalentity: http://legalentity.${environment.name}.${environment.domain}
     accessgroup: http://accessgroup.${environment.name}.${environment.domain}
@@ -26,9 +26,9 @@ bb-fuel:
     billpay: billpay-presentation-service
     legalentity: legalentity-presentation-service
     limits: limits-presentation-service
-    messages: messagecenter
-    notifications: notifications-service
-    payments: payment-order-service
+    messages: messages-presentation-service
+    notifications: notifications-presentation-service
+    payments: payment-order-presentation-service
     pfm: categories-management-presentation-service
     user: user-presentation-service
     products: product-summary-presentation-service

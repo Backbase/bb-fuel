@@ -19,7 +19,6 @@ public class ServiceAgreementsPresentationRestClient extends RestClient {
 
     private static final String SERVICE_VERSION = "v2";
     private static final String CLIENT_API = "client-api";
-    private static final String ACCESS_GROUP_PRESENTATION_SERVICE = "accessgroup-presentation-service";
     private static final String ENDPOINT_ACCESS_GROUPS = "/accessgroups";
     private static final String ENDPOINT_SERVICE_AGREEMENTS = ENDPOINT_ACCESS_GROUPS + "/serviceagreements";
     private static final String ENDPOINT_SERVICE_AGREEMENTS_BY_ID = ENDPOINT_SERVICE_AGREEMENTS + "/%s";
@@ -30,7 +29,7 @@ public class ServiceAgreementsPresentationRestClient extends RestClient {
     public void init() {
         setBaseUri(config.getPlatform().getGateway());
         setVersion(SERVICE_VERSION);
-        setInitialPath(ACCESS_GROUP_PRESENTATION_SERVICE + "/" + CLIENT_API);
+        setInitialPath(config.getDbsServiceNames().getAccessgroup() + "/" + CLIENT_API);
     }
 
     public Response retrieveServiceAgreementByCreatorLegalEntityId(String internalCreatorLegalEntityId) {

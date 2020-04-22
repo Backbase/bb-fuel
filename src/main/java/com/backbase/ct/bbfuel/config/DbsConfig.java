@@ -11,6 +11,10 @@ import lombok.Setter;
 public class DbsConfig {
 
     /**
+     * URI to actions.
+     */
+    private String actions;
+    /**
      * URI to approvals.
      */
     private String approvals;
@@ -56,13 +60,33 @@ public class DbsConfig {
     private String notifications;
 
     /**
-     *  URI to billpay mockbank
+     *  URI to billpay mockbank.
      */
     private String billpay;
 
     /**
-     * URI to accounts
+     * URI to accounts.
      */
     private String accounts;
+
+    /**
+     * URI to limits.
+     */
+    private String limits;
+
+    /**
+     * URI to payments.
+     */
+    private String payments;
+
+    /**
+     * URI to Personal Finance Management.
+     */
+    private String pfm;
+
+    /**
+     * URI to Products.
+     */
+    private String products;
 
 }

@@ -4,7 +4,7 @@ pipeline {
     agent any
 
     parameters {
-        choice(name: 'SPRING_PROFILES_ACTIVE', choices: 'k8s\naws\npcf', description: 'Select the profile to operate.\nK8s (default):\nKubernetes requires environment name\n\nAWS: \n Requires environment name\n\nPCF: \nRequires space name (environment name will be ignored)')
+        choice(name: 'SPRING_PROFILES_ACTIVE', choices: 'k8s\nk8s-3ang\naws\npcf', description: 'Select the profile to operate.\nK8s (default):\nKubernetes requires environment name\n\nk8s-3ang: \nUsed for DBS with triangular services only\n\nAWS: \n Requires environment name\n\nPCF: \nRequires space name (environment name will be ignored)')
         string(name: 'ENVIRONMENT_NAME', defaultValue: '00.dbs', description: 'K8S example: 42.dbs\n\nAutoconfig example: frosty-snow-99\nRead before running: https://github.com/Backbase/bb-fuel/blob/master/README.md')
         string(name: 'PCF_SPACE', defaultValue: 'your-space', description: 'Required only for PCF. Space name, example: approvals\nRead before running: https://github.com/Backbase/bb-fuel/blob/master/README.md')
         booleanParam(name: 'INGEST_ACCESS_CONTROL', defaultValue: true, description: 'Ingest access control setup')

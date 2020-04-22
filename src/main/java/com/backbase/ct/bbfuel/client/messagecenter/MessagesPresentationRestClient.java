@@ -18,7 +18,6 @@ public class MessagesPresentationRestClient extends RestClient {
     private final BbFuelConfiguration config;
 
     private static final String SERVICE_VERSION = "v4";
-    private static final String MESSAGES_PRESENTATION_SERVICE = "messages-presentation-service";
     private static final String ENDPOINT_MESSAGE_CENTER = "/message-center";
     private static final String ENDPOINT_DRAFTS = ENDPOINT_MESSAGE_CENTER + "/drafts";
     private static final String ENDPOINT_SEND_DRAFT_REQUEST = ENDPOINT_DRAFTS + "/%s/send-draft-request";
@@ -30,7 +29,7 @@ public class MessagesPresentationRestClient extends RestClient {
     public void init() {
         setBaseUri(config.getPlatform().getGateway());
         setVersion(SERVICE_VERSION);
-        setInitialPath(MESSAGES_PRESENTATION_SERVICE);
+        setInitialPath(config.getDbsServiceNames().getMessages());
     }
 
     public Response postDraft(DraftsPostRequestBody body) {

@@ -19,14 +19,13 @@ public class CategoriesPresentationRestClient extends RestClient {
 
     private static final String SERVICE_VERSION = "v2";
     private static final String CLIENT_API = "client-api";
-    private static final String CATEGORIES_MANAGEMENT_PRESENTATION_SERVICE = "categories-management-presentation-service";
     private static final String ENDPOINT_CATEGORIES = "/categories";
 
     @PostConstruct
     public void init() {
         setBaseUri(config.getPlatform().getGateway());
         setVersion(SERVICE_VERSION);
-        setInitialPath(CATEGORIES_MANAGEMENT_PRESENTATION_SERVICE + "/" + CLIENT_API);
+        setInitialPath(config.getDbsServiceNames().getPfm() + "/" + CLIENT_API);
     }
 
     public List<SubCategory> retrieveCategories() {

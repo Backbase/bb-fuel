@@ -17,14 +17,13 @@ public class ActionRecipesPresentationRestClient extends RestClient {
 
     private static final String SERVICE_VERSION = "v2";
     private static final String CLIENT_API = "client-api";
-    private static final String ACTIONRECIPES_PRESENTATION_SERVICE = "actionrecipes-presentation-service";
     private static final String ENDPOINT_ACTION_RECIPES = "/action-recipes";
 
     @PostConstruct
     public void init() {
         setBaseUri(config.getPlatform().getGateway());
         setVersion(SERVICE_VERSION);
-        setInitialPath(ACTIONRECIPES_PRESENTATION_SERVICE + "/" + CLIENT_API);
+        setInitialPath(config.getDbsServiceNames().getActions() + "/" + CLIENT_API);
     }
 
     public Response createActionRecipe(ActionRecipesPostRequestBody actionRecipesPostRequestBody) {

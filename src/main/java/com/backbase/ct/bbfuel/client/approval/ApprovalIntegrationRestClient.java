@@ -36,7 +36,6 @@ public class ApprovalIntegrationRestClient extends RestClient {
     private final BbFuelConfiguration config;
 
     private static final String SERVICE_VERSION = "v2";
-    private static final String CLIENT_API = "client-api";
     private static final String APPROVAL_TYPES = "/approval-types";
     private static final String APPROVAL_TYPE_ASSIGNMENTS = "/approval-type-assignments";
     private static final String APPROVAL_TYPE_ASSIGNMENTS_BULK = APPROVAL_TYPE_ASSIGNMENTS + "/bulk";
@@ -47,7 +46,6 @@ public class ApprovalIntegrationRestClient extends RestClient {
     @PostConstruct
     public void init() {
         setBaseUri(config.getDbs().getApprovals());
-        setInitialPath(CLIENT_API);
         setVersion(SERVICE_VERSION);
     }
 
@@ -58,23 +56,11 @@ public class ApprovalIntegrationRestClient extends RestClient {
             .post(getPath(APPROVAL_TYPES));
     }
 
-    public Response deleteApprovalType(String approvalTypeId) {
-        return requestSpec()
-            .contentType(ContentType.JSON)
-            .delete(getPath(APPROVAL_TYPES + "/" + approvalTypeId));
-    }
-
     public Response assignApprovalTypes(IntegrationPostBulkApprovalTypeAssignmentRequest body) {
         return requestSpec()
             .contentType(ContentType.JSON)
             .body(body)
             .post(getPath(APPROVAL_TYPE_ASSIGNMENTS_BULK));
-    }
-
-    public Response deleteApprovalTypeAssignment(String jobProfileId) {
-        return requestSpec()
-            .contentType(ContentType.JSON)
-            .delete(getPath(APPROVAL_TYPE_ASSIGNMENTS + "/" + jobProfileId));
     }
 
     public Response createPolicy(PostPolicyRequest body) {
@@ -89,12 +75,6 @@ public class ApprovalIntegrationRestClient extends RestClient {
             .contentType(ContentType.JSON)
             .body(body)
             .post(getPath(POLICY_ASSIGNMENTS_BULK));
-    }
-
-    public Response deletePolicy(String policyId) {
-        return requestSpec()
-            .contentType(ContentType.JSON)
-            .delete(getPath(POLICIES + "/" + policyId));
     }
 
     public String createApprovalType(String name, Integer rank) {
@@ -141,20 +121,4 @@ public class ApprovalIntegrationRestClient extends RestClient {
             .then()
             .statusCode(SC_NO_CONTENT);
     }
-
-    public IntegrationDeletePolicyAssignmentResponse deletePolicyAssignment(String externalServiceAgreementId,
-        String resource,
-        String function) {
-        return requestSpec()
-            .contentType(ContentType.JSON)
-            .queryParam("externalServiceAgreementId", externalServiceAgreementId)
-            .queryParam("resource", resource)
-            .queryParam("function", function)
-            .delete(getPath(POLICY_ASSIGNMENTS))
-            .then()
-            .statusCode(SC_OK)
-            .extract()
-            .as(IntegrationDeletePolicyAssignmentResponse.class);
-    }
-
 }

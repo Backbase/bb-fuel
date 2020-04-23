@@ -30,6 +30,11 @@ public class BbFuelConfiguration {
     DbsConfig dbs;
 
     /**
+     * Configuration of DBS service names.
+     */
+    DbsConfig dbsServiceNames;
+
+    /**
      * Spring Boot does not automatically define a RestTemplate and BB codeGen generated clients require this.
      *
      * @param builder configurable builder to build a RestTemplate

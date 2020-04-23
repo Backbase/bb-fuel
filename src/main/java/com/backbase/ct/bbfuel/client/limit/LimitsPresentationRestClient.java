@@ -18,14 +18,13 @@ public class LimitsPresentationRestClient extends RestClient {
 
     private static final String SERVICE_VERSION = "v2";
     private static final String CLIENT_API = "client-api";
-    private static final String LIMITS_PRESENTATION_SERVICE = "limits-presentation-service";
     private static final String ENDPOINT_LIMITS = "/limits";
 
     @PostConstruct
     public void init() {
         setBaseUri(config.getPlatform().getGateway());
         setVersion(SERVICE_VERSION);
-        setInitialPath(LIMITS_PRESENTATION_SERVICE + "/" + CLIENT_API);
+        setInitialPath(config.getDbsServiceNames().getLimits() + "/" + CLIENT_API);
     }
 
     public Response createTransactionalLimit(CreateLimitRequestBody transactionalLimitsPostRequestBody) {

@@ -22,7 +22,6 @@ public class LegalEntityPresentationRestClient extends RestClient {
 
     private static final String SERVICE_VERSION = "v2";
     private static final String CLIENT_API = "client-api";
-    private static final String LEGAL_ENTITY_PRESENTATION_SERVICE = "legalentity-presentation-service";
     private static final String ENDPOINT_LEGAL_ENTITIES = "/legalentities";
     private static final String ENDPOINT_SUB_ENTITIES = ENDPOINT_LEGAL_ENTITIES + "/sub-entities";
     private static final String ENDPOINT_EXTERNAL = ENDPOINT_LEGAL_ENTITIES + "/external/%s";
@@ -33,7 +32,7 @@ public class LegalEntityPresentationRestClient extends RestClient {
     public void init() {
         setBaseUri(config.getPlatform().getGateway());
         setVersion(SERVICE_VERSION);
-        setInitialPath(LEGAL_ENTITY_PRESENTATION_SERVICE + "/" + CLIENT_API);
+        setInitialPath(config.getDbsServiceNames().getLegalentity() + "/" + CLIENT_API);
     }
 
     public List<LegalEntitiesGetResponseBody> retrieveLegalEntities() {

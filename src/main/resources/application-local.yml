@@ -7,9 +7,9 @@ bb-fuel:
     auth: ${bb-fuel.platform.gateway}/auth/login
     tokenconverter: ${bb-fuel.platform.infra}/bb-authentication-token-converter-service
   dbs:
-    approvals: http://localhost:8090/approval-integration-service
+    approvals: http://localhost:8090/approval-service/integration-api
     transactions: http://localhost:8083/transaction-integration-service
-    contactmanager: http://localhost:8081/contact-integration-service
+    contactmanager: http://localhost:8081/contact-manager/integration-api
     messages: http://localhost:8084/messages-integration-service
     user: http://localhost:8086/user-integration-service
     legalentity: http://localhost:8086/legalentity-integration-service
@@ -18,3 +18,16 @@ bb-fuel:
     notifications: http://localhost:8082/notifications-presentation-service
     billpay: http://localhost:8006/billpay-service
     accounts: http://localhost:8082/account-integration-service
+  dbs-service-names:
+    accessgroup: accessgroup-presentation-service
+    actions: actionrecipes-presentation-service
+    arrangements: product-summary-presentation-service
+    billpay: billpay-presentation-service
+    legalentity: legalentity-presentation-service
+    limits: limits-presentation-service
+    messages: messagecenter
+    notifications: notifications-service
+    payments: payment-order-service
+    pfm: categories-management-presentation-service
+    user: user-presentation-service
+    products: product-summary-presentation-service

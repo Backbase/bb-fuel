@@ -24,7 +24,6 @@ public class ArrangementsIntegrationRestClient extends RestClient {
     private final BbFuelConfiguration config;
 
     private static final String SERVICE_VERSION = "v2";
-    private static final String CLIENT_API = "client-api";
     private static final String ENDPOINT_ARRANGEMENTS = "/arrangements";
     private static final String ENDPOINT_PRODUCTS = "/products";
     private static final String ENDPOINT_BALANCE_HISTORY = "/balance-history";
@@ -33,7 +32,6 @@ public class ArrangementsIntegrationRestClient extends RestClient {
     public void init() {
         setBaseUri(config.getDbs().getArrangements());
         setVersion(SERVICE_VERSION);
-        setInitialPath(CLIENT_API);
     }
 
     public ArrangementsPostResponseBody ingestArrangement(ArrangementsPostRequestBody body) {

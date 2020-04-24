@@ -61,6 +61,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class RestClient {
 
+    protected static final String CLIENT_API = "client-api";
     private static final String PARAMETER_NAME = "CONNECTION_MANAGER_TIMEOUT";
     private static final int TIMEOUT_VALUE = 10000;
     private static final String PRODUCTION_SUPPORT_HEALTH_PATH = "/production-support/health";

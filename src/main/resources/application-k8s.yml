@@ -9,16 +9,15 @@ bb-fuel:
     auth: http://edge.${environment.name}.${environment.domain}/api/auth/login
     tokenconverter: http://tokenconverter.${environment.name}.${environment.domain}
   dbs:
-    approvals: http://approvals.${environment.name}.${environment.domain}/integration-api
-    transactions: http://transactions.${environment.name}.${environment.domain}
-    contactmanager: http://contacts.${environment.name}.${environment.domain}/integration-api
-    messages: http://messagecenter.${environment.name}.${environment.domain}/integration-api
-    user: http://user.${environment.name}.${environment.domain}
-    legalentity: http://legalentity.${environment.name}.${environment.domain}
     accessgroup: http://accessgroup.${environment.name}.${environment.domain}
-    arrangements: http://arrangements.${environment.name}.${environment.domain}
-    billpay: http://billpayprovidermock.${environment.name}.${environment.domain}
-    accounts: http://account.${environment.name}.${environment.domain}
+    accounts: http://account.${environment.name}.${environment.domain}/service-api
+    approvals: http://approvals.${environment.name}.${environment.domain}/integration-api
+    arrangements: http://arrangements.${environment.name}.${environment.domain}/client-api
+    billpay: http://billpayprovidermock.${environment.name}.${environment.domain}/client-api
+    contactmanager: http://contacts.${environment.name}.${environment.domain}/integration-api
+    legalentity: http://legalentity.${environment.name}.${environment.domain}
+    transactions: http://transactions.${environment.name}.${environment.domain}
+    user: http://user.${environment.name}.${environment.domain}/client-api
   dbs-service-names:
     accessgroup: accessgroup-presentation-service
     actions: actionrecipes-presentation-service
@@ -26,7 +25,7 @@ bb-fuel:
     billpay: billpay-presentation-service
     legalentity: legalentity-presentation-service
     limits: limits-presentation-service
-    messages: messagecenter
+    messages: messages-service
     notifications: notifications-service
     payments: payment-order-service
     pfm: categories-management-presentation-service

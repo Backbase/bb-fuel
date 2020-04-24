@@ -11,16 +11,15 @@ bb-fuel:
     auth: ${bb-fuel.platform.gateway}/auth/login
     tokenconverter: ${bb-fuel.platform.infra}/bb-authentication-token-converter-service
   dbs:
-    approvals: http://${environment.name}-approvals.${environment.domain}/approval-integration-service/client-api
-    transactions: http://${environment.name}-transactions.${environment.domain}/transaction-integration-service
-    contactmanager: http://${environment.name}-contactmanager.${environment.domain}/contact-integration-service/client-api
-    messages: http://${environment.name}-messages.${environment.domain}/messages-integration-service
-    user: http://${environment.name}-entitlements.${environment.domain}/user-integration-service
-    legalentity: http://${environment.name}-entitlements.${environment.domain}/legalentity-integration-service
     accessgroup: http://${environment.name}-entitlements.${environment.domain}/accessgroup-integration-service
-    arrangements: http://${environment.name}-productsummary.${environment.domain}/arrangements-integration-service
-    billpay: http://${environment.name}-billpay.${environment.domain}/billpay-mockbank
-    accounts: http://${environment.name}-productsummary.${environment.domain}/account-integration-service
+    accounts: http://${environment.name}-productsummary.${environment.domain}/account-integration-service/service-api
+    approvals: http://${environment.name}-approvals.${environment.domain}/approval-integration-service/client-api
+    arrangements: http://${environment.name}-productsummary.${environment.domain}/arrangements-integration-service/client-api
+    billpay: http://${environment.name}-billpay.${environment.domain}/billpay-mockbank/client-api
+    contactmanager: http://${environment.name}-contactmanager.${environment.domain}/contact-manager/integration-api
+    legalentity: http://${environment.name}-entitlements.${environment.domain}/legalentity-integration-service
+    transactions: http://${environment.name}-transactions.${environment.domain}/transaction-integration-service
+    user: http://${environment.name}-entitlements.${environment.domain}/user-integration-service/client-api
   dbs-service-names:
     accessgroup: accessgroup-presentation-service
     actions: actionrecipes-presentation-service

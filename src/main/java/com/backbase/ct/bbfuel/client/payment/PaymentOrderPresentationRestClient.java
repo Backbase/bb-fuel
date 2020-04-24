@@ -16,7 +16,6 @@ public class PaymentOrderPresentationRestClient extends RestClient {
     private final BbFuelConfiguration config;
 
     private static final String SERVICE_VERSION = "v2";
-    private static final String CLIENT_API = "client-api";
     private static final String ENDPOINT_PAYMENT_ORDERS = "/payment-orders";
 
     @PostConstruct

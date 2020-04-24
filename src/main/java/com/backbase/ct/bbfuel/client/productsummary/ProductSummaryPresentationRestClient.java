@@ -27,7 +27,6 @@ public class ProductSummaryPresentationRestClient extends RestClient {
     private final BbFuelConfiguration config;
 
     private static final String SERVICE_VERSION = "v2";
-    private static final String CLIENT_API = "/client-api";
     private static final String ENDPOINT_PRODUCT_SUMMARY = "/productsummary";
     private static final String ENDPOINT_CONTEXT_ARRANGEMENTS = ENDPOINT_PRODUCT_SUMMARY + "/context/arrangements";
 
@@ -35,7 +34,7 @@ public class ProductSummaryPresentationRestClient extends RestClient {
     public void init() {
         setBaseUri(config.getPlatform().getGateway());
         setVersion(SERVICE_VERSION);
-        setInitialPath(config.getDbsServiceNames().getProducts() + CLIENT_API);
+        setInitialPath(config.getDbsServiceNames().getProducts() + "/" + CLIENT_API);
     }
 
     public List<ArrangementsByBusinessFunctionGetResponseBody> getSepaCtArrangements() {

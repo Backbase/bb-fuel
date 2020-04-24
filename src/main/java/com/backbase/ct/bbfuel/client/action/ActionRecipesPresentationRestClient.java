@@ -16,7 +16,6 @@ public class ActionRecipesPresentationRestClient extends RestClient {
     private final BbFuelConfiguration config;
 
     private static final String SERVICE_VERSION = "v2";
-    private static final String CLIENT_API = "client-api";
     private static final String ENDPOINT_ACTION_RECIPES = "/action-recipes";
 
     @PostConstruct
@@ -32,5 +31,4 @@ public class ActionRecipesPresentationRestClient extends RestClient {
             .body(actionRecipesPostRequestBody)
             .post(getPath(ENDPOINT_ACTION_RECIPES));
     }
-
 }

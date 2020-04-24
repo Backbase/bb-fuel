@@ -15,8 +15,7 @@ import lombok.RequiredArgsConstructor;
 public class BillPayPresentationRestClient extends RestClient {
     
     private final BbFuelConfiguration config;
-    
-    private static final String CLIENT_API = "/client-api";
+
     private static final String SERVICE_VERSION = "v2";
     private static final String ENDPOINT_BILLPAY = "/bill-pay";
     private static final String ENDPOINT_ENROL = ENDPOINT_BILLPAY + "/enrolment";
@@ -25,12 +24,11 @@ public class BillPayPresentationRestClient extends RestClient {
     public void init() {
         setBaseUri(config.getPlatform().getGateway());
         setVersion(SERVICE_VERSION);
-        setInitialPath(config.getDbsServiceNames().getBillpay() + CLIENT_API);
+        setInitialPath(config.getDbsServiceNames().getBillpay() + "/" + CLIENT_API);
     }
     
     public Response enrolUser() {
         return requestSpec()
-                        .post(getPath(ENDPOINT_ENROL));
+            .post(getPath(ENDPOINT_ENROL));
     }
-
 }

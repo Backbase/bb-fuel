@@ -21,13 +21,11 @@ public class AccountsIntegrationRestClient extends RestClient {
     private final BbFuelConfiguration config;
 
     private static final String SERVICE_VERSION = "v2";
-    private static final String SERVICE = "service-api";
     private static final String ENDPOINT_ARRANGEMENTS = "/arrangements";
 
     @PostConstruct
     public void init() {
         setBaseUri(config.getDbs().getAccounts());
-        setInitialPath(SERVICE);
         setVersion(SERVICE_VERSION);
     }
 

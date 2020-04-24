@@ -17,13 +17,11 @@ public class BillPayMockBankRestClient extends RestClient {
     private final BbFuelConfiguration config;
 
     private static final String SERVICE_VERSION = "v2";
-    private static final String SERVICE = "/client-api";
     private static final String ENDPOINT_USER = "/bill-pay/enrol-user";
 
     @PostConstruct
     public void init() {
         setBaseUri(config.getDbs().getBillpay());
-        setInitialPath(SERVICE);
         setVersion(SERVICE_VERSION);
     }
 

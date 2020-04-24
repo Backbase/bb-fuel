@@ -24,7 +24,7 @@ public class NotificationsPresentationRestClient extends RestClient {
     public void init() {
         setBaseUri(config.getPlatform().getGateway());
         setVersion(SERVICE_VERSION);
-        setInitialPath(config.getDbsServiceNames().getNotifications());
+        setInitialPath(config.getDbsServiceNames().getNotifications() + "/" + CLIENT_API);
     }
 
     /** Create notification. */

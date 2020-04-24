@@ -23,7 +23,6 @@ public class UserContextPresentationRestClient extends RestClient {
     private final BbFuelConfiguration config;
 
     private static final String SERVICE_VERSION = "v2";
-    private static final String CLIENT_API = "client-api";
     private static final String ENDPOINT_ACCESS_GROUPS = "/accessgroups";
     private static final String ENDPOINT_USER_CONTEXT = ENDPOINT_ACCESS_GROUPS + "/usercontext";
     private static final String ENDPOINT_USER_CONTEXT_SERVICE_AGREEMENTS = ENDPOINT_USER_CONTEXT + "/serviceagreements";

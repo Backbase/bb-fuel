@@ -25,7 +25,19 @@ public class TransactionsReader extends BaseReader {
         return getRandomFromList(load(globalProperties.getString(CommonConstants.PROPERTY_TRANSACTIONS_DATA_JSON)))
                 .withId(UUID.randomUUID().toString())
                 .withArrangementId(externalArrangementId)
-                .withBookingDate(DateUtils.addDays(new Date(), generateRandomNumberInRange(-180, 0)))
+                .withBookingDate(DateUtils.addDays(new Date(), generateRandomNumberInRange(-180, 0)));
+    }
+
+    /**
+     * To be able to retrieve check images for a transaction, we need at least one of the transactions with
+     * with transactions id = TRANS0000000000001
+     * We need to set the date of the transaction to today so that we can easly find that transaction and test it.
+     */
+    public static TransactionsPostRequestBody loadSingleWithCheckImages(String externalArrangementId) {
+        TransactionsPostRequestBody defaultBody = this.loadSingle(externalArrangementId);
+        return defaultBody.withId("TRANS0000000000001")
+                .withBookingDate(new Date())
+                .withValueDate(new Date())
                 .withCheckSerialNumber(new BigDecimal(generateRandomNumberInRange(1, 99999999)));
     }
 

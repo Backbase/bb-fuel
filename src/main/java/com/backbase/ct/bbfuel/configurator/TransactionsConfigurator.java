@@ -53,6 +53,10 @@ public class TransactionsConfigurator {
         List<SubCategory> finalCategories = new ArrayList<>(retailCategories);
 
         if (isRetail) {
+            // Add 1 check images per account.
+            transactions.add(reader.loadSingleWithCheckImages(externalArrangementId));
+
+            // After that ingest rest of the transactions.
             IntStream.range(0, randomAmount).parallel()
                     .forEach(randomNumber -> transactions.add(
                             reader.loadSingle(externalArrangementId)));

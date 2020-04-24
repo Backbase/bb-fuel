@@ -23,13 +23,13 @@ public class MessagesPresentationRestClient extends RestClient {
     private static final String ENDPOINT_SEND_DRAFT_REQUEST = ENDPOINT_DRAFTS + "/%s/send-draft-request";
     private static final String ENDPOINT_CONVERSATIONS = ENDPOINT_MESSAGE_CENTER + "/conversations";
     private static final String ENDPOINT_CONVERSATION_DRAFTS = ENDPOINT_CONVERSATIONS + "/%s/drafts";
-    private static final String ENDPOINT_TOPICS = ENDPOINT_MESSAGE_CENTER + "/topics";
+    private static final String ENDPOINT_TOPICS = "/employee/topics";
 
     @PostConstruct
     public void init() {
         setBaseUri(config.getPlatform().getGateway());
         setVersion(SERVICE_VERSION);
-        setInitialPath(config.getDbsServiceNames().getMessages());
+        setInitialPath(config.getDbsServiceNames().getMessages() + "/" + CLIENT_API);
     }
 
     public Response postDraft(DraftsPostRequestBody body) {

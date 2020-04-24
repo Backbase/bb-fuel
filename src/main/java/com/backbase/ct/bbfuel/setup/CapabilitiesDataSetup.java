@@ -181,7 +181,8 @@ public class CapabilitiesDataSetup extends BaseSetup {
     private void ingestBillPayUsers() {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_BILLPAY)) {
             this.accessControlSetup.getLegalEntitiesWithUsersExcludingSupport().forEach((le) -> {
-                billpayConfigurator.ingestBillPayUserAndAccounts(le, this.globalProperties.getBoolean(PROPERTY_INGEST_BILLPAY_ACCOUNTS));
+                billpayConfigurator.ingestBillPayUserAndAccounts(le,
+                    this.globalProperties.getBoolean(PROPERTY_INGEST_BILLPAY_ACCOUNTS));
             });
         }
     }

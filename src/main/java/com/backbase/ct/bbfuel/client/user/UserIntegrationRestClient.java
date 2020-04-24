@@ -20,13 +20,11 @@ public class UserIntegrationRestClient extends RestClient {
 
     private final BbFuelConfiguration config;
     private static final String SERVICE_VERSION = "v2";
-    private static final String CLIENT_API = "client-api";
     private static final String ENDPOINT_USERS = "/users";
 
     @PostConstruct
     public void init() {
         setBaseUri(config.getDbs().getUser());
-        setInitialPath(CLIENT_API);
         setVersion(SERVICE_VERSION);
     }
 

@@ -71,8 +71,8 @@ public class BillPayConfigurator {
         if (ingestAccounts) {
             String externalUserId = le.getUserExternalIds().get(0);
             loginRestClient.login(externalUserId, externalUserId);
-            String externalLegalEntityId = this.userPresentationRestClient.
-                retrieveLegalEntityByExternalUserId(externalUserId)
+            String externalLegalEntityId = this.userPresentationRestClient
+                .retrieveLegalEntityByExternalUserId(externalUserId)
                 .getExternalId();
             List<ArrangementItem> arrangementItems = accountsIntegrationRestClient
                 .getArrangements(externalLegalEntityId);

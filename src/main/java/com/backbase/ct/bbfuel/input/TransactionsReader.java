@@ -36,6 +36,7 @@ public class TransactionsReader extends BaseReader {
     public static TransactionsPostRequestBody loadSingleWithCheckImages(String externalArrangementId) {
         TransactionsPostRequestBody defaultBody = this.loadSingle(externalArrangementId);
         return defaultBody.withId("TRANS0000000000001")
+                .withCreditDebitIndicator(DBIT)
                 .withBookingDate(new Date())
                 .withValueDate(new Date())
                 .withCheckSerialNumber(new BigDecimal(generateRandomNumberInRange(1, 99999999)));

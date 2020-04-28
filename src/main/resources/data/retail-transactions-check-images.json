@@ -1,0 +1,30 @@
+[
+  {
+    "amount": 3.99,
+    "category": "Food Drinks",
+    "counterPartyCountry": "US",
+    "counterPartyName": "In N Out Burger",
+    "currency": "USD",
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "IN-N-OUT BURGER #239AMERICAN FO",
+    "billingStatus": "BILLED",
+    "id": "TRANS0000000000001",
+    "creditDebitIndicator": "DBIT"
+  },
+  {
+    "amount": 14.99,
+    "category": "Gas",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Murphy USA",
+    "currency": "USD",
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "Gas",
+    "billingStatus": "BILLED",
+    "id": "TRANS0000000000002",
+    "creditDebitIndicator": "DBIT"
+  }
+]

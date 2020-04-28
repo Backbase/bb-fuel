@@ -30,13 +30,12 @@ public class TransactionsReader extends BaseReader {
 
     /**
      * To be able to retrieve check images for a transaction, we need at least one of the transactions with
-     * with transactions id = TRANS0000000000001
-     * We need to set the date of the transaction to today so that we can easly find that transaction and test it.
+     * with transactions id = TRANS0000000000001 or TRANS0000000000002 in transactions list.
+     * We need to set the date of the transaction to today so that we can easily find that transaction and test it.
      */
     public static TransactionsPostRequestBody loadSingleWithCheckImages(String externalArrangementId) {
         TransactionsPostRequestBody defaultBody = this.loadSingle(externalArrangementId);
-        return defaultBody.withId("TRANS0000000000001")
-                .withCreditDebitIndicator(DBIT)
+        return getRandomFromList(load(globalProperties.getString(CommonConstants.PROPERTY_TRANSACTIONS_CHECK_IMAGES_DATA_JSON)))
                 .withBookingDate(new Date())
                 .withValueDate(new Date())
                 .withCheckSerialNumber(new BigDecimal(generateRandomNumberInRange(1, 99999999)));

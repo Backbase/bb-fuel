@@ -34,8 +34,8 @@ public class TransactionsReader extends BaseReader {
      * We need to set the date of the transaction to today so that we can easily find that transaction and test it.
      */
     public static TransactionsPostRequestBody loadSingleWithCheckImages(String externalArrangementId) {
-        TransactionsPostRequestBody defaultBody = this.loadSingle(externalArrangementId);
         return getRandomFromList(load(globalProperties.getString(CommonConstants.PROPERTY_TRANSACTIONS_CHECK_IMAGES_DATA_JSON)))
+                .withArrangementId(externalArrangementId)
                 .withBookingDate(new Date())
                 .withValueDate(new Date());
     }

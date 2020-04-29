@@ -11,7 +11,8 @@
     "description": "IN-N-OUT BURGER #239AMERICAN FO",
     "billingStatus": "BILLED",
     "id": "TRANS0000000000001",
-    "creditDebitIndicator": "DBIT"
+    "creditDebitIndicator": "DBIT",
+    "checkSerialNumber": 123456789
   },
   {
     "amount": 14.99,
@@ -25,6 +26,7 @@
     "description": "Gas",
     "billingStatus": "BILLED",
     "id": "TRANS0000000000002",
-    "creditDebitIndicator": "DBIT"
+    "creditDebitIndicator": "DBIT",
+    "checkSerialNumber": 234567891
   }
 ]

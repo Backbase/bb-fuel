@@ -37,8 +37,7 @@ public class TransactionsReader extends BaseReader {
         TransactionsPostRequestBody defaultBody = this.loadSingle(externalArrangementId);
         return getRandomFromList(load(globalProperties.getString(CommonConstants.PROPERTY_TRANSACTIONS_CHECK_IMAGES_DATA_JSON)))
                 .withBookingDate(new Date())
-                .withValueDate(new Date())
-                .withCheckSerialNumber(new BigDecimal(generateRandomNumberInRange(1, 99999999)));
+                .withValueDate(new Date());
     }
 
     private List<TransactionsPostRequestBody> load(String uri) {

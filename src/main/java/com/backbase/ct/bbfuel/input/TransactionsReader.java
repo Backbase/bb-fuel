@@ -33,7 +33,7 @@ public class TransactionsReader extends BaseReader {
      * transaction-integration-check-images-api
      * And the booking date and value date should be set to today so that we can easily find that transaction and test it.
      */
-    public static TransactionsPostRequestBody loadSingleWithCheckImages(String externalArrangementId) {
+    public TransactionsPostRequestBody loadSingleWithCheckImages(String externalArrangementId) {
         return getRandomFromList(load(globalProperties.getString(CommonConstants.PROPERTY_TRANSACTIONS_CHECK_IMAGES_DATA_JSON)))
                 .withArrangementId(externalArrangementId)
                 .withBookingDate(new Date())

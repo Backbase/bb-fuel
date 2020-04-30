@@ -25,8 +25,19 @@ public class TransactionsReader extends BaseReader {
         return getRandomFromList(load(globalProperties.getString(CommonConstants.PROPERTY_TRANSACTIONS_DATA_JSON)))
                 .withId(UUID.randomUUID().toString())
                 .withArrangementId(externalArrangementId)
-                .withBookingDate(DateUtils.addDays(new Date(), generateRandomNumberInRange(-180, 0)))
-                .withCheckSerialNumber(new BigDecimal(generateRandomNumberInRange(1, 99999999)));
+                .withBookingDate(DateUtils.addDays(new Date(), generateRandomNumberInRange(-180, 0)));
+    }
+
+    /**
+     * To be able to find check images in front end apps easily, created transactions should match with
+     * transaction-integration-check-images-api
+     * And the booking date and value date should be set to today so that we can easily find that transaction and test it.
+     */
+    public static TransactionsPostRequestBody loadSingleWithCheckImages(String externalArrangementId) {
+        return getRandomFromList(load(globalProperties.getString(CommonConstants.PROPERTY_TRANSACTIONS_CHECK_IMAGES_DATA_JSON)))
+                .withArrangementId(externalArrangementId)
+                .withBookingDate(new Date())
+                .withValueDate(new Date());
     }
 
     private List<TransactionsPostRequestBody> load(String uri) {

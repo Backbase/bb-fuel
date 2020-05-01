@@ -242,9 +242,8 @@ public class AccessControlSetup extends BaseSetup {
 
     private void ingestTransactions(List<ArrangementId> arrangementIds, boolean isRetail) {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_TRANSACTIONS)) {
-            arrangementIds.parallelStream()
-                .forEach(arrangementId -> this.transactionsConfigurator
-                    .ingestTransactionsByArrangement(arrangementId.getExternalArrangementId(), isRetail));
+            arrangementIds.forEach(arrangementId -> this.transactionsConfigurator
+                .ingestTransactionsByArrangement(arrangementId.getExternalArrangementId(), isRetail));
         }
     }
 
@@ -300,7 +299,8 @@ public class AccessControlSetup extends BaseSetup {
                     .findAssignedProductGroupsIds(externalServiceAgreementId, user);
                 List<IntegrationIdentifier> dataGroupIdentifiers = new ArrayList<>();
 
-                dataGroupIds.forEach(dataGroupId -> dataGroupIdentifiers.add(new IntegrationIdentifier().withIdIdentifier(dataGroupId)));
+                dataGroupIds.forEach(
+                    dataGroupId -> dataGroupIdentifiers.add(new IntegrationIdentifier().withIdIdentifier(dataGroupId)));
 
                 functionGroupDataGroups.add(new IntegrationFunctionGroupDataGroup()
                     .withFunctionGroupIdentifier(

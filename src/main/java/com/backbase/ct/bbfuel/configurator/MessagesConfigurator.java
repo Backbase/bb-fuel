@@ -10,6 +10,7 @@ import static org.apache.http.HttpStatus.SC_OK;
 
 import com.backbase.ct.bbfuel.client.common.LoginRestClient;
 import com.backbase.ct.bbfuel.client.messagecenter.MessagesPresentationRestClient;
+import com.backbase.ct.bbfuel.client.user.UserPresentationRestClient;
 import com.backbase.ct.bbfuel.data.MessagesDataGenerator;
 import com.backbase.ct.bbfuel.service.LegalEntityService;
 import com.backbase.ct.bbfuel.util.CommonHelpers;
@@ -34,6 +35,7 @@ public class MessagesConfigurator {
     private final LoginRestClient loginRestClient;
     private final MessagesPresentationRestClient messagesPresentationRestClient;
     private final LegalEntityService legalEntityService;
+    private final UserPresentationRestClient userPresentationRestClient;
 
     public void ingestConversations(String externalUserId) {
         int howManyMessages = CommonHelpers.generateRandomNumberInRange(globalProperties.getInt(PROPERTY_MESSAGES_MIN),
@@ -46,9 +48,11 @@ public class MessagesConfigurator {
 
         List<String> topicIds = new ArrayList<>();
         String bankAdmin = legalEntityService.getRootAdmin();
+        String bankAdminInternalId = userPresentationRestClient.getUserByExternalId(bankAdmin).getId();
+
         IntStream.range(0, howManyTopics).forEach(number -> {
             String topicId = messagesPresentationRestClient.postTopic(MessagesDataGenerator
-                .generateTopicPostRequestBody(singleton(bankAdmin)))
+                .generateTopicPostRequestBody(singleton(bankAdminInternalId)))
                 .then()
                 .statusCode(SC_ACCEPTED)
                 .extract()

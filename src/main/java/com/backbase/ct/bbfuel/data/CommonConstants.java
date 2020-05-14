@@ -76,6 +76,7 @@ public final class CommonConstants {
 
     // Product summary
     public static final String PROPERTY_PRODUCTS_JSON_LOCATION = "products.json";
+    public static final String PROPERTY_ARRANGEMENT_CURRENT_ACCOUNT_EXTERNAL_IDS = "arrangement.currentaccount.externalIds";
 
     // Payments
     public static final String PAYMENT_TYPE_SEPA_CREDIT_TRANSFER = "SEPA_CREDIT_TRANSFER";

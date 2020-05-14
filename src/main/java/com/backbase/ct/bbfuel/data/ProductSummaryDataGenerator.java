@@ -58,7 +58,7 @@ public class ProductSummaryDataGenerator {
         }
 
         String propertyValue = GlobalProperties.getInstance()
-            .getString(CommonConstants.PROPERTY_ARRANGEMENT_CURRENT_ACCOUNT_EXTERNALIDS);
+            .getString(CommonConstants.PROPERTY_ARRANGEMENT_CURRENT_ACCOUNT_EXTERNAL_IDS);
         Splitter.on(',').trimResults().split(propertyValue).forEach(staticCurrentAccountArrangementsQueue::add);
     }
 

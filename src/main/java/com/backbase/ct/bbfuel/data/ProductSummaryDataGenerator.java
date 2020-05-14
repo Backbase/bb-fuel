@@ -43,7 +43,7 @@ public class ProductSummaryDataGenerator {
     private static final int WEEKS_IN_A_QUARTER = 13;
     private static final int DAYS_IN_A_WEEK = 7;
     private static final String EUR = "EUR";
-    private static final ConcurrentLinkedQueue<String> staticCurrentaccountArrangementsQueue = new ConcurrentLinkedQueue<>();
+    private static final ConcurrentLinkedQueue<String> staticCurrentAccountArrangementsQueue = new ConcurrentLinkedQueue<>();
 
     static {
         List<String> allowed = asList("AT", "BE", "BG", "CH", "CY", "CZ", "DE", "DK", "EE", "ES", "FI", "FR", "GB",
@@ -58,8 +58,8 @@ public class ProductSummaryDataGenerator {
         }
 
         String propertyValue = GlobalProperties.getInstance()
-            .getString(CommonConstants.PROPERTY_ARRANGEMENT_CURRENTACCOUNT_EXTERNALIDS);
-        Splitter.on(',').trimResults().split(propertyValue).forEach(staticCurrentaccountArrangementsQueue::add);
+            .getString(CommonConstants.PROPERTY_ARRANGEMENT_CURRENT_ACCOUNT_EXTERNALIDS);
+        Splitter.on(',').trimResults().split(propertyValue).forEach(staticCurrentAccountArrangementsQueue::add);
     }
 
     static String generateRandomIban() {
@@ -101,7 +101,7 @@ public class ProductSummaryDataGenerator {
             String currentAccountName = productGroupSeed.getCurrentAccountNames().get(currentAccountNameIndex);
             String currency = productGroupSeed.getCurrencies().get(currencyIndex);
             ArrangementsPostRequestBody arrangementsPostRequestBody = getArrangementsPostRequestBody(
-                Optional.ofNullable(staticCurrentaccountArrangementsQueue.poll()), externalLegalEntityId,
+                Optional.ofNullable(staticCurrentAccountArrangementsQueue.poll()), externalLegalEntityId,
                 currentAccountName, currency, 1);
 
             HashSet<DebitCard> debitCards = new HashSet<>();

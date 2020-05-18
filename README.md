@@ -139,6 +139,20 @@ bb-fuel supports multiple DBS versions. See below which version maps to the requ
 Note: Starting version 2.4.0 Kubernetes is added as supported platform.
 Note: Starting version 2.0 PCF is added as supported platform.
 
+## Installation
+
+- Install [IntelliJ](https://www.jetbrains.com/idea/) IDE.
+
+- [Java](https://www.java.com/en/) installed
+
+- Install and configure [Maven](https://www.jetbrains.com/help/idea/maven-support.html#maven_import_project_start).
+    - You may also install `maven` by using `homebrew` with following command: `brew install maven`.
+- Clone the [BBFuel](https://github.com/Backbase/bb-fuel) repository.
+- Link Backbase artifacts to your local project by following this [guide](https://backbase.atlassian.net/wiki/spaces/NMB/pages/1819150080/How+to+configure+BB-Fuel+for+Backbase+artifacts).
+- Open the project in IntelliJ
+- Execute the command: `mvn clean install` to compile the project
+- In [#s-bb-fuel](https://backbase.slack.com/archives/CG231B6FM) slack channel, ask for permissions to push changes.
+   
 ## Contributing
 You are welcome to provide bug fixes and new features in the form of pull requests. If you'd like to contribute, please be mindful of the following guidelines:
 

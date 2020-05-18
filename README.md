@@ -142,9 +142,7 @@ Note: Starting version 2.0 PCF is added as supported platform.
 ## Installation
 
 - Install [IntelliJ](https://www.jetbrains.com/idea/) IDE.
-
 - [Java](https://www.java.com/en/) installed
-
 - Install and configure [Maven](https://www.jetbrains.com/help/idea/maven-support.html#maven_import_project_start).
     - You may also install `maven` by using `homebrew` with following command: `brew install maven`.
 - Clone the [BBFuel](https://github.com/Backbase/bb-fuel) repository.

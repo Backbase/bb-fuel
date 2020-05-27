@@ -1,12 +1,9 @@
 package com.backbase.ct.bbfuel.data;
 
-import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
-
-import com.backbase.dbs.messages.presentation.rest.spec.v4.messagecenter.ConversationDraftsPostRequestBody;
-import com.backbase.dbs.messages.presentation.rest.spec.v4.messagecenter.DraftsPostRequestBody;
-import com.backbase.dbs.messages.presentation.rest.spec.v4.messagecenter.TopicsPostRequestBody;
+import com.backbase.dbs.messages.rest.spec.v4.messagecenter.ConversationMessageDraftPostRequestBody;
+import com.backbase.dbs.messages.rest.spec.v4.messagecenter.MessageDraftsPostRequestBody;
+import com.backbase.dbs.messages.rest.spec.v4.messagecenter.TopicsPostRequestBody;
 import com.github.javafaker.Faker;
-import java.util.List;
 import java.util.Set;
 import org.apache.commons.codec.binary.Base64;
 
@@ -14,16 +11,15 @@ public class MessagesDataGenerator {
 
     private static Faker faker = new Faker();
 
-    public static DraftsPostRequestBody generateDraftsPostRequestBody(List<String> topicIds) {
-        return new DraftsPostRequestBody()
+    public static MessageDraftsPostRequestBody generateDraftsPostRequestBody(String topicId) {
+        return new MessageDraftsPostRequestBody()
             .withBody(encodeString(faker.lorem().paragraph()))
             .withSubject(faker.lorem().sentence().replace(".", ""))
-            .withCategory(getRandomFromList(topicIds))
-            .withImportant(true);
+            .withTopic(topicId);
     }
 
-    public static ConversationDraftsPostRequestBody generateConversationDraftsPostRequestBody() {
-        return new ConversationDraftsPostRequestBody()
+    public static ConversationMessageDraftPostRequestBody generateConversationDraftsPostRequestBody() {
+        return new ConversationMessageDraftPostRequestBody()
             .withBody(encodeString(faker.lorem().paragraph()));
     }
 

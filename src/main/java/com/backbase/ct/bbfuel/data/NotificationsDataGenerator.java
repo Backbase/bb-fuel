@@ -2,8 +2,8 @@ package com.backbase.ct.bbfuel.data;
 
 import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromEnumValues;
 
-import com.backbase.dbs.presentation.notifications.rest.spec.v2.notifications.NotificationsPostRequestBody;
-import com.backbase.dbs.presentation.notifications.rest.spec.v2.notifications.SeverityLevel;
+import com.backbase.dbs.notifications.rest.spec.v2.notifications.NotificationsPostRequestBody;
+import com.backbase.dbs.notifications.rest.spec.v2.notifications.SeverityLevel;
 import com.github.javafaker.Faker;
 import java.util.Random;
 

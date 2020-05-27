@@ -4,6 +4,9 @@ import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_MESSAGES_MAX;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_MESSAGES_MIN;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_MESSAGE_TOPICS_MAX;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_MESSAGE_TOPICS_MIN;
+import static com.backbase.ct.bbfuel.data.MessagesDataGenerator.generateConversationDraftsPostRequestBody;
+import static com.backbase.ct.bbfuel.data.MessagesDataGenerator.generateDraftsPostRequestBody;
+import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
 import static java.util.Collections.singleton;
 import static org.apache.http.HttpStatus.SC_ACCEPTED;
 import static org.apache.http.HttpStatus.SC_OK;
@@ -15,10 +18,9 @@ import com.backbase.ct.bbfuel.data.MessagesDataGenerator;
 import com.backbase.ct.bbfuel.service.LegalEntityService;
 import com.backbase.ct.bbfuel.util.CommonHelpers;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
-import com.backbase.dbs.messages.presentation.rest.spec.v4.messagecenter.ConversationDraftsPostResponseBody;
-import com.backbase.dbs.messages.presentation.rest.spec.v4.messagecenter.ConversationsGetResponseBody;
-import com.backbase.dbs.messages.presentation.rest.spec.v4.messagecenter.DraftsPostRequestBody;
-import com.backbase.dbs.messages.presentation.rest.spec.v4.messagecenter.DraftsPostResponseBody;
+import com.backbase.dbs.messages.rest.spec.v4.messagecenter.DraftPostResponseBody;
+import com.backbase.dbs.messages.rest.spec.v4.messagecenter.MessageDraftsGetResponseBody;
+import com.backbase.dbs.messages.rest.spec.v4.messagecenter.MessageDraftsPostRequestBody;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -65,12 +67,12 @@ public class MessagesConfigurator {
         IntStream.range(0, howManyMessages).forEach(number -> {
             loginRestClient.login(externalUserId, externalUserId);
 
-            DraftsPostRequestBody draftsPostRequestBody = MessagesDataGenerator.generateDraftsPostRequestBody(topicIds);
+            MessageDraftsPostRequestBody draftsPostRequestBody = generateDraftsPostRequestBody(getRandomFromList(topicIds));
             String draftId = messagesPresentationRestClient.postDraft(draftsPostRequestBody)
                 .then()
                 .statusCode(SC_ACCEPTED)
                 .extract()
-                .as(DraftsPostResponseBody.class)
+                .as(DraftPostResponseBody.class)
                 .getId();
 
             messagesPresentationRestClient.sendDraftRequest(draftId)
@@ -82,16 +84,15 @@ public class MessagesConfigurator {
                 .then()
                 .statusCode(SC_OK)
                 .extract()
-                .as(ConversationsGetResponseBody[].class)[0]
+                .as(DraftPostResponseBody[].class)[0]
                 .getId();
 
             String conversationDraftId = messagesPresentationRestClient
-                .postConversationDraft(MessagesDataGenerator.generateConversationDraftsPostRequestBody(),
-                    conversationId)
+                .postConversationDraft(generateConversationDraftsPostRequestBody(), conversationId)
                 .then()
                 .statusCode(SC_ACCEPTED)
                 .extract()
-                .as(ConversationDraftsPostResponseBody.class)
+                .as(MessageDraftsGetResponseBody.class)
                 .getId();
 
             messagesPresentationRestClient.sendDraftRequest(conversationDraftId)

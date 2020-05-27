@@ -2,9 +2,9 @@ package com.backbase.ct.bbfuel.client.messagecenter;
 
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
-import com.backbase.dbs.messages.presentation.rest.spec.v4.messagecenter.ConversationDraftsPostRequestBody;
-import com.backbase.dbs.messages.presentation.rest.spec.v4.messagecenter.DraftsPostRequestBody;
-import com.backbase.dbs.messages.presentation.rest.spec.v4.messagecenter.TopicsPostRequestBody;
+import com.backbase.dbs.messages.rest.spec.v4.messagecenter.ConversationMessageDraftPostRequestBody;
+import com.backbase.dbs.messages.rest.spec.v4.messagecenter.MessageDraftsPostRequestBody;
+import com.backbase.dbs.messages.rest.spec.v4.messagecenter.TopicsPostRequestBody;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import javax.annotation.PostConstruct;
@@ -32,7 +32,7 @@ public class MessagesPresentationRestClient extends RestClient {
         setInitialPath(config.getDbsServiceNames().getMessages() + "/" + CLIENT_API);
     }
 
-    public Response postDraft(DraftsPostRequestBody body) {
+    public Response postDraft(MessageDraftsPostRequestBody body) {
         return requestSpec()
             .contentType(ContentType.JSON)
             .body(body)
@@ -46,7 +46,7 @@ public class MessagesPresentationRestClient extends RestClient {
             .post(String.format(getPath(ENDPOINT_SEND_DRAFT_REQUEST), draftId));
     }
 
-    public Response postConversationDraft(ConversationDraftsPostRequestBody draft, String conversationId) {
+    public Response postConversationDraft(ConversationMessageDraftPostRequestBody draft, String conversationId) {
         return requestSpec()
             .contentType(ContentType.JSON)
             .body(draft)

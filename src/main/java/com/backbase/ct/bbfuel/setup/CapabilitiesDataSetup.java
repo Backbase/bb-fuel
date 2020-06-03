@@ -151,11 +151,9 @@ public class CapabilitiesDataSetup extends BaseSetup {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_MESSAGES)) {
             this.loginRestClient.loginBankAdmin();
             this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
-            this.accessControlSetup.getLegalEntitiesWithUsersExcludingSupport().stream()
-                .map(LegalEntityWithUsers::getUserExternalIds)
-                .flatMap(List::stream)
-                .collect(Collectors.toList())
-                .forEach(this.messagesConfigurator::ingestConversations);
+            this.accessControlSetup.getLegalEntitiesWithUsersExcludingSupport().forEach(legalEntityWithUsers ->
+                this.messagesConfigurator.ingestTopics()
+            );
         }
     }
 

@@ -15,7 +15,7 @@
     <scm>
         <connection>scm:git:https://github.com/backbase/bb-fuel.git</connection>
         <developerConnection>scm:git:https://github.com/backbase/bb-fuel.git</developerConnection>
-        <tag>bb-fuel-2.3.26</tag>
+        <tag>HEAD</tag>
         <url>https://github.com/backbase/bb-fuel</url>
     </scm>
 

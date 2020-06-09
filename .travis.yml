@@ -2,6 +2,9 @@ language: java
 jdk:
   - openjdk8
 install: true
+cache:
+  directories:
+    - $HOME/.m2
 
 script:
 - git config --local user.name "Travis CI"
@@ -17,7 +20,6 @@ deploy:
   tag_name: $TAG
   file:
     - target/$TAG-boot.jar
-    - target/$TAG-exec.jar
     - target/$TAG-import.jar
   on:
     repo: Backbase/bb-fuel

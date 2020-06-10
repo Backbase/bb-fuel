@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.ListUtils;
+import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.stereotype.Component;
 
@@ -36,7 +36,8 @@ public class ProductReader extends BaseReader {
     public List<ProductsPostRequestBody> load(String uri) {
         List<ProductsPostRequestBody> products;
         try {
-            ProductsPostRequestBody[] parsedProducts = ParserUtil.convertJsonToObject(uri, ProductsPostRequestBody[].class);
+            ProductsPostRequestBody[] parsedProducts = ParserUtil.convertJsonToObject(
+                uri, ProductsPostRequestBody[].class);
             validate(parsedProducts);
             products = asList(parsedProducts);
         } catch (IOException e) {
@@ -45,6 +46,7 @@ public class ProductReader extends BaseReader {
         }
         return products;
     }
+
     /**
      * Check on duplicate ids.
      */

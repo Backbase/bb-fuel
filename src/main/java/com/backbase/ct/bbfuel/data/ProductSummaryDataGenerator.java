@@ -5,8 +5,8 @@ import static com.backbase.ct.bbfuel.util.CommonHelpers.generateRandomNumberInRa
 import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
 import static java.lang.String.valueOf;
 import static java.util.Arrays.asList;
+import static java.util.Collections.synchronizedList;
 import static java.util.Collections.unmodifiableList;
-import static org.apache.commons.collections.ListUtils.synchronizedList;
 
 import com.backbase.ct.bbfuel.dto.entitlement.ProductGroupSeed;
 import com.backbase.ct.bbfuel.input.ProductReader;
@@ -43,7 +43,8 @@ public class ProductSummaryDataGenerator {
     private static final int WEEKS_IN_A_QUARTER = 13;
     private static final int DAYS_IN_A_WEEK = 7;
     private static final String EUR = "EUR";
-    private static final ConcurrentLinkedQueue<String> staticCurrentAccountArrangementsQueue = new ConcurrentLinkedQueue<>();
+    private static final ConcurrentLinkedQueue<String> staticCurrentAccountArrangementsQueue =
+        new ConcurrentLinkedQueue<>();
 
     static {
         List<String> allowed = asList("AT", "BE", "BG", "CH", "CY", "CZ", "DE", "DK", "EE", "ES", "FI", "FR", "GB",
@@ -131,7 +132,7 @@ public class ProductSummaryDataGenerator {
             String arrangementName = getProductTypeNameFromProductsInputFile(productId);
             ArrangementsPostRequestBody arrangementsPostRequestBody = getArrangementsPostRequestBody(
                 Optional.empty(), externalLegalEntityId, arrangementName, currency,
-                Integer.valueOf(productId));
+                Integer.parseInt(productId));
 
             arrangementsPostRequestBodies.add(arrangementsPostRequestBody);
         });

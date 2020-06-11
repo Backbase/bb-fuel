@@ -6,7 +6,7 @@ import com.backbase.ct.bbfuel.dto.LegalEntityWithUsers;
 import com.backbase.ct.bbfuel.dto.entitlement.ProductGroupSeed;
 import com.backbase.ct.bbfuel.input.InvalidInputException;
 import java.util.List;
-import org.apache.commons.collections.ListUtils;
+import org.apache.commons.collections4.ListUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -38,11 +38,12 @@ public class ProductGroupAssignmentValidator {
      */
     public void verify(LegalEntityWithUsers legalEntityWithUsers, List<String> productGroupNames) {
         legalEntityWithUsers.getUsers().forEach(user -> {
-          if (!CollectionUtils.isEmpty(user.getProductGroupNames())
-              && !productGroupNames.containsAll(user.getProductGroupNames())) {
-              throw new InvalidInputException(String.format("User %s has been assigned non existing product groups: %s",
-                  user.getExternalId(), ListUtils.subtract(user.getProductGroupNames(), productGroupNames)));
-          }
+            if (!CollectionUtils.isEmpty(user.getProductGroupNames())
+                && !productGroupNames.containsAll(user.getProductGroupNames())) {
+                throw new InvalidInputException(
+                    String.format("User %s has been assigned non existing product groups: %s",
+                        user.getExternalId(), ListUtils.subtract(user.getProductGroupNames(), productGroupNames)));
+            }
         });
     }
 }

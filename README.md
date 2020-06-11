@@ -106,6 +106,7 @@ bb-fuel supports multiple DBS versions. See below which version maps to the requ
 
 | DBS version | bb-fuel minimal [version](https://github.com/backbase/bb-fuel/releases) |
 |-------------|-------------------------------------------------------------------------|
+| 2.18.2      | 2.6.9                                                                   |
 | 2.18.1      | 2.6.6                                                                   |
 | 2.18.0      | 2.6.5                                                                   |
 | 2.17.3      | 2.5.12                                                                  |
@@ -150,8 +151,9 @@ You are welcome to provide bug fixes and new features in the form of pull reques
 
 ## Contributors
 - [Kwo Ding](https://github.com/kwoding) (author)
-- [Mark Bertels](marinus@backbase.com)
-- [Richard Blank](richardb@backbase.com)
+- [Mark Bertels](https://github.com/ButAds)
+- [Richard Blank](https://github.com/richard-blank)
+- [Eugene Grybinnyk](https://github.com/polarfish)
 
 # License
 Copyright (c) 2020 Backbase B.V.

@@ -1,13 +1,20 @@
 [
   {
     "jobProfileName": "Admin",
-    "roles": ["admin"],
+    "type": "REGULAR",
+    "roles": [
+      "admin"
+    ],
     "approvalLevel": "C"
   },
   {
     "jobProfileName": "Retail User",
+    "type": "REGULAR",
     "isRetail": "true",
-    "roles": ["admin", "retail"],
+    "roles": [
+      "admin",
+      "retail"
+    ],
     "permissions": [
       {
         "businessFunction": "Contacts",
@@ -188,7 +195,11 @@
   },
   {
     "jobProfileName": "Manager",
-    "roles": ["admin", "manager"],
+    "type": "REGULAR",
+    "roles": [
+      "admin",
+      "manager"
+    ],
     "approvalLevel": "B",
     "permissions": [
       {
@@ -457,7 +468,11 @@
   },
   {
     "jobProfileName": "Finance Employee",
-    "roles": ["admin", "employee"],
+    "type": "REGULAR",
+    "roles": [
+      "admin",
+      "employee"
+    ],
     "approvalLevel": "A",
     "permissions": [
       {
@@ -690,10 +705,778 @@
   },
   {
     "jobProfileName": "Support Employee",
-    "roles": ["admin", "support"],
+    "type": "REGULAR",
+    "roles": [
+      "admin",
+      "support"
+    ],
     "permissions": [
       {
         "businessFunction": "Support Access for Payments",
+        "privileges": [
+          "view"
+        ]
+      }
+    ]
+  },
+  {
+    "jobProfileName": "Job Role Template with all business functions",
+    "type": "TEMPLATE",
+    "roles": [
+      "admin"
+    ],
+    "permissions": [
+      {
+        "businessFunction": "P2P Transfer",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "US Billpay Enrolment",
+        "privileges": [
+          "execute",
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Audit",
+        "privileges": [
+          "view",
+          "create"
+        ]
+      },
+      {
+        "businessFunction": "SEPA CT - Intracompany",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "Cash Flow Forecasting",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete"
+        ]
+      },
+      {
+        "businessFunction": "Assign Approval Policies",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve"
+        ]
+      },
+      {
+        "businessFunction": "Unlock User",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "approve"
+        ]
+      },
+      {
+        "businessFunction": "Lock User",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "approve"
+        ]
+      },
+      {
+        "businessFunction": "Access Task Statistics",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Assign Permissions",
+        "privileges": [
+          "approve",
+          "view",
+          "create",
+          "edit"
+        ]
+      },
+      {
+        "businessFunction": "Batch - SEPA CT",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "Manage Users",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Access Case Statistics",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "UK CHAPS",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "Manage Data Groups",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve"
+        ]
+      },
+      {
+        "businessFunction": "Intra Company Payments",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "Manage Service Agreements",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve"
+        ]
+      },
+      {
+        "businessFunction": "US Domestic Wire - Intracompany",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "SEPA CT - closed",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "US Foreign Wire - Intracompany",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "Manage Topics",
+        "privileges": [
+          "edit",
+          "delete",
+          "execute",
+          "view",
+          "create"
+        ]
+      },
+      {
+        "businessFunction": "A2A Transfer",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "ACH Credit - Intracompany",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "Manage Identities",
+        "privileges": [
+          "approve",
+          "view",
+          "create",
+          "edit"
+        ]
+      },
+      {
+        "businessFunction": "Manage Budgets",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete"
+        ]
+      },
+      {
+        "businessFunction": "Manage Approval Policy and Level",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve"
+        ]
+      },
+      {
+        "businessFunction": "Transactions",
+        "privileges": [
+          "view",
+          "edit"
+        ]
+      },
+      {
+        "businessFunction": "Manage User Profiles",
+        "privileges": [
+          "view",
+          "edit",
+          "create",
+          "delete"
+        ]
+      },
+      {
+        "businessFunction": "Supervise Messages",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve"
+        ]
+      },
+      {
+        "businessFunction": "Contacts",
+        "privileges": [
+          "delete",
+          "view",
+          "create",
+          "edit",
+          "approve"
+        ]
+      },
+      {
+        "businessFunction": "ACH Credit Transfer",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "Access Journey Definitions",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Payment Templates",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve"
+        ]
+      },
+      {
+        "businessFunction": "Manage Statements",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Manage Saving Goals",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete"
+        ]
+      },
+      {
+        "businessFunction": "US Foreign Wire",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "US Billpay Payees-Search",
+        "privileges": [
+          "execute"
+        ]
+      },
+      {
+        "businessFunction": "Product Summary",
+        "privileges": [
+          "view",
+          "edit"
+        ]
+      },
+      {
+        "businessFunction": "ACH Debit",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "Manage Global Limits",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve"
+        ]
+      },
+      {
+        "businessFunction": "US Billpay Payments",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete"
+        ]
+      },
+      {
+        "businessFunction": "Manage Legal Entities",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve"
+        ]
+      },
+      {
+        "businessFunction": "Manage Devices",
+        "privileges": [
+          "view",
+          "edit",
+          "delete"
+        ]
+      },
+      {
+        "businessFunction": "Manage Other User's Devices",
+        "privileges": [
+          "view",
+          "edit",
+          "delete"
+        ]
+      },
+      {
+        "businessFunction": "Manage Task Dates",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete"
+        ]
+      },
+      {
+        "businessFunction": "Manage Shadow Limits",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve"
+        ]
+      },
+      {
+        "businessFunction": "Batch - ACH Debit",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "US Domestic Wire",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "Archive Case",
+        "privileges": [
+          "execute"
+        ]
+      },
+      {
+        "businessFunction": "US Billpay Payees",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete"
+        ]
+      },
+      {
+        "businessFunction": "US Billpay Payees-Summary",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Stop Checks",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "Access Journey Statistics",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Manage Messages",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve"
+        ]
+      },
+      {
+        "businessFunction": "SEPA CT",
+        "privileges": [
+          "create",
+          "view",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "Manage Case Documents",
+        "privileges": [
+          "view",
+          "create",
+          "delete"
+        ]
+      },
+      {
+        "businessFunction": "US Billpay Accounts",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Manage Case Comments",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete"
+        ]
+      },
+      {
+        "businessFunction": "UK Faster Payments",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "Access Case Changelog",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Manage Task",
+        "privileges": [
+          "execute",
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Assign Task",
+        "privileges": [
+          "execute"
+        ]
+      },
+      {
+        "businessFunction": "Manage Limits",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve"
+        ]
+      },
+      {
+        "businessFunction": "Manage Case",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete"
+        ]
+      },
+      {
+        "businessFunction": "Manage Action Recipes",
+        "privileges": [
+          "execute",
+          "view",
+          "create",
+          "edit",
+          "delete"
+        ]
+      },
+      {
+        "businessFunction": "Access Actions History",
+        "privileges": [
+          "execute",
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Manage Notifications",
+        "privileges": [
+          "approve",
+          "edit",
+          "view",
+          "create",
+          "delete"
+        ]
+      },
+      {
+        "businessFunction": "Manage Function Groups",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve"
+        ]
+      },
+      {
+        "businessFunction": "Assign Users",
+        "privileges": [
+          "view",
+          "create",
+          "edit"
+        ]
+      },
+      {
+        "businessFunction": "Batch - ACH Credit",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "Support Access for Payments",
+        "privileges": [
+          "view"
+        ]
+      }
+    ]
+  },
+  {
+    "jobProfileName": "Job Role Template with payments business functions",
+    "type": "TEMPLATE",
+    "roles": [
+      "admin"
+    ],
+    "permissions": [
+      {
+        "businessFunction": "P2P Transfer",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "SEPA CT - Intracompany",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "UK CHAPS",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Intra Company Payments",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "US Domestic Wire - Intracompany",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "SEPA CT - closed",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "US Foreign Wire - Intracompany",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "A2A Transfer",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "ACH Credit - Intracompany",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "ACH Credit Transfer",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Payment Templates",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "US Foreign Wire",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "ACH Debit",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "US Billpay Payments",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "US Domestic Wire",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Stop Checks",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "SEPA CT",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "UK Faster Payments",
         "privileges": [
           "view"
         ]

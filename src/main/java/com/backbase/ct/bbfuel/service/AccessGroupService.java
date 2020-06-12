@@ -34,9 +34,10 @@ public class AccessGroupService {
 
     private final ServiceAgreementsIntegrationRestClient serviceAgreementsIntegrationRestClient;
 
-    public String ingestFunctionGroup(String externalServiceAgreementId, String functionGroupName, List<Permission> permissions) {
+    public String ingestFunctionGroup(String externalServiceAgreementId, String functionGroupName, String functionGroupType,
+        List<Permission> permissions) {
         Response response = accessGroupIntegrationRestClient.ingestFunctionGroup(
-            generateFunctionGroupPostRequestBody(externalServiceAgreementId, functionGroupName, permissions));
+            generateFunctionGroupPostRequestBody(externalServiceAgreementId, functionGroupName, functionGroupType, permissions));
 
         if (isBadRequestException(response, "Function Group with given name already exists")) {
 

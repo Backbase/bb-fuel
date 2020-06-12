@@ -23,6 +23,7 @@ public class JobProfile extends DbsEntity {
     private List<String> roles;
     private Boolean isRetail;
     private List<Permission> permissions;
+    private String type;
 
     public JobProfile() {
         super();

@@ -11,6 +11,7 @@ import static com.backbase.ct.bbfuel.enrich.LegalEntityWithUsersEnricher.createR
 import static java.util.Collections.singletonList;
 
 import com.backbase.ct.bbfuel.client.accessgroup.AccessGroupPresentationRestClient;
+import com.backbase.ct.bbfuel.client.accessgroup.ServiceAgreementsIntegrationRestClient;
 import com.backbase.ct.bbfuel.client.accessgroup.UserContextPresentationRestClient;
 import com.backbase.ct.bbfuel.client.common.LoginRestClient;
 import com.backbase.ct.bbfuel.client.user.UserPresentationRestClient;
@@ -45,6 +46,7 @@ import com.google.common.collect.Multimap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -77,11 +79,15 @@ public class AccessControlSetup extends BaseSetup {
     private final JobProfileReader jobProfileReader;
     private final ProductGroupSeedReader productGroupSeedReader;
     private final LegalEntityService legalEntityService;
+    private final ServiceAgreementsIntegrationRestClient serviceAgreementsIntegrationRestClient;
     @Getter
     private List<LegalEntityWithUsers> legalEntitiesWithUsers;
     @Setter
     private List<JobProfile> jobProfileTemplates;
     private List<ProductGroupSeed> productGroupSeedTemplates;
+
+    private Predicate<JobProfile> isTemplate =  jobProfile -> jobProfile.getType().equals("TEMPLATE");
+    private Predicate<String> isRootServiceAgreement = serviceAgreementName -> serviceAgreementName.equals("Bank");
 
     public List<LegalEntityWithUsers> getLegalEntitiesWithUsersExcludingSupport() {
         return getLegalEntitiesWithUsers()
@@ -280,6 +286,12 @@ public class AccessControlSetup extends BaseSetup {
                         template.getJobProfileName(), isRetail);
                     return;
                 }
+                if(isTemplate.test(template)) {
+                    String serviceAgreementName = serviceAgreementsIntegrationRestClient
+                        .retrieveServiceAgreementByExternalId(externalServiceAgreementId).getName();
+                    if(!isRootServiceAgreement.test(serviceAgreementName))
+                        return;
+                }
                 JobProfile jobProfile = new JobProfile(template);
                 jobProfile.setExternalServiceAgreementId(externalServiceAgreementId);
                 this.accessGroupsConfigurator.ingestFunctionGroup(jobProfile);
@@ -293,6 +305,9 @@ public class AccessControlSetup extends BaseSetup {
         List<IntegrationFunctionGroupDataGroup> functionGroupDataGroups = new ArrayList<>();
 
         this.jobProfileService.getAssignedJobProfiles(externalServiceAgreementId).forEach(jobProfile -> {
+            if(isTemplate.test(jobProfile)){
+                return;
+            }
             if (jobProfileService.isJobProfileForUserRole(jobProfile, user.getRole(), isRetail)) {
 
                 List<String> dataGroupIds = this.productGroupService

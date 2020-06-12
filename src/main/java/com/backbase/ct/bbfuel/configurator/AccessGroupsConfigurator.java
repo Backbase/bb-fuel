@@ -14,6 +14,7 @@ import com.backbase.ct.bbfuel.service.JobProfileService;
 import com.backbase.ct.bbfuel.service.ProductGroupService;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.config.functions.FunctionsGetResponseBody;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.Permission;
+import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.functiongroups.FunctionGroupBase.Type;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,7 @@ public class AccessGroupsConfigurator {
     private static final String ARRANGEMENTS = "ARRANGEMENTS";
 
     public JobProfile ingestAdminFunctionGroup(String externalServiceAgreementId) {
-        JobProfile adminProfile = new JobProfile(ADMIN_FUNCTION_GROUP_NAME, null, null, null, null);
+        JobProfile adminProfile = new JobProfile(ADMIN_FUNCTION_GROUP_NAME, null, null, null, null,Type.REGULAR.toString());
         adminProfile.setExternalServiceAgreementId(externalServiceAgreementId);
         ingestFunctionGroup(adminProfile);
         return adminProfile;
@@ -55,7 +56,7 @@ public class AccessGroupsConfigurator {
             : createPermissionsForJobProfile(jobProfile, functions);
 
         functionGroupId = accessGroupService.ingestFunctionGroup(jobProfile.getExternalServiceAgreementId(),
-            jobProfile.getJobProfileName(), permissions);
+            jobProfile.getJobProfileName(), jobProfile.getType(), permissions);
         jobProfile.setId(functionGroupId);
 
         jobProfileService.storeInCache(jobProfile);

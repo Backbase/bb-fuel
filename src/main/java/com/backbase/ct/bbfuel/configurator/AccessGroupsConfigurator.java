@@ -34,7 +34,8 @@ public class AccessGroupsConfigurator {
     private static final String ARRANGEMENTS = "ARRANGEMENTS";
 
     public JobProfile ingestAdminFunctionGroup(String externalServiceAgreementId) {
-        JobProfile adminProfile = new JobProfile(ADMIN_FUNCTION_GROUP_NAME, null, null, null, null,Type.REGULAR.toString());
+        JobProfile adminProfile = new JobProfile(ADMIN_FUNCTION_GROUP_NAME, null, null, null,
+            null, Type.REGULAR.toString());
         adminProfile.setExternalServiceAgreementId(externalServiceAgreementId);
         ingestFunctionGroup(adminProfile);
         return adminProfile;

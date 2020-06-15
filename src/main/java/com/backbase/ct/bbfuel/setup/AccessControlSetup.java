@@ -15,6 +15,7 @@ import com.backbase.ct.bbfuel.client.accessgroup.ServiceAgreementsIntegrationRes
 import com.backbase.ct.bbfuel.client.accessgroup.UserContextPresentationRestClient;
 import com.backbase.ct.bbfuel.client.common.LoginRestClient;
 import com.backbase.ct.bbfuel.client.user.UserPresentationRestClient;
+import com.backbase.ct.bbfuel.config.MultiTenancyConfig;
 import com.backbase.ct.bbfuel.configurator.AccessGroupsConfigurator;
 import com.backbase.ct.bbfuel.configurator.LegalEntitiesAndUsersConfigurator;
 import com.backbase.ct.bbfuel.configurator.PermissionsConfigurator;
@@ -36,8 +37,8 @@ import com.backbase.ct.bbfuel.service.JobProfileService;
 import com.backbase.ct.bbfuel.service.LegalEntityService;
 import com.backbase.ct.bbfuel.service.ProductGroupService;
 import com.backbase.ct.bbfuel.service.UserContextService;
-import com.backbase.ct.bbfuel.config.MultiTenancyConfig;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.IntegrationIdentifier;
+import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.functiongroups.FunctionGroupBase.Type;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.users.permissions.IntegrationFunctionGroupDataGroup;
 import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.datagroups.DataGroupsGetResponseBody;
 import com.backbase.presentation.user.rest.spec.v2.users.LegalEntityByUserGetResponseBody;
@@ -86,8 +87,11 @@ public class AccessControlSetup extends BaseSetup {
     private List<JobProfile> jobProfileTemplates;
     private List<ProductGroupSeed> productGroupSeedTemplates;
 
-    private Predicate<JobProfile> isTemplate =  jobProfile -> jobProfile.getType().equals("TEMPLATE");
-    private Predicate<String> isRootServiceAgreement = serviceAgreementName -> serviceAgreementName.equals("Bank");
+    private static final Predicate<JobProfile> JOB_PROFILE_IS_TEMPLATE =
+        jobProfile -> jobProfile.getType().equals(Type.TEMPLATE.toString());
+
+    private static final Predicate<String> SERVICE_AGREEMENT_NAME_IS_BANK =
+        serviceAgreementName -> serviceAgreementName.equals("Bank");
 
     public List<LegalEntityWithUsers> getLegalEntitiesWithUsersExcludingSupport() {
         return getLegalEntitiesWithUsers()
@@ -286,11 +290,13 @@ public class AccessControlSetup extends BaseSetup {
                         template.getJobProfileName(), isRetail);
                     return;
                 }
-                if(isTemplate.test(template)) {
+                if (JOB_PROFILE_IS_TEMPLATE.test(template)) {
                     String serviceAgreementName = serviceAgreementsIntegrationRestClient
                         .retrieveServiceAgreementByExternalId(externalServiceAgreementId).getName();
-                    if(!isRootServiceAgreement.test(serviceAgreementName))
+
+                    if (!SERVICE_AGREEMENT_NAME_IS_BANK.test(serviceAgreementName)) {
                         return;
+                    }
                 }
                 JobProfile jobProfile = new JobProfile(template);
                 jobProfile.setExternalServiceAgreementId(externalServiceAgreementId);
@@ -304,12 +310,11 @@ public class AccessControlSetup extends BaseSetup {
         String externalServiceAgreementId, boolean isRetail) {
         List<IntegrationFunctionGroupDataGroup> functionGroupDataGroups = new ArrayList<>();
 
-        this.jobProfileService.getAssignedJobProfiles(externalServiceAgreementId).forEach(jobProfile -> {
-            if(isTemplate.test(jobProfile)){
-                return;
-            }
-            if (jobProfileService.isJobProfileForUserRole(jobProfile, user.getRole(), isRetail)) {
-
+        this.jobProfileService.getAssignedJobProfiles(externalServiceAgreementId)
+            .stream()
+            .filter(JOB_PROFILE_IS_TEMPLATE.negate())
+            .filter(jobProfile -> jobProfileService.isJobProfileForUserRole(jobProfile, user.getRole(), isRetail))
+            .forEach(jobProfile -> {
                 List<String> dataGroupIds = this.productGroupService
                     .findAssignedProductGroupsIds(externalServiceAgreementId, user);
                 List<IntegrationIdentifier> dataGroupIdentifiers = new ArrayList<>();
@@ -321,8 +326,9 @@ public class AccessControlSetup extends BaseSetup {
                     .withFunctionGroupIdentifier(
                         new IntegrationIdentifier().withIdIdentifier(jobProfile.getId()))
                     .withDataGroupIdentifiers(dataGroupIdentifiers));
-            }
-        });
+
+            });
+
         this.permissionsConfigurator.assignPermissions(
             user.getExternalId(), externalServiceAgreementId, functionGroupDataGroups);
     }

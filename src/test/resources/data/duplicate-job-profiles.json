@@ -1,13 +1,20 @@
 [
   {
     "jobProfileName": "Admin",
-    "roles": ["admin"],
+    "type": "REGULAR",
+    "roles": [
+      "admin"
+    ],
     "approvalLevel": "C"
   },
   {
     "jobProfileName": "Retail User",
+    "type": "REGULAR",
     "isRetail": "true",
-    "roles": ["admin", "retail"],
+    "roles": [
+      "admin",
+      "retail"
+    ],
     "permissions": [
       {
         "businessFunction": "Contacts",
@@ -32,8 +39,12 @@
   },
   {
     "jobProfileName": "Retail User",
+    "type": "REGULAR",
     "isRetail": "true",
-    "roles": ["admin", "retail"],
+    "roles": [
+      "admin",
+      "retail"
+    ],
     "permissions": [
       {
         "businessFunction": "Contacts",
@@ -58,7 +69,11 @@
   },
   {
     "jobProfileName": "Manager",
-    "roles": ["admin", "manager"],
+    "type": "REGULAR",
+    "roles": [
+      "admin",
+      "manager"
+    ],
     "approvalLevel": "B",
     "permissions": [
       {
@@ -295,7 +310,11 @@
   },
   {
     "jobProfileName": "Finance Employee",
-    "roles": ["admin", "employee"],
+    "type": "REGULAR",
+    "roles": [
+      "admin",
+      "employee"
+    ],
     "approvalLevel": "A",
     "permissions": [
       {

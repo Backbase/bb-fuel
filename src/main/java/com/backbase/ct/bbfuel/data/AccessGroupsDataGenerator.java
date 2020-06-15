@@ -9,6 +9,7 @@ import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.datagroups
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.IntegrationPrivilege;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.Permission;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.Privilege;
+import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.functiongroups.FunctionGroupBase.Type;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.functiongroups.FunctionGroupPostRequestBody;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,10 +17,11 @@ import java.util.List;
 public class AccessGroupsDataGenerator {
 
     public static FunctionGroupPostRequestBody generateFunctionGroupPostRequestBody(String externalServiceAgreementId,
-        String functionGroupName, List<Permission> permissions) {
+        String functionGroupName, String functionGroupType, List<Permission> permissions) {
         return new FunctionGroupPostRequestBody()
             .withName(functionGroupName)
             .withDescription(functionGroupName)
+            .withType(Type.fromValue(functionGroupType))
             .withExternalServiceAgreementId(externalServiceAgreementId)
             .withPermissions(permissions);
     }

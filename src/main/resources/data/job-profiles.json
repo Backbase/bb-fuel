@@ -727,17 +727,6 @@
     ],
     "permissions": [
       {
-        "businessFunction": "P2P Transfer",
-        "privileges": [
-          "view",
-          "create",
-          "edit",
-          "delete",
-          "approve",
-          "cancel"
-        ]
-      },
-      {
         "businessFunction": "US Billpay Enrolment",
         "privileges": [
           "execute",
@@ -800,12 +789,6 @@
         ]
       },
       {
-        "businessFunction": "Access Task Statistics",
-        "privileges": [
-          "view"
-        ]
-      },
-      {
         "businessFunction": "Assign Permissions",
         "privileges": [
           "approve",
@@ -835,17 +818,6 @@
         "businessFunction": "Access Case Statistics",
         "privileges": [
           "view"
-        ]
-      },
-      {
-        "businessFunction": "UK CHAPS",
-        "privileges": [
-          "view",
-          "create",
-          "edit",
-          "delete",
-          "approve",
-          "cancel"
         ]
       },
       {
@@ -1023,16 +995,6 @@
         "businessFunction": "Access Journey Definitions",
         "privileges": [
           "view"
-        ]
-      },
-      {
-        "businessFunction": "Payment Templates",
-        "privileges": [
-          "view",
-          "create",
-          "edit",
-          "delete",
-          "approve"
         ]
       },
       {
@@ -1254,17 +1216,6 @@
         ]
       },
       {
-        "businessFunction": "UK Faster Payments",
-        "privileges": [
-          "view",
-          "create",
-          "edit",
-          "delete",
-          "approve",
-          "cancel"
-        ]
-      },
-      {
         "businessFunction": "Access Case Changelog",
         "privileges": [
           "view"
@@ -1374,19 +1325,7 @@
     ],
     "permissions": [
       {
-        "businessFunction": "P2P Transfer",
-        "privileges": [
-          "view"
-        ]
-      },
-      {
         "businessFunction": "SEPA CT - Intracompany",
-        "privileges": [
-          "view"
-        ]
-      },
-      {
-        "businessFunction": "UK CHAPS",
         "privileges": [
           "view"
         ]
@@ -1434,12 +1373,6 @@
         ]
       },
       {
-        "businessFunction": "Payment Templates",
-        "privileges": [
-          "view"
-        ]
-      },
-      {
         "businessFunction": "US Foreign Wire",
         "privileges": [
           "view"
@@ -1471,12 +1404,6 @@
       },
       {
         "businessFunction": "SEPA CT",
-        "privileges": [
-          "view"
-        ]
-      },
-      {
-        "businessFunction": "UK Faster Payments",
         "privileges": [
           "view"
         ]

@@ -28,6 +28,6 @@ bb-fuel:
     messages: messages-service
     notifications: notifications-service
     payments: payment-order-service
-    pfm: categories-management-presentation-service
+    pfm: transaction-category-collector
     user: user-presentation-service
     products: product-summary-presentation-service

@@ -16,8 +16,8 @@ bb-fuel:
     billpay: http://billpayprovidermock.${environment.name}.${environment.domain}/client-api
     contactmanager: http://contacts.${environment.name}.${environment.domain}/integration-api
     legalentity: http://legalentity.${environment.name}.${environment.domain}
-    transactions: http://transactions.${environment.name}.${environment.domain}
-    user: http://user.${environment.name}.${environment.domain}/client-api
+    transactions: http://transactions.${environment.name}.${environment.domain}/integration-api
+    user: http://user-manager.${environment.name}.${environment.domain}/integration-api
   dbs-service-names:
     accessgroup: accessgroup-presentation-service
     actions: actionrecipes-presentation-service
@@ -28,6 +28,6 @@ bb-fuel:
     messages: messages-service
     notifications: notifications-service
     payments: payment-order-service
-    pfm: categories-management-presentation-service
-    user: user-presentation-service
+    pfm: transaction-category-collector
+    user: user-manager
     products: product-summary-presentation-service

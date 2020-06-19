@@ -22,7 +22,7 @@ bb-fuel:
     accessgroup: accessgroup-presentation-service
     actions: actionrecipes-presentation-service
     arrangements: product-summary-presentation-service
-    billpay: billpay-presentation-service
+    billpay: billpay-integrator
     legalentity: legalentity-presentation-service
     limits: limits-presentation-service
     messages: messages-service

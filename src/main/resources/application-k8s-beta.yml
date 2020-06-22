@@ -1,0 +1,33 @@
+environment:
+  domain: backbase.test
+
+bb-fuel:
+  platform:
+    registry: http://registry.${environment.name}.${environment.domain}
+    identity: http://identity.${environment.name}.${environment.domain}
+    gateway: http://edge.${environment.name}.${environment.domain}/api
+    auth: http://edge.${environment.name}.${environment.domain}/api/auth/login
+    tokenconverter: http://tokenconverter.${environment.name}.${environment.domain}
+  dbs:
+    accessgroup: http://accessgroup.${environment.name}.${environment.domain}
+    accounts: http://account.${environment.name}.${environment.domain}/service-api
+    approvals: http://approvals.${environment.name}.${environment.domain}/integration-api
+    arrangements: http://arrangements.${environment.name}.${environment.domain}/client-api
+    billpay: http://billpayprovidermock.${environment.name}.${environment.domain}/client-api
+    contactmanager: http://contacts.${environment.name}.${environment.domain}/integration-api
+    legalentity: http://legalentity.${environment.name}.${environment.domain}
+    transactions: http://transactions.${environment.name}.${environment.domain}/integration-api
+    user: http://user-manager.${environment.name}.${environment.domain}/integration-api
+  dbs-service-names:
+    accessgroup: accessgroup-presentation-service
+    actions: actionrecipes-presentation-service
+    arrangements: product-summary-presentation-service
+    billpay: billpay-presentation-service
+    legalentity: legalentity-presentation-service
+    limits: limits-presentation-service
+    messages: messages-service
+    notifications: notifications-service
+    payments: payment-order-service
+    pfm: transaction-category-collector
+    user: user-manager
+    products: product-summary-presentation-service

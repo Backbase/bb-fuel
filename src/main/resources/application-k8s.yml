@@ -31,3 +31,4 @@ bb-fuel:
     pfm: transaction-category-collector
     user: user-presentation-service
     products: product-summary-presentation-service
+

@@ -12,7 +12,7 @@ bb-fuel:
     accessgroup: http://accessgroup.${environment.name}.${environment.domain}
     accounts: http://account.${environment.name}.${environment.domain}/service-api
     approvals: http://approvals.${environment.name}.${environment.domain}/integration-api
-    arrangements: http://arrangements.${environment.name}.${environment.domain}/client-api
+    arrangements: http://arrangement.${environment.name}.${environment.domain}/integration-api
     billpay: http://billpayprovidermock.${environment.name}.${environment.domain}/client-api
     contactmanager: http://contacts.${environment.name}.${environment.domain}/integration-api
     legalentity: http://legalentity.${environment.name}.${environment.domain}
@@ -30,4 +30,4 @@ bb-fuel:
     payments: payment-order-service
     pfm: transaction-category-collector
     user: user-manager
-    products: product-summary-presentation-service
+    products: arrangement-manager

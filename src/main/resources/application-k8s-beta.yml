@@ -30,4 +30,4 @@ bb-fuel:
     payments: payment-order-service
     pfm: transaction-category-collector
     user: user-manager
-    products: product-summary-presentation-service
+    products: arrangement-manager

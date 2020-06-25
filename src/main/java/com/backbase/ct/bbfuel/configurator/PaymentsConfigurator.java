@@ -59,7 +59,7 @@ public class PaymentsConfigurator {
         if (!isEmpty(sepaCtArrangements) && !isEmpty(usDomesticWireArrangements)
             && !isEmpty(achDebitArrangements) && !isEmpty(usForeignWireArrangements)) {
 
-            IntStream.range(0, randomAmount).parallel().forEach(randomNumber -> {
+            IntStream.range(0, randomAmount).forEach(randomNumber -> {
                 String paymentType = getRandomFromList(ootbPaymentTypes);
                 ArrangementsByBusinessFunctionGetResponseBody randomArrangement;
 

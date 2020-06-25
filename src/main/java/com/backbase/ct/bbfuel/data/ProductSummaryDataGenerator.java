@@ -85,7 +85,7 @@ public class ProductSummaryDataGenerator {
     public static List<ArrangementsPostRequestBody> generateCurrentAccountArrangementsPostRequestBodies(
         String externalLegalEntityId, ProductGroupSeed productGroupSeed, int numberOfArrangements) {
         List<ArrangementsPostRequestBody> arrangementsPostRequestBodies = synchronizedList(new ArrayList<>());
-        IntStream.range(0, numberOfArrangements).parallel().forEach(randomNumber -> {
+        IntStream.range(0, numberOfArrangements).forEach(randomNumber -> {
             int randomCurrentAccountIndex = ThreadLocalRandom.current()
                 .nextInt(productGroupSeed.getCurrentAccountNames().size());
             // To support specific currency - account name map such as in the International Trade product group example
@@ -126,7 +126,7 @@ public class ProductSummaryDataGenerator {
         String externalLegalEntityId, ProductGroupSeed productGroupSeed, int numberOfArrangements) {
         List<ArrangementsPostRequestBody> arrangementsPostRequestBodies = synchronizedList(new ArrayList<>());
 
-        IntStream.range(0, numberOfArrangements).parallel().forEach(randomNumber -> {
+        IntStream.range(0, numberOfArrangements).forEach(randomNumber -> {
             String currency = getRandomFromList(productGroupSeed.getCurrencies());
             String productId = getRandomFromList(productGroupSeed.getProductIds());
             String arrangementName = getProductTypeNameFromProductsInputFile(productId);

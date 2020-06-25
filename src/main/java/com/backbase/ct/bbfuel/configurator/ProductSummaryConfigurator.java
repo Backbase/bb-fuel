@@ -29,7 +29,7 @@ public class ProductSummaryConfigurator {
 
     public void ingestProducts() {
         List<ProductsPostRequestBody> products = ProductSummaryDataGenerator.getProductsFromFile();
-        products.stream().parallel()
+        products.stream()
             .forEach(arrangementsIntegrationRestClient::ingestProductAndLogResponse);
     }
 
@@ -56,7 +56,7 @@ public class ProductSummaryConfigurator {
                 productGroupSeed.getProductIds().contains(String.valueOf(1)) ? numberOfNonCurrentAccounts : numberOfArrangements));
         }
 
-        arrangements.parallelStream().forEach(arrangement -> {
+        arrangements.forEach(arrangement -> {
             ArrangementsPostResponseBody arrangementsPostResponseBody = arrangementsIntegrationRestClient
                 .ingestArrangement(arrangement);
             log.info("Arrangement [{}] ingested for product [{}] under legal entity [{}]",
@@ -71,7 +71,7 @@ public class ProductSummaryConfigurator {
         List<BalanceHistoryPostRequestBody> balanceHistoryPostRequestBodies = generateBalanceHistoryPostRequestBodies(
             externalArrangementId);
 
-        balanceHistoryPostRequestBodies.parallelStream()
+        balanceHistoryPostRequestBodies
             .forEach(balanceHistoryPostRequestBody -> {
                 arrangementsIntegrationRestClient.ingestBalance(balanceHistoryPostRequestBody)
                     .then()

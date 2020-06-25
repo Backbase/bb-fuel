@@ -61,7 +61,7 @@ public class LegalEntitiesAndUsersConfigurator {
 
         String externalLegalEntityId = this.legalEntityService.ingestLegalEntity(requestBody);
 
-        legalEntityWithUsers.getUsers().parallelStream()
+        legalEntityWithUsers.getUsers()
             .forEach(
                 user -> this.userIntegrationRestClient
                     .ingestUserAndLogResponse(LegalEntitiesAndUsersDataGenerator

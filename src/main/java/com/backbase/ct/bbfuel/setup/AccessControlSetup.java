@@ -259,7 +259,7 @@ public class AccessControlSetup extends BaseSetup {
 
     private void ingestBalanceHistory(List<ArrangementId> arrangementIds) {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_BALANCE_HISTORY)) {
-            arrangementIds.parallelStream()
+            arrangementIds
                 .forEach(arrangementId -> this.productSummaryConfigurator
                     .ingestBalanceHistory(arrangementId.getExternalArrangementId()));
         }

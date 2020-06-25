@@ -57,11 +57,11 @@ public class TransactionsConfigurator {
             transactions.add(reader.loadSingleWithCheckImages(externalArrangementId));
 
             // After that ingest rest of the transactions.
-            IntStream.range(0, randomAmount).parallel()
+            IntStream.range(0, randomAmount)
                     .forEach(randomNumber -> transactions.add(
                             reader.loadSingle(externalArrangementId)));
         } else {
-            IntStream.range(0, randomAmount).parallel()
+            IntStream.range(0, randomAmount)
                     .forEach(randomNumber -> transactions.add(
                             TransactionsDataGenerator.generateTransactionsPostRequestBody(externalArrangementId, isRetail, finalCategories)));
         }

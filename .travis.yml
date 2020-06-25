@@ -12,7 +12,7 @@ script:
 - git checkout -f master
 - mvn -B -s settings.xml release:prepare -DskipTests=true -DscmCommentPrefix="[ci skip][maven-release-plugin] " -Dusername=${GITHUB_USERNAME} -Dpassword=${GITHUB_TOKEN}
 before_deploy:
-- export TAG=$(git describe --tags --abbrev=0)
+- export TAG=$(git describe --tags --abbrev=0)$(if [ "$TRAVIS_BRANCH" != "master" ]; then echo "-$TRAVIS_BRANCH"; fi)
 deploy:
   skip_cleanup: true
   provider: releases

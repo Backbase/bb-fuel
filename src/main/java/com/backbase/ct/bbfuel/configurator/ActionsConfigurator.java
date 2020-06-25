@@ -45,7 +45,7 @@ public class ActionsConfigurator {
         arrangements.addAll(productSummaryPresentationRestClient.getUsDomesticWireArrangements());
         arrangements.addAll(productSummaryPresentationRestClient.getAchDebitArrangements());
 
-        IntStream.range(0, randomAmount).parallel().forEach(randomNumber -> {
+        IntStream.range(0, randomAmount).forEach(randomNumber -> {
             String internalArrangementId = getRandomFromList(arrangements).getId();
 
             ActionRecipesPostRequestBody actionRecipesPostRequestBody = generateActionRecipesPostRequestBody(

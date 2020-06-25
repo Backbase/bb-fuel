@@ -38,7 +38,7 @@ public class NotificationsConfigurator {
         int randomAmount = CommonHelpers
             .generateRandomNumberInRange(globalProperties.getInt(CommonConstants.PROPERTY_NOTIFICATIONS_MIN),
                 globalProperties.getInt(CommonConstants.PROPERTY_NOTIFICATIONS_MAX));
-        IntStream.range(0, randomAmount).parallel().forEach(randomNumber -> {
+        IntStream.range(0, randomAmount).forEach(randomNumber -> {
             NotificationsPostRequestBody notification = NotificationsDataGenerator
                 .generateNotificationsPostRequestBodyForGlobalTargetGroup();
             notificationsPresentationRestClient.createNotification(notification)

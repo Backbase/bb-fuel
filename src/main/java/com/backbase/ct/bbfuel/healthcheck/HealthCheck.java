@@ -19,7 +19,7 @@ public class HealthCheck {
             .getLong(CommonConstants.PROPERTY_HEALTH_CHECK_TIMEOUT_IN_MINUTES);
         long timeOutInMillis = CommonHelpers.convertMinutesToMillis(healthCheckTimeOutInMinutes);
 
-        restClients.parallelStream()
+        restClients
             .forEach(restClient -> {
                 String serviceUri = restClient.getBaseURI().toString() + "/" + restClient.getInitialPath();
                 long startTime = System.currentTimeMillis();

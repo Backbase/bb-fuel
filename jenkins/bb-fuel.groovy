@@ -29,7 +29,7 @@ pipeline {
         booleanParam(name: 'USE_PERFORMANCE_TEST_DATA_SETUP', defaultValue: false, description: 'Use performance test data setup\n' +
                 'Only enable when strictly necessary (long running job)')
         choice(name: 'PERFORMANCE_TEST_DATA', choices: 'retail\nbusiness', description: 'Retail or business performance test data setup')
-        choice(name: 'INFRA_BASE_URI', choices: 'backbase.test\ninfra.backbase.test:8080\neditorial.backbase.test:8080', description: 'Select the base URI.\nK8S: backbase.test\n\nAWS dbs-microservices: infra.backbase.test:8080\n\nAWS dbs-cx6.1-editorial: editorial.backbase.test:8080')
+        choice(name: 'INFRA_BASE_URI', choices: 'backbase.test\nbackbase.eu\ninfra.backbase.test:8080\neditorial.backbase.test:8080', description: 'Select the base URI.\nK8S environment-creator: backbase.test\nK8S Beck: backbase.eu\n\nAWS dbs-microservices: infra.backbase.test:8080\n\nAWS dbs-cx6.1-editorial: editorial.backbase.test:8080')
         booleanParam(name: 'IDENTITY_FEATURE_TOGGLE', defaultValue: false, description: 'Use identity')
         string(name: 'IDENTITY_REALM', defaultValue: 'backbase', description: 'Identity realm')
         string(name: 'IDENTITY_CLIENT', defaultValue: 'bb-tooling-client', description: 'AWS: hybrid-flow\nK8S: bb-tooling-client')

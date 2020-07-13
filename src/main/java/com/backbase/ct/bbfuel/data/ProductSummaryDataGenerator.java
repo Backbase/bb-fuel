@@ -144,7 +144,7 @@ public class ProductSummaryDataGenerator {
         String externalLegalEntityId, String currentAccountName, String currency, int productId) {
         String accountNumber = EUR.equals(currency)
             ? generateRandomIban()
-            : valueOf(generateRandomNumberInRange(0, 999999999));
+            : valueOf(generateRandomNumberInRange(100000, 999999999));
         String bic = faker.finance().bic();
         String arrangementNameSuffix =
             " " + currency + " " + bic.substring(0, 3) + accountNumber.substring(accountNumber.length() - 3);

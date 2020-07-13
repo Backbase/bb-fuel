@@ -19,6 +19,18 @@ An alternative approach is when you have copied the `data.properties` from the j
 java -Denvironment.name=your-env-00 bb-fuel-{version}-boot.jar
 ```
 
+It is also possible to collect data into property files and provide path to it via `custom.properties.path` system property
+
+```
+java -Dspring.profiles.active=k8s \
+-Denvironment.name=your-env-number \
+-Dingest.access.control=true -Dingest.custom.service.agreements=true \
+-Dingest.balance.history=true -Dingest.transactions=true \
+-Dcustom.properties.path=data/us-productized-dataset/us-productized-data.properties 
+-jar bb-fuel-2.6.19-SNAPSHOT-boot.jar
+```
+
+
 ## Built-in custom data setup
 ### How to run with performance test data setup
 Based on [gatling-performance-simulations](https://stash.backbase.com/projects/CT/repos/gatling-performance-simulations/browse):

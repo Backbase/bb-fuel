@@ -23,11 +23,11 @@ It is also possible to collect data into property files and provide path to it v
 
 ```
 java -Dspring.profiles.active=k8s \
--Denvironment.name=your-env-number \
+-Denvironment.name={your-env-number} \
 -Dingest.access.control=true -Dingest.custom.service.agreements=true \
 -Dingest.balance.history=true -Dingest.transactions=true \
 -Dcustom.properties.path=data/us-productized-dataset/us-productized-data.properties 
--jar bb-fuel-2.6.19-SNAPSHOT-boot.jar
+-jar bb-fuel-{version}-boot.jar
 ```
 
 

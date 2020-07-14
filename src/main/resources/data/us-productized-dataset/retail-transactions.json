@@ -907,6 +907,6 @@
     "type": "POS",
     "typeGroup": "Payment",
     "description": "COMCAST OF MEMPHIS 800-CO #5898 BISHOPVILLE SC",
-    "billingStatus": "BIL:LED"
+    "billingStatus": "BILLED"
   }
 ]

@@ -1,0 +1,207 @@
+[
+  {
+    "users": [
+      {
+        "externalId": "user"
+      }
+    ]
+  },
+  {
+    "users": [
+      {
+        "externalId": "designer"
+      }
+    ]
+  },
+  {
+    "users": [
+      {
+        "externalId": "manager"
+      }
+    ]
+  },
+  {
+    "users": [
+      {
+        "externalId": "U0000010"
+      },
+      {
+        "externalId": "U0000011"
+      }
+    ]
+  },
+  {
+    "users": [
+      {
+        "externalId": "U0001001",
+        "role": "employee"
+      },
+      {
+        "externalId": "U0001002",
+        "role": "employee"
+      },
+      {
+        "externalId": "U0001003",
+        "role": "employee"
+      },
+      {
+        "externalId": "U0001004",
+        "role": "manager"
+      },
+      {
+        "externalId": "U0001005",
+        "role": "admin"
+      }
+    ]
+  },
+  {
+    "users": [
+      {
+        "externalId": "U0001021"
+      },
+      {
+        "externalId": "U0001022"
+      },
+      {
+        "externalId": "U0001023"
+      },
+      {
+        "externalId": "U0001024"
+      },
+      {
+        "externalId": "U0001025"
+      },
+      {
+        "externalId": "U0001026"
+      },
+      {
+        "externalId": "U0001027"
+      },
+      {
+        "externalId": "U0001028"
+      },
+      {
+        "externalId": "U0001029"
+      },
+      {
+        "externalId": "U0001030"
+      }
+    ]
+  },
+  {
+    "users": [
+      {
+        "externalId": "U0001011"
+      },
+      {
+        "externalId": "U0001012"
+      },
+      {
+        "externalId": "U0001013"
+      },
+      {
+        "externalId": "U0001014"
+      },
+      {
+        "externalId": "U0001015"
+      }
+    ]
+  },
+  {
+    "legalEntityName": "Green Bicycle Factory",
+    "users": [
+      {
+        "externalId": "robin_green",
+        "role": "admin"
+      },
+      {
+        "externalId": "paddy_brian",
+        "role": "admin"
+      },
+      {
+        "externalId": "sarah_lee",
+        "role": "manager"
+      },
+      {
+        "externalId": "alex_wong",
+        "role": "employee"
+      },
+      {
+        "externalId": "jan_verschoor",
+        "role": "employee",
+        "productGroupNames": ["Payroll"]
+      },
+      {
+        "externalId": "iris_schipper",
+        "role": "employee"
+      },
+      {
+        "externalId": "joe_santorelli",
+        "role": "employee",
+        "productGroupNames": ["Portland", "Finance International"]
+      }
+    ]
+  },
+  {
+    "legalEntityName": "Boats of Atlantis",
+    "legalEntityExternalId": "B000001",
+    "users": [
+      {
+        "externalId": "U0001031",
+        "role": "admin"
+      }
+    ]
+  },
+  {
+    "legalEntityName": "Boats of Atlantis Florida",
+    "legalEntityExternalId": "B000002",
+    "parentLegalEntityExternalId": "B000001",
+    "users": [
+      {
+        "externalId": "U0001032",
+        "role": "support"
+      },
+      {
+        "externalId": "U0001033",
+        "role": "employee"
+      }
+    ]
+  },
+  {
+    "legalEntityName": "Boats of Atlantis Georgia",
+    "legalEntityExternalId": "B000003",
+    "parentLegalEntityExternalId": "B000002",
+    "users": [
+      {
+        "externalId": "U0001034",
+        "role": "employee"
+      }
+    ]
+  },
+  {
+    "legalEntityName": "Boats of Atlantis New Jersey",
+    "legalEntityExternalId": "B000004",
+    "parentLegalEntityExternalId": "B000001",
+    "users": [
+      {
+        "externalId": "U0001035",
+        "role": "support"
+      },
+      {
+        "externalId": "U0001036",
+        "role": "employee"
+      }
+    ]
+  },
+  {
+    "legalEntityName": "Boats of Atlantis Virginia",
+    "legalEntityExternalId": "B000005",
+    "parentLegalEntityExternalId": "B000004",
+    "users": [
+      {
+        "externalId": "U0001037",
+        "role": "employee"
+      }
+    ]
+  }
+]

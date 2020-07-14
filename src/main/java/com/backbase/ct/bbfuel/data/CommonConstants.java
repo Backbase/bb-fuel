@@ -7,6 +7,7 @@ public final class CommonConstants {
 
     // Environment
     public static final String PROPERTIES_FILE_NAME = "data.properties";
+    public static final String CUSTOM_PROPERTIES_PATH = "custom.properties.path";
     public static final String ENVIRONMENT_PROPERTIES_FILE_NAME = "environment.properties";
     public static final String PROPERTY_HEALTH_CHECK_TIMEOUT_IN_MINUTES = "healthcheck.timeout.in.minutes";
     public static final String PROPERTY_HEALTH_CHECK_USE_ACTUATOR = "healthcheck.use.actuator";
@@ -59,6 +60,7 @@ public final class CommonConstants {
     public static final String PROPERTY_INGEST_LIMITS = "ingest.limits";
     public static final String PROPERTY_CONTACTS_MIN = "contacts.min";
     public static final String PROPERTY_CONTACTS_MAX = "contacts.max";
+    public static final String PROPERTY_CONTACTS_ACCOUNT_TYPES = "contacts.account.types";
     public static final String PROPERTY_INGEST_CONTACTS = "ingest.contacts";
     public static final String PROPERTY_PAYMENTS_MIN = "payments.min";
     public static final String PROPERTY_PAYMENTS_MAX = "payments.max";
@@ -81,6 +83,11 @@ public final class CommonConstants {
     public static final String PAYMENT_TYPE_US_DOMESTIC_WIRE = "US_DOMESTIC_WIRE";
     public static final String PAYMENT_TYPE_ACH_DEBIT = "ACH_DEBIT";
     public static final String PAYMENT_TYPE_US_FOREIGN_WIRE = "US_FOREIGN_WIRE";
+    public static final String PROPERTY_PAYMENTS_OOTB_TYPES = "payments.ootb.types";
+
+    // Contacts
+    public static final String IBAN_ACCOUNT_TYPE = "IBAN";
+    public static final String BBAN_ACCOUNT_TYPE = "BBAN";
 
     // Transactions
     public static final String PROPERTY_TRANSACTIONS_DATA_JSON = "transactions.data.json";

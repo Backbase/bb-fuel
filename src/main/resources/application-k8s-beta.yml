@@ -19,12 +19,12 @@ bb-fuel:
     transactions: http://transactions.${environment.name}.${environment.domain}/integration-api
     user: http://user-manager.${environment.name}.${environment.domain}/integration-api
   dbs-service-names:
-    accessgroup: accessgroup-presentation-service
-    actions: actionrecipes-presentation-service
-    arrangements: product-summary-presentation-service
-    billpay: billpay-presentation-service
-    legalentity: legalentity-presentation-service
-    limits: limits-presentation-service
+    accessgroup: access-control
+    actions: action-service
+    arrangements: arrangements-manager
+    billpay: billpay-integrator
+    legalentity: access-control
+    limits: limit
     messages: messages-service
     notifications: notifications-service
     payments: payment-order-service

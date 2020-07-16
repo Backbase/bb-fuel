@@ -100,4 +100,6 @@ public final class CommonConstants {
     public static final String IDENTITY_AUTH = "/auth/realms";
     public static final String IDENTITY_TOKEN_PATH = "/protocol/openid-connect/token";
     public static final String ACCESS_TOKEN = "access_token";
+    public static final String REFRESH_TOKEN = "refresh_token";
+    public static final String SESSION_TOKEN = "session_state";
 }

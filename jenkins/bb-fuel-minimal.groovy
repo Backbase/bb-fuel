@@ -10,6 +10,7 @@ pipeline {
         string(name: 'ENVIRONMENT_NAME', defaultValue: '00.dbs', description: 'K8S environment-creator example: 42.dbs\nK8S Beck example: friendly-feyman\n\nAutoconfig example: frosty-snow-99\nRead before running: https://github.com/Backbase/bb-fuel/blob/master/README.md')
         choice(name: 'INFRA_BASE_URI', choices: 'backbase.test\nbackbase.eu\ninfra.backbase.test:8080\neditorial.backbase.test:8080', description: 'Select the base URI.\nK8S environment-creator: backbase.test\nK8S Beck: backbase.eu\n\nAWS dbs-microservices: infra.backbase.test:8080\n\nAWS dbs-cx6.1-editorial: editorial.backbase.test:8080')
         string(name: 'PCF_SPACE', defaultValue: 'your-space', description: 'Required only for PCF. Space name, example: approvals\nRead before running: https://github.com/Backbase/bb-fuel/blob/master/README.md')
+        booleanParam(name: 'US_PRODUCTIZED_DATASET', defaultValue: false, description: 'Use data seed specific for US market')
         booleanParam(name: 'INGEST_ACCESS_CONTROL', defaultValue: true, description: 'Ingest access control setup')
         booleanParam(name: 'INGEST_CUSTOM_SERVICE_AGREEMENTS', defaultValue: false, description: 'Ingest custom service agreements')
         booleanParam(name: 'INGEST_BALANCE_HISTORY', defaultValue: false, description: 'Ingest balance history per arrangement (only applicable on the first run when INGEST_ACCESS_CONTROL = true)\n' +
@@ -44,11 +45,14 @@ pipeline {
                 script {
                     currentBuild.displayName = "#${BUILD_NUMBER} - env: ${params.ENVIRONMENT_NAME}"
                     currentBuild.description = "env: ${params.ENVIRONMENT_NAME}\ntype: ${params.SPRING_PROFILES_ACTIVE}\nbb-fuel-version: ${params.BB_FUEL_VERSION}"
-                    def customLegalEntitiesWithUsersJson = ""
 
-                    if ("${params.USE_PERFORMANCE_TEST_DATA_SETUP}".toBoolean()) {
-                        customLegalEntitiesWithUsersJson = "-Dlegal.entities.with.users.json=data/performance/performance-test-legal-entities-with-users-${params.PERFORMANCE_TEST_DATA}.json "
-                    }
+                    def customLegalEntitiesWithUsersJson = params.USE_PERFORMANCE_TEST_DATA_SETUP ?
+                            " -Dlegal.entities.with.users.json=data/performance/performance-test-legal-entities-with-users-${params.PERFORMANCE_TEST_DATA}.json " :
+                            "";
+
+                    def usProductizedPropertiesPath = params.US_PRODUCTIZED_DATASET ?
+                            " -Dcustom.properties.path=data/us-productized-dataset/us-productized-data.properties " :
+                            "";
 
                     loadData(
                             environmentName: params.ENVIRONMENT_NAME,
@@ -78,6 +82,7 @@ pipeline {
                                     "-Dmulti.tenancy.environment=${params.MULTI_TENANCY_ENVIRONMENT} " +
                                     "-Dhealthcheck.use.actuator=${params.HEALTHCHECK_USE_ACTUATOR} " +
                                     customLegalEntitiesWithUsersJson +
+                                    usProductizedPropertiesPath +
                                     "${params.ADDITIONAL_ARGUMENTS}"
                     )
                 }

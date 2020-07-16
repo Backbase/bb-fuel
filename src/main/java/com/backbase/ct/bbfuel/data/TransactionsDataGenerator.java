@@ -1,30 +1,31 @@
 package com.backbase.ct.bbfuel.data;
 
+import com.backbase.ct.bbfuel.util.CommonHelpers;
+import com.backbase.ct.bbfuel.util.GlobalProperties;
+import com.backbase.integration.transaction.external.rest.spec.v2.transactions.TransactionsPostRequestBody;
+import com.backbase.integration.transaction.external.rest.spec.v2.transactions.TransactionsPostRequestBody.CreditDebitIndicator;
+import com.github.javafaker.Faker;
+import org.apache.commons.lang.time.DateUtils;
+import org.iban4j.Iban;
+
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
+import static com.backbase.ct.bbfuel.data.CommonConstants.IBAN_ACCOUNT_TYPE;
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_CONTACTS_ACCOUNT_TYPES;
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_TRANSACTIONS_BUSINESS_CURRENCY;
 import static com.backbase.ct.bbfuel.util.CommonHelpers.generateRandomNumberInRange;
 import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromEnumValues;
 import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
 import static com.backbase.integration.transaction.external.rest.spec.v2.transactions.TransactionsPostRequestBody.CreditDebitIndicator.CRDT;
 import static java.util.Arrays.asList;
 
-import com.backbase.ct.bbfuel.util.CommonHelpers;
-import com.backbase.integration.transaction.external.rest.spec.v2.transactions.TransactionsPostRequestBody;
-import com.backbase.integration.transaction.external.rest.spec.v2.transactions.TransactionsPostRequestBody.CreditDebitIndicator;
-import com.backbase.presentation.categories.management.rest.spec.v2.categories.SubCategory;
-import com.github.javafaker.Faker;
-
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
-import org.apache.commons.lang.time.DateUtils;
-import org.iban4j.Iban;
-
 public class TransactionsDataGenerator {
 
     private static Faker faker = new Faker();
-    private static final String EUR_CURRENCY = "EUR";
-    private static final String USD_CURRENCY = "USD";
+    private static final GlobalProperties GLOBAL_PROPERTIES = GlobalProperties.getInstance();
     private static final List<String> TRANSACTION_TYPE_GROUPS = asList(
         "Payment",
         "Withdrawal",
@@ -59,40 +60,6 @@ public class TransactionsDataGenerator {
         "Interest received",
         "Term deposit"
     );
-    private static List<String> DEBIT_RETAIL_CATEGORIES = asList(
-        "Food Drinks",
-        "Transportation",
-        "Home",
-        "Health Beauty",
-        "Shopping",
-        "Bills Utilities",
-        "Hobbies Entertainment",
-        "Transfers",
-        "Uncategorised",
-        "Car",
-        "Beauty",
-        "Health Fitness",
-        "Mortgage",
-        "Rent",
-        "Public Transport",
-        "Internet",
-        "Mobile Phone",
-        "Utilities",
-        "Alcohol Bars",
-        "Fast Food",
-        "Groceries",
-        "Restaurants",
-        "Clothing",
-        "Electronics"
-    );
-    private static List<String> CREDIT_RETAIL_CATEGORIES = asList(
-        "Income",
-        "Other Income",
-        "Bonus",
-        "Salary/Wages",
-        "Interest Income",
-        "Rental Income"
-    );
 
     private static List<String> US_COUNTER_PARTY_NAMES = asList(
         "Shell",
@@ -124,51 +91,23 @@ public class TransactionsDataGenerator {
         "RECURRING-23442424243"
     );
 
-    public static TransactionsPostRequestBody generateTransactionsPostRequestBody(String externalArrangementId,
-        boolean isRetail, List<SubCategory> categories) {
+    public static TransactionsPostRequestBody generateTransactionsPostRequestBody(String externalArrangementId) {
         CreditDebitIndicator creditDebitIndicator = getRandomFromEnumValues(CreditDebitIndicator.values());
 
-        BigDecimal amount;
+        String finalCategory = creditDebitIndicator == CRDT
+            ? getRandomFromList(CREDIT_BUSINESS_CATEGORIES)
+            : getRandomFromList(DEBIT_BUSINESS_CATEGORIES);
 
-        String currency;
-        String counterPartyName;
-        String description;
-        String finalCategory;
+        String description = faker.lorem().sentence().replace(".", "");
+        String counterPartyName = faker.name().fullName();
 
-        if (isRetail) {
-            if (!categories.isEmpty()) {
-                CREDIT_RETAIL_CATEGORIES = categories.stream()
-                    .filter(category -> "INCOME".equals(category.getCategoryType()))
-                    .map(SubCategory::getCategoryName)
-                    .collect(Collectors.toList());
+        BigDecimal amount = CommonHelpers.generateRandomAmountInRange(100L, 9999L);
+        String currency = GLOBAL_PROPERTIES.getString(PROPERTY_TRANSACTIONS_BUSINESS_CURRENCY);
 
-                DEBIT_RETAIL_CATEGORIES = categories.stream()
-                    .filter(category -> "EXPENSE".equals(category.getCategoryType()))
-                    .map(SubCategory::getCategoryName)
-                    .collect(Collectors.toList());
-            }
+        String accountNumber = GLOBAL_PROPERTIES.getString(PROPERTY_CONTACTS_ACCOUNT_TYPES).contains(IBAN_ACCOUNT_TYPE) ?
+            Iban.random().toString() :
+            String.valueOf(generateRandomNumberInRange(100000, 999999999));
 
-            finalCategory = creditDebitIndicator == CRDT
-                ? getRandomFromList(CREDIT_RETAIL_CATEGORIES)
-                : getRandomFromList(DEBIT_RETAIL_CATEGORIES);
-
-            amount = creditDebitIndicator == CRDT
-                    ? CommonHelpers.generateRandomAmountInRange(1000L, 3000L)
-                    : CommonHelpers.generateRandomAmountInRange(1L, 300L);
-
-            description = getRandomFromList(TRANSACTION_DESCRIPTIONS);
-            counterPartyName = getRandomFromList(US_COUNTER_PARTY_NAMES);
-            currency = USD_CURRENCY;
-        } else {
-            finalCategory = creditDebitIndicator == CRDT
-                ? getRandomFromList(CREDIT_BUSINESS_CATEGORIES)
-                : getRandomFromList(DEBIT_BUSINESS_CATEGORIES);
-
-            description = faker.lorem().sentence().replace(".", "");
-            counterPartyName = faker.name().fullName();
-            amount = CommonHelpers.generateRandomAmountInRange(100L, 9999L);
-            currency = EUR_CURRENCY;
-        }
 
         return new TransactionsPostRequestBody().withId(UUID.randomUUID().toString())
             .withArrangementId(externalArrangementId)
@@ -186,7 +125,7 @@ public class TransactionsDataGenerator {
             .withInstructedCurrency(currency)
             .withCurrencyExchangeRate(CommonHelpers.generateRandomAmountInRange(1L, 2L))
             .withCounterPartyName(counterPartyName)
-            .withCounterPartyAccountNumber(Iban.random().toString())
+            .withCounterPartyAccountNumber(accountNumber)
             .withCounterPartyBIC(faker.finance().bic())
             .withCounterPartyCountry(faker.address().countryCode())
             .withCounterPartyBankName(faker.company().name());

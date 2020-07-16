@@ -63,7 +63,7 @@ public class TransactionsConfigurator {
         } else {
             IntStream.range(0, randomAmount).parallel()
                     .forEach(randomNumber -> transactions.add(
-                            TransactionsDataGenerator.generateTransactionsPostRequestBody(externalArrangementId, isRetail, finalCategories)));
+                            TransactionsDataGenerator.generateTransactionsPostRequestBody(externalArrangementId)));
         }
         transactionsIntegrationRestClient.ingestTransactions(transactions)
             .then()

@@ -1,6 +1,13 @@
 package com.backbase.ct.bbfuel.client.common;
 
-import static com.backbase.ct.bbfuel.data.CommonConstants.*;
+import static com.backbase.ct.bbfuel.data.CommonConstants.ACCESS_TOKEN;
+import static com.backbase.ct.bbfuel.data.CommonConstants.IDENTITY_AUTH;
+import static com.backbase.ct.bbfuel.data.CommonConstants.IDENTITY_TOKEN_PATH;
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_IDENTITY_CLIENT;
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_IDENTITY_FEATURE_TOGGLE;
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_IDENTITY_REALM;
+import static com.backbase.ct.bbfuel.data.CommonConstants.REFRESH_TOKEN;
+import static com.backbase.ct.bbfuel.data.CommonConstants.SESSION_TOKEN;
 import static org.apache.http.HttpStatus.SC_OK;
 
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;

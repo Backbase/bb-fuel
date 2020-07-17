@@ -1,10 +1,14 @@
 package com.backbase.ct.bbfuel.service;
 
 import static com.backbase.ct.bbfuel.data.CommonConstants.ACH_DEBIT_FUNCTION_NAME;
+import static com.backbase.ct.bbfuel.data.CommonConstants.ACH_DEBIT_INTRACOMPANY_FUNCTION_NAME;
 import static com.backbase.ct.bbfuel.data.CommonConstants.BATCH_SEPA_CT_FUNCTION_NAME;
 import static com.backbase.ct.bbfuel.data.CommonConstants.SEPA_CT_FUNCTION_NAME;
+import static com.backbase.ct.bbfuel.data.CommonConstants.SEPA_CT_INTRACOMPANY_FUNCTION_NAME;
 import static com.backbase.ct.bbfuel.data.CommonConstants.US_DOMESTIC_WIRE_FUNCTION_NAME;
+import static com.backbase.ct.bbfuel.data.CommonConstants.US_DOMESTIC_WIRE_INTRACOMPANY_FUNCTION_NAME;
 import static com.backbase.ct.bbfuel.data.CommonConstants.US_FOREIGN_WIRE_FUNCTION_NAME;
+import static com.backbase.ct.bbfuel.data.CommonConstants.US_FOREIGN_WIRE_INTRACOMPANY_FUNCTION_NAME;
 import static java.util.Arrays.asList;
 import static java.util.Collections.unmodifiableList;
 
@@ -24,8 +28,11 @@ public final class PaymentsFunctionService {
      */
     public static final List<String> PAYMENTS_FUNCTIONS = unmodifiableList(asList(
         SEPA_CT_FUNCTION_NAME,
+        SEPA_CT_INTRACOMPANY_FUNCTION_NAME,
         US_DOMESTIC_WIRE_FUNCTION_NAME,
+        US_DOMESTIC_WIRE_INTRACOMPANY_FUNCTION_NAME,
         US_FOREIGN_WIRE_FUNCTION_NAME,
+        US_FOREIGN_WIRE_INTRACOMPANY_FUNCTION_NAME,
         ACH_DEBIT_FUNCTION_NAME));
 
     /**

@@ -26,9 +26,13 @@ public final class CommonConstants {
     static final String EXTERNAL_LEGAL_ENTITY_ID_PREFIX = "C00000";
     public static final String EXTERNAL_ROOT_LEGAL_ENTITY_ID = EXTERNAL_LEGAL_ENTITY_ID_PREFIX + "0";
     public static final String SEPA_CT_FUNCTION_NAME = "SEPA CT";
+    public static final String SEPA_CT_INTRACOMPANY_FUNCTION_NAME = "SEPA CT - Intracompany";
     public static final String ACH_DEBIT_FUNCTION_NAME = "ACH Debit";
+    public static final String ACH_DEBIT_INTRACOMPANY_FUNCTION_NAME = "ACH Debit - Intracompany";
     public static final String US_DOMESTIC_WIRE_FUNCTION_NAME = "US Domestic Wire";
+    public static final String US_DOMESTIC_WIRE_INTRACOMPANY_FUNCTION_NAME = "US Domestic Wire - Intracompany";
     public static final String US_FOREIGN_WIRE_FUNCTION_NAME = "US Foreign Wire";
+    public static final String US_FOREIGN_WIRE_INTRACOMPANY_FUNCTION_NAME = "US Foreign Wire - Intracompany";
     public static final String PAYMENTS_RESOURCE_NAME = "Payments";
     public static final String CONTACTS_RESOURCE_NAME = "Contacts";
     public static final String NOTIFICATIONS_RESOURCE_NAME = "Notifications";

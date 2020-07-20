@@ -26,8 +26,6 @@ public class LegalEntityService {
     @Getter
     private String rootAdmin;
 
-    private final LegalEntityPresentationRestClient legalEntityPresentationRestClient;
-
     private final LegalEntityIntegrationRestClient legalEntityIntegrationRestClient;
 
     public String ingestLegalEntity(LegalEntitiesPostRequestBody legalEntity) {
@@ -42,18 +40,7 @@ public class LegalEntityService {
                 return EXTERNAL_ROOT_LEGAL_ENTITY_ID;
             }
 
-            // Legal entity name is unique in the system
-            LegalEntitiesGetResponseBody existingLegalEntity = legalEntityPresentationRestClient
-                .retrieveLegalEntities()
-                .stream()
-                .filter(legalEntitiesGetResponseBody ->
-                    legalEntity.getExternalId().equals(legalEntitiesGetResponseBody.getExternalId()) ||
-                    legalEntity.getName().equals(legalEntitiesGetResponseBody.getName()))
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException(
-                    String.format("No existing legal entity found by name [%s]", legalEntity.getName())));
-
-            return existingLegalEntity.getExternalId();
+            return legalEntity.getExternalId();
         } else {
             response.then()
                 .statusCode(SC_CREATED);

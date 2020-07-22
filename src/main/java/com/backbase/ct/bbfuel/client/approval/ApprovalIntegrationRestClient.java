@@ -12,7 +12,6 @@ import static org.apache.http.HttpStatus.SC_OK;
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
 import com.backbase.dbs.approval.integration.spec.IntegrationApprovalTypeAssignmentDto;
-import com.backbase.dbs.approval.integration.spec.IntegrationDeletePolicyAssignmentResponse;
 import com.backbase.dbs.approval.integration.spec.IntegrationPolicyAssignmentRequest;
 import com.backbase.dbs.approval.integration.spec.IntegrationPostBulkApprovalTypeAssignmentRequest;
 import com.backbase.dbs.approval.integration.spec.IntegrationPostBulkApprovalTypeAssignmentResponse;

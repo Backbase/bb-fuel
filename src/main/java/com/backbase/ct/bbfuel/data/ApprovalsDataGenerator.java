@@ -1,6 +1,7 @@
 package com.backbase.ct.bbfuel.data;
 
 import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
 
 import com.backbase.dbs.approval.integration.spec.IntegrationApprovalTypeAssignmentDto;
 import com.backbase.dbs.approval.integration.spec.IntegrationPolicyAssignmentRequest;
@@ -72,7 +73,7 @@ public class ApprovalsDataGenerator {
         return new IntegrationPolicyAssignmentRequest()
             .withExternalServiceAgreementId(externalServiceAgreementId)
             .withResource(resource)
-            .withFunction(function)
+            .withFunctions(singletonList(function))
             .withBounds(integrationPolicyAssignmentRequestBounds);
     }
 

@@ -5,7 +5,7 @@ import static org.apache.http.HttpStatus.SC_CREATED;
 
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
-import com.backbase.integration.user.rest.spec.v2.users.UsersPostRequestBody;
+import com.backbase.dbs.user.integration.rest.spec.v2.users.UsersPostRequestBody;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import javax.annotation.PostConstruct;

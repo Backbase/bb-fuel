@@ -4,8 +4,8 @@ import static org.apache.http.HttpStatus.SC_OK;
 
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
-import com.backbase.presentation.user.rest.spec.v2.users.LegalEntityByUserGetResponseBody;
-import com.backbase.presentation.user.rest.spec.v2.users.UserGetResponseBody;
+import com.backbase.dbs.user.presentation.rest.spec.v2.users.LegalEntityByUserGetResponseBody;
+import com.backbase.dbs.user.presentation.rest.spec.v2.users.UserGetResponseBody;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

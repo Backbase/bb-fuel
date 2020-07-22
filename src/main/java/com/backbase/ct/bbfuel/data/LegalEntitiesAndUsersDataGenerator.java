@@ -3,9 +3,9 @@ package com.backbase.ct.bbfuel.data;
 import static com.backbase.ct.bbfuel.data.CommonConstants.*;
 
 import com.backbase.ct.bbfuel.dto.User;
+import com.backbase.dbs.user.integration.rest.spec.v2.users.UsersPostRequestBody;
 import com.backbase.integration.legalentity.rest.spec.v2.legalentities.LegalEntitiesPostRequestBody;
 import com.backbase.integration.legalentity.rest.spec.v2.legalentities.enumeration.LegalEntityType;
-import com.backbase.integration.user.rest.spec.v2.users.UsersPostRequestBody;
 import com.github.javafaker.Faker;
 import com.google.common.base.Strings;
 import java.util.Optional;

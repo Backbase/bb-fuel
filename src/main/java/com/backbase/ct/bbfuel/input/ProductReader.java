@@ -6,7 +6,7 @@ import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toList;
 
 import com.backbase.ct.bbfuel.util.ParserUtil;
-import com.backbase.integration.arrangement.rest.spec.v2.products.ProductsPostRequestBody;
+import com.backbase.dbs.arrangement.integration.rest.spec.v2.products.ProductsPostRequestBody;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;

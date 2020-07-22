@@ -10,10 +10,10 @@ import com.backbase.ct.bbfuel.client.productsummary.ArrangementsIntegrationRestC
 import com.backbase.ct.bbfuel.data.ProductSummaryDataGenerator;
 import com.backbase.ct.bbfuel.dto.ArrangementId;
 import com.backbase.ct.bbfuel.dto.entitlement.ProductGroupSeed;
+import com.backbase.dbs.arrangement.integration.rest.spec.v2.arrangements.ArrangementsPostResponseBody;
+import com.backbase.dbs.arrangement.integration.rest.spec.v2.balancehistory.BalanceHistoryPostRequestBody;
+import com.backbase.dbs.arrangement.integration.rest.spec.v2.products.ProductsPostRequestBody;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBody;
-import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostResponseBody;
-import com.backbase.integration.arrangement.rest.spec.v2.balancehistory.BalanceHistoryPostRequestBody;
-import com.backbase.integration.arrangement.rest.spec.v2.products.ProductsPostRequestBody;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

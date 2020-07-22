@@ -4,6 +4,7 @@ import com.backbase.ct.bbfuel.util.CommonHelpers;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
 import com.backbase.integration.transaction.external.rest.spec.v2.transactions.TransactionsPostRequestBody;
 import com.backbase.integration.transaction.external.rest.spec.v2.transactions.TransactionsPostRequestBody.CreditDebitIndicator;
+import com.backbase.rest.spec.common.types.Currency;
 import com.github.javafaker.Faker;
 import org.apache.commons.lang.time.DateUtils;
 import org.iban4j.Iban;
@@ -118,8 +119,7 @@ public class TransactionsDataGenerator {
             .withCategory(finalCategory)
             .withBookingDate(DateUtils.addDays(new Date(), generateRandomNumberInRange(-365, 0)))
             .withValueDate(DateUtils.addDays(new Date(), generateRandomNumberInRange(-365, 0)))
-            .withAmount(amount)
-            .withCurrency(currency)
+            .withTransactionAmountCurrency(new Currency().withAmount(amount).withCurrencyCode(currency))
             .withCreditDebitIndicator(creditDebitIndicator)
             .withInstructedAmount(amount)
             .withInstructedCurrency(currency)

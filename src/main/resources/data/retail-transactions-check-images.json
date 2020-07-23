@@ -3,7 +3,7 @@
     "category": "Food Drinks",
     "counterPartyCountry": "US",
     "counterPartyName": "In N Out Burger",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 3.99,
       "currencyCode": "USD"
     },
@@ -20,7 +20,7 @@
     "category": "Gas",
     "counterPartyCountry": "US",
     "counterPartyName": "Murphy USA",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 14.99,
       "currencyCode": "USD"
     },

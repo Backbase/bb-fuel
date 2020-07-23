@@ -4,7 +4,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "In N Out Burger",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 3.99,
       "currencyCode": "USD"
     },
@@ -19,7 +19,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "Murphy USA",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 14.99,
       "currencyCode": "USD"
     },
@@ -34,7 +34,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "Comcast",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 1199.99,
       "currencyCode": "USD"
     },
@@ -49,7 +49,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "Cheap Campers",
     "creditDebitIndicator": "CRDT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 4000,
       "currencyCode": "USD"
     },
@@ -64,7 +64,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "Salt Lake",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 239.99,
       "currencyCode": "USD"
     },
@@ -79,7 +79,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "AT&T",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 80,
       "currencyCode": "USD"
     },
@@ -94,7 +94,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "Nike",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 160,
       "currencyCode": "USD"
     },
@@ -109,7 +109,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "Home Rent",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 1500,
       "currencyCode": "USD"
     },
@@ -124,7 +124,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "Gloss Makeup & Beauty Studio",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 71,
       "currencyCode": "USD"
     },
@@ -139,7 +139,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "NextEra Energy",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 76,
       "currencyCode": "USD"
     },
@@ -155,7 +155,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "Bank of America",
     "creditDebitIndicator": "CRDT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 250,
       "currencyCode": "USD"
     },
@@ -170,7 +170,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "ARCO Gas Station",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 85,
       "currencyCode": "USD"
     },
@@ -185,7 +185,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "Starbucks",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 4.45,
       "currencyCode": "USD"
     },
@@ -200,7 +200,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "NextEra Energy",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 76,
       "currencyCode": "USD"
     },
@@ -215,7 +215,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "Under Armour",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 90,
       "currencyCode": "USD"
     },
@@ -230,7 +230,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "Harmon Face Values",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 56.87,
       "currencyCode": "USD"
     },
@@ -245,7 +245,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "Netflix",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 12.99,
       "currencyCode": "USD"
     },
@@ -260,7 +260,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "Albertsons LLC",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 36.39,
       "currencyCode": "USD"
     },
@@ -275,7 +275,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "Brittney T. Smith",
     "creditDebitIndicator": "CRDT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 400,
       "currencyCode": "USD"
     },
@@ -290,7 +290,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "Uber",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 54,
       "currencyCode": "USD"
     },
@@ -305,7 +305,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "Nike",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 90,
       "currencyCode": "USD"
     },
@@ -320,7 +320,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "Apple Store",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 159,
       "currencyCode": "USD"
     },
@@ -335,7 +335,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "Gardeners",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 202.95,
       "currencyCode": "USD"
     },
@@ -350,7 +350,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "Burro Kids",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 295,
       "currencyCode": "USD"
     },
@@ -365,7 +365,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "Hammer & Nails",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 43,
       "currencyCode": "USD"
     },
@@ -380,7 +380,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "Amazon",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 35,
       "currencyCode": "USD"
     },
@@ -395,7 +395,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "Starbucks",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 3.75,
       "currencyCode": "USD"
     },
@@ -410,7 +410,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "IKEA",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 249.99,
       "currencyCode": "USD"
     },
@@ -425,7 +425,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "GameStop",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 10,
       "currencyCode": "USD"
     },
@@ -440,7 +440,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "Walmart",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 112.05,
       "currencyCode": "USD"
     },
@@ -455,7 +455,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "Benefit Cosmetics",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 24.47,
       "currencyCode": "USD"
     },
@@ -470,7 +470,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "Tommy Hilfiger",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 149,
       "currencyCode": "USD"
     },
@@ -485,7 +485,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "Pamela W. Green",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 20,
       "currencyCode": "USD"
     },
@@ -500,7 +500,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "Saison",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 125,
       "currencyCode": "USD"
     },
@@ -515,7 +515,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "PayPal",
     "creditDebitIndicator": "CRDT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 35,
       "currencyCode": "USD"
     },
@@ -530,7 +530,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "Metro Subscription",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 97.5,
       "currencyCode": "USD"
     },
@@ -545,7 +545,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "Hand & Stone Spa",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 120,
       "currencyCode": "USD"
     },
@@ -560,7 +560,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "The Home Depot",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 156.75,
       "currencyCode": "USD"
     },
@@ -575,7 +575,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "Walmart",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 87.65,
       "currencyCode": "USD"
     },
@@ -590,7 +590,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "Apple Store",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 4.99,
       "currencyCode": "USD"
     },
@@ -605,7 +605,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "LinkedIn",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 29.99,
       "currencyCode": "USD"
     },
@@ -620,7 +620,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "John Doe",
     "creditDebitIndicator": "CRDT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 48,
       "currencyCode": "USD"
     },
@@ -635,7 +635,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "Coinbase Payments, LTD",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 500,
       "currencyCode": "USD"
     },
@@ -650,7 +650,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "Savings Account",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 300,
       "currencyCode": "USD"
     },
@@ -665,7 +665,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "Lyft",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 35.49,
       "currencyCode": "USD"
     },
@@ -680,7 +680,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "Calvin Klein",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 213,
       "currencyCode": "USD"
     },
@@ -695,7 +695,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "eBay",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 17.13,
       "currencyCode": "USD"
     },
@@ -710,7 +710,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "Backbase Bank",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 450,
       "currencyCode": "USD"
     },
@@ -725,7 +725,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "Lifetime Healthcare Group",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 150,
       "currencyCode": "USD"
     },
@@ -740,7 +740,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "Domino's",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 27.54,
       "currencyCode": "USD"
     },
@@ -755,7 +755,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "La Taqueria",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 18.75,
       "currencyCode": "USD"
     },
@@ -770,7 +770,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "Burrito's Anonymous",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 14.5,
       "currencyCode": "USD"
     },
@@ -785,7 +785,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "Whole Foods",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 66.8,
       "currencyCode": "USD"
     },
@@ -800,7 +800,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "McDonalds",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 8.95,
       "currencyCode": "USD"
     },
@@ -815,7 +815,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "Walmart",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 22.5,
       "currencyCode": "USD"
     },
@@ -830,7 +830,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "PayPal",
     "creditDebitIndicator": "CRDT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 345.95,
       "currencyCode": "USD"
     },
@@ -845,7 +845,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "Jessica Biel",
     "creditDebitIndicator": "CRDT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 25,
       "currencyCode": "USD"
     },
@@ -860,7 +860,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "AliExpress",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 10.83,
       "currencyCode": "USD"
     },
@@ -875,7 +875,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "AliExpress",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 44.59,
       "currencyCode": "USD"
     },
@@ -890,7 +890,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "7Eleven",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 5.99,
       "currencyCode": "USD"
     },
@@ -905,7 +905,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "7Eleven",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 12.54,
       "currencyCode": "USD"
     },
@@ -920,7 +920,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "AMC Theatres",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 24.5,
       "currencyCode": "USD"
     },
@@ -935,7 +935,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "Cinemark USA, Inc.",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 13.1,
       "currencyCode": "USD"
     },
@@ -950,7 +950,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "Long Beach Surf Shop",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 67.5,
       "currencyCode": "USD"
     },
@@ -965,7 +965,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "Headspace",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 54.5,
       "currencyCode": "USD"
     },
@@ -980,7 +980,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "Savings Account",
     "creditDebitIndicator": "CRDT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 100,
       "currencyCode": "USD"
     },
@@ -995,7 +995,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "Adobe Creative Cloud",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 19.99,
       "currencyCode": "USD"
     },
@@ -1010,7 +1010,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "Ticketmaster",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 119.98,
       "currencyCode": "USD"
     },
@@ -1025,7 +1025,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "Amazon",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 49.95,
       "currencyCode": "USD"
     },
@@ -1040,7 +1040,7 @@
     "counterPartyCountry": "US",
     "counterPartyName": "YouTube Premium",
     "creditDebitIndicator": "DBIT",
-    "transactionsAmountCurrency": {
+    "transactionAmountCurrency": {
       "amount": 11.99,
       "currencyCode": "USD"
     },

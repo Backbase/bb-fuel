@@ -53,7 +53,6 @@ public final class CommonConstants {
     public static final String PROPERTY_TRANSACTIONS_MIN = "transactions.min";
     public static final String PROPERTY_TRANSACTIONS_MAX = "transactions.max";
     public static final String PROPERTY_INGEST_TRANSACTIONS = "ingest.transactions";
-    public static final String PROPERTY_USE_PFM_CATEGORIES_FOR_TRANSACTIONS = "use.pfm.categories.for.transactions";
     public static final String PROPERTY_NOTIFICATIONS_MIN = "notifications.min";
     public static final String PROPERTY_NOTIFICATIONS_MAX = "notifications.max";
     public static final String PROPERTY_INGEST_NOTIFICATIONS = "ingest.notifications";

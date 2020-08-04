@@ -10,6 +10,7 @@ import com.backbase.ct.bbfuel.util.GlobalProperties;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.restassured.RestAssured;
 import io.restassured.config.LogConfig;
 import io.restassured.config.ObjectMapperConfig;
@@ -114,7 +115,9 @@ public class RestClient {
         restAssuredConfig = RestAssuredConfig.config()
             .objectMapperConfig(new ObjectMapperConfig().jackson2ObjectMapperFactory(
                 (aClass, s) -> new ObjectMapper().configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
-                    .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                        .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                        .registerModule(new JavaTimeModule())
+                        .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
             ))
             .logConfig(LogConfig.logConfig().enableLoggingOfRequestAndResponseIfValidationFails())
             .httpClient(httpClientConfig().setParam(PARAMETER_NAME, TIMEOUT_VALUE));

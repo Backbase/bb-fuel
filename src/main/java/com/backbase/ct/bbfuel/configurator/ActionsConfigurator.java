@@ -12,7 +12,7 @@ import com.backbase.ct.bbfuel.client.action.ActionRecipesPresentationRestClient;
 import com.backbase.ct.bbfuel.client.common.LoginRestClient;
 import com.backbase.ct.bbfuel.client.productsummary.ProductSummaryPresentationRestClient;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
-import com.backbase.dbs.actions.actionrecipes.presentation.rest.spec.v2.actionrecipes.ActionRecipesPostRequestBody;
+import com.backbase.dbs.actions.rest.spec.v2.actionrecipes.ActionRecipesPostRequestBody;
 import com.backbase.dbs.productsummary.presentation.rest.spec.v2.productsummary.ArrangementsByBusinessFunctionGetResponseBody;
 import java.util.ArrayList;
 import java.util.List;

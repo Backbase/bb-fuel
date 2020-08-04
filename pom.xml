@@ -286,6 +286,12 @@
                   <outputDirectory>${project.build.directory}/approval-integration-spec
                   </outputDirectory>
                 </artifactItem>
+                <artifactItem>
+                  <groupId>com.backbase.dbs.paymentorder</groupId>
+                  <artifactId>payment-order-presentation-spec</artifactId>
+                  <outputDirectory>${project.build.directory}/payment-order-presentation-spec
+                  </outputDirectory>
+                </artifactItem>
               </artifactItems>
             </configuration>
           </execution>
@@ -310,6 +316,22 @@
               <packageName>dbs.approval.integration</packageName>
               <inputFiles>
                 <inputFile>${project.build.directory}/approval-integration-spec/client-api.raml
+                </inputFile>
+              </inputFiles>
+              <requestHeaders>false</requestHeaders>
+            </configuration>
+          </execution>
+          <execution>
+            <id>generate-payment-order-presentation-spec</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>raml-api-generator</goal>
+            </goals>
+            <configuration>
+              <serviceId>payment-order-service</serviceId>
+              <packageName>dbs.presentation.paymentorder</packageName>
+              <inputFiles>
+                <inputFile>${project.build.directory}/payment-order-presentation-spec/api.raml
                 </inputFile>
               </inputFiles>
               <requestHeaders>false</requestHeaders>

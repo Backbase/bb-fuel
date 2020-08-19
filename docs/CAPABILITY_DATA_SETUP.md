@@ -17,7 +17,6 @@ Note: This can be rerun on an existing environment which already contains data b
     - Only works if property `ingest.access.control` is set to `true` due to the required external arrangement id when ingesting transactions.
     - This external arrangement id is only available when creating an arrangement (part of the access control setup). The external arrangement id is currently not retrievable via any REST endpoint.
 - If enabled, random transactions (by default: between 10 and 50) per arrangement per today's date
-- Possible to use the PFM categories by setting the property `use.pfm.categories.for.transactions` to `true`
 
 ## Approvals setup
 Approvals configuration can be ingested for payments, contacts, notifications and batches based on master service agreements.

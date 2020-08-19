@@ -1,10 +1,12 @@
 [
   {
-    "amount": 3.99,
     "category": "Food Drinks",
     "counterPartyCountry": "US",
     "counterPartyName": "In N Out Burger",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 3.99,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -15,11 +17,13 @@
     "checkSerialNumber": 123456789
   },
   {
-    "amount": 14.99,
     "category": "Gas",
     "counterPartyCountry": "US",
     "counterPartyName": "Murphy USA",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 14.99,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",

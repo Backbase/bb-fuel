@@ -8,7 +8,7 @@ import com.backbase.ct.bbfuel.client.user.UserPresentationRestClient;
 import com.backbase.ct.bbfuel.dto.User;
 import com.backbase.ct.bbfuel.dto.UserContext;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
-import com.backbase.presentation.user.rest.spec.v2.users.LegalEntityByUserGetResponseBody;
+import com.backbase.dbs.user.presentation.rest.spec.v2.users.LegalEntityByUserGetResponseBody;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

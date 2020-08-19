@@ -1,11 +1,13 @@
 [
   {
-    "amount": 3.99,
     "category": "Food Drinks",
     "counterPartyCountry": "US",
     "counterPartyName": "In N Out Burger",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 3.99,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -13,12 +15,14 @@
     "billingStatus": "BILLED"
   },
   {
-    "amount": 14.99,
     "category": "Gas",
     "counterPartyCountry": "US",
     "counterPartyName": "Murphy USA",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 14.99,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -26,12 +30,14 @@
     "billingStatus": "BILLED"
   },
   {
-    "amount": 1199.99,
     "category": "Television",
     "counterPartyCountry": "US",
     "counterPartyName": "Comcast",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 1199.99,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -39,12 +45,14 @@
     "billingStatus": "BILLED"
   },
   {
-    "amount": 4000,
     "category": "Travel",
     "counterPartyCountry": "US",
     "counterPartyName": "Cheap Campers",
     "creditDebitIndicator": "CRDT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 4000,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -52,12 +60,14 @@
     "billingStatus": "BILLED"
   },
   {
-    "amount": 239.99,
     "category": "Alcohol & Bars",
     "counterPartyCountry": "US",
     "counterPartyName": "Salt Lake",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 239.99,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -65,12 +75,14 @@
     "billingStatus": "BILLED"
   },
   {
-    "amount": 80,
     "category": "Bills Utilities",
     "counterPartyCountry": "US",
     "counterPartyName": "AT&T",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 80,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -78,12 +90,14 @@
     "billingStatus": "BILLED"
   },
   {
-    "amount": 160,
     "category": "Shopping",
     "counterPartyCountry": "US",
     "counterPartyName": "Nike",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 160,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -91,12 +105,14 @@
     "billingStatus": "PENDING"
   },
   {
-    "amount": 1500,
     "category": "Bills Utilities",
     "counterPartyCountry": "US",
     "counterPartyName": "Home Rent",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 1500,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -104,12 +120,14 @@
     "billingStatus": "PENDING"
   },
   {
-    "amount": 71,
     "category": "Health Beauty",
     "counterPartyCountry": "US",
     "counterPartyName": "Gloss Makeup & Beauty Studio",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 71,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -117,12 +135,14 @@
     "billingStatus": "PENDING"
   },
   {
-    "amount": 76,
     "category": "Bills Utilities",
     "counterPartyCountry": "US",
     "counterPartyName": "NextEra Energy",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 76,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -135,7 +155,10 @@
     "counterPartyCountry": "US",
     "counterPartyName": "Bank of America",
     "creditDebitIndicator": "CRDT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 250,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -143,12 +166,14 @@
     "billingStatus": "PENDING"
   },
   {
-    "amount": 85,
     "category": "Transport",
     "counterPartyCountry": "US",
     "counterPartyName": "ARCO Gas Station",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 85,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -156,12 +181,14 @@
     "billingStatus": "UNBILLED"
   },
   {
-    "amount": 4.45,
     "category": "Food Drinks",
     "counterPartyCountry": "US",
     "counterPartyName": "Starbucks",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 4.45,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -169,12 +196,14 @@
     "billingStatus": "UNBILLED"
   },
   {
-    "amount": 76,
     "category": "Bills Utilities",
     "counterPartyCountry": "US",
     "counterPartyName": "NextEra Energy",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 76,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -182,12 +211,14 @@
     "billingStatus": "UNBILLED"
   },
   {
-    "amount": 90,
     "category": "Shopping",
     "counterPartyCountry": "US",
     "counterPartyName": "Under Armour",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 90,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -195,12 +226,14 @@
     "billingStatus": "BILLED"
   },
   {
-    "amount": 56.87,
     "category": "Health Beauty",
     "counterPartyCountry": "US",
     "counterPartyName": "Harmon Face Values",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 56.87,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -208,12 +241,14 @@
     "billingStatus": "BILLED"
   },
   {
-    "amount": 12.99,
     "category": "Hobbies Entertainment",
     "counterPartyCountry": "US",
     "counterPartyName": "Netflix",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 12.99,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -221,12 +256,14 @@
     "billingStatus": "BILLED"
   },
   {
-    "amount": 36.39,
     "category": "Shopping",
     "counterPartyCountry": "US",
     "counterPartyName": "Albertsons LLC",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 36.39,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -234,12 +271,14 @@
     "billingStatus": "BILLED"
   },
   {
-    "amount": 400,
     "category": "Transfers",
     "counterPartyCountry": "US",
     "counterPartyName": "Brittney T. Smith",
     "creditDebitIndicator": "CRDT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 400,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -247,12 +286,14 @@
     "billingStatus": "BILLED"
   },
   {
-    "amount": 54,
     "category": "Transport",
     "counterPartyCountry": "US",
     "counterPartyName": "Uber",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 54,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -260,12 +301,14 @@
     "billingStatus": "BILLED"
   },
   {
-    "amount": 90,
     "category": "Shopping",
     "counterPartyCountry": "US",
     "counterPartyName": "Nike",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 90,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -273,12 +316,14 @@
     "billingStatus": "BILLED"
   },
   {
-    "amount": 159,
     "category": "Shopping",
     "counterPartyCountry": "US",
     "counterPartyName": "Apple Store",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 159,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -286,12 +331,14 @@
     "billingStatus": "PENDING"
   },
   {
-    "amount": 202.95,
     "category": "Home",
     "counterPartyCountry": "US",
     "counterPartyName": "Gardeners",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 202.95,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -299,12 +346,14 @@
     "billingStatus": "PENDING"
   },
   {
-    "amount": 295,
     "category": "Shopping",
     "counterPartyCountry": "US",
     "counterPartyName": "Burro Kids",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 295,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -312,12 +361,14 @@
     "billingStatus": "PENDING"
   },
   {
-    "amount": 43,
     "category": "Health Beauty",
     "counterPartyCountry": "US",
     "counterPartyName": "Hammer & Nails",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 43,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -325,12 +376,14 @@
     "billingStatus": "PENDING"
   },
   {
-    "amount": 35,
     "category": "Shopping",
     "counterPartyCountry": "US",
     "counterPartyName": "Amazon",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 35,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -338,12 +391,14 @@
     "billingStatus": "PENDING"
   },
   {
-    "amount": 3.75,
     "category": "Food Drinks",
     "counterPartyCountry": "US",
     "counterPartyName": "Starbucks",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 3.75,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -351,12 +406,14 @@
     "billingStatus": "UNBILLED"
   },
   {
-    "amount": 249.99,
     "category": "Shopping",
     "counterPartyCountry": "US",
     "counterPartyName": "IKEA",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 249.99,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -364,12 +421,14 @@
     "billingStatus": "UNBILLED"
   },
   {
-    "amount": 10,
     "category": "Shopping",
     "counterPartyCountry": "US",
     "counterPartyName": "GameStop",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 10,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -377,12 +436,14 @@
     "billingStatus": "UNBILLED"
   },
   {
-    "amount": 112.05,
     "category": "Shopping",
     "counterPartyCountry": "US",
     "counterPartyName": "Walmart",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 112.05,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -390,12 +451,14 @@
     "billingStatus": "UNBILLED"
   },
   {
-    "amount": 24.47,
     "category": "Health Beauty",
     "counterPartyCountry": "US",
     "counterPartyName": "Benefit Cosmetics",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 24.47,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -403,12 +466,14 @@
     "billingStatus": "UNBILLED"
   },
   {
-    "amount": 149,
     "category": "Shopping",
     "counterPartyCountry": "US",
     "counterPartyName": "Tommy Hilfiger",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 149,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -416,12 +481,14 @@
     "billingStatus": "UNBILLED"
   },
   {
-    "amount": 20,
     "category": "Transfers",
     "counterPartyCountry": "US",
     "counterPartyName": "Pamela W. Green",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 20,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -429,12 +496,14 @@
     "billingStatus": "BILLED"
   },
   {
-    "amount": 125,
     "category": "Food Drinks",
     "counterPartyCountry": "US",
     "counterPartyName": "Saison",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 125,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -442,12 +511,14 @@
     "billingStatus": "BILLED"
   },
   {
-    "amount": 35,
     "category": "Other Income",
     "counterPartyCountry": "US",
     "counterPartyName": "PayPal",
     "creditDebitIndicator": "CRDT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 35,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -455,12 +526,14 @@
     "billingStatus": "BILLED"
   },
   {
-    "amount": 97.5,
     "category": "Transport",
     "counterPartyCountry": "US",
     "counterPartyName": "Metro Subscription",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 97.5,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -468,12 +541,14 @@
     "billingStatus": "BILLED"
   },
   {
-    "amount": 120,
     "category": "Health Beauty",
     "counterPartyCountry": "US",
     "counterPartyName": "Hand & Stone Spa",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 120,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -481,12 +556,14 @@
     "billingStatus": "BILLED"
   },
   {
-    "amount": 156.75,
     "category": "Shopping",
     "counterPartyCountry": "US",
     "counterPartyName": "The Home Depot",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 156.75,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -494,12 +571,14 @@
     "billingStatus": "BILLED"
   },
   {
-    "amount": 87.65,
     "category": "Shopping",
     "counterPartyCountry": "US",
     "counterPartyName": "Walmart",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 87.65,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -507,12 +586,14 @@
     "billingStatus": "BILLED"
   },
   {
-    "amount": 4.99,
     "category": "Bills Utilities",
     "counterPartyCountry": "US",
     "counterPartyName": "Apple Store",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 4.99,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -520,12 +601,14 @@
     "billingStatus": "BILLED"
   },
   {
-    "amount": 29.99,
     "category": "Bills Utilities",
     "counterPartyCountry": "US",
     "counterPartyName": "LinkedIn",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 29.99,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -533,12 +616,14 @@
     "billingStatus": "BILLED"
   },
   {
-    "amount": 48,
     "category": "Transfers",
     "counterPartyCountry": "US",
     "counterPartyName": "John Doe",
     "creditDebitIndicator": "CRDT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 48,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -546,12 +631,14 @@
     "billingStatus": "BILLED"
   },
   {
-    "amount": 500,
     "category": "Transfers",
     "counterPartyCountry": "US",
     "counterPartyName": "Coinbase Payments, LTD",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 500,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -559,12 +646,14 @@
     "billingStatus": "BILLED"
   },
   {
-    "amount": 300,
     "category": "Transfers",
     "counterPartyCountry": "US",
     "counterPartyName": "Savings Account",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 300,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -572,12 +661,14 @@
     "billingStatus": "BILLED"
   },
   {
-    "amount": 35.49,
     "category": "Transport",
     "counterPartyCountry": "US",
     "counterPartyName": "Lyft",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 35.49,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -585,12 +676,14 @@
     "billingStatus": "BILLED"
   },
   {
-    "amount": 213,
     "category": "Shopping",
     "counterPartyCountry": "US",
     "counterPartyName": "Calvin Klein",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 213,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -598,12 +691,14 @@
     "billingStatus": "BILLED"
   },
   {
-    "amount": 17.13,
     "category": "Shopping",
     "counterPartyCountry": "US",
     "counterPartyName": "eBay",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 17.13,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -611,12 +706,14 @@
     "billingStatus": "BILLED"
   },
   {
-    "amount": 450,
     "category": "Transfers",
     "counterPartyCountry": "US",
     "counterPartyName": "Backbase Bank",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 450,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -624,12 +721,14 @@
     "billingStatus": "BILLED"
   },
   {
-    "amount": 150,
     "category": "Bills Utilities",
     "counterPartyCountry": "US",
     "counterPartyName": "Lifetime Healthcare Group",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 150,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -637,12 +736,14 @@
     "billingStatus": "BILLED"
   },
   {
-    "amount": 27.54,
     "category": "Food Drinks",
     "counterPartyCountry": "US",
     "counterPartyName": "Domino's",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 27.54,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -650,12 +751,14 @@
     "billingStatus": "BILLED"
   },
   {
-    "amount": 18.75,
     "category": "Food Drinks",
     "counterPartyCountry": "US",
     "counterPartyName": "La Taqueria",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 18.75,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -663,12 +766,14 @@
     "billingStatus": "BILLED"
   },
   {
-    "amount": 14.5,
     "category": "Food Drinks",
     "counterPartyCountry": "US",
     "counterPartyName": "Burrito's Anonymous",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 14.5,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -676,12 +781,14 @@
     "billingStatus": "BILLED"
   },
   {
-    "amount": 66.8,
     "category": "Food Drinks",
     "counterPartyCountry": "US",
     "counterPartyName": "Whole Foods",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 66.8,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -689,12 +796,14 @@
     "billingStatus": "BILLED"
   },
   {
-    "amount": 8.95,
     "category": "Food Drinks",
     "counterPartyCountry": "US",
     "counterPartyName": "McDonalds",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 8.95,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -702,12 +811,14 @@
     "billingStatus": "BILLED"
   },
   {
-    "amount": 22.5,
     "category": "Shopping",
     "counterPartyCountry": "US",
     "counterPartyName": "Walmart",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 22.5,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -715,12 +826,14 @@
     "billingStatus": "BILLED"
   },
   {
-    "amount": 345.95,
     "category": "Transfers",
     "counterPartyCountry": "US",
     "counterPartyName": "PayPal",
     "creditDebitIndicator": "CRDT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 345.95,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -728,12 +841,14 @@
     "billingStatus": "BILLED"
   },
   {
-    "amount": 25,
     "category": "Transfers",
     "counterPartyCountry": "US",
     "counterPartyName": "Jessica Biel",
     "creditDebitIndicator": "CRDT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 25,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -741,12 +856,14 @@
     "billingStatus": "BILLED"
   },
   {
-    "amount": 10.83,
     "category": "Shopping",
     "counterPartyCountry": "US",
     "counterPartyName": "AliExpress",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 10.83,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -754,12 +871,14 @@
     "billingStatus": "BILLED"
   },
   {
-    "amount": 44.59,
     "category": "Shopping",
     "counterPartyCountry": "US",
     "counterPartyName": "AliExpress",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 44.59,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -767,12 +886,14 @@
     "billingStatus": "BILLED"
   },
   {
-    "amount": 5.99,
     "category": "Food Drinks",
     "counterPartyCountry": "US",
     "counterPartyName": "7Eleven",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 5.99,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -780,12 +901,14 @@
     "billingStatus": "BILLED"
   },
   {
-    "amount": 12.54,
     "category": "Food Drinks",
     "counterPartyCountry": "US",
     "counterPartyName": "7Eleven",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 12.54,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -793,12 +916,14 @@
     "billingStatus": "BILLED"
   },
   {
-    "amount": 24.5,
     "category": "Hobbies Entertainment",
     "counterPartyCountry": "US",
     "counterPartyName": "AMC Theatres",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 24.5,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -806,12 +931,14 @@
     "billingStatus": "BILLED"
   },
   {
-    "amount": 13.1,
     "category": "Hobbies Entertainment",
     "counterPartyCountry": "US",
     "counterPartyName": "Cinemark USA, Inc.",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 13.1,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -819,12 +946,14 @@
     "billingStatus": "BILLED"
   },
   {
-    "amount": 67.5,
     "category": "Shopping",
     "counterPartyCountry": "US",
     "counterPartyName": "Long Beach Surf Shop",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 67.5,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -832,12 +961,14 @@
     "billingStatus": "BILLED"
   },
   {
-    "amount": 54.5,
     "category": "Hobbies Entertainment",
     "counterPartyCountry": "US",
     "counterPartyName": "Headspace",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 54.5,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -845,12 +976,14 @@
     "billingStatus": "BILLED"
   },
   {
-    "amount": 100,
     "category": "Transfers",
     "counterPartyCountry": "US",
     "counterPartyName": "Savings Account",
     "creditDebitIndicator": "CRDT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 100,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -858,12 +991,14 @@
     "billingStatus": "BILLED"
   },
   {
-    "amount": 19.99,
     "category": "Bills Utilities",
     "counterPartyCountry": "US",
     "counterPartyName": "Adobe Creative Cloud",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 19.99,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -871,12 +1006,14 @@
     "billingStatus": "BILLED"
   },
   {
-    "amount": 119.98,
     "category": "Hobbies Entertainment",
     "counterPartyCountry": "US",
     "counterPartyName": "Ticketmaster",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 119.98,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -884,12 +1021,14 @@
     "billingStatus": "BILLED"
   },
   {
-    "amount": 49.95,
     "category": "Shopping",
     "counterPartyCountry": "US",
     "counterPartyName": "Amazon",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 49.95,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",
@@ -897,12 +1036,14 @@
     "billingStatus": "BILLED"
   },
   {
-    "amount": 11.99,
     "category": "Hobbies Entertainment",
     "counterPartyCountry": "US",
     "counterPartyName": "YouTube Premium",
     "creditDebitIndicator": "DBIT",
-    "currency": "USD",
+    "transactionAmountCurrency": {
+      "amount": 11.99,
+      "currencyCode": "USD"
+    },
     "reference": "czyo9c2n7z",
     "type": "POS",
     "typeGroup": "Payment",

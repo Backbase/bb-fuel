@@ -2,7 +2,7 @@ package com.backbase.ct.bbfuel.client.action;
 
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
-import com.backbase.dbs.actions.actionrecipes.presentation.rest.spec.v2.actionrecipes.ActionRecipesPostRequestBody;
+import com.backbase.dbs.actions.rest.spec.v2.actionrecipes.ActionRecipesPostRequestBody;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import javax.annotation.PostConstruct;

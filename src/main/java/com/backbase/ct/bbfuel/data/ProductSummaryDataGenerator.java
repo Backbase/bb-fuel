@@ -11,10 +11,10 @@ import static java.util.Collections.unmodifiableList;
 import com.backbase.ct.bbfuel.dto.entitlement.ProductGroupSeed;
 import com.backbase.ct.bbfuel.input.ProductReader;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
+import com.backbase.dbs.arrangement.integration.rest.spec.v2.arrangements.DebitCard;
+import com.backbase.dbs.arrangement.integration.rest.spec.v2.balancehistory.BalanceHistoryPostRequestBody;
+import com.backbase.dbs.arrangement.integration.rest.spec.v2.products.ProductsPostRequestBody;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBody;
-import com.backbase.integration.arrangement.rest.spec.v2.arrangements.DebitCard;
-import com.backbase.integration.arrangement.rest.spec.v2.balancehistory.BalanceHistoryPostRequestBody;
-import com.backbase.integration.arrangement.rest.spec.v2.products.ProductsPostRequestBody;
 import com.github.javafaker.Faker;
 import com.google.common.base.Splitter;
 import java.math.BigDecimal;
@@ -207,8 +207,7 @@ public class ProductSummaryDataGenerator {
     }
 
     private static BalanceHistoryPostRequestBody generateBalanceHistoryPostRequestBody(String
-        externalArrangementId,
-        Date updatedDate) {
+        externalArrangementId, Date updatedDate) {
         return new BalanceHistoryPostRequestBody()
             .withArrangementId(externalArrangementId)
             .withBalance(generateRandomAmountInRange(1000000L, 1999999L))

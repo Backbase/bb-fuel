@@ -5,11 +5,11 @@ import static com.backbase.ct.bbfuel.data.ProductSummaryDataGenerator.generateRa
 
 import com.backbase.ct.bbfuel.util.CommonHelpers;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
-import com.backbase.dbs.integration.external.inbound.contact.rest.spec.v2.contacts.AccessContext;
-import com.backbase.dbs.integration.external.inbound.contact.rest.spec.v2.contacts.Address;
-import com.backbase.dbs.integration.external.inbound.contact.rest.spec.v2.contacts.ContactsBulkIngestionPostRequestBody;
 import com.backbase.dbs.integration.external.inbound.contact.rest.spec.v2.contacts.ExternalAccountInformation;
 import com.backbase.dbs.integration.external.inbound.contact.rest.spec.v2.contacts.ExternalContact;
+import com.backbase.dbs.productsummary.presentation.rest.spec.v2.contacts.AccessContext;
+import com.backbase.dbs.productsummary.presentation.rest.spec.v2.contacts.Address;
+import com.backbase.dbs.productsummary.presentation.rest.spec.v2.contacts.ContactsBulkIngestionPostRequestBody;
 import com.github.javafaker.Faker;
 import java.util.ArrayList;
 import java.util.List;

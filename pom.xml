@@ -42,7 +42,7 @@
       <dependency>
         <groupId>com.backbase.dbs</groupId>
         <artifactId>banking-services-bom</artifactId>
-        <version>2.18.2</version>
+        <version>2.19.0</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -185,6 +185,7 @@
     <dependency>
       <groupId>com.backbase.dbs.transaction</groupId>
       <artifactId>transaction-integration-external-inbound-spec</artifactId>
+      <version>2.2</version>
     </dependency>
     <dependency>
       <groupId>com.backbase.dbs.user</groupId>
@@ -286,6 +287,76 @@
                   <outputDirectory>${project.build.directory}/approval-integration-spec
                   </outputDirectory>
                 </artifactItem>
+
+              <artifactItem>
+                  <groupId>com.backbase.dbs.arrangement</groupId>
+                  <artifactId>arrangement-integration-spec</artifactId>
+                  <outputDirectory>${project.build.directory}/arrangement-integration-spec
+                  </outputDirectory>
+              </artifactItem>
+
+                <artifactItem>
+                  <groupId>com.backbase.dbs.user</groupId>
+                  <artifactId>user-integration-spec</artifactId>
+                  <outputDirectory>${project.build.directory}/user-integration-spec
+                  </outputDirectory>
+                </artifactItem>
+
+                <artifactItem>
+                  <groupId>com.backbase.dbs.user</groupId>
+                  <artifactId>user-presentation-spec</artifactId>
+                  <outputDirectory>${project.build.directory}/user-presentation-spec
+                  </outputDirectory>
+                </artifactItem>
+
+                <artifactItem>
+                  <groupId>com.backbase.dbs.productsummary</groupId>
+                  <artifactId>product-summary-presentation-spec</artifactId>
+                  <outputDirectory>${project.build.directory}/product-summary-presentation-spec
+                  </outputDirectory>
+                </artifactItem>
+
+                <artifactItem>
+                  <groupId>com.backbase.dbs.account</groupId>
+                  <artifactId>account-integration-spec</artifactId>
+                  <outputDirectory>${project.build.directory}/account-integration-spec
+                  </outputDirectory>
+                </artifactItem>
+
+                <artifactItem>
+                  <groupId>com.backbase.dbs.contact</groupId>
+                  <artifactId>contact-integration-external-inbound-spec</artifactId>
+                  <outputDirectory>${project.build.directory}/contact-integration-external-inbound-spec
+                  </outputDirectory>
+                </artifactItem>
+
+                <artifactItem>
+                  <groupId>com.backbase.dbs.notifications</groupId>
+                  <artifactId>notifications-spec</artifactId>
+                  <outputDirectory>${project.build.directory}/notifications-spec
+                  </outputDirectory>
+                </artifactItem>
+
+                <artifactItem>
+                  <groupId>com.backbase.dbs.paymentorder</groupId>
+                  <artifactId>payment-order-presentation-spec</artifactId>
+                  <outputDirectory>${project.build.directory}/payment-order-presentation-spec
+                  </outputDirectory>
+                </artifactItem>
+
+                <artifactItem>
+                  <groupId>com.backbase.dbs.messages</groupId>
+                  <artifactId>messages-service-spec</artifactId>
+                  <outputDirectory>${project.build.directory}/messages-service-spec
+                  </outputDirectory>
+                </artifactItem>
+
+                <artifactItem>
+                  <groupId>com.backbase.dbs.actions</groupId>
+                  <artifactId>actionrecipes-presentation-spec</artifactId>
+                  <outputDirectory>${project.build.directory}/actionrecipes-presentation-spec
+                  </outputDirectory>
+                </artifactItem>
               </artifactItems>
             </configuration>
           </execution>
@@ -315,6 +386,174 @@
               <requestHeaders>false</requestHeaders>
             </configuration>
           </execution>
+          <execution>
+            <id>generate-arrangement-integration-spec</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>raml-api-generator</goal>
+            </goals>
+            <configuration>
+              <serviceId>arrangement-service</serviceId>
+              <packageName>dbs.arrangement.integration</packageName>
+              <inputFiles>
+                <inputFile>${project.build.directory}/arrangement-integration-spec/integration-api.raml
+                </inputFile>
+              </inputFiles>
+              <requestHeaders>false</requestHeaders>
+            </configuration>
+          </execution>
+          <execution>
+            <id>generate-product-summary-presentation-spec</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>raml-api-generator</goal>
+            </goals>
+            <configuration>
+              <serviceId>productsummary-service</serviceId>
+              <packageName>dbs.productsummary.presentation</packageName>
+              <inputFiles>
+                <inputFile>${project.build.directory}/product-summary-presentation-spec/service-api.raml
+                </inputFile>
+              </inputFiles>
+              <requestHeaders>false</requestHeaders>
+            </configuration>
+          </execution>
+          <execution>
+            <id>generate-contact-manager-integration-external-inbound-spec</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>raml-api-generator</goal>
+            </goals>
+            <configuration>
+              <serviceId>contact-manager-service</serviceId>
+              <packageName>dbs.productsummary.presentation</packageName>
+              <inputFiles>
+                <inputFile>${project.build.directory}/contact-integration-external-inbound-spec/integration-api.raml
+                </inputFile>
+              </inputFiles>
+              <requestHeaders>false</requestHeaders>
+            </configuration>
+          </execution>
+
+          <execution>
+            <id>generate-user-presentation-spec</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>raml-api-generator</goal>
+            </goals>
+            <configuration>
+              <serviceId>user-presentation-service</serviceId>
+              <packageName>dbs.user.presentation</packageName>
+              <inputFiles>
+                <inputFile>${project.build.directory}/user-presentation-spec/service-api.raml
+                </inputFile>
+              </inputFiles>
+              <requestHeaders>false</requestHeaders>
+            </configuration>
+          </execution>
+
+          <execution>
+            <id>generate-user-integration-spec</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>raml-api-generator</goal>
+            </goals>
+            <configuration>
+              <serviceId>user-integration-service</serviceId>
+              <packageName>dbs.user.integration</packageName>
+              <inputFiles>
+                <inputFile>${project.build.directory}/user-integration-spec/client-api.raml
+                </inputFile>
+              </inputFiles>
+              <requestHeaders>false</requestHeaders>
+            </configuration>
+          </execution>
+
+          <execution>
+            <id>generate-account-integration-spec</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>raml-api-generator</goal>
+            </goals>
+            <configuration>
+              <serviceId>account-integration-service</serviceId>
+              <packageName>dbs.user.account</packageName>
+              <inputFiles>
+                <inputFile>${project.build.directory}/account-integration-spec/service-api.raml
+                </inputFile>
+              </inputFiles>
+              <requestHeaders>false</requestHeaders>
+            </configuration>
+          </execution>
+
+          <execution>
+            <id>generate-notifications-spec</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>raml-api-generator</goal>
+            </goals>
+            <configuration>
+              <serviceId>notifications-spec</serviceId>
+              <packageName>dbs.notifications</packageName>
+              <inputFiles>
+                <inputFile>${project.build.directory}/notifications-spec/service-api.raml
+                </inputFile>
+              </inputFiles>
+              <requestHeaders>false</requestHeaders>
+            </configuration>
+          </execution>
+
+          <execution>
+            <id>generate-messages-service-spec</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>raml-api-generator</goal>
+            </goals>
+            <configuration>
+              <serviceId>messages-service-spec</serviceId>
+              <packageName>dbs.messages</packageName>
+              <inputFiles>
+                <inputFile>${project.build.directory}/messages-service-spec/service-api.raml
+                </inputFile>
+              </inputFiles>
+              <requestHeaders>false</requestHeaders>
+            </configuration>
+          </execution>
+
+          <execution>
+            <id>generate-actionrecipes-presentation-spec</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>raml-api-generator</goal>
+            </goals>
+            <configuration>
+              <serviceId>actionrecipes-presentation-spec</serviceId>
+              <packageName>dbs.actions</packageName>
+              <inputFiles>
+                <inputFile>${project.build.directory}/actionrecipes-presentation-spec/service-api.raml</inputFile>
+                <inputFile>${project.build.directory}/actionrecipes-presentation-spec/api.raml</inputFile>
+              </inputFiles>
+              <requestHeaders>false</requestHeaders>
+            </configuration>
+          </execution>
+
+          <execution>
+            <id>generate-payment-order-presentation-spec</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>raml-api-generator</goal>
+            </goals>
+            <configuration>
+              <serviceId>payment-order-presentation-spec</serviceId>
+              <packageName>dbs.payments</packageName>
+              <inputFiles>
+                <inputFile>${project.build.directory}/payment-order-presentation-spec/service-api.raml</inputFile>
+                <inputFile>${project.build.directory}/payment-order-presentation-spec/api.raml</inputFile>>
+              </inputFiles>
+              <requestHeaders>false</requestHeaders>
+            </configuration>
+          </execution>
+
         </executions>
       </plugin>
     </plugins>

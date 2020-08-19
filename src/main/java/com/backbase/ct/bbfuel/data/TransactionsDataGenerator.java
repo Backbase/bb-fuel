@@ -4,12 +4,12 @@ import com.backbase.ct.bbfuel.util.CommonHelpers;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
 import com.backbase.integration.transaction.external.rest.spec.v2.transactions.TransactionsPostRequestBody;
 import com.backbase.integration.transaction.external.rest.spec.v2.transactions.TransactionsPostRequestBody.CreditDebitIndicator;
+import com.backbase.rest.spec.common.types.Currency;
 import com.github.javafaker.Faker;
-import org.apache.commons.lang.time.DateUtils;
 import org.iban4j.Iban;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -108,7 +108,6 @@ public class TransactionsDataGenerator {
             Iban.random().toString() :
             String.valueOf(generateRandomNumberInRange(100000, 999999999));
 
-
         return new TransactionsPostRequestBody().withId(UUID.randomUUID().toString())
             .withArrangementId(externalArrangementId)
             .withReference(faker.lorem().characters(10))
@@ -116,13 +115,11 @@ public class TransactionsDataGenerator {
             .withTypeGroup(getRandomFromList(TRANSACTION_TYPE_GROUPS))
             .withType(getRandomFromList(TRANSACTION_TYPES))
             .withCategory(finalCategory)
-            .withBookingDate(DateUtils.addDays(new Date(), generateRandomNumberInRange(-365, 0)))
-            .withValueDate(DateUtils.addDays(new Date(), generateRandomNumberInRange(-365, 0)))
-            .withAmount(amount)
-            .withCurrency(currency)
+            .withBookingDate(LocalDate.now())
+            .withValueDate(LocalDate.now())
+            .withTransactionAmountCurrency(new Currency().withAmount(amount).withCurrencyCode(currency))
             .withCreditDebitIndicator(creditDebitIndicator)
-            .withInstructedAmount(amount)
-            .withInstructedCurrency(currency)
+            .withInstructedAmountCurrency(new Currency().withAmount(amount).withCurrencyCode(currency))
             .withCurrencyExchangeRate(CommonHelpers.generateRandomAmountInRange(1L, 2L))
             .withCounterPartyName(counterPartyName)
             .withCounterPartyAccountNumber(accountNumber)

@@ -4,8 +4,8 @@ import static com.backbase.ct.bbfuel.util.CommonHelpers.generateRandomAmountInRa
 import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
 import static java.util.Arrays.asList;
 
-import com.backbase.dbs.actions.actionrecipes.presentation.rest.spec.v2.actionrecipes.ActionParent;
-import com.backbase.dbs.actions.actionrecipes.presentation.rest.spec.v2.actionrecipes.ActionRecipesPostRequestBody;
+import com.backbase.dbs.actions.rest.spec.v2.actionrecipes.ActionParent;
+import com.backbase.dbs.actions.rest.spec.v2.actionrecipes.ActionRecipesPostRequestBody;
 import com.github.javafaker.Faker;
 import java.util.List;
 import java.util.Random;
@@ -15,7 +15,7 @@ public class ActionsDataGenerator {
     private static Faker faker = new Faker();
     private static Random random = new Random();
 
-    public static ActionRecipesPostRequestBody generateActionRecipesPostRequestBody(String internalArrangementId) {
+    public static  ActionRecipesPostRequestBody generateActionRecipesPostRequestBody(String internalArrangementId) {
         List<String> specificationIds = asList("1", "4");
 
         return new ActionRecipesPostRequestBody()

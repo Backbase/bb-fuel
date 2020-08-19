@@ -1,6 +1,5 @@
 package com.backbase.ct.bbfuel.configurator;
 
-import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_USE_PFM_CATEGORIES_FOR_TRANSACTIONS;
 import static org.apache.http.HttpStatus.SC_CREATED;
 
 import com.backbase.ct.bbfuel.client.accessgroup.UserContextPresentationRestClient;
@@ -39,12 +38,6 @@ public class TransactionsConfigurator {
     public void ingestTransactionsByArrangement(String externalArrangementId, boolean isRetail) {
         List<TransactionsPostRequestBody> transactions = Collections.synchronizedList(new ArrayList<>());
         List<SubCategory> retailCategories = new ArrayList<>();
-
-        if (globalProperties.getBoolean(PROPERTY_USE_PFM_CATEGORIES_FOR_TRANSACTIONS)) {
-            loginRestClient.loginBankAdmin();
-            userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
-            retailCategories = categoriesPresentationRestClient.retrieveCategories();
-        }
 
         int randomAmount = CommonHelpers
             .generateRandomNumberInRange(globalProperties.getInt(CommonConstants.PROPERTY_TRANSACTIONS_MIN),

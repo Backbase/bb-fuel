@@ -207,8 +207,7 @@ public class ProductSummaryDataGenerator {
     }
 
     private static BalanceHistoryPostRequestBody generateBalanceHistoryPostRequestBody(String
-        externalArrangementId,
-                                                                                       Date updatedDate) {
+        externalArrangementId, Date updatedDate) {
         return new BalanceHistoryPostRequestBody()
             .withArrangementId(externalArrangementId)
             .withBalance(generateRandomAmountInRange(1000000L, 1999999L))

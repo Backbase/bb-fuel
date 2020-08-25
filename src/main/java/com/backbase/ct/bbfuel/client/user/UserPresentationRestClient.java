@@ -1,15 +1,27 @@
 package com.backbase.ct.bbfuel.client.user;
 
+import static com.backbase.ct.bbfuel.util.ResponseUtils.isBadRequestException;
+import static com.backbase.ct.bbfuel.util.ResponseUtils.isConflictException;
+import static org.apache.http.HttpStatus.SC_CREATED;
 import static org.apache.http.HttpStatus.SC_OK;
 
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
+
+
 import com.backbase.dbs.user.presentation.rest.spec.v2.users.LegalEntityByUserGetResponseBody;
 import com.backbase.dbs.user.presentation.rest.spec.v2.users.UserGetResponseBody;
+import com.backbase.dbs.user.presentation.rest.spec.v2.users.UsersPostRequestBody;
+import com.backbase.presentation.user.rest.spec.v2.users.IdentitiesImportRequestBody;
+import io.restassured.http.ContentType;
+import io.restassured.response.Response;
+
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class UserPresentationRestClient extends RestClient {
@@ -20,6 +32,9 @@ public class UserPresentationRestClient extends RestClient {
     private static final String ENDPOINT_USERS = "/users";
     private static final String ENDPOINT_EXTERNAL_ID_LEGAL_ENTITIES = ENDPOINT_USERS + "/externalId/%s/legalentities";
     private static final String ENDPOINT_USER_BY_EXTERNAL_ID = ENDPOINT_USERS + "/externalId/%s";
+    private static final String ENDPOINT_IDENTITIES = ENDPOINT_USERS + "/identities";
+
+    private static final String EMAIL_DOMAIN = "@email.invalid";
 
     @PostConstruct
     public void init() {
@@ -46,4 +61,35 @@ public class UserPresentationRestClient extends RestClient {
             .as(UserGetResponseBody.class);
     }
 
+    public void createIdentityUserAndLogResponse(UsersPostRequestBody user, String LegalEntityId) {
+
+        Response response = createIdentity(user, LegalEntityId);
+
+        if (isBadRequestException(response, "User already exists") || (isConflictException(response, "User already exists"))) {
+            log.info("User [{}] already exists, skipped ingesting this user", user.getExternalId());
+        } else if (response.statusCode() == SC_CREATED) {
+            log.info("Identity User [{}] ingested under legal entity [{}]",
+                user.getExternalId(), user.getLegalEntityExternalId());
+        } else {
+            log.info("User [{}] could not be ingested", user.getExternalId());
+            response.then()
+                .statusCode(SC_CREATED);
+        }
+    }
+
+    private Response createIdentity(UsersPostRequestBody user, String legalEntityId) {
+
+        IdentitiesImportRequestBody createUserBody = new IdentitiesImportRequestBody();
+
+        createUserBody
+            .withExternalId(user.getExternalId())
+            .withLegalEntityInternalId(legalEntityId)
+            .withFullName(user.getFullName())
+            .withEmailAddress(user.getExternalId() + EMAIL_DOMAIN);
+
+        return requestSpec()
+            .contentType(ContentType.JSON)
+            .body(createUserBody)
+            .post(getPath(ENDPOINT_IDENTITIES));
+    }
 }

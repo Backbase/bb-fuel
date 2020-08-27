@@ -1,0 +1,98 @@
+[
+  {
+    "category": "RETAIL",
+    "users": [
+      {
+        "externalId": "admin"
+      }
+    ]
+  },
+  {
+    "category": "RETAIL",
+    "users": [
+      {
+        "externalId": "user"
+      }
+    ]
+  },
+  {
+    "category": "RETAIL",
+    "users": [
+      {
+        "externalId": "designer"
+      }
+    ]
+  },
+  {
+    "category": "RETAIL",
+    "users": [
+      {
+        "externalId": "manager"
+      }
+    ]
+  },
+  {
+    "category": "RETAIL",
+    "users": [
+      {
+        "externalId": "U0001022"
+      }
+    ]
+  },
+  {
+    "category": "RETAIL",
+    "users": [
+      {
+        "externalId": "U0001023"
+      }
+    ]
+  },
+  {
+    "category": "RETAIL",
+    "users": [
+      {
+        "externalId": "U0001024"
+      }
+    ]
+  },
+  {
+    "category": "RETAIL",
+    "users": [
+      {
+        "externalId": "U0001025"
+      }
+    ]
+  },
+  {
+    "category": "RETAIL",
+    "users": [
+      {
+        "externalId": "U0001026"
+      }
+    ]
+  },
+  {
+    "category": "RETAIL",
+    "users": [
+      {
+        "externalId": "U0001027"
+      }
+    ]
+  },
+  {
+    "category": "RETAIL",
+    "users": [
+      {
+        "externalId": "U0001028"
+      }
+    ]
+  },
+  {
+    "category": "RETAIL",
+    "users": [
+      {
+        "externalId": "U0001029"
+      }
+    ]
+  }
+]

@@ -1,0 +1,36 @@
+[
+  {
+    "category": "Food Drinks",
+    "counterPartyCountry": "US",
+    "counterPartyName": "In N Out Burger",
+    "transactionAmountCurrency": {
+      "amount": 3.99,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "Transaction with Check images with id 1",
+    "billingStatus": "BILLED",
+    "id": "TRANS0000000000001",
+    "creditDebitIndicator": "DBIT",
+    "checkSerialNumber": 123456789
+  },
+  {
+    "category": "Gas",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Murphy USA",
+    "transactionAmountCurrency": {
+      "amount": 14.99,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "Transaction with Check images with id 2",
+    "billingStatus": "BILLED",
+    "id": "TRANS0000000000002",
+    "creditDebitIndicator": "DBIT",
+    "checkSerialNumber": 234567891
+  }
+]

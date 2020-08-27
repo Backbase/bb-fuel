@@ -16,8 +16,6 @@ import java.util.UUID;
 @Slf4j
 public class TransactionsReader extends BaseReader {
 
-    private static Faker faker = new Faker();
-
     public TransactionsPostRequestBody loadSingle(String externalArrangementId) {
         return getRandomFromList(load(globalProperties.getString(CommonConstants.PROPERTY_TRANSACTIONS_DATA_JSON)))
                 .withId(UUID.randomUUID().toString())

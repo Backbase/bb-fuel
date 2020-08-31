@@ -31,19 +31,13 @@ public class TransactionsConfigurator {
     private final TransactionsReader reader = new TransactionsReader();
 
     private final TransactionsIntegrationRestClient transactionsIntegrationRestClient;
-    private final CategoriesPresentationRestClient categoriesPresentationRestClient;
-    private final LoginRestClient loginRestClient;
-    private final UserContextPresentationRestClient userContextPresentationRestClient;
 
     public void ingestTransactionsByArrangement(String externalArrangementId, boolean isRetail) {
         List<TransactionsPostRequestBody> transactions = Collections.synchronizedList(new ArrayList<>());
-        List<SubCategory> retailCategories = new ArrayList<>();
 
         int randomAmount = CommonHelpers
             .generateRandomNumberInRange(globalProperties.getInt(CommonConstants.PROPERTY_TRANSACTIONS_MIN),
                 globalProperties.getInt(CommonConstants.PROPERTY_TRANSACTIONS_MAX));
-
-        List<SubCategory> finalCategories = new ArrayList<>(retailCategories);
 
         if (isRetail) {
             // Add 1 check images per account.

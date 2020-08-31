@@ -10,12 +10,13 @@ import org.iban4j.Iban;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
 import static com.backbase.ct.bbfuel.data.CommonConstants.IBAN_ACCOUNT_TYPE;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_CONTACTS_ACCOUNT_TYPES;
-import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_TRANSACTIONS_BUSINESS_CURRENCY;
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_TRANSACTIONS_CURRENCY;
 import static com.backbase.ct.bbfuel.util.CommonHelpers.generateRandomNumberInRange;
 import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromEnumValues;
 import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
@@ -61,36 +62,6 @@ public class TransactionsDataGenerator {
         "Term deposit"
     );
 
-    private static List<String> US_COUNTER_PARTY_NAMES = asList(
-        "Shell",
-        "Netflix",
-        "Exxon",
-        "Walmart",
-        "Verizon",
-        "T-Mobile",
-        "Amazon",
-        "E-bay",
-        "The Home Depot",
-        "McDonald's",
-        "Spotify",
-        "Starbucks",
-        "Subway",
-        "Lowe's",
-        "Walgreens",
-        "Dollar Tree",
-        "Best Buy",
-        "United States Postal Service"
-    );
-
-    private static List<String> TRANSACTION_DESCRIPTIONS = asList(
-        "5342423424-RECURRING",
-        "D8CD8C8XFS888-PAY",
-        "PORTLAND2332-PAY",
-        "S-234243554574542312",
-        "AAA1122353",
-        "RECURRING-23442424243"
-    );
-
     public static TransactionsPostRequestBody generateTransactionsPostRequestBody(String externalArrangementId) {
         CreditDebitIndicator creditDebitIndicator = getRandomFromEnumValues(CreditDebitIndicator.values());
 
@@ -102,7 +73,7 @@ public class TransactionsDataGenerator {
         String counterPartyName = faker.name().fullName();
 
         BigDecimal amount = CommonHelpers.generateRandomAmountInRange(100L, 9999L);
-        String currency = GLOBAL_PROPERTIES.getString(PROPERTY_TRANSACTIONS_BUSINESS_CURRENCY);
+        String currency = getRandomFromList(Arrays.asList(GLOBAL_PROPERTIES.getString(PROPERTY_TRANSACTIONS_CURRENCY).split(",")));
 
         String accountNumber = GLOBAL_PROPERTIES.getString(PROPERTY_CONTACTS_ACCOUNT_TYPES).contains(IBAN_ACCOUNT_TYPE) ?
             Iban.random().toString() :

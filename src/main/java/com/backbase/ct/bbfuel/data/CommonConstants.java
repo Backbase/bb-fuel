@@ -95,7 +95,7 @@ public final class CommonConstants {
     // Transactions
     public static final String PROPERTY_TRANSACTIONS_DATA_JSON = "transactions.data.json";
     public static final String PROPERTY_TRANSACTIONS_CHECK_IMAGES_DATA_JSON = "transactions-check-images.data.json";
-    public static final String PROPERTY_TRANSACTIONS_BUSINESS_CURRENCY = "transactions.business.currency";
+    public static final String PROPERTY_TRANSACTIONS_CURRENCY = "transactions.currency";
 
     // Identity
     public static final String PROPERTY_IDENTITY_FEATURE_TOGGLE = "identity.feature.toggle";

@@ -1,7 +1,7 @@
 spring:
   application:
     name: bb-fuel
-    version: @project.version@
+    version: 1
 
 logging:
   secured:

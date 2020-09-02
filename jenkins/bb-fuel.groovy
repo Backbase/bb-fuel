@@ -8,7 +8,8 @@ pipeline {
         booleanParam(name: 'PRERELEASE', defaultValue: false, description: 'Only applicable if BB_FUEL_VERSION = latest')
         choice(name: 'SPRING_PROFILES_ACTIVE', choices: 'k8s\nk8s-beta\nk8s-3ang\naws\npcf', description: 'Select the profile to operate.\nK8s (default):\nKubernetes requires environment name\n\nk8s-beta: \nUsed for DBS with lean beta services \n\nk8s-3ang: \nUsed for DBS with triangular services only\n\nAWS: \n Requires environment name\n\nPCF: \nRequires space name (environment name will be ignored)')
         string(name: 'ENVIRONMENT_NAME', defaultValue: '00.dbs', description: 'K8S environment-creator example: 42.dbs\nK8S Beck example: friendly-feyman\n\nAutoconfig example: frosty-snow-99\nRead before running: https://github.com/Backbase/bb-fuel/blob/master/README.md')
-        choice(name: 'INFRA_BASE_URI', choices: 'backbase.test\nbackbase.eu\ninfra.backbase.test:8080\neditorial.backbase.test:8080', description: 'Select the base URI.\nK8S environment-creator: backbase.test\nK8S Beck: backbase.eu\n\nAWS dbs-microservices: infra.backbase.test:8080\n\nAWS dbs-cx6.1-editorial: editorial.backbase.test:8080')
+        choice(name: 'INFRA_BASE_URI', choices: 'infra\neditorial\n', description: 'Select the base INFRA URI.(Autoconfig-only)\n\n\nAWS dbs-microservices: infra\n\nAWS dbs-cx6.1-editorial: editorial')
+        choice(name: 'ENVIRONMENT_DOMAIN', choices: 'backbase.eu\nbackbase.test\nbackbase.test:8080\n', description: 'Select the base URI.\nK8S environment-creator: backbase.test\nK8S Beck: backbase.eu\n\nAWS: backbase.test:8080\n\n')
         string(name: 'PCF_SPACE', defaultValue: 'your-space', description: 'Required only for PCF. Space name, example: approvals\nRead before running: https://github.com/Backbase/bb-fuel/blob/master/README.md')
         booleanParam(name: 'US_PRODUCTIZED_DATASET', defaultValue: false, description: 'Use data seed specific for US market')
         booleanParam(name: 'UNIVERSAL_PRODUCTIZED_DATASET', defaultValue: false, description: 'Use data seed specific for UNIVERSAL market')
@@ -62,8 +63,8 @@ pipeline {
                             environmentName: params.ENVIRONMENT_NAME,
                             bbFuelVersion: params.BB_FUEL_VERSION,
                             prerelease: params.PRERELEASE,
-                            additionalArguments: "-Dbb-fuel.platform.infra=http://${params.ENVIRONMENT_NAME}-${params.INFRA_BASE_URI} " +
-                                    "-Denvironment.domain=${params.INFRA_BASE_URI} " +
+                            additionalArguments: "-Dbb-fuel.platform.infra=http://${params.ENVIRONMENT_NAME}-${params.INFRA_BASE_URI}.${params.ENVIRONMENT_DOMAIN} " +
+                                    "-Denvironment.domain=${params.ENVIRONMENT_DOMAIN} " +
                                     "-Dingest.access.control=${params.INGEST_ACCESS_CONTROL} " +
                                     "-Dingest.custom.service.agreements=${params.INGEST_CUSTOM_SERVICE_AGREEMENTS} " +
                                     "-Dingest.balance.history=${params.INGEST_BALANCE_HISTORY} " +

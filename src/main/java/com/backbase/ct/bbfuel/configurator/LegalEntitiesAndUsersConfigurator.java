@@ -90,7 +90,7 @@ public class LegalEntitiesAndUsersConfigurator {
     
 
     private void ingestUserAndLogResponse(UsersPostRequestBody user) {
-        
+
         Response response;
 
         if (this.globalProperties.getBoolean(PROPERTY_IDENTITY_FEATURE_TOGGLE)) {

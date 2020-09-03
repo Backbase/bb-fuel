@@ -90,7 +90,7 @@ public class LegalEntitiesAndUsersConfigurator {
     
 
     private void ingestUserAndLogResponse(UsersPostRequestBody user) {
-
+        
         Response response;
 
         if (this.globalProperties.getBoolean(PROPERTY_IDENTITY_FEATURE_TOGGLE)) {
@@ -106,11 +106,10 @@ public class LegalEntitiesAndUsersConfigurator {
 
             String legalEntityId = legalEntityPresentationRestClient
                 .retrieveLegalEntityByExternalId(user.getLegalEntityExternalId()).getId();
-
-
+            
             com.backbase.dbs.user.presentation.rest.spec.v2.users.UsersPostRequestBody userBody =
                 new com.backbase.dbs.user.presentation.rest.spec.v2.users.UsersPostRequestBody();
-            
+
             userBody
                 .withExternalId(user.getExternalId())
                 .withFullName(user.getFullName())

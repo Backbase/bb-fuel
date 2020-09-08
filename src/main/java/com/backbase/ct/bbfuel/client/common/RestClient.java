@@ -69,7 +69,6 @@ public class RestClient {
     private static final String ACTUATOR_HEALTH_PATH = "/actuator/health";
     private static final String SERVER_STATUS_UP = "UP";
     private static final String TENANT_HEADER_NAME = "X-TID";
-
     protected static GlobalProperties globalProperties = GlobalProperties.getInstance();
 
     @Getter

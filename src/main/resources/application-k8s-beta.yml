@@ -20,7 +20,7 @@ bb-fuel:
     user: http://user-manager.${environment.name}.${environment.domain}/integration-api
   dbs-service-names:
     accessgroup: access-control
-    actions: action-service
+    actions: action
     arrangements: arrangements-manager
     billpay: billpay-integrator
     legalentity: access-control

@@ -31,7 +31,7 @@
     <commons-collections.version>4.4</commons-collections.version>
     <javafaker.version>1.0.2</javafaker.version>
     <iban4j.version>3.2.1</iban4j.version>
-    <junit.version>4.12</junit.version>
+    <junit.version>4.13.1</junit.version>
     <maven-assembly-plugin.version>2.4.1</maven-assembly-plugin.version>
     <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
     <service-sdk.version>11.0.0</service-sdk.version>

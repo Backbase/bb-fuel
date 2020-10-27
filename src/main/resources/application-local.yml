@@ -1,31 +1,31 @@
 bb-fuel:
   platform:
-    infra: http://localhost:8080
+    infra: http://localhost:7777
     identity: http://localhost:8180
     registry: ${bb-fuel.platform.infra}/registry/eureka
-    gateway: ${bb-fuel.platform.infra}/gateway/api
+    gateway: ${bb-fuel.platform.infra}/api
     auth: ${bb-fuel.platform.gateway}/auth/login
     tokenconverter: ${bb-fuel.platform.infra}/bb-authentication-token-converter-service
   dbs:
     accessgroup: http://localhost:8086/accessgroup-integration-service
     accounts: http://localhost:8082/account-integration-service/service-api
-    approvals: http://localhost:8090/approval-service/integration-api
-    arrangements: http://localhost:8082/arrangements-integration-service/client-api
+    approvals: http://localhost:8091/approval-service/integration-api
+    arrangements: http://localhost:8082/arrangement-manager/integration-api
     billpay: http://localhost:8006/billpay-service/client-api
     contactmanager: http://localhost:8081/contact-manager/integration-api
     legalentity: http://localhost:8086/legalentity-integration-service
-    transactions: http://localhost:8083/transaction-integration-service
-    user: http://localhost:8086/user-integration-service/client-api
+    transactions: http://localhost:8083/transaction-manager/integration-api
+    user: http://localhost:8086/user-manager/integration-api
   dbs-service-names:
-    accessgroup: accessgroup-presentation-service
-    actions: actionrecipes-presentation-service
-    arrangements: product-summary-presentation-service
-    billpay: billpay-presentation-service
-    legalentity: legalentity-presentation-service
-    limits: limits-presentation-service
+    accessgroup: access-control
+    actions: action-service
+    arrangements: arrangements-manager
+    billpay: billpay-integrator
+    legalentity: access-control
+    limits: limit
     messages: messages-service
-    notifications: notifications-service
+    notifications: notifications
     payments: payment-order-service
-    pfm: categories-management-presentation-service
-    user: user-presentation-service
-    products: product-summary-presentation-service
+    pfm: transaction-category-collector
+    user: user-manager
+    products: arrangement-manager

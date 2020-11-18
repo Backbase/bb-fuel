@@ -4,9 +4,9 @@ import static org.apache.http.HttpStatus.SC_OK;
 
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
-import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementGetResponseBody;
-import com.backbase.presentation.legalentity.rest.spec.v2.legalentities.LegalEntityByExternalIdGetResponseBody;
-import com.backbase.presentation.legalentity.rest.spec.v2.legalentities.LegalEntityByIdGetResponseBody;
+import com.backbase.dbs.accesscontrol.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementGetResponseBody;
+import com.backbase.dbs.accesscontrol.rest.spec.v2.legalentities.LegalEntityByExternalIdGetResponseBody;
+import com.backbase.dbs.accesscontrol.rest.spec.v2.legalentities.LegalEntityByIdGetResponseBody;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -29,15 +29,6 @@ public class LegalEntityPresentationRestClient extends RestClient {
         setBaseUri(config.getPlatform().getGateway());
         setVersion(SERVICE_VERSION);
         setInitialPath(config.getDbsServiceNames().getLegalentity() + "/" + CLIENT_API);
-    }
-
-    public LegalEntityByIdGetResponseBody retrieveLegalEntityByLegalEntityId(String internalLegalEntityId){
-        return requestSpec()
-            .get(getPath(ENDPOINT_LEGAL_ENTITIES + "/" + internalLegalEntityId))
-            .then()
-            .statusCode(SC_OK)
-            .extract()
-            .as(LegalEntityByIdGetResponseBody.class);
     }
 
     public LegalEntityByExternalIdGetResponseBody retrieveLegalEntityByExternalId(String externalLegalEntityId) {

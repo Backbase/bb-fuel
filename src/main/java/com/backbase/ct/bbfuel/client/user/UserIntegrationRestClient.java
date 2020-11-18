@@ -7,7 +7,8 @@ import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_IDENTITY_FEAT
 
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
-import com.backbase.dbs.user.integration.rest.spec.v2.users.UsersPostRequestBody;
+import com.backbase.dbs.user.manager.models.v2.ImportIdentityRequest;
+import com.backbase.dbs.user.manager.models.v2.UserExternal;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import javax.annotation.PostConstruct;
@@ -31,7 +32,7 @@ public class UserIntegrationRestClient extends RestClient {
         setVersion(SERVICE_VERSION);
     }
 
-    public void ingestAdminAndLogResponse(UsersPostRequestBody user) {
+    public void ingestAdminAndLogResponse(UserExternal user) {
 
         Response response;
 
@@ -53,16 +54,16 @@ public class UserIntegrationRestClient extends RestClient {
         }
     }
 
-    public Response ingestUser(UsersPostRequestBody body) {
+    public Response ingestUser(UserExternal body) {
         return requestSpec()
             .contentType(ContentType.JSON)
             .body(body)
             .post(getPath(ENDPOINT_USERS));
     }
 
-    public Response importUserIdentity(UsersPostRequestBody body){
+    public Response importUserIdentity(UserExternal body){
 
-        UsersPostRequestBody importBody = new UsersPostRequestBody();
+        ImportIdentityRequest importBody = new ImportIdentityRequest();
 
         importBody
             .withExternalId(body.getExternalId())

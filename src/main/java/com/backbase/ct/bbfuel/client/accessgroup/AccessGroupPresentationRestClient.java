@@ -5,11 +5,9 @@ import static org.apache.http.HttpStatus.SC_OK;
 
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
-import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.datagroups.DataGroupsGetResponseBody;
-import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.functiongroups.FunctionGroupsGetResponseBody;
-import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.users.UsersGetResponseBody;
+import com.backbase.dbs.accesscontrol.rest.spec.v2.accessgroups.datagroups.DataGroupsGetResponseBody;
+import com.backbase.dbs.accesscontrol.rest.spec.v2.accessgroups.functiongroups.FunctionGroupsGetResponseBody;
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -44,12 +42,6 @@ public class AccessGroupPresentationRestClient extends RestClient {
             .as(FunctionGroupsGetResponseBody[].class));
     }
 
-    public List<String> retrieveFunctionGroupIdsByServiceAgreement(String internalServiceAgreementId) {
-        return retrieveFunctionGroupsByServiceAgreement(internalServiceAgreementId).stream()
-            .map(FunctionGroupsGetResponseBody::getId)
-            .collect(Collectors.toList());
-    }
-
     public List<DataGroupsGetResponseBody> retrieveDataGroupsByServiceAgreement(String internalServiceAgreement) {
         return asList(requestSpec()
             .get(String.format(getPath(ENDPOINT_DATA_BY_SERVICE_AGREEMENT_ID_AND_TYPE), internalServiceAgreement,
@@ -58,53 +50,6 @@ public class AccessGroupPresentationRestClient extends RestClient {
             .statusCode(SC_OK)
             .extract()
             .as(DataGroupsGetResponseBody[].class));
-    }
-
-    public List<String> retrieveDataGroupIdsByServiceAgreement(String internalServiceAgreement) {
-        return retrieveDataGroupsByServiceAgreement(internalServiceAgreement).stream()
-            .map(DataGroupsGetResponseBody::getId)
-            .collect(Collectors.toList());
-    }
-
-    public List<String> getDataGroupIdsByFunctionId(String internalServiceAgreementId, String internalUserId,
-        String functionId) {
-        List<String> functionGroupIds = getFunctionGroupsByFunctionId(internalServiceAgreementId, functionId)
-            .stream()
-            .map(FunctionGroupsGetResponseBody::getId)
-            .collect(Collectors.toList());
-
-        List<UsersGetResponseBody> userAccesses = getUserAccessByUserId(internalUserId);
-
-        return userAccesses.stream()
-            .filter(userAccessGetResponseBody -> internalServiceAgreementId
-                .equals(userAccessGetResponseBody.getServiceAgreementId()))
-            .flatMap(userAccessGetResponseBody -> userAccessGetResponseBody.getDataAccessGroupsByFunctionAccessGroup()
-                .stream())
-            .filter(dataAccessGroupsByFunctionAccessGroup -> functionGroupIds
-                .contains(dataAccessGroupsByFunctionAccessGroup.getFunctionAccessGroupId()))
-            .findAny()
-            .orElseThrow(() -> new RuntimeException("No function group found"))
-            .getDataAccessGroupIds();
-    }
-
-    public List<FunctionGroupsGetResponseBody> getFunctionGroupsByFunctionId(String internalServiceAgreementId,
-        String functionId) {
-        return retrieveFunctionGroupsByServiceAgreement(
-            internalServiceAgreementId).stream()
-            .filter(fg -> fg.getPermissions()
-                .stream()
-                .anyMatch(permission -> functionId.equals(permission.getFunctionId())))
-            .collect(Collectors.toList());
-    }
-
-    public List<UsersGetResponseBody> getUserAccessByUserId(String userId) {
-        return asList(requestSpec()
-            .queryParam("userId", userId)
-            .get(getPath(ENDPOINT_USER_ACCESS))
-            .then()
-            .statusCode(SC_OK)
-            .extract()
-            .as(UsersGetResponseBody[].class));
     }
 
 }

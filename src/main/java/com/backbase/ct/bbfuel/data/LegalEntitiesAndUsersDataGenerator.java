@@ -3,7 +3,7 @@ package com.backbase.ct.bbfuel.data;
 import static com.backbase.ct.bbfuel.data.CommonConstants.*;
 
 import com.backbase.ct.bbfuel.dto.User;
-import com.backbase.dbs.user.integration.rest.spec.v2.users.UsersPostRequestBody;
+import com.backbase.dbs.user.manager.models.v2.UserExternal;
 import com.backbase.integration.legalentity.rest.spec.v2.legalentities.LegalEntitiesPostRequestBody;
 import com.backbase.integration.legalentity.rest.spec.v2.legalentities.enumeration.LegalEntityType;
 import com.github.javafaker.Faker;
@@ -37,8 +37,8 @@ public class LegalEntitiesAndUsersDataGenerator {
             .withType((!Strings.isNullOrEmpty(type)) ? LegalEntityType.fromValue(type) : LegalEntityType.CUSTOMER);
     }
 
-    public static UsersPostRequestBody generateUsersPostRequestBody(User user, String legalEntityId) {
-        return new UsersPostRequestBody()
+    public static UserExternal generateUsersPostRequestBody(User user, String legalEntityId) {
+        return new UserExternal()
             .withExternalId(user.getExternalId())
             .withLegalEntityExternalId(legalEntityId)
             .withFullName(user.getFullName());

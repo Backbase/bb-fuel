@@ -37,11 +37,11 @@ import com.backbase.ct.bbfuel.service.JobProfileService;
 import com.backbase.ct.bbfuel.service.LegalEntityService;
 import com.backbase.ct.bbfuel.service.ProductGroupService;
 import com.backbase.ct.bbfuel.service.UserContextService;
-import com.backbase.dbs.user.presentation.rest.spec.v2.users.LegalEntityByUserGetResponseBody;
+import com.backbase.dbs.accesscontrol.rest.spec.v2.accessgroups.datagroups.DataGroupsGetResponseBody;
+import com.backbase.dbs.accesscontrol.rest.spec.v2.legalentities.LegalEntityForUserGetResponseBody;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.IntegrationIdentifier;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.functiongroups.FunctionGroupBase.Type;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.users.permissions.IntegrationFunctionGroupDataGroup;
-import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.datagroups.DataGroupsGetResponseBody;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import java.util.ArrayList;
@@ -171,7 +171,7 @@ public class AccessControlSetup extends BaseSetup {
         this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
         legalEntityWithUsers.getUsers().forEach(user -> {
-            LegalEntityByUserGetResponseBody legalEntity = this.userPresentationRestClient
+            LegalEntityForUserGetResponseBody legalEntity = this.userPresentationRestClient
                 .retrieveLegalEntityByExternalUserId(user.getExternalId());
             final String legalEntityExternalId = legalEntity.getExternalId();
 

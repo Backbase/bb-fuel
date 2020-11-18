@@ -2,9 +2,6 @@ package com.backbase.ct.bbfuel.configurator;
 
 import static org.apache.http.HttpStatus.SC_CREATED;
 
-import com.backbase.ct.bbfuel.client.accessgroup.UserContextPresentationRestClient;
-import com.backbase.ct.bbfuel.client.common.LoginRestClient;
-import com.backbase.ct.bbfuel.client.pfm.CategoriesPresentationRestClient;
 import com.backbase.ct.bbfuel.client.transaction.TransactionsIntegrationRestClient;
 import com.backbase.ct.bbfuel.data.CommonConstants;
 import com.backbase.ct.bbfuel.data.TransactionsDataGenerator;
@@ -12,7 +9,6 @@ import com.backbase.ct.bbfuel.input.TransactionsReader;
 import com.backbase.ct.bbfuel.util.CommonHelpers;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
 import com.backbase.integration.transaction.external.rest.spec.v2.transactions.TransactionsPostRequestBody;
-import com.backbase.presentation.categories.management.rest.spec.v2.categories.SubCategory;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

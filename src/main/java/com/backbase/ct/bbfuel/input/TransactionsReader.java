@@ -4,8 +4,7 @@ import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
 import static java.util.Arrays.asList;
 import com.backbase.ct.bbfuel.data.CommonConstants;
 import com.backbase.ct.bbfuel.util.ParserUtil;
-import com.backbase.integration.transaction.external.rest.spec.v2.transactions.TransactionsPostRequestBody;
-import com.github.javafaker.Faker;
+import com.backbase.dbs.transaction.client.v2.model.TransactionsPostRequestBody;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -18,9 +17,9 @@ public class TransactionsReader extends BaseReader {
 
     public TransactionsPostRequestBody loadSingle(String externalArrangementId) {
         return getRandomFromList(load(globalProperties.getString(CommonConstants.PROPERTY_TRANSACTIONS_DATA_JSON)))
-                .withId(UUID.randomUUID().toString())
-                .withArrangementId(externalArrangementId)
-                .withBookingDate(LocalDate.now());
+                .id(UUID.randomUUID().toString())
+                .arrangementId(externalArrangementId)
+                .bookingDate(LocalDate.now());
     }
 
     /**
@@ -30,9 +29,9 @@ public class TransactionsReader extends BaseReader {
      */
     public TransactionsPostRequestBody loadSingleWithCheckImages(String externalArrangementId) {
         return getRandomFromList(load(globalProperties.getString(CommonConstants.PROPERTY_TRANSACTIONS_CHECK_IMAGES_DATA_JSON)))
-                .withArrangementId(externalArrangementId)
-                .withBookingDate(LocalDate.now())
-                .withValueDate(LocalDate.now());
+                .arrangementId(externalArrangementId)
+                .bookingDate(LocalDate.now())
+                .valueDate(LocalDate.now());
     }
 
     private List<TransactionsPostRequestBody> load(String uri) {

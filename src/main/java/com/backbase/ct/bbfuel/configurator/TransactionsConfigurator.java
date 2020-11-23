@@ -8,7 +8,7 @@ import com.backbase.ct.bbfuel.data.TransactionsDataGenerator;
 import com.backbase.ct.bbfuel.input.TransactionsReader;
 import com.backbase.ct.bbfuel.util.CommonHelpers;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
-import com.backbase.integration.transaction.external.rest.spec.v2.transactions.TransactionsPostRequestBody;
+import com.backbase.dbs.transaction.client.v2.model.TransactionsPostRequestBody;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

@@ -2,7 +2,7 @@ package com.backbase.ct.bbfuel.client.transaction;
 
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
-import com.backbase.integration.transaction.external.rest.spec.v2.transactions.TransactionsPostRequestBody;
+import com.backbase.dbs.transaction.client.v2.model.TransactionsPostRequestBody;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import java.util.List;

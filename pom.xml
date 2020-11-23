@@ -123,11 +123,6 @@
             <groupId>com.backbase.dbs.limit</groupId>
             <artifactId>limit-spec</artifactId>
         </dependency>
-        <!-- Transaction Manager -->
-        <dependency>
-            <groupId>com.backbase.dbs.transaction</groupId>
-            <artifactId>transaction-integration-external-inbound-spec</artifactId>
-        </dependency>
         <!-- Transaction Manager Category Collector -->
         <dependency>
             <groupId>com.backbase.dbs.pfm</groupId>
@@ -348,6 +343,18 @@
                             <fromFile>action-client-api-v2.0.1.yaml</fromFile>
                         </configuration>
                     </execution>
+
+                    <execution>
+                        <id>download-transaction-manager-integration-api-spec</id>
+                        <goals>
+                            <goal>download-single</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <url>https://artifacts.backbase.com/specs/transaction-manager</url>
+                            <fromFile>transaction-manager-integration-inbound-api-v2.0.0.yaml</fromFile>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 
@@ -419,6 +426,20 @@
                             <configOptions>
                                 <apiPackage>com.backbase.dbs.action.client.v2</apiPackage>
                                 <modelPackage>com.backbase.dbs.action.client.v2.model</modelPackage>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>generate-transaction-manager-client-code</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${api.target}/transaction-manager-integration-inbound-api-v2.0.0.yaml</inputSpec>
+                            <configOptions>
+                                <apiPackage>com.backbase.dbs.transaction.client.v2</apiPackage>
+                                <modelPackage>com.backbase.dbs.transaction.client.v2.model</modelPackage>
                             </configOptions>
                         </configuration>
                     </execution>
@@ -523,14 +544,6 @@
                                     <artifactId>user-manager-spec</artifactId>
                                     <outputDirectory>
                                         ${project.build.directory}/user-manager-spec
-                                    </outputDirectory>
-                                </artifactItem>
-
-                                <artifactItem>
-                                    <groupId>com.backbase.dbs.transaction</groupId>
-                                    <artifactId>transaction-integration-external-inbound-spec</artifactId>
-                                    <outputDirectory>
-                                        ${project.build.directory}/transaction-integration-external-inbound-spec
                                     </outputDirectory>
                                 </artifactItem>
                             </artifactItems>
@@ -666,24 +679,6 @@
                             <inputFiles>
                                 <inputFile>
                                     ${project.build.directory}/product-summary-presentation-spec/service-api.raml
-                                </inputFile>
-                            </inputFiles>
-                            <requestHeaders>false</requestHeaders>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>generate-transaction-integration-external-inbound-spec</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>raml-api-generator</goal>
-                        </goals>
-                        <configuration>
-                            <serviceId>transaction-service</serviceId>
-                            <packageName>dbs.transaction.integration</packageName>
-                            <inputFiles>
-                                <inputFile>
-                                    ${project.build.directory}/transaction-integration-external-inbound-spec/integration-api.raml
                                 </inputFile>
                             </inputFiles>
                             <requestHeaders>false</requestHeaders>

@@ -4,8 +4,8 @@ import static org.apache.http.HttpStatus.SC_OK;
 
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
-import com.backbase.dbs.accesscontrol.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementGetResponseBody;
-import com.backbase.integration.legalentity.rest.spec.v2.legalentities.LegalEntitiesPostRequestBody;
+import com.backbase.dbs.accesscontrol.client.v2.model.ServiceAgreementItem;
+import com.backbase.dbs.accesscontrol.legalentity.client.v2.model.LegalEntityCreateItem;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import javax.annotation.PostConstruct;
@@ -29,20 +29,20 @@ public class LegalEntityIntegrationRestClient extends RestClient {
         setVersion(SERVICE_VERSION);
     }
 
-    public Response ingestLegalEntity(LegalEntitiesPostRequestBody body) {
+    public Response ingestLegalEntity(LegalEntityCreateItem body) {
         return requestSpec()
             .contentType(ContentType.JSON)
             .body(body)
             .post(getPath(ENDPOINT_LEGAL_ENTITIES));
     }
 
-    public ServiceAgreementGetResponseBody getMasterServiceAgreementOfLegalEntity(String externalLegalEntityId) {
+    public ServiceAgreementItem getMasterServiceAgreementOfLegalEntity(String externalLegalEntityId) {
         return requestSpec()
             .get(String.format(getPath(ENDPOINT_SERVICE_AGREEMENTS_MASTER), externalLegalEntityId))
             .then()
             .statusCode(SC_OK)
             .extract()
-            .as(ServiceAgreementGetResponseBody.class);
+            .as(ServiceAgreementItem.class);
     }
 
 }

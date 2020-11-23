@@ -33,14 +33,14 @@
         <commons-configuration.version>1.10</commons-configuration.version>
         <commons-collections.version>4.4</commons-collections.version>
 
-        <rest-assured.version>3.3.0</rest-assured.version>
+        <rest-assured.version>4.2.0</rest-assured.version>
         <groovy.version>2.5.12</groovy.version>
         <guava.version>29.0-jre</guava.version>
 
         <api.target>${project.build.directory}/downloaded-api</api.target>
-        <openapi-generator-version>4.2.3-backbase</openapi-generator-version>
-        <jackson-databind.version>2.8.11</jackson-databind.version>
-        <jackson-databind-nullable-version>0.2.0</jackson-databind-nullable-version>
+        <openapi-generator-version>4.3.1</openapi-generator-version>
+        <jackson-databind.version>2.11.3</jackson-databind.version>
+        <jackson-databind-nullable-version>0.2.1</jackson-databind-nullable-version>
         <swagger-annotations-version>1.6.0</swagger-annotations-version>
         <jsr305-version>3.0.0</jsr305-version>
 
@@ -93,20 +93,6 @@
             <groupId>com.backbase.dbs.accessgroup</groupId>
             <artifactId>accessgroup-integration-spec</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.backbase.dbs.accesscontrol</groupId>
-            <artifactId>access-control-spec</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.backbase.dbs.legalentity</groupId>
-            <artifactId>legalentity-integration-spec</artifactId>
-        </dependency>
-        <!-- Action service -->
-        <dependency>
-            <groupId>com.backbase.dbs.actions</groupId>
-            <artifactId>action-spec</artifactId>
-        </dependency>
-        <!-- Approvals -->
         <dependency>
             <groupId>com.backbase.dbs.approval</groupId>
             <artifactId>approval-integration-spec</artifactId>
@@ -223,6 +209,11 @@
             <version>${swagger-annotations-version}</version>
         </dependency>
         <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson-databind.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.openapitools</groupId>
             <artifactId>jackson-databind-nullable</artifactId>
             <version>${jackson-databind-nullable-version}</version>
@@ -308,6 +299,133 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>wagon-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>download-access-control-client-api-spec</id>
+                        <goals>
+                            <goal>download-single</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <url>https://artifacts.backbase.com/specs/access-control</url>
+                            <fromFile>access-control-client-api-v2.0.0.yaml</fromFile>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>download-accessgroup-integration-api-spec</id>
+                        <goals>
+                            <goal>download-single</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <url>https://artifacts.backbase.com/specs/accessgroup-integration-service</url>
+                            <fromFile>accessgroup-integration-inbound-api-v2.0.0.yaml</fromFile>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>download-legal-entity-integration-api-spec</id>
+                        <goals>
+                            <goal>download-single</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <url>https://artifacts.backbase.com/specs/legalentity-integration-service</url>
+                            <fromFile>legalentity-integration-inbound-api-v2.0.0.yaml</fromFile>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>download-action-api-spec</id>
+                        <goals>
+                            <goal>download-single</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <url>https://artifacts.backbase.com/specs/action</url>
+                            <fromFile>action-client-api-v2.0.1.yaml</fromFile>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>${openapi-generator-version}</version>
+                <configuration>
+                    <auth>${api-backbase-cloud-encoded.auth}</auth>
+                    <output>${project.build.directory}/generated-sources/api</output>
+                    <generatorName>java</generatorName>
+                    <generateApiTests>false</generateApiTests>
+                    <generateModelTests>false</generateModelTests>
+                    <configOptions>
+                        <library>rest-assured</library>
+                        <dateLibrary>java8</dateLibrary>
+                        <serializationLibrary>jackson</serializationLibrary>
+                    </configOptions>
+                </configuration>
+                <executions>
+                    <execution>
+                    <id>generate-access-control-client-code</id>
+                    <goals>
+                        <goal>generate</goal>
+                    </goals>
+                    <configuration>
+                        <inputSpec>${api.target}/access-control-client-api-v2.0.0.yaml</inputSpec>
+                        <configOptions>
+                            <apiPackage>com.backbase.dbs.accesscontrol.client.v2</apiPackage>
+                            <modelPackage>com.backbase.dbs.accesscontrol.client.v2.model</modelPackage>
+                        </configOptions>
+                    </configuration>
+                </execution>
+                    <execution>
+                        <id>generate-accessgroup-integration-client-code</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${api.target}/accessgroup-integration-inbound-api-v2.0.0.yaml</inputSpec>
+                            <configOptions>
+                                <apiPackage>com.backbase.dbs.accesscontrol.accessgroup.client.v2</apiPackage>
+                                <modelPackage>com.backbase.dbs.accesscontrol.accessgroup.client.v2.model</modelPackage>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>generate-legalentity-integration-client-code</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${api.target}/legalentity-integration-inbound-api-v2.0.0.yaml</inputSpec>
+                            <configOptions>
+                                <apiPackage>com.backbase.dbs.accesscontrol.legalentity.client.v2</apiPackage>
+                                <modelPackage>com.backbase.dbs.accesscontrol.legalentity.client.v2.model</modelPackage>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>generate-contact-manager-client-code</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${api.target}/action-client-api-v2.0.1.yaml</inputSpec>
+                            <configOptions>
+                                <apiPackage>com.backbase.dbs.action.client.v2</apiPackage>
+                                <modelPackage>com.backbase.dbs.action.client.v2.model</modelPackage>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
@@ -320,13 +438,6 @@
                         <configuration>
                             <includes>**/*.raml,**/*.json,**/*.md,**/*.csv</includes>
                             <artifactItems>
-                                <artifactItem>
-                                    <groupId>com.backbase.dbs.accesscontrol</groupId>
-                                    <artifactId>access-control-spec</artifactId>
-                                    <outputDirectory>
-                                        ${project.build.directory}/access-control-spec
-                                    </outputDirectory>
-                                </artifactItem>
                                 <artifactItem>
                                     <groupId>com.backbase.dbs.account</groupId>
                                     <artifactId>account-integration-spec</artifactId>
@@ -436,27 +547,6 @@
                 </configuration>
                 <executions>
                     <execution>
-                        <id>generate-access-control-spec</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>raml-api-generator</goal>
-                        </goals>
-                        <configuration>
-                            <serviceId>access-control-spec</serviceId>
-                            <packageName>dbs.accesscontrol</packageName>
-                            <inputFiles>
-                                <inputFile>
-                                    ${project.build.directory}/access-control-spec/accessgroup-presentation-spec/api.raml
-                                </inputFile>
-                                <inputFile>
-                                    ${project.build.directory}/access-control-spec/legalentity-presentation-spec/api.raml
-                                </inputFile>
-                            </inputFiles>
-                            <requestHeaders>false</requestHeaders>
-                        </configuration>
-                    </execution>
-
-                    <execution>
                         <id>generate-account-integration-spec</id>
                         <phase>generate-sources</phase>
                         <goals>
@@ -468,27 +558,6 @@
                             <inputFiles>
                                 <inputFile>
                                     ${project.build.directory}/account-integration-spec/service-api.raml
-                                </inputFile>
-                            </inputFiles>
-                            <requestHeaders>false</requestHeaders>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>generate-actionrecipes-presentation-spec</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>raml-api-generator</goal>
-                        </goals>
-                        <configuration>
-                            <serviceId>actionrecipes-presentation-spec</serviceId>
-                            <packageName>dbs.actions</packageName>
-                            <inputFiles>
-                                <inputFile>
-                                    ${project.build.directory}/action-spec/service-api.raml
-                                </inputFile>
-                                <inputFile>
-                                    ${project.build.directory}/action-spec/api.raml
                                 </inputFile>
                             </inputFiles>
                             <requestHeaders>false</requestHeaders>

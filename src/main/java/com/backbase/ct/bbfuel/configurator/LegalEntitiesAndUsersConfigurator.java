@@ -23,7 +23,7 @@ import com.backbase.ct.bbfuel.util.GlobalProperties;
 
 
 import com.backbase.dbs.user.manager.models.v2.UserExternal;
-import com.backbase.integration.legalentity.rest.spec.v2.legalentities.LegalEntitiesPostRequestBody;
+import com.backbase.dbs.accesscontrol.legalentity.client.v2.model.LegalEntityCreateItem;
 import io.restassured.response.Response;
 import lombok.extern.slf4j.Slf4j;
 import lombok.RequiredArgsConstructor;
@@ -62,7 +62,7 @@ public class LegalEntitiesAndUsersConfigurator {
         this.serviceAgreementsConfigurator
             .updateMasterServiceAgreementWithExternalIdByLegalEntity(externalLegalEntityId);
 
-        User admin = root.getUsers().get(0);
+        User admin = root. getUsers().get(0);
         this.userIntegrationRestClient.ingestAdminAndLogResponse(LegalEntitiesAndUsersDataGenerator
             .generateUsersPostRequestBody(admin, EXTERNAL_ROOT_LEGAL_ENTITY_ID));
         this.serviceAgreementsConfigurator
@@ -70,7 +70,7 @@ public class LegalEntitiesAndUsersConfigurator {
     }
 
     private void ingestLegalEntityAndUsers(LegalEntityWithUsers legalEntityWithUsers) {
-        final LegalEntitiesPostRequestBody requestBody = LegalEntitiesAndUsersDataGenerator
+        final LegalEntityCreateItem requestBody = LegalEntitiesAndUsersDataGenerator
             .composeLegalEntitiesPostRequestBody(
                 legalEntityWithUsers.getLegalEntityExternalId(),
                 legalEntityWithUsers.getLegalEntityName(),

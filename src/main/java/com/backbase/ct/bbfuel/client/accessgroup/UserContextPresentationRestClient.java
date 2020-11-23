@@ -5,8 +5,8 @@ import static org.apache.http.HttpStatus.SC_OK;
 
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
-import com.backbase.dbs.accesscontrol.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementGetResponseBody;
-import com.backbase.dbs.accesscontrol.rest.spec.v2.accessgroups.usercontext.UserContextPostRequestBody;
+import com.backbase.dbs.accesscontrol.client.v2.model.UserContextPOST;
+import com.backbase.dbs.accesscontrol.client.v2.model.ServiceAgreementItem;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import java.util.Arrays;
@@ -35,15 +35,15 @@ public class UserContextPresentationRestClient extends RestClient {
     }
 
     public void selectContextBasedOnMasterServiceAgreement() {
-        ServiceAgreementGetResponseBody masterServiceAgreement = getMasterServiceAgreementForUserContext();
+        ServiceAgreementItem masterServiceAgreement = getMasterServiceAgreementForUserContext();
 
-        postUserContext(new UserContextPostRequestBody()
-            .withServiceAgreementId(masterServiceAgreement.getId()))
-            .then()
-            .statusCode(SC_NO_CONTENT);
+        postUserContext(new UserContextPOST()
+                .serviceAgreementId(masterServiceAgreement.getId()))
+                .then()
+                .statusCode(SC_NO_CONTENT);
     }
 
-    private Response postUserContext(UserContextPostRequestBody userContextPostRequestBody) {
+    private Response postUserContext(UserContextPOST userContextPostRequestBody) {
         Response response = requestSpec()
             .contentType(ContentType.JSON)
             .body(userContextPostRequestBody)
@@ -63,15 +63,15 @@ public class UserContextPresentationRestClient extends RestClient {
             .get(getPath(ENDPOINT_USER_CONTEXT_SERVICE_AGREEMENTS));
     }
 
-    public ServiceAgreementGetResponseBody getMasterServiceAgreementForUserContext() {
-        ServiceAgreementGetResponseBody[] serviceAgreementGetResponseBodies = getServiceAgreementsForUserContext()
+    public ServiceAgreementItem getMasterServiceAgreementForUserContext() {
+        ServiceAgreementItem[] serviceAgreementGetResponseBodies = getServiceAgreementsForUserContext()
             .then()
             .statusCode(SC_OK)
             .extract()
-            .as(ServiceAgreementGetResponseBody[].class);
+            .as(ServiceAgreementItem[].class);
 
         return Arrays.stream(serviceAgreementGetResponseBodies)
-            .filter(ServiceAgreementGetResponseBody::getIsMaster)
+            .filter(ServiceAgreementItem::getIsMaster)
             .findFirst()
             .orElseThrow(() -> new RuntimeException("No master service agreement found"));
     }

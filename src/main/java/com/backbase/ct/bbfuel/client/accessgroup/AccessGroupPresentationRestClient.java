@@ -5,8 +5,8 @@ import static org.apache.http.HttpStatus.SC_OK;
 
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
-import com.backbase.dbs.accesscontrol.rest.spec.v2.accessgroups.datagroups.DataGroupsGetResponseBody;
-import com.backbase.dbs.accesscontrol.rest.spec.v2.accessgroups.functiongroups.FunctionGroupsGetResponseBody;
+import com.backbase.dbs.accesscontrol.client.v2.model.FunctionGroupItem;
+import com.backbase.dbs.accesscontrol.client.v2.model.DataGroupItem;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -33,23 +33,23 @@ public class AccessGroupPresentationRestClient extends RestClient {
         setInitialPath(config.getDbsServiceNames().getAccessgroup() + "/" + CLIENT_API);
     }
 
-    public List<FunctionGroupsGetResponseBody> retrieveFunctionGroupsByServiceAgreement(String internalServiceAgreementId) {
+    public List<FunctionGroupItem> retrieveFunctionGroupsByServiceAgreement(String internalServiceAgreementId) {
         return asList(requestSpec()
             .get(String.format(getPath(ENDPOINT_FUNCTION_BY_SERVICE_AGREEMENT_ID), internalServiceAgreementId))
             .then()
             .statusCode(SC_OK)
             .extract()
-            .as(FunctionGroupsGetResponseBody[].class));
+            .as(FunctionGroupItem[].class));
     }
 
-    public List<DataGroupsGetResponseBody> retrieveDataGroupsByServiceAgreement(String internalServiceAgreement) {
+    public List<DataGroupItem> retrieveDataGroupsByServiceAgreement(String internalServiceAgreement) {
         return asList(requestSpec()
             .get(String.format(getPath(ENDPOINT_DATA_BY_SERVICE_AGREEMENT_ID_AND_TYPE), internalServiceAgreement,
                     "ARRANGEMENTS"))
             .then()
             .statusCode(SC_OK)
             .extract()
-            .as(DataGroupsGetResponseBody[].class));
+            .as(DataGroupItem[].class));
     }
 
 }

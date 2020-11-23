@@ -12,7 +12,8 @@ import com.backbase.ct.bbfuel.client.action.ActionRecipesPresentationRestClient;
 import com.backbase.ct.bbfuel.client.common.LoginRestClient;
 import com.backbase.ct.bbfuel.client.productsummary.ProductSummaryPresentationRestClient;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
-import com.backbase.dbs.actions.rest.spec.v2.actionrecipes.ActionRecipesPostRequestBody;
+import com.backbase.dbs.action.client.v2.model.ActionRecipeItemParent;
+import com.backbase.dbs.action.client.v2.model.ActionRecipesPostRequestBodyParent;
 import com.backbase.dbs.productsummary.presentation.rest.spec.v2.productsummary.ArrangementsByBusinessFunctionGetResponseBody;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +49,7 @@ public class ActionsConfigurator {
         IntStream.range(0, randomAmount).parallel().forEach(randomNumber -> {
             String internalArrangementId = getRandomFromList(arrangements).getId();
 
-            ActionRecipesPostRequestBody actionRecipesPostRequestBody = generateActionRecipesPostRequestBody(
+            ActionRecipesPostRequestBodyParent actionRecipesPostRequestBody = (ActionRecipesPostRequestBodyParent) generateActionRecipesPostRequestBody(
                 internalArrangementId);
 
             actionRecipesPresentationRestClient.createActionRecipe(actionRecipesPostRequestBody)

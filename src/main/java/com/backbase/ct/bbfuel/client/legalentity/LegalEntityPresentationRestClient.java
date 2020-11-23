@@ -4,9 +4,8 @@ import static org.apache.http.HttpStatus.SC_OK;
 
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
-import com.backbase.dbs.accesscontrol.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementGetResponseBody;
-import com.backbase.dbs.accesscontrol.rest.spec.v2.legalentities.LegalEntityByExternalIdGetResponseBody;
-import com.backbase.dbs.accesscontrol.rest.spec.v2.legalentities.LegalEntityByIdGetResponseBody;
+import com.backbase.dbs.accesscontrol.client.v2.model.LegalEntityBase;
+import com.backbase.dbs.accesscontrol.client.v2.model.ServiceAgreementItem;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -31,23 +30,23 @@ public class LegalEntityPresentationRestClient extends RestClient {
         setInitialPath(config.getDbsServiceNames().getLegalentity() + "/" + CLIENT_API);
     }
 
-    public LegalEntityByExternalIdGetResponseBody retrieveLegalEntityByExternalId(String externalLegalEntityId) {
+    public LegalEntityBase retrieveLegalEntityByExternalId(String externalLegalEntityId) {
         return requestSpec()
             .get(String.format(getPath(ENDPOINT_EXTERNAL), externalLegalEntityId))
             .then()
             .statusCode(SC_OK)
             .extract()
-            .as(LegalEntityByExternalIdGetResponseBody.class);
+            .as(LegalEntityBase.class);
     }
 
 
-    public ServiceAgreementGetResponseBody getMasterServiceAgreementOfLegalEntity(String internalLegalEntityId) {
+    public ServiceAgreementItem getMasterServiceAgreementOfLegalEntity(String internalLegalEntityId) {
         return requestSpec()
             .get(String.format(getPath(ENDPOINT_SERVICE_AGREEMENTS_MASTER), internalLegalEntityId))
             .then()
             .statusCode(SC_OK)
             .extract()
-            .as(ServiceAgreementGetResponseBody.class);
+            .as(ServiceAgreementItem.class);
     }
 
 }

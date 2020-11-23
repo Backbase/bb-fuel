@@ -9,8 +9,8 @@ import static org.apache.http.HttpStatus.SC_MULTI_STATUS;
 import com.backbase.ct.bbfuel.client.accessgroup.AccessGroupIntegrationRestClient;
 import com.backbase.ct.bbfuel.client.accessgroup.AccessGroupPresentationRestClient;
 import com.backbase.ct.bbfuel.client.accessgroup.ServiceAgreementsIntegrationRestClient;
-import com.backbase.dbs.accesscontrol.rest.spec.v2.accessgroups.datagroups.DataGroupsGetResponseBody;
-import com.backbase.dbs.accesscontrol.rest.spec.v2.accessgroups.functiongroups.FunctionGroupsGetResponseBody;
+import com.backbase.dbs.accesscontrol.client.v2.model.FunctionGroupItem;
+import com.backbase.dbs.accesscontrol.client.v2.model.DataGroupItem;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.BatchResponseItem;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.Permission;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.functiongroups.FunctionGroupPostResponseBody;
@@ -46,7 +46,7 @@ public class AccessGroupService {
                 .getId();
 
             // Combination of function group name and service agreement is unique in the system
-            FunctionGroupsGetResponseBody existingFunctionGroup = accessGroupPresentationRestClient
+            FunctionGroupItem existingFunctionGroup = accessGroupPresentationRestClient
                 .retrieveFunctionGroupsByServiceAgreement(internalServiceAgreementId)
                 .stream()
                 .filter(functionGroupsGetResponseBody -> functionGroupName.equals(functionGroupsGetResponseBody.getName()))
@@ -84,7 +84,7 @@ public class AccessGroupService {
                 .getId();
 
             // Combination of data group name and service agreement is unique in the system
-            DataGroupsGetResponseBody existingDataGroup = accessGroupPresentationRestClient
+            DataGroupItem existingDataGroup = accessGroupPresentationRestClient
                 .retrieveDataGroupsByServiceAgreement(internalServiceAgreementId)
                 .stream()
                 .filter(dataGroupsGetResponseBody -> dataGroupName.equals(dataGroupsGetResponseBody.getName()))

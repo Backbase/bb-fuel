@@ -5,7 +5,7 @@ import static org.apache.http.HttpStatus.SC_CREATED;
 
 import com.backbase.ct.bbfuel.client.legalentity.LegalEntityIntegrationRestClient;
 import com.backbase.ct.bbfuel.util.ResponseUtils;
-import com.backbase.integration.legalentity.rest.spec.v2.legalentities.LegalEntitiesPostRequestBody;
+import com.backbase.dbs.accesscontrol.legalentity.client.v2.model.LegalEntityCreateItem;
 import io.restassured.response.Response;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +24,7 @@ public class LegalEntityService {
 
     private final LegalEntityIntegrationRestClient legalEntityIntegrationRestClient;
 
-    public String ingestLegalEntity(LegalEntitiesPostRequestBody legalEntity) {
+    public String ingestLegalEntity(LegalEntityCreateItem legalEntity) {
         Response response = legalEntityIntegrationRestClient.ingestLegalEntity(legalEntity);
 
         if (ResponseUtils.isBadRequestExceptionMatching(response, "Legal Entity with given external Id already exists")) {

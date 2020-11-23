@@ -2,7 +2,7 @@ package com.backbase.ct.bbfuel.client.action;
 
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
-import com.backbase.dbs.actions.rest.spec.v2.actionrecipes.ActionRecipesPostRequestBody;
+import com.backbase.dbs.action.client.v2.model.ActionRecipeItemParent;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import javax.annotation.PostConstruct;
@@ -25,7 +25,7 @@ public class ActionRecipesPresentationRestClient extends RestClient {
         setInitialPath(config.getDbsServiceNames().getActions() + "/" + CLIENT_API);
     }
 
-    public Response createActionRecipe(ActionRecipesPostRequestBody actionRecipesPostRequestBody) {
+    public Response createActionRecipe(ActionRecipeItemParent actionRecipesPostRequestBody) {
         return requestSpec()
             .contentType(ContentType.JSON)
             .body(actionRecipesPostRequestBody)

@@ -9,10 +9,8 @@ import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
 
 
-import com.backbase.dbs.user.presentation.rest.spec.v2.users.LegalEntityByUserGetResponseBody;
-import com.backbase.dbs.user.presentation.rest.spec.v2.users.UserGetResponseBody;
-import com.backbase.dbs.user.presentation.rest.spec.v2.users.UsersPostRequestBody;
-import com.backbase.presentation.user.rest.spec.v2.users.IdentitiesImportRequestBody;
+import com.backbase.dbs.accesscontrol.rest.spec.v2.legalentities.LegalEntityForUserGetResponseBody;
+import com.backbase.dbs.user.manager.models.v2.*;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 
@@ -43,25 +41,25 @@ public class UserPresentationRestClient extends RestClient {
         setInitialPath(config.getDbsServiceNames().getUser() + "/" + CLIENT_API);
     }
 
-    public LegalEntityByUserGetResponseBody retrieveLegalEntityByExternalUserId(String externalUserId) {
+    public LegalEntityForUserGetResponseBody retrieveLegalEntityByExternalUserId(String externalUserId) {
         return requestSpec()
             .get(String.format(getPath(ENDPOINT_EXTERNAL_ID_LEGAL_ENTITIES), externalUserId))
             .then()
             .statusCode(SC_OK)
             .extract()
-            .as(LegalEntityByUserGetResponseBody.class);
+            .as(LegalEntityForUserGetResponseBody.class);
     }
 
-    public UserGetResponseBody getUserByExternalId(String userExternalId) {
+    public GetUser getUserByExternalId(String userExternalId) {
         return requestSpec()
             .get(String.format(getPath(ENDPOINT_USER_BY_EXTERNAL_ID), userExternalId))
             .then()
             .statusCode(SC_OK)
             .extract()
-            .as(UserGetResponseBody.class);
+            .as(GetUser.class);
     }
 
-    public void createIdentityUserAndLogResponse(UsersPostRequestBody user, String LegalEntityId) {
+    public void createIdentityUserAndLogResponse(UserExternal user, String LegalEntityId) {
 
         Response response = createIdentity(user, LegalEntityId);
 
@@ -77,15 +75,13 @@ public class UserPresentationRestClient extends RestClient {
         }
     }
 
-    private Response createIdentity(UsersPostRequestBody user, String legalEntityId) {
+    private Response createIdentity(UserExternal user, String legalEntityId) {
 
-        IdentitiesImportRequestBody createUserBody = new IdentitiesImportRequestBody();
+        ImportIdentityRequest createUserBody = new ImportIdentityRequest();
 
         createUserBody
             .withExternalId(user.getExternalId())
-            .withLegalEntityInternalId(legalEntityId)
-            .withFullName(user.getFullName())
-            .withEmailAddress(user.getExternalId() + EMAIL_DOMAIN);
+            .withLegalEntityExternalId(legalEntityId);
 
         return requestSpec()
             .contentType(ContentType.JSON)

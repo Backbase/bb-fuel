@@ -20,9 +20,9 @@ import com.backbase.ct.bbfuel.dto.LegalEntityWithUsers;
 import com.backbase.ct.bbfuel.dto.User;
 import com.backbase.ct.bbfuel.service.LegalEntityService;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
-import com.backbase.dbs.user.integration.rest.spec.v2.users.UsersPostRequestBody;
 
 
+import com.backbase.dbs.user.manager.models.v2.UserExternal;
 import com.backbase.integration.legalentity.rest.spec.v2.legalentities.LegalEntitiesPostRequestBody;
 import io.restassured.response.Response;
 import lombok.extern.slf4j.Slf4j;
@@ -89,7 +89,7 @@ public class LegalEntitiesAndUsersConfigurator {
     }
     
 
-    private void ingestUserAndLogResponse(UsersPostRequestBody user) {
+    private void ingestUserAndLogResponse(UserExternal user) {
 
         Response response;
 
@@ -105,10 +105,9 @@ public class LegalEntitiesAndUsersConfigurator {
             log.info("Identity for user [{}] not found, creating identity", user.getExternalId());
 
             String legalEntityId = legalEntityPresentationRestClient
-                .retrieveLegalEntityByExternalId(user.getLegalEntityExternalId()).getId();
-            
-            com.backbase.dbs.user.presentation.rest.spec.v2.users.UsersPostRequestBody userBody =
-                new com.backbase.dbs.user.presentation.rest.spec.v2.users.UsersPostRequestBody();
+                .retrieveLegalEntityByExternalId(user.getExternalId()).getId();
+
+            UserExternal userBody = new UserExternal();
 
             userBody
                 .withExternalId(user.getExternalId())

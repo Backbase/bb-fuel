@@ -10,10 +10,10 @@ import com.backbase.ct.bbfuel.client.accessgroup.UserContextPresentationRestClie
 import com.backbase.ct.bbfuel.client.common.LoginRestClient;
 import com.backbase.ct.bbfuel.client.legalentity.LegalEntityIntegrationRestClient;
 import com.backbase.ct.bbfuel.client.user.UserPresentationRestClient;
+import com.backbase.dbs.accesscontrol.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementGetResponseBody;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.Participant;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementPostResponseBody;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.UserServiceAgreementPair;
-import com.backbase.presentation.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementGetResponseBody;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Set;

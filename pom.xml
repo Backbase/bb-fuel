@@ -118,11 +118,6 @@
             <groupId>com.backbase.dbs.limit</groupId>
             <artifactId>limit-spec</artifactId>
         </dependency>
-        <!-- Transaction Manager Category Collector -->
-        <dependency>
-            <groupId>com.backbase.dbs.pfm</groupId>
-            <artifactId>categories-management-presentation-spec</artifactId>
-        </dependency>
         <!-- User manager -->
         <dependency>
             <groupId>com.backbase.dbs.user</groupId>
@@ -362,6 +357,18 @@
                             <fromFile>transaction-manager-integration-inbound-api-v2.0.0.yaml</fromFile>
                         </configuration>
                     </execution>
+
+                    <execution>
+                        <id>download-transaction-category-collector-api-spec</id>
+                        <goals>
+                            <goal>download-single</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <url>https://artifacts.backbase.com/specs/transaction-category-collector</url>
+                            <fromFile>transaction-category-collector-client-api-v2.0.0.yaml</fromFile>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 
@@ -460,6 +467,20 @@
                             <configOptions>
                                 <apiPackage>com.backbase.dbs.transaction.client.v2</apiPackage>
                                 <modelPackage>com.backbase.dbs.transaction.client.v2.model</modelPackage>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>generate-transaction-category-collector-client-code</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${api.target}/transaction-category-collector-client-api-v2.0.0.yaml</inputSpec>
+                            <configOptions>
+                                <apiPackage>com.backbase.dbs.transaction.categories.client.v2</apiPackage>
+                                <modelPackage>com.backbase.dbs.transaction.categories.client.v2.model</modelPackage>
                             </configOptions>
                         </configuration>
                     </execution>

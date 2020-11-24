@@ -108,11 +108,6 @@
             <groupId>com.backbase.dbs.arrangement</groupId>
             <artifactId>arrangement-integration-spec</artifactId>
         </dependency>
-        <!-- Billpay -->
-        <dependency>
-            <groupId>com.backbase.dbs.billpay</groupId>
-            <artifactId>billpay-integration-external-provider-outbound-spec</artifactId>
-        </dependency>
         <!-- Contact Manager -->
         <dependency>
             <groupId>com.backbase.dbs.contact</groupId>
@@ -345,6 +340,18 @@
                     </execution>
 
                     <execution>
+                        <id>download-billpay-api-spec</id>
+                        <goals>
+                            <goal>download-single</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <url>https://artifacts.backbase.com/specs/billpay-integrator</url>
+                            <fromFile>billpay-integration-external-provider-outbound-api-v2.0.0.yaml</fromFile>
+                        </configuration>
+                    </execution>
+
+                    <execution>
                         <id>download-transaction-manager-integration-api-spec</id>
                         <goals>
                             <goal>download-single</goal>
@@ -417,7 +424,7 @@
                     </execution>
 
                     <execution>
-                        <id>generate-contact-manager-client-code</id>
+                        <id>generate-action-client-code</id>
                         <goals>
                             <goal>generate</goal>
                         </goals>
@@ -426,6 +433,19 @@
                             <configOptions>
                                 <apiPackage>com.backbase.dbs.action.client.v2</apiPackage>
                                 <modelPackage>com.backbase.dbs.action.client.v2.model</modelPackage>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-billpay-client-code</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${api.target}/billpay-integration-external-provider-outbound-api-v2.0.0.yaml</inputSpec>
+                            <configOptions>
+                                <apiPackage>com.backbase.dbs.billpay.client.v2</apiPackage>
+                                <modelPackage>com.backbase.dbs.billpay.client.v2.model</modelPackage>
                             </configOptions>
                         </configuration>
                     </execution>
@@ -488,14 +508,6 @@
                                     <artifactId>arrangement-integration-spec</artifactId>
                                     <outputDirectory>
                                         ${project.build.directory}/arrangement-integration-spec
-                                    </outputDirectory>
-                                </artifactItem>
-
-                                <artifactItem>
-                                    <groupId>com.backbase.dbs.billpay</groupId>
-                                    <artifactId>billpay-integration-external-provider-outbound-spec</artifactId>
-                                    <outputDirectory>
-                                        ${project.build.directory}/billpay-integration-external-provider-outbound-spec
                                     </outputDirectory>
                                 </artifactItem>
 

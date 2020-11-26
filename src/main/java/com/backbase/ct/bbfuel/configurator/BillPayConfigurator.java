@@ -4,11 +4,6 @@ import static com.backbase.ct.bbfuel.util.ResponseUtils.isBadRequestException;
 import static org.apache.http.HttpStatus.SC_NO_CONTENT;
 import static org.apache.http.HttpStatus.SC_OK;
 
-import com.backbase.billpay.integration.enrolment.Account;
-import com.backbase.billpay.integration.enrolment.Account.AccountType;
-import com.backbase.billpay.integration.enrolment.Address;
-import com.backbase.billpay.integration.enrolment.Subscriber;
-import com.backbase.billpay.integration.rest.spec.v2.billpay.enroluser.UserByIdPutRequestBody;
 import com.backbase.ct.bbfuel.client.accessgroup.UserContextPresentationRestClient;
 import com.backbase.ct.bbfuel.client.billpay.BillPayMockBankRestClient;
 import com.backbase.ct.bbfuel.client.billpay.BillPayPresentationRestClient;
@@ -17,6 +12,10 @@ import com.backbase.ct.bbfuel.client.productsummary.AccountsIntegrationRestClien
 import com.backbase.ct.bbfuel.client.user.UserPresentationRestClient;
 import com.backbase.ct.bbfuel.dto.LegalEntityWithUsers;
 import com.backbase.ct.bbfuel.util.CommonHelpers;
+import com.backbase.dbs.billpay.client.v2.model.Subscriber;
+import com.backbase.dbs.billpay.client.v2.model.SubscriberAccount;
+import com.backbase.dbs.billpay.client.v2.model.SubscriberAddress;
+import com.backbase.dbs.billpay.client.v2.model.UserByIdPutRequestBody;
 import com.backbase.integration.account.spec.v2.arrangements.ArrangementItem;
 import io.restassured.response.Response;
 import java.util.ArrayList;
@@ -38,7 +37,7 @@ public class BillPayConfigurator {
     private final BillPayMockBankRestClient billPayMockBankRestClient;
     private final AccountsIntegrationRestClient accountsIntegrationRestClient;
     private final UserPresentationRestClient userPresentationRestClient;
-    
+
     public void ingestBillPayUser(String externalUserId) {
         loginRestClient.login(externalUserId, externalUserId);
         userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
@@ -52,11 +51,11 @@ public class BillPayConfigurator {
         }
     }
 
-    private void ingestBillPayAccounts(String subscriberId, List<Account> accounts) {
+    private void ingestBillPayAccounts(String subscriberId, List<SubscriberAccount> accounts) {
         loginRestClient.login(subscriberId, subscriberId);
         userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
         UserByIdPutRequestBody request = new UserByIdPutRequestBody()
-            .withSubscriber(createSubscriber(subscriberId, accounts));
+            .subscriber(createSubscriber(subscriberId, accounts));
         Response response = billPayMockBankRestClient.ingestAccounts(request);
         if (isBadRequestException(response, "The request is invalid")) {
             log.info("Bad request for Bill Pay user [{}]", subscriberId);
@@ -67,7 +66,7 @@ public class BillPayConfigurator {
     }
 
     public void ingestBillPayUserAndAccounts(LegalEntityWithUsers le, Boolean ingestAccounts) {
-        List<Account> accounts = new ArrayList<>();
+        List<SubscriberAccount> accounts = new ArrayList<>();
         if (ingestAccounts) {
             String externalUserId = le.getUserExternalIds().get(0);
             loginRestClient.login(externalUserId, externalUserId);
@@ -89,28 +88,28 @@ public class BillPayConfigurator {
         });
     }
 
-    private Subscriber createSubscriber(String subscriberId, List<Account> accounts) {
+    private Subscriber createSubscriber(String subscriberId, List<SubscriberAccount> accounts) {
         return new Subscriber()
-            .withUser(subscriberId)
-            .withSubscriberId(subscriberId)
-            .withFirstName("John")
-            .withLastName("Doe")
-            .withTaxIdentifier("tax00001")
-            .withAddress(
-                new Address()
-                    .withAddress1("560 Carillon Parkway")
-                    .withAddress2("Carillon")
-                    .withCity("Saint Petersburg")
-                    .withState("FL")
-                    .withPostalCode("33717")
+            .user(subscriberId)
+            .subscriberId(subscriberId)
+            .firstName("John")
+            .lastName("Doe")
+            .taxIdentifier("tax00001")
+            .address(
+                new com.backbase.dbs.billpay.client.v2.model.SubscriberAddress()
+                    .address1("560 Carillon Parkway")
+                    .address2("Carillon")
+                    .city("Saint Petersburg")
+                    .state("FL")
+                    .postalCode("33717")
             )
-            .withAccounts(accounts);
+            .accounts(accounts);
     }
 
-    public Account mapBillPayAccount(ArrangementItem arrangement) {
-        return new Account()
-            .withAccountNumber(arrangement.getBBAN())
-            .withRoutingNumber(arrangement.getBankBranchCode())
-            .withAccountType(CommonHelpers.getRandomFromList(Arrays.asList(AccountType.values())));
+    public SubscriberAccount mapBillPayAccount(ArrangementItem arrangement) {
+        return new SubscriberAccount()
+            .accountNumber(arrangement.getBBAN())
+            .routingNumber(arrangement.getBankBranchCode())
+            .accountType(CommonHelpers.getRandomFromList(Arrays.asList(SubscriberAccount.AccountTypeEnum.values())));
     }
 }

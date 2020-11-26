@@ -4,7 +4,7 @@ import static org.apache.http.HttpStatus.SC_OK;
 
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
-import com.backbase.dbs.accesscontrol.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementGetResponseBody;
+import com.backbase.dbs.accesscontrol.client.v2.model.ServiceAgreementItem;
 import io.restassured.http.ContentType;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -28,14 +28,14 @@ public class ServiceAgreementsPresentationRestClient extends RestClient {
         setInitialPath(config.getDbsServiceNames().getAccessgroup() + "/" + CLIENT_API);
     }
 
-    public ServiceAgreementGetResponseBody retrieveServiceAgreement(String internalServiceAgreementId) {
+    public ServiceAgreementItem retrieveServiceAgreement(String internalServiceAgreementId) {
         return requestSpec()
             .contentType(ContentType.JSON)
             .get(getPath(String.format(ENDPOINT_SERVICE_AGREEMENTS_BY_ID, internalServiceAgreementId)))
             .then()
             .statusCode(SC_OK)
             .extract()
-            .as(ServiceAgreementGetResponseBody.class);
+            .as(ServiceAgreementItem.class);
     }
 
 }

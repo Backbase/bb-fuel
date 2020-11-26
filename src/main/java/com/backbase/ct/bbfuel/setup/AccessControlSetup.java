@@ -37,8 +37,8 @@ import com.backbase.ct.bbfuel.service.JobProfileService;
 import com.backbase.ct.bbfuel.service.LegalEntityService;
 import com.backbase.ct.bbfuel.service.ProductGroupService;
 import com.backbase.ct.bbfuel.service.UserContextService;
-import com.backbase.dbs.accesscontrol.rest.spec.v2.accessgroups.datagroups.DataGroupsGetResponseBody;
-import com.backbase.dbs.accesscontrol.rest.spec.v2.legalentities.LegalEntityForUserGetResponseBody;
+import com.backbase.dbs.accesscontrol.client.v2.model.LegalEntityBase;
+import com.backbase.dbs.accesscontrol.client.v2.model.DataGroupItem;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.IntegrationIdentifier;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.functiongroups.FunctionGroupBase.Type;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.users.permissions.IntegrationFunctionGroupDataGroup;
@@ -171,7 +171,7 @@ public class AccessControlSetup extends BaseSetup {
         this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
         legalEntityWithUsers.getUsers().forEach(user -> {
-            LegalEntityForUserGetResponseBody legalEntity = this.userPresentationRestClient
+            LegalEntityBase legalEntity = this.userPresentationRestClient
                 .retrieveLegalEntityByExternalUserId(user.getExternalId());
             final String legalEntityExternalId = legalEntity.getExternalId();
 
@@ -221,7 +221,7 @@ public class AccessControlSetup extends BaseSetup {
             ProductGroupSeed productGroupSeed = new ProductGroupSeed(productGroupTemplate);
 
             // Combination of data group name and service agreement is unique in the system
-            DataGroupsGetResponseBody existingDataGroup = accessGroupPresentationRestClient
+            DataGroupItem existingDataGroup = accessGroupPresentationRestClient
                 .retrieveDataGroupsByServiceAgreement(internalServiceAgreementId)
                 .stream()
                 .filter(dataGroupsGetResponseBody -> productGroupSeed.getProductGroupName()

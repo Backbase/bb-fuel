@@ -10,7 +10,7 @@ import com.backbase.ct.bbfuel.client.accessgroup.UserContextPresentationRestClie
 import com.backbase.ct.bbfuel.client.common.LoginRestClient;
 import com.backbase.ct.bbfuel.client.legalentity.LegalEntityIntegrationRestClient;
 import com.backbase.ct.bbfuel.client.user.UserPresentationRestClient;
-import com.backbase.dbs.accesscontrol.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementGetResponseBody;
+import com.backbase.dbs.accesscontrol.client.v2.model.ServiceAgreementItem;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.Participant;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementPostResponseBody;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.UserServiceAgreementPair;
@@ -80,7 +80,7 @@ public class ServiceAgreementsConfigurator {
     }
 
     public void setEntitlementsAdminUnderMsa(String user, String externalLeId) {
-        ServiceAgreementGetResponseBody msa = legalEntityIntegrationRestClient
+        ServiceAgreementItem msa = legalEntityIntegrationRestClient
             .getMasterServiceAgreementOfLegalEntity(externalLeId);
         serviceAgreementsIntegrationRestClient
             .addServiceAgreementAdminsBulk(Collections.singletonList(

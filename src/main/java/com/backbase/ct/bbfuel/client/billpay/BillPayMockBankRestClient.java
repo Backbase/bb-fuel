@@ -1,9 +1,9 @@
 package com.backbase.ct.bbfuel.client.billpay;
 
 
-import com.backbase.billpay.integration.rest.spec.v2.billpay.enroluser.UserByIdPutRequestBody;
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
+import com.backbase.dbs.billpay.client.v2.model.UserByIdPutRequestBody;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import javax.annotation.PostConstruct;

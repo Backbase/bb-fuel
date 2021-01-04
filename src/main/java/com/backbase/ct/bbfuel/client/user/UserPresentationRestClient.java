@@ -27,8 +27,8 @@ public class UserPresentationRestClient extends RestClient {
 
     private static final String SERVICE_VERSION = "v2";
     private static final String ENDPOINT_USERS = "/users";
-    private static final String ENDPOINT_EXTERNAL_ID_LEGAL_ENTITIES = ENDPOINT_USERS + "/externalId/%s/legalentities";
-    private static final String ENDPOINT_USER_BY_EXTERNAL_ID = ENDPOINT_USERS + "/externalId/%s";
+    private static final String ENDPOINT_EXTERNAL_ID_LEGAL_ENTITIES = ENDPOINT_USERS + "/externalids/%s/legalentities";
+    private static final String ENDPOINT_USER_BY_EXTERNAL_ID = ENDPOINT_USERS + "/externalids/%s";
     private static final String ENDPOINT_IDENTITIES = ENDPOINT_USERS + "/identities";
 
     private static final String EMAIL_DOMAIN = "@email.invalid";

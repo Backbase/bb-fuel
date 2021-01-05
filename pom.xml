@@ -48,6 +48,7 @@
         <iban4j.version>3.2.1</iban4j.version>
 
         <service-sdk.version>11.0.0</service-sdk.version>
+        <common-types.version>1.0.5</common-types.version>
     </properties>
 
     <dependencyManagement>
@@ -86,6 +87,11 @@
                     <groupId>com.backbase.buildingblocks</groupId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.backbase.buildingblocks</groupId>
+            <artifactId>common-types</artifactId>
+            <version>${common-types.version}</version>
         </dependency>
         <!-- DBS Specs -->
         <!-- Access control -->

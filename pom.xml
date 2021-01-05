@@ -300,7 +300,7 @@
                         </goals>
                         <phase>generate-sources</phase>
                         <configuration>
-                            <url>https://artifacts.backbase.com/specs/access-control</url>
+                            <url>https://repo.backbase.com/specs/access-control</url>
                             <fromFile>access-control-client-api-v2.0.0.yaml</fromFile>
                         </configuration>
                     </execution>
@@ -311,7 +311,7 @@
                         </goals>
                         <phase>generate-sources</phase>
                         <configuration>
-                            <url>https://artifacts.backbase.com/specs/accessgroup-integration-service</url>
+                            <url>https://repo.backbase.com/specs/accessgroup-integration-service</url>
                             <fromFile>accessgroup-integration-inbound-api-v2.0.0.yaml</fromFile>
                         </configuration>
                     </execution>
@@ -323,7 +323,7 @@
                         </goals>
                         <phase>generate-sources</phase>
                         <configuration>
-                            <url>https://artifacts.backbase.com/specs/legalentity-integration-service</url>
+                            <url>https://repo.backbase.com/specs/legalentity-integration-service</url>
                             <fromFile>legalentity-integration-inbound-api-v2.0.0.yaml</fromFile>
                         </configuration>
                     </execution>
@@ -335,7 +335,7 @@
                         </goals>
                         <phase>generate-sources</phase>
                         <configuration>
-                            <url>https://artifacts.backbase.com/specs/action</url>
+                            <url>https://repo.backbase.com/specs/action</url>
                             <fromFile>action-client-api-v2.0.1.yaml</fromFile>
                         </configuration>
                     </execution>
@@ -347,7 +347,7 @@
                         </goals>
                         <phase>generate-sources</phase>
                         <configuration>
-                            <url>https://artifacts.backbase.com/specs/billpay-integrator</url>
+                            <url>https://repo.backbase.com/specs/billpay-integrator</url>
                             <fromFile>billpay-integration-external-provider-outbound-api-v2.0.0.yaml</fromFile>
                         </configuration>
                     </execution>
@@ -359,7 +359,7 @@
                         </goals>
                         <phase>generate-sources</phase>
                         <configuration>
-                            <url>https://artifacts.backbase.com/specs/transaction-manager</url>
+                            <url>https://repo.backbase.com/specs/transaction-manager</url>
                             <fromFile>transaction-manager-integration-inbound-api-v2.0.0.yaml</fromFile>
                         </configuration>
                     </execution>
@@ -371,7 +371,7 @@
                         </goals>
                         <phase>generate-sources</phase>
                         <configuration>
-                            <url>https://artifacts.backbase.com/specs/transaction-category-collector</url>
+                            <url>https://repo.backbase.com/specs/transaction-category-collector</url>
                             <fromFile>transaction-category-collector-client-api-v2.0.0.yaml</fromFile>
                         </configuration>
                     </execution>

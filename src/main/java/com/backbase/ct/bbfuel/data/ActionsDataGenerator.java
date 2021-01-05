@@ -21,7 +21,7 @@ public class ActionsDataGenerator {
         return new ActionRecipesPostRequestBodyParent()
                 .specificationId(getRandomFromList(specificationIds))
                 .actions(createAllActionsList())
-                .amount(generateRandomAmountInRange(100000L, 999999L).toString())
+                .amount(generateRandomAmountInRange(100000L, 999999L))
                 .arrangementId(internalArrangementId)
                 .userId(null)
                 .active(true)

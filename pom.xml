@@ -336,7 +336,7 @@
                         <phase>generate-sources</phase>
                         <configuration>
                             <url>https://repo.backbase.com/specs/action</url>
-                            <fromFile>action-client-api-v2.0.1.yaml</fromFile>
+                            <fromFile>action-client-api-v2.0.0.yaml</fromFile>
                         </configuration>
                     </execution>
 
@@ -442,7 +442,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${api.target}/action-client-api-v2.0.1.yaml</inputSpec>
+                            <inputSpec>${api.target}/action-client-api-v2.0.0.yaml</inputSpec>
                             <configOptions>
                                 <apiPackage>com.backbase.dbs.action.client.v2</apiPackage>
                                 <modelPackage>com.backbase.dbs.action.client.v2.model</modelPackage>

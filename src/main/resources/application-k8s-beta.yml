@@ -18,7 +18,7 @@ bb-fuel:
     legalentity: http://legalentity.${environment.name}.${environment.domain}
     transactions: http://transactions.${environment.name}.${environment.domain}/integration-api
     user: http://user-manager.${environment.name}.${environment.domain}/integration-api
-    accountStatement: http://10.201.96.160:8080/service-api
+    accountStatement: http://accountstatementsintegration.${environment.name}.${environment.domain}/service-api
   dbs-service-names:
     accessgroup: access-control
     actions: action
@@ -32,4 +32,3 @@ bb-fuel:
     pfm: transaction-category-collector
     user: user-manager
     products: arrangement-manager
-    accountStatement:

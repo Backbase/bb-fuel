@@ -1,8 +1,5 @@
 package com.backbase.ct.bbfuel.dto.accountStatement;
 
-import com.backbase.ct.bbfuel.dto.accountStatement.DocumentType;
-import com.backbase.ct.bbfuel.dto.accountStatement.EstatetmentDocument;
-
 public enum ValidEstatementDocuments {
 
     MSWORD(new EstatetmentDocument("uid_001", DocumentType.MSWORD)),

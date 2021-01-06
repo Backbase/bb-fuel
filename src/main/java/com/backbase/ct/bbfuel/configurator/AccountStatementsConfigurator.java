@@ -45,20 +45,6 @@ public class AccountStatementsConfigurator {
         arrangements.addAll(productSummaryPresentationRestClient.getUsDomesticWireArrangements());
         arrangements.addAll(productSummaryPresentationRestClient.getAchDebitArrangements());
 
-        /**IntStream.range(0, randomAmount).parallel().forEach(randomNumber -> {
-         for(ArrangementsByBusinessFunctionGetResponseBody arrangement:arrangements) {
-         String internalArrangementId = arrangement.getId();
-         String accountName = arrangement.getName();
-         String accountIBAN = arrangement.getIBAN();
-
-         EstatementPostRequestBody eStatementsPostRequestBody = generateAccountStatementsRequests(randomNumber, externalUserId, internalArrangementId, accountName, accountIBAN);
-
-         AccountStatementsIntegrationMockServiceApiClient.createAccountStatements(eStatementsPostRequestBody).then().statusCode(SC_CREATED);
-
-         log.info("Account Statement ingested with  id [{}] for account Name [{}] for user [{}]",
-         eStatementsPostRequestBody.getAccountId(), eStatementsPostRequestBody.getAccountName(), eStatementsPostRequestBody.getUserId());
-         }
-         });**/
         for (ArrangementsByBusinessFunctionGetResponseBody arrangement : arrangements) {
             String internalArrangementId = arrangement.getId();
             String accountName = arrangement.getName();

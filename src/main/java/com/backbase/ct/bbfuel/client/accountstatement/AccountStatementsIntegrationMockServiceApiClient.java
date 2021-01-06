@@ -17,22 +17,21 @@ public class AccountStatementsIntegrationMockServiceApiClient extends RestClient
 
     private final BbFuelConfiguration config;
 
-    private static final String POST_DEL_ESTATEMENT = "/account/statements/mock";
 
     private static final String SERVICE_VERSION ="v2";
+    private static final String ENDPOINT_ACCOUNT_STATEMENT = "/account/statements/mock";
 
     @PostConstruct
     public void init() {
         setBaseUri(config.getDbs().getAccountStatement());
         setVersion(SERVICE_VERSION);
-        //setInitialPath("/" + "service-api");
     }
 
     public Response createAccountStatements(List<EstatementPostRequestBody> requestBody) {
         return requestSpec()
                 .contentType(ContentType.JSON)
                 .body(requestBody)
-                .post(getPath(POST_DEL_ESTATEMENT));
+                .post(getPath(ENDPOINT_ACCOUNT_STATEMENT));
     }
 }
 

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import static com.backbase.ct.bbfuel.data.AccountStatementDataGenerator.generateAccountStatementsRequests;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ACCOUNTSTATEMENTS_MAX;
@@ -45,16 +46,18 @@ public class AccountStatementsConfigurator {
         arrangements.addAll(productSummaryPresentationRestClient.getUsDomesticWireArrangements());
         arrangements.addAll(productSummaryPresentationRestClient.getAchDebitArrangements());
 
-        for (ArrangementsByBusinessFunctionGetResponseBody arrangement : arrangements) {
-            String internalArrangementId = arrangement.getId();
-            String accountName = arrangement.getName();
-            String accountIBAN = arrangement.getIBAN();
+            IntStream.range(0, randomAmount).parallel().forEach(randomNumber -> {
+                for (ArrangementsByBusinessFunctionGetResponseBody arrangement : arrangements) {
+                    String internalArrangementId = arrangement.getId();
+                    String accountName = arrangement.getName();
+                    String accountIBAN = arrangement.getIBAN();
 
-            AccountStatementsIntegrationMockServiceApiClient.createAccountStatements(generateAccountStatementsRequests(randomAmount,externalUserId,internalArrangementId,accountName,accountIBAN)).then().statusCode(SC_CREATED);
+                    AccountStatementsIntegrationMockServiceApiClient.createAccountStatements(generateAccountStatementsRequests(randomAmount, externalUserId, internalArrangementId, accountName, accountIBAN)).then().statusCode(SC_CREATED);
 
-            log.info("Account Statement ingested with  id [{}] for account Name [{}] and account Number [{}] for user [{}]",
-                    internalArrangementId, accountName, accountIBAN,externalUserId );
+                    log.info("Account Statement ingested with  id [{}] for account Name [{}] and account Number [{}] for user [{}]",
+                            internalArrangementId, accountName, accountIBAN, externalUserId);
 
-        }
+                }
+            });
     }
 }

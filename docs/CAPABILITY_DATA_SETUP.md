@@ -9,6 +9,7 @@
 - Messages per user
 - Actions per user for SEPA CT, ACH Debit and/or US Wire arrangements
 - Bill Pay enrolment per user
+- Account Statement per user
 
 Note: This can be rerun on an existing environment which already contains data by setting the property `ingest.access.control` to `false`
 

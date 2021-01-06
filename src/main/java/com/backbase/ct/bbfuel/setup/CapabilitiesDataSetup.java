@@ -1,30 +1,12 @@
 package com.backbase.ct.bbfuel.setup;
 
-import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_ACTIONS;
-import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_BATCHES;
-import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_CONTACTS;
-import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_NOTIFICATIONS;
-import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_PAYMENTS;
-import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_BILLPAY;
-import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_BILLPAY_ACCOUNTS;
-import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_CONTACTS;
-import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_LIMITS;
-import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_MESSAGES;
-import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_NOTIFICATIONS;
-import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_PAYMENTS;
+import static com.backbase.ct.bbfuel.data.CommonConstants.*;
 import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
 import static java.util.Collections.singletonList;
 
 import com.backbase.ct.bbfuel.client.accessgroup.UserContextPresentationRestClient;
 import com.backbase.ct.bbfuel.client.common.LoginRestClient;
-import com.backbase.ct.bbfuel.configurator.ActionsConfigurator;
-import com.backbase.ct.bbfuel.configurator.ApprovalsConfigurator;
-import com.backbase.ct.bbfuel.configurator.BillPayConfigurator;
-import com.backbase.ct.bbfuel.configurator.ContactsConfigurator;
-import com.backbase.ct.bbfuel.configurator.LimitsConfigurator;
-import com.backbase.ct.bbfuel.configurator.MessagesConfigurator;
-import com.backbase.ct.bbfuel.configurator.NotificationsConfigurator;
-import com.backbase.ct.bbfuel.configurator.PaymentsConfigurator;
+import com.backbase.ct.bbfuel.configurator.*;
 import com.backbase.ct.bbfuel.dto.LegalEntityWithUsers;
 import com.backbase.ct.bbfuel.dto.User;
 import com.backbase.ct.bbfuel.dto.UserContext;
@@ -52,6 +34,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
     private final ActionsConfigurator actionsConfigurator;
     private final BillPayConfigurator billpayConfigurator;
     private final LegalEntityService legalEntityService;
+    private final AccountStatementsConfigurator accountStatementsConfigurator;
 
     /**
      * Ingest data with services of projects APPR, PO, LIM, NOT, CON, MC, ACT and BPAY.
@@ -66,6 +49,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
         this.ingestConversationsPerUser();
         this.ingestActionsPerUser();
         this.ingestBillPayUsers();
+        this.ingestAccountStatementPerUser();
     }
 
     private void ingestApprovals() {
@@ -182,6 +166,18 @@ public class CapabilitiesDataSetup extends BaseSetup {
                 billpayConfigurator.ingestBillPayUserAndAccounts(le,
                     this.globalProperties.getBoolean(PROPERTY_INGEST_BILLPAY_ACCOUNTS));
             });
+        }
+    }
+
+    private void ingestAccountStatementPerUser() {
+        if (this.globalProperties.getBoolean(PROPERTY_INGEST_ACCOUNT_STATEMENTS)) {
+            this.accessControlSetup.getLegalEntitiesWithUsersExcludingSupport().forEach(legalEntityWithUsers -> {
+                List<User> users = legalEntityWithUsers.getUsers();
+                UserContext userContext = getRandomUserContextBasedOnMsaByExternalUserId(users);
+
+                this.accountStatementsConfigurator.ingestAccountStatements(userContext.getExternalUserId());
+
+         });
         }
     }
 }

@@ -46,7 +46,6 @@ public class AccountStatementsConfigurator {
         arrangements.addAll(productSummaryPresentationRestClient.getUsDomesticWireArrangements());
         arrangements.addAll(productSummaryPresentationRestClient.getAchDebitArrangements());
 
-            IntStream.range(0, randomAmount).parallel().forEach(randomNumber -> {
                 for (ArrangementsByBusinessFunctionGetResponseBody arrangement : arrangements) {
                     String internalArrangementId = arrangement.getId();
                     String accountName = arrangement.getName();
@@ -58,6 +57,5 @@ public class AccountStatementsConfigurator {
                             internalArrangementId, accountName, accountIBAN, externalUserId);
 
                 }
-            });
     }
 }

@@ -89,4 +89,9 @@ public class DbsConfig {
      */
     private String products;
 
+    /**
+     * URI to accountStatement.
+     */
+    private String accountStatement;
+
 }

@@ -20,6 +20,7 @@ bb-fuel:
     legalentity: http://${environment.name}-entitlements.${environment.domain}/legalentity-integration-service
     transactions: http://${environment.name}-transactions.${environment.domain}/transaction-integration-service
     user: http://${environment.name}-entitlements.${environment.domain}/user-integration-service/client-api
+    accountStatement: http://${environment.name}-accountstatements.${environment.domain}/account-statement-integration-service/service-api
   dbs-service-names:
     accessgroup: accessgroup-presentation-service
     actions: actionrecipes-presentation-service

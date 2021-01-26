@@ -13,6 +13,7 @@ import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_MESSAG
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_NOTIFICATIONS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_PAYMENTS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_ACCOUNT_STATEMENTS;
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ACCOUNTSTATEMENTS_USERS;
 import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
 import static java.util.Collections.singletonList;
 
@@ -32,9 +33,14 @@ import com.backbase.ct.bbfuel.dto.User;
 import com.backbase.ct.bbfuel.dto.UserContext;
 import com.backbase.ct.bbfuel.service.LegalEntityService;
 import com.backbase.ct.bbfuel.service.UserContextService;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.google.common.base.Splitter;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -69,7 +75,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
         this.ingestConversationsPerUser();
         this.ingestActionsPerUser();
         this.ingestBillPayUsers();
-        this.ingestAccountStatementPerUser();
+        this.ingestAccountStatementForSelectedUser();
     }
 
     private void ingestApprovals() {
@@ -189,15 +195,13 @@ public class CapabilitiesDataSetup extends BaseSetup {
         }
     }
 
-    private void ingestAccountStatementPerUser() {
+    private void ingestAccountStatementForSelectedUser() {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_ACCOUNT_STATEMENTS)) {
-            this.accessControlSetup.getLegalEntitiesWithUsersExcludingSupport().forEach(legalEntityWithUsers -> {
-                List<User> users = legalEntityWithUsers.getUsers();
-                UserContext userContext = getRandomUserContextBasedOnMsaByExternalUserId(users);
+            String externalUserIds = this.globalProperties.getString(PROPERTY_ACCOUNTSTATEMENTS_USERS);
+            Splitter.on(';').trimResults().split(externalUserIds).forEach(externalUserId -> {
+                this.accountStatementsConfigurator.ingestAccountStatements(externalUserId);
+            });
+         }
+     }
+  }
 
-                this.accountStatementsConfigurator.ingestAccountStatements(userContext.getExternalUserId());
-
-         });
-        }
-    }
-}

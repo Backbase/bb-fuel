@@ -79,6 +79,7 @@ public final class CommonConstants {
     public static final String PROPERTY_INGEST_ACCOUNT_STATEMENTS = "ingest.accountStatements";
     public static final String PROPERTY_ACCOUNTSTATEMENTS_MIN = "accountStatement.min";
     public static final String PROPERTY_ACCOUNTSTATEMENTS_MAX = "accountStatement.max";
+    public static final String PROPERTY_ACCOUNTSTATEMENTS_USERS = "accountStatement.externalUserIds";
 
     // Product summary
     public static final String PROPERTY_PRODUCTS_JSON_LOCATION = "products.json";

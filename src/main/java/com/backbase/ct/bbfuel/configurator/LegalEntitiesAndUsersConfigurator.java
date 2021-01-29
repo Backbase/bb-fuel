@@ -105,7 +105,7 @@ public class LegalEntitiesAndUsersConfigurator {
             log.info("Identity for user [{}] not found, creating identity", user.getExternalId());
 
             String legalEntityId = legalEntityPresentationRestClient
-                .retrieveLegalEntityByExternalId(user.getExternalId()).getId();
+                .retrieveLegalEntityByExternalId(user.getLegalEntityExternalId()).getId();
 
             UserExternal userBody = new UserExternal();
 

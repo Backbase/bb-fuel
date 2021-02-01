@@ -76,11 +76,13 @@ public class UserPresentationRestClient extends RestClient {
 
     private Response createIdentity(UserExternal user, String legalEntityId) {
 
-        ImportIdentityRequest createUserBody = new ImportIdentityRequest();
+        CreateIdentityRequest createUserBody = new CreateIdentityRequest();
 
         createUserBody
             .withExternalId(user.getExternalId())
-            .withLegalEntityExternalId(legalEntityId);
+            .withFullName(user.getFullName())
+            .withEmailAddress(user.getExternalId() + EMAIL_DOMAIN)
+            .withLegalEntityInternalId(legalEntityId);
 
         return requestSpec()
             .contentType(ContentType.JSON)

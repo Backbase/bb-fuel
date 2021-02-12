@@ -166,7 +166,7 @@ public class ProductSummaryDataGenerator {
             .withPrincipalAmount(generateRandomAmountInRange(10000L, 999999L))
             .withCurrentInvestmentValue(generateRandomAmountInRange(10000L, 999999L))
             .withDebitAccount(productId == 1 || productId == 2)
-            .withCreditAccount(productId == 1 || productId == 2)
+            .withCreditAccount(productId == 1 || productId == 2 || productId == 4 || productId == 5)
             .withAccountHolderNames(faker.name().fullName())
             .withAccountHolderAddressLine1(faker.address().streetAddress())
             .withAccountHolderAddressLine2(faker.address().secondaryAddress())

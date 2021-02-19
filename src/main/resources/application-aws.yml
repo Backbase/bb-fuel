@@ -10,16 +10,16 @@ bb-fuel:
     auth: https://edge.${environment.name}.${environment.domain}/api/auth/login
     tokenconverter: https://tokenconverter.${environment.name}.${environment.domain}
   dbs:
-    accessgroup: https://${environment.name}.${environment.domain}/accessgroup
-    accounts: https://${environment.name}.${environment.domain}/account/service-api
-    approvals: https://${environment.name}.${environment.domain}/approvals/integration-api
-    arrangements: https://${environment.name}.${environment.domain}/arrangements/integration-api
-    billpay: https://${environment.name}.${environment.domain}/billpayprovidermock/client-api
-    contactmanager: https://${environment.name}.${environment.domain}/contacts/integration-api
-    legalentity: https://${environment.name}.${environment.domain}/legalentity
-    transactions: https://${environment.name}.${environment.domain}/transactions/integration-api
-    user: https://${environment.name}.${environment.domain}/user-manager/integration-api
-    accountStatement: https://${environment.name}.${environment.domain}/accountstatementsintegration/account-statement-integration-service/service-api
+    accessgroup: https://app.${environment.name}.${environment.domain}/accessgroup
+    accounts: https://app.${environment.name}.${environment.domain}/account/service-api
+    approvals: https://app.${environment.name}.${environment.domain}/approvals/integration-api
+    arrangements: https://app.${environment.name}.${environment.domain}/arrangement/integration-api
+    billpay: https://app.${environment.name}.${environment.domain}/billpayprovidermock/client-api
+    contactmanager: https://app.${environment.name}.${environment.domain}/contacts/integration-api
+    legalentity: https://app.${environment.name}.${environment.domain}/legalentity
+    transactions: https://app.${environment.name}.${environment.domain}/transactions/integration-api
+    user: https://app.${environment.name}.${environment.domain}/user-manager/integration-api
+    accountStatement: https://app.${environment.name}.${environment.domain}/accountstatementsintegration/service-api
   dbs-service-names:
     accessgroup: accessgroup-presentation-service
     actions: actionrecipes-presentation-service

@@ -4,22 +4,22 @@ environment:
 
 bb-fuel:
   platform:
-    registry: http://registry.${environment.name}.${environment.domain}
-    identity: http://identity.${environment.name}.${environment.domain}
-    gateway: http://edge.${environment.name}.${environment.domain}/api
-    auth: http://edge.${environment.name}.${environment.domain}/api/auth/login
-    tokenconverter: http://tokenconverter.${environment.name}.${environment.domain}
+    registry: https://registry.${environment.name}.${environment.domain}
+    identity: https://identity.${environment.name}.${environment.domain}
+    gateway: https://edge.${environment.name}.${environment.domain}/api
+    auth: https://edge.${environment.name}.${environment.domain}/api/auth/login
+    tokenconverter: https://tokenconverter.${environment.name}.${environment.domain}
   dbs:
-    accessgroup: http://${environment.name}.${environment.domain}/accessgroup
-    accounts: http://${environment.name}.${environment.domain}/account/service-api
-    approvals: http://${environment.name}.${environment.domain}/approvals/client-api
-    arrangements: http://${environment.name}.${environment.domain}/arrangements/client-api
-    billpay: http://${environment.name}.${environment.domain}/billpayprovidermock/client-api
-    contactmanager: http://${environment.name}.${environment.domain}/contacts/client-api
-    legalentity: http://${environment.name}.${environment.domain}/legalentity
-    transactions: http://${environment.name}.${environment.domain}/transactions
-    user: http://${environment.name}.${environment.domain}/user/client-api
-    accountStatement: http://${environment.name}.${environment.domain}/accountstatementsintegration/account-statement-integration-service/service-api
+    accessgroup: https://${environment.name}.${environment.domain}/accessgroup
+    accounts: https://${environment.name}.${environment.domain}/account/service-api
+    approvals: https://${environment.name}.${environment.domain}/approvals/integration-api
+    arrangements: https://${environment.name}.${environment.domain}/arrangements/integration-api
+    billpay: https://${environment.name}.${environment.domain}/billpayprovidermock/client-api
+    contactmanager: https://${environment.name}.${environment.domain}/contacts/integration-api
+    legalentity: https://${environment.name}.${environment.domain}/legalentity
+    transactions: https://${environment.name}.${environment.domain}/transactions/integration-api
+    user: https://${environment.name}.${environment.domain}/user-manager/integration-api
+    accountStatement: https://${environment.name}.${environment.domain}/accountstatementsintegration/account-statement-integration-service/service-api
   dbs-service-names:
     accessgroup: accessgroup-presentation-service
     actions: actionrecipes-presentation-service

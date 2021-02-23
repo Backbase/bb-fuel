@@ -36,6 +36,13 @@
         ]
       },
       {
+        "businessFunction": "Manage Positive Pay",
+        "privileges": [
+          "view",
+          "create"
+        ]
+      },
+      {
         "businessFunction": "Manage Action Recipes",
         "privileges": [
           "execute",
@@ -256,6 +263,13 @@
           "view",
           "create",
           "edit"
+        ]
+      },
+      {
+        "businessFunction": "Manage Positive Pay",
+        "privileges": [
+          "view",
+          "create"
         ]
       },
       {
@@ -490,6 +504,13 @@
           "edit",
           "delete",
           "approve"
+        ]
+      },
+      {
+        "businessFunction": "Manage Positive Pay",
+        "privileges": [
+          "view",
+          "create"
         ]
       },
       {
@@ -735,6 +756,13 @@
       },
       {
         "businessFunction": "Audit",
+        "privileges": [
+          "view",
+          "create"
+        ]
+      },
+      {
+        "businessFunction": "Manage Positive Pay",
         "privileges": [
           "view",
           "create"
@@ -1404,6 +1432,12 @@
       },
       {
         "businessFunction": "SEPA CT",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Manage Positive Pay",
         "privileges": [
           "view"
         ]

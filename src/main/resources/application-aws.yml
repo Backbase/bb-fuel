@@ -1,14 +1,11 @@
-environment:
-  domain: backbase.test:8080
-  domain-identity: backbase.test:8180
 
 bb-fuel:
   platform:
     registry: https://registry.${environment.name}.${environment.domain}
     identity: https://identity.${environment.name}.${environment.domain}
-    gateway: https://edge.${environment.name}.${environment.domain}/api
-    auth: https://edge.${environment.name}.${environment.domain}/api/auth/login
-    tokenconverter: https://tokenconverter.${environment.name}.${environment.domain}
+    gateway: https://app.${environment.name}.${environment.domain}/api
+    auth: https://app.${environment.name}.${environment.domain}/api/auth/login
+    tokenconverter: https://app.${environment.name}.${environment.domain}/tokenconverter
   dbs:
     accessgroup: https://app.${environment.name}.${environment.domain}/accessgroup
     accounts: https://app.${environment.name}.${environment.domain}/account/service-api
@@ -21,15 +18,15 @@ bb-fuel:
     user: https://app.${environment.name}.${environment.domain}/user-manager/integration-api
     accountStatement: https://app.${environment.name}.${environment.domain}/accountstatementsintegration/service-api
   dbs-service-names:
-    accessgroup: accessgroup-presentation-service
-    actions: actionrecipes-presentation-service
-    arrangements: product-summary-presentation-service
-    billpay: billpay-presentation-service
-    legalentity: legalentity-presentation-service
-    limits: limits-presentation-service
-    messages: messages-presentation-service
-    notifications: notifications-presentation-service
-    payments: payment-order-presentation-service
-    pfm: categories-management-presentation-service
-    user: user-presentation-service
-    products: product-summary-presentation-service
+    accessgroup: access-control
+    actions: action
+    arrangements: arrangements-manager
+    billpay: billpay-integrator
+    legalentity: access-control
+    limits: limit
+    messages: messages-service
+    notifications: notifications-service
+    payments: payment-order-service
+    pfm: transaction-category-collector
+    user: user-manager
+    products: arrangement-manager

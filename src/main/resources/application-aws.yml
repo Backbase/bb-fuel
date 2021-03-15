@@ -1,36 +1,32 @@
-environment:
-  domain: backbase.test:8080
-  domain-identity: backbase.test:8180
 
 bb-fuel:
   platform:
-    infra: http://${environment.name}-${infra.base:infra}.${environment.domain}
-    identity: http://${environment.name}-bbiam.${environment.domain-identity}
-    registry: ${bb-fuel.platform.infra}/registry/eureka
-    gateway: ${bb-fuel.platform.infra}/gateway/api
-    auth: ${bb-fuel.platform.gateway}/auth/login
-    tokenconverter: ${bb-fuel.platform.infra}/bb-authentication-token-converter-service
+    registry: https://registry.${environment.name}.${environment.domain}
+    identity: https://identity.${environment.name}.${environment.domain}
+    gateway: https://app.${environment.name}.${environment.domain}/api
+    auth: https://app.${environment.name}.${environment.domain}/api/auth/login
+    tokenconverter: https://app.${environment.name}.${environment.domain}/tokenconverter
   dbs:
-    accessgroup: http://${environment.name}-entitlements.${environment.domain}/accessgroup-integration-service
-    accounts: http://${environment.name}-productsummary.${environment.domain}/account-integration-service/service-api
-    approvals: http://${environment.name}-approvals.${environment.domain}/approval-integration-service/client-api
-    arrangements: http://${environment.name}-productsummary.${environment.domain}/arrangements-integration-service/client-api
-    billpay: http://${environment.name}-billpay.${environment.domain}/billpay-mockbank/client-api
-    contactmanager: http://${environment.name}-contactmanager.${environment.domain}/contact-manager/integration-api
-    legalentity: http://${environment.name}-entitlements.${environment.domain}/legalentity-integration-service
-    transactions: http://${environment.name}-transactions.${environment.domain}/transaction-integration-service
-    user: http://${environment.name}-entitlements.${environment.domain}/user-integration-service/client-api
-    accountStatement: http://${environment.name}-accountstatements.${environment.domain}/account-statement-integration-service/service-api
+    accessgroup: https://app.${environment.name}.${environment.domain}/accessgroup
+    accounts: https://app.${environment.name}.${environment.domain}/account/service-api
+    approvals: https://app.${environment.name}.${environment.domain}/approvals/integration-api
+    arrangements: https://app.${environment.name}.${environment.domain}/arrangement/integration-api
+    billpay: https://app.${environment.name}.${environment.domain}/billpayprovidermock/client-api
+    contactmanager: https://app.${environment.name}.${environment.domain}/contacts/integration-api
+    legalentity: https://app.${environment.name}.${environment.domain}/legalentity
+    transactions: https://app.${environment.name}.${environment.domain}/transactions/integration-api
+    user: https://app.${environment.name}.${environment.domain}/user-manager/integration-api
+    accountStatement: https://app.${environment.name}.${environment.domain}/accountstatementsintegration/service-api
   dbs-service-names:
-    accessgroup: accessgroup-presentation-service
-    actions: actionrecipes-presentation-service
-    arrangements: product-summary-presentation-service
-    billpay: billpay-presentation-service
-    legalentity: legalentity-presentation-service
-    limits: limits-presentation-service
-    messages: messages-presentation-service
-    notifications: notifications-presentation-service
-    payments: payment-order-presentation-service
-    pfm: categories-management-presentation-service
-    user: user-presentation-service
-    products: product-summary-presentation-service
+    accessgroup: access-control
+    actions: action
+    arrangements: arrangements-manager
+    billpay: billpay-integrator
+    legalentity: access-control
+    limits: limit
+    messages: messages-service
+    notifications: notifications-service
+    payments: payment-order-service
+    pfm: transaction-category-collector
+    user: user-manager
+    products: arrangement-manager

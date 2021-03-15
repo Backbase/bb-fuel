@@ -765,7 +765,9 @@
         "businessFunction": "Manage Positive Pay",
         "privileges": [
           "view",
-          "create"
+          "create",
+          "edit",
+          "delete"
         ]
       },
       {

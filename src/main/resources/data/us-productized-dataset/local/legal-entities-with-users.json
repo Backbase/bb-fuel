@@ -1,0 +1,23 @@
+[
+  {
+    "users": [
+      {
+        "externalId": "user"
+      }
+    ]
+  },
+  {
+    "users": [
+      {
+        "externalId": "designer"
+      }
+    ]
+  },
+  {
+    "users": [
+      {
+        "externalId": "manager"
+      }
+    ]
+  }
+]

@@ -37,23 +37,24 @@ import com.backbase.ct.bbfuel.service.JobProfileService;
 import com.backbase.ct.bbfuel.service.LegalEntityService;
 import com.backbase.ct.bbfuel.service.ProductGroupService;
 import com.backbase.ct.bbfuel.service.UserContextService;
-import com.backbase.dbs.accesscontrol.client.v2.model.LegalEntityBase;
 import com.backbase.dbs.accesscontrol.client.v2.model.DataGroupItem;
+import com.backbase.dbs.accesscontrol.client.v2.model.LegalEntityBase;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.IntegrationIdentifier;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.functiongroups.FunctionGroupBase.Type;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.users.permissions.IntegrationFunctionGroupDataGroup;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -203,7 +204,7 @@ public class AccessControlSetup extends BaseSetup {
                         userContext.getExternalServiceAgreementId(),
                         userContext.getExternalLegalEntityId(),
                         legalEntityWithUsers.getCategory().isRetail());
-                    ingestFunctionGroups(userContext.getExternalServiceAgreementId(), isRetail);
+                    ingestFunctionGroups(userContext.getExternalServiceAgreementId(), userContext.getUser().getRole(), isRetail);
                     isOnce.getAndSet(false);
                 }
 
@@ -270,7 +271,7 @@ public class AccessControlSetup extends BaseSetup {
             createLegalEntitiesUserContextMap(legalEntityWithUsers)
                 .values()
                 .forEach(userContext -> ingestFunctionGroups(
-                    userContext.getExternalServiceAgreementId(), isRetail)
+                    userContext.getExternalServiceAgreementId(), userContext.getUser().getRole(), isRetail)
                 );
         });
     }
@@ -278,10 +279,10 @@ public class AccessControlSetup extends BaseSetup {
     /**
      * AccessGroupConfigurator is called to ingest and detects duplicates.
      */
-    private void ingestFunctionGroups(String externalServiceAgreementId, boolean isRetail) {
+    private void ingestFunctionGroups(String externalServiceAgreementId, String userRole, boolean isRetail) {
         if (this.jobProfileService.getAssignedJobProfiles(externalServiceAgreementId) == null) {
             jobProfileTemplates.forEach(template -> {
-                if (!jobProfileService.isJobProfileForBranch(isRetail, template)) {
+                if (!jobProfileService.isJobProfileForUserRole(template, userRole, isRetail)) {
                     log.info("Job profile template [{}] does not apply to this legal entity [isRetail: {}]",
                         template.getJobProfileName(), isRetail);
                     return;

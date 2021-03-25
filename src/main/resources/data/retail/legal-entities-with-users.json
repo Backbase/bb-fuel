@@ -1,0 +1,40 @@
+[
+  {
+    "category": "RETAIL",
+    "users": [
+      {
+        "externalId": "admin"
+      }
+    ]
+  },
+  {
+  	"category": "RETAIL",
+    "users": [
+      {
+        "externalId": "user",
+        "role": "retail",
+        "productGroupNames": ["Retail Accounts U.S"]
+      }
+    ]
+  },
+  {
+    "category": "RETAIL",
+    "users": [
+      {
+        "externalId": "manager",
+        "role": "retail",
+        "productGroupNames": ["Retail Accounts U.S"]
+      }
+    ]
+  },
+  {
+    "category": "RETAIL",
+    "users": [
+      {
+        "externalId": "designer",
+        "role": "retail-transfers-only",
+        "productGroupNames": ["Retail Accounts U.S"]
+      }
+    ]
+  }
+]

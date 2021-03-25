@@ -13,6 +13,7 @@ pipeline {
         string(name: 'PCF_SPACE', defaultValue: 'your-space', description: 'Required only for PCF. Space name, example: approvals\nRead before running: https://github.com/Backbase/bb-fuel/blob/master/README.md')
         booleanParam(name: 'US_PRODUCTIZED_DATASET', defaultValue: false, description: 'Use data seed specific for US market')
         booleanParam(name: 'UNIVERSAL_PRODUCTIZED_DATASET', defaultValue: false, description: 'Use data seed specific for UNIVERSAL market')
+        booleanParam(name: 'RETAIL_DATASET', defaultValue: false, description: 'Use data seed specific for RETAIL banking')
         booleanParam(name: 'INGEST_ACCESS_CONTROL', defaultValue: true, description: 'Ingest access control setup')
         booleanParam(name: 'INGEST_CUSTOM_SERVICE_AGREEMENTS', defaultValue: false, description: 'Ingest custom service agreements')
         booleanParam(name: 'INGEST_BALANCE_HISTORY', defaultValue: false, description: 'Ingest balance history per arrangement (only applicable on the first run when INGEST_ACCESS_CONTROL = true)\n' +
@@ -33,7 +34,7 @@ pipeline {
         booleanParam(name: 'USE_PERFORMANCE_TEST_DATA_SETUP', defaultValue: false, description: 'Use performance test data setup\n' +
                 'Only enable when strictly necessary (long running job)')
         choice(name: 'PERFORMANCE_TEST_DATA', choices: 'retail\nbusiness', description: 'Retail or business performance test data setup')
-        booleanParam(name: 'IDENTITY_FEATURE_TOGGLE', defaultValue: false, description: 'Use identity')
+        booleanParam(name: 'IDENTITY_FEATURE_TOGGLE', defaultValue: true, description: 'Use identity')
         string(name: 'IDENTITY_REALM', defaultValue: 'backbase', description: 'Identity realm')
         string(name: 'IDENTITY_CLIENT', defaultValue: 'bb-tooling-client', description: 'AWS: hybrid-flow\nK8S: bb-tooling-client')
         booleanParam(name: 'HEALTHCHECK_USE_ACTUATOR', defaultValue: true, description: 'Should be false if BOM version <= 2.16.4')
@@ -59,6 +60,8 @@ pipeline {
                     def universalProductizedPropertiesPath = params.UNIVERSAL_PRODUCTIZED_DATASET ?
                             " -Dcustom.properties.path=data/universal-productised-dataset/universal-productised-data.properties " :
                             "";
+
+                    def retailDatasetPropertiesPath = params.RETAIL_DATASET ? " -Dcustom.properties.path=data/retail/data.properties "
 
                     loadData(
                             environmentName: params.ENVIRONMENT_NAME,
@@ -90,6 +93,7 @@ pipeline {
                                     customLegalEntitiesWithUsersJson +
                                     usProductizedPropertiesPath +
                                     universalProductizedPropertiesPath +
+                                    retailDatasetPropertiesPath +
                                     "${params.ADDITIONAL_ARGUMENTS}"
                     )
                 }

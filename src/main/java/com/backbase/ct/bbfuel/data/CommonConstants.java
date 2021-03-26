@@ -17,6 +17,7 @@ public final class CommonConstants {
 
     // Users
     public static final String PROPERTY_ROOT_ENTITLEMENTS_ADMIN = "root.entitlements.admin";
+    public static final String PROPERTY_ROOT_ENTITLEMENTS_ADMIN_PASSWORD = "root.entitlements.admin.password";
     public static final String PROPERTY_M10Y_LEGAL_ENTITIES_WITH_USERS_JSON =
         "multi.tenancy.legal.entities.with.users.json";
     public static final String PROPERTY_LEGAL_ENTITIES_WITH_USERS_JSON = "legal.entities.with.users.json";

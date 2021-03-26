@@ -8,6 +8,7 @@ import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_IDENTITY_FEAT
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_IDENTITY_REALM;
 import static com.backbase.ct.bbfuel.data.CommonConstants.REFRESH_TOKEN;
 import static com.backbase.ct.bbfuel.data.CommonConstants.SESSION_TOKEN;
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN_PASSWORD;
 import static org.apache.http.HttpStatus.SC_OK;
 
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
@@ -36,8 +37,9 @@ public class LoginRestClient extends RestClient {
     }
 
     public void loginBankAdmin() {
-        String admin = legalEntityService.getRootAdmin();
-        login(admin, admin);
+        String bankAdminUsername = legalEntityService.getRootAdmin();
+        String bankAdminPassword = this.globalProperties.getString(PROPERTY_ROOT_ENTITLEMENTS_ADMIN_PASSWORD);
+        login(bankAdminUsername, bankAdminPassword);
     }
 
     public void login(String username, String password) {

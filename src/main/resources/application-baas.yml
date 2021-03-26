@@ -1,4 +1,3 @@
-
 bb-fuel:
   platform:
     registry: https://registry.${environment.name}.${environment.domain}

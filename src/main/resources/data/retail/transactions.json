@@ -1,0 +1,1052 @@
+[
+  {
+    "category": "Food Drinks",
+    "counterPartyCountry": "US",
+    "counterPartyName": "In N Out Burger",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 3.99,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "IN-N-OUT BURGER #239AMERICAN FO",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Gas",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Murphy USA",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 14.99,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "Gas",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Television",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Comcast",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 1199.99,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "Television",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Travel",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Cheap Campers",
+    "creditDebitIndicator": "CRDT",
+    "transactionAmountCurrency": {
+      "amount": 4000,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "Travel",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Alcohol & Bars",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Salt Lake",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 239.99,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "BEER BAR 65000000764SALT LAKE C",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Bills Utilities",
+    "counterPartyCountry": "US",
+    "counterPartyName": "AT&T",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 80,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "X",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Shopping",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Nike",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 160,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "MANAGEMENT SYSTEMS INTERNATIONAL, INC. #2154 NEW YORK NY",
+    "billingStatus": "PENDING"
+  },
+  {
+    "category": "Bills Utilities",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Home Rent",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 1500,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "JSI RESEARCH AND TRAINING INSTITUTE,INC. #3267 CHARLESTON SC",
+    "billingStatus": "PENDING"
+  },
+  {
+    "category": "Health Beauty",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Gloss Makeup & Beauty Studio",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 71,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "SAVE THE CHILDREN #5898 BEAUFORT SC",
+    "billingStatus": "PENDING"
+  },
+  {
+    "category": "Bills Utilities",
+    "counterPartyCountry": "US",
+    "counterPartyName": "NextEra Energy",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 76,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "INTERNATIONAL MEDICAL CORPS #2154 BELTON SC",
+    "billingStatus": "PENDING"
+  },
+  {
+    "category": "Transfers",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Bank of America",
+    "creditDebitIndicator": "CRDT",
+    "transactionAmountCurrency": {
+      "amount": 250,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "AECOM INTERNATIONAL DEVELOPMENT, INC. #5898 MEMPHIS TN",
+    "billingStatus": "PENDING"
+  },
+  {
+    "category": "Transport",
+    "counterPartyCountry": "US",
+    "counterPartyName": "ARCO Gas Station",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 85,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "AECOM INTERNATIONAL DEVELOPMENT, INC. #5898 MEMPHIS TN",
+    "billingStatus": "UNBILLED"
+  },
+  {
+    "category": "Food Drinks",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Starbucks",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 4.45,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "IN-N-OUT BURGER #239AMERICAN FO",
+    "billingStatus": "UNBILLED"
+  },
+  {
+    "category": "Bills Utilities",
+    "counterPartyCountry": "US",
+    "counterPartyName": "NextEra Energy",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 76,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "CREATIVE ASSOCIATES INTERNATIONAL, INC. #3267 BISHOPVILLE SC",
+    "billingStatus": "UNBILLED"
+  },
+  {
+    "category": "Shopping",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Under Armour",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 90,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "UNAIDS JOINT UNITED NATIONS PROGRAMME ON HIV/AIDS #5898 NEW YORK NY",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Health Beauty",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Harmon Face Values",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 56.87,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "INTERNATIONAL RELIEF AND DEVELOPMENT, INC. #2154 CHARLESTON SC",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Hobbies Entertainment",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Netflix",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 12.99,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "MANAGEMENT SYSTEMS INTERNATIONAL, INC. #3267 BEAUFORT SC",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Shopping",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Albertsons LLC",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 36.39,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "JSI RESEARCH AND TRAINING INSTITUTE,INC. #5898 BELTON SC",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Transfers",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Brittney T. Smith",
+    "creditDebitIndicator": "CRDT",
+    "transactionAmountCurrency": {
+      "amount": 400,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "AECOM INTERNATIONAL DEVELOPMENT, INC. #5898 MEMPHIS TN",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Transport",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Uber",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 54,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "INTERNATIONAL MEDICAL CORPS #3267 MEMPHIS TN",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Shopping",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Nike",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 90,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "FAMILY DOLLAR #5898 #3267 CHARLESTON SC",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Shopping",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Apple Store",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 159,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "KROGER FUEL #5387 #2154 BELTON SC",
+    "billingStatus": "PENDING"
+  },
+  {
+    "category": "Home",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Gardeners",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 202.95,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "CAPTAIN JJ FISH AND CH #2154 BISHOPVILLE SC",
+    "billingStatus": "PENDING"
+  },
+  {
+    "category": "Shopping",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Burro Kids",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 295,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "AECOM INTERNATIONAL DEVELOPMENT, INC. #5898 MEMPHIS TN",
+    "billingStatus": "PENDING"
+  },
+  {
+    "category": "Health Beauty",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Hammer & Nails",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 43,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "FEDEXOFFICE 00007500 #3267 BISHOPVILLE SC",
+    "billingStatus": "PENDING"
+  },
+  {
+    "category": "Shopping",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Amazon",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 35,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "SQ *NEW LIFE HOLINESS CHU #3267 BISHOPVILLE SC",
+    "billingStatus": "PENDING"
+  },
+  {
+    "category": "Food Drinks",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Starbucks",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 3.75,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "IN-N-OUT BURGER #239AMERICAN FO",
+    "billingStatus": "UNBILLED"
+  },
+  {
+    "category": "Shopping",
+    "counterPartyCountry": "US",
+    "counterPartyName": "IKEA",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 249.99,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "FAMILY DOLLAR #5898 #2154 NEW YORK NY",
+    "billingStatus": "UNBILLED"
+  },
+  {
+    "category": "Shopping",
+    "counterPartyCountry": "US",
+    "counterPartyName": "GameStop",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 10,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "FAMILY DOLLAR #5898 #2154 NEW YORK NY",
+    "billingStatus": "UNBILLED"
+  },
+  {
+    "category": "Shopping",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Walmart",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 112.05,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "MURPHY EXPRESS #8674 #3267 CHARLESTON SC",
+    "billingStatus": "UNBILLED"
+  },
+  {
+    "category": "Health Beauty",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Benefit Cosmetics",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 24.47,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "JSI RESEARCH AND TRAINING INSTITUTE,INC. #2154 MEMPHIS TN",
+    "billingStatus": "UNBILLED"
+  },
+  {
+    "category": "Shopping",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Tommy Hilfiger",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 149,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "INTERNATIONAL RELIEF AND DEVELOPMENT, INC. #3267 BELTON SC",
+    "billingStatus": "UNBILLED"
+  },
+  {
+    "category": "Transfers",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Pamela W. Green",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 20,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "SQ *NEW LIFE HOLINESS CHU #3267 BISHOPVILLE SC",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Food Drinks",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Saison",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 125,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "IN-N-OUT BURGER #239AMERICAN FO",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Other Income",
+    "counterPartyCountry": "US",
+    "counterPartyName": "PayPal",
+    "creditDebitIndicator": "CRDT",
+    "transactionAmountCurrency": {
+      "amount": 35,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "FEDEXOFFICE 00007502 #3267 BISHOPVILLE SC",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Transport",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Metro Subscription",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 97.5,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "FAMILY DOLLAR #5900 #2154 NEW YORK NY",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Health Beauty",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Hand & Stone Spa",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 120,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "MURPHY EXPRESS #8676 #3267 CHARLESTON SC",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Shopping",
+    "counterPartyCountry": "US",
+    "counterPartyName": "The Home Depot",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 156.75,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "KROGER FUEL #5389 #5898 BEAUFORT SC",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Shopping",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Walmart",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 87.65,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "FAMILY DOLLAR #5898 #2154 NEW YORK NY",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Bills Utilities",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Apple Store",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 4.99,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "CAPTAIN JJ FISH AND CH #2154 BELTON SC",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Bills Utilities",
+    "counterPartyCountry": "US",
+    "counterPartyName": "LinkedIn",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 29.99,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "IRC AND PARTNERS #5898 BISHOPVILLE SC",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Transfers",
+    "counterPartyCountry": "US",
+    "counterPartyName": "John Doe",
+    "creditDebitIndicator": "CRDT",
+    "transactionAmountCurrency": {
+      "amount": 48,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "FAMILY DOLLAR #5898 #2154 NEW YORK NY",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Transfers",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Coinbase Payments, LTD",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 500,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "AECOM INTERNATIONAL DEVELOPMENT, INC. #2154 BISHOPVILLE SC",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Transfers",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Savings Account",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 300,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "UNIVERSITY RESEARCH CO., LLC #3267 NEW YORK NY",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Transport",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Lyft",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 35.49,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "CREATIVE ASSOCIATES INTERNATIONAL, INC. #5898 CHARLESTON SC",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Shopping",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Calvin Klein",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 213,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "UNAIDS JOINT UNITED NATIONS PROGRAMME ON HIV/AIDS #2154 BEAUFORT SC",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Shopping",
+    "counterPartyCountry": "US",
+    "counterPartyName": "eBay",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 17.13,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "MURPHY EXPRESS #8674 #3267 CHARLESTON SC",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Transfers",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Backbase Bank",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 450,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "KROGER FUEL #5387 #5898 BEAUFORT SC",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Bills Utilities",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Lifetime Healthcare Group",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 150,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "CAPTAIN JJ FISH AND CH #2154 BELTON SC",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Food Drinks",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Domino's",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 27.54,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "IN-N-OUT BURGER #239AMERICAN FO",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Food Drinks",
+    "counterPartyCountry": "US",
+    "counterPartyName": "La Taqueria",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 18.75,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "IN-N-OUT BURGER #239AMERICAN FO",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Food Drinks",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Burrito's Anonymous",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 14.5,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "IN-N-OUT BURGER #239AMERICAN FO",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Food Drinks",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Whole Foods",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 66.8,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "IN-N-OUT BURGER #239AMERICAN FO",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Food Drinks",
+    "counterPartyCountry": "US",
+    "counterPartyName": "McDonalds",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 8.95,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "IN-N-OUT BURGER #239AMERICAN FO",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Shopping",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Walmart",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 22.5,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "FAMILY DOLLAR #5899 #2154 NEW YORK NY",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Transfers",
+    "counterPartyCountry": "US",
+    "counterPartyName": "PayPal",
+    "creditDebitIndicator": "CRDT",
+    "transactionAmountCurrency": {
+      "amount": 345.95,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "FAMILY DOLLAR #5898 #2154 NEW YORK NY",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Transfers",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Jessica Biel",
+    "creditDebitIndicator": "CRDT",
+    "transactionAmountCurrency": {
+      "amount": 25,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "FAMILY DOLLAR #5898 #2154 NEW YORK NY",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Shopping",
+    "counterPartyCountry": "US",
+    "counterPartyName": "AliExpress",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 10.83,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "KROGER FUEL #5388 #5898 BEAUFORT SC",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Shopping",
+    "counterPartyCountry": "US",
+    "counterPartyName": "AliExpress",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 44.59,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "MURPHY EXPRESS #8675 #3267 CHARLESTON SC",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Food Drinks",
+    "counterPartyCountry": "US",
+    "counterPartyName": "7Eleven",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 5.99,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "IN-N-OUT BURGER #239AMERICAN FO",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Food Drinks",
+    "counterPartyCountry": "US",
+    "counterPartyName": "7Eleven",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 12.54,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "IN-N-OUT BURGER #239AMERICAN FO",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Hobbies Entertainment",
+    "counterPartyCountry": "US",
+    "counterPartyName": "AMC Theatres",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 24.5,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "FEDEXOFFICE 00007502 #3267 BISHOPVILLE SC",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Hobbies Entertainment",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Cinemark USA, Inc.",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 13.1,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "SQ *NEW LIFE HOLINESS CHU #3267 BISHOPVILLE SC",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Shopping",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Long Beach Surf Shop",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 67.5,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "CAPTAIN JJ FISH AND CH #2154 BELTON SC",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Hobbies Entertainment",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Headspace",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 54.5,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "JO-ANN STORE #2157 #5898 MEMPHIS TN",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Transfers",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Savings Account",
+    "creditDebitIndicator": "CRDT",
+    "transactionAmountCurrency": {
+      "amount": 100,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "FAMILY DOLLAR #5898 #2154 NEW YORK NY",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Bills Utilities",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Adobe Creative Cloud",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 19.99,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "CAPTAIN JJ FISH AND CH #2154 BISHOPVILLE SC",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Hobbies Entertainment",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Ticketmaster",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 119.98,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "FEDEXOFFICE 00007503 #3267 BISHOPVILLE SC",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Shopping",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Amazon",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 49.95,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "SQ *NEW LIFE HOLINESS CHU #3267 BISHOPVILLE SC",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Hobbies Entertainment",
+    "counterPartyCountry": "US",
+    "counterPartyName": "YouTube Premium",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 11.99,
+      "currencyCode": "USD"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "COMCAST OF MEMPHIS 800-CO #5898 BISHOPVILLE SC",
+    "billingStatus": "BILLED"
+  }
+]

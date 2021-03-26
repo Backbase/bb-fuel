@@ -1,0 +1,223 @@
+[
+  {
+    "jobProfileName": "Admin",
+    "type": "REGULAR",
+    "roles": [
+      "admin"
+    ],
+    "approvalLevel": "C"
+  },
+  {
+    "jobProfileName": "Retail User - Transfers Only",
+    "type": "REGULAR",
+    "isRetail": "true",
+    "roles": [
+      "retail-transfers-only"
+    ],
+    "permissions": [
+      {
+        "businessFunction": "Product Summary",
+        "privileges": [
+          "view",
+          "edit"
+        ]
+      },
+      {
+        "businessFunction": "SEPA CT",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "cancel"
+        ]
+      }
+    ]
+  },
+  {
+    "jobProfileName": "Retail User",
+    "type": "REGULAR",
+    "isRetail": "true",
+    "roles": [
+      "admin",
+      "retail"
+    ],
+    "permissions": [
+      {
+        "businessFunction": "Contacts",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve"
+        ]
+      },
+      {
+        "businessFunction": "Manage Limits",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete"
+        ]
+      },
+      {
+        "businessFunction": "Manage Action Recipes",
+        "privileges": [
+          "execute",
+          "view",
+          "create",
+          "edit",
+          "delete"
+        ]
+      },
+      {
+        "businessFunction": "Manage Notifications",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Manage Topics",
+        "privileges": [
+          "execute",
+          "view",
+          "create",
+          "edit",
+          "delete"
+        ]
+      },
+      {
+        "businessFunction": "SEPA CT",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "SEPA CT - Intracompany",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "ACH Debit",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "Product Summary",
+        "privileges": [
+          "view",
+          "edit"
+        ]
+      },
+      {
+        "businessFunction": "Transactions",
+        "privileges": [
+          "view",
+          "edit"
+        ]
+      },
+      {
+        "businessFunction": "US Billpay Enrolment",
+        "privileges": [
+          "execute",
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "US Billpay Payments",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete"
+        ]
+      },
+      {
+        "businessFunction": "US Billpay Payees",
+        "privileges": [
+          "view",
+          "create",
+          "edit"
+        ]
+      },
+      {
+        "businessFunction": "US Billpay Payees-Summary",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "US Billpay Accounts",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "US Billpay Payees-Search",
+        "privileges": [
+          "execute"
+        ]
+      },
+      {
+        "businessFunction": "US Domestic Wire",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "US Foreign Wire",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "US Domestic Wire - Intracompany",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "US Foreign Wire - Intracompany",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      }
+    ]
+  }
+]

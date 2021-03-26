@@ -1,0 +1,26 @@
+[
+  {
+    "productGroupName": "Retail Accounts U.S",
+    "isRetail": true,
+    "currencies": [
+      "USD"
+    ],
+    "currentAccountNames": [
+      "Current Account",
+      "Joint Account",
+      "Savings Account",
+      "Credit Card"
+    ],
+    "productIds": [
+      "1","2", "4", "7"
+    ],
+    "numberOfArrangements": {
+      "min": 3,
+      "max": 4
+    },
+    "numberOfDebitCards": {
+      "min": 1,
+      "max": 2
+    }
+  }
+]

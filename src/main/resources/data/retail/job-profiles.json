@@ -223,6 +223,12 @@
         ]
       },
       {
+        "businessFunction": "Manage Statements",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
         "businessFunction": "Manage Notifications",
         "privileges": [
           "view"
@@ -236,6 +242,56 @@
           "create",
           "edit",
           "delete"
+        ]
+      },
+      {
+        "businessFunction": "Manage Budgets",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Manage Messages",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve"
+        ]
+      },
+      {
+        "businessFunction": "Manage User Profiles",
+        "privileges": [
+          "view",
+          "edit",
+          "create",
+          "delete"
+        ]
+      },
+      {
+        "businessFunction": "Manage Authorized Users",
+        "privileges": [
+          "view",
+          "edit",
+          "create"
+        ]
+      },
+      {
+        "businessFunction": "Manage Cards",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "A2A Transfer",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
         ]
       },
       {
@@ -280,6 +336,23 @@
         "privileges": [
           "view",
           "edit"
+        ]
+      },
+      {
+        "businessFunction": "Places",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Stop Checks",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
         ]
       },
       {

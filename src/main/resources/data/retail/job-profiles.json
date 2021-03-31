@@ -8,6 +8,23 @@
     "approvalLevel": "C"
   },
   {
+    "jobProfileName": "Retail User - My Accounts Only",
+    "type": "REGULAR",
+    "isRetail": "true",
+    "roles": [
+      "retail-my-accounts-only"
+    ],
+    "permissions": [
+      {
+        "businessFunction": "Product Summary",
+        "privileges": [
+          "view",
+          "edit"
+        ]
+      }
+    ]
+  },
+  {
     "jobProfileName": "Retail User - Transfers Only",
     "type": "REGULAR",
     "isRetail": "true",
@@ -23,13 +40,147 @@
         ]
       },
       {
-        "businessFunction": "SEPA CT",
+        "businessFunction": "A2A Transfer",
         "privileges": [
           "view",
           "create",
           "edit",
           "delete",
+          "approve",
           "cancel"
+        ]
+      }
+    ]
+  },
+  {
+    "jobProfileName": "Retail User - Billpay Only",
+    "type": "REGULAR",
+    "isRetail": "true",
+    "roles": [
+      "retail-billpay-only"
+    ],
+    "permissions": [
+      {
+        "businessFunction": "US Billpay Payments",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete"
+        ]
+      }
+    ]
+  },
+  {
+    "jobProfileName": "Retail User - Analytics Only",
+    "type": "REGULAR",
+    "isRetail": "true",
+    "roles": [
+      "retail-analytics-only"
+    ],
+    "permissions": [
+      {
+        "businessFunction": "Product Summary",
+        "privileges": [
+          "view",
+          "edit"
+        ]
+      },
+      {
+        "businessFunction": "Transactions",
+        "privileges": [
+          "view",
+          "edit"
+        ]
+      }
+    ]
+  },
+  {
+    "jobProfileName": "Retail User - Self-Services Only",
+    "type": "REGULAR",
+    "isRetail": "true",
+    "roles": [
+      "retail-self-service-only"
+    ],
+    "permissions": [
+      {
+        "businessFunction": "Manage User Profiles",
+        "privileges": [
+          "view",
+          "edit",
+          "create",
+          "delete"
+        ]
+      },
+      {
+        "businessFunction": "Manage Authorized Users",
+        "privileges": [
+          "view",
+          "edit",
+          "create"
+        ]
+      },
+      {
+        "businessFunction": "Manage Cards",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Stop Checks",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "Manage Notifications",
+        "privileges": [
+          "view",
+          "create",
+          "delete"
+        ]
+      },
+      {
+        "businessFunction": "Manage Statements",
+        "privileges": [
+          "view"
+        ]
+      }
+    ]
+  },
+  {
+    "jobProfileName": "Retail User - More menu Only",
+    "type": "REGULAR",
+    "isRetail": "true",
+    "roles": [
+      "retail-more-menu-only"
+    ],
+    "permissions": [
+      {
+        "businessFunction": "Manage Budgets",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Manage Messages",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve"
+        ]
+      },
+      {
+        "businessFunction": "Places",
+        "privileges": [
+          "view"
         ]
       }
     ]
@@ -39,7 +190,6 @@
     "type": "REGULAR",
     "isRetail": "true",
     "roles": [
-      "admin",
       "retail"
     ],
     "permissions": [

@@ -32,7 +32,67 @@
     "users": [
       {
         "externalId": "designer",
+        "role": "retail",
+        "productGroupNames": ["Retail Accounts U.S"]
+      }
+    ]
+  },
+  {
+    "category": "RETAIL",
+    "users": [
+      {
+        "externalId": "joe_santorelli",
+        "role": "retail-my-accounts-only",
+        "productGroupNames": ["Retail Accounts U.S"]
+      }
+    ]
+  },
+  {
+    "category": "RETAIL",
+    "users": [
+      {
+        "externalId": "robin_green",
         "role": "retail-transfers-only",
+        "productGroupNames": ["Retail Accounts U.S"]
+      }
+    ]
+  },
+  {
+    "category": "RETAIL",
+    "users": [
+      {
+        "externalId": "paddy_brian",
+        "role": "retail-billpay-only",
+        "productGroupNames": ["Retail Accounts U.S"]
+      }
+    ]
+  },
+  {
+    "category": "RETAIL",
+    "users": [
+      {
+        "externalId": "sarah_lee",
+        "role": "retail-analytics-only",
+        "productGroupNames": ["Retail Accounts U.S"]
+      }
+    ]
+  },
+  {
+    "category": "RETAIL",
+    "users": [
+      {
+        "externalId": "alex_wong",
+        "role": "retail-self-service-only",
+        "productGroupNames": ["Retail Accounts U.S"]
+      }
+    ]
+  },
+  {
+    "category": "RETAIL",
+    "users": [
+      {
+        "externalId": "jan_verschoor",
+        "role": "retail-more-menu-only",
         "productGroupNames": ["Retail Accounts U.S"]
       }
     ]

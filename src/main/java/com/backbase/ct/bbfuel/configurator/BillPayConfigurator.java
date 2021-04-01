@@ -73,6 +73,7 @@ public class BillPayConfigurator {
             String externalLegalEntityId = this.userPresentationRestClient
                 .retrieveLegalEntityByExternalUserId(externalUserId)
                 .getExternalId();
+            //TODO TRANS-5724 use as example for transaction.reference filling
             List<ArrangementItem> arrangementItems = accountsIntegrationRestClient
                 .getArrangements(externalLegalEntityId);
 

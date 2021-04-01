@@ -5,6 +5,7 @@ import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROV
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_CONTACTS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_PAYMENTS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_BALANCE_HISTORY;
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_POCKETS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_TRANSACTIONS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
 import static com.backbase.ct.bbfuel.enrich.LegalEntityWithUsersEnricher.createRootLegalEntityWithAdmin;
@@ -19,6 +20,7 @@ import com.backbase.ct.bbfuel.config.MultiTenancyConfig;
 import com.backbase.ct.bbfuel.configurator.AccessGroupsConfigurator;
 import com.backbase.ct.bbfuel.configurator.LegalEntitiesAndUsersConfigurator;
 import com.backbase.ct.bbfuel.configurator.PermissionsConfigurator;
+import com.backbase.ct.bbfuel.configurator.PocketsConfigurator;
 import com.backbase.ct.bbfuel.configurator.ProductSummaryConfigurator;
 import com.backbase.ct.bbfuel.configurator.ServiceAgreementsConfigurator;
 import com.backbase.ct.bbfuel.configurator.TransactionsConfigurator;
@@ -70,6 +72,7 @@ public class AccessControlSetup extends BaseSetup {
     private final ServiceAgreementsConfigurator serviceAgreementsConfigurator;
     private final PermissionsConfigurator permissionsConfigurator;
     private final TransactionsConfigurator transactionsConfigurator;
+    private final PocketsConfigurator pocketsConfigurator;
     private final LegalEntityWithUsersReader legalEntityWithUsersReader;
     private final JobProfileService jobProfileService;
     private final ProductGroupService productGroupService;
@@ -202,7 +205,9 @@ public class AccessControlSetup extends BaseSetup {
                     userContext.getExternalLegalEntityId(),
                     legalEntityWithUsers.getCategory().isRetail());
 
-                ingestFunctionGroups(userContext.getExternalServiceAgreementId(), isRetail);
+                ingestFunctionGroups(userContext.getExternalServiceAgreementId(),
+                        isRetail);
+
 
                 assignPermissions(userContext.getUser(),
                     userContext.getExternalServiceAgreementId(),
@@ -233,6 +238,7 @@ public class AccessControlSetup extends BaseSetup {
                 productGroupSeed.setExternalServiceAgreementId(externalServiceAgreementId);
                 this.accessGroupsConfigurator.ingestDataGroupForArrangements(productGroupSeed, arrangementIds);
 
+                ingestPockets(arrangementIds, isRetail);
                 ingestTransactions(arrangementIds, isRetail);
                 ingestBalanceHistory(arrangementIds);
             } else {
@@ -247,6 +253,13 @@ public class AccessControlSetup extends BaseSetup {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_TRANSACTIONS)) {
             arrangementIds.forEach(arrangementId -> this.transactionsConfigurator
                 .ingestTransactionsByArrangement(arrangementId.getExternalArrangementId(), isRetail));
+        }
+    }
+
+    private void ingestPockets(List<ArrangementId> arrangementIds, boolean isRetail) {
+        if (this.globalProperties.getBoolean(PROPERTY_INGEST_POCKETS)) {
+            arrangementIds.parallelStream()
+                .forEach(arrangementId -> this.pocketsConfigurator.ingestPockets(arrangementId, isRetail));
         }
     }
 

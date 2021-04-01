@@ -63,6 +63,17 @@
     </dependencyManagement>
 
     <dependencies>
+<!--  //TODO TRANS-5724 remove once banking-services-bom contains pocket-management dependency  -->
+        <dependency>
+            <groupId>com.backbase.dbs.pfm</groupId>
+            <artifactId>pocket-tailor</artifactId>
+            <version>0.3-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.backbase.dbs.pfm</groupId>
+            <artifactId>pocket-tailor-client-api</artifactId>
+            <version>0.3-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>com.backbase.buildingblocks</groupId>
             <artifactId>building-blocks-common</artifactId>
@@ -374,6 +385,18 @@
                             <fromFile>transaction-category-collector-client-api-v2.0.0.yaml</fromFile>
                         </configuration>
                     </execution>
+
+                    <execution>
+                        <id>download-pocket-tailor-client-api-spec</id>
+                        <goals>
+                            <goal>download-single</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <url>https://artifacts.backbase.com/specs/pocket-tailor/</url>
+                            <fromFile>pocket-tailor-client-api-v1.3.0.yaml</fromFile>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 
@@ -486,6 +509,20 @@
                             <configOptions>
                                 <apiPackage>com.backbase.dbs.transaction.categories.client.v2</apiPackage>
                                 <modelPackage>com.backbase.dbs.transaction.categories.client.v2.model</modelPackage>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>generate-pocket-tailor-client-code</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${api.target}/pocket-tailor-client-api-v1.3.0.yaml</inputSpec>
+                            <configOptions>
+                                <apiPackage>com.backbase.dbs.pocket.tailor.client.v1</apiPackage>
+                                <modelPackage>com.backbase.dbs.pocket.tailor.client.v1.model</modelPackage>
                             </configOptions>
                         </configuration>
                     </execution>

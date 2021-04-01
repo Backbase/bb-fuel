@@ -81,6 +81,9 @@ public final class CommonConstants {
     public static final String PROPERTY_ACCOUNTSTATEMENTS_MIN = "accountStatement.min";
     public static final String PROPERTY_ACCOUNTSTATEMENTS_MAX = "accountStatement.max";
     public static final String PROPERTY_ACCOUNTSTATEMENTS_USERS = "accountStatement.externalUserIds";
+    public static final String PROPERTY_INGEST_POCKETS = "ingest.pockets";
+    public static final String PROPERTY_POCKETS_MIN = "pockets.min";
+    public static final String PROPERTY_POCKETS_MAX = "pockets.max";
 
     // Product summary
     public static final String PROPERTY_PRODUCTS_JSON_LOCATION = "products.json";
@@ -111,4 +114,8 @@ public final class CommonConstants {
     public static final String ACCESS_TOKEN = "access_token";
     public static final String REFRESH_TOKEN = "refresh_token";
     public static final String SESSION_TOKEN = "session_state";
+
+    // Pockets
+    public static final String POCKETS_CURRENCY = "pockets.currency";
+    public static final String PROPERTY_POCKETS_DATA_JSON = "pockets.data.json";
 }

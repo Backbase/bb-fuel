@@ -94,4 +94,8 @@ public class DbsConfig {
      */
     private String accountStatement;
 
+    /**
+     * URI to Pockets.
+     */
+    private String pockets;
 }

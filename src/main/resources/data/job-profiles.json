@@ -17,6 +17,16 @@
     ],
     "permissions": [
       {
+        "businessFunction": "Manage Pockets",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "execute"
+        ]
+      },
+      {
         "businessFunction": "Contacts",
         "privileges": [
           "view",
@@ -726,6 +736,16 @@
       "admin"
     ],
     "permissions": [
+      {
+        "businessFunction": "Manage Pockets",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "execute"
+        ]
+      },
       {
         "businessFunction": "US Billpay Enrolment",
         "privileges": [

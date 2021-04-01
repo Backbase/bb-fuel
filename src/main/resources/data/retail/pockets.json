@@ -1,0 +1,35 @@
+[
+  {
+    "name": "Travel Europe",
+    "icon": "travel",
+    "goal": {
+      "amountCurrency": {
+        "amount": "2000.00",
+        "currencyCode": "EUR"
+      },
+      "deadline": "2021-02-28"
+    }
+  },
+  {
+    "name": "Christmas Shopping",
+    "icon": "shopping",
+    "goal": {
+      "amountCurrency": {
+        "amount": "800.00",
+        "currencyCode": "EUR"
+      },
+      "deadline": "2021-08-14"
+    }
+  },
+  {
+    "name": "Unlimited Happiness",
+    "icon": "medicine",
+    "goal": {
+      "amountCurrency": {
+        "amount": "200000.00",
+        "currencyCode": "EUR"
+      },
+      "deadline": "2035-02-28"
+    }
+  }
+]

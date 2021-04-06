@@ -33,7 +33,7 @@ public class PocketsRestClient extends RestClient {
      * @param pocketPostRequest pocketPostRequest
      * @return Response
      */
-    public Response ingestPockets(PocketPostRequest pocketPostRequest) {
+    public Response ingestPocket(PocketPostRequest pocketPostRequest) {
         RequestSpecification specification = requestSpec()
             .contentType(ContentType.JSON)
             .body(pocketPostRequest);

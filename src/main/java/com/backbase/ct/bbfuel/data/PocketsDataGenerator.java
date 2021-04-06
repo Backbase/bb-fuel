@@ -30,8 +30,8 @@ public class PocketsDataGenerator {
         String currency = GLOBAL_PROPERTIES.getString(POCKETS_CURRENCY);
 
         return new PocketPostRequest()
-            .name(faker.lorem().characters(80))
-            .icon(faker.lorem().characters(80))
+            .name(faker.address().cityName())
+            .icon(faker.animal().name())
             .goal(new PocketGoalRequest()
                 .amountCurrency(new Currency().amount(amount.toString()).currencyCode(currency))
                 .deadline(LocalDate.now().plusMonths(CommonHelpers.generateRandomNumberInRange(1, 24))));

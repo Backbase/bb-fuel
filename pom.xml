@@ -63,17 +63,6 @@
     </dependencyManagement>
 
     <dependencies>
-<!--  //TODO TRANS-5724 remove once banking-services-bom contains pocket-management dependency  -->
-        <dependency>
-            <groupId>com.backbase.dbs.pfm</groupId>
-            <artifactId>pocket-tailor</artifactId>
-            <version>0.3-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.backbase.dbs.pfm</groupId>
-            <artifactId>pocket-tailor-client-api</artifactId>
-            <version>0.3-SNAPSHOT</version>
-        </dependency>
         <dependency>
             <groupId>com.backbase.buildingblocks</groupId>
             <artifactId>building-blocks-common</artifactId>
@@ -393,7 +382,8 @@
                         </goals>
                         <phase>generate-sources</phase>
                         <configuration>
-                            <url>https://artifacts.backbase.com/specs/pocket-tailor/</url>
+<!-- //TODO TRANS-5724 change to repo when released                            -->
+                            <url>https://artifacts.backbase.com/specs/pocket-tailor</url>
                             <fromFile>pocket-tailor-client-api-v1.3.0.yaml</fromFile>
                         </configuration>
                     </execution>

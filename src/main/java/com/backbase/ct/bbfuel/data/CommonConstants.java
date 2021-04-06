@@ -117,5 +117,5 @@ public final class CommonConstants {
 
     // Pockets
     public static final String POCKETS_CURRENCY = "pockets.currency";
-    public static final String PROPERTY_POCKETS_DATA_JSON = "pockets.data.json";
+    public static final String PROPERTY_POCKETS_DATA_JSON = "pocket.data.json";
 }

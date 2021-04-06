@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class PocketsConfigurator {
 
-    private static final GlobalProperties globalProperties = GlobalProperties.getInstance();
+    private static final GlobalProperties GLOBAL_PROPERTIES = GlobalProperties.getInstance();
 
     private final PocketsReader pocketsReader = new PocketsReader();
 
@@ -43,24 +43,22 @@ public class PocketsConfigurator {
             .synchronizedList(new ArrayList<>());
 
         int randomAmount = CommonHelpers
-            .generateRandomNumberInRange(globalProperties.getInt(CommonConstants.PROPERTY_POCKETS_MIN),
-                globalProperties.getInt(CommonConstants.PROPERTY_POCKETS_MAX));
+            .generateRandomNumberInRange(GLOBAL_PROPERTIES.getInt(CommonConstants.PROPERTY_POCKETS_MIN),
+                GLOBAL_PROPERTIES.getInt(CommonConstants.PROPERTY_POCKETS_MAX));
 
         if (isRetail) {
             log.debug("Generating pockets data from json file.");
-            IntStream.range(0, randomAmount).parallel()
-                .forEach(randomNumber -> pockets.add(
+            IntStream.range(0, randomAmount).forEach(randomNumber -> pockets.add(
                     pocketsReader.loadSingle()));
 
         } else {
             log.debug("Generating pockets data with faker.");
-            IntStream.range(0, randomAmount).parallel()
-                .forEach(randomNumber -> pockets.add(
+            IntStream.range(0, randomAmount).forEach(randomNumber -> pockets.add(
                     PocketsDataGenerator.generatePocketPostRequest()));
         }
 
         for (PocketPostRequest pocketPostRequest : pockets) {
-            Response response = pocketsRestClient.ingestPockets(pocketPostRequest);
+            Response response = pocketsRestClient.ingestPocket(pocketPostRequest);
 
             if (isBadRequestException(response, "The request is invalid")) {
                 log.info("Bad request for ingesting pockets for [{}]", arrangementId);

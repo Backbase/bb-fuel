@@ -39,17 +39,19 @@ public class PocketsConfigurator {
     /**
      * Ingest pocket parent arrangement.
      *
-     * @param externalLegalEntityId externalLegalEntityId
+     * @param externalLegalEntityId      externalLegalEntityId
      * @param externalServiceAgreementId externalServiceAgreementId
      */
-    public void ingestPocketParentArrangement(String externalLegalEntityId, String externalServiceAgreementId) {
+    public void ingestPocketParentArrangement(String externalLegalEntityId, String externalServiceAgreementId,
+        String externalUserId) {
         log.debug("Going to ingest a pocket parent arrangement.");
         CreateArrangementRequest createArrangementRequest = new CreateArrangementRequest();
         createArrangementRequest
             .externalProductId(PRODUCT_ID)
             .externalProductKindId(PRODUCT_KIND_ID)
             .externalLegalEntityId(externalLegalEntityId)
-            .serviceAgreementId(externalServiceAgreementId);
+            .serviceAgreementId(externalServiceAgreementId)
+            .externalUserId(externalUserId);
 
         Response response = pocketsMockArrangementRestClient.ingestPocketParentArrangement(createArrangementRequest);
         if (isBadRequestException(response, "The request is invalid")) {

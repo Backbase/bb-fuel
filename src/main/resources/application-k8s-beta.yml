@@ -20,7 +20,7 @@ bb-fuel:
     user: http://user-manager.${environment.name}.${environment.domain}/integration-api
     accountStatement: http://accountstatementsintegration.${environment.name}.${environment.domain}/service-api
     pockets: http://edge.${environment.name}.${environment.domain}/api/pocket-tailor/client-api
-    pocketsArrangements: http://pocketsprovidermock.${environment.name}.${environment.domain}/service-api
+    pocketsArrangements: http://arrangement.${environment.name}.${environment.domain}/service-api
   dbs-service-names:
     accessgroup: access-control
     actions: action

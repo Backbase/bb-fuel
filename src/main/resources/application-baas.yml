@@ -17,7 +17,7 @@ bb-fuel:
     user: https://app.${environment.name}.${environment.domain}/user-manager/integration-api
     accountStatement: https://app.${environment.name}.${environment.domain}/accountstatementsintegration/service-api
     pockets: http://app.${environment.name}.${environment.domain}/api/pocket-tailor/client-api
-    pocketsArrangements: http://app.${environment.name}.${environment.domain}/arrangement/service-api
+    pocketsArrangements: http://app.${environment.name}.${environment.domain}/arrangementoutboundoriginationmock/service-api
   dbs-service-names:
     accessgroup: access-control
     actions: action

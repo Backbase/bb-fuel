@@ -205,6 +205,7 @@ public class AccessControlSetup extends BaseSetup {
                     ingestDataGroupArrangementsForServiceAgreement(userContext.getInternalServiceAgreementId(),
                         userContext.getExternalServiceAgreementId(),
                         userContext.getExternalLegalEntityId(),
+                        userContext.getExternalUserId(),
                         legalEntityWithUsers.getCategory().isRetail());
                     ingestFunctionGroups(userContext.getExternalServiceAgreementId(), userContext.getUser().getRole(),
                         isRetail);
@@ -219,7 +220,7 @@ public class AccessControlSetup extends BaseSetup {
 
     protected void ingestDataGroupArrangementsForServiceAgreement(String internalServiceAgreementId,
         String externalServiceAgreementId,
-        String externalLegalEntityId, boolean isRetail) {
+        String externalLegalEntityId, String externalUserId, boolean isRetail) {
 
         productGroupSeedTemplates.forEach(productGroupTemplate -> {
             ProductGroupSeed productGroupSeed = new ProductGroupSeed(productGroupTemplate);
@@ -240,8 +241,10 @@ public class AccessControlSetup extends BaseSetup {
                 productGroupSeed.setExternalServiceAgreementId(externalServiceAgreementId);
                 this.accessGroupsConfigurator.ingestDataGroupForArrangements(productGroupSeed, arrangementIds);
 
-                ingestPocketParentArrangement(externalLegalEntityId, externalServiceAgreementId);
-                ingestPockets(arrangementIds, isRetail);
+                if (externalUserId != null) {
+                    ingestPocketParentArrangement(externalLegalEntityId, externalServiceAgreementId, externalUserId);
+                    ingestPockets(arrangementIds, isRetail);
+                }
                 ingestTransactions(arrangementIds, isRetail);
                 ingestBalanceHistory(arrangementIds);
             } else {
@@ -260,9 +263,10 @@ public class AccessControlSetup extends BaseSetup {
     }
 
     private void ingestPocketParentArrangement(String externalLegalEntityId,
-        String externalServiceAgreementId) {
+        String externalServiceAgreementId, String externalUserId) {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_POCKETS)) {
-            this.pocketsConfigurator.ingestPocketParentArrangement(externalLegalEntityId, externalServiceAgreementId);
+            this.pocketsConfigurator
+                .ingestPocketParentArrangement(externalLegalEntityId, externalServiceAgreementId, externalUserId);
         }
     }
 

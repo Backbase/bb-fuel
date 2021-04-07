@@ -46,17 +46,16 @@ import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.functiongr
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.users.permissions.IntegrationFunctionGroupDataGroup;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
@@ -241,6 +240,7 @@ public class AccessControlSetup extends BaseSetup {
                 productGroupSeed.setExternalServiceAgreementId(externalServiceAgreementId);
                 this.accessGroupsConfigurator.ingestDataGroupForArrangements(productGroupSeed, arrangementIds);
 
+                ingestPocketParentArrangement(externalLegalEntityId, externalServiceAgreementId);
                 ingestPockets(arrangementIds, isRetail);
                 ingestTransactions(arrangementIds, isRetail);
                 ingestBalanceHistory(arrangementIds);
@@ -256,6 +256,13 @@ public class AccessControlSetup extends BaseSetup {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_TRANSACTIONS)) {
             arrangementIds.forEach(arrangementId -> this.transactionsConfigurator
                 .ingestTransactionsByArrangement(arrangementId.getExternalArrangementId(), isRetail));
+        }
+    }
+
+    private void ingestPocketParentArrangement(String externalLegalEntityId,
+        String externalServiceAgreementId) {
+        if (this.globalProperties.getBoolean(PROPERTY_INGEST_POCKETS)) {
+            this.pocketsConfigurator.ingestPocketParentArrangement(externalLegalEntityId, externalServiceAgreementId);
         }
     }
 

@@ -1,6 +1,7 @@
 package com.backbase.ct.bbfuel.configurator;
 
 import static com.backbase.ct.bbfuel.util.ResponseUtils.isBadRequestException;
+import static org.apache.http.HttpStatus.SC_CREATED;
 import static org.apache.http.HttpStatus.SC_OK;
 
 import com.backbase.ct.bbfuel.client.pfm.PocketsMockArrangementRestClient;
@@ -51,14 +52,16 @@ public class PocketsConfigurator {
             .externalProductKindId(PRODUCT_KIND_ID)
             .externalLegalEntityId(externalLegalEntityId)
             .serviceAgreementId(externalServiceAgreementId)
-            .externalUserId(externalUserId);
+            .externalUserId(externalUserId)
+            .name("pocket")
+            .additions(Collections.singletonMap("name", "value"));
 
         Response response = pocketsMockArrangementRestClient.ingestPocketParentArrangement(createArrangementRequest);
         if (isBadRequestException(response, "The request is invalid")) {
             log.info("Bad request for ingesting parent pocket arrangement for [{}, {}]", externalLegalEntityId,
                 externalServiceAgreementId);
         } else {
-            response.then().assertThat().statusCode(SC_OK);
+            response.then().assertThat().statusCode(SC_CREATED);
             log.info("Pocket parent arrangement ingested for [{}, {}]", externalLegalEntityId,
                 externalServiceAgreementId);
         }
@@ -71,7 +74,8 @@ public class PocketsConfigurator {
      * @param isRetail      isRetail
      */
     public void ingestPockets(ArrangementId arrangementId, boolean isRetail) {
-        log.debug("Going to ingest pockets for [{}]", arrangementId);
+        log.debug("Going to ingest pockets for [{}, {}]", arrangementId.getExternalArrangementId(),
+            arrangementId.getInternalArrangementId());
         List<PocketPostRequest> pockets = Collections
             .synchronizedList(new ArrayList<>());
 

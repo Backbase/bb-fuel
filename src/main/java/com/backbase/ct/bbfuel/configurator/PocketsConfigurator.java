@@ -1,22 +1,22 @@
 package com.backbase.ct.bbfuel.configurator;
 
-import static com.backbase.ct.bbfuel.util.ResponseUtils.isBadRequestException;
+import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 import static org.apache.http.HttpStatus.SC_CREATED;
-import static org.apache.http.HttpStatus.SC_OK;
 
 import com.backbase.ct.bbfuel.client.pfm.PocketsMockArrangementRestClient;
 import com.backbase.ct.bbfuel.client.pfm.PocketsRestClient;
+import com.backbase.ct.bbfuel.client.productsummary.ArrangementsIntegrationRestClient;
 import com.backbase.ct.bbfuel.data.CommonConstants;
 import com.backbase.ct.bbfuel.data.PocketsDataGenerator;
-import com.backbase.ct.bbfuel.dto.ArrangementId;
+import com.backbase.ct.bbfuel.data.ProductSummaryDataGenerator;
 import com.backbase.ct.bbfuel.input.PocketsReader;
 import com.backbase.ct.bbfuel.util.CommonHelpers;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
-import com.backbase.dbs.arrangement.integration.outbound.origination.v1.model.CreateArrangementRequest;
+import com.backbase.dbs.arrangement.integration.rest.spec.v2.arrangements.ArrangementsPostResponseBody;
 import com.backbase.dbs.pocket.tailor.client.v1.model.PocketPostRequest;
+import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBody;
 import io.restassured.response.Response;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +34,7 @@ public class PocketsConfigurator {
 
     private final PocketsReader pocketsReader = new PocketsReader();
 
+    private final ArrangementsIntegrationRestClient arrangementsIntegrationRestClient;
     private final PocketsRestClient pocketsRestClient;
     private final PocketsMockArrangementRestClient pocketsMockArrangementRestClient;
 
@@ -43,41 +44,25 @@ public class PocketsConfigurator {
      * @param externalLegalEntityId      externalLegalEntityId
      * @param externalServiceAgreementId externalServiceAgreementId
      */
-    public void ingestPocketParentArrangement(String externalLegalEntityId, String externalServiceAgreementId,
-        String externalUserId) {
-        log.debug("Going to ingest a pocket parent arrangement.");
-        CreateArrangementRequest createArrangementRequest = new CreateArrangementRequest();
-        createArrangementRequest
-            .externalProductId(PRODUCT_ID)
-            .externalProductKindId(PRODUCT_KIND_ID)
-            .externalLegalEntityId(externalLegalEntityId)
-            .serviceAgreementId(externalServiceAgreementId)
-            .externalUserId(externalUserId)
-            .name("pocket")
-            .additions(Collections.singletonMap("name", "value"));
+    public void ingestPocketParentArrangement(String externalLegalEntityId, String externalServiceAgreementId) {
+        log.debug("Going to ingest a parent pocket arrangement.");
+        ArrangementsPostRequestBody parentPocketArrangement = ProductSummaryDataGenerator
+            .generateParentPocketArrangement(externalLegalEntityId);
+        ArrangementsPostResponseBody response = arrangementsIntegrationRestClient
+            .ingestArrangement(parentPocketArrangement);
 
-        Response response = pocketsMockArrangementRestClient.ingestPocketParentArrangement(createArrangementRequest);
-        if (isBadRequestException(response, "The request is invalid")) {
-            log.info("Bad request for ingesting parent pocket arrangement for [{}, {}]", externalLegalEntityId,
-                externalServiceAgreementId);
-        } else {
-            response.then().assertThat().statusCode(SC_CREATED);
-            log.info("Pocket parent arrangement ingested for [{}, {}]", externalLegalEntityId,
-                externalServiceAgreementId);
-        }
+        log.info("Parent pocket arrangement ingested for [{}, {}]: ID {}, name: {}", externalLegalEntityId,
+            externalServiceAgreementId, response.getId(), parentPocketArrangement.getName());
     }
 
     /**
      * Ingest Pockets.
      *
-     * @param arrangementId arrangementId
      * @param isRetail      isRetail
      */
-    public void ingestPockets(ArrangementId arrangementId, boolean isRetail) {
-        log.debug("Going to ingest pockets for [{}, {}]", arrangementId.getExternalArrangementId(),
-            arrangementId.getInternalArrangementId());
-        List<PocketPostRequest> pockets = Collections
-            .synchronizedList(new ArrayList<>());
+    public void ingestPockets(String externalLegalEntityId, boolean isRetail) {
+        log.debug("Going to ingest pockets for [{}]", externalLegalEntityId);
+        List<PocketPostRequest> pockets = new ArrayList<>();
 
         int randomAmount = CommonHelpers
             .generateRandomNumberInRange(GLOBAL_PROPERTIES.getInt(CommonConstants.PROPERTY_POCKETS_MIN),
@@ -85,8 +70,7 @@ public class PocketsConfigurator {
 
         if (isRetail) {
             log.debug("Generating pockets data from json file.");
-            IntStream.range(0, randomAmount).forEach(randomNumber -> pockets.add(
-                pocketsReader.loadSingle()));
+            IntStream.range(0, randomAmount).forEach(randomNumber -> pockets.add(pocketsReader.loadSingle()));
 
         } else {
             log.debug("Generating pockets data with faker.");
@@ -97,11 +81,11 @@ public class PocketsConfigurator {
         for (PocketPostRequest pocketPostRequest : pockets) {
             Response response = pocketsRestClient.ingestPocket(pocketPostRequest);
 
-            if (isBadRequestException(response, "The request is invalid")) {
-                log.info("Bad request for ingesting pockets for [{}]", arrangementId);
+            if (response.statusCode() == SC_BAD_REQUEST) {
+                log.info("Bad request for ingesting pocket with request [{}]", pocketPostRequest);
             } else {
-                response.then().assertThat().statusCode(SC_OK);
-                log.info("Pockets ingested for [{}]", arrangementId);
+                response.then().assertThat().statusCode(SC_CREATED);
+                log.info("Pocket ingested with request [{}]", pocketPostRequest);
             }
         }
 

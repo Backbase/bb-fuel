@@ -82,6 +82,16 @@ public class ProductSummaryDataGenerator {
         return product.getProductTypeName();
     }
 
+    public static ArrangementsPostRequestBody generateParentPocketArrangement(String externalLegalEntityId) {
+        ArrangementsPostRequestBody arrangementsPostRequestBody = getArrangementsPostRequestBody(
+            Optional.of("external-arrangement-origination-1"), externalLegalEntityId, "Parent Pocket Account", EUR, 8);
+        arrangementsPostRequestBody.setBookedBalance(BigDecimal.ZERO);
+        arrangementsPostRequestBody.setAvailableBalance(BigDecimal.ZERO);
+        arrangementsPostRequestBody.setAccruedInterest(BigDecimal.ZERO);
+        arrangementsPostRequestBody.setPrincipalAmount(BigDecimal.ZERO);
+        return arrangementsPostRequestBody;
+    }
+
     public static List<ArrangementsPostRequestBody> generateCurrentAccountArrangementsPostRequestBodies(
         String externalLegalEntityId, ProductGroupSeed productGroupSeed, int numberOfArrangements) {
         List<ArrangementsPostRequestBody> arrangementsPostRequestBodies = synchronizedList(new ArrayList<>());
@@ -165,8 +175,8 @@ public class ProductSummaryDataGenerator {
             .withNumber(String.format("%s", ThreadLocalRandom.current().nextInt(9999)))
             .withPrincipalAmount(generateRandomAmountInRange(10000L, 999999L))
             .withCurrentInvestmentValue(generateRandomAmountInRange(10000L, 999999L))
-            .withDebitAccount(productId == 1 || productId == 2)
-            .withCreditAccount(productId == 1 || productId == 2 || productId == 4 || productId == 5)
+            .withDebitAccount(productId == 1 || productId == 2 || productId == 8)
+            .withCreditAccount(productId == 1 || productId == 2 || productId == 4 || productId == 5 || productId == 8)
             .withAccountHolderNames(faker.name().fullName())
             .withAccountHolderAddressLine1(faker.address().streetAddress())
             .withAccountHolderAddressLine2(faker.address().secondaryAddress())

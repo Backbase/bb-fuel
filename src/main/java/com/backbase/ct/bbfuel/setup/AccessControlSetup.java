@@ -238,8 +238,8 @@ public class AccessControlSetup extends BaseSetup {
                 this.accessGroupsConfigurator.ingestDataGroupForArrangements(productGroupSeed, arrangementIds);
 
                 if (externalUserId != null) {
-                    ingestPocketParentArrangement(externalLegalEntityId, externalServiceAgreementId, externalUserId);
-                    ingestPockets(arrangementIds, isRetail);
+                    ingestPocketParentArrangement(externalLegalEntityId, externalServiceAgreementId);
+                    ingestPockets(externalLegalEntityId, isRetail);
                 }
                 ingestTransactions(arrangementIds, isRetail);
                 ingestBalanceHistory(arrangementIds);
@@ -259,17 +259,15 @@ public class AccessControlSetup extends BaseSetup {
     }
 
     private void ingestPocketParentArrangement(String externalLegalEntityId,
-        String externalServiceAgreementId, String externalUserId) {
+        String externalServiceAgreementId) {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_POCKETS)) {
-            this.pocketsConfigurator
-                .ingestPocketParentArrangement(externalLegalEntityId, externalServiceAgreementId, externalUserId);
+            this.pocketsConfigurator.ingestPocketParentArrangement(externalLegalEntityId, externalServiceAgreementId);
         }
     }
 
-    private void ingestPockets(List<ArrangementId> arrangementIds, boolean isRetail) {
+    private void ingestPockets(String externalLegalEntityId, boolean isRetail) {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_POCKETS)) {
-            arrangementIds.parallelStream()
-                .forEach(arrangementId -> this.pocketsConfigurator.ingestPockets(arrangementId, isRetail));
+            this.pocketsConfigurator.ingestPockets(externalLegalEntityId, isRetail);
         }
     }
 

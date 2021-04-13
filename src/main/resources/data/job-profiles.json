@@ -190,6 +190,13 @@
           "approve",
           "cancel"
         ]
+      },
+      {
+        "businessFunction": "Positive Pay",
+        "privileges": [
+          "view",
+          "edit"
+        ]
       }
     ]
   },
@@ -463,6 +470,13 @@
         "privileges": [
           "execute"
         ]
+      },
+      {
+        "businessFunction": "Positive Pay",
+        "privileges": [
+          "view",
+          "create"
+        ]
       }
     ]
   },
@@ -699,6 +713,12 @@
         "businessFunction": "US Billpay Payees-Search",
         "privileges": [
           "execute"
+        ]
+      },
+      {
+        "businessFunction": "Positive Pay",
+        "privileges": [
+          "view"
         ]
       }
     ]
@@ -1314,6 +1334,13 @@
         "privileges": [
           "view"
         ]
+      },
+      {
+        "businessFunction": "Positive Pay",
+        "privileges": [
+          "view",
+          "create"
+        ]
       }
     ]
   },
@@ -1407,7 +1434,14 @@
         "privileges": [
           "view"
         ]
+      },
+      {
+        "businessFunction": "Positive Pay",
+        "privileges": [
+          "view"
+        ]
       }
+
     ]
   }
 ]

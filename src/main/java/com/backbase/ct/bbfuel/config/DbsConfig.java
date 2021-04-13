@@ -94,4 +94,8 @@ public class DbsConfig {
      */
     private String accountStatement;
 
+    /**
+     * URI to positivePay.
+     */
+    private String positivePay;
 }

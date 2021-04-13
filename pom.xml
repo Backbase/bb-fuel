@@ -374,6 +374,18 @@
                             <fromFile>transaction-category-collector-client-api-v2.0.0.yaml</fromFile>
                         </configuration>
                     </execution>
+
+                    <execution>
+                        <id>download-positive-pay-client-api</id>
+                        <goals>
+                            <goal>download-single</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <url>https://artifacts.backbase.com/specs/positive-pay</url>
+                            <fromFile>positive-pay-client-api-v1.0.0.yaml</fromFile>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 
@@ -489,9 +501,22 @@
                             </configOptions>
                         </configuration>
                     </execution>
+
+                    <execution>
+                        <id>generate-positive-pay-client-code</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${api.target}/positive-pay-client-api-v1.0.0.yaml</inputSpec>
+                            <configOptions>
+                                <apiPackage>com.backbase.dbs.positivepay.client.api.v1</apiPackage>
+                                <modelPackage>com.backbase.dbs.positivepay.client.api.v1.model</modelPackage>
+                            </configOptions>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>

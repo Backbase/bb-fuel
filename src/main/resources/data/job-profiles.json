@@ -199,6 +199,13 @@
           "approve",
           "cancel"
         ]
+      },
+      {
+        "businessFunction": "Manage Positive Pay",
+        "privileges": [
+          "view",
+          "edit"
+        ]
       }
     ]
   },
@@ -535,6 +542,13 @@
           "delete",
           "approve"
         ]
+      },
+      {
+        "businessFunction": "Manage Positive Pay",
+        "privileges": [
+          "view",
+          "create"
+        ]
       }
     ]
   },
@@ -834,6 +848,12 @@
           "edit",
           "delete",
           "approve"
+        ]
+      },
+      {
+        "businessFunction": "Manage Positive Pay",
+        "privileges": [
+          "view"
         ]
       }
     ]
@@ -1479,6 +1499,13 @@
         "privileges": [
           "view"
         ]
+      },
+      {
+        "businessFunction": "Manage Positive Pay",
+        "privileges": [
+          "view",
+          "create"
+        ]
       }
     ]
   },
@@ -1599,6 +1626,12 @@
       },
       {
         "businessFunction": "Batch Templates",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Manage Positive Pay",
         "privileges": [
           "view"
         ]

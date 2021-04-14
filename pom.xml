@@ -382,8 +382,19 @@
                         </goals>
                         <phase>generate-sources</phase>
                         <configuration>
-                            <url>https://artifacts.backbase.com/specs/positive-pay</url>
+                            <url>https://repo.backbase.com/specs/positive-pay</url>
                             <fromFile>positive-pay-client-api-v1.0.0.yaml</fromFile>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>download-arrangement-integration-inbound-api</id>
+                        <goals>
+                            <goal>download-single</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <url>https://repo.backbase.com/specs/arrangement-manager</url>
+                            <fromFile>arrangement-integration-inbound-api-v2.2.0.yaml</fromFile>
                         </configuration>
                     </execution>
                 </executions>
@@ -512,6 +523,21 @@
                             <configOptions>
                                 <apiPackage>com.backbase.dbs.positivepay.client.api.v1</apiPackage>
                                 <modelPackage>com.backbase.dbs.positivepay.client.api.v1.model</modelPackage>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>generate-arrangement-integration-inbound-api</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <inputSpec>${api.target}/arrangement-integration-inbound-api-v2.2.0.yaml</inputSpec>
+                            <configOptions>
+                                <apiPackage>com.backbase.dbs.arrangement.integration.inbound.api.v2</apiPackage>
+                                <modelPackage>com.backbase.dbs.arrangement.integration.inbound.api.v2.model</modelPackage>
                             </configOptions>
                         </configuration>
                     </execution>

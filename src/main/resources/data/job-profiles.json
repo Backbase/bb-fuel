@@ -192,10 +192,9 @@
         ]
       },
       {
-        "businessFunction": "Positive Pay",
+        "businessFunction": "Manage Positive Pay",
         "privileges": [
-          "view",
-          "edit"
+          "view"
         ]
       }
     ]
@@ -472,7 +471,7 @@
         ]
       },
       {
-        "businessFunction": "Positive Pay",
+        "businessFunction": "Manage Positive Pay",
         "privileges": [
           "view",
           "create"
@@ -716,7 +715,7 @@
         ]
       },
       {
-        "businessFunction": "Positive Pay",
+        "businessFunction": "Manage Positive Pay",
         "privileges": [
           "view"
         ]
@@ -1336,7 +1335,7 @@
         ]
       },
       {
-        "businessFunction": "Positive Pay",
+        "businessFunction": "Manage Positive Pay",
         "privileges": [
           "view",
           "create"
@@ -1436,7 +1435,7 @@
         ]
       },
       {
-        "businessFunction": "Positive Pay",
+        "businessFunction": "Manage Positive Pay",
         "privileges": [
           "view"
         ]

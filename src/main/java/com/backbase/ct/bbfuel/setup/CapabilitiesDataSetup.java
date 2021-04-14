@@ -14,7 +14,6 @@ import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_NOTIFI
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_PAYMENTS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_ACCOUNT_STATEMENTS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ACCOUNTSTATEMENTS_USERS;
-import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_POSITIVEPAY_USERS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_POSITIVE_PAY_CHECKS;
 import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
 import static java.util.Collections.singletonList;
@@ -209,11 +208,12 @@ public class CapabilitiesDataSetup extends BaseSetup {
 
     private void ingestPositivePayChecksForSelectedUser() {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_POSITIVE_PAY_CHECKS)) {
-            String externalUserIds = this.globalProperties.getString(PROPERTY_POSITIVEPAY_USERS);
-            Splitter.on(';').trimResults().split(externalUserIds).forEach(externalUserId -> {
-                this.positivePayConfigurator.ingestPositivePayChecks(externalUserId);
-            });
+            this.accessControlSetup.getLegalEntitiesWithUsersExcludingSupportAndEmployee().stream()
+                    .map(LegalEntityWithUsers::getUserExternalIds)
+                    .flatMap(List::stream)
+                    .collect(Collectors.toList())
+                    .forEach(this.positivePayConfigurator::ingestPositivePayChecks);
         }
     }
-  }
+}
 

@@ -194,8 +194,7 @@
       {
         "businessFunction": "Manage Positive Pay",
         "privileges": [
-          "view",
-          "edit"
+          "view"
         ]
       }
     ]

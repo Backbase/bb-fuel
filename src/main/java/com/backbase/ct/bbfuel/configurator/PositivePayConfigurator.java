@@ -20,7 +20,6 @@ import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_POSITIVEPAY_M
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_POSITIVEPAY_MAX;
 import static com.backbase.ct.bbfuel.util.CommonHelpers.generateRandomNumberInRange;
 import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
-import static org.apache.http.HttpStatus.SC_CREATED;
 import static org.apache.http.HttpStatus.SC_OK;
 
 @Slf4j

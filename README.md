@@ -21,6 +21,7 @@ bb-fuel is a Backbase DBS data loader tool for test and demo data. It can ingest
 - Actions
 - Bill Pay
 - Account Statements
+- Positive Pay
 
 It is based on REST and relies on DBS service specs.
 

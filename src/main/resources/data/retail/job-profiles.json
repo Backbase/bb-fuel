@@ -68,6 +68,15 @@
           "edit",
           "delete"
         ]
+      },
+      {
+        "businessFunction": "US Billpay Payees",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete"
+        ]
       }
     ]
   },
@@ -138,11 +147,28 @@
         ]
       },
       {
+        "businessFunction": "Product Summary",
+        "privileges": [
+          "view",
+          "edit"
+        ]
+      },
+      {
         "businessFunction": "Manage Notifications",
         "privileges": [
           "view",
           "create",
           "delete"
+        ]
+      },
+      {
+        "businessFunction": "Manage Action Recipes",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "execute"
         ]
       },
       {

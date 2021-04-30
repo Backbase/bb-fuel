@@ -1,8 +1,5 @@
 package com.backbase.ct.bbfuel.configurator;
 
-import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
-import static org.apache.http.HttpStatus.SC_CREATED;
-
 import com.backbase.ct.bbfuel.client.common.LoginRestClient;
 import com.backbase.ct.bbfuel.client.pfm.PocketsRestClient;
 import com.backbase.ct.bbfuel.client.productsummary.ArrangementsIntegrationRestClient;
@@ -13,9 +10,9 @@ import com.backbase.ct.bbfuel.input.PocketsReader;
 import com.backbase.ct.bbfuel.util.CommonHelpers;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
 import com.backbase.dbs.arrangement.integration.rest.spec.v2.arrangements.ArrangementsPostResponseBody;
-import com.backbase.dbs.pocket.tailor.client.v2.model.PocketPostRequest;
+import com.backbase.dbs.pocket.tailor.client.v1.model.Pocket;
+import com.backbase.dbs.pocket.tailor.client.v1.model.PocketPostRequest;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBody;
-import io.restassured.response.Response;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -40,17 +37,18 @@ public class PocketsConfigurator {
      * Ingest pocket parent arrangement.
      *
      * @param externalLegalEntityId externalLegalEntityId
-     * @param externalArrangementId externalArrangementId
      */
-    public void ingestPocketParentArrangement(String externalLegalEntityId, String externalArrangementId) {
-        log.debug("Going to ingest a parent pocket arrangement.");
+    public void ingestPocketParentArrangement(String externalLegalEntityId) {
+        log.debug("Going to ingest a parent pocket arrangement for external legal entity ID: [{}]",
+            externalLegalEntityId);
         ArrangementsPostRequestBody parentPocketArrangement = ProductSummaryDataGenerator
-            .generateParentPocketArrangement(externalLegalEntityId, externalArrangementId);
+            .generateParentPocketArrangement(externalLegalEntityId);
         ArrangementsPostResponseBody response = arrangementsIntegrationRestClient
             .ingestArrangement(parentPocketArrangement);
 
-        log.info("Parent pocket arrangement ingested for [{}, {}]: ID {}, name: {}", externalLegalEntityId,
-            externalArrangementId, response.getId(), parentPocketArrangement.getName());
+        log.info("Parent pocket arrangement ingested for external legal entity ID [{}]: ID {}, name: {}",
+            externalLegalEntityId,
+            response.getId(), parentPocketArrangement.getName());
     }
 
     /**
@@ -60,10 +58,9 @@ public class PocketsConfigurator {
      * @param isRetail       isRetail
      */
     public void ingestPockets(String externalUserId, boolean isRetail) {
-        log.debug("Going to ingest pockets.");
+        log.debug("Going to ingest pockets for user [{}]", externalUserId);
 
         loginRestClient.login(externalUserId, externalUserId);
-        log.debug("logged in as {}", externalUserId);
 
         List<PocketPostRequest> pockets = new ArrayList<>();
 
@@ -81,14 +78,9 @@ public class PocketsConfigurator {
         }
 
         for (PocketPostRequest pocketPostRequest : pockets) {
-            Response response = pocketsRestClient.ingestPocket(pocketPostRequest);
-
-            if (response.statusCode() == SC_BAD_REQUEST) {
-                log.info("Bad request for ingesting pocket with request [{}]", pocketPostRequest);
-            } else {
-                response.then().assertThat().statusCode(SC_CREATED);
-                log.info("Pocket ingested with request [{}]", pocketPostRequest);
-            }
+            Pocket pocket = pocketsRestClient.ingestPocket(pocketPostRequest);
+            log.info("Pocket with ID [{}] and name [{}] created for user [{}]", pocket.getId(), pocket.getName(),
+                externalUserId);
         }
 
     }

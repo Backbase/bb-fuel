@@ -1,25 +1,5 @@
 [
   {
-    "productGroupName": "Pockets",
-    "currencies": [
-      "EUR"
-    ],
-    "currentAccountNames": [
-      "OutletLegal"
-    ],
-    "productIds": [
-      "1", "2", "8", "9"
-    ],
-    "numberOfArrangements": {
-      "min": 1,
-      "max": 3
-    },
-    "numberOfDebitCards": {
-      "min": 1,
-      "max": 2
-    }
-  },
-  {
     "productGroupName": "Amsterdam",
     "currencies": [
       "EUR"
@@ -37,7 +17,7 @@
       "Support"
     ],
     "productIds": [
-      "1", "2", "8", "9"
+      "1", "2"
     ],
     "numberOfArrangements": {
       "min": 5,
@@ -66,7 +46,7 @@
       "Support"
     ],
     "productIds": [
-      "1", "2", "8", "9"
+      "1", "2"
     ],
     "numberOfArrangements": {
       "min": 5,
@@ -95,7 +75,7 @@
       "Support"
     ],
     "productIds": [
-      "1", "2", "8", "9"
+      "1", "2"
     ],
     "numberOfArrangements": {
       "min": 5,
@@ -124,7 +104,7 @@
       "Support"
     ],
     "productIds": [
-      "1", "2", "8", "9"
+      "1", "2"
     ],
     "numberOfArrangements": {
       "min": 5,
@@ -154,7 +134,7 @@
       "Belgium sales"
     ],
     "productIds": [
-      "1", "8", "9"
+      "1"
     ],
     "numberOfArrangements": {
       "min": 5,
@@ -183,7 +163,7 @@
       "Transport"
     ],
     "productIds": [
-      "1", "2", "5", "7", "8", "9"
+      "1", "2", "5", "7"
     ],
     "numberOfArrangements": {
       "min": 5,
@@ -206,7 +186,7 @@
       "Payroll"
     ],
     "productIds": [
-      "1", "8", "9"
+      "1"
     ],
     "numberOfArrangements": {
       "min": 5,
@@ -228,7 +208,7 @@
       "Current Account"
     ],
     "productIds": [
-      "1", "2", "3", "4", "5", "6", "7", "8", "9"
+      "1", "2", "3", "4", "5", "6", "7"
     ],
     "numberOfArrangements": {
       "min": 5,

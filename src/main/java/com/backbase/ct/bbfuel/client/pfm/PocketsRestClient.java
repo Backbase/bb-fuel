@@ -2,10 +2,9 @@ package com.backbase.ct.bbfuel.client.pfm;
 
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
-import com.backbase.dbs.pocket.tailor.client.v1.model.PocketPostRequest;
+import com.backbase.dbs.pocket.tailor.client.v2.model.PocketPostRequest;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import io.restassured.specification.RequestSpecification;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,10 +33,7 @@ public class PocketsRestClient extends RestClient {
      * @return Response
      */
     public Response ingestPocket(PocketPostRequest pocketPostRequest) {
-        RequestSpecification specification = requestSpec()
-            .contentType(ContentType.JSON)
-            .body(pocketPostRequest);
-        log.debug("Entering rest client accessing endpoint to ingest pockets [{}]", specification.request().toString());
+        log.debug("Entering rest client accessing endpoint to ingest pockets [{}]", pocketPostRequest.toString());
         log.debug("Entering rest client with path [{}]", getPath(ENDPOINT_POCKETS));
         return requestSpec()
             .contentType(ContentType.JSON)

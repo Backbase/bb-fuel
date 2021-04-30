@@ -47,19 +47,5 @@
     "productKindName": "Investment Account",
     "productTypeId": "7777777",
     "productTypeName": "Investment Account"
-  },
-  {
-    "id": "8",
-    "productKindId": "kind8",
-    "productKindName": "Pocket Parent",
-    "productTypeId": "8888888",
-    "productTypeName": "Pocket Parent"
-  },
-  {
-    "id": "9",
-    "productKindId": "kind9",
-    "productKindName": "Pocket",
-    "productTypeId": "9999999",
-    "productTypeName": "Pocket"
   }
 ]

@@ -17,6 +17,7 @@ import com.backbase.dbs.arrangement.integration.rest.spec.v2.products.ProductsPo
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBody;
 import com.github.javafaker.Faker;
 import com.google.common.base.Splitter;
+import com.google.common.collect.ImmutableList;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -82,9 +83,9 @@ public class ProductSummaryDataGenerator {
         return product.getProductTypeName();
     }
 
-    public static ArrangementsPostRequestBody generateParentPocketArrangement(String externalLegalEntityId, String externalArrangementId) {
+    public static ArrangementsPostRequestBody generateParentPocketArrangement(String externalLegalEntityId) {
         ArrangementsPostRequestBody arrangementsPostRequestBody = getArrangementsPostRequestBody(
-            Optional.of(externalArrangementId), externalLegalEntityId, "Parent Pocket Account", EUR, 8);
+            Optional.of("external-arrangement-origination-1"), externalLegalEntityId, "Parent Pocket Account", EUR, "default-pocket-parent-external-id");
         arrangementsPostRequestBody.setBookedBalance(BigDecimal.ZERO);
         arrangementsPostRequestBody.setAvailableBalance(BigDecimal.ZERO);
         arrangementsPostRequestBody.setAccruedInterest(BigDecimal.ZERO);
@@ -113,7 +114,7 @@ public class ProductSummaryDataGenerator {
             String currency = productGroupSeed.getCurrencies().get(currencyIndex);
             ArrangementsPostRequestBody arrangementsPostRequestBody = getArrangementsPostRequestBody(
                 Optional.ofNullable(staticCurrentAccountArrangementsQueue.poll()), externalLegalEntityId,
-                currentAccountName, currency, 1);
+                currentAccountName, currency, "1");
 
             HashSet<DebitCard> debitCards = new HashSet<>();
 
@@ -141,8 +142,7 @@ public class ProductSummaryDataGenerator {
             String productId = getRandomFromList(productGroupSeed.getProductIds());
             String arrangementName = getProductTypeNameFromProductsInputFile(productId);
             ArrangementsPostRequestBody arrangementsPostRequestBody = getArrangementsPostRequestBody(
-                Optional.empty(), externalLegalEntityId, arrangementName, currency,
-                Integer.parseInt(productId));
+                Optional.empty(), externalLegalEntityId, arrangementName, currency, productId);
 
             arrangementsPostRequestBodies.add(arrangementsPostRequestBody);
         });
@@ -151,7 +151,7 @@ public class ProductSummaryDataGenerator {
     }
 
     private static ArrangementsPostRequestBody getArrangementsPostRequestBody(Optional<String> externalArrangementId,
-        String externalLegalEntityId, String currentAccountName, String currency, int productId) {
+        String externalLegalEntityId, String currentAccountName, String currency, String productId) {
         String accountNumber = EUR.equals(currency)
             ? generateRandomIban()
             : valueOf(generateRandomNumberInRange(100000, 999999999));
@@ -162,7 +162,7 @@ public class ProductSummaryDataGenerator {
         ArrangementsPostRequestBody arrangementsPostRequestBody = new ArrangementsPostRequestBody()
             .withId(externalArrangementId.orElse(UUID.randomUUID().toString()))
             .withLegalEntityIds(Collections.singleton(externalLegalEntityId))
-            .withProductId(String.valueOf(productId))
+            .withProductId(productId)
             .withName(fullArrangementName)
             .withBankAlias(fullArrangementName)
             .withBookedBalance(generateRandomAmountInRange(10000L, 9999999L))
@@ -175,8 +175,8 @@ public class ProductSummaryDataGenerator {
             .withNumber(String.format("%s", ThreadLocalRandom.current().nextInt(9999)))
             .withPrincipalAmount(generateRandomAmountInRange(10000L, 999999L))
             .withCurrentInvestmentValue(generateRandomAmountInRange(10000L, 999999L))
-            .withDebitAccount(productId == 1 || productId == 2 || productId == 8)
-            .withCreditAccount(productId == 1 || productId == 2 || productId == 4 || productId == 5 || productId == 8)
+            .withDebitAccount(ImmutableList.of("1", "2", "default-pocket-external-id").contains(productId))
+            .withCreditAccount(ImmutableList.of("1", "2", "4", "5", "default-pocket-external-id").contains(productId))
             .withAccountHolderNames(faker.name().fullName())
             .withAccountHolderAddressLine1(faker.address().streetAddress())
             .withAccountHolderAddressLine2(faker.address().secondaryAddress())

@@ -20,6 +20,7 @@ import static java.util.Collections.singletonList;
 
 import com.backbase.ct.bbfuel.client.accessgroup.UserContextPresentationRestClient;
 import com.backbase.ct.bbfuel.client.common.LoginRestClient;
+import com.backbase.ct.bbfuel.client.user.UserPresentationRestClient;
 import com.backbase.ct.bbfuel.configurator.AccountStatementsConfigurator;
 import com.backbase.ct.bbfuel.configurator.ActionsConfigurator;
 import com.backbase.ct.bbfuel.configurator.ApprovalsConfigurator;
@@ -35,7 +36,9 @@ import com.backbase.ct.bbfuel.dto.User;
 import com.backbase.ct.bbfuel.dto.UserContext;
 import com.backbase.ct.bbfuel.service.LegalEntityService;
 import com.backbase.ct.bbfuel.service.UserContextService;
+import com.backbase.dbs.accesscontrol.client.v2.model.LegalEntityBase;
 import com.google.common.base.Splitter;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -62,6 +65,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
     private final PocketsConfigurator pocketsConfigurator;
     private final LegalEntityService legalEntityService;
     private final AccountStatementsConfigurator accountStatementsConfigurator;
+    private final UserPresentationRestClient userPresentationRestClient;
 
     /**
      * Ingest data with services of projects APPR, PO, LIM, NOT, CON, MC, ACT and BPAY.
@@ -201,29 +205,24 @@ public class CapabilitiesDataSetup extends BaseSetup {
     private void ingestPockets() {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_POCKETS)) {
             log.debug("Going to ingest pockets...");
+            this.loginRestClient.loginBankAdmin();
             this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
-            List<LegalEntityWithUsers> legalEntityWithUsersList = this.accessControlSetup
+            List<User> retailUsers = this.accessControlSetup
                 .getLegalEntitiesWithUsersExcludingSupport()
                 .stream()
                 .filter(legalEntityWithUsers -> legalEntityWithUsers.getCategory().isRetail())
-                .filter(legalEntityWithUsers ->
-                    legalEntityWithUsers.getUsers().stream()
-                        .filter(user -> !user.getProductGroupNames().isEmpty())
-                        .allMatch(user -> "Pockets".equalsIgnoreCase(user.getProductGroupNames().get(0))))
+                .map(LegalEntityWithUsers::getUsers)
+                .flatMap(Collection::stream)
                 .collect(Collectors.toList());
-            legalEntityWithUsersList.forEach(legalEntityWithUsers -> {
-                log.debug("Going to ingest pockets for legalEntityWithUsers {}", legalEntityWithUsers);
 
-                pocketsConfigurator
-                    .ingestPocketParentArrangement(legalEntityWithUsers.getLegalEntityExternalId(),
-                        "external-arrangement-origination-1");
-                // TODO TRANS-5724 allthough parent arrangement is created above, while creating a new pocket the following error
-                // occurs com.backbase.buildingblocks.presentation.errors.BadRequestException: Bad Request
-                //	at com.backbase.dbs.pfm.pockets.util.ExceptionWrapper.toBadRequest(ExceptionWrapper.java:79)
-                //	at com.backbase.dbs.pfm.pockets.service.impl.PocketTailorServiceImpl.createArrangedLegalEntity(PocketTailorServiceImpl.java:170)
-                //	at com.backbase.dbs.pfm.pockets.service.impl.PocketTailorServiceImpl.lambda$retrieveOrCreateParentArrangement$3(PocketTailorServiceImpl.java:162)
-                pocketsConfigurator
-                    .ingestPockets(legalEntityWithUsers.getUserExternalIds().get(0), true);
+            retailUsers.forEach(retailUser -> {
+                log.debug("Going to ingest pockets for retail user {}", retailUser);
+
+                LegalEntityBase legalEntity = this.userPresentationRestClient
+                    .retrieveLegalEntityByExternalUserId(retailUser.getExternalId());
+
+                pocketsConfigurator.ingestPocketParentArrangement(legalEntity.getExternalId());
+                pocketsConfigurator.ingestPockets(retailUser.getExternalId(), true);
             });
         }
     }

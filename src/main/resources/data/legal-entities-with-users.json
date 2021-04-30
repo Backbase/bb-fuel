@@ -1,15 +1,4 @@
 [
-  {"legalEntityName": "Yellow Pocket Outlet Amsterdam",
-    "category": "RETAIL",
-    "legalEntityExternalId": "A000001",
-    "users": [
-      {
-        "externalId": "pocket_hole1",
-        "role": "pocketer",
-        "productGroupNames": ["Pockets"]
-      }
-    ]
-  },
   {
     "category": "BUSINESS",
     "users": [

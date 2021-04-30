@@ -34,7 +34,7 @@ public class JobProfileReaderTest {
     @Test
     public void testLoadJobProfiles() {
         List<JobProfile> jobProfiles = subject.load();
-        assertThat(jobProfiles, hasSize(8));
+        assertThat(jobProfiles, hasSize(7));
         assertThat("permission should have business function",
             jobProfiles.get(1).getPermissions().get(0).getBusinessFunction(), notNullValue());
         assertThat("profile should have enough permissions",
@@ -42,7 +42,7 @@ public class JobProfileReaderTest {
         assertThat("Only one specific profile for retail expected", jobProfiles.stream()
             .filter(jobProfile -> Objects.nonNull(jobProfile.getIsRetail()))
             .filter(jobProfile -> jobProfile.getIsRetail())
-            .collect(toList()), hasSize(2));
+            .collect(toList()), hasSize(1));
     }
 
     @Test

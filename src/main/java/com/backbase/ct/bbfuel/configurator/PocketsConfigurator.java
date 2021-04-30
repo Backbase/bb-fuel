@@ -38,7 +38,7 @@ public class PocketsConfigurator {
      *
      * @param externalLegalEntityId externalLegalEntityId
      */
-    public void ingestPocketParentArrangement(String externalLegalEntityId) {
+    public ArrangementsPostResponseBody ingestPocketParentArrangement(String externalLegalEntityId) {
         log.debug("Going to ingest a parent pocket arrangement for external legal entity ID: [{}]",
             externalLegalEntityId);
         ArrangementsPostRequestBody parentPocketArrangement = ProductSummaryDataGenerator
@@ -49,6 +49,8 @@ public class PocketsConfigurator {
         log.info("Parent pocket arrangement ingested for external legal entity ID [{}]: ID {}, name: {}",
             externalLegalEntityId,
             response.getId(), parentPocketArrangement.getName());
+
+        return response;
     }
 
     /**

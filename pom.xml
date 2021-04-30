@@ -524,8 +524,8 @@
                         <configuration>
                             <inputSpec>${api.target}/pocket-tailor-client-api-v1.3.0.yaml</inputSpec>
                             <configOptions>
-                                <apiPackage>com.backbase.dbs.pocket.tailor.client.v1</apiPackage>
-                                <modelPackage>com.backbase.dbs.pocket.tailor.client.v1.model</modelPackage>
+                                <apiPackage>com.backbase.dbs.pocket.tailor.client.v2</apiPackage>
+                                <modelPackage>com.backbase.dbs.pocket.tailor.client.v2.model</modelPackage>
                             </configOptions>
                         </configuration>
                     </execution>

@@ -4,9 +4,9 @@ import static com.backbase.ct.bbfuel.data.CommonConstants.POCKETS_CURRENCY;
 
 import com.backbase.ct.bbfuel.util.CommonHelpers;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
-import com.backbase.dbs.pocket.tailor.client.v1.model.Currency;
-import com.backbase.dbs.pocket.tailor.client.v1.model.PocketGoalRequest;
-import com.backbase.dbs.pocket.tailor.client.v1.model.PocketPostRequest;
+import com.backbase.dbs.pocket.tailor.client.v2.model.Currency;
+import com.backbase.dbs.pocket.tailor.client.v2.model.PocketGoalRequest;
+import com.backbase.dbs.pocket.tailor.client.v2.model.PocketPostRequest;
 import com.github.javafaker.Faker;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -33,7 +33,7 @@ public class PocketsDataGenerator {
             .name(faker.address().cityName())
             .icon(faker.animal().name())
             .goal(new PocketGoalRequest()
-                .amountCurrency(new Currency().amount(amount.toString()).currencyCode(currency))
+                .amountCurrency(new Currency().amount(amount.toString()).currencyCode("EUR"))
                 .deadline(LocalDate.now().plusMonths(CommonHelpers.generateRandomNumberInRange(1, 24))));
     }
 }

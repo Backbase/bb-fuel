@@ -1,5 +1,25 @@
 [
   {
+    "productGroupName": "Pockets",
+    "currencies": [
+      "EUR"
+    ],
+    "currentAccountNames": [
+      "OutletLegal"
+    ],
+    "productIds": [
+      "1", "2", "8", "9"
+    ],
+    "numberOfArrangements": {
+      "min": 1,
+      "max": 3
+    },
+    "numberOfDebitCards": {
+      "min": 1,
+      "max": 2
+    }
+  },
+  {
     "productGroupName": "Amsterdam",
     "currencies": [
       "EUR"

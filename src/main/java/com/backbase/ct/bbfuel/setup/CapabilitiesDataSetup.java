@@ -1,5 +1,7 @@
 package com.backbase.ct.bbfuel.setup;
 
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ACCOUNTSTATEMENTS_USERS;
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_ACCOUNT_STATEMENTS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_ACTIONS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_BATCHES;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_CONTACTS;
@@ -12,13 +14,13 @@ import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_LIMITS
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_MESSAGES;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_NOTIFICATIONS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_PAYMENTS;
-import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_ACCOUNT_STATEMENTS;
-import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ACCOUNTSTATEMENTS_USERS;
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_POCKETS;
 import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
 import static java.util.Collections.singletonList;
 
 import com.backbase.ct.bbfuel.client.accessgroup.UserContextPresentationRestClient;
 import com.backbase.ct.bbfuel.client.common.LoginRestClient;
+import com.backbase.ct.bbfuel.configurator.AccountStatementsConfigurator;
 import com.backbase.ct.bbfuel.configurator.ActionsConfigurator;
 import com.backbase.ct.bbfuel.configurator.ApprovalsConfigurator;
 import com.backbase.ct.bbfuel.configurator.BillPayConfigurator;
@@ -27,22 +29,20 @@ import com.backbase.ct.bbfuel.configurator.LimitsConfigurator;
 import com.backbase.ct.bbfuel.configurator.MessagesConfigurator;
 import com.backbase.ct.bbfuel.configurator.NotificationsConfigurator;
 import com.backbase.ct.bbfuel.configurator.PaymentsConfigurator;
-import com.backbase.ct.bbfuel.configurator.AccountStatementsConfigurator;
+import com.backbase.ct.bbfuel.configurator.PocketsConfigurator;
 import com.backbase.ct.bbfuel.dto.LegalEntityWithUsers;
 import com.backbase.ct.bbfuel.dto.User;
 import com.backbase.ct.bbfuel.dto.UserContext;
 import com.backbase.ct.bbfuel.service.LegalEntityService;
 import com.backbase.ct.bbfuel.service.UserContextService;
-
-import java.util.ArrayList;
+import com.google.common.base.Splitter;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import com.google.common.base.Splitter;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class CapabilitiesDataSetup extends BaseSetup {
@@ -59,6 +59,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
     private final MessagesConfigurator messagesConfigurator;
     private final ActionsConfigurator actionsConfigurator;
     private final BillPayConfigurator billpayConfigurator;
+    private final PocketsConfigurator pocketsConfigurator;
     private final LegalEntityService legalEntityService;
     private final AccountStatementsConfigurator accountStatementsConfigurator;
 
@@ -67,6 +68,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
      */
     @Override
     public void initiate() {
+        log.debug("initiate CapabilitiesDataSetup");
         this.ingestApprovals();
         this.ingestPaymentsPerUser();
         this.ingestLimits();
@@ -75,6 +77,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
         this.ingestConversationsPerUser();
         this.ingestActionsPerUser();
         this.ingestBillPayUsers();
+        this.ingestPockets();
         this.ingestAccountStatementForSelectedUser();
     }
 
@@ -195,13 +198,43 @@ public class CapabilitiesDataSetup extends BaseSetup {
         }
     }
 
+    private void ingestPockets() {
+        if (this.globalProperties.getBoolean(PROPERTY_INGEST_POCKETS)) {
+            log.debug("Going to ingest pockets...");
+            this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
+            List<LegalEntityWithUsers> legalEntityWithUsersList = this.accessControlSetup
+                .getLegalEntitiesWithUsersExcludingSupport()
+                .stream()
+                .filter(legalEntityWithUsers -> legalEntityWithUsers.getCategory().isRetail())
+                .filter(legalEntityWithUsers ->
+                    legalEntityWithUsers.getUsers().stream()
+                        .filter(user -> !user.getProductGroupNames().isEmpty())
+                        .allMatch(user -> "Pockets".equalsIgnoreCase(user.getProductGroupNames().get(0))))
+                .collect(Collectors.toList());
+            legalEntityWithUsersList.forEach(legalEntityWithUsers -> {
+                log.debug("Going to ingest pockets for legalEntityWithUsers {}", legalEntityWithUsers);
+
+                pocketsConfigurator
+                    .ingestPocketParentArrangement(legalEntityWithUsers.getLegalEntityExternalId(),
+                        "external-arrangement-origination-1");
+                // TODO TRANS-5724 allthough parent arrangement is created above, while creating a new pocket the following error
+                // occurs com.backbase.buildingblocks.presentation.errors.BadRequestException: Bad Request
+                //	at com.backbase.dbs.pfm.pockets.util.ExceptionWrapper.toBadRequest(ExceptionWrapper.java:79)
+                //	at com.backbase.dbs.pfm.pockets.service.impl.PocketTailorServiceImpl.createArrangedLegalEntity(PocketTailorServiceImpl.java:170)
+                //	at com.backbase.dbs.pfm.pockets.service.impl.PocketTailorServiceImpl.lambda$retrieveOrCreateParentArrangement$3(PocketTailorServiceImpl.java:162)
+                pocketsConfigurator
+                    .ingestPockets(legalEntityWithUsers.getUserExternalIds().get(0), true);
+            });
+        }
+    }
+
     private void ingestAccountStatementForSelectedUser() {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_ACCOUNT_STATEMENTS)) {
             String externalUserIds = this.globalProperties.getString(PROPERTY_ACCOUNTSTATEMENTS_USERS);
             Splitter.on(';').trimResults().split(externalUserIds).forEach(externalUserId -> {
                 this.accountStatementsConfigurator.ingestAccountStatements(externalUserId);
             });
-         }
-     }
-  }
+        }
+    }
+}
 

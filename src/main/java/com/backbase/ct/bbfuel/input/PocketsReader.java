@@ -3,7 +3,7 @@ package com.backbase.ct.bbfuel.input;
 import com.backbase.ct.bbfuel.data.CommonConstants;
 import com.backbase.ct.bbfuel.util.CommonHelpers;
 import com.backbase.ct.bbfuel.util.ParserUtil;
-import com.backbase.dbs.pocket.tailor.client.v1.model.PocketPostRequest;
+import com.backbase.dbs.pocket.tailor.client.v2.model.PocketPostRequest;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -21,6 +21,7 @@ public class PocketsReader extends BaseReader {
         List<PocketPostRequest> pockets;
 
         try {
+            //TODO TRANS-5724 parsing deadline generates parsing error
             PocketPostRequest[] parsedPockets = ParserUtil.convertJsonToObject(uri, PocketPostRequest[].class);
             pockets = Arrays.asList(parsedPockets);
         } catch (IOException e) {

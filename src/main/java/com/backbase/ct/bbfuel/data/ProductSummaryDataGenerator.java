@@ -82,9 +82,9 @@ public class ProductSummaryDataGenerator {
         return product.getProductTypeName();
     }
 
-    public static ArrangementsPostRequestBody generateParentPocketArrangement(String externalLegalEntityId) {
+    public static ArrangementsPostRequestBody generateParentPocketArrangement(String externalLegalEntityId, String externalArrangementId) {
         ArrangementsPostRequestBody arrangementsPostRequestBody = getArrangementsPostRequestBody(
-            Optional.of("external-arrangement-origination-1"), externalLegalEntityId, "Parent Pocket Account", EUR, 8);
+            Optional.of(externalArrangementId), externalLegalEntityId, "Parent Pocket Account", EUR, 8);
         arrangementsPostRequestBody.setBookedBalance(BigDecimal.ZERO);
         arrangementsPostRequestBody.setAvailableBalance(BigDecimal.ZERO);
         arrangementsPostRequestBody.setAccruedInterest(BigDecimal.ZERO);

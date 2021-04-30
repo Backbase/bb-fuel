@@ -20,6 +20,7 @@ import static java.util.Collections.singletonList;
 
 import com.backbase.ct.bbfuel.client.accessgroup.UserContextPresentationRestClient;
 import com.backbase.ct.bbfuel.client.common.LoginRestClient;
+import com.backbase.ct.bbfuel.client.pfm.PocketTailorActuatorClient;
 import com.backbase.ct.bbfuel.client.user.UserPresentationRestClient;
 import com.backbase.ct.bbfuel.configurator.AccountStatementsConfigurator;
 import com.backbase.ct.bbfuel.configurator.ActionsConfigurator;
@@ -37,6 +38,7 @@ import com.backbase.ct.bbfuel.dto.UserContext;
 import com.backbase.ct.bbfuel.service.LegalEntityService;
 import com.backbase.ct.bbfuel.service.UserContextService;
 import com.backbase.dbs.accesscontrol.client.v2.model.LegalEntityBase;
+import com.backbase.dbs.arrangement.integration.rest.spec.v2.arrangements.ArrangementsPostResponseBody;
 import com.google.common.base.Splitter;
 import java.util.Collection;
 import java.util.List;
@@ -66,6 +68,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
     private final LegalEntityService legalEntityService;
     private final AccountStatementsConfigurator accountStatementsConfigurator;
     private final UserPresentationRestClient userPresentationRestClient;
+    private final PocketTailorActuatorClient pocketTailorActuatorClient;
 
     /**
      * Ingest data with services of projects APPR, PO, LIM, NOT, CON, MC, ACT and BPAY.
@@ -205,6 +208,8 @@ public class CapabilitiesDataSetup extends BaseSetup {
     private void ingestPockets() {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_POCKETS)) {
             log.debug("Going to ingest pockets...");
+
+            // TODO Should login for each user because pockets are always created for the current user
             this.loginRestClient.loginBankAdmin();
             this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
             List<User> retailUsers = this.accessControlSetup
@@ -221,7 +226,9 @@ public class CapabilitiesDataSetup extends BaseSetup {
                 LegalEntityBase legalEntity = this.userPresentationRestClient
                     .retrieveLegalEntityByExternalUserId(retailUser.getExternalId());
 
-                pocketsConfigurator.ingestPocketParentArrangement(legalEntity.getExternalId());
+                ArrangementsPostResponseBody arrangement = pocketsConfigurator
+                    .ingestPocketParentArrangement(legalEntity.getExternalId());
+                pocketTailorActuatorClient.createArrangedLegalEntity(arrangement, legalEntity);
                 pocketsConfigurator.ingestPockets(retailUser.getExternalId(), true);
             });
         }

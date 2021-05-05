@@ -209,7 +209,6 @@ public class CapabilitiesDataSetup extends BaseSetup {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_POCKETS)) {
             log.debug("Going to ingest pockets...");
 
-            // TODO Should login for each user because pockets are always created for the current user
             this.loginRestClient.loginBankAdmin();
             this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
             List<User> retailUsers = this.accessControlSetup
@@ -229,7 +228,9 @@ public class CapabilitiesDataSetup extends BaseSetup {
                 ArrangementsPostResponseBody arrangement = pocketsConfigurator
                     .ingestPocketParentArrangement(legalEntity.getExternalId());
                 pocketTailorActuatorClient.createArrangedLegalEntity(arrangement, legalEntity);
-                pocketsConfigurator.ingestPockets(retailUser.getExternalId(), true);
+
+                this.loginRestClient.login(retailUser.getExternalId(), retailUser.getExternalId());
+                this.pocketsConfigurator.ingestPockets(retailUser.getExternalId());
             });
         }
     }

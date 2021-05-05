@@ -98,9 +98,4 @@ public class DbsConfig {
      * URI to Pockets.
      */
     private String pockets;
-
-    /**
-     * URI to Pockets Arrangements mock.
-     */
-    private String pocketsArrangements;
 }

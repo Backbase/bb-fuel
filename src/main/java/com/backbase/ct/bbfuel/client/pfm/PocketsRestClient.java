@@ -16,15 +16,15 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class PocketsRestClient extends RestClient {
 
-    private final BbFuelConfiguration config;
-
-    private static final String SERVICE_VERSION = "v1";
+    private static final String API_VERSION = "v1";
     private static final String ENDPOINT_POCKETS = "/pockets";
+
+    private final BbFuelConfiguration config;
 
     @PostConstruct
     public void init() {
         setBaseUri(config.getDbs().getPockets());
-        setVersion(SERVICE_VERSION);
+        setVersion(API_VERSION);
     }
 
     /**

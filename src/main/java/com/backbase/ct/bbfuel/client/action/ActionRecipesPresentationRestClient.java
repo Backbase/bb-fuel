@@ -2,12 +2,13 @@ package com.backbase.ct.bbfuel.client.action;
 
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
-import com.backbase.dbs.action.client.v2.model.ActionRecipeItemParent;
+import com.backbase.dbs.action.client.v2.model.ActionRecipesPostRequestBodyParent;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
 
 @Component
 @RequiredArgsConstructor
@@ -25,7 +26,7 @@ public class ActionRecipesPresentationRestClient extends RestClient {
         setInitialPath(config.getDbsServiceNames().getActions() + "/" + CLIENT_API);
     }
 
-    public Response createActionRecipe(ActionRecipeItemParent actionRecipesPostRequestBody) {
+    public Response createActionRecipe(ActionRecipesPostRequestBodyParent actionRecipesPostRequestBody) {
         return requestSpec()
             .contentType(ContentType.JSON)
             .body(actionRecipesPostRequestBody)

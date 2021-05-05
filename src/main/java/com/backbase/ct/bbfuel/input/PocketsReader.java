@@ -1,7 +1,6 @@
 package com.backbase.ct.bbfuel.input;
 
 import com.backbase.ct.bbfuel.data.CommonConstants;
-import com.backbase.ct.bbfuel.util.CommonHelpers;
 import com.backbase.ct.bbfuel.util.ParserUtil;
 import com.backbase.dbs.pocket.tailor.client.v1.model.PocketPostRequest;
 import java.io.IOException;
@@ -12,9 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class PocketsReader extends BaseReader {
 
-    public PocketPostRequest loadSingle() {
-        return CommonHelpers
-            .getRandomFromList(load(globalProperties.getString(CommonConstants.PROPERTY_POCKETS_DATA_JSON)));
+    public List<PocketPostRequest> load() {
+        return load(globalProperties.getString(CommonConstants.PROPERTY_POCKETS_DATA_JSON));
     }
 
     private List<PocketPostRequest> load(String uri) {

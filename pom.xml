@@ -37,7 +37,7 @@
         <guava.version>29.0-jre</guava.version>
 
         <api.target>${project.build.directory}/downloaded-api</api.target>
-        <openapi-generator-version>4.3.1</openapi-generator-version>
+        <openapi-generator-version>5.1.0</openapi-generator-version>
         <jackson-databind.version>2.11.3</jackson-databind.version>
         <jackson-databind-nullable-version>0.2.1</jackson-databind-nullable-version>
         <swagger-annotations-version>1.6.0</swagger-annotations-version>

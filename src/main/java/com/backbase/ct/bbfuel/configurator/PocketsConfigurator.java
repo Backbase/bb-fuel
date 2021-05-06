@@ -5,8 +5,8 @@ import com.backbase.ct.bbfuel.client.productsummary.ArrangementsIntegrationRestC
 import com.backbase.ct.bbfuel.data.ProductSummaryDataGenerator;
 import com.backbase.ct.bbfuel.input.PocketsReader;
 import com.backbase.dbs.arrangement.integration.rest.spec.v2.arrangements.ArrangementsPostResponseBody;
-import com.backbase.dbs.pocket.tailor.client.v1.model.Pocket;
-import com.backbase.dbs.pocket.tailor.client.v1.model.PocketPostRequest;
+import com.backbase.dbs.pocket.tailor.client.v2.model.Pocket;
+import com.backbase.dbs.pocket.tailor.client.v2.model.PocketPostRequest;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBody;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

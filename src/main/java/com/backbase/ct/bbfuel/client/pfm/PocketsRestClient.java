@@ -2,8 +2,8 @@ package com.backbase.ct.bbfuel.client.pfm;
 
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
-import com.backbase.dbs.pocket.tailor.client.v1.model.Pocket;
-import com.backbase.dbs.pocket.tailor.client.v1.model.PocketPostRequest;
+import com.backbase.dbs.pocket.tailor.client.v2.model.Pocket;
+import com.backbase.dbs.pocket.tailor.client.v2.model.PocketPostRequest;
 import io.restassured.http.ContentType;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class PocketsRestClient extends RestClient {
 
-    private static final String API_VERSION = "v1";
+    private static final String API_VERSION = "v2";
     private static final String ENDPOINT_POCKETS = "/pockets";
 
     private final BbFuelConfiguration config;

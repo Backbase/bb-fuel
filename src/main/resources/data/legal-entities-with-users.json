@@ -1,5 +1,6 @@
 [
   {
+    "category": "BUSINESS",
     "users": [
       {
         "externalId": "user"
@@ -7,6 +8,7 @@
     ]
   },
   {
+    "category": "BUSINESS",
     "users": [
       {
         "externalId": "designer"
@@ -14,6 +16,7 @@
     ]
   },
   {
+    "category": "BUSINESS",
     "users": [
       {
         "externalId": "manager"
@@ -21,6 +24,7 @@
     ]
   },
   {
+    "category": "BUSINESS",
     "users": [
       {
         "externalId": "U0000010"
@@ -31,6 +35,7 @@
     ]
   },
   {
+    "category": "BUSINESS",
     "users": [
       {
         "externalId": "U0001001",
@@ -55,6 +60,7 @@
     ]
   },
   {
+    "category": "BUSINESS",
     "users": [
       {
         "externalId": "U0001021"
@@ -89,6 +95,7 @@
     ]
   },
   {
+    "category": "BUSINESS",
     "users": [
       {
         "externalId": "U0001011"
@@ -108,6 +115,7 @@
     ]
   },
   {
+    "category": "BUSINESS",
     "legalEntityName": "Green Bicycle Factory",
     "users": [
       {
@@ -143,6 +151,7 @@
     ]
   },
   {
+    "category": "BUSINESS",
     "legalEntityName": "Boats of Atlantis",
     "legalEntityExternalId": "B000001",
     "users": [
@@ -153,6 +162,7 @@
     ]
   },
   {
+    "category": "BUSINESS",
     "legalEntityName": "Boats of Atlantis Europe",
     "legalEntityExternalId": "B000002",
     "parentLegalEntityExternalId": "B000001",
@@ -168,6 +178,7 @@
     ]
   },
   {
+    "category": "BUSINESS",
     "legalEntityName": "Boats of Atlantis Faroe",
     "legalEntityExternalId": "B000003",
     "parentLegalEntityExternalId": "B000002",
@@ -179,6 +190,7 @@
     ]
   },
   {
+    "category": "BUSINESS",
     "legalEntityName": "Boats of Atlantis Asia",
     "legalEntityExternalId": "B000004",
     "parentLegalEntityExternalId": "B000001",
@@ -194,6 +206,7 @@
     ]
   },
   {
+    "category": "BUSINESS",
     "legalEntityName": "Boats of Atlantis Mongolia",
     "legalEntityExternalId": "B000005",
     "parentLegalEntityExternalId": "B000004",

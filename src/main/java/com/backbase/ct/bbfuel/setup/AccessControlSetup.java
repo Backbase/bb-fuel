@@ -52,7 +52,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -194,19 +193,16 @@ public class AccessControlSetup extends BaseSetup {
         this.loginRestClient.loginBankAdmin();
         this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
-        AtomicBoolean isOnce = new AtomicBoolean(true);
-
         legalEntitiesUserContextMap.values()
             .forEach(userContext -> {
                 boolean isRetail = legalEntityWithUsers.getCategory().isRetail();
-                if (isOnce.get()) {
-                    ingestDataGroupArrangementsForServiceAgreement(userContext.getInternalServiceAgreementId(),
-                        userContext.getExternalServiceAgreementId(),
-                        userContext.getExternalLegalEntityId(),
-                        legalEntityWithUsers.getCategory().isRetail());
-                    ingestFunctionGroups(userContext.getExternalServiceAgreementId(), userContext.getUser().getRole(), isRetail);
-                    isOnce.getAndSet(false);
-                }
+
+                ingestDataGroupArrangementsForServiceAgreement(userContext.getInternalServiceAgreementId(),
+                    userContext.getExternalServiceAgreementId(),
+                    userContext.getExternalLegalEntityId(),
+                    legalEntityWithUsers.getCategory().isRetail());
+
+                ingestFunctionGroups(userContext.getExternalServiceAgreementId(), isRetail);
 
                 assignPermissions(userContext.getUser(),
                     userContext.getExternalServiceAgreementId(),
@@ -271,7 +267,7 @@ public class AccessControlSetup extends BaseSetup {
             createLegalEntitiesUserContextMap(legalEntityWithUsers)
                 .values()
                 .forEach(userContext -> ingestFunctionGroups(
-                    userContext.getExternalServiceAgreementId(), userContext.getUser().getRole(), isRetail)
+                    userContext.getExternalServiceAgreementId(), isRetail)
                 );
         });
     }
@@ -279,10 +275,10 @@ public class AccessControlSetup extends BaseSetup {
     /**
      * AccessGroupConfigurator is called to ingest and detects duplicates.
      */
-    private void ingestFunctionGroups(String externalServiceAgreementId, String userRole, boolean isRetail) {
+    private void ingestFunctionGroups(String externalServiceAgreementId, boolean isRetail) {
         if (this.jobProfileService.getAssignedJobProfiles(externalServiceAgreementId) == null) {
             jobProfileTemplates.forEach(template -> {
-                if (!jobProfileService.isJobProfileForUserRole(template, userRole, isRetail)) {
+                if (!jobProfileService.isJobProfileForBranch(isRetail, template)) {
                     log.info("Job profile template [{}] does not apply to this legal entity [isRetail: {}]",
                         template.getJobProfileName(), isRetail);
                     return;

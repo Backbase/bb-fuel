@@ -226,7 +226,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
                     .retrieveLegalEntityByExternalUserId(retailUser.getExternalId());
 
                 ArrangementsPostResponseBody arrangement = pocketsConfigurator
-                    .ingestPocketParentArrangement(legalEntity.getExternalId());
+                    .ingestPocketParentArrangement(legalEntity);
                 pocketTailorActuatorClient.createArrangedLegalEntity(arrangement, legalEntity);
 
                 this.loginRestClient.login(retailUser.getExternalId(), retailUser.getExternalId());

@@ -207,7 +207,6 @@ public class CapabilitiesDataSetup extends BaseSetup {
 
     private void ingestPockets() {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_POCKETS)) {
-            log.debug("Going to ingest pockets...");
 
             this.loginRestClient.loginBankAdmin();
             this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();

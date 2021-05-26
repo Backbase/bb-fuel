@@ -1,5 +1,6 @@
 package com.backbase.ct.bbfuel.configurator;
 
+import com.backbase.ct.bbfuel.client.accessgroup.AccessGroupIntegrationRestClient;
 import com.backbase.ct.bbfuel.client.accessgroup.ServiceAgreementsPresentationRestClient;
 import com.backbase.ct.bbfuel.client.legalentity.LegalEntityPresentationRestClient;
 import com.backbase.ct.bbfuel.client.pfm.PocketsRestClient;
@@ -11,9 +12,13 @@ import com.backbase.dbs.accesscontrol.client.v2.model.LegalEntityBase;
 import com.backbase.dbs.arrangement.integration.rest.spec.v2.arrangements.ArrangementsPostResponseBody;
 import com.backbase.dbs.pocket.tailor.client.v2.model.Pocket;
 import com.backbase.dbs.pocket.tailor.client.v2.model.PocketPostRequest;
+import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.config.functions.FunctionsGetResponseBody;
+import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.Permission;
+import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.Privilege;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBody;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -29,6 +34,7 @@ public class PocketsConfigurator {
     private final LegalEntityPresentationRestClient legalEntityPresentationRestClient;
     private final ServiceAgreementsPresentationRestClient serviceAgreementsPresentationRestClient;
     private final AccessGroupService accessGroupService;
+    private final AccessGroupIntegrationRestClient accessGroupIntegrationRestClient;
 
     /**
      * Ingest pocket parent arrangement.
@@ -66,7 +72,26 @@ public class PocketsConfigurator {
         String dataGroupId = accessGroupService
             .ingestDataGroup(externalServiceAgreementId, "Retail Accounts U.S", "ARRANGEMENTS", internalArrangementIds);
         log.debug("created data group with id [{}]", dataGroupId);
-        //TODO after this code has run, there is no entry in the table data_group_item for the arrangement from response.getId(), why?
+
+        log.debug("Going to ingest function group and use hardcoded 'Manage Pockets' as function_group.name");
+        List<FunctionsGetResponseBody> bodyList = accessGroupIntegrationRestClient.retrieveFunctions();
+        List<Privilege> privileges = new ArrayList<>();
+        privileges.add(new Privilege().withPrivilege("create"));
+        privileges.add(new Privilege().withPrivilege("edit"));
+        privileges.add(new Privilege().withPrivilege("delete"));
+        privileges.add(new Privilege().withPrivilege("execute"));
+        privileges.add(new Privilege().withPrivilege("view"));
+        List<Permission> permissions = new ArrayList<>();
+        List<String> functionIds = bodyList.stream()
+            .filter(functionsGetResponseBody -> functionsGetResponseBody.getResource()
+                .equalsIgnoreCase("Personal Finance Management"))
+            .map(FunctionsGetResponseBody::getFunctionId)
+            .collect(Collectors.toList());
+        permissions.add(new Permission().withFunctionId(functionIds.get(0)).withAssignedPrivileges(privileges));
+        String functionGroupId = accessGroupService
+            .ingestFunctionGroup(externalServiceAgreementId, "Manage Pockets", "REGULAR", permissions);
+        log.debug("created function group with id {}", functionGroupId);
+
         return response;
     }
 
@@ -78,7 +103,6 @@ public class PocketsConfigurator {
     public void ingestPockets(String externalUserId) {
         log.debug("Going to ingest pockets for user [{}]", externalUserId);
 
-        log.debug("Generating pockets data from json file");
         List<PocketPostRequest> pockets = pocketsReader.load();
 
         for (PocketPostRequest pocketPostRequest : pockets) {

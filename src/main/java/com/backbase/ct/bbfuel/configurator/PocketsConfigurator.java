@@ -53,26 +53,35 @@ public class PocketsConfigurator {
             legalEntity,
             response.getId(), parentPocketArrangement.getName());
 
-        //TODO data group ingestion for above created arrangement must be done.
-        // so first retrieve service agreement with externalLegalEntityId
-        log.debug("getting legalEntityPresentationRestClient.getMasterServiceAgreementOfLegalEntity for [{}]",
-            legalEntity.getId());
+        // TODO problem to solve:
+        // Selected is data in the data group defined in retail/product-group-seed.json by groupname
+        // 'Retail Accounts U.S'
+        // for user defined in retail/legal-entities-with-users.json by role 'retail'
+        // For permissions to work we have to ingest datagroup with the parent pocket arrangement
+        // (from response.getId())
+        // and with the existing groupname 'Retail Accounts U.S'.
+        // This should result in entries in the table accesscontrol_pandp.data_group_item for the datagroup associated
+        // with the groupname and the parent pocket arrangement.
+        //
+        // BUT inserting with the same groupname result in an duplicate error, see access control logs!!!
+        // inserting by hand when halting with breakpoint will work and pockets will be created
+        //
+        // insert into accesscontrol_pandp.data_group_item (data_group_id, data_item_id)
+        // values ('existing data group id', 'parent pocket arrangement id');
+
         String internalServiceAgreementId = this.legalEntityPresentationRestClient
             .getMasterServiceAgreementOfLegalEntity(legalEntity.getId())
             .getId();
-        log.debug("getting serviceAgreementsPresentationRestClient.retrieveServiceAgreement for [{}]",
-            internalServiceAgreementId);
         String externalServiceAgreementId = this.serviceAgreementsPresentationRestClient
             .retrieveServiceAgreement(internalServiceAgreementId)
             .getExternalId();
-        log.debug("Going to ingest a ingest datagroup for service agreement: [{}]", externalServiceAgreementId);
-        //TODO ingest datagroup, hardcoded datagroup name for now from data/retail/legal-entities-with-user.json
         List<String> internalArrangementIds = new ArrayList<>();
         internalArrangementIds.add(response.getId());
         String dataGroupId = accessGroupService
             .ingestDataGroup(externalServiceAgreementId, "Retail Accounts U.S", "ARRANGEMENTS", internalArrangementIds);
         log.debug("created data group with id [{}]", dataGroupId);
 
+        // TODO you probably do not have to ingest function group if above data group is correctly ingested
         log.debug("Going to ingest function group and use hardcoded 'Manage Pockets' as function_group.name");
         List<FunctionsGetResponseBody> bodyList = accessGroupIntegrationRestClient.retrieveFunctions();
         List<Privilege> privileges = new ArrayList<>();

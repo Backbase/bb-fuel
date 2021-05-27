@@ -210,12 +210,15 @@ public class CapabilitiesDataSetup extends BaseSetup {
 
             this.loginRestClient.loginBankAdmin();
             this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
+            // only use legal entities with category 'retail' and users with role 'retail'
             List<User> retailUsers = this.accessControlSetup
                 .getLegalEntitiesWithUsersExcludingSupport()
                 .stream()
                 .filter(legalEntityWithUsers -> legalEntityWithUsers.getCategory().isRetail())
                 .map(LegalEntityWithUsers::getUsers)
                 .flatMap(Collection::stream)
+                .filter(user -> user.getRole().equalsIgnoreCase("retail"))
+                .peek(user -> log.debug("user {}", user))
                 .collect(Collectors.toList());
 
             retailUsers.forEach(retailUser -> {

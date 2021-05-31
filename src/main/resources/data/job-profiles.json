@@ -170,6 +170,15 @@
         ]
       },
       {
+        "businessFunction": "Payment Templates",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete"
+        ]
+      },
+      {
         "businessFunction": "US Domestic Wire - Intracompany",
         "privileges": [
           "view",
@@ -326,6 +335,15 @@
           "delete",
           "approve",
           "cancel"
+        ]
+      },
+      {
+        "businessFunction": "Payment Templates",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete"
         ]
       },
       {
@@ -696,6 +714,15 @@
         ]
       },
       {
+        "businessFunction": "Payment Templates",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete"
+        ]
+      },
+      {
         "businessFunction": "US Billpay Payees-Search",
         "privileges": [
           "execute"
@@ -1045,6 +1072,15 @@
           "delete",
           "approve",
           "cancel"
+        ]
+      },
+      {
+        "businessFunction": "Payment Templates",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete"
         ]
       },
       {

@@ -481,6 +481,50 @@
         "privileges": [
           "execute"
         ]
+      },
+      {
+        "businessFunction": "Batch - SEPA CT",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "Batch - ACH Debit",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "Batch - ACH Credit",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "Batch - Internal Transfer",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
       }
     ]
   },
@@ -727,6 +771,50 @@
         "privileges": [
           "execute"
         ]
+      },
+      {
+        "businessFunction": "Batch - SEPA CT",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "Batch - ACH Debit",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "Batch - ACH Credit",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "Batch - Internal Transfer",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
       }
     ]
   },
@@ -822,17 +910,6 @@
           "view",
           "create",
           "edit"
-        ]
-      },
-      {
-        "businessFunction": "Batch - SEPA CT",
-        "privileges": [
-          "view",
-          "create",
-          "edit",
-          "delete",
-          "approve",
-          "cancel"
         ]
       },
       {
@@ -1159,6 +1236,39 @@
         ]
       },
       {
+        "businessFunction": "Batch - SEPA CT",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "Batch - ACH Credit",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "Batch - Internal Transfer",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
         "businessFunction": "US Domestic Wire",
         "privileges": [
           "view",
@@ -1335,17 +1445,6 @@
         ]
       },
       {
-        "businessFunction": "Batch - ACH Credit",
-        "privileges": [
-          "view",
-          "create",
-          "edit",
-          "delete",
-          "approve",
-          "cancel"
-        ]
-      },
-      {
         "businessFunction": "Support Access for Payments",
         "privileges": [
           "view"
@@ -1440,6 +1539,30 @@
       },
       {
         "businessFunction": "SEPA CT",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Batch - SEPA CT",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Batch - ACH Debit",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Batch - ACH Credit",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Batch - Internal Transfer",
         "privileges": [
           "view"
         ]

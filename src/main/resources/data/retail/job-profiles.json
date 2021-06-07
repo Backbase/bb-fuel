@@ -122,6 +122,14 @@
         ]
       },
       {
+        "businessFunction": "Manage Devices",
+        "privileges": [
+          "view",
+          "edit",
+          "delete"
+        ]
+      },
+      {
         "businessFunction": "Manage Authorized Users",
         "privileges": [
           "view",
@@ -307,6 +315,14 @@
         "businessFunction": "Manage Cards",
         "privileges": [
           "view"
+        ]
+      },
+      {
+        "businessFunction": "Manage Devices",
+        "privileges": [
+          "view",
+          "edit",
+          "delete"
         ]
       },
       {

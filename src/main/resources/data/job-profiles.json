@@ -516,7 +516,18 @@
         ]
       },
       {
-        "businessFunction": "Batch - Internal Transfers",
+        "businessFunction": "Batch - Intracompany Payments",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "Batch Templates",
         "privileges": [
           "view",
           "create",
@@ -806,7 +817,18 @@
         ]
       },
       {
-        "businessFunction": "Batch - Internal Transfers",
+        "businessFunction": "Batch - Intracompany Payments",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "Batch Templates",
         "privileges": [
           "view",
           "create",
@@ -1258,7 +1280,18 @@
         ]
       },
       {
-        "businessFunction": "Batch - Internal Transfers",
+        "businessFunction": "Batch - Intracompany Payments",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "Batch Templates",
         "privileges": [
           "view",
           "create",
@@ -1562,7 +1595,13 @@
         ]
       },
       {
-        "businessFunction": "Batch - Internal Transfers",
+        "businessFunction": "Batch - Intracompany Payments",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Batch Templates",
         "privileges": [
           "view"
         ]

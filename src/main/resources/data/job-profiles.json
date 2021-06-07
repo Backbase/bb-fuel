@@ -516,7 +516,7 @@
         ]
       },
       {
-        "businessFunction": "Batch - Internal Transfer",
+        "businessFunction": "Batch - Internal Transfers",
         "privileges": [
           "view",
           "create",
@@ -806,7 +806,7 @@
         ]
       },
       {
-        "businessFunction": "Batch - Internal Transfer",
+        "businessFunction": "Batch - Internal Transfers",
         "privileges": [
           "view",
           "create",
@@ -1258,7 +1258,7 @@
         ]
       },
       {
-        "businessFunction": "Batch - Internal Transfer",
+        "businessFunction": "Batch - Internal Transfers",
         "privileges": [
           "view",
           "create",
@@ -1562,7 +1562,7 @@
         ]
       },
       {
-        "businessFunction": "Batch - Internal Transfer",
+        "businessFunction": "Batch - Internal Transfers",
         "privileges": [
           "view"
         ]

@@ -533,8 +533,7 @@
           "create",
           "edit",
           "delete",
-          "approve",
-          "cancel"
+          "approve"
         ]
       }
     ]
@@ -834,8 +833,7 @@
           "create",
           "edit",
           "delete",
-          "approve",
-          "cancel"
+          "approve"
         ]
       }
     ]
@@ -1297,8 +1295,7 @@
           "create",
           "edit",
           "delete",
-          "approve",
-          "cancel"
+          "approve"
         ]
       },
       {

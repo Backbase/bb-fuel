@@ -10,6 +10,7 @@ import com.backbase.ct.bbfuel.client.productsummary.ArrangementsIntegrationRestC
 import com.backbase.ct.bbfuel.data.ProductSummaryDataGenerator;
 import com.backbase.ct.bbfuel.dto.ArrangementId;
 import com.backbase.ct.bbfuel.dto.entitlement.ProductGroupSeed;
+import com.backbase.dbs.arrangement.integration.inbound.api.v2.model.Subscription;
 import com.backbase.dbs.arrangement.integration.rest.spec.v2.arrangements.ArrangementsPostResponseBody;
 import com.backbase.dbs.arrangement.integration.rest.spec.v2.balancehistory.BalanceHistoryPostRequestBody;
 import com.backbase.dbs.arrangement.integration.rest.spec.v2.products.ProductsPostRequestBody;
@@ -37,6 +38,7 @@ public class ProductSummaryConfigurator {
         List<ArrangementsPostRequestBody> arrangements = synchronizedList(new ArrayList<>());
         List<ArrangementId> arrangementIds = synchronizedList(new ArrayList<>());
         List<String> productIds = productGroupSeed.getProductIds();
+        String positivePaySubscription = "checks-positive-pay-without-payee-match";
 
         int numberOfArrangements = productGroupSeed.getNumberOfArrangements().getRandomNumberInRange();
         int tenPercentOfTotal = (int) Math.round(numberOfArrangements * 0.1);
@@ -59,6 +61,8 @@ public class ProductSummaryConfigurator {
         arrangements.parallelStream().forEach(arrangement -> {
             ArrangementsPostResponseBody arrangementsPostResponseBody = arrangementsIntegrationRestClient
                 .ingestArrangement(arrangement);
+            arrangementsIntegrationRestClient.postSubscriptions(arrangement.getId(),
+                    new Subscription().identifier(positivePaySubscription));
             log.info("Arrangement [{}] ingested for product [{}] under legal entity [{}]",
                 arrangement.getName(), arrangement.getProductId(), externalLegalEntityId);
             arrangementIds.add(new ArrangementId(arrangementsPostResponseBody.getId(), arrangement.getId()));

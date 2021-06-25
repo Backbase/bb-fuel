@@ -25,7 +25,7 @@ bb-fuel:
     legalentity: access-control
     limits: limit
     messages: messages-service
-    notifications: notifications
+    notifications: notifications-service
     payments: payment-order-service
     pfm: transaction-category-collector
     user: user-manager

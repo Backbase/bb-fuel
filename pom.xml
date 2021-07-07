@@ -48,6 +48,7 @@
 
         <service-sdk.version>11.0.0</service-sdk.version>
         <common-types.version>1.0.5</common-types.version>
+        <specs-server-id>Backbase Artifact Repository</specs-server-id>
     </properties>
 
     <dependencyManagement>
@@ -299,6 +300,7 @@
                         </goals>
                         <phase>generate-sources</phase>
                         <configuration>
+                            <serverId>${specs-server-id}</serverId>
                             <url>https://repo.backbase.com/specs/access-control</url>
                             <fromFile>access-control-client-api-v2.6.0.yaml</fromFile>
                         </configuration>
@@ -310,6 +312,7 @@
                         </goals>
                         <phase>generate-sources</phase>
                         <configuration>
+                            <serverId>${specs-server-id}</serverId>
                             <url>https://repo.backbase.com/specs/accessgroup-integration-service</url>
                             <fromFile>accessgroup-integration-inbound-api-v2.2.0.yaml</fromFile>
                         </configuration>
@@ -322,6 +325,7 @@
                         </goals>
                         <phase>generate-sources</phase>
                         <configuration>
+                            <serverId>${specs-server-id}</serverId>
                             <url>https://repo.backbase.com/specs/legalentity-integration-service</url>
                             <fromFile>legalentity-integration-inbound-api-v2.1.0.yaml</fromFile>
                         </configuration>
@@ -334,6 +338,7 @@
                         </goals>
                         <phase>generate-sources</phase>
                         <configuration>
+                            <serverId>${specs-server-id}</serverId>
                             <url>https://repo.backbase.com/specs/action</url>
                             <fromFile>action-client-api-v2.0.0.yaml</fromFile>
                         </configuration>
@@ -346,6 +351,7 @@
                         </goals>
                         <phase>generate-sources</phase>
                         <configuration>
+                            <serverId>${specs-server-id}</serverId>
                             <url>https://repo.backbase.com/specs/billpay-integrator</url>
                             <fromFile>billpay-integration-external-provider-outbound-api-v2.0.0.yaml</fromFile>
                         </configuration>
@@ -358,6 +364,7 @@
                         </goals>
                         <phase>generate-sources</phase>
                         <configuration>
+                            <serverId>${specs-server-id}</serverId>
                             <url>https://repo.backbase.com/specs/transaction-manager</url>
                             <fromFile>transaction-manager-integration-inbound-api-v2.0.0.yaml</fromFile>
                         </configuration>
@@ -370,6 +377,7 @@
                         </goals>
                         <phase>generate-sources</phase>
                         <configuration>
+                            <serverId>${specs-server-id}</serverId>
                             <url>https://repo.backbase.com/specs/transaction-category-collector</url>
                             <fromFile>transaction-category-collector-client-api-v2.0.0.yaml</fromFile>
                         </configuration>
@@ -382,6 +390,7 @@
                         </goals>
                         <phase>generate-sources</phase>
                         <configuration>
+                            <serverId>${specs-server-id}</serverId>
                             <url>https://repo.backbase.com/specs/positive-pay</url>
                             <fromFile>positive-pay-client-api-v1.0.0.yaml</fromFile>
                         </configuration>
@@ -393,6 +402,7 @@
                         </goals>
                         <phase>generate-sources</phase>
                         <configuration>
+                            <serverId>${specs-server-id}</serverId>
                             <url>https://repo.backbase.com/specs/arrangement-manager</url>
                             <fromFile>arrangement-integration-inbound-api-v2.2.0.yaml</fromFile>
                         </configuration>

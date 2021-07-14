@@ -3,6 +3,9 @@ package com.backbase.ct.bbfuel.client.productsummary;
 import static com.backbase.ct.bbfuel.data.CommonConstants.ACH_DEBIT_FUNCTION_NAME;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PAYMENTS_RESOURCE_NAME;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PRIVILEGE_CREATE;
+import static com.backbase.ct.bbfuel.data.CommonConstants.PRIVILEGE_VIEW;
+import static com.backbase.ct.bbfuel.data.CommonConstants.PRODUCT_SUMMARY_FUNCTION_NAME;
+import static com.backbase.ct.bbfuel.data.CommonConstants.PRODUCT_SUMMARY_RESOURCE_NAME;
 import static com.backbase.ct.bbfuel.data.CommonConstants.SEPA_CT_FUNCTION_NAME;
 import static com.backbase.ct.bbfuel.data.CommonConstants.US_DOMESTIC_WIRE_FUNCTION_NAME;
 import static com.backbase.ct.bbfuel.data.CommonConstants.US_FOREIGN_WIRE_FUNCTION_NAME;
@@ -35,6 +38,19 @@ public class ProductSummaryPresentationRestClient extends RestClient {
         setBaseUri(config.getPlatform().getGateway());
         setVersion(SERVICE_VERSION);
         setInitialPath(config.getDbsServiceNames().getProducts() + "/" + CLIENT_API);
+    }
+
+    public List<ArrangementsByBusinessFunctionGetResponseBody> getProductSummaryArrangements() {
+        return Arrays.asList(getProductSummaryContextArrangements(new ProductSummaryQueryParameters()
+            .withBusinessFunction(PRODUCT_SUMMARY_FUNCTION_NAME)
+            .withResourceName(PRODUCT_SUMMARY_RESOURCE_NAME)
+            .withPrivilege(PRIVILEGE_VIEW)
+            .withSize(999)
+            .withOrderBy("name"))
+            .then()
+            .statusCode(SC_OK)
+            .extract()
+            .as(ArrangementsByBusinessFunctionGetResponseBody[].class));
     }
 
     public List<ArrangementsByBusinessFunctionGetResponseBody> getSepaCtArrangements() {

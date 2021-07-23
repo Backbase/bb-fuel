@@ -24,7 +24,7 @@
       <repositories>
         <repository>
           <id>Backbase Artifactory Repository</id>
-          <url>https://repo.backbase.com/artifactory</url>
+          <url>https://repo.backbase.com/repo</url>
           <releases>
             <updatePolicy>always</updatePolicy>
           </releases>
@@ -33,7 +33,7 @@
       <pluginRepositories>
         <pluginRepository>
           <id>Backbase Artifactory Repository</id>
-          <url>https://repo.backbase.com/artifactory</url>
+          <url>https://repo.backbase.com/repo</url>
           <releases>
             <updatePolicy>always</updatePolicy>
           </releases>

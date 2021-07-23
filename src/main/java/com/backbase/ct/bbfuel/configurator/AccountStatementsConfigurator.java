@@ -4,7 +4,6 @@ import com.backbase.ct.bbfuel.client.accessgroup.UserContextPresentationRestClie
 import com.backbase.ct.bbfuel.client.accountstatement.AccountStatementsIntegrationMockServiceApiClient;
 import com.backbase.ct.bbfuel.client.common.LoginRestClient;
 import com.backbase.ct.bbfuel.client.productsummary.ProductSummaryPresentationRestClient;
-import com.backbase.ct.bbfuel.dto.UserContext;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
 import com.backbase.dbs.productsummary.presentation.rest.spec.v2.productsummary.ArrangementsByBusinessFunctionGetResponseBody;
 
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.IntStream;
 
 import static com.backbase.ct.bbfuel.data.AccountStatementDataGenerator.generateAccountStatementsRequests;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ACCOUNTSTATEMENTS_MAX;
@@ -43,6 +41,7 @@ public class AccountStatementsConfigurator {
         loginRestClient.login(externalUserId, externalUserId);
         userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
+        arrangements.addAll(productSummaryPresentationRestClient.getProductSummaryArrangements());
         arrangements.addAll(productSummaryPresentationRestClient.getSepaCtArrangements());
         arrangements.addAll(productSummaryPresentationRestClient.getUsDomesticWireArrangements());
         arrangements.addAll(productSummaryPresentationRestClient.getAchDebitArrangements());

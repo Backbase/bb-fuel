@@ -4,18 +4,17 @@ import static com.backbase.ct.bbfuel.util.CommonHelpers.generateRandomAmountInRa
 import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
 import static java.util.Arrays.asList;
 
-import com.backbase.dbs.action.client.v2.model.ActionRecipesPostRequestBodyParent;
 import com.backbase.dbs.action.client.v2.model.ActionParent;
-import com.backbase.dbs.action.client.v2.model.ActionRecipeItemParent;
+import com.backbase.dbs.action.client.v2.model.ActionRecipesPostRequestBodyParent;
 import com.github.javafaker.Faker;
+
 import java.util.List;
-import java.util.Random;
 
 public class ActionsDataGenerator {
 
     private static Faker faker = new Faker();
 
-    public static ActionRecipeItemParent generateActionRecipesPostRequestBody(String internalArrangementId) {
+    public static ActionRecipesPostRequestBodyParent generateActionRecipesPostRequestBody(String internalArrangementId) {
         List<String> specificationIds = asList("1", "4");
 
         return new ActionRecipesPostRequestBodyParent()

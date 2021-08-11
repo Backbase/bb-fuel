@@ -15,8 +15,8 @@
       "1","2", "4", "7"
     ],
     "numberOfArrangements": {
-      "min": 3,
-      "max": 4
+      "min": 8,
+      "max": 10
     },
     "numberOfDebitCards": {
       "min": 1,

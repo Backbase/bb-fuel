@@ -180,6 +180,15 @@
         ]
       },
       {
+        "businessFunction": "Payment Templates",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete"
+        ]
+      },
+      {
         "businessFunction": "US Domestic Wire - Intracompany",
         "privileges": [
           "view",
@@ -339,6 +348,15 @@
         ]
       },
       {
+        "businessFunction": "Payment Templates",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete"
+        ]
+      },
+      {
         "businessFunction": "SEPA CT - Intracompany",
         "privileges": [
           "view",
@@ -472,6 +490,60 @@
         "businessFunction": "US Billpay Payees-Search",
         "privileges": [
           "execute"
+        ]
+      },
+      {
+        "businessFunction": "Batch - SEPA CT",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "Batch - ACH Debit",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "Batch - ACH Credit",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "Batch - Intracompany Payments",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "Batch Templates",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve"
         ]
       }
     ]
@@ -706,9 +778,72 @@
         ]
       },
       {
+        "businessFunction": "Payment Templates",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete"
+        ]
+      },
+      {
         "businessFunction": "US Billpay Payees-Search",
         "privileges": [
           "execute"
+        ]
+      },
+      {
+        "businessFunction": "Batch - SEPA CT",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "Batch - ACH Debit",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "Batch - ACH Credit",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "Batch - Intracompany Payments",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "Batch Templates",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve"
         ]
       }
     ]
@@ -815,17 +950,6 @@
           "view",
           "create",
           "edit"
-        ]
-      },
-      {
-        "businessFunction": "Batch - SEPA CT",
-        "privileges": [
-          "view",
-          "create",
-          "edit",
-          "delete",
-          "approve",
-          "cancel"
         ]
       },
       {
@@ -1068,6 +1192,15 @@
         ]
       },
       {
+        "businessFunction": "Payment Templates",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete"
+        ]
+      },
+      {
         "businessFunction": "Manage Global Limits",
         "privileges": [
           "view",
@@ -1140,6 +1273,49 @@
           "delete",
           "approve",
           "cancel"
+        ]
+      },
+      {
+        "businessFunction": "Batch - SEPA CT",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "Batch - ACH Credit",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "Batch - Intracompany Payments",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "Batch Templates",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve"
         ]
       },
       {
@@ -1319,17 +1495,6 @@
         ]
       },
       {
-        "businessFunction": "Batch - ACH Credit",
-        "privileges": [
-          "view",
-          "create",
-          "edit",
-          "delete",
-          "approve",
-          "cancel"
-        ]
-      },
-      {
         "businessFunction": "Support Access for Payments",
         "privileges": [
           "view"
@@ -1424,6 +1589,36 @@
       },
       {
         "businessFunction": "SEPA CT",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Batch - SEPA CT",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Batch - ACH Debit",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Batch - ACH Credit",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Batch - Intracompany Payments",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Batch Templates",
         "privileges": [
           "view"
         ]

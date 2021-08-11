@@ -9,6 +9,7 @@ import com.backbase.dbs.arrangement.integration.rest.spec.v2.arrangements.Arrang
 import com.backbase.dbs.arrangement.integration.rest.spec.v2.balancehistory.BalanceHistoryPostRequestBody;
 import com.backbase.dbs.arrangement.integration.rest.spec.v2.products.ProductsPostRequestBody;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBody;
+import com.backbase.dbs.arrangement.integration.inbound.api.v2.model.Subscription;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import javax.annotation.PostConstruct;
@@ -27,6 +28,7 @@ public class ArrangementsIntegrationRestClient extends RestClient {
     private static final String ENDPOINT_ARRANGEMENTS = "/arrangements";
     private static final String ENDPOINT_PRODUCTS = "/products";
     private static final String ENDPOINT_BALANCE_HISTORY = "/balance-history";
+    private static final String ENDPOINT_SUBSCRIPTION = "/subscriptions";
 
     @PostConstruct
     public void init() {
@@ -70,5 +72,12 @@ public class ArrangementsIntegrationRestClient extends RestClient {
             .contentType(ContentType.JSON)
             .body(body)
             .post(getPath(ENDPOINT_PRODUCTS));
+    }
+
+    public Response postSubscriptions(String externalArrangementId, Subscription subscription) {
+        return requestSpec()
+                .contentType(ContentType.JSON)
+                .body(subscription)
+                .post(getPath(ENDPOINT_ARRANGEMENTS) + "/" + externalArrangementId + ENDPOINT_SUBSCRIPTION);
     }
 }

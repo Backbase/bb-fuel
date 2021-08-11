@@ -46,6 +46,8 @@ public class ProductSummaryDataGenerator {
     private static final String EUR = "EUR";
     private static final ConcurrentLinkedQueue<String> staticCurrentAccountArrangementsQueue =
         new ConcurrentLinkedQueue<>();
+    private static final ConcurrentLinkedQueue<String> staticNotCurrentAccountArrangementsQueue =
+        new ConcurrentLinkedQueue<>();
 
     static {
         List<String> allowed = asList("AT", "BE", "BG", "CH", "CY", "CZ", "DE", "DK", "EE", "ES", "FI", "FR", "GB",
@@ -59,9 +61,17 @@ public class ProductSummaryDataGenerator {
             }
         }
 
-        String propertyValue = GlobalProperties.getInstance()
+        String currentAccountArrangementIds = GlobalProperties.getInstance()
             .getString(CommonConstants.PROPERTY_ARRANGEMENT_CURRENT_ACCOUNT_EXTERNAL_IDS);
-        Splitter.on(',').trimResults().split(propertyValue).forEach(staticCurrentAccountArrangementsQueue::add);
+        Splitter.on(',').trimResults().split(currentAccountArrangementIds)
+            .forEach(staticCurrentAccountArrangementsQueue::add);
+
+        String notCurrentAccountArrangementIds = GlobalProperties.getInstance()
+            .getString(CommonConstants.PROPERTY_ARRANGEMENT_NOT_CURRENT_ACCOUNT_EXTERNAL_IDS);
+        if (notCurrentAccountArrangementIds != null) {
+            Splitter.on(',').trimResults().split(notCurrentAccountArrangementIds)
+                .forEach(staticNotCurrentAccountArrangementsQueue::add);
+        }
     }
 
     static String generateRandomIban() {
@@ -141,13 +151,39 @@ public class ProductSummaryDataGenerator {
             String currency = getRandomFromList(productGroupSeed.getCurrencies());
             String productId = getRandomFromList(productGroupSeed.getProductIds());
             String arrangementName = getProductTypeNameFromProductsInputFile(productId);
+            Optional<String> externalArrangementId =
+                getNotCurrentAccountArrangementExternalId(externalLegalEntityId, productId);
             ArrangementsPostRequestBody arrangementsPostRequestBody = getArrangementsPostRequestBody(
-                Optional.empty(), externalLegalEntityId, arrangementName, currency, productId);
+                externalArrangementId, externalLegalEntityId, arrangementName, currency,
+                Integer.parseInt(productId));
 
             arrangementsPostRequestBodies.add(arrangementsPostRequestBody);
         });
 
         return arrangementsPostRequestBodies;
+    }
+
+    private static Optional<String> getNotCurrentAccountArrangementExternalId(String externalLegalEntityId,
+        String productId) {
+
+        if (isIdSuitableForStaticNotCurrentAccountArrangementExternalId(externalLegalEntityId)
+            && isProductIdSuitableForStaticNotCurrentAccountArrangementExternalId(productId)) {
+            return Optional.ofNullable(staticNotCurrentAccountArrangementsQueue.poll());
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    private static boolean isIdSuitableForStaticNotCurrentAccountArrangementExternalId(String externalLegalEntityId) {
+        String limitByLegalEntityExternalId = GlobalProperties.getInstance()
+            .getString(CommonConstants.PROPERTY_ARRANGEMENT_NOT_CURRENT_ACCOUNT_LEGAL_ENTITY_EXTERNAL_ID_LIMIT);
+        return (limitByLegalEntityExternalId == null || externalLegalEntityId.equals(limitByLegalEntityExternalId));
+    }
+
+    private static boolean isProductIdSuitableForStaticNotCurrentAccountArrangementExternalId(String productId) {
+        String limitByProductId = GlobalProperties.getInstance()
+            .getString(CommonConstants.PROPERTY_ARRANGEMENT_NOT_CURRENT_ACCOUNT_PRODUCT_ID_LIMIT);
+        return (limitByProductId == null || productId.equals(limitByProductId));
     }
 
     private static ArrangementsPostRequestBody getArrangementsPostRequestBody(Optional<String> externalArrangementId,

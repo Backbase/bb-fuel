@@ -14,6 +14,9 @@ import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_LIMITS
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_MESSAGES;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_NOTIFICATIONS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_PAYMENTS;
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_ACCOUNT_STATEMENTS;
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ACCOUNTSTATEMENTS_USERS;
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_POSITIVE_PAY_CHECKS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_POCKETS;
 import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
 import static java.util.Collections.singletonList;
@@ -31,8 +34,9 @@ import com.backbase.ct.bbfuel.configurator.LimitsConfigurator;
 import com.backbase.ct.bbfuel.configurator.MessagesConfigurator;
 import com.backbase.ct.bbfuel.configurator.NotificationsConfigurator;
 import com.backbase.ct.bbfuel.configurator.PaymentsConfigurator;
-import com.backbase.ct.bbfuel.configurator.PocketsConfigurator;
-import com.backbase.ct.bbfuel.dto.LegalEntityWithUsers;
+import com.backbase.ct.bbfuel.configurator.AccountStatementsConfigurator;
+import com.backbase.ct.bbfuel.configurator.PositivePayConfigurator;
+import com.backbase.ct.bbfuel.configurator.PocketsConfigurator;import com.backbase.ct.bbfuel.dto.LegalEntityWithUsers;
 import com.backbase.ct.bbfuel.dto.User;
 import com.backbase.ct.bbfuel.dto.UserContext;
 import com.backbase.ct.bbfuel.service.LegalEntityService;
@@ -67,6 +71,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
     private final PocketsConfigurator pocketsConfigurator;
     private final LegalEntityService legalEntityService;
     private final AccountStatementsConfigurator accountStatementsConfigurator;
+    private final PositivePayConfigurator positivePayConfigurator;
     private final UserPresentationRestClient userPresentationRestClient;
     private final PocketTailorActuatorClient pocketTailorActuatorClient;
 
@@ -86,6 +91,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
         this.ingestBillPayUsers();
         this.ingestPockets();
         this.ingestAccountStatementForSelectedUser();
+        this.ingestPositivePayChecksForSelectedUser();
     }
 
     private void ingestApprovals() {
@@ -243,6 +249,16 @@ public class CapabilitiesDataSetup extends BaseSetup {
             Splitter.on(';').trimResults().split(externalUserIds).forEach(externalUserId -> {
                 this.accountStatementsConfigurator.ingestAccountStatements(externalUserId);
             });
+         }
+     }
+
+    private void ingestPositivePayChecksForSelectedUser() {
+        if (this.globalProperties.getBoolean(PROPERTY_INGEST_POSITIVE_PAY_CHECKS)) {
+            this.accessControlSetup.getLegalEntitiesWithUsersExcludingSupportAndEmployee().stream()
+                    .map(LegalEntityWithUsers::getUserExternalIds)
+                    .flatMap(List::stream)
+                    .collect(Collectors.toList())
+                    .forEach(this.positivePayConfigurator::ingestPositivePayChecks);
         }
     }
 }

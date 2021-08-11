@@ -1,6 +1,8 @@
 package com.backbase.ct.bbfuel.util;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import org.apache.commons.lang.StringUtils;
@@ -18,6 +20,13 @@ public class CommonHelpers {
         long clamp = max * 10 - min * 10;
         long value = Math.abs((ThreadLocalRandom.current().nextLong() % clamp));
         return new BigDecimal("" + ((value / 10D) + min)).setScale(2, BigDecimal.ROUND_HALF_UP);
+    }
+
+    public static LocalDate generateRandomDateInRange(LocalDate min , LocalDate max)
+    {
+        long days = min.until(max, ChronoUnit.DAYS);
+        long randomDays = ThreadLocalRandom.current().nextLong(days + 1);
+        return min.plusDays(randomDays);
     }
 
     public static <T> T getRandomFromList(List<T> list) {

@@ -9,7 +9,7 @@
 
     <groupId>com.backbase.ct</groupId>
     <artifactId>bb-fuel</artifactId>
-    <version>2.6.60-SNAPSHOT</version>
+    <version>2.6.63-SNAPSHOT</version>
     <name>Backbase :: Capability Testing :: bb-fuel</name>
 
     <scm>
@@ -398,7 +398,29 @@
                             <fromFile>arrangement-integration-outbound-origination-api-v1.0.3.yaml</fromFile>
                         </configuration>
                     </execution>
-                </executions>
+
+                    <execution>
+                        <id>download-positive-pay-client-api</id>
+                        <goals>
+                            <goal>download-single</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <url>https://repo.backbase.com/specs/positive-pay</url>
+                            <fromFile>positive-pay-client-api-v1.0.0.yaml</fromFile>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>download-arrangement-integration-inbound-api</id>
+                        <goals>
+                            <goal>download-single</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <url>https://repo.backbase.com/specs/arrangement-manager</url>
+                            <fromFile>arrangement-integration-inbound-api-v2.2.0.yaml</fromFile>
+                        </configuration>
+                    </execution>                </executions>
             </plugin>
 
             <plugin>
@@ -540,7 +562,35 @@
                             </configOptions>
                         </configuration>
                     </execution>
-                </executions>
+
+                    <execution>
+                        <id>generate-positive-pay-client-code</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${api.target}/positive-pay-client-api-v1.0.0.yaml</inputSpec>
+                            <configOptions>
+                                <apiPackage>com.backbase.dbs.positivepay.client.api.v1</apiPackage>
+                                <modelPackage>com.backbase.dbs.positivepay.client.api.v1.model</modelPackage>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>generate-arrangement-integration-inbound-api</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <inputSpec>${api.target}/arrangement-integration-inbound-api-v2.2.0.yaml</inputSpec>
+                            <configOptions>
+                                <apiPackage>com.backbase.dbs.arrangement.integration.inbound.api.v2</apiPackage>
+                                <modelPackage>com.backbase.dbs.arrangement.integration.inbound.api.v2.model</modelPackage>
+                            </configOptions>
+                        </configuration>
+                    </execution>                </executions>
             </plugin>
 
             <plugin>

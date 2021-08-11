@@ -1,0 +1,22 @@
+[
+  {
+    "productGroupName": "Loans",
+    "currencies": [
+      "USD"
+    ],
+    "currentAccountNames": [
+      "Current Account"
+    ],
+    "productIds": [
+      "5"
+    ],
+    "numberOfArrangements": {
+      "min": 14,
+      "max": 14
+    },
+    "numberOfDebitCards": {
+      "min": 0,
+      "max": 0
+    }
+  }
+]

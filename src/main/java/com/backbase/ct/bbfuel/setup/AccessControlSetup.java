@@ -103,6 +103,16 @@ public class AccessControlSetup extends BaseSetup {
             .collect(Collectors.toList());
     }
 
+    public List<LegalEntityWithUsers> getLegalEntitiesWithUsersExcludingSupportAndEmployee() {
+       List<LegalEntityWithUsers> legalEntityWithUsers = getLegalEntitiesWithUsersExcludingSupport()
+                .stream()
+                .filter(legalEntities -> legalEntities.getUsers()
+                        .stream()
+                        .noneMatch(user -> "employee".equals(user.getRole())))
+                .collect(Collectors.toList());
+       return legalEntityWithUsers;
+    }
+
     /**
      * Prepare the environment before ingesting the entities.
      */

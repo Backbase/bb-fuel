@@ -26,6 +26,7 @@ public final class CommonConstants {
     // Entitlements
     static final String EXTERNAL_LEGAL_ENTITY_ID_PREFIX = "C00000";
     public static final String EXTERNAL_ROOT_LEGAL_ENTITY_ID = EXTERNAL_LEGAL_ENTITY_ID_PREFIX + "0";
+    public static final String PRODUCT_SUMMARY_FUNCTION_NAME = "Product Summary";
     public static final String SEPA_CT_FUNCTION_NAME = "SEPA CT";
     public static final String SEPA_CT_INTRACOMPANY_FUNCTION_NAME = "SEPA CT - Intracompany";
     public static final String ACH_DEBIT_FUNCTION_NAME = "ACH Debit";
@@ -34,6 +35,7 @@ public final class CommonConstants {
     public static final String US_DOMESTIC_WIRE_INTRACOMPANY_FUNCTION_NAME = "US Domestic Wire - Intracompany";
     public static final String US_FOREIGN_WIRE_FUNCTION_NAME = "US Foreign Wire";
     public static final String US_FOREIGN_WIRE_INTRACOMPANY_FUNCTION_NAME = "US Foreign Wire - Intracompany";
+    public static final String PRODUCT_SUMMARY_RESOURCE_NAME = "Product Summary";
     public static final String PAYMENTS_RESOURCE_NAME = "Payments";
     public static final String CONTACTS_RESOURCE_NAME = "Contacts";
     public static final String NOTIFICATIONS_RESOURCE_NAME = "Notifications";
@@ -42,6 +44,7 @@ public final class CommonConstants {
     public static final String BATCH_RESOURCE_NAME = "Batch";
     public static final String BATCH_SEPA_CT_FUNCTION_NAME = "Batch - SEPA CT";
     public static final String PRIVILEGE_CREATE = "create";
+    public static final String PRIVILEGE_VIEW = "view";
     public static final String PROPERTY_INGEST_ACCESS_CONTROL = "ingest.access.control";
     public static final String PROPERTY_INGEST_CUSTOM_SERVICE_AGREEMENTS = "ingest.custom.service.agreements";
     public static final String PROPERTY_JOB_PROFILES_JSON_LOCATION = "job.profiles.json";
@@ -81,11 +84,19 @@ public final class CommonConstants {
     public static final String PROPERTY_ACCOUNTSTATEMENTS_MIN = "accountStatement.min";
     public static final String PROPERTY_ACCOUNTSTATEMENTS_MAX = "accountStatement.max";
     public static final String PROPERTY_ACCOUNTSTATEMENTS_USERS = "accountStatement.externalUserIds";
+    public static final String PROPERTY_INGEST_POSITIVE_PAY_CHECKS = "ingest.positivePay";
+    public static final String PROPERTY_POSITIVEPAY_MIN = "positivePay.min";
+    public static final String PROPERTY_POSITIVEPAY_MAX = "positivePay.max";
     public static final String PROPERTY_INGEST_POCKETS = "ingest.pockets";
 
     // Product summary
     public static final String PROPERTY_PRODUCTS_JSON_LOCATION = "products.json";
     public static final String PROPERTY_ARRANGEMENT_CURRENT_ACCOUNT_EXTERNAL_IDS = "arrangement.currentaccount.externalIds";
+    public static final String PROPERTY_ARRANGEMENT_NOT_CURRENT_ACCOUNT_EXTERNAL_IDS = "arrangement.not.currentaccount.externalIds";
+    public static final String PROPERTY_ARRANGEMENT_NOT_CURRENT_ACCOUNT_LEGAL_ENTITY_EXTERNAL_ID_LIMIT =
+        "arrangement.not.currentaccount.legal.entity.externalId.limit";
+    public static final String PROPERTY_ARRANGEMENT_NOT_CURRENT_ACCOUNT_PRODUCT_ID_LIMIT =
+        "arrangement.not.currentaccount.productId.limit";
 
     // Payments
     public static final String PAYMENT_TYPE_SEPA_CREDIT_TRANSFER = "SEPA_CREDIT_TRANSFER";

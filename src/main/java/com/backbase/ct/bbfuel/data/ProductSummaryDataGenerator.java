@@ -154,8 +154,7 @@ public class ProductSummaryDataGenerator {
             Optional<String> externalArrangementId =
                 getNotCurrentAccountArrangementExternalId(externalLegalEntityId, productId);
             ArrangementsPostRequestBody arrangementsPostRequestBody = getArrangementsPostRequestBody(
-                externalArrangementId, externalLegalEntityId, arrangementName, currency,
-                Integer.parseInt(productId));
+                externalArrangementId, externalLegalEntityId, arrangementName, currency, productId);
 
             arrangementsPostRequestBodies.add(arrangementsPostRequestBody);
         });

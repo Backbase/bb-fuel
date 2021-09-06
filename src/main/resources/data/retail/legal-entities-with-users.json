@@ -11,6 +11,16 @@
   	"category": "RETAIL",
     "users": [
       {
+        "externalId": "pocket",
+        "role": "pocket",
+        "productGroupNames": ["Retail Pocket"]
+      }
+    ]
+  },
+  {
+  	"category": "RETAIL",
+    "users": [
+      {
         "externalId": "user",
         "role": "retail",
         "productGroupNames": ["Retail Accounts U.S"]

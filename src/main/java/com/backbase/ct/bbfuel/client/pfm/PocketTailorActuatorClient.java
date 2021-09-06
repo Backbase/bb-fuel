@@ -3,7 +3,6 @@ package com.backbase.ct.bbfuel.client.pfm;
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
 import com.backbase.dbs.accesscontrol.client.v2.model.LegalEntityBase;
-import com.backbase.dbs.arrangement.integration.rest.spec.v2.arrangements.ArrangementsPostResponseBody;
 import io.restassured.http.ContentType;
 import javax.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
@@ -23,10 +22,15 @@ public class PocketTailorActuatorClient extends RestClient {
         setBaseUri(config.getDbs().getPockets().replace("/client-api", "/actuator"));
     }
 
-    public void createArrangedLegalEntity(ArrangementsPostResponseBody arrangement, LegalEntityBase legalEntity) {
+    /**
+     * Create entry in table pocket_tailor.arranged_legal_entity
+     * @param arrangementId arrangement id
+     * @param legalEntity legal entity
+     */
+    public void createArrangedLegalEntity(String arrangementId, LegalEntityBase legalEntity) {
         requestSpec()
             .contentType(ContentType.JSON)
-            .body(new ArrangedLegalEntityRequest(arrangement.getId(), legalEntity.getId()))
+            .body(new ArrangedLegalEntityRequest(arrangementId, legalEntity.getId()))
             .post("/arranged-legal-entities")
             .then().statusCode(HttpStatus.SC_NO_CONTENT);
     }

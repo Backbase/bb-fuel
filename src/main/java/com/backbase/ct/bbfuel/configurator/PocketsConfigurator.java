@@ -1,6 +1,5 @@
 package com.backbase.ct.bbfuel.configurator;
 
-import com.backbase.ct.bbfuel.client.accessgroup.AccessGroupIntegrationRestClient;
 import com.backbase.ct.bbfuel.client.accessgroup.ServiceAgreementsPresentationRestClient;
 import com.backbase.ct.bbfuel.client.legalentity.LegalEntityPresentationRestClient;
 import com.backbase.ct.bbfuel.client.pfm.PocketsRestClient;
@@ -12,15 +11,12 @@ import com.backbase.dbs.accesscontrol.client.v2.model.LegalEntityBase;
 import com.backbase.dbs.arrangement.integration.rest.spec.v2.arrangements.ArrangementsPostResponseBody;
 import com.backbase.dbs.pocket.tailor.client.v2.model.Pocket;
 import com.backbase.dbs.pocket.tailor.client.v2.model.PocketPostRequest;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.config.functions.FunctionsGetResponseBody;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.Permission;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.Privilege;
 import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBody;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -34,74 +30,39 @@ public class PocketsConfigurator {
     private final LegalEntityPresentationRestClient legalEntityPresentationRestClient;
     private final ServiceAgreementsPresentationRestClient serviceAgreementsPresentationRestClient;
     private final AccessGroupService accessGroupService;
-    private final AccessGroupIntegrationRestClient accessGroupIntegrationRestClient;
 
     /**
      * Ingest pocket parent arrangement.
      *
-     * @param legalEntity legalEntity
+     * @param legalEntity legal entity
+     * @return pocket parent arrangement id as String
      */
-    public ArrangementsPostResponseBody ingestPocketParentArrangement(LegalEntityBase legalEntity) {
-        log.debug("Going to ingest a parent pocket arrangement for external legal entity ID: [{}]",
-            legalEntity);
-        ArrangementsPostRequestBody parentPocketArrangement = ProductSummaryDataGenerator
-            .generateParentPocketArrangement(legalEntity.getExternalId());
-        ArrangementsPostResponseBody response = arrangementsIntegrationRestClient
-            .ingestArrangement(parentPocketArrangement);
+    public String ingestPocketParentArrangementAndSetEntitlements(LegalEntityBase legalEntity) {
+        // -> creating parent pocket arrangement for legal entity
+        log.debug("Going to ingest a parent pocket arrangement for external legal entity ID: [{}]", legalEntity);
 
-        log.info("Parent pocket arrangement ingested for external legal entity ID [{}]: ID {}, name: {}",
-            legalEntity,
-            response.getId(), parentPocketArrangement.getName());
+        String parentPocketArrangementId = null;
+        ArrangementsPostResponseBody arrangementsPostResponseBody = ingestParentPocketArrangement(legalEntity);
 
-        // TODO problem to solve:
-        // Selected is data in the data group defined in retail/product-group-seed.json by groupname
-        // 'Retail Accounts U.S'
-        // for user defined in retail/legal-entities-with-users.json by role 'retail'
-        // For permissions to work we have to ingest datagroup with the parent pocket arrangement
-        // (from response.getId())
-        // and with the existing groupname 'Retail Accounts U.S'.
-        // This should result in entries in the table accesscontrol_pandp.data_group_item for the datagroup associated
-        // with the groupname and the parent pocket arrangement.
-        //
-        // BUT inserting with the same groupname result in an duplicate error, see access control logs!!!
-        // inserting by hand when halting with breakpoint will work and pockets will be created
-        //
-        // insert into accesscontrol_pandp.data_group_item (data_group_id, data_item_id)
-        // values ('existing data group id', 'parent pocket arrangement id');
+        if (arrangementsPostResponseBody != null
+            && StringUtils.isNotEmpty(arrangementsPostResponseBody.getId())) {
+            parentPocketArrangementId = arrangementsPostResponseBody.getId();
+            log.info("Parent pocket arrangement ingested for external legal entity ID [{}]: ID {}",
+                legalEntity, parentPocketArrangementId);
+        }
 
-        String internalServiceAgreementId = this.legalEntityPresentationRestClient
-            .getMasterServiceAgreementOfLegalEntity(legalEntity.getId())
-            .getId();
-        String externalServiceAgreementId = this.serviceAgreementsPresentationRestClient
-            .retrieveServiceAgreement(internalServiceAgreementId)
-            .getExternalId();
-        List<String> internalArrangementIds = new ArrayList<>();
-        internalArrangementIds.add(response.getId());
-        String dataGroupId = accessGroupService
-            .ingestDataGroup(externalServiceAgreementId, "Retail Accounts U.S", "ARRANGEMENTS", internalArrangementIds);
-        log.debug("created data group with id [{}]", dataGroupId);
+        if (parentPocketArrangementId != null) {
+            // -> Now setting entitlements by dataGroup (functionGroup is already managed by setting
+            //      permissions in retail/job-profiles.json: jobProfileName: Admin )
+            // -> Updating dataGroup makes the method accessControlClient.verifyCreateAccessToArrangement(arrangementId)
+            //      in PocketTailorServiceImpl succeed, by returning all relevant arrangements with
+            //      usersApi.getArrangementPrivileges
+            // -> Updating functionGroup makes @PreAuthorize("checkPermission... in PocketTailorServiceImpl work, by
+            //      AccessControlValidatorImpl.checkPermissions succeed
+            updateDataGroupForPockets(parentPocketArrangementId, legalEntity);
+        }
 
-        // TODO you probably do not have to ingest function group if above data group is correctly ingested
-        log.debug("Going to ingest function group and use hardcoded 'Manage Pockets' as function_group.name");
-        List<FunctionsGetResponseBody> bodyList = accessGroupIntegrationRestClient.retrieveFunctions();
-        List<Privilege> privileges = new ArrayList<>();
-        privileges.add(new Privilege().withPrivilege("create"));
-        privileges.add(new Privilege().withPrivilege("edit"));
-        privileges.add(new Privilege().withPrivilege("delete"));
-        privileges.add(new Privilege().withPrivilege("execute"));
-        privileges.add(new Privilege().withPrivilege("view"));
-        List<Permission> permissions = new ArrayList<>();
-        List<String> functionIds = bodyList.stream()
-            .filter(functionsGetResponseBody -> functionsGetResponseBody.getResource()
-                .equalsIgnoreCase("Personal Finance Management"))
-            .map(FunctionsGetResponseBody::getFunctionId)
-            .collect(Collectors.toList());
-        permissions.add(new Permission().withFunctionId(functionIds.get(0)).withAssignedPrivileges(privileges));
-        String functionGroupId = accessGroupService
-            .ingestFunctionGroup(externalServiceAgreementId, "Manage Pockets", "REGULAR", permissions);
-        log.debug("created function group with id {}", functionGroupId);
-
-        return response;
+        return parentPocketArrangementId;
     }
 
     /**
@@ -119,5 +80,32 @@ public class PocketsConfigurator {
             log.info("Pocket with ID [{}] and name [{}] created for user [{}]", pocket.getId(), pocket.getName(),
                 externalUserId);
         }
+    }
+
+    private ArrangementsPostResponseBody ingestParentPocketArrangement(LegalEntityBase legalEntity) {
+        ArrangementsPostRequestBody parentPocketArrangement = ProductSummaryDataGenerator
+            .generateParentPocketArrangement(legalEntity.getExternalId());
+        return arrangementsIntegrationRestClient
+            .ingestParentPocketArrangementAndLogResponse(parentPocketArrangement);
+    }
+
+    private void updateDataGroupForPockets(String parentPocketArrangementId, LegalEntityBase legalEntity) {
+        List<String> internalArrangementIds = new ArrayList<>();
+        internalArrangementIds.add(parentPocketArrangementId);
+
+        String dataGroupId = accessGroupService.updateDataGroup(internalArrangementIds,
+            getExternalServiceAgreementId(legalEntity));
+
+        log.debug("Updated data group with id [{}]", dataGroupId);
+    }
+
+    private String getExternalServiceAgreementId(
+        com.backbase.dbs.accesscontrol.client.v2.model.LegalEntityBase legalEntity) {
+        String internalServiceAgreementId = this.legalEntityPresentationRestClient
+            .getMasterServiceAgreementOfLegalEntity(legalEntity.getId())
+            .getId();
+        return this.serviceAgreementsPresentationRestClient
+            .retrieveServiceAgreement(internalServiceAgreementId)
+            .getExternalId();
     }
 }

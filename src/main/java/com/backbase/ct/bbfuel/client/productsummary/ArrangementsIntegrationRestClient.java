@@ -47,6 +47,35 @@ public class ArrangementsIntegrationRestClient extends RestClient {
             .as(ArrangementsPostResponseBody.class);
     }
 
+    public Response ingestParentPocketArrangement(ArrangementsPostRequestBody body) {
+        return requestSpec()
+            .contentType(ContentType.JSON)
+            .body(body)
+            .post(getPath(ENDPOINT_ARRANGEMENTS));
+    }
+
+    /**
+     * Ingest parent pocket arrangement when not already existing
+     * @param arrangement the parent pocket arrangement
+     * @return ArrangementsPostResponseBody
+     */
+    public ArrangementsPostResponseBody ingestParentPocketArrangementAndLogResponse(ArrangementsPostRequestBody arrangement) {
+        ArrangementsPostResponseBody arrangementsPostResponseBody = null;
+        Response response = ingestParentPocketArrangement(arrangement);
+        if (isBadRequestExceptionWithErrorKey(response, "arrangements.api.alreadyExists.arrangement")) {
+            log.info("Arrangement [{}] already exists, skipped ingesting this arrangement", arrangement.getProductId());
+        } else if (response.statusCode() != SC_CREATED) {
+            log.info("Arrangement [{}] already ingested", arrangement.getProductId());
+        } else {
+            log.info("Arrangement [{}] ingested", arrangement.getId());
+            arrangementsPostResponseBody = response.then()
+                .statusCode(SC_CREATED)
+                .extract()
+                .as(ArrangementsPostResponseBody.class);
+        }
+        return arrangementsPostResponseBody;
+    }
+
     public void ingestProductAndLogResponse(ProductsPostRequestBody product) {
         Response response = ingestProduct(product);
 

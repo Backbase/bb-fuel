@@ -14,10 +14,8 @@ import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_LIMITS
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_MESSAGES;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_NOTIFICATIONS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_PAYMENTS;
-import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_ACCOUNT_STATEMENTS;
-import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ACCOUNTSTATEMENTS_USERS;
-import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_POSITIVE_PAY_CHECKS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_POCKETS;
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_POSITIVE_PAY_CHECKS;
 import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
 import static java.util.Collections.singletonList;
 
@@ -34,15 +32,14 @@ import com.backbase.ct.bbfuel.configurator.LimitsConfigurator;
 import com.backbase.ct.bbfuel.configurator.MessagesConfigurator;
 import com.backbase.ct.bbfuel.configurator.NotificationsConfigurator;
 import com.backbase.ct.bbfuel.configurator.PaymentsConfigurator;
-import com.backbase.ct.bbfuel.configurator.AccountStatementsConfigurator;
+import com.backbase.ct.bbfuel.configurator.PocketsConfigurator;
 import com.backbase.ct.bbfuel.configurator.PositivePayConfigurator;
-import com.backbase.ct.bbfuel.configurator.PocketsConfigurator;import com.backbase.ct.bbfuel.dto.LegalEntityWithUsers;
+import com.backbase.ct.bbfuel.dto.LegalEntityWithUsers;
 import com.backbase.ct.bbfuel.dto.User;
 import com.backbase.ct.bbfuel.dto.UserContext;
 import com.backbase.ct.bbfuel.service.LegalEntityService;
 import com.backbase.ct.bbfuel.service.UserContextService;
 import com.backbase.dbs.accesscontrol.client.v2.model.LegalEntityBase;
-import com.backbase.dbs.arrangement.integration.rest.spec.v2.arrangements.ArrangementsPostResponseBody;
 import com.google.common.base.Splitter;
 import java.util.Collection;
 import java.util.List;
@@ -216,14 +213,14 @@ public class CapabilitiesDataSetup extends BaseSetup {
 
             this.loginRestClient.loginBankAdmin();
             this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
-            // only use legal entities with category 'retail' and users with role 'retail'
+            // only use legal entities with category 'retail' and users with role 'pocket'
             List<User> retailUsers = this.accessControlSetup
                 .getLegalEntitiesWithUsersExcludingSupport()
                 .stream()
                 .filter(legalEntityWithUsers -> legalEntityWithUsers.getCategory().isRetail())
                 .map(LegalEntityWithUsers::getUsers)
                 .flatMap(Collection::stream)
-                .filter(user -> user.getRole().equalsIgnoreCase("retail"))
+                .filter(user -> user.getRole().equalsIgnoreCase("pocket"))
                 .peek(user -> log.debug("user {}", user))
                 .collect(Collectors.toList());
 
@@ -232,13 +229,17 @@ public class CapabilitiesDataSetup extends BaseSetup {
 
                 LegalEntityBase legalEntity = this.userPresentationRestClient
                     .retrieveLegalEntityByExternalUserId(retailUser.getExternalId());
+                log.debug("legalEntity {} for user {}", legalEntity.toString(), retailUser.toString());
 
-                ArrangementsPostResponseBody arrangement = pocketsConfigurator
-                    .ingestPocketParentArrangement(legalEntity);
-                pocketTailorActuatorClient.createArrangedLegalEntity(arrangement, legalEntity);
+                String parentPocketArrangementId = pocketsConfigurator.ingestPocketParentArrangementAndSetEntitlements(
+                    legalEntity);
+                if (parentPocketArrangementId != null) {
+                    pocketTailorActuatorClient.createArrangedLegalEntity(parentPocketArrangementId, legalEntity);
+                }
 
                 this.loginRestClient.login(retailUser.getExternalId(), retailUser.getExternalId());
-                this.pocketsConfigurator.ingestPockets(retailUser.getExternalId());
+                userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
+                this.pocketsConfigurator.ingestPockets(legalEntity.getExternalId());
             });
         }
     }

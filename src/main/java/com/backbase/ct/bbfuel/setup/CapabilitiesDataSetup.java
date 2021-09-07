@@ -221,7 +221,6 @@ public class CapabilitiesDataSetup extends BaseSetup {
                 .map(LegalEntityWithUsers::getUsers)
                 .flatMap(Collection::stream)
                 .filter(user -> user.getRole().equalsIgnoreCase("pocket"))
-                .peek(user -> log.debug("user {}", user))
                 .collect(Collectors.toList());
 
             retailUsers.forEach(retailUser -> {

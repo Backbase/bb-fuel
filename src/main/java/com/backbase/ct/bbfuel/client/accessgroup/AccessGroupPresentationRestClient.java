@@ -7,10 +7,8 @@ import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
 import com.backbase.dbs.accesscontrol.client.v2.model.DataGroupItem;
 import com.backbase.dbs.accesscontrol.client.v2.model.FunctionGroupItem;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.BatchResponseItemExtended;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.datagroups.IntegrationDataGroupItemBatchPutRequestBody;
 import io.restassured.http.ContentType;
-import java.util.Arrays;
+import io.restassured.response.Response;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -58,20 +56,16 @@ public class AccessGroupPresentationRestClient extends RestClient {
     }
 
     /**
-     * Update data group
-     * @param internalServiceAgreementId internal service agreement
-     * @param body as IntegrationDataGroupItemBatchPutRequestBody list
-     * @return list of BatchResponseItemExtended
+     * Update data group.
+     * @param dataGroupId data group id
+     * @param body as DataGroupItem
+     * @return Response
      */
-    public List<BatchResponseItemExtended> updateDataGroup(String internalServiceAgreementId,
-        IntegrationDataGroupItemBatchPutRequestBody... body) {
-        return Arrays.asList(requestSpec()
+    public Response updateDataGroup(String dataGroupId,
+        DataGroupItem body) {
+        return requestSpec()
             .contentType(ContentType.JSON)
             .body(body)
-            .put(getPath(String.format(ENDPOINT_UPDATE_DATAGROUP, internalServiceAgreementId)))
-            .then()
-            .statusCode(SC_OK)
-            .extract()
-            .as(BatchResponseItemExtended.class));
+            .put(getPath(String.format(ENDPOINT_UPDATE_DATAGROUP, dataGroupId)));
     }
 }

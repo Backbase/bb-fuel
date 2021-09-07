@@ -5,6 +5,7 @@ import static com.backbase.ct.bbfuel.data.AccessGroupsDataGenerator.generateFunc
 import static com.backbase.ct.bbfuel.util.ResponseUtils.isBadRequestException;
 import static org.apache.http.HttpStatus.SC_CREATED;
 import static org.apache.http.HttpStatus.SC_MULTI_STATUS;
+import static org.apache.http.HttpStatus.SC_OK;
 
 import com.backbase.ct.bbfuel.client.accessgroup.AccessGroupIntegrationRestClient;
 import com.backbase.ct.bbfuel.client.accessgroup.AccessGroupPresentationRestClient;
@@ -12,14 +13,9 @@ import com.backbase.ct.bbfuel.client.accessgroup.ServiceAgreementsIntegrationRes
 import com.backbase.dbs.accesscontrol.client.v2.model.DataGroupItem;
 import com.backbase.dbs.accesscontrol.client.v2.model.FunctionGroupItem;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.BatchResponseItem;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.BatchResponseItemExtended;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.IntegrationIdentifier;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.IntegrationItemIdentifier;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.datagroups.IntegrationDataGroupItemBatchPutRequestBody;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.Permission;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.functiongroups.FunctionGroupPostResponseBody;
 import io.restassured.response.Response;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
@@ -115,39 +111,41 @@ public class AccessGroupService {
     }
 
     /**
-     * Update data group
-     * @param items as internal arrangement id's
+     * Update data group.
+     *
+     * @param parentPocketArrangementId  parent pocket arrangement
      * @param externalServiceAgreementId external service agreement
      * @return id of updated data group
      */
-    public String updateDataGroup(List<String> items, String externalServiceAgreementId) {
+    public String updateDataGroup(String parentPocketArrangementId, String externalServiceAgreementId) {
 
         String internalServiceAgreementId = serviceAgreementsIntegrationRestClient
             .retrieveServiceAgreementByExternalId(externalServiceAgreementId)
             .getId();
 
-        List<IntegrationItemIdentifier> dataItems = new ArrayList<>();
-        items.forEach(item -> dataItems.add(new IntegrationItemIdentifier().withInternalIdIdentifier(item)));
-        IntegrationIdentifier integrationIdentifier = new IntegrationIdentifier()
-            .withIdIdentifier(DATAGROUP_NAME_RETAIL_POCKETS);
+        // Combination of data group name and service agreement is unique in the system
+        DataGroupItem existingDataGroup = accessGroupPresentationRestClient
+            .retrieveDataGroupsByServiceAgreement(internalServiceAgreementId)
+            .stream()
+            .filter(
+                dataGroupsGetResponseBody -> DATAGROUP_NAME_RETAIL_POCKETS.equals(dataGroupsGetResponseBody.getName()))
+            .findFirst()
+            .orElseThrow(() -> new RuntimeException(
+                String.format("No existing data group found by service agreement [%s] and name [%s]",
+                    externalServiceAgreementId, DATAGROUP_NAME_RETAIL_POCKETS)));
 
-        IntegrationDataGroupItemBatchPutRequestBody integrationDataGroupItemBatchPutRequestBody =
-            new IntegrationDataGroupItemBatchPutRequestBody()
-            .withDataItems(dataItems)
-            .withDataGroupIdentifier(integrationIdentifier)
-            .withName(DATAGROUP_NAME_RETAIL_POCKETS)
-            .withDescription(DATAGROUP_NAME_RETAIL_POCKETS)
-            .withType("ARRANGEMENTS");
+        List<String> arrangementIds = existingDataGroup.getItems();
+        arrangementIds.add(parentPocketArrangementId);
+        existingDataGroup.setItems(arrangementIds);
 
-        List<BatchResponseItemExtended> batchResponseItemExtendeds = accessGroupPresentationRestClient.updateDataGroup(
-            internalServiceAgreementId,
-            integrationDataGroupItemBatchPutRequestBody);
-        String dataGroupId = batchResponseItemExtendeds.stream()
-            .filter(batchResponseItemExtended -> StringUtils.isNotEmpty(batchResponseItemExtended.getResourceId()))
-            .findFirst().get().getResourceId();
+        Response response = accessGroupPresentationRestClient.updateDataGroup(
+            existingDataGroup.getId(),
+            existingDataGroup);
 
-        log.info("Data group [{}] with id [{}] updated", DATAGROUP_NAME_RETAIL_POCKETS, dataGroupId);
+        if (response.statusCode() == SC_OK) {
+            log.info("Data group [{}] with id [{}] updated", DATAGROUP_NAME_RETAIL_POCKETS, existingDataGroup.getId());
+        }
 
-        return dataGroupId;
+        return existingDataGroup.getId();
     }
 }

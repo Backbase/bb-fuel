@@ -90,10 +90,8 @@ public class PocketsConfigurator {
     }
 
     private void updateDataGroupForPockets(String parentPocketArrangementId, LegalEntityBase legalEntity) {
-        List<String> internalArrangementIds = new ArrayList<>();
-        internalArrangementIds.add(parentPocketArrangementId);
 
-        String dataGroupId = accessGroupService.updateDataGroup(internalArrangementIds,
+        String dataGroupId = accessGroupService.updateDataGroup(parentPocketArrangementId,
             getExternalServiceAgreementId(legalEntity));
 
         log.debug("Updated data group with id [{}]", dataGroupId);

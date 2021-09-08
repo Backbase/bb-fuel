@@ -5,46 +5,7 @@
     "roles": [
       "admin"
     ],
-    "permissions": [
-      {
-        "businessFunction": "Manage Pockets",
-        "privileges": [
-          "view",
-          "create",
-          "edit",
-          "delete",
-          "execute"
-        ]
-      }
-    ],
     "approvalLevel": "C"
-  },
-  {
-    "jobProfileName": "Pocket User",
-    "type": "REGULAR",
-    "isRetail": "true",
-    "roles": [
-      "pocket"
-    ],
-    "permissions": [
-      {
-        "businessFunction": "Product Summary",
-        "privileges": [
-          "view",
-          "edit"
-        ]
-      },
-      {
-        "businessFunction": "Manage Pockets",
-        "privileges": [
-          "view",
-          "create",
-          "edit",
-          "delete",
-          "execute"
-        ]
-      }
-    ]
   },
   {
     "jobProfileName": "Retail User - My Accounts Only",
@@ -266,6 +227,16 @@
       "retail"
     ],
     "permissions": [
+      {
+        "businessFunction": "Manage Pockets",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "execute"
+        ]
+      },
       {
         "businessFunction": "Contacts",
         "privileges": [

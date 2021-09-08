@@ -46,6 +46,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -213,14 +214,20 @@ public class CapabilitiesDataSetup extends BaseSetup {
 
             this.loginRestClient.loginBankAdmin();
             this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
-            // only use legal entities with category 'retail' and users with role 'pocket'
+            // only use legal entities with category 'retail', users with productGroupName 'Retail Pocket'
             List<User> retailUsers = this.accessControlSetup
                 .getLegalEntitiesWithUsersExcludingSupport()
                 .stream()
                 .filter(legalEntityWithUsers -> legalEntityWithUsers.getCategory().isRetail())
                 .map(LegalEntityWithUsers::getUsers)
                 .flatMap(Collection::stream)
-                .filter(user -> user.getRole().equalsIgnoreCase("pocket"))
+                .filter(user -> user.getExternalId().equalsIgnoreCase("user"))
+                .filter(user -> user.getRole().equalsIgnoreCase("retail"))
+                .filter(user -> StringUtils.isNotEmpty(user.getProductGroupNames()
+                        .stream()
+                        .filter(productGroupName -> productGroupName.equals("Retail Pocket"))
+                        .findFirst()
+                        .get()))
                 .collect(Collectors.toList());
 
             retailUsers.forEach(retailUser -> {
@@ -228,7 +235,6 @@ public class CapabilitiesDataSetup extends BaseSetup {
 
                 LegalEntityBase legalEntity = this.userPresentationRestClient
                     .retrieveLegalEntityByExternalUserId(retailUser.getExternalId());
-                log.debug("legalEntity {} for user {}", legalEntity.toString(), retailUser.toString());
 
                 String parentPocketArrangementId = pocketsConfigurator.ingestPocketParentArrangementAndSetEntitlements(
                     legalEntity);

@@ -8,22 +8,12 @@
     ]
   },
   {
-  	"category": "RETAIL",
-    "users": [
-      {
-        "externalId": "pocket",
-        "role": "pocket",
-        "productGroupNames": ["Retail Pocket"]
-      }
-    ]
-  },
-  {
-  	"category": "RETAIL",
+    "category": "RETAIL",
     "users": [
       {
         "externalId": "user",
         "role": "retail",
-        "productGroupNames": ["Retail Accounts U.S"]
+        "productGroupNames": ["Retail Pocket","Retail Accounts U.S"]
       }
     ]
   },

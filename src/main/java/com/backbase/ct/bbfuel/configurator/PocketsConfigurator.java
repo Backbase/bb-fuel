@@ -53,7 +53,7 @@ public class PocketsConfigurator {
 
         if (parentPocketArrangementId != null) {
             // -> Now setting entitlements by dataGroup (functionGroup is already managed by setting
-            //      permissions in retail/job-profiles.json: jobProfileName: Admin )
+            //      permissions in retail/job-profiles.json: jobProfileName: 'Retail User' )
             // -> Updating dataGroup makes the method accessControlClient.verifyCreateAccessToArrangement(arrangementId)
             //      in PocketTailorServiceImpl succeed, by returning all relevant arrangements with
             //      usersApi.getArrangementPrivileges

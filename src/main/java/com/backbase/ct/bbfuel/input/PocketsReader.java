@@ -16,15 +16,13 @@ public class PocketsReader extends BaseReader {
     }
 
     private List<PocketPostRequest> load(String uri) {
-        List<PocketPostRequest> pockets;
 
         try {
             PocketPostRequest[] parsedPockets = ParserUtil.convertJsonToObject(uri, PocketPostRequest[].class);
-            pockets = Arrays.asList(parsedPockets);
+            return Arrays.asList(parsedPockets);
         } catch (IOException e) {
             log.error("Failed parsing file with Pockets", e);
             throw new InvalidInputException(e.getMessage(), e);
         }
-        return pockets;
     }
 }

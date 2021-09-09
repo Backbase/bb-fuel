@@ -28,7 +28,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AccessGroupService {
 
-    public static final String DATAGROUP_NAME_RETAIL_POCKETS = "Retail Pocket";
+    public static final String DATA_GROUP_NAME_RETAIL_POCKETS = "Retail Pocket";
 
     private final AccessGroupPresentationRestClient accessGroupPresentationRestClient;
 
@@ -128,11 +128,11 @@ public class AccessGroupService {
             .retrieveDataGroupsByServiceAgreement(internalServiceAgreementId)
             .stream()
             .filter(
-                dataGroupsGetResponseBody -> DATAGROUP_NAME_RETAIL_POCKETS.equals(dataGroupsGetResponseBody.getName()))
+                dataGroupsGetResponseBody -> DATA_GROUP_NAME_RETAIL_POCKETS.equals(dataGroupsGetResponseBody.getName()))
             .findFirst()
             .orElseThrow(() -> new RuntimeException(
                 String.format("No existing data group found by service agreement [%s] and name [%s]",
-                    externalServiceAgreementId, DATAGROUP_NAME_RETAIL_POCKETS)));
+                    externalServiceAgreementId, DATA_GROUP_NAME_RETAIL_POCKETS)));
 
         List<String> arrangementIds = existingDataGroup.getItems();
         arrangementIds.add(parentPocketArrangementId);
@@ -143,7 +143,7 @@ public class AccessGroupService {
             existingDataGroup);
 
         if (response.statusCode() == SC_OK) {
-            log.info("Data group [{}] with id [{}] updated", DATAGROUP_NAME_RETAIL_POCKETS, existingDataGroup.getId());
+            log.info("Data group [{}] with id [{}] updated", DATA_GROUP_NAME_RETAIL_POCKETS, existingDataGroup.getId());
         }
 
         return existingDataGroup.getId();

@@ -64,8 +64,6 @@ public class ArrangementsIntegrationRestClient extends RestClient {
         Response response = ingestParentPocketArrangement(arrangement);
         if (isBadRequestExceptionWithErrorKey(response, "arrangements.api.alreadyExists.arrangement")) {
             log.info("Arrangement [{}] already exists, skipped ingesting this arrangement", arrangement.getProductId());
-        } else if (response.statusCode() != SC_CREATED) {
-            log.info("Arrangement [{}] already ingested", arrangement.getProductId());
         } else {
             log.info("Arrangement [{}] ingested", arrangement.getId());
             arrangementsPostResponseBody = response.then()

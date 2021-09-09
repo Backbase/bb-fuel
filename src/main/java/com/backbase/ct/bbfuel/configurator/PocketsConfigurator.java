@@ -44,14 +44,11 @@ public class PocketsConfigurator {
         String parentPocketArrangementId = null;
         ArrangementsPostResponseBody arrangementsPostResponseBody = ingestParentPocketArrangement(legalEntity);
 
-        if (arrangementsPostResponseBody != null
-            && StringUtils.isNotEmpty(arrangementsPostResponseBody.getId())) {
+        if (arrangementsPostResponseBody != null) {
             parentPocketArrangementId = arrangementsPostResponseBody.getId();
             log.info("Parent pocket arrangement ingested for external legal entity ID [{}]: ID {}",
                 legalEntity, parentPocketArrangementId);
-        }
 
-        if (parentPocketArrangementId != null) {
             // -> Now setting entitlements by dataGroup (functionGroup is already managed by setting
             //      permissions in retail/job-profiles.json: jobProfileName: 'Retail User' )
             // -> Updating dataGroup makes the method accessControlClient.verifyCreateAccessToArrangement(arrangementId)

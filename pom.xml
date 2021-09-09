@@ -388,7 +388,7 @@
                     </execution>
 
                     <execution>
-                        <id>download-arrangement-outbound-origination-mock</id>
+                        <id>download-arrangement-outbound-origination-api-spec</id>
                         <goals>
                             <goal>download-single</goal>
                         </goals>
@@ -420,7 +420,8 @@
                             <url>https://repo.backbase.com/specs/arrangement-manager</url>
                             <fromFile>arrangement-integration-inbound-api-v2.2.0.yaml</fromFile>
                         </configuration>
-                    </execution>                </executions>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>
@@ -550,7 +551,7 @@
                     </execution>
 
                     <execution>
-                        <id>generate-arrangement-outbound-origination-mock-code</id>
+                        <id>generate-arrangement-outbound-origination-client-code</id>
                         <goals>
                             <goal>generate</goal>
                         </goals>
@@ -590,7 +591,8 @@
                                 <modelPackage>com.backbase.dbs.arrangement.integration.inbound.api.v2.model</modelPackage>
                             </configOptions>
                         </configuration>
-                    </execution>                </executions>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>

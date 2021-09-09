@@ -19,7 +19,6 @@ public class PocketsReader extends BaseReader {
         List<PocketPostRequest> pockets;
 
         try {
-            //TODO TRANS-5724 parsing deadline generates parsing error
             PocketPostRequest[] parsedPockets = ParserUtil.convertJsonToObject(uri, PocketPostRequest[].class);
             pockets = Arrays.asList(parsedPockets);
         } catch (IOException e) {

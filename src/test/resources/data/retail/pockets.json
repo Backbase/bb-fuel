@@ -1,0 +1,23 @@
+[
+  {
+    "name": "Travel Europe",
+    "icon": "travel",
+    "goal": {
+      "amountCurrency": {
+        "amount": "2000.00",
+        "currencyCode": "EUR"
+      }
+    }
+  },
+  {
+    "name": "Asian kitchen knives",
+    "icon": "home",
+    "goal": {
+      "amountCurrency": {
+        "amount": "1000.00",
+        "currencyCode": "EUR"
+      },
+      "deadline": "2021-06-01"
+    }
+  }
+]

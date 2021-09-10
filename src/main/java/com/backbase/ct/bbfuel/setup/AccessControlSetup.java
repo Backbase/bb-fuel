@@ -5,6 +5,7 @@ import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROV
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_CONTACTS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_PAYMENTS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_BALANCE_HISTORY;
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_POSITIVE_PAY_CHECKS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_TRANSACTIONS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
 import static com.backbase.ct.bbfuel.enrich.LegalEntityWithUsersEnricher.createRootLegalEntityWithAdmin;
@@ -19,6 +20,7 @@ import com.backbase.ct.bbfuel.config.MultiTenancyConfig;
 import com.backbase.ct.bbfuel.configurator.AccessGroupsConfigurator;
 import com.backbase.ct.bbfuel.configurator.LegalEntitiesAndUsersConfigurator;
 import com.backbase.ct.bbfuel.configurator.PermissionsConfigurator;
+import com.backbase.ct.bbfuel.configurator.PositivePayConfigurator;
 import com.backbase.ct.bbfuel.configurator.ProductSummaryConfigurator;
 import com.backbase.ct.bbfuel.configurator.ServiceAgreementsConfigurator;
 import com.backbase.ct.bbfuel.configurator.TransactionsConfigurator;
@@ -70,6 +72,7 @@ public class AccessControlSetup extends BaseSetup {
     private final ServiceAgreementsConfigurator serviceAgreementsConfigurator;
     private final PermissionsConfigurator permissionsConfigurator;
     private final TransactionsConfigurator transactionsConfigurator;
+    private final PositivePayConfigurator positivePayConfigurator;
     private final LegalEntityWithUsersReader legalEntityWithUsersReader;
     private final JobProfileService jobProfileService;
     private final ProductGroupService productGroupService;
@@ -245,6 +248,7 @@ public class AccessControlSetup extends BaseSetup {
 
                 ingestTransactions(arrangementIds, isRetail);
                 ingestBalanceHistory(arrangementIds);
+                ingestSubscriptions(arrangementIds);
             } else {
                 productGroupSeed.setId(existingDataGroup.getId());
                 productGroupSeed.setExternalServiceAgreementId(externalServiceAgreementId);
@@ -265,6 +269,13 @@ public class AccessControlSetup extends BaseSetup {
             arrangementIds.parallelStream()
                 .forEach(arrangementId -> this.productSummaryConfigurator
                     .ingestBalanceHistory(arrangementId.getExternalArrangementId()));
+        }
+    }
+
+    private void ingestSubscriptions(List<ArrangementId> arrangementIds) {
+        if (this.globalProperties.getBoolean(PROPERTY_INGEST_POSITIVE_PAY_CHECKS)) {
+            arrangementIds.parallelStream()
+                .forEach(positivePayConfigurator::ingestPositivePaySubscriptions);
         }
     }
 

@@ -34,4 +34,4 @@ bb-fuel:
     pfm: transaction-category-collector
     user: user-presentation-service
     products: product-summary-presentation-service
-    positivePay: positive-pay
+    positivePay: positive-pay-check

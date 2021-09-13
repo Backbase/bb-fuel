@@ -74,7 +74,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
     private final PocketTailorActuatorClient pocketTailorActuatorClient;
 
     /**
-     * Ingest data with services of projects APPR, PO, LIM, NOT, CON, MC, ACT and BPAY.
+     * Ingest data with services of projects APPR, PO, LIM, NOT, CON, MC, ACT, BPAY and Pockets.
      */
     @Override
     public void initiate() {

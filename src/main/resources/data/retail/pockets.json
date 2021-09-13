@@ -44,13 +44,6 @@
   },
   {
     "name": "Robot Lawn Mower",
-    "icon": "utilities",
-    "goal": {
-      "amountCurrency": {
-        "amount": "1200.00",
-        "currencyCode": "EUR"
-      },
-      "deadline": "2049-11-23"
-    }
+    "icon": "utilities"
   }
 ]

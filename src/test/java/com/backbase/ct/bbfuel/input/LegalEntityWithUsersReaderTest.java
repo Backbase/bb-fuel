@@ -27,7 +27,7 @@ public class LegalEntityWithUsersReaderTest {
     public void testLoad() {
         List<LegalEntityWithUsers> legalEntities = subject.load();
         assertThat(legalEntities, hasSize(13));
-        LegalEntityWithUsers greenBicycleFactory = legalEntities.get(8);
+        LegalEntityWithUsers greenBicycleFactory = legalEntities.get(7);
         assertThat("GBF should have admin user ids",
             greenBicycleFactory.getAdminUserExternalIds(), hasSize(2));
         assertThat("GBF should have one manager",

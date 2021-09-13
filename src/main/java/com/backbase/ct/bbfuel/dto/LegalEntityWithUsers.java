@@ -14,11 +14,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Singular;
+import lombok.ToString;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class LegalEntityWithUsers {
     private String legalEntityExternalId;
     private String parentLegalEntityExternalId;

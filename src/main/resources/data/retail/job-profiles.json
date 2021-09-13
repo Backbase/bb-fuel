@@ -228,6 +228,16 @@
     ],
     "permissions": [
       {
+        "businessFunction": "Manage Pockets",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "execute"
+        ]
+      },
+      {
         "businessFunction": "Contacts",
         "privileges": [
           "view",

@@ -5,8 +5,10 @@ import static org.apache.http.HttpStatus.SC_OK;
 
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
-import com.backbase.dbs.accesscontrol.client.v2.model.FunctionGroupItem;
 import com.backbase.dbs.accesscontrol.client.v2.model.DataGroupItem;
+import com.backbase.dbs.accesscontrol.client.v2.model.FunctionGroupItem;
+import io.restassured.http.ContentType;
+import io.restassured.response.Response;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,7 @@ public class AccessGroupPresentationRestClient extends RestClient {
         ENDPOINT_ACCESS_GROUPS + "/function-groups?serviceAgreementId=%s";
     private static final String ENDPOINT_DATA_BY_SERVICE_AGREEMENT_ID_AND_TYPE =
         ENDPOINT_ACCESS_GROUPS + "/data-groups?serviceAgreementId=%s&type=%s";
+    private static final String ENDPOINT_UPDATE_DATAGROUP = ENDPOINT_ACCESS_GROUPS + "/data-groups/%s";
 
     @PostConstruct
     public void init() {
@@ -52,4 +55,17 @@ public class AccessGroupPresentationRestClient extends RestClient {
             .as(DataGroupItem[].class));
     }
 
+    /**
+     * Update data group.
+     * @param dataGroupId data group id
+     * @param body as DataGroupItem
+     * @return Response
+     */
+    public Response updateDataGroup(String dataGroupId,
+        DataGroupItem body) {
+        return requestSpec()
+            .contentType(ContentType.JSON)
+            .body(body)
+            .put(getPath(String.format(ENDPOINT_UPDATE_DATAGROUP, dataGroupId)));
+    }
 }

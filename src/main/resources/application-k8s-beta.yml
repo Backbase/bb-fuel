@@ -19,7 +19,8 @@ bb-fuel:
     transactions: http://transactions.${environment.name}.${environment.domain}/integration-api
     user: http://user-manager.${environment.name}.${environment.domain}/integration-api
     accountStatement: http://accountstatementsintegration.${environment.name}.${environment.domain}/service-api
-
+    pockets: http://edge.${environment.name}.${environment.domain}/api/pocket-tailor/client-api
+    pocketsArrangements: http://arrangementoutboundoriginationmock.${environment.name}.${environment.domain}/service-api
   dbs-service-names:
     accessgroup: access-control
     actions: action

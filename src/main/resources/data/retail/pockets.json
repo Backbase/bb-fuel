@@ -1,0 +1,49 @@
+[
+  {
+    "name": "Travel Europe",
+    "icon": "travel",
+    "goal": {
+      "amountCurrency": {
+        "amount": "2000.00",
+        "currencyCode": "EUR"
+      }
+    }
+  },
+  {
+    "name": "Christmas Shopping",
+    "icon": "home",
+    "goal": {
+      "amountCurrency": {
+        "amount": "800.00",
+        "currencyCode": "EUR"
+      },
+      "deadline": "2040-01-23"
+    }
+  },
+  {
+    "name": "Unlimited Happiness",
+    "icon": "gift",
+    "goal": {
+      "amountCurrency": {
+        "amount": "200000.00",
+        "currencyCode": "EUR"
+      },
+      "deadline": "2050-06-01"
+    }
+  },
+  {
+    "name": "Television",
+    "icon": "entertainment",
+    "goal": {
+      "amountCurrency": {
+        "amount": "800.00",
+        "currencyCode": "EUR"
+      },
+      "deadline": "2036-08-05"
+    }
+  },
+  {
+    "name": "Robot Lawn Mower",
+    "icon": "utilities"
+  }
+]

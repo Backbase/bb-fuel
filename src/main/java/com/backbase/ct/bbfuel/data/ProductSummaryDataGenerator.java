@@ -11,14 +11,15 @@ import static java.util.Collections.unmodifiableList;
 import com.backbase.ct.bbfuel.dto.entitlement.ProductGroupSeed;
 import com.backbase.ct.bbfuel.input.ProductReader;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
-import com.backbase.dbs.arrangement.integration.rest.spec.v2.arrangements.DebitCard;
-import com.backbase.dbs.arrangement.integration.rest.spec.v2.balancehistory.BalanceHistoryPostRequestBody;
-import com.backbase.dbs.arrangement.integration.rest.spec.v2.products.ProductsPostRequestBody;
-import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBody;
+import com.backbase.dbs.arrangement.integration.inbound.api.v2.model.BalanceHistoryItem;
+import com.backbase.dbs.arrangement.integration.inbound.api.v2.model.IntegrationDebitCardItem;
+import com.backbase.dbs.arrangement.integration.inbound.api.v2.model.PostArrangement;
+import com.backbase.dbs.arrangement.integration.inbound.api.v2.model.ProductItem;
 import com.github.javafaker.Faker;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
 import java.math.BigDecimal;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -78,14 +79,14 @@ public class ProductSummaryDataGenerator {
         return Iban.random(getRandomFromList(SEPA_COUNTRY_CODES)).toString();
     }
 
-    public static List<ProductsPostRequestBody> getProductsFromFile() {
+    public static List<ProductItem> getProductsFromFile() {
         return productReader.load();
     }
 
     private static String getProductTypeNameFromProductsInputFile(String productId) {
-        List<ProductsPostRequestBody> productsPostRequestBodies = getProductsFromFile();
+        List<ProductItem> productsPostRequestBodies = getProductsFromFile();
 
-        ProductsPostRequestBody product = productsPostRequestBodies.stream()
+        ProductItem product = productsPostRequestBodies.stream()
             .filter(productsPostRequestBody -> productId.equals(productsPostRequestBody.getId()))
             .findFirst()
             .orElseThrow(() -> new RuntimeException(String.format("No product found by id: %s", productId)));
@@ -93,9 +94,10 @@ public class ProductSummaryDataGenerator {
         return product.getProductTypeName();
     }
 
-    public static ArrangementsPostRequestBody generateParentPocketArrangement(String externalLegalEntityId) {
-        ArrangementsPostRequestBody arrangementsPostRequestBody = getArrangementsPostRequestBody(
-            Optional.of("external-arrangement-origination-1"), externalLegalEntityId, "Parent Pocket Account", EUR, "default-pocket-parent-external-id");
+    public static PostArrangement generateParentPocketArrangement(String externalLegalEntityId) {
+        PostArrangement arrangementsPostRequestBody = getArrangementsPostRequestBody(
+            Optional.of("external-arrangement-origination-1"), externalLegalEntityId, "Parent Pocket Account", EUR,
+            "default-pocket-parent-external-id");
         arrangementsPostRequestBody.setBookedBalance(BigDecimal.ZERO);
         arrangementsPostRequestBody.setAvailableBalance(BigDecimal.ZERO);
         arrangementsPostRequestBody.setAccruedInterest(BigDecimal.ZERO);
@@ -103,9 +105,9 @@ public class ProductSummaryDataGenerator {
         return arrangementsPostRequestBody;
     }
 
-    public static List<ArrangementsPostRequestBody> generateCurrentAccountArrangementsPostRequestBodies(
+    public static List<PostArrangement> generateCurrentAccountArrangementsPostRequestBodies(
         String externalLegalEntityId, ProductGroupSeed productGroupSeed, int numberOfArrangements) {
-        List<ArrangementsPostRequestBody> arrangementsPostRequestBodies = synchronizedList(new ArrayList<>());
+        List<PostArrangement> arrangementsPostRequestBodies = synchronizedList(new ArrayList<>());
         IntStream.range(0, numberOfArrangements).parallel().forEach(randomNumber -> {
             int randomCurrentAccountIndex = ThreadLocalRandom.current()
                 .nextInt(productGroupSeed.getCurrentAccountNames().size());
@@ -122,14 +124,14 @@ public class ProductSummaryDataGenerator {
 
             String currentAccountName = productGroupSeed.getCurrentAccountNames().get(currentAccountNameIndex);
             String currency = productGroupSeed.getCurrencies().get(currencyIndex);
-            ArrangementsPostRequestBody arrangementsPostRequestBody = getArrangementsPostRequestBody(
+            PostArrangement arrangementsPostRequestBody = getArrangementsPostRequestBody(
                 Optional.ofNullable(staticCurrentAccountArrangementsQueue.poll()), externalLegalEntityId,
                 currentAccountName, currency, "1");
 
-            HashSet<DebitCard> debitCards = new HashSet<>();
+            HashSet<IntegrationDebitCardItem> debitCards = new HashSet<>();
 
             for (int i = 0; i < productGroupSeed.getNumberOfDebitCards().getRandomNumberInRange(); i++) {
-                debitCards.add(new DebitCard()
+                debitCards.add(new IntegrationDebitCardItem()
                     .withNumber(String.valueOf(generateRandomNumberInRange(1111, 9999)))
                     .withExpiryDate(faker.business()
                         .creditCardExpiry()));
@@ -143,9 +145,9 @@ public class ProductSummaryDataGenerator {
         return arrangementsPostRequestBodies;
     }
 
-    public static List<ArrangementsPostRequestBody> generateNonCurrentAccountArrangementsPostRequestBodies(
+    public static List<PostArrangement> generateNonCurrentAccountArrangementsPostRequestBodies(
         String externalLegalEntityId, ProductGroupSeed productGroupSeed, int numberOfArrangements) {
-        List<ArrangementsPostRequestBody> arrangementsPostRequestBodies = synchronizedList(new ArrayList<>());
+        List<PostArrangement> arrangementsPostRequestBodies = synchronizedList(new ArrayList<>());
 
         IntStream.range(0, numberOfArrangements).parallel().forEach(randomNumber -> {
             String currency = getRandomFromList(productGroupSeed.getCurrencies());
@@ -153,7 +155,7 @@ public class ProductSummaryDataGenerator {
             String arrangementName = getProductTypeNameFromProductsInputFile(productId);
             Optional<String> externalArrangementId =
                 getNotCurrentAccountArrangementExternalId(externalLegalEntityId, productId);
-            ArrangementsPostRequestBody arrangementsPostRequestBody = getArrangementsPostRequestBody(
+            PostArrangement arrangementsPostRequestBody = getArrangementsPostRequestBody(
                 externalArrangementId, externalLegalEntityId, arrangementName, currency, productId);
 
             arrangementsPostRequestBodies.add(arrangementsPostRequestBody);
@@ -185,7 +187,7 @@ public class ProductSummaryDataGenerator {
         return (limitByProductId == null || productId.equals(limitByProductId));
     }
 
-    private static ArrangementsPostRequestBody getArrangementsPostRequestBody(Optional<String> externalArrangementId,
+    private static PostArrangement getArrangementsPostRequestBody(Optional<String> externalArrangementId,
         String externalLegalEntityId, String currentAccountName, String currency, String productId) {
         String accountNumber = EUR.equals(currency)
             ? generateRandomIban()
@@ -194,10 +196,10 @@ public class ProductSummaryDataGenerator {
         String arrangementNameSuffix =
             " " + currency + " " + bic.substring(0, 3) + accountNumber.substring(accountNumber.length() - 3);
         String fullArrangementName = currentAccountName + arrangementNameSuffix;
-        ArrangementsPostRequestBody arrangementsPostRequestBody = new ArrangementsPostRequestBody()
-            .withId(externalArrangementId.orElse(UUID.randomUUID().toString()))
+        PostArrangement arrangementsPostRequestBody = (PostArrangement) new PostArrangement()
             .withLegalEntityIds(Collections.singleton(externalLegalEntityId))
             .withProductId(productId)
+            .withId(externalArrangementId.orElse(UUID.randomUUID().toString()))
             .withName(fullArrangementName)
             .withBankAlias(fullArrangementName)
             .withBookedBalance(generateRandomAmountInRange(10000L, 9999999L))
@@ -234,9 +236,9 @@ public class ProductSummaryDataGenerator {
         return arrangementsPostRequestBody;
     }
 
-    public static List<BalanceHistoryPostRequestBody> generateBalanceHistoryPostRequestBodies(
+    public static List<BalanceHistoryItem> generateBalanceHistoryPostRequestBodies(
         String externalArrangementId) {
-        List<BalanceHistoryPostRequestBody> balanceHistoryPostRequestBodies = new ArrayList<>();
+        List<BalanceHistoryItem> balanceHistoryPostRequestBodies = new ArrayList<>();
 
         for (int i = 0; i >= -WEEKS_IN_A_QUARTER; i--) {
             balanceHistoryPostRequestBodies.add(generateBalanceHistoryPostRequestBody(
@@ -251,11 +253,11 @@ public class ProductSummaryDataGenerator {
         return balanceHistoryPostRequestBodies;
     }
 
-    private static BalanceHistoryPostRequestBody generateBalanceHistoryPostRequestBody(String
+    private static BalanceHistoryItem generateBalanceHistoryPostRequestBody(String
         externalArrangementId, Date updatedDate) {
-        return new BalanceHistoryPostRequestBody()
+        return new BalanceHistoryItem()
             .withArrangementId(externalArrangementId)
             .withBalance(generateRandomAmountInRange(1000000L, 1999999L))
-            .withUpdatedDate(updatedDate);
+            .withUpdatedDate(updatedDate.toInstant().atOffset(ZoneOffset.UTC));
     }
 }

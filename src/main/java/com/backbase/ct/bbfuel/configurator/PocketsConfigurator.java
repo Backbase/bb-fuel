@@ -8,15 +8,13 @@ import com.backbase.ct.bbfuel.data.ProductSummaryDataGenerator;
 import com.backbase.ct.bbfuel.input.PocketsReader;
 import com.backbase.ct.bbfuel.service.AccessGroupService;
 import com.backbase.dbs.accesscontrol.client.v2.model.LegalEntityBase;
-import com.backbase.dbs.arrangement.integration.rest.spec.v2.arrangements.ArrangementsPostResponseBody;
+import com.backbase.dbs.arrangement.integration.inbound.api.v2.model.ArrangementAddedResponse;
+import com.backbase.dbs.arrangement.integration.inbound.api.v2.model.PostArrangement;
 import com.backbase.dbs.pocket.tailor.client.v2.model.Pocket;
 import com.backbase.dbs.pocket.tailor.client.v2.model.PocketPostRequest;
-import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBody;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -42,7 +40,7 @@ public class PocketsConfigurator {
         log.debug("Going to ingest a parent pocket arrangement for external legal entity ID: [{}]", legalEntity);
 
         String parentPocketArrangementId = null;
-        ArrangementsPostResponseBody arrangementsPostResponseBody = ingestParentPocketArrangement(legalEntity);
+        ArrangementAddedResponse arrangementsPostResponseBody = ingestParentPocketArrangement(legalEntity);
 
         if (arrangementsPostResponseBody != null) {
             parentPocketArrangementId = arrangementsPostResponseBody.getId();
@@ -79,8 +77,8 @@ public class PocketsConfigurator {
         }
     }
 
-    private ArrangementsPostResponseBody ingestParentPocketArrangement(LegalEntityBase legalEntity) {
-        ArrangementsPostRequestBody parentPocketArrangement = ProductSummaryDataGenerator
+    private ArrangementAddedResponse ingestParentPocketArrangement(LegalEntityBase legalEntity) {
+        PostArrangement parentPocketArrangement = ProductSummaryDataGenerator
             .generateParentPocketArrangement(legalEntity.getExternalId());
         return arrangementsIntegrationRestClient
             .ingestParentPocketArrangementAndLogResponse(parentPocketArrangement);

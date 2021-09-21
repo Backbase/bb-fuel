@@ -1,6 +1,9 @@
 package com.backbase.ct.bbfuel.data;
 
 import static com.backbase.ct.bbfuel.util.CommonHelpers.generateRandomAmountInRange;
+import static com.backbase.ct.bbfuel.util.CommonHelpers.generateRandomBranchCode;
+import static com.backbase.ct.bbfuel.util.CommonHelpers.generateRandomCardProvider;
+import static com.backbase.ct.bbfuel.util.CommonHelpers.generateRandomDateInRange;
 import static com.backbase.ct.bbfuel.util.CommonHelpers.generateRandomNumberInRange;
 import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
 import static java.lang.String.valueOf;
@@ -12,13 +15,16 @@ import com.backbase.ct.bbfuel.dto.entitlement.ProductGroupSeed;
 import com.backbase.ct.bbfuel.input.ProductReader;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
 import com.backbase.dbs.arrangement.integration.inbound.api.v2.model.BalanceHistoryItem;
+import com.backbase.dbs.arrangement.integration.inbound.api.v2.model.CardDetails;
 import com.backbase.dbs.arrangement.integration.inbound.api.v2.model.IntegrationDebitCardItem;
+import com.backbase.dbs.arrangement.integration.inbound.api.v2.model.InterestDetails;
 import com.backbase.dbs.arrangement.integration.inbound.api.v2.model.PostArrangement;
 import com.backbase.dbs.arrangement.integration.inbound.api.v2.model.ProductItem;
 import com.github.javafaker.Faker;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -223,7 +229,15 @@ public class ProductSummaryDataGenerator {
             .withAccountHolderCountry(faker.address().countryCode())
             .withCountrySubDivision(faker.address().state())
             .withBIC(bic)
-            .withStateId(getRandomFromList(ARRANGEMENT_STATES));
+            .withStateId(getRandomFromList(ARRANGEMENT_STATES))
+            .withCardDetails(generateCardDetails())
+            .withInterestDetails(generateInterestDetails())
+            .withReservedAmount(generateRandomAmountInRange(500L, 10000L))
+            .withRemainingPeriodicTransfers(generateRandomAmountInRange(500L, 10000L))
+            .withNextClosingDate(generateRandomDateInRange(LocalDate.now().minusDays(30), LocalDate.now().minusDays(1)))
+            .withOverdueSince(generateRandomDateInRange(LocalDate.now().minusDays(30), LocalDate.now().minusDays(1)))
+            .withBankBranchCode(generateRandomBranchCode())
+            .withBankBranchCode2(generateRandomBranchCode());
 
         if (EUR.equals(currency)) {
             arrangementsPostRequestBody
@@ -234,6 +248,32 @@ public class ProductSummaryDataGenerator {
                 .withBBAN(accountNumber);
         }
         return arrangementsPostRequestBody;
+    }
+
+    public static CardDetails generateCardDetails() {
+        return (CardDetails) new CardDetails()
+            .withAvailableCashCredit(generateRandomAmountInRange(500L, 10000L))
+            .withCardProvider(generateRandomCardProvider())
+            .withCashCreditLimit(generateRandomAmountInRange(1500L, 15000L))
+            .withLastPaymentAmount(generateRandomAmountInRange(1L, 1000L))
+            .withLastPaymentDate(generateRandomDateInRange(LocalDate.now().minusDays(30), LocalDate.now()))
+            .withLatePaymentFee(generateRandomNumberInRange(1, 2) == 1 ? generateRandomNumberInRange(1, 10) + "%"
+                : String.valueOf(generateRandomNumberInRange(1, 50)))
+            .withPreviousStatementBalance(generateRandomAmountInRange(500L, 2000L))
+            .withPreviousStatementDate(
+                generateRandomDateInRange(LocalDate.now().minusDays(60), LocalDate.now().minusDays(30)))
+            .withSecured(generateRandomNumberInRange(1, 2) == 1)
+            .withStatementBalance(generateRandomAmountInRange(500L, 2000L));
+    }
+
+    public static InterestDetails generateInterestDetails() {
+        return (InterestDetails) new InterestDetails()
+            .withAnnualPercentageYield(generateRandomAmountInRange(1L, 8L))
+            .withCashAdvanceInterestRate(generateRandomAmountInRange(1L, 10L))
+            .withDividendWithheldYTD(generateRandomNumberInRange(1, 2) == 1 ? generateRandomNumberInRange(1, 10) + "%"
+                : String.valueOf(generateRandomNumberInRange(1, 50)))
+            .withLastYearAccruedInterest(generateRandomAmountInRange(50L, 150L))
+            .withPenaltyInterestRate(generateRandomAmountInRange(1L, 10L));
     }
 
     public static List<BalanceHistoryItem> generateBalanceHistoryPostRequestBodies(

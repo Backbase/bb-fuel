@@ -16,7 +16,7 @@ import com.backbase.dbs.billpay.client.v2.model.Subscriber;
 import com.backbase.dbs.billpay.client.v2.model.SubscriberAccount;
 import com.backbase.dbs.billpay.client.v2.model.SubscriberAddress;
 import com.backbase.dbs.billpay.client.v2.model.UserByIdPutRequestBody;
-import com.backbase.integration.account.spec.v2.arrangements.ArrangementItem;
+import com.backbase.dbs.arrangement.integration.outbound.link.v2.model.ArrangementItem;
 import io.restassured.response.Response;
 import java.util.ArrayList;
 import java.util.Arrays;

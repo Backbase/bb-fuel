@@ -6,7 +6,7 @@ import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toList;
 
 import com.backbase.ct.bbfuel.util.ParserUtil;
-import com.backbase.dbs.arrangement.integration.rest.spec.v2.products.ProductsPostRequestBody;
+import com.backbase.dbs.arrangement.integration.inbound.api.v2.model.ProductItem;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -26,18 +26,18 @@ public class ProductReader extends BaseReader {
     /**
      * Load the configured json file.
      */
-    public List<ProductsPostRequestBody> load() {
+    public List<ProductItem> load() {
         return load(this.globalProperties.getString(PROPERTY_PRODUCTS_JSON_LOCATION));
     }
 
     /**
      * Load json file.
      */
-    public List<ProductsPostRequestBody> load(String uri) {
-        List<ProductsPostRequestBody> products;
+    public List<ProductItem> load(String uri) {
+        List<ProductItem> products;
         try {
-            ProductsPostRequestBody[] parsedProducts = ParserUtil.convertJsonToObject(
-                uri, ProductsPostRequestBody[].class);
+            ProductItem[] parsedProducts = ParserUtil.convertJsonToObject(
+                uri, ProductItem[].class);
             validate(parsedProducts);
             products = asList(parsedProducts);
         } catch (IOException e) {
@@ -50,12 +50,12 @@ public class ProductReader extends BaseReader {
     /**
      * Check on duplicate ids.
      */
-    private void validate(ProductsPostRequestBody[] products) {
+    private void validate(ProductItem[] products) {
         if (ArrayUtils.isEmpty(products)) {
             throw new InvalidInputException("No products have been parsed");
         }
         List<String> ids = stream(products)
-            .map(ProductsPostRequestBody::getId)
+            .map(ProductItem::getId)
             .collect(toList());
         Set<String> uniqueIds = new HashSet<>(ids);
         if (uniqueIds.size() != products.length) {

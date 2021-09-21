@@ -1,4 +1,12 @@
 package com.backbase.ct.bbfuel.configurator;
+
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_POSITIVEPAY_MAX;
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_POSITIVEPAY_MIN;
+import static com.backbase.ct.bbfuel.util.CommonHelpers.generateRandomNumberInRange;
+import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
+import static com.google.common.collect.Lists.newArrayList;
+import static org.apache.http.HttpStatus.SC_OK;
+
 import com.backbase.ct.bbfuel.client.accessgroup.UserContextPresentationRestClient;
 import com.backbase.ct.bbfuel.client.common.LoginRestClient;
 import com.backbase.ct.bbfuel.client.positivepay.PositivePayRestClient;
@@ -10,21 +18,12 @@ import com.backbase.ct.bbfuel.util.GlobalProperties;
 import com.backbase.dbs.arrangement.integration.inbound.api.v2.model.Subscription;
 import com.backbase.dbs.positivepay.client.api.v1.model.PositivePayPost;
 import com.backbase.dbs.productsummary.presentation.rest.spec.v2.productsummary.ArrangementsByBusinessFunctionGetResponseBody;
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
-
-import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_POSITIVEPAY_MIN;
-import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_POSITIVEPAY_MAX;
-import static com.backbase.ct.bbfuel.util.CommonHelpers.generateRandomNumberInRange;
-import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
-import static com.google.common.collect.Lists.newArrayList;
-import static org.apache.http.HttpStatus.SC_OK;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
@@ -79,13 +78,13 @@ public class PositivePayConfigurator {
         // Assigning a check subscription
         String randomSubscription = getRandomFromList(CHECK_SUBSCRIPTIONS);
         arrangementsIntegrationRestClient.postSubscriptions(arrangementId.getExternalArrangementId(),
-            new Subscription().identifier(randomSubscription));
+            new Subscription().withIdentifier(randomSubscription));
         log.info("Positive Pay check subscription : [{}] submitted for arrangement id [{}]",
             randomSubscription, arrangementId.getInternalArrangementId());
 
         // Assigning an ACH subscription
         arrangementsIntegrationRestClient.postSubscriptions(arrangementId.getExternalArrangementId(),
-            new Subscription().identifier(SUBSCRIPTION_ACH_POSITIVE_PAY));
+            new Subscription().withIdentifier(SUBSCRIPTION_ACH_POSITIVE_PAY));
         log.info("Positive Pay ACH subscription submitted for arrangement id [{}]",
             arrangementId.getInternalArrangementId());
     }

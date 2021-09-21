@@ -4,7 +4,7 @@ import static org.apache.http.HttpStatus.SC_OK;
 
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
-import com.backbase.integration.account.spec.v2.arrangements.ArrangementItem;
+import com.backbase.dbs.arrangement.integration.outbound.link.v2.model.ArrangementItem;
 import groovy.util.logging.Slf4j;
 import io.restassured.http.ContentType;
 import java.util.Arrays;

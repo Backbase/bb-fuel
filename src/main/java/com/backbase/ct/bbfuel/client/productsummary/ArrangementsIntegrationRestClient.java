@@ -5,10 +5,10 @@ import static org.apache.http.HttpStatus.SC_CREATED;
 
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
-import com.backbase.dbs.arrangement.integration.rest.spec.v2.arrangements.ArrangementsPostResponseBody;
-import com.backbase.dbs.arrangement.integration.rest.spec.v2.balancehistory.BalanceHistoryPostRequestBody;
-import com.backbase.dbs.arrangement.integration.rest.spec.v2.products.ProductsPostRequestBody;
-import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBody;
+import com.backbase.dbs.arrangement.integration.inbound.api.v2.model.ArrangementAddedResponse;
+import com.backbase.dbs.arrangement.integration.inbound.api.v2.model.BalanceHistoryItem;
+import com.backbase.dbs.arrangement.integration.inbound.api.v2.model.PostArrangement;
+import com.backbase.dbs.arrangement.integration.inbound.api.v2.model.ProductItem;
 import com.backbase.dbs.arrangement.integration.inbound.api.v2.model.Subscription;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
@@ -36,7 +36,7 @@ public class ArrangementsIntegrationRestClient extends RestClient {
         setVersion(SERVICE_VERSION);
     }
 
-    public ArrangementsPostResponseBody ingestArrangement(ArrangementsPostRequestBody body) {
+    public ArrangementAddedResponse ingestArrangement(PostArrangement body) {
         return requestSpec()
             .contentType(ContentType.JSON)
             .body(body)
@@ -44,10 +44,10 @@ public class ArrangementsIntegrationRestClient extends RestClient {
             .then()
             .statusCode(SC_CREATED)
             .extract()
-            .as(ArrangementsPostResponseBody.class);
+            .as(ArrangementAddedResponse.class);
     }
 
-    public Response ingestParentPocketArrangement(ArrangementsPostRequestBody body) {
+    public Response ingestParentPocketArrangement(PostArrangement body) {
         return requestSpec()
             .contentType(ContentType.JSON)
             .body(body)
@@ -56,11 +56,12 @@ public class ArrangementsIntegrationRestClient extends RestClient {
 
     /**
      * Ingest parent pocket arrangement when not already existing
+     *
      * @param arrangement the parent pocket arrangement
-     * @return ArrangementsPostResponseBody
+     * @return ArrangementAddedResponse
      */
-    public ArrangementsPostResponseBody ingestParentPocketArrangementAndLogResponse(ArrangementsPostRequestBody arrangement) {
-        ArrangementsPostResponseBody arrangementsPostResponseBody = null;
+    public ArrangementAddedResponse ingestParentPocketArrangementAndLogResponse(PostArrangement arrangement) {
+        ArrangementAddedResponse arrangementsPostResponseBody = null;
         Response response = ingestParentPocketArrangement(arrangement);
         if (isBadRequestExceptionWithErrorKey(response, "arrangements.api.alreadyExists.arrangement")) {
             log.info("Arrangement [{}] already exists, skipped ingesting this arrangement", arrangement.getProductId());
@@ -69,12 +70,12 @@ public class ArrangementsIntegrationRestClient extends RestClient {
             arrangementsPostResponseBody = response.then()
                 .statusCode(SC_CREATED)
                 .extract()
-                .as(ArrangementsPostResponseBody.class);
+                .as(ArrangementAddedResponse.class);
         }
         return arrangementsPostResponseBody;
     }
 
-    public void ingestProductAndLogResponse(ProductsPostRequestBody product) {
+    public void ingestProductAndLogResponse(ProductItem product) {
         Response response = ingestProduct(product);
 
         if (isBadRequestExceptionWithErrorKey(response, "account.api.product.alreadyExists")) {
@@ -87,14 +88,14 @@ public class ArrangementsIntegrationRestClient extends RestClient {
         }
     }
 
-    public Response ingestBalance(BalanceHistoryPostRequestBody balanceHistoryPostRequestBody) {
+    public Response ingestBalance(BalanceHistoryItem balanceHistoryPostRequestBody) {
         return requestSpec()
             .contentType(ContentType.JSON)
             .body(balanceHistoryPostRequestBody)
             .post(getPath(ENDPOINT_BALANCE_HISTORY));
     }
 
-    private Response ingestProduct(ProductsPostRequestBody body) {
+    private Response ingestProduct(ProductItem body) {
         return requestSpec()
             .contentType(ContentType.JSON)
             .body(body)
@@ -103,8 +104,8 @@ public class ArrangementsIntegrationRestClient extends RestClient {
 
     public Response postSubscriptions(String externalArrangementId, Subscription subscription) {
         return requestSpec()
-                .contentType(ContentType.JSON)
-                .body(subscription)
-                .post(getPath(ENDPOINT_ARRANGEMENTS) + "/" + externalArrangementId + ENDPOINT_SUBSCRIPTION);
+            .contentType(ContentType.JSON)
+            .body(subscription)
+            .post(getPath(ENDPOINT_ARRANGEMENTS) + "/" + externalArrangementId + ENDPOINT_SUBSCRIPTION);
     }
 }

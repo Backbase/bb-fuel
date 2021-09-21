@@ -10,10 +10,10 @@ import com.backbase.ct.bbfuel.client.productsummary.ArrangementsIntegrationRestC
 import com.backbase.ct.bbfuel.data.ProductSummaryDataGenerator;
 import com.backbase.ct.bbfuel.dto.ArrangementId;
 import com.backbase.ct.bbfuel.dto.entitlement.ProductGroupSeed;
-import com.backbase.dbs.arrangement.integration.rest.spec.v2.arrangements.ArrangementsPostResponseBody;
-import com.backbase.dbs.arrangement.integration.rest.spec.v2.balancehistory.BalanceHistoryPostRequestBody;
-import com.backbase.dbs.arrangement.integration.rest.spec.v2.products.ProductsPostRequestBody;
-import com.backbase.integration.arrangement.rest.spec.v2.arrangements.ArrangementsPostRequestBody;
+import com.backbase.dbs.arrangement.integration.inbound.api.v2.model.ArrangementAddedResponse;
+import com.backbase.dbs.arrangement.integration.inbound.api.v2.model.BalanceHistoryItem;
+import com.backbase.dbs.arrangement.integration.inbound.api.v2.model.PostArrangement;
+import com.backbase.dbs.arrangement.integration.inbound.api.v2.model.ProductItem;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -28,13 +28,13 @@ public class ProductSummaryConfigurator {
     private final ArrangementsIntegrationRestClient arrangementsIntegrationRestClient;
 
     public void ingestProducts() {
-        List<ProductsPostRequestBody> products = ProductSummaryDataGenerator.getProductsFromFile();
+        List<ProductItem> products = ProductSummaryDataGenerator.getProductsFromFile();
         products.stream().parallel()
             .forEach(arrangementsIntegrationRestClient::ingestProductAndLogResponse);
     }
 
     public List<ArrangementId> ingestArrangements(String externalLegalEntityId, ProductGroupSeed productGroupSeed) {
-        List<ArrangementsPostRequestBody> arrangements = synchronizedList(new ArrayList<>());
+        List<PostArrangement> arrangements = synchronizedList(new ArrayList<>());
         List<ArrangementId> arrangementIds = synchronizedList(new ArrayList<>());
         List<String> productIds = productGroupSeed.getProductIds();
 
@@ -53,11 +53,12 @@ public class ProductSummaryConfigurator {
         if (numberOfNonCurrentAccounts > 0 && !productGroupSeed.getProductIds().isEmpty()) {
             arrangements.addAll(generateNonCurrentAccountArrangementsPostRequestBodies(
                 externalLegalEntityId, productGroupSeed,
-                productGroupSeed.getProductIds().contains(String.valueOf(1)) ? numberOfNonCurrentAccounts : numberOfArrangements));
+                productGroupSeed.getProductIds().contains(String.valueOf(1)) ? numberOfNonCurrentAccounts
+                    : numberOfArrangements));
         }
 
         arrangements.parallelStream().forEach(arrangement -> {
-            ArrangementsPostResponseBody arrangementsPostResponseBody = arrangementsIntegrationRestClient
+            ArrangementAddedResponse arrangementsPostResponseBody = arrangementsIntegrationRestClient
                 .ingestArrangement(arrangement);
             log.info("Arrangement [{}] ingested for product [{}] under legal entity [{}]",
                 arrangement.getName(), arrangement.getProductId(), externalLegalEntityId);
@@ -68,7 +69,7 @@ public class ProductSummaryConfigurator {
     }
 
     public void ingestBalanceHistory(String externalArrangementId) {
-        List<BalanceHistoryPostRequestBody> balanceHistoryPostRequestBodies = generateBalanceHistoryPostRequestBodies(
+        List<BalanceHistoryItem> balanceHistoryPostRequestBodies = generateBalanceHistoryPostRequestBodies(
             externalArrangementId);
 
         balanceHistoryPostRequestBodies.parallelStream()

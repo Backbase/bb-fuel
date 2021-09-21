@@ -38,6 +38,7 @@
 
         <api.target>${project.build.directory}/downloaded-api</api.target>
         <openapi-generator-version>5.1.0</openapi-generator-version>
+        <boat-maven-plugin.version>0.14.3</boat-maven-plugin.version>
         <jackson-databind.version>2.11.3</jackson-databind.version>
         <jackson-databind-nullable-version>0.2.1</jackson-databind-nullable-version>
         <swagger-annotations-version>1.6.0</swagger-annotations-version>
@@ -48,6 +49,12 @@
 
         <service-sdk.version>11.0.0</service-sdk.version>
         <common-types.version>1.0.5</common-types.version>
+
+        <!-- Products Specs Versions -->
+        <arrangement-integration-outbound-link-account-api.version>2.1.1</arrangement-integration-outbound-link-account-api.version>
+        <arrangement-integration-outbound-origination-api.version>1.0.3</arrangement-integration-outbound-origination-api.version>
+        <arrangement-integration-inbound-api.version>2.4.1</arrangement-integration-inbound-api.version>
+
     </properties>
 
     <dependencyManagement>
@@ -388,18 +395,6 @@
                     </execution>
 
                     <execution>
-                        <id>download-arrangement-outbound-origination-api-spec</id>
-                        <goals>
-                            <goal>download-single</goal>
-                        </goals>
-                        <phase>generate-sources</phase>
-                        <configuration>
-                            <url>https://repo.backbase.com/specs/arrangement-manager</url>
-                            <fromFile>arrangement-integration-outbound-origination-api-v1.0.3.yaml</fromFile>
-                        </configuration>
-                    </execution>
-
-                    <execution>
                         <id>download-positive-pay-client-api</id>
                         <goals>
                             <goal>download-single</goal>
@@ -410,6 +405,32 @@
                             <fromFile>positive-pay-client-api-v1.0.0.yaml</fromFile>
                         </configuration>
                     </execution>
+
+                    <!-- Products Specs -->
+                    <execution>
+                        <id>download-arrangement-outbound-origination-api-spec</id>
+                        <goals>
+                            <goal>download-single</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <url>https://repo.backbase.com/specs/arrangement-manager</url>
+                            <fromFile>arrangement-integration-outbound-origination-api-v${arrangement-integration-outbound-origination-api.version}.yaml</fromFile>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>download-arrangement-integration-outbound-link-account-api-spec</id>
+                        <goals>
+                            <goal>download-single</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <url>https://repo.backbase.com/specs/arrangement-manager</url>
+                            <fromFile>arrangement-integration-outbound-link-account-api-v${arrangement-integration-outbound-link-account-api.version}.yaml</fromFile>
+                        </configuration>
+                    </execution>
+
                     <execution>
                         <id>download-arrangement-integration-inbound-api</id>
                         <goals>
@@ -418,7 +439,7 @@
                         <phase>generate-sources</phase>
                         <configuration>
                             <url>https://repo.backbase.com/specs/arrangement-manager</url>
-                            <fromFile>arrangement-integration-inbound-api-v2.2.0.yaml</fromFile>
+                            <fromFile>arrangement-integration-inbound-api-v${arrangement-integration-inbound-api.version}.yaml</fromFile>
                         </configuration>
                     </execution>
                 </executions>
@@ -551,20 +572,6 @@
                     </execution>
 
                     <execution>
-                        <id>generate-arrangement-outbound-origination-client-code</id>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <inputSpec>${api.target}/arrangement-integration-outbound-origination-api-v1.0.3.yaml</inputSpec>
-                            <configOptions>
-                                <apiPackage>com.backbase.dbs.arrangement.integration.outbound.origination.v1</apiPackage>
-                                <modelPackage>com.backbase.dbs.arrangement.integration.outbound.origination.v1.model</modelPackage>
-                            </configOptions>
-                        </configuration>
-                    </execution>
-
-                    <execution>
                         <id>generate-positive-pay-client-code</id>
                         <goals>
                             <goal>generate</goal>
@@ -577,6 +584,59 @@
                             </configOptions>
                         </configuration>
                     </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>com.backbase.oss</groupId>
+                <artifactId>boat-maven-plugin</artifactId>
+                <version>${boat-maven-plugin.version}</version>
+                <configuration>
+                    <output>${project.build.directory}/generated-sources/api</output>
+                    <generatorName>java</generatorName>
+                    <generateApiTests>false</generateApiTests>
+                    <generateModelTests>false</generateModelTests>
+                    <generateModelDocumentation>false</generateModelDocumentation>
+                    <generateApiDocumentation>false</generateApiDocumentation>
+
+                    <configOptions>
+                        <library>rest-assured</library>
+                        <dateLibrary>java8</dateLibrary>
+                        <serializationLibrary>jackson</serializationLibrary>
+                        <useSetForUniqueItems>true</useSetForUniqueItems>
+                        <useWithModifiers>true</useWithModifiers>
+                    </configOptions>
+                </configuration>
+
+                <executions>
+
+                    <execution>
+                        <id>generate-arrangement-outbound-origination-client-code</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${api.target}/arrangement-integration-outbound-origination-api-v${arrangement-integration-outbound-origination-api.version}.yaml</inputSpec>
+                            <configOptions>
+                                <apiPackage>com.backbase.dbs.arrangement.integration.outbound.origination.v1</apiPackage>
+                                <modelPackage>com.backbase.dbs.arrangement.integration.outbound.origination.v1.model</modelPackage>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>generate-arrangement-integration-outbound-link-account-client-code</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${api.target}/arrangement-integration-outbound-link-account-api-v${arrangement-integration-outbound-link-account-api.version}.yaml</inputSpec>
+                            <configOptions>
+                                <apiPackage>com.backbase.dbs.arrangement.integration.outbound.link.v2</apiPackage>
+                                <modelPackage>com.backbase.dbs.arrangement.integration.outbound.link.v2.model</modelPackage>
+                            </configOptions>
+                        </configuration>
+                    </execution>
 
                     <execution>
                         <id>generate-arrangement-integration-inbound-api</id>
@@ -585,7 +645,7 @@
                         </goals>
                         <phase>generate-sources</phase>
                         <configuration>
-                            <inputSpec>${api.target}/arrangement-integration-inbound-api-v2.2.0.yaml</inputSpec>
+                            <inputSpec>${api.target}/arrangement-integration-inbound-api-v${arrangement-integration-inbound-api.version}.yaml</inputSpec>
                             <configOptions>
                                 <apiPackage>com.backbase.dbs.arrangement.integration.inbound.api.v2</apiPackage>
                                 <modelPackage>com.backbase.dbs.arrangement.integration.inbound.api.v2.model</modelPackage>
@@ -608,13 +668,6 @@
                         <configuration>
                             <includes>**/*.raml,**/*.json,**/*.md,**/*.csv</includes>
                             <artifactItems>
-                                <artifactItem>
-                                    <groupId>com.backbase.dbs.account</groupId>
-                                    <artifactId>account-integration-spec</artifactId>
-                                    <outputDirectory>
-                                        ${project.build.directory}/account-integration-spec
-                                    </outputDirectory>
-                                </artifactItem>
 
                                 <artifactItem>
                                     <groupId>com.backbase.dbs.actions</groupId>
@@ -629,14 +682,6 @@
                                     <artifactId>approval-integration-spec</artifactId>
                                     <outputDirectory>
                                         ${project.build.directory}/approval-integration-spec
-                                    </outputDirectory>
-                                </artifactItem>
-
-                                <artifactItem>
-                                    <groupId>com.backbase.dbs.arrangement</groupId>
-                                    <artifactId>arrangement-integration-spec</artifactId>
-                                    <outputDirectory>
-                                        ${project.build.directory}/arrangement-integration-spec
                                     </outputDirectory>
                                 </artifactItem>
 
@@ -700,23 +745,6 @@
                     <outputFile>target/generated-sources</outputFile>
                 </configuration>
                 <executions>
-                    <execution>
-                        <id>generate-account-integration-spec</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>raml-api-generator</goal>
-                        </goals>
-                        <configuration>
-                            <serviceId>account-integration-service</serviceId>
-                            <packageName>dbs.account</packageName>
-                            <inputFiles>
-                                <inputFile>
-                                    ${project.build.directory}/account-integration-spec/service-api.raml
-                                </inputFile>
-                            </inputFiles>
-                            <requestHeaders>false</requestHeaders>
-                        </configuration>
-                    </execution>
 
                     <execution>
                         <id>generate-approval-integration-spec</id>
@@ -730,24 +758,6 @@
                             <inputFiles>
                                 <inputFile>
                                     ${project.build.directory}/approval-integration-spec/client-api.raml
-                                </inputFile>
-                            </inputFiles>
-                            <requestHeaders>false</requestHeaders>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>generate-arrangement-integration-spec</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>raml-api-generator</goal>
-                        </goals>
-                        <configuration>
-                            <serviceId>arrangement-service</serviceId>
-                            <packageName>dbs.arrangement.integration</packageName>
-                            <inputFiles>
-                                <inputFile>
-                                    ${project.build.directory}/arrangement-integration-spec/integration-api.raml
                                 </inputFile>
                             </inputFiles>
                             <requestHeaders>false</requestHeaders>

@@ -230,7 +230,7 @@ public class ProductSummaryDataGenerator {
             .withCountrySubDivision(faker.address().state())
             .withBIC(bic)
             .withStateId(getRandomFromList(ARRANGEMENT_STATES))
-            .withCardDetails(generateCardDetails())
+            .withCardDetails("4".equals(productId) ? generateCardDetails() : null)
             .withInterestDetails(generateInterestDetails())
             .withReservedAmount(generateRandomAmountInRange(500L, 10000L))
             .withRemainingPeriodicTransfers(generateRandomAmountInRange(500L, 10000L))

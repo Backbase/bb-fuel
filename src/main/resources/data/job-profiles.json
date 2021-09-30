@@ -543,6 +543,12 @@
         ]
       },
       {
+        "businessFunction": "Batch - List Confidential",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
         "businessFunction": "Manage Positive Pay",
         "privileges": [
           "view",
@@ -847,6 +853,18 @@
           "edit",
           "delete",
           "approve"
+        ]
+      },
+      {
+        "businessFunction": "Batch - Manage Confidential",
+        "privileges": [
+          "execute"
+        ]
+      },
+      {
+        "businessFunction": "Batch - List Confidential",
+        "privileges": [
+          "view"
         ]
       },
       {

@@ -17,6 +17,7 @@ bb-fuel:
     transactions: http://localhost:8083/transaction-manager/integration-api
     user: http://localhost:8086/user-manager/integration-api
     accountStatement: http://localhost:8085/account-statement-integration-service/service-api
+    pockets: http://localhost:8087/pocket-tailor/client-api
   dbs-service-names:
     accessgroup: access-control
     actions: action-service

@@ -1,11 +1,6 @@
 package com.backbase.ct.bbfuel.data;
 
-import static com.backbase.ct.bbfuel.util.CommonHelpers.generateRandomAmountInRange;
-import static com.backbase.ct.bbfuel.util.CommonHelpers.generateRandomBranchCode;
-import static com.backbase.ct.bbfuel.util.CommonHelpers.generateRandomCardProvider;
-import static com.backbase.ct.bbfuel.util.CommonHelpers.generateRandomDateInRange;
-import static com.backbase.ct.bbfuel.util.CommonHelpers.generateRandomNumberInRange;
-import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
+import static com.backbase.ct.bbfuel.util.CommonHelpers.*;
 import static java.lang.String.valueOf;
 import static java.util.Arrays.asList;
 import static java.util.Collections.synchronizedList;
@@ -202,24 +197,38 @@ public class ProductSummaryDataGenerator {
         String arrangementNameSuffix =
             " " + currency + " " + bic.substring(0, 3) + accountNumber.substring(accountNumber.length() - 3);
         String fullArrangementName = currentAccountName + arrangementNameSuffix;
+
+        // Credit Limit Logic
+        BigDecimal creditLimit = generateRandomAmountInRange(1000L, 10000L);
+        BigDecimal creditLimitUsage = generateRandomAmountInRange(0L, creditLimit.longValue());
+        BigDecimal reservedAmount = generateRandomAmountInRange(0L, creditLimit.subtract(creditLimitUsage).longValue());
+        BigDecimal remainingCredit = creditLimit.subtract(creditLimitUsage).subtract(reservedAmount);
+        BigDecimal bookedBalance = ("4".equals(productId) ? creditLimitUsage : generateRandomAmountInRange(10000L, 9999999L));
+
         PostArrangement arrangementsPostRequestBody = (PostArrangement) new PostArrangement()
             .withLegalEntityIds(Collections.singleton(externalLegalEntityId))
             .withProductId(productId)
             .withId(externalArrangementId.orElse(UUID.randomUUID().toString()))
             .withName(fullArrangementName)
             .withBankAlias(fullArrangementName)
-            .withBookedBalance(generateRandomAmountInRange(10000L, 9999999L))
+            .withBookedBalance(bookedBalance)
             .withAvailableBalance(generateRandomAmountInRange(10000L, 9999999L))
-            .withCreditLimit(generateRandomAmountInRange(10000L, 999999L))
+            .withCreditLimit(creditLimit)
+            .withCreditLimitUsage(creditLimitUsage)
+            .withRemainingCredit(remainingCredit)
+            .withReservedAmount(reservedAmount)
             .withCurrency(currency)
+            .withMinimumPayment(generateRandomAmountInRange(10L, 250L))
+            .withMinimumPaymentDueDate(generateRandomDateInRange(LocalDate.now(), LocalDate.now().plusDays(30)).atStartOfDay().atOffset(ZoneOffset.UTC))
             .withExternalTransferAllowed(true)
             .withUrgentTransferAllowed(true)
             .withAccruedInterest(BigDecimal.valueOf(ThreadLocalRandom.current().nextInt(10)))
             .withNumber(String.format("%s", ThreadLocalRandom.current().nextInt(9999)))
             .withPrincipalAmount(generateRandomAmountInRange(10000L, 999999L))
             .withCurrentInvestmentValue(generateRandomAmountInRange(10000L, 999999L))
-            .withDebitAccount(ImmutableList.of("1", "2", "default-pocket-external-id").contains(productId))
+            .withDebitAccount(ImmutableList.of("1", "2", "4", "default-pocket-external-id").contains(productId))
             .withCreditAccount(ImmutableList.of("1", "2", "4", "5", "default-pocket-external-id").contains(productId))
+            .withValidThru(generateRandomDateInRange(LocalDate.now().plusDays(365), LocalDate.now().plusDays(1825)).atStartOfDay().atOffset(ZoneOffset.UTC))
             .withAccountHolderNames(faker.name().fullName())
             .withAccountHolderAddressLine1(faker.address().streetAddress())
             .withAccountHolderAddressLine2(faker.address().secondaryAddress())
@@ -232,18 +241,17 @@ public class ProductSummaryDataGenerator {
             .withStateId(getRandomFromList(ARRANGEMENT_STATES))
             .withCardDetails("4".equals(productId) ? generateCardDetails() : null)
             .withInterestDetails(generateInterestDetails())
-            .withReservedAmount(generateRandomAmountInRange(500L, 10000L))
             .withRemainingPeriodicTransfers(generateRandomAmountInRange(500L, 10000L))
             .withNextClosingDate(generateRandomDateInRange(LocalDate.now().minusDays(30), LocalDate.now().minusDays(1)))
             .withOverdueSince(generateRandomDateInRange(LocalDate.now().minusDays(30), LocalDate.now().minusDays(1)))
             .withBankBranchCode(generateRandomBranchCode())
             .withBankBranchCode2(generateRandomBranchCode());
 
-        if (EUR.equals(currency)) {
+        if (EUR.equals(currency) && !"4".equals(productId)) {
             arrangementsPostRequestBody
                 .withIBAN(accountNumber)
                 .withBBAN(accountNumber.substring(3).replaceAll("[a-zA-Z]", ""));
-        } else {
+        } else if (!"4".equals(productId)) {
             arrangementsPostRequestBody
                 .withBBAN(accountNumber);
         }
@@ -253,7 +261,7 @@ public class ProductSummaryDataGenerator {
     public static CardDetails generateCardDetails() {
         return (CardDetails) new CardDetails()
             .withAvailableCashCredit(generateRandomAmountInRange(500L, 10000L))
-            .withCardProvider(generateRandomCardProvider())
+            .withCardProvider(generateRandomCardProviderFromList())
             .withCashCreditLimit(generateRandomAmountInRange(1500L, 15000L))
             .withLastPaymentAmount(generateRandomAmountInRange(1L, 1000L))
             .withLastPaymentDate(generateRandomDateInRange(LocalDate.now().minusDays(30), LocalDate.now()))

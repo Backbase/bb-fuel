@@ -20,6 +20,10 @@ public final class CommonHelpers {
         "122105155", "082000549", "121122676", "091300023", "121201694", "123123123", "307070115", "091000022"
     );
 
+    private static final List<String> VALID_PROVIDERS = asList(
+            "mastercard", "visa", "diners-club"
+    );
+
     public static int generateRandomNumberInRange(int min, int max) {
         if (min > max) {
             throw new IllegalArgumentException("max must be greater than min");
@@ -69,5 +73,9 @@ public final class CommonHelpers {
     public static String generateRandomCardProvider() {
         return CreditCardType.values()[new Faker().random().nextInt(CreditCardType.values().length)]
             .name().replace("_", " ");
+    }
+
+    public static String generateRandomCardProviderFromList() {
+        return VALID_PROVIDERS.get(generateRandomNumberInRange(0, VALID_PROVIDERS.size() - 1));
     }
 }

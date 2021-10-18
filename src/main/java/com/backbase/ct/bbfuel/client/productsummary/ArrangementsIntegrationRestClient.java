@@ -47,7 +47,7 @@ public class ArrangementsIntegrationRestClient extends RestClient {
             .as(ArrangementAddedResponse.class);
     }
 
-    public Response ingestParentPocketArrangement(PostArrangement body) {
+    public Response ingestPocketArrangement(PostArrangement body) {
         return requestSpec()
             .contentType(ContentType.JSON)
             .body(body)
@@ -55,14 +55,14 @@ public class ArrangementsIntegrationRestClient extends RestClient {
     }
 
     /**
-     * Ingest parent pocket arrangement when not already existing
+     * Ingest pocket arrangement for 1-to-many or 1-to-1 mode, when not already existing.
      *
-     * @param arrangement the parent pocket arrangement
+     * @param arrangement the pocket arrangement generated for 1-to-many or 1-to-1 mode
      * @return ArrangementAddedResponse
      */
-    public ArrangementAddedResponse ingestParentPocketArrangementAndLogResponse(PostArrangement arrangement) {
+    public ArrangementAddedResponse ingestPocketArrangementAndLogResponse(PostArrangement arrangement) {
         ArrangementAddedResponse arrangementsPostResponseBody = null;
-        Response response = ingestParentPocketArrangement(arrangement);
+        Response response = ingestPocketArrangement(arrangement);
         if (isBadRequestExceptionWithErrorKey(response, "arrangements.api.alreadyExists.arrangement")) {
             log.info("Arrangement [{}] already exists, skipped ingesting this arrangement", arrangement.getProductId());
         } else {

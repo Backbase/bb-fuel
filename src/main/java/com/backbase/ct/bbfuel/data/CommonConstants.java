@@ -88,6 +88,7 @@ public final class CommonConstants {
     public static final String PROPERTY_POSITIVEPAY_MIN = "positivePay.min";
     public static final String PROPERTY_POSITIVEPAY_MAX = "positivePay.max";
     public static final String PROPERTY_INGEST_POCKETS = "ingest.pockets";
+    public static final String PROPERTY_POCKET_MAPPING_MODE = "pocket.mapping.mode";
 
     // Product summary
     public static final String PROPERTY_PRODUCTS_JSON_LOCATION = "products.json";

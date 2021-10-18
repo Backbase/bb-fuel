@@ -113,11 +113,11 @@ public class AccessGroupService {
     /**
      * Update data group.
      *
-     * @param parentPocketArrangementId  parent pocket arrangement
-     * @param externalServiceAgreementId external service agreement
+     * @param pocketArrangementId  pocket arrangement id, created by 1-to-many or 1-to-1 mode
+     * @param externalServiceAgreementId external service agreement id
      * @return id of updated data group
      */
-    public String updateDataGroup(String parentPocketArrangementId, String externalServiceAgreementId) {
+    public String updateDataGroup(String pocketArrangementId, String externalServiceAgreementId) {
 
         String internalServiceAgreementId = serviceAgreementsIntegrationRestClient
             .retrieveServiceAgreementByExternalId(externalServiceAgreementId)
@@ -135,7 +135,7 @@ public class AccessGroupService {
                     externalServiceAgreementId, DATA_GROUP_NAME_RETAIL_POCKETS)));
 
         List<String> arrangementIds = existingDataGroup.getItems();
-        arrangementIds.add(parentPocketArrangementId);
+        arrangementIds.add(pocketArrangementId);
         existingDataGroup.setItems(arrangementIds);
 
         Response response = accessGroupPresentationRestClient.updateDataGroup(

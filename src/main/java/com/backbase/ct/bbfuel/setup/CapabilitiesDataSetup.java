@@ -16,6 +16,7 @@ import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_NOTIFI
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_PAYMENTS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_POCKETS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_POSITIVE_PAY_CHECKS;
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_POCKET_MAPPING_MODE;
 import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
 import static java.util.Collections.singletonList;
 
@@ -231,20 +232,31 @@ public class CapabilitiesDataSetup extends BaseSetup {
                 .collect(Collectors.toList());
 
             retailUsers.forEach(retailUser -> {
-                log.debug("Going to ingest pockets for retail user {}", retailUser);
+                log.debug("Going to ingest pockets in mode {} for retail user {}",
+                    globalProperties.getString(PROPERTY_POCKET_MAPPING_MODE), retailUser);
 
                 LegalEntityBase legalEntity = this.userPresentationRestClient
                     .retrieveLegalEntityByExternalUserId(retailUser.getExternalId());
 
-                String parentPocketArrangementId = pocketsConfigurator.ingestPocketParentArrangementAndSetEntitlements(
-                    legalEntity);
-                if (parentPocketArrangementId != null) {
-                    pocketTailorActuatorClient.createArrangedLegalEntity(parentPocketArrangementId, legalEntity);
+                if (this.globalProperties.getString(PROPERTY_POCKET_MAPPING_MODE).equals("ONE_TO_ONE")) {
+                    pocketsConfigurator.ingestPocketArrangementForMode1to1AndSetEntitlements(legalEntity);
+
+                    this.loginRestClient.login(retailUser.getExternalId(), retailUser.getExternalId());
+                    userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
+                    this.pocketsConfigurator.ingestPockets(legalEntity.getExternalId());
                 }
 
-                this.loginRestClient.login(retailUser.getExternalId(), retailUser.getExternalId());
-                userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
-                this.pocketsConfigurator.ingestPockets(legalEntity.getExternalId());
+                if (this.globalProperties.getString(PROPERTY_POCKET_MAPPING_MODE).equals("ONE_TO_MANY")) {
+                    String parentPocketArrangementId = pocketsConfigurator.ingestPocketArrangementForMode1toManyAndSetEntitlements(
+                        legalEntity);
+                    if (parentPocketArrangementId != null) {
+                        pocketTailorActuatorClient.createArrangedLegalEntity(parentPocketArrangementId, legalEntity);
+                    }
+
+                    this.loginRestClient.login(retailUser.getExternalId(), retailUser.getExternalId());
+                    userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
+                    this.pocketsConfigurator.ingestPockets(legalEntity.getExternalId());
+                }
             });
         }
     }

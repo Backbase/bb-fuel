@@ -35,7 +35,7 @@ public class PocketsConfigurator {
      * @param legalEntity legal entity
      * @return pocket parent arrangement id as String
      */
-    public String ingestPocketArrangementForMode1toManyAndSetEntitlements(LegalEntityBase legalEntity) {
+    public String ingestPocketArrangementForModeOnetoManyAndSetEntitlements(LegalEntityBase legalEntity) {
         // -> creating parent pocket arrangement for legal entity
         log.debug("Going to ingest a parent pocket arrangement for external legal entity ID: [{}]", legalEntity);
 
@@ -66,7 +66,7 @@ public class PocketsConfigurator {
      * @param legalEntity legal entity
      * @return pocket arrangement id as String
      */
-    public String ingestPocketArrangementForMode1to1AndSetEntitlements(
+    public String ingestPocketArrangementForModeOnetoOneAndSetEntitlements(
         LegalEntityBase legalEntity) {
         // -> creating pocket arrangement for legal entity
         log.debug("Going to ingest a pocket arrangement for external legal entity ID: [{}]", legalEntity);

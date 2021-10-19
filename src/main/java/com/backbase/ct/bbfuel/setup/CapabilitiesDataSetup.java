@@ -239,7 +239,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
                     .retrieveLegalEntityByExternalUserId(retailUser.getExternalId());
 
                 if (this.globalProperties.getString(PROPERTY_POCKET_MAPPING_MODE).equals("ONE_TO_ONE")) {
-                    pocketsConfigurator.ingestPocketArrangementForMode1to1AndSetEntitlements(legalEntity);
+                    pocketsConfigurator.ingestPocketArrangementForModeOnetoOneAndSetEntitlements(legalEntity);
 
                     this.loginRestClient.login(retailUser.getExternalId(), retailUser.getExternalId());
                     userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
@@ -247,7 +247,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
                 }
 
                 if (this.globalProperties.getString(PROPERTY_POCKET_MAPPING_MODE).equals("ONE_TO_MANY")) {
-                    String parentPocketArrangementId = pocketsConfigurator.ingestPocketArrangementForMode1toManyAndSetEntitlements(
+                    String parentPocketArrangementId = pocketsConfigurator.ingestPocketArrangementForModeOnetoManyAndSetEntitlements(
                         legalEntity);
                     if (parentPocketArrangementId != null) {
                         pocketTailorActuatorClient.createArrangedLegalEntity(parentPocketArrangementId, legalEntity);

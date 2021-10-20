@@ -115,12 +115,13 @@ public class ProductSummaryDataGenerator {
         return arrangementsPostRequestBody;
     }
 
-    public static PostArrangement generateChildPocketArrangement(String externalLegalEntityId) {
-        String externalArrangementId = "external-arrangement-origination-1";
+    public static PostArrangement generateChildPocketArrangement(String externalLegalEntityId,
+        String externalArrangementId, int counter) {
+        String currentAccountName = "Core Pocket Account" + counter;
         PostArrangement postArrangement = getArrangementsPostRequestBody(
             Optional.of(externalArrangementId),
             externalLegalEntityId,
-            "Child Pocket Account",
+            currentAccountName,
             EUR,
             DEFAULT_POCKET_EXTERNAL_ID);
         postArrangement.setBookedBalance(BigDecimal.ZERO);

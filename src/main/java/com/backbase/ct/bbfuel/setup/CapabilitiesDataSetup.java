@@ -211,6 +211,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
     }
 
     private void ingestPockets() {
+        // Consult docs/pockets_setup/*.png files for help to run this ingestion locally as a Spring Boot application
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_POCKETS)) {
 
             this.loginRestClient.loginBankAdmin();
@@ -239,11 +240,25 @@ public class CapabilitiesDataSetup extends BaseSetup {
                     .retrieveLegalEntityByExternalUserId(retailUser.getExternalId());
 
                 if (this.globalProperties.getString(PROPERTY_POCKET_MAPPING_MODE).equals("ONE_TO_ONE")) {
-                    pocketsConfigurator.ingestPocketArrangementForModeOnetoOneAndSetEntitlements(legalEntity);
+                    //  Create 5 arrangements for 5 pockets
+                    int numberOfCreatedPockets = 5;
+                    //  TODO this implementation now creates 1 pocket. Problem see below
+//                    for (int counter = 0; counter < numberOfCreatedPockets; counter++) {
+                        // Create 5 arrangements, which represent the core pocket arrangements with an external arrangement id
+                        // based partly on the counter, namely 'external-arrangement-origination-0', 'external-arrangement-origination-1',
+                        // 'external-arrangement-origination-3', 'external-arrangement-origination-4' and 'external-arrangement-origination-5'
+                        pocketsConfigurator.ingestPocketArrangementForModeOnetoOneAndSetEntitlements(legalEntity, 1);
 
-                    this.loginRestClient.login(retailUser.getExternalId(), retailUser.getExternalId());
-                    userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
-                    this.pocketsConfigurator.ingestPockets(legalEntity.getExternalId());
+                        this.loginRestClient.login(retailUser.getExternalId(), retailUser.getExternalId());
+                        userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
+                        // Ingestion pockets based on the 5 created arrangements above.
+                        // PROBLEM: This goes wrong in AccountMappingModeService.createArrangementInCore.
+                        // This method calls arrangementOriginationApi.createArrangement which in Beck environment always returns
+                        // 'external-arrangement-origination-1' (api simulator instance)
+                        // The subsequent call in AccountMappingModeService.createArrangementInCore is arrangementsApi.getInternalId(externalId))
+                        // which will work when the arrangement is the one with the external arrangement id 'external-arrangement-origination-1'
+                        this.pocketsConfigurator.ingestPocket(legalEntity.getExternalId(), 1);
+//                    }
                 }
 
                 if (this.globalProperties.getString(PROPERTY_POCKET_MAPPING_MODE).equals("ONE_TO_MANY")) {

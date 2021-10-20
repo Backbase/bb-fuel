@@ -121,7 +121,7 @@ public class PocketsConfigurator {
         List<PocketPostRequest> pockets = pocketsReader.load();
         PocketPostRequest pocketPostRequest = pockets.get(counter);
 
-        Pocket pocket = pocketsRestClient.ingestPocket(pocketPostRequest);
+        Pocket pocket = pocketsRestClient.ingestPocket(pocketPostRequest, counter);
         log.info("Pocket with ID [{}], arrangementID [{}] and name [{}] created for user [{}]",
             pocket.getId(),
             pocket.getArrangementId(),

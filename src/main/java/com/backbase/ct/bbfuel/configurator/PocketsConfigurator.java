@@ -30,12 +30,12 @@ public class PocketsConfigurator {
     private final AccessGroupService accessGroupService;
 
     /**
-     * Ingest pocket parent arrangement.
+     * Ingest pocket arrangement for 1-to-many mode.
      *
      * @param legalEntity legal entity
      * @return pocket parent arrangement id as String
      */
-    public String ingestPocketParentArrangementAndSetEntitlements(LegalEntityBase legalEntity) {
+    public String ingestPocketArrangementForModeOnetoManyAndSetEntitlements(LegalEntityBase legalEntity) {
         // -> creating parent pocket arrangement for legal entity
         log.debug("Going to ingest a parent pocket arrangement for external legal entity ID: [{}]", legalEntity);
 
@@ -61,6 +61,38 @@ public class PocketsConfigurator {
     }
 
     /**
+     * Ingest pocket arrangement for 1-to-1 mode.
+     *
+     * @param legalEntity legal entity
+     * @return pocket arrangement id as String
+     */
+    public String ingestPocketArrangementForModeOnetoOneAndSetEntitlements(
+        LegalEntityBase legalEntity, int counter) {
+        // -> creating pocket arrangement for legal entity
+        log.debug("Going to ingest a pocket arrangement for external legal entity ID: [{}]", legalEntity);
+
+        String pocketArrangementId = null;
+        ArrangementAddedResponse arrangementAddedResponse = ingestPocketArrangement(legalEntity, counter);
+
+        if (arrangementAddedResponse != null) {
+            pocketArrangementId = arrangementAddedResponse.getId();
+            log.info("Pocket arrangement ingested for external legal entity ID [{}]: ID {}",
+                legalEntity, pocketArrangementId);
+
+            // -> Now setting entitlements by dataGroup (functionGroup is already managed by setting
+            //      permissions in retail/job-profiles.json: jobProfileName: 'Retail User' )
+            // -> Updating dataGroup makes the method accessControlClient.verifyCreateAccessToArrangement(arrangementId)
+            //      in PocketTailorServiceImpl succeed, by returning all relevant arrangements with
+            //      usersApi.getArrangementPrivileges
+            // -> Updating functionGroup makes @PreAuthorize("checkPermission... in PocketTailorServiceImpl work, by
+            //      AccessControlValidatorImpl.checkPermissions succeed
+            updateDataGroupForPockets(pocketArrangementId, legalEntity);
+        }
+
+        return pocketArrangementId;
+    }
+
+    /**
      * Ingests Pockets for the given user.
      *
      * @param externalUserId External user ID to ingest pockets for.
@@ -77,16 +109,45 @@ public class PocketsConfigurator {
         }
     }
 
+    /**
+     * Ingest Pocket for the given user.
+     *
+     * @param externalUserId External user ID to ingest pockets for.
+     * @param counter counter to select specific pocket from reader load
+     */
+    public void ingestPocket(String externalUserId, int counter) {
+        log.debug("Going to ingest pockets for user [{}]", externalUserId);
+
+        List<PocketPostRequest> pockets = pocketsReader.load();
+        PocketPostRequest pocketPostRequest = pockets.get(counter);
+
+        Pocket pocket = pocketsRestClient.ingestPocket(pocketPostRequest, counter);
+        log.info("Pocket with ID [{}], arrangementID [{}] and name [{}] created for user [{}]",
+            pocket.getId(),
+            pocket.getArrangementId(),
+            pocket.getName(),
+            externalUserId);
+    }
+
     private ArrangementAddedResponse ingestParentPocketArrangement(LegalEntityBase legalEntity) {
+        String externalArrangementId = "external-arrangement-origination-1";
         PostArrangement parentPocketArrangement = ProductSummaryDataGenerator
             .generateParentPocketArrangement(legalEntity.getExternalId());
         return arrangementsIntegrationRestClient
-            .ingestParentPocketArrangementAndLogResponse(parentPocketArrangement);
+            .ingestPocketArrangementAndLogResponse(parentPocketArrangement, externalArrangementId, true);
     }
 
-    private void updateDataGroupForPockets(String parentPocketArrangementId, LegalEntityBase legalEntity) {
+    private ArrangementAddedResponse ingestPocketArrangement(LegalEntityBase legalEntity, int counter) {
+        String externalArrangementId = "external-arrangement-origination-" + counter;
+        PostArrangement childPostArrangement = ProductSummaryDataGenerator
+            .generateChildPocketArrangement(legalEntity.getExternalId(), externalArrangementId, counter);
+        return arrangementsIntegrationRestClient
+            .ingestPocketArrangementAndLogResponse(childPostArrangement, externalArrangementId, false);
+    }
 
-        String dataGroupId = accessGroupService.updateDataGroup(parentPocketArrangementId,
+    private void updateDataGroupForPockets(String pocketArrangementId, LegalEntityBase legalEntity) {
+
+        String dataGroupId = accessGroupService.updateDataGroup(pocketArrangementId,
             getExternalServiceAgreementId(legalEntity));
 
         log.debug("Updated data group with id [{}]", dataGroupId);

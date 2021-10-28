@@ -21,7 +21,7 @@ public final class CommonHelpers {
     );
 
     private static final List<String> VALID_PROVIDERS = asList(
-            "mastercard", "visa", "diners-club"
+            "mastercard", "visa-white", "union-pay", "diners-club"
     );
 
     public static int generateRandomNumberInRange(int min, int max) {

@@ -50,6 +50,7 @@ public class ProductSummaryDataGenerator {
         new ConcurrentLinkedQueue<>();
     private static final ConcurrentLinkedQueue<String> staticNotCurrentAccountArrangementsQueue =
         new ConcurrentLinkedQueue<>();
+    public static final String DEFAULT_POCKET_EXTERNAL_ID = "default-pocket-external-id";
 
     static {
         List<String> allowed = asList("AT", "BE", "BG", "CH", "CY", "CZ", "DE", "DK", "EE", "ES", "FI", "FR", "GB",
@@ -97,13 +98,32 @@ public class ProductSummaryDataGenerator {
 
     public static PostArrangement generateParentPocketArrangement(String externalLegalEntityId) {
         PostArrangement arrangementsPostRequestBody = getArrangementsPostRequestBody(
-            Optional.of("external-arrangement-origination-1"), externalLegalEntityId, "Parent Pocket Account", EUR,
+            Optional.of("external-arrangement-origination-1"),
+            externalLegalEntityId,
+            "Parent Pocket Account",
+            EUR,
             "default-pocket-parent-external-id");
         arrangementsPostRequestBody.setBookedBalance(BigDecimal.ZERO);
         arrangementsPostRequestBody.setAvailableBalance(BigDecimal.ZERO);
         arrangementsPostRequestBody.setAccruedInterest(BigDecimal.ZERO);
         arrangementsPostRequestBody.setPrincipalAmount(BigDecimal.ZERO);
         return arrangementsPostRequestBody;
+    }
+
+    public static PostArrangement generateChildPocketArrangement(String externalLegalEntityId,
+        String externalArrangementId, int counter) {
+        String currentAccountName = "Core Pocket Account" + counter;
+        PostArrangement postArrangement = getArrangementsPostRequestBody(
+            Optional.of(externalArrangementId),
+            externalLegalEntityId,
+            currentAccountName,
+            EUR,
+            DEFAULT_POCKET_EXTERNAL_ID);
+        postArrangement.setBookedBalance(BigDecimal.ZERO);
+        postArrangement.setAvailableBalance(BigDecimal.ZERO);
+        postArrangement.setAccruedInterest(BigDecimal.ZERO);
+        postArrangement.setPrincipalAmount(BigDecimal.ZERO);
+        return postArrangement;
     }
 
     public static List<PostArrangement> generateCurrentAccountArrangementsPostRequestBodies(
@@ -226,8 +246,8 @@ public class ProductSummaryDataGenerator {
             .withNumber(String.format("%s", ThreadLocalRandom.current().nextInt(9999)))
             .withPrincipalAmount(generateRandomAmountInRange(10000L, 999999L))
             .withCurrentInvestmentValue(generateRandomAmountInRange(10000L, 999999L))
-            .withDebitAccount(ImmutableList.of("1", "2", "4", "default-pocket-external-id").contains(productId))
-            .withCreditAccount(ImmutableList.of("1", "2", "4", "5", "default-pocket-external-id").contains(productId))
+            .withDebitAccount(ImmutableList.of("1", "2", "4" DEFAULT_POCKET_EXTERNAL_ID).contains(productId))
+            .withCreditAccount(ImmutableList.of("1", "2", "4", "5", DEFAULT_POCKET_EXTERNAL_ID).contains(productId))
             .withValidThru(generateRandomDateInRange(LocalDate.now().plusDays(365), LocalDate.now().plusDays(1825)).atStartOfDay().atOffset(ZoneOffset.UTC))
             .withAccountHolderNames(faker.name().fullName())
             .withAccountHolderAddressLine1(faker.address().streetAddress())

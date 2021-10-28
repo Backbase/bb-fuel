@@ -16,6 +16,7 @@ import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_NOTIFI
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_PAYMENTS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_POCKETS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_POSITIVE_PAY_CHECKS;
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_POCKET_MAPPING_MODE;
 import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
 import static java.util.Collections.singletonList;
 
@@ -210,6 +211,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
     }
 
     private void ingestPockets() {
+        // Consult docs/pockets_setup/*.png files for help to run this ingestion locally as a Spring Boot application
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_POCKETS)) {
 
             this.loginRestClient.loginBankAdmin();
@@ -231,20 +233,37 @@ public class CapabilitiesDataSetup extends BaseSetup {
                 .collect(Collectors.toList());
 
             retailUsers.forEach(retailUser -> {
-                log.debug("Going to ingest pockets for retail user {}", retailUser);
+                log.debug("Going to ingest pockets in mode {} for retail user {}",
+                    globalProperties.getString(PROPERTY_POCKET_MAPPING_MODE), retailUser);
 
                 LegalEntityBase legalEntity = this.userPresentationRestClient
                     .retrieveLegalEntityByExternalUserId(retailUser.getExternalId());
 
-                String parentPocketArrangementId = pocketsConfigurator.ingestPocketParentArrangementAndSetEntitlements(
-                    legalEntity);
-                if (parentPocketArrangementId != null) {
-                    pocketTailorActuatorClient.createArrangedLegalEntity(parentPocketArrangementId, legalEntity);
+                if (this.globalProperties.getString(PROPERTY_POCKET_MAPPING_MODE).equals("ONE_TO_ONE")) {
+                    int numberOfCreatedPockets = 5;
+                    for (int counter = 0; counter < numberOfCreatedPockets; counter++) {
+                        // Create 5 arrangements, which represent the core pocket arrangements with configured external arrangement id
+                        pocketsConfigurator.ingestPocketArrangementForModeOnetoOneAndSetEntitlements(legalEntity,
+                            counter);
+                    }
+                    this.loginRestClient.login(retailUser.getExternalId(), retailUser.getExternalId());
+                    userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
+                    for (int counter = 0; counter < numberOfCreatedPockets; counter++) {
+                        this.pocketsConfigurator.ingestPocket(legalEntity.getExternalId(), counter);
+                    }
                 }
 
-                this.loginRestClient.login(retailUser.getExternalId(), retailUser.getExternalId());
-                userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
-                this.pocketsConfigurator.ingestPockets(legalEntity.getExternalId());
+                if (this.globalProperties.getString(PROPERTY_POCKET_MAPPING_MODE).equals("ONE_TO_MANY")) {
+                    String parentPocketArrangementId = pocketsConfigurator.ingestPocketArrangementForModeOnetoManyAndSetEntitlements(
+                        legalEntity);
+                    if (parentPocketArrangementId != null) {
+                        pocketTailorActuatorClient.createArrangedLegalEntity(parentPocketArrangementId, legalEntity);
+                    }
+
+                    this.loginRestClient.login(retailUser.getExternalId(), retailUser.getExternalId());
+                    userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
+                    this.pocketsConfigurator.ingestPockets(legalEntity.getExternalId());
+                }
             });
         }
     }

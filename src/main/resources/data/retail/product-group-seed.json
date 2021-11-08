@@ -8,8 +8,7 @@
     "currentAccountNames": [
       "Current Account",
       "Joint Account",
-      "Savings Account",
-      "Credit Card"
+      "Savings Account"
     ],
     "productIds": [
       "1","2", "4", "7"

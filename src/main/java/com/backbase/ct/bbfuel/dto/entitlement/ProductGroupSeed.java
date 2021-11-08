@@ -16,6 +16,7 @@ import lombok.EqualsAndHashCode;
 @AllArgsConstructor
 public class ProductGroupSeed extends DbsEntity {
 
+    private String legalEntityExternalId;
     private String productGroupName;
     private Boolean isRetail;
     private List<String> currencies;

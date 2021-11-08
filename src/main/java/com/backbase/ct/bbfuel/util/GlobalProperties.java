@@ -1,18 +1,18 @@
 package com.backbase.ct.bbfuel.util;
 
+import static com.backbase.ct.bbfuel.data.CommonConstants.ADDITIONAL_PROPERTIES_PATH;
+import static com.backbase.ct.bbfuel.data.CommonConstants.CUSTOM_PROPERTIES_PATH;
+import static com.backbase.ct.bbfuel.data.CommonConstants.ENVIRONMENT_PROPERTIES_FILE_NAME;
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTIES_FILE_NAME;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.apache.commons.configuration.CompositeConfiguration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.EnvironmentConfiguration;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.configuration.SystemConfiguration;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static com.backbase.ct.bbfuel.data.CommonConstants.CUSTOM_PROPERTIES_PATH;
-import static com.backbase.ct.bbfuel.data.CommonConstants.ENVIRONMENT_PROPERTIES_FILE_NAME;
-import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTIES_FILE_NAME;
 
 /**
  * This is the single thread-safe source of retrieving properties.
@@ -40,6 +40,8 @@ public class GlobalProperties {
         configuration.addConfiguration(new SystemConfiguration());
         configuration.addConfiguration(new EnvironmentConfiguration());
 
+        addAdditionalPropertiesConfiguration();
+
         String effectivePropertiesPath = configuration.containsKey(CUSTOM_PROPERTIES_PATH) ?
             configuration.getString(CUSTOM_PROPERTIES_PATH) :
             PROPERTIES_FILE_NAME;
@@ -51,6 +53,16 @@ public class GlobalProperties {
         }
     }
 
+    private void addAdditionalPropertiesConfiguration() {
+        if (configuration.containsKey(ADDITIONAL_PROPERTIES_PATH)) {
+            String additionalPropertiesPath = configuration.getString(ADDITIONAL_PROPERTIES_PATH);
+            try {
+                configuration.addConfiguration(new PropertiesConfiguration(additionalPropertiesPath));
+            } catch (ConfigurationException ignored) {
+            }
+        }
+    }
+
     public synchronized static GlobalProperties getInstance() {
         if (instance == null) {
             instance = new GlobalProperties();
@@ -58,8 +70,16 @@ public class GlobalProperties {
         return instance;
     }
 
+    public boolean containsKey(String key) {
+        return configuration.containsKey(key);
+    }
+
     public String getString(String key) {
         return configuration.getString(key);
+    }
+
+    public String[] getStringArray(String key) {
+        return configuration.getStringArray(key);
     }
 
     public List<String> getList(String key) {

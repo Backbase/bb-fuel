@@ -8,6 +8,7 @@ public final class CommonConstants {
     // Environment
     public static final String PROPERTIES_FILE_NAME = "data.properties";
     public static final String CUSTOM_PROPERTIES_PATH = "custom.properties.path";
+    public static final String ADDITIONAL_PROPERTIES_PATH = "additional.properties.path";
     public static final String ENVIRONMENT_PROPERTIES_FILE_NAME = "environment.properties";
     public static final String PROPERTY_HEALTH_CHECK_TIMEOUT_IN_MINUTES = "healthcheck.timeout.in.minutes";
     public static final String PROPERTY_HEALTH_CHECK_USE_ACTUATOR = "healthcheck.use.actuator";
@@ -49,6 +50,7 @@ public final class CommonConstants {
     public static final String PROPERTY_INGEST_CUSTOM_SERVICE_AGREEMENTS = "ingest.custom.service.agreements";
     public static final String PROPERTY_JOB_PROFILES_JSON_LOCATION = "job.profiles.json";
     public static final String PROPERTY_PRODUCT_GROUP_SEED_JSON_LOCATION = "product.group.seed.json";
+    public static final String PROPERTY_ADDITIONAL_PRODUCT_GROUP_SEED_JSON_LOCATION = "additional.product.group.seed.json";
 
     // User data
     public static final String PROPERTY_CONTACT_ACCOUNTS_MIN = "contact.accounts.min";

@@ -216,5 +216,16 @@
         "role": "employee"
       }
     ]
+  },
+  {
+    "legalEntityExternalId": "loan_legal_entity",
+    "category": "BUSINESS",
+    "legalEntityName": "Duna Socks",
+    "users": [
+      {
+        "externalId": "steve_johnson",
+        "role": "admin"
+      }
+    ]
   }
 ]

@@ -494,5 +494,50 @@
         ]
       }
     ]
+  },
+  {
+    "jobProfileName": "Finance Employee",
+    "type": "REGULAR",
+    "roles": [
+      "retail-transfers-only"
+    ],
+    "approvalLevel": "A",
+    "permissions": [
+      {
+        "businessFunction": "Product Summary",
+        "privileges": [
+          "view",
+          "edit"
+        ]
+      },
+      {
+        "businessFunction": "Audit",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Manage Legal Entities",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Manage Service Agreements",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Contacts",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve"
+        ]
+      }
+    ]
   }
 ]

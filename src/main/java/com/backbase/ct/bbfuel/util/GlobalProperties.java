@@ -7,7 +7,8 @@ import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTIES_FILE_NAME;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import org.apache.commons.configuration.AbstractConfiguration;
 import org.apache.commons.configuration.CompositeConfiguration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.EnvironmentConfiguration;
@@ -79,15 +80,41 @@ public class GlobalProperties {
     }
 
     public String[] getStringArray(String key) {
-        return configuration.getStringArray(key);
+        return getStringArray(key, false);
+    }
+
+    /**
+     * Gets string array by key from a property with {@link AbstractConfiguration#getDefaultListDelimiter()} separated
+     * value.
+     *
+     * It is possible to control property source with <i>allPropertiesCombined</i> param.
+     * If false - string array is got from a single most prioritized source (e.g. {@link SystemConfiguration}).
+     * If true - string array is merged from all configurations.
+     *
+     * @param key property key
+     * @param allPropertiesCombined controls whether values should be taken from single or all properties sources
+     * @return string array of property values
+     */
+    public String[] getStringArray(String key, boolean allPropertiesCombined) {
+        if (!allPropertiesCombined) {
+            return configuration.getStringArray(key);
+        }
+
+        int numberOfConfigurations = configuration.getNumberOfConfigurations();
+        return IntStream.range(0, numberOfConfigurations)
+            .mapToObj(configuration::getConfiguration)
+            .map(internalConfiguration -> internalConfiguration.getStringArray(key))
+            .flatMap(Arrays::stream)
+            .distinct()
+            .toArray(String[]::new);
     }
 
     public List<String> getList(String key) {
-        String propertyValue = getString(key);
-        return Arrays.asList(propertyValue.split(","))
-            .stream()
-            .map(String::trim)
-            .collect(Collectors.toList());
+        return getList(key, false);
+    }
+
+    public List<String> getList(String key, boolean allPropertiesCombined) {
+        return Arrays.asList(getStringArray(key, allPropertiesCombined));
     }
 
     public int getInt(String key) {

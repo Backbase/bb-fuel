@@ -35,13 +35,14 @@ import com.backbase.ct.bbfuel.configurator.NotificationsConfigurator;
 import com.backbase.ct.bbfuel.configurator.PaymentsConfigurator;
 import com.backbase.ct.bbfuel.configurator.PocketsConfigurator;
 import com.backbase.ct.bbfuel.configurator.PositivePayConfigurator;
+import com.backbase.ct.bbfuel.configurator.TransactionsConfigurator;
 import com.backbase.ct.bbfuel.dto.LegalEntityWithUsers;
 import com.backbase.ct.bbfuel.dto.User;
 import com.backbase.ct.bbfuel.dto.UserContext;
 import com.backbase.ct.bbfuel.service.LegalEntityService;
 import com.backbase.ct.bbfuel.service.UserContextService;
 import com.backbase.dbs.accesscontrol.client.v2.model.LegalEntityBase;
-import com.google.common.base.Splitter;
+import com.backbase.dbs.pocket.tailor.client.v2.model.Pocket;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -73,6 +74,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
     private final PositivePayConfigurator positivePayConfigurator;
     private final UserPresentationRestClient userPresentationRestClient;
     private final PocketTailorActuatorClient pocketTailorActuatorClient;
+    private final TransactionsConfigurator transactionsConfigurator;
 
     /**
      * Ingest data with services of projects APPR, PO, LIM, NOT, CON, MC, ACT, BPAY and Pockets.
@@ -226,10 +228,10 @@ public class CapabilitiesDataSetup extends BaseSetup {
                 .filter(user -> user.getExternalId().equalsIgnoreCase("user"))
                 .filter(user -> user.getRole().equalsIgnoreCase("retail"))
                 .filter(user -> StringUtils.isNotEmpty(user.getProductGroupNames()
-                        .stream()
-                        .filter(productGroupName -> productGroupName.equals("Retail Pocket"))
-                        .findFirst()
-                        .get()))
+                    .stream()
+                    .filter(productGroupName -> productGroupName.equals("Retail Pocket"))
+                    .findFirst()
+                    .get()))
                 .collect(Collectors.toList());
 
             retailUsers.forEach(retailUser -> {
@@ -262,10 +264,16 @@ public class CapabilitiesDataSetup extends BaseSetup {
 
                     this.loginRestClient.login(retailUser.getExternalId(), retailUser.getExternalId());
                     userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
-                    this.pocketsConfigurator.ingestPockets(legalEntity.getExternalId());
+                    List<Pocket> createdPockets = this.pocketsConfigurator.ingestPockets(legalEntity.getExternalId());
+                    ingestPocketTransactions(PocketsConfigurator.EXTERNAL_ARRANGEMENT_ORIGINATION_1, createdPockets);
                 }
             });
         }
+    }
+
+    private void ingestPocketTransactions(String parentPocketArrangementId,
+        List<Pocket> createdPockets) {
+            transactionsConfigurator.ingestTransactionsForPocket(parentPocketArrangementId, createdPockets);
     }
 
     private void ingestAccountStatementForSelectedUser() {

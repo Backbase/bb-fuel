@@ -12,9 +12,12 @@ import com.backbase.dbs.arrangement.integration.inbound.api.v2.model.Arrangement
 import com.backbase.dbs.arrangement.integration.inbound.api.v2.model.PostArrangement;
 import com.backbase.dbs.pocket.tailor.client.v2.model.Pocket;
 import com.backbase.dbs.pocket.tailor.client.v2.model.PocketPostRequest;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.ListUtils;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -22,6 +25,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class PocketsConfigurator {
 
+    public static final String EXTERNAL_ARRANGEMENT_ORIGINATION_1 = "external-arrangement-origination-1";
+    public static final String EXTERNAL_ARRANGEMENT_ORIGINATION = "external-arrangement-origination-";
     private final PocketsReader pocketsReader = new PocketsReader();
     private final ArrangementsIntegrationRestClient arrangementsIntegrationRestClient;
     private final PocketsRestClient pocketsRestClient;
@@ -96,17 +101,20 @@ public class PocketsConfigurator {
      * Ingests Pockets for the given user.
      *
      * @param externalUserId External user ID to ingest pockets for.
+     * @return List<Pocket>
      */
-    public void ingestPockets(String externalUserId) {
+    public List<Pocket> ingestPockets(String externalUserId) {
         log.debug("Going to ingest pockets for user [{}]", externalUserId);
-
+        List<Pocket> createdPockets = Collections.synchronizedList(new ArrayList<>());
         List<PocketPostRequest> pockets = pocketsReader.load();
 
         for (PocketPostRequest pocketPostRequest : pockets) {
             Pocket pocket = pocketsRestClient.ingestPocket(pocketPostRequest);
             log.info("Pocket with ID [{}] and name [{}] created for user [{}]", pocket.getId(), pocket.getName(),
                 externalUserId);
+            createdPockets.add(pocket);
         }
+        return ListUtils.unmodifiableList(createdPockets);
     }
 
     /**
@@ -130,7 +138,7 @@ public class PocketsConfigurator {
     }
 
     private ArrangementAddedResponse ingestParentPocketArrangement(LegalEntityBase legalEntity) {
-        String externalArrangementId = "external-arrangement-origination-1";
+        String externalArrangementId = EXTERNAL_ARRANGEMENT_ORIGINATION_1;
         PostArrangement parentPocketArrangement = ProductSummaryDataGenerator
             .generateParentPocketArrangement(legalEntity.getExternalId());
         return arrangementsIntegrationRestClient
@@ -138,7 +146,7 @@ public class PocketsConfigurator {
     }
 
     private ArrangementAddedResponse ingestPocketArrangement(LegalEntityBase legalEntity, int counter) {
-        String externalArrangementId = "external-arrangement-origination-" + counter;
+        String externalArrangementId = EXTERNAL_ARRANGEMENT_ORIGINATION + counter;
         PostArrangement childPostArrangement = ProductSummaryDataGenerator
             .generateChildPocketArrangement(legalEntity.getExternalId(), externalArrangementId, counter);
         return arrangementsIntegrationRestClient

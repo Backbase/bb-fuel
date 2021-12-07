@@ -1,0 +1,77 @@
+[
+  {
+    "category": "Food Drinks",
+    "counterPartyCountry": "US",
+    "counterPartyName": "In N Out Burger",
+    "creditDebitIndicator": "CRDT",
+    "transactionAmountCurrency": {
+      "amount": 3.99,
+      "currencyCode": "EUR"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "IN-N-OUT BURGER AMERICAN FO",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Gas",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Murphy USA",
+    "creditDebitIndicator": "CRDT",
+    "transactionAmountCurrency": {
+      "amount": 14.99,
+      "currencyCode": "EUR"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "Gas",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Television",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Comcast",
+    "creditDebitIndicator": "CRDT",
+    "transactionAmountCurrency": {
+      "amount": 1199.99,
+      "currencyCode": "EUR"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "Television",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Travel",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Cheap Campers",
+    "creditDebitIndicator": "CRDT",
+    "transactionAmountCurrency": {
+      "amount": 4000,
+      "currencyCode": "EUR"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "Travel",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Alcohol & Bars",
+    "counterPartyCountry": "US",
+    "counterPartyName": "Salt Lake",
+    "creditDebitIndicator": "CRDT",
+    "transactionAmountCurrency": {
+      "amount": 239.99,
+      "currencyCode": "EUR"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "POS",
+    "typeGroup": "Payment",
+    "description": "BEER BAR SALT LAKE C",
+    "billingStatus": "BILLED"
+  }
+]

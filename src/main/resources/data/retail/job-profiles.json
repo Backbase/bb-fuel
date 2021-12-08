@@ -49,6 +49,17 @@
           "approve",
           "cancel"
         ]
+      },
+      {
+        "businessFunction": "P2P Transfer",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
       }
     ]
   },
@@ -337,6 +348,17 @@
       },
       {
         "businessFunction": "A2A Transfer",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "P2P Transfer",
         "privileges": [
           "view",
           "create",

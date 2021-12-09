@@ -30,7 +30,7 @@ public class TransactionsReader extends BaseReader {
      *
      * @param externalArrangementId parent pocket external arrangement id
      * @param pocketArrangementId   pocket arrangement id
-     * @return List<TransactionsPostRequestBody>
+     * @return list of TransactionsPostRequestBody's
      */
     public List<TransactionsPostRequestBody> loadWithPocketAsReference(String externalArrangementId,
         String pocketArrangementId) {

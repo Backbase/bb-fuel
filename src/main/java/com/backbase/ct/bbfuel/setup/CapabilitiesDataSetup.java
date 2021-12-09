@@ -273,7 +273,8 @@ public class CapabilitiesDataSetup extends BaseSetup {
 
     private void ingestPocketTransactions(String parentPocketArrangementId,
         List<Pocket> createdPockets) {
-            transactionsConfigurator.ingestTransactionsForPocket(parentPocketArrangementId, createdPockets);
+        // TODO with productsummary find for productkindname 'Savings Account'. Get arrangementId and ingest Debit transactions, when pocket is Credit or vice versa
+        transactionsConfigurator.ingestTransactionsForPocket(parentPocketArrangementId, createdPockets);
     }
 
     private void ingestAccountStatementForSelectedUser() {

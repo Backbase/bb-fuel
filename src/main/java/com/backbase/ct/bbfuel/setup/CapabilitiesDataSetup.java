@@ -270,10 +270,8 @@ public class CapabilitiesDataSetup extends BaseSetup {
 
     private void ingestAccountStatementForSelectedUser() {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_ACCOUNT_STATEMENTS)) {
-            String externalUserIds = this.globalProperties.getString(PROPERTY_ACCOUNTSTATEMENTS_USERS);
-            Splitter.on(';').trimResults().split(externalUserIds).forEach(externalUserId -> {
-                this.accountStatementsConfigurator.ingestAccountStatements(externalUserId);
-            });
+            List<String> externalUserIds = this.globalProperties.getList(PROPERTY_ACCOUNTSTATEMENTS_USERS, true);
+            externalUserIds.forEach(this.accountStatementsConfigurator::ingestAccountStatements);
          }
      }
 

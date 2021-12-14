@@ -1,5 +1,6 @@
 package com.backbase.ct.bbfuel.input;
 
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ADDITIONAL_PRODUCT_GROUP_SEED_JSON_LOCATION;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_PRODUCT_GROUP_SEED_JSON_LOCATION;
 import static java.util.Arrays.asList;
 import static java.util.Arrays.stream;
@@ -27,7 +28,16 @@ public class ProductGroupSeedReader extends BaseReader {
      * Load the configured json file.
      */
     public List<ProductGroupSeed> load() {
-        return load(this.globalProperties.getString(PROPERTY_PRODUCT_GROUP_SEED_JSON_LOCATION));
+
+        List<ProductGroupSeed> productGroupSeeds =
+            load(this.globalProperties.getString(PROPERTY_PRODUCT_GROUP_SEED_JSON_LOCATION));
+
+        if (this.globalProperties.containsKey(PROPERTY_ADDITIONAL_PRODUCT_GROUP_SEED_JSON_LOCATION)) {
+            String additionalProductGroupSeedUri =
+                globalProperties.getString(PROPERTY_ADDITIONAL_PRODUCT_GROUP_SEED_JSON_LOCATION);
+            productGroupSeeds.addAll(load(additionalProductGroupSeedUri));
+        }
+        return productGroupSeeds;
     }
 
     /**
@@ -36,9 +46,10 @@ public class ProductGroupSeedReader extends BaseReader {
     public List<ProductGroupSeed> load(String uri) {
         List<ProductGroupSeed> productGroupSeeds;
         try {
+            log.info("Loading product group seeds {}", uri);
             ProductGroupSeed[] parsedProductGroupSeeds = ParserUtil.convertJsonToObject(uri, ProductGroupSeed[].class);
             validate(parsedProductGroupSeeds);
-            productGroupSeeds = asList(parsedProductGroupSeeds);
+            productGroupSeeds = new ArrayList<>(asList(parsedProductGroupSeeds));
         } catch (IOException e) {
             log.error("Failed parsing file with entities", e);
             throw new InvalidInputException(e.getMessage(), e);

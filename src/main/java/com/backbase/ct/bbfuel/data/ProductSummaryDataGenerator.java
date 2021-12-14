@@ -75,12 +75,9 @@ public class ProductSummaryDataGenerator {
         Splitter.on(',').trimResults().split(currentAccountArrangementIds)
             .forEach(staticCurrentAccountArrangementsQueue::add);
 
-        String notCurrentAccountArrangementIds = GlobalProperties.getInstance()
-            .getString(CommonConstants.PROPERTY_ARRANGEMENT_NOT_CURRENT_ACCOUNT_EXTERNAL_IDS);
-        if (notCurrentAccountArrangementIds != null) {
-            Splitter.on(',').trimResults().split(notCurrentAccountArrangementIds)
-                .forEach(staticNotCurrentAccountArrangementsQueue::add);
-        }
+        List<String> notCurrentAccountArrangementIds = GlobalProperties.getInstance()
+            .getList(CommonConstants.PROPERTY_ARRANGEMENT_NOT_CURRENT_ACCOUNT_EXTERNAL_IDS);
+        staticNotCurrentAccountArrangementsQueue.addAll(notCurrentAccountArrangementIds);
     }
 
     static String generateRandomIban() {

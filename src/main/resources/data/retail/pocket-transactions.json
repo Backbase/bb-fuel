@@ -1,52 +1,52 @@
 [
   {
-    "category": "Food Drinks",
-    "counterPartyCountry": "US",
-    "counterPartyName": "In N Out Burger",
+    "category": "Shopping",
+    "counterPartyCountry": "NL",
+    "counterPartyName": "H&M",
     "creditDebitIndicator": "CRDT",
     "transactionAmountCurrency": {
       "amount": 3.99,
       "currencyCode": "EUR"
     },
     "reference": "czyo9c2n7z",
-    "type": "POS",
+    "type": "Deposit",
     "typeGroup": "Payment",
-    "description": "IN-N-OUT BURGER AMERICAN FO",
+    "description": "Fashion shopping",
     "billingStatus": "BILLED"
   },
   {
-    "category": "Gas",
-    "counterPartyCountry": "US",
-    "counterPartyName": "Murphy USA",
+    "category": "Auto & Transport",
+    "counterPartyCountry": "NL",
+    "counterPartyName": "KLM",
     "creditDebitIndicator": "CRDT",
     "transactionAmountCurrency": {
       "amount": 14.99,
       "currencyCode": "EUR"
     },
     "reference": "czyo9c2n7z",
-    "type": "POS",
+    "type": "Deposit",
     "typeGroup": "Payment",
-    "description": "Gas",
+    "description": "Flight to Amsterdam",
     "billingStatus": "BILLED"
   },
   {
-    "category": "Television",
-    "counterPartyCountry": "US",
-    "counterPartyName": "Comcast",
+    "category": "Food & Dining",
+    "counterPartyCountry": "NL",
+    "counterPartyName": "Mcdonalds",
     "creditDebitIndicator": "CRDT",
     "transactionAmountCurrency": {
       "amount": 1199.99,
       "currencyCode": "EUR"
     },
     "reference": "czyo9c2n7z",
-    "type": "POS",
+    "type": "Deposit",
     "typeGroup": "Payment",
-    "description": "Television",
+    "description": "Dinner at Mcdonalds",
     "billingStatus": "BILLED"
   },
   {
     "category": "Travel",
-    "counterPartyCountry": "US",
+    "counterPartyCountry": "NL",
     "counterPartyName": "Cheap Campers",
     "creditDebitIndicator": "CRDT",
     "transactionAmountCurrency": {
@@ -54,24 +54,24 @@
       "currencyCode": "EUR"
     },
     "reference": "czyo9c2n7z",
-    "type": "POS",
+    "type": "Deposit",
     "typeGroup": "Payment",
-    "description": "Travel",
+    "description": "Travel to Bangkok",
     "billingStatus": "BILLED"
   },
   {
-    "category": "Alcohol & Bars",
-    "counterPartyCountry": "US",
-    "counterPartyName": "Salt Lake",
-    "creditDebitIndicator": "CRDT",
+    "category": "Shopping",
+    "counterPartyCountry": "NL",
+    "counterPartyName": "H&M",
+    "creditDebitIndicator": "DBIT",
     "transactionAmountCurrency": {
       "amount": 239.99,
       "currencyCode": "EUR"
     },
     "reference": "czyo9c2n7z",
-    "type": "POS",
+    "type": "Withdrawal",
     "typeGroup": "Payment",
-    "description": "BEER BAR SALT LAKE C",
+    "description": "Fashion shopping",
     "billingStatus": "BILLED"
   }
 ]

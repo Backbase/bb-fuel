@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class TransactionsConfigurator {
 
-    public static final int NUMBER_OF_POCKETS = 5;
+    public static final int NUMBER_OF_POCKET_TRANSACTIONS = 5;
 
     private static GlobalProperties globalProperties = GlobalProperties.getInstance();
 
@@ -89,7 +89,7 @@ public class TransactionsConfigurator {
      public void ingestTransactionsForCurrentAccount(String currentAccountExternalArrangementId, String parentPocketExternalArrangementId) {
         Builder<TransactionsPostRequestBody> transactionsPostRequestBodyBuilder = ImmutableList.builder();
 
-         for (int i = 0; i < NUMBER_OF_POCKETS; i++) {
+         for (int i = 0; i < NUMBER_OF_POCKET_TRANSACTIONS; i++) {
              transactionsPostRequestBodyBuilder.addAll(reader.loadWithPocketParentAsReference(currentAccountExternalArrangementId, parentPocketExternalArrangementId));
          }
 

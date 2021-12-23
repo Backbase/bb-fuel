@@ -2,7 +2,7 @@
   {
     "category": "Shopping",
     "counterPartyCountry": "NL",
-    "counterPartyName": "H&M",
+    "counterPartyName": "Christmas pocket account",
     "creditDebitIndicator": "DBIT",
     "transactionAmountCurrency": {
       "amount": 3.99,
@@ -11,13 +11,13 @@
     "reference": "czyo9c2n7z",
     "type": "Withdrawal",
     "typeGroup": "Payment",
-    "description": "Fashion shopping",
+    "description": "Christmas shopping",
     "billingStatus": "BILLED"
   },
   {
     "category": "Auto & Transport",
     "counterPartyCountry": "NL",
-    "counterPartyName": "KLM",
+    "counterPartyName": "Transport pocket account",
     "creditDebitIndicator": "DBIT",
     "transactionAmountCurrency": {
       "amount": 14.99,
@@ -32,7 +32,7 @@
   {
     "category": "Food & Dining",
     "counterPartyCountry": "NL",
-    "counterPartyName": "Mcdonalds",
+    "counterPartyName": "Food pocket account",
     "creditDebitIndicator": "DBIT",
     "transactionAmountCurrency": {
       "amount": 1199.99,
@@ -47,7 +47,7 @@
   {
     "category": "Travel",
     "counterPartyCountry": "NL",
-    "counterPartyName": "Cheap Campers",
+    "counterPartyName": "Travel pocket acccount",
     "creditDebitIndicator": "DBIT",
     "transactionAmountCurrency": {
       "amount": 4000,
@@ -62,7 +62,7 @@
   {
     "category": "Shopping",
     "counterPartyCountry": "NL",
-    "counterPartyName": "H&M",
+    "counterPartyName": "Fashion shopping pocket account",
     "creditDebitIndicator": "CRDT",
     "transactionAmountCurrency": {
       "amount": 239.99,

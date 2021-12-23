@@ -37,15 +37,11 @@ public class TransactionsReader extends BaseReader {
         List<TransactionsPostRequestBody> list = load(
             globalProperties.getString(CommonConstants.PROPERTY_POCKET_TRANSACTIONS_DATA_JSON));
         list.forEach(transactionsPostRequestBody -> {
-            BigDecimal amount = CommonHelpers.generateRandomAmountInRange(1L, 200L);
             transactionsPostRequestBody
                 .id(UUID.randomUUID().toString())
                 .arrangementId(externalArrangementId)
                 .reference(pocketArrangementId)
-                .bookingDate(LocalDate.now())
-                .transactionAmountCurrency(
-                    new Currency().amount(amount.toString())
-                        .currencyCode("EUR"));
+                .bookingDate(LocalDate.now());
         });
         return list;
     }
@@ -62,15 +58,11 @@ public class TransactionsReader extends BaseReader {
         List<TransactionsPostRequestBody> list = load(
             globalProperties.getString(CommonConstants.PROPERTY_CURRENTACCOUNT_TRANSACTIONS_DATA_JSON));
         list.forEach(transactionsPostRequestBody -> {
-            BigDecimal amount = CommonHelpers.generateRandomAmountInRange(1L, 200L);
             transactionsPostRequestBody
                 .id(UUID.randomUUID().toString())
                 .arrangementId(currentAccountExternalArrangementId)
                 .reference(parentPocketExternalArrangementId)
-                .bookingDate(LocalDate.now())
-                .transactionAmountCurrency(
-                    new Currency().amount(amount.toString())
-                        .currencyCode("EUR"));
+                .bookingDate(LocalDate.now());
         });
         return list;
     }

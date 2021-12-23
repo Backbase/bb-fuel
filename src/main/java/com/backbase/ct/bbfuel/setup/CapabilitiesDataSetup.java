@@ -58,6 +58,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
 
     public static final String POCKET_MODE_ONE_TO_ONE = "ONE_TO_ONE";
     public static final String POCKET_MODE_ONE_TO_MANY = "ONE_TO_MANY";
+    public static final String PRODUCT_GROUP_NAME_RETAIL_POCKET = "Retail Pocket";
 
     private final UserContextService userContextService;
     private final UserContextPresentationRestClient userContextPresentationRestClient;
@@ -232,7 +233,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
                 .filter(user -> user.getRole().equalsIgnoreCase("retail"))
                 .filter(user -> StringUtils.isNotEmpty(user.getProductGroupNames()
                     .stream()
-                    .filter(productGroupName -> productGroupName.equals("Retail Pocket"))
+                    .filter(productGroupName -> productGroupName.equals(PRODUCT_GROUP_NAME_RETAIL_POCKET))
                     .findFirst()
                     .get()))
                 .collect(Collectors.toList());

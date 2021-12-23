@@ -26,7 +26,7 @@ public class TransactionsReader extends BaseReader {
     }
 
     /**
-     * Load transactions with reference filled with pocket arrangement id.
+     * Load transactions with reference filled with pocket external arrangement id.
      *
      * @param externalArrangementId parent pocket external arrangement id
      * @param pocketArrangementId   pocket arrangement id
@@ -42,6 +42,31 @@ public class TransactionsReader extends BaseReader {
                 .id(UUID.randomUUID().toString())
                 .arrangementId(externalArrangementId)
                 .reference(pocketArrangementId)
+                .bookingDate(LocalDate.now())
+                .transactionAmountCurrency(
+                    new Currency().amount(amount.toString())
+                        .currencyCode("EUR"));
+        });
+        return list;
+    }
+
+    /**
+     * Load transactions with reference filled with pocket parent external arrangement id.
+     *
+     * @param currentAccountExternalArrangementId current account external arrangement id
+     * @param parentPocketExternalArrangementId   parent pocket external arrangement id
+     * @return list of TransactionsPostRequestBody's
+     */
+    public List<TransactionsPostRequestBody> loadWithPocketParentAsReference(String currentAccountExternalArrangementId,
+        String parentPocketExternalArrangementId) {
+        List<TransactionsPostRequestBody> list = load(
+            globalProperties.getString(CommonConstants.PROPERTY_CURRENTACCOUNT_TRANSACTIONS_DATA_JSON));
+        list.forEach(transactionsPostRequestBody -> {
+            BigDecimal amount = CommonHelpers.generateRandomAmountInRange(1L, 200L);
+            transactionsPostRequestBody
+                .id(UUID.randomUUID().toString())
+                .arrangementId(currentAccountExternalArrangementId)
+                .reference(parentPocketExternalArrangementId)
                 .bookingDate(LocalDate.now())
                 .transactionAmountCurrency(
                     new Currency().amount(amount.toString())

@@ -5,6 +5,7 @@ import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROV
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_CONTACTS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_PAYMENTS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_BALANCE_HISTORY;
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_POCKETS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_POSITIVE_PAY_CHECKS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_TRANSACTIONS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ROOT_ENTITLEMENTS_ADMIN;
@@ -21,6 +22,7 @@ import com.backbase.ct.bbfuel.config.MultiTenancyConfig;
 import com.backbase.ct.bbfuel.configurator.AccessGroupsConfigurator;
 import com.backbase.ct.bbfuel.configurator.LegalEntitiesAndUsersConfigurator;
 import com.backbase.ct.bbfuel.configurator.PermissionsConfigurator;
+import com.backbase.ct.bbfuel.configurator.PocketsConfigurator;
 import com.backbase.ct.bbfuel.configurator.PositivePayConfigurator;
 import com.backbase.ct.bbfuel.configurator.ProductSummaryConfigurator;
 import com.backbase.ct.bbfuel.configurator.ServiceAgreementsConfigurator;
@@ -62,6 +64,8 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class AccessControlSetup extends BaseSetup {
 
+    public static final String RETAIL_POCKET = "Retail Pocket";
+    public static final String PRODUCT_ID_CURRENT_ACCOUNT = "1";
 
     private final UserContextPresentationRestClient userContextPresentationRestClient;
     private final AccessGroupPresentationRestClient accessGroupPresentationRestClient;
@@ -251,6 +255,15 @@ public class AccessControlSetup extends BaseSetup {
                     ingestTransactions(arrangementIds, isRetail);
                     ingestBalanceHistory(arrangementIds);
                     ingestSubscriptions(arrangementIds);
+                    if (this.globalProperties.getBoolean(PROPERTY_INGEST_POCKETS)
+                        && productGroupTemplate.getProductGroupName().equals(RETAIL_POCKET)
+                        && !productGroupTemplate.getProductIds().isEmpty()
+                        && productGroupTemplate.getProductIds().get(0).equals(PRODUCT_ID_CURRENT_ACCOUNT)) {
+
+                        transactionsConfigurator.ingestTransactionsForCurrentAccount(
+                            arrangementIds.get(0).getExternalArrangementId(),
+                            PocketsConfigurator.EXTERNAL_ARRANGEMENT_ORIGINATION_1);
+                    }
                 } else {
                     productGroupSeed.setId(existingDataGroup.getId());
                     productGroupSeed.setExternalServiceAgreementId(externalServiceAgreementId);

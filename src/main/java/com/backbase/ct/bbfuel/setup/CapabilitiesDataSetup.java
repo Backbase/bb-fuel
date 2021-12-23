@@ -56,6 +56,9 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class CapabilitiesDataSetup extends BaseSetup {
 
+    public static final String POCKET_MODE_ONE_TO_ONE = "ONE_TO_ONE";
+    public static final String POCKET_MODE_ONE_TO_MANY = "ONE_TO_MANY";
+
     private final UserContextService userContextService;
     private final UserContextPresentationRestClient userContextPresentationRestClient;
     private final LoginRestClient loginRestClient;
@@ -241,7 +244,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
                 LegalEntityBase legalEntity = this.userPresentationRestClient
                     .retrieveLegalEntityByExternalUserId(retailUser.getExternalId());
 
-                if (this.globalProperties.getString(PROPERTY_POCKET_MAPPING_MODE).equals("ONE_TO_ONE")) {
+                if (this.globalProperties.getString(PROPERTY_POCKET_MAPPING_MODE).equals(POCKET_MODE_ONE_TO_ONE)) {
                     int numberOfCreatedPockets = 5;
                     for (int counter = 0; counter < numberOfCreatedPockets; counter++) {
                         // Create 5 arrangements, which represent the core pocket arrangements with configured external arrangement id
@@ -255,7 +258,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
                     }
                 }
 
-                if (this.globalProperties.getString(PROPERTY_POCKET_MAPPING_MODE).equals("ONE_TO_MANY")) {
+                if (this.globalProperties.getString(PROPERTY_POCKET_MAPPING_MODE).equals(POCKET_MODE_ONE_TO_MANY)) {
                     String parentPocketArrangementId = pocketsConfigurator.ingestPocketArrangementForModeOnetoManyAndSetEntitlements(
                         legalEntity);
                     if (parentPocketArrangementId != null) {
@@ -264,17 +267,13 @@ public class CapabilitiesDataSetup extends BaseSetup {
 
                     this.loginRestClient.login(retailUser.getExternalId(), retailUser.getExternalId());
                     userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
+
                     List<Pocket> createdPockets = this.pocketsConfigurator.ingestPockets(legalEntity.getExternalId());
-                    ingestPocketTransactions(PocketsConfigurator.EXTERNAL_ARRANGEMENT_ORIGINATION_1, createdPockets);
+                    transactionsConfigurator.ingestTransactionsForPocket(
+                        PocketsConfigurator.EXTERNAL_ARRANGEMENT_ORIGINATION_1, createdPockets);
                 }
             });
         }
-    }
-
-    private void ingestPocketTransactions(String parentPocketArrangementId,
-        List<Pocket> createdPockets) {
-        // TODO with productsummary find for productkindname 'Savings Account'. Get arrangementId and ingest Debit transactions, when pocket is Credit or vice versa
-        transactionsConfigurator.ingestTransactionsForPocket(parentPocketArrangementId, createdPockets);
     }
 
     private void ingestAccountStatementForSelectedUser() {

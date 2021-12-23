@@ -25,6 +25,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class TransactionsConfigurator {
 
+    public static final int NUMBER_OF_POCKETS = 5;
+
     private static GlobalProperties globalProperties = GlobalProperties.getInstance();
 
     private final TransactionsReader reader = new TransactionsReader();
@@ -60,7 +62,7 @@ public class TransactionsConfigurator {
 
     /**
      * Ingest transactions that will be referenced to the specified pockets.
-     * @param externalArrangementId the parent pocket external arrangement id
+     * @param externalArrangementId the external arrangement id of the parent pocket arrangement
      * @param ingestedPockets list of ingested pockets
      */
     public void ingestTransactionsForPocket(String externalArrangementId, List<Pocket> ingestedPockets) {
@@ -75,7 +77,28 @@ public class TransactionsConfigurator {
             .then()
             .statusCode(SC_CREATED);
 
-        log.info("Ingested [{}] transactions for parent pocket arrangement [{}]", transactionsPostRequestBodyList.size(),
+        log.info("Ingested [{}] transactions for parent pocket external arrangement [{}]", transactionsPostRequestBodyList.size(),
             externalArrangementId);
+    }
+
+    /**
+     * Ingest transactions that counterbalance the pocket transactions for the current arrangement.
+     * @param currentAccountExternalArrangementId the external arrangement id of the current arrangement
+     * @param parentPocketExternalArrangementId  the external arrangement id of the parent pocket arrangement
+     */
+     public void ingestTransactionsForCurrentAccount(String currentAccountExternalArrangementId, String parentPocketExternalArrangementId) {
+        Builder<TransactionsPostRequestBody> transactionsPostRequestBodyBuilder = ImmutableList.builder();
+
+         for (int i = 0; i < NUMBER_OF_POCKETS; i++) {
+             transactionsPostRequestBodyBuilder.addAll(reader.loadWithPocketParentAsReference(currentAccountExternalArrangementId, parentPocketExternalArrangementId));
+         }
+
+        List<TransactionsPostRequestBody> transactionsPostRequestBodyList = transactionsPostRequestBodyBuilder.build();
+        transactionsIntegrationRestClient.ingestTransactions(transactionsPostRequestBodyList)
+            .then()
+            .statusCode(SC_CREATED);
+
+        log.info("Ingested [{}] transactions for current account external arrangement [{}]", transactionsPostRequestBodyList.size(),
+            currentAccountExternalArrangementId);
     }
 }

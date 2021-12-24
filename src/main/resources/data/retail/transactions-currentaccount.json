@@ -1,6 +1,6 @@
 [
   {
-    "category": "Shopping",
+    "category": "Transfer",
     "counterPartyCountry": "NL",
     "counterPartyName": "Christmas pocket account",
     "creditDebitIndicator": "DBIT",
@@ -11,11 +11,11 @@
     "reference": "czyo9c2n7z",
     "type": "Withdrawal",
     "typeGroup": "Payment",
-    "description": "Christmas shopping",
+    "description": "Deposit to Christmas shopping",
     "billingStatus": "BILLED"
   },
   {
-    "category": "Auto & Transport",
+    "category": "Transfer",
     "counterPartyCountry": "NL",
     "counterPartyName": "Transport pocket account",
     "creditDebitIndicator": "DBIT",
@@ -26,11 +26,11 @@
     "reference": "czyo9c2n7z",
     "type": "Withdrawal",
     "typeGroup": "Payment",
-    "description": "Flight to Amsterdam",
+    "description": "Deposit to Flight to Amsterdam",
     "billingStatus": "BILLED"
   },
   {
-    "category": "Food & Dining",
+    "category": "Transfer",
     "counterPartyCountry": "NL",
     "counterPartyName": "Food pocket account",
     "creditDebitIndicator": "DBIT",
@@ -41,11 +41,11 @@
     "reference": "czyo9c2n7z",
     "type": "Withdrawal",
     "typeGroup": "Payment",
-    "description": "Dinner at Mcdonalds",
+    "description": "Deposit to Dinner at Mcdonalds",
     "billingStatus": "BILLED"
   },
   {
-    "category": "Travel",
+    "category": "Transfer",
     "counterPartyCountry": "NL",
     "counterPartyName": "Travel pocket acccount",
     "creditDebitIndicator": "DBIT",
@@ -56,11 +56,11 @@
     "reference": "czyo9c2n7z",
     "type": "Withdrawal",
     "typeGroup": "Payment",
-    "description": "Travel to Bangkok",
+    "description": "Deposit to Travel to Bangkok",
     "billingStatus": "BILLED"
   },
   {
-    "category": "Shopping",
+    "category": "Transfer",
     "counterPartyCountry": "NL",
     "counterPartyName": "Fashion shopping pocket account",
     "creditDebitIndicator": "CRDT",
@@ -71,7 +71,7 @@
     "reference": "czyo9c2n7z",
     "type": "Deposit",
     "typeGroup": "Payment",
-    "description": "Fashion shopping",
+    "description": "Withdraw from Fashion shopping",
     "billingStatus": "BILLED"
   }
 ]

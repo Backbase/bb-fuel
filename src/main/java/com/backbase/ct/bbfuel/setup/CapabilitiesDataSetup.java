@@ -35,13 +35,14 @@ import com.backbase.ct.bbfuel.configurator.NotificationsConfigurator;
 import com.backbase.ct.bbfuel.configurator.PaymentsConfigurator;
 import com.backbase.ct.bbfuel.configurator.PocketsConfigurator;
 import com.backbase.ct.bbfuel.configurator.PositivePayConfigurator;
+import com.backbase.ct.bbfuel.configurator.TransactionsConfigurator;
 import com.backbase.ct.bbfuel.dto.LegalEntityWithUsers;
 import com.backbase.ct.bbfuel.dto.User;
 import com.backbase.ct.bbfuel.dto.UserContext;
 import com.backbase.ct.bbfuel.service.LegalEntityService;
 import com.backbase.ct.bbfuel.service.UserContextService;
 import com.backbase.dbs.accesscontrol.client.v2.model.LegalEntityBase;
-import com.google.common.base.Splitter;
+import com.backbase.dbs.pocket.tailor.client.v2.model.Pocket;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -54,6 +55,10 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class CapabilitiesDataSetup extends BaseSetup {
+
+    public static final String POCKET_MODE_ONE_TO_ONE = "ONE_TO_ONE";
+    public static final String POCKET_MODE_ONE_TO_MANY = "ONE_TO_MANY";
+    public static final String PRODUCT_GROUP_NAME_RETAIL_POCKET = "Retail Pocket";
 
     private final UserContextService userContextService;
     private final UserContextPresentationRestClient userContextPresentationRestClient;
@@ -73,6 +78,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
     private final PositivePayConfigurator positivePayConfigurator;
     private final UserPresentationRestClient userPresentationRestClient;
     private final PocketTailorActuatorClient pocketTailorActuatorClient;
+    private final TransactionsConfigurator transactionsConfigurator;
 
     /**
      * Ingest data with services of projects APPR, PO, LIM, NOT, CON, MC, ACT, BPAY and Pockets.
@@ -226,10 +232,10 @@ public class CapabilitiesDataSetup extends BaseSetup {
                 .filter(user -> user.getExternalId().equalsIgnoreCase("user"))
                 .filter(user -> user.getRole().equalsIgnoreCase("retail"))
                 .filter(user -> StringUtils.isNotEmpty(user.getProductGroupNames()
-                        .stream()
-                        .filter(productGroupName -> productGroupName.equals("Retail Pocket"))
-                        .findFirst()
-                        .get()))
+                    .stream()
+                    .filter(productGroupName -> productGroupName.equals(PRODUCT_GROUP_NAME_RETAIL_POCKET))
+                    .findFirst()
+                    .get()))
                 .collect(Collectors.toList());
 
             retailUsers.forEach(retailUser -> {
@@ -239,7 +245,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
                 LegalEntityBase legalEntity = this.userPresentationRestClient
                     .retrieveLegalEntityByExternalUserId(retailUser.getExternalId());
 
-                if (this.globalProperties.getString(PROPERTY_POCKET_MAPPING_MODE).equals("ONE_TO_ONE")) {
+                if (this.globalProperties.getString(PROPERTY_POCKET_MAPPING_MODE).equals(POCKET_MODE_ONE_TO_ONE)) {
                     int numberOfCreatedPockets = 5;
                     for (int counter = 0; counter < numberOfCreatedPockets; counter++) {
                         // Create 5 arrangements, which represent the core pocket arrangements with configured external arrangement id
@@ -253,7 +259,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
                     }
                 }
 
-                if (this.globalProperties.getString(PROPERTY_POCKET_MAPPING_MODE).equals("ONE_TO_MANY")) {
+                if (this.globalProperties.getString(PROPERTY_POCKET_MAPPING_MODE).equals(POCKET_MODE_ONE_TO_MANY)) {
                     String parentPocketArrangementId = pocketsConfigurator.ingestPocketArrangementForModeOnetoManyAndSetEntitlements(
                         legalEntity);
                     if (parentPocketArrangementId != null) {
@@ -262,7 +268,10 @@ public class CapabilitiesDataSetup extends BaseSetup {
 
                     this.loginRestClient.login(retailUser.getExternalId(), retailUser.getExternalId());
                     userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
-                    this.pocketsConfigurator.ingestPockets(legalEntity.getExternalId());
+
+                    List<Pocket> createdPockets = this.pocketsConfigurator.ingestPockets(legalEntity.getExternalId());
+                    transactionsConfigurator.ingestTransactionsForPocket(
+                        PocketsConfigurator.EXTERNAL_ARRANGEMENT_ORIGINATION_1, createdPockets);
                 }
             });
         }

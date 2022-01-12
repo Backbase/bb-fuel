@@ -17,7 +17,7 @@
       "Support"
     ],
     "productIds": [
-      "1", "2"
+      "1", "2", "4"
     ],
     "numberOfArrangements": {
       "min": 3,
@@ -43,7 +43,7 @@
       "Transport"
     ],
     "productIds": [
-      "1", "2", "5", "7"
+      "1", "2", "5", "7", "4"
     ],
     "numberOfArrangements": {
       "min": 4,
@@ -77,6 +77,7 @@
   {
     "productGroupName": "General USD",
     "isRetail": true,
+    "hasExternalAccounts": true,
     "currencies": [
       "USD"
     ],
@@ -84,11 +85,15 @@
       "Current Account"
     ],
     "productIds": [
-      "1", "2", "3", "5", "6", "7"
+      "1", "2", "3", "4", "5", "6", "7"
     ],
     "numberOfArrangements": {
       "min": 4,
       "max": 6
+    },
+    "numberOfExternalAccounts": {
+      "min": 2,
+      "max": 3
     },
     "numberOfDebitCards": {
       "min": 2,

@@ -2,6 +2,7 @@
 {
   "productGroupName": "Retail Accounts Universal",
   "isRetail": true,
+  "hasExternalAccounts": true,
   "currencies": [
     "USD",
     "GBP",
@@ -13,11 +14,15 @@
     "Savings Account"
   ],
   "productIds": [
-    "1","2"
+    "1","2","4"
   ],
   "numberOfArrangements": {
     "min": 1,
     "max": 3
+  },
+  "numberOfExternalAccounts": {
+    "min": 1,
+    "max": 1
   },
   "numberOfDebitCards": {
     "min": 0,

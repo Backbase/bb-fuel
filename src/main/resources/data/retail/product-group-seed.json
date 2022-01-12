@@ -2,6 +2,7 @@
   {
     "productGroupName": "Retail Accounts U.S",
     "isRetail": true,
+    "hasExternalAccounts": true,
     "currencies": [
       "USD"
     ],
@@ -18,6 +19,10 @@
       "min": 8,
       "max": 10
     },
+    "numberOfExternalAccounts": {
+      "min": 3,
+      "max": 5
+    },
     "numberOfDebitCards": {
       "min": 1,
       "max": 2
@@ -33,7 +38,7 @@
       "Current Account"
     ],
     "productIds": [
-      "1"
+      "1","4"
     ],
     "numberOfArrangements": {
       "min": 1,

@@ -26,13 +26,7 @@ import com.google.common.collect.ImmutableList;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.IntStream;
@@ -46,6 +40,7 @@ public class ProductSummaryDataGenerator {
     private static final List<String> ARRANGEMENT_STATES = unmodifiableList(
         asList("Active", "Closed", "Inactive", null));
     private static final ProductReader productReader = new ProductReader();
+    private static final Random random = new Random();
     private static final Faker faker = new Faker();
     private static final List<CountryCode> SEPA_COUNTRY_CODES;
     private static final int WEEKS_IN_A_QUARTER = 13;
@@ -130,9 +125,10 @@ public class ProductSummaryDataGenerator {
     }
 
     public static List<PostArrangement> generateCurrentAccountArrangementsPostRequestBodies(
-        String externalLegalEntityId, ProductGroupSeed productGroupSeed, int numberOfArrangements) {
+        String externalLegalEntityId, ProductGroupSeed productGroupSeed, int numberOfArrangements, int numberOfExternalAccounts) {
         List<PostArrangement> arrangementsPostRequestBodies = synchronizedList(new ArrayList<>());
         IntStream.range(0, numberOfArrangements).parallel().forEach(randomNumber -> {
+            int remainingExternalAccountsToIngest = numberOfExternalAccounts;
             int randomCurrentAccountIndex = ThreadLocalRandom.current()
                 .nextInt(productGroupSeed.getCurrentAccountNames().size());
             // To support specific currency - account name map such as in the International Trade product group example
@@ -152,6 +148,13 @@ public class ProductSummaryDataGenerator {
                 Optional.ofNullable(staticCurrentAccountArrangementsQueue.poll()), externalLegalEntityId,
                 currentAccountName, currency, "1");
 
+            if (productGroupSeed.getHasExternalAccounts() && remainingExternalAccountsToIngest > 0) {
+                arrangementsPostRequestBody
+                        .withFinancialInstitutionId(ThreadLocalRandom.current().nextLong(1L,6L))
+                        .withSourceId("source-1");
+                remainingExternalAccountsToIngest = remainingExternalAccountsToIngest-1;
+            }
+
             HashSet<IntegrationDebitCardItem> debitCards = new HashSet<>();
 
             for (int i = 0; i < productGroupSeed.getNumberOfDebitCards().getRandomNumberInRange(); i++) {
@@ -170,10 +173,12 @@ public class ProductSummaryDataGenerator {
     }
 
     public static List<PostArrangement> generateNonCurrentAccountArrangementsPostRequestBodies(
-        String externalLegalEntityId, ProductGroupSeed productGroupSeed, int numberOfArrangements) {
+        String externalLegalEntityId, ProductGroupSeed productGroupSeed, int numberOfArrangements,
+        int numberOfExternalAccounts) {
         List<PostArrangement> arrangementsPostRequestBodies = synchronizedList(new ArrayList<>());
 
         IntStream.range(0, numberOfArrangements).parallel().forEach(randomNumber -> {
+            int remainingExternalAccountsToIngest = numberOfExternalAccounts;
             String currency = getRandomFromList(productGroupSeed.getCurrencies());
             String productId = getRandomFromList(productGroupSeed.getProductIds());
             String arrangementName = getProductTypeNameFromProductsInputFile(productId);
@@ -181,6 +186,13 @@ public class ProductSummaryDataGenerator {
                 getNotCurrentAccountArrangementExternalId(externalLegalEntityId, productId);
             PostArrangement arrangementsPostRequestBody = getArrangementsPostRequestBody(
                 externalArrangementId, externalLegalEntityId, arrangementName, currency, productId);
+
+            if (productGroupSeed.getHasExternalAccounts() && remainingExternalAccountsToIngest > 0) {
+                arrangementsPostRequestBody
+                        .withFinancialInstitutionId(ThreadLocalRandom.current().nextLong(1L,6L))
+                        .withSourceId("source-1");
+                remainingExternalAccountsToIngest = remainingExternalAccountsToIngest-1;
+            }
 
             arrangementsPostRequestBodies.add(arrangementsPostRequestBody);
         });
@@ -221,15 +233,31 @@ public class ProductSummaryDataGenerator {
             " " + currency + " " + bic.substring(0, 3) + accountNumber.substring(accountNumber.length() - 3);
         String fullArrangementName = currentAccountName + arrangementNameSuffix;
 
+        // Credit Limit Logic
+        BigDecimal creditLimit = generateRandomAmountInRange(1000L, 10000L);
+        BigDecimal creditLimitUsage = generateRandomAmountInRange(0L, creditLimit.longValue());
+        BigDecimal reservedAmount = generateRandomAmountInRange(0L, creditLimit.subtract(creditLimitUsage).longValue());
+        BigDecimal remainingCredit = creditLimit.subtract(creditLimitUsage).subtract(reservedAmount);
+        BigDecimal bookedBalance = ("4".equals(productId) ? creditLimitUsage : generateRandomAmountInRange(10000L, 9999999L));
+
+
+
         PostArrangement arrangementsPostRequestBody = (PostArrangement) new PostArrangement()
             .withLegalEntityIds(Collections.singleton(externalLegalEntityId))
             .withProductId(productId)
             .withId(externalArrangementId.orElse(generateRandomIdFromProductId(productId)))
             .withName(fullArrangementName)
             .withBankAlias(fullArrangementName)
-            .withBookedBalance(generateRandomAmountInRange(10000L, 9999999L))
+            .withBookedBalance(bookedBalance)
             .withAvailableBalance(generateRandomAmountInRange(10000L, 9999999L))
-            .withCreditLimit(generateRandomAmountInRange(10000L, 999999L))
+            .withCreditLimit(creditLimit)
+            .withCreditLimitUsage(creditLimitUsage)
+            .withRemainingCredit(remainingCredit)
+            .withReservedAmount(reservedAmount)
+            .withMinimumPayment(generateRandomAmountInRange(10L, 250L))
+            .withMinimumPaymentDueDate(generateRandomDateInRange(LocalDate.now(), LocalDate.now().plusDays(30)).atStartOfDay().atOffset(ZoneOffset.UTC))
+            .withDebitAccount(ImmutableList.of("1", "2", "4", DEFAULT_POCKET_EXTERNAL_ID).contains(productId))
+            .withValidThru(generateRandomDateInRange(LocalDate.now().plusDays(365), LocalDate.now().plusDays(1825)).atStartOfDay().atOffset(ZoneOffset.UTC))
             .withCurrency(currency)
             .withExternalTransferAllowed(true)
             .withUrgentTransferAllowed(true)
@@ -258,7 +286,7 @@ public class ProductSummaryDataGenerator {
             .withBankBranchCode(generateRandomBranchCode())
             .withBankBranchCode2(generateRandomBranchCode());
 
-        if (EUR.equals(currency)) {
+        if (EUR.equals(currency) && !"4".equals(productId)) {
             arrangementsPostRequestBody
                 .withIBAN(accountNumber)
                 .withBBAN(accountNumber.substring(3).replaceAll("[a-zA-Z]", ""));
@@ -266,13 +294,14 @@ public class ProductSummaryDataGenerator {
             arrangementsPostRequestBody
                 .withBBAN(accountNumber);
         }
+
         return arrangementsPostRequestBody;
     }
 
     public static CardDetails generateCardDetails() {
         return (CardDetails) new CardDetails()
             .withAvailableCashCredit(generateRandomAmountInRange(500L, 10000L))
-            .withCardProvider(generateRandomCardProvider())
+            .withCardProvider(generateRandomCardProviderFromList())
             .withCashCreditLimit(generateRandomAmountInRange(1500L, 15000L))
             .withLastPaymentAmount(generateRandomAmountInRange(1L, 1000L))
             .withLastPaymentDate(generateRandomDateInRange(LocalDate.now().minusDays(30), LocalDate.now()))
@@ -310,6 +339,14 @@ public class ProductSummaryDataGenerator {
         }
 
         return balanceHistoryPostRequestBodies;
+    }
+
+    private static final List<String> VALID_PROVIDERS = asList(
+            "mastercard", "visa-white", "union-pay", "diners-club"
+    );
+
+    private static String generateRandomCardProviderFromList() {
+        return VALID_PROVIDERS.get(generateRandomNumberInRange(0, VALID_PROVIDERS.size() - 1));
     }
 
     private static BalanceHistoryItem generateBalanceHistoryPostRequestBody(String

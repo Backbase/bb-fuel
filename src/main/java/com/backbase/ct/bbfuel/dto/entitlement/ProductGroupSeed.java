@@ -19,10 +19,12 @@ public class ProductGroupSeed extends DbsEntity {
     private String legalEntityExternalId;
     private String productGroupName;
     private Boolean isRetail;
+    private Boolean hasExternalAccounts;
     private List<String> currencies;
     private List<String> currentAccountNames;
     private List<String> productIds;
     private AmountRange numberOfArrangements;
+    private AmountRange numberOfExternalAccounts;
     private AmountRange numberOfDebitCards;
 
     public ProductGroupSeed() {
@@ -32,6 +34,7 @@ public class ProductGroupSeed extends DbsEntity {
     public ProductGroupSeed(ProductGroupSeed source) {
         copyProperties(source, this);
         this.setIsRetail(source.getIsRetail() == null ? Boolean.valueOf(false) : source.getIsRetail());
+        this.setHasExternalAccounts(source.getHasExternalAccounts() == null ? Boolean.valueOf(false) : source.getHasExternalAccounts());
         if (source.getCurrencies() != null) {
             this.setCurrencies(new ArrayList<>(source.getCurrencies()));
         }

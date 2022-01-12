@@ -3,6 +3,7 @@ package com.backbase.ct.bbfuel.configurator;
 import static com.backbase.ct.bbfuel.data.ProductSummaryDataGenerator.generateBalanceHistoryPostRequestBodies;
 import static com.backbase.ct.bbfuel.data.ProductSummaryDataGenerator.generateCurrentAccountArrangementsPostRequestBodies;
 import static com.backbase.ct.bbfuel.data.ProductSummaryDataGenerator.generateNonCurrentAccountArrangementsPostRequestBodies;
+import static java.util.Collections.min;
 import static java.util.Collections.synchronizedList;
 import static org.apache.http.HttpStatus.SC_CREATED;
 
@@ -38,23 +39,34 @@ public class ProductSummaryConfigurator {
         List<ArrangementId> arrangementIds = synchronizedList(new ArrayList<>());
         List<String> productIds = productGroupSeed.getProductIds();
 
+        boolean hasCurrentAccounts = productGroupSeed.getProductIds().contains(String.valueOf(1));
+        boolean hasExternalAccounts = productGroupSeed.getHasExternalAccounts();
         int numberOfArrangements = productGroupSeed.getNumberOfArrangements().getRandomNumberInRange();
-        int tenPercentOfTotal = (int) Math.round(numberOfArrangements * 0.1);
-        int minNumberOfNonCurrentAccounts = (productIds.contains(String.valueOf(1)) && productIds.size() > 1)
-            || (!productIds.contains(String.valueOf(1)) && !productIds.isEmpty()) ? 1 : 0;
-        int numberOfNonCurrentAccounts = tenPercentOfTotal > 0 ? tenPercentOfTotal : minNumberOfNonCurrentAccounts;
+        int numberOfExternalAccounts = hasExternalAccounts ? productGroupSeed.getNumberOfExternalAccounts().getRandomNumberInRange() : 0;
+        int tenPercentOfTotalArrangements = (int) Math.round(numberOfArrangements * 0.1);
+        int tenPercentOfTotalExternalAccounts = (int) Math.round(numberOfExternalAccounts * 0.1);
+        int minNumberOfNonCurrentAccounts = (hasCurrentAccounts && productIds.size() > 1)
+            || (!hasCurrentAccounts && !productIds.isEmpty()) ? 1 : 0;
+        int numberOfNonCurrentAccounts = tenPercentOfTotalArrangements > 0 ? tenPercentOfTotalArrangements : minNumberOfNonCurrentAccounts;
+        int numberOfCurrentAccounts = numberOfArrangements - numberOfNonCurrentAccounts;
+        int minNumberOfExternalAccounts = (hasExternalAccounts && productIds.size() > 1 )
+            || (!hasExternalAccounts && !productIds.isEmpty()) ? 1 : 0;
+        int numberOfExternalAccountsForNonCurrentAccounts = numberOfNonCurrentAccounts == tenPercentOfTotalArrangements
+            ? tenPercentOfTotalExternalAccounts : minNumberOfExternalAccounts;
+        int numberOfExternalAccountsForCurrentAccounts = numberOfExternalAccounts - numberOfExternalAccountsForNonCurrentAccounts;
 
-        if (productGroupSeed.getProductIds().contains(String.valueOf(1))) {
+
+        if (hasCurrentAccounts) {
             arrangements.addAll(generateCurrentAccountArrangementsPostRequestBodies(
-                externalLegalEntityId, productGroupSeed, numberOfArrangements - numberOfNonCurrentAccounts));
+                externalLegalEntityId, productGroupSeed, numberOfCurrentAccounts, numberOfExternalAccountsForCurrentAccounts ));
             productGroupSeed.getProductIds().remove(String.valueOf(1));
         }
 
         if (numberOfNonCurrentAccounts > 0 && !productGroupSeed.getProductIds().isEmpty()) {
             arrangements.addAll(generateNonCurrentAccountArrangementsPostRequestBodies(
                 externalLegalEntityId, productGroupSeed,
-                productGroupSeed.getProductIds().contains(String.valueOf(1)) ? numberOfNonCurrentAccounts
-                    : numberOfArrangements));
+                    hasCurrentAccounts ? numberOfNonCurrentAccounts
+                    : numberOfArrangements, numberOfExternalAccountsForNonCurrentAccounts));
         }
 
         arrangements.parallelStream().forEach(arrangement -> {

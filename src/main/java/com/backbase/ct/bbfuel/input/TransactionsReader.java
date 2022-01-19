@@ -2,15 +2,18 @@ package com.backbase.ct.bbfuel.input;
 
 import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
 import static java.util.Arrays.asList;
-import com.backbase.ct.bbfuel.data.CommonConstants;
-import com.backbase.ct.bbfuel.util.ParserUtil;
-import com.backbase.dbs.transaction.client.v2.model.TransactionsPostRequestBody;
-import lombok.extern.slf4j.Slf4j;
 
+import com.backbase.ct.bbfuel.data.CommonConstants;
+import com.backbase.ct.bbfuel.util.CommonHelpers;
+import com.backbase.ct.bbfuel.util.ParserUtil;
+import com.backbase.dbs.transaction.client.v2.model.Currency;
+import com.backbase.dbs.transaction.client.v2.model.TransactionsPostRequestBody;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class TransactionsReader extends BaseReader {
@@ -20,6 +23,48 @@ public class TransactionsReader extends BaseReader {
                 .id(UUID.randomUUID().toString())
                 .arrangementId(externalArrangementId)
                 .bookingDate(LocalDate.now());
+    }
+
+    /**
+     * Load transactions with reference filled with pocket external arrangement id.
+     *
+     * @param externalArrangementId parent pocket external arrangement id
+     * @param pocketArrangementId   pocket arrangement id
+     * @return list of TransactionsPostRequestBody's
+     */
+    public List<TransactionsPostRequestBody> loadWithPocketAsReference(String externalArrangementId,
+        String pocketArrangementId) {
+        List<TransactionsPostRequestBody> list = load(
+            globalProperties.getString(CommonConstants.PROPERTY_POCKET_TRANSACTIONS_DATA_JSON));
+        list.forEach(transactionsPostRequestBody -> {
+            transactionsPostRequestBody
+                .id(UUID.randomUUID().toString())
+                .arrangementId(externalArrangementId)
+                .reference(pocketArrangementId)
+                .bookingDate(LocalDate.now());
+        });
+        return list;
+    }
+
+    /**
+     * Load transactions with reference filled with pocket parent external arrangement id.
+     *
+     * @param currentAccountExternalArrangementId current account external arrangement id
+     * @param parentPocketExternalArrangementId   parent pocket external arrangement id
+     * @return list of TransactionsPostRequestBody's
+     */
+    public List<TransactionsPostRequestBody> loadWithPocketParentAsReference(String currentAccountExternalArrangementId,
+        String parentPocketExternalArrangementId) {
+        List<TransactionsPostRequestBody> list = load(
+            globalProperties.getString(CommonConstants.PROPERTY_CURRENTACCOUNT_TRANSACTIONS_DATA_JSON));
+        list.forEach(transactionsPostRequestBody -> {
+            transactionsPostRequestBody
+                .id(UUID.randomUUID().toString())
+                .arrangementId(currentAccountExternalArrangementId)
+                .reference(parentPocketExternalArrangementId)
+                .bookingDate(LocalDate.now());
+        });
+        return list;
     }
 
     /**

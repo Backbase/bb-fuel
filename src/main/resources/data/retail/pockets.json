@@ -14,7 +14,7 @@
     "icon": "home",
     "goal": {
       "amountCurrency": {
-        "amount": "800.00",
+        "amount": "100.00",
         "currencyCode": "EUR"
       },
       "deadline": "2040-01-23"

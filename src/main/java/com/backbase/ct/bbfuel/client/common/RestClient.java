@@ -2,6 +2,7 @@ package com.backbase.ct.bbfuel.client.common;
 
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_LOG_ALL_REQUESTS_RESPONSES;
 import static io.restassured.config.HttpClientConfig.httpClientConfig;
+import static java.util.Objects.*;
 import static org.apache.http.HttpStatus.SC_OK;
 
 import com.backbase.ct.bbfuel.config.MultiTenancyConfig;
@@ -31,6 +32,8 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Objects;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -70,6 +73,8 @@ public class RestClient {
     private static final String SERVER_STATUS_UP = "UP";
     private static final String TENANT_HEADER_NAME = "X-TID";
     protected static GlobalProperties globalProperties = GlobalProperties.getInstance();
+    private static final String X_XSRF_TOKEN_NAME = "X-XSRF-TOKEN";
+    private static final String XSRF_TOKEN_NAME = "XSRF-TOKEN";
 
     @Getter
     private URI baseURI = null;
@@ -130,7 +135,12 @@ public class RestClient {
             .getRequestSpecification();
 
         setLoggingFilters(requestSpec);
-        requestSpec.queryParam("_csrf", getCookies().get("XSRF-TOKEN"));
+
+//        requestSpec.queryParam("_csrf", getCookies().get("XSRF-TOKEN"));
+        if (!isNull(getCookies().get(XSRF_TOKEN_NAME))) {
+            requestSpec.header(X_XSRF_TOKEN_NAME, getCookies().get(XSRF_TOKEN_NAME));
+        }
+
         requestSpec.cookies(getCookies());
         if (MultiTenancyConfig.isMultiTenancyEnvironment()) {
             requestSpec.header(TENANT_HEADER_NAME, MultiTenancyConfig.getTenantId());

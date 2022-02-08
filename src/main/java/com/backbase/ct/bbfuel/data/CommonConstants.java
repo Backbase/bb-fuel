@@ -114,6 +114,8 @@ public final class CommonConstants {
 
     // Transactions
     public static final String PROPERTY_TRANSACTIONS_DATA_JSON = "transactions.data.json";
+    public static final String PROPERTY_POCKET_TRANSACTIONS_DATA_JSON = "pocket.transactions.data.json";
+    public static final String PROPERTY_CURRENTACCOUNT_TRANSACTIONS_DATA_JSON = "currentaccount.transactions.data.json";
     public static final String PROPERTY_TRANSACTIONS_CHECK_IMAGES_DATA_JSON = "transactions-check-images.data.json";
     public static final String PROPERTY_TRANSACTIONS_CURRENCY = "transactions.currency";
 

@@ -1,0 +1,77 @@
+[
+  {
+    "category": "Transfer",
+    "counterPartyCountry": "NL",
+    "counterPartyName": "Christmas pocket account",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 3.99,
+      "currencyCode": "EUR"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "Withdrawal",
+    "typeGroup": "Payment",
+    "description": "Deposit to Christmas shopping",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Transfer",
+    "counterPartyCountry": "NL",
+    "counterPartyName": "Transport pocket account",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 14.99,
+      "currencyCode": "EUR"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "Withdrawal",
+    "typeGroup": "Payment",
+    "description": "Deposit to Flight to Amsterdam",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Transfer",
+    "counterPartyCountry": "NL",
+    "counterPartyName": "Food pocket account",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 1199.99,
+      "currencyCode": "EUR"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "Withdrawal",
+    "typeGroup": "Payment",
+    "description": "Deposit to Dinner at Mcdonalds",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Transfer",
+    "counterPartyCountry": "NL",
+    "counterPartyName": "Travel pocket acccount",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 4000,
+      "currencyCode": "EUR"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "Withdrawal",
+    "typeGroup": "Payment",
+    "description": "Deposit to Travel to Bangkok",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Transfer",
+    "counterPartyCountry": "NL",
+    "counterPartyName": "Fashion shopping pocket account",
+    "creditDebitIndicator": "CRDT",
+    "transactionAmountCurrency": {
+      "amount": 239.99,
+      "currencyCode": "EUR"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "Deposit",
+    "typeGroup": "Payment",
+    "description": "Withdraw from Fashion shopping",
+    "billingStatus": "BILLED"
+  }
+]

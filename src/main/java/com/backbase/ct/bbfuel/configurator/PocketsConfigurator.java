@@ -12,6 +12,8 @@ import com.backbase.dbs.arrangement.integration.inbound.api.v2.model.Arrangement
 import com.backbase.dbs.arrangement.integration.inbound.api.v2.model.PostArrangement;
 import com.backbase.dbs.pocket.tailor.client.v2.model.Pocket;
 import com.backbase.dbs.pocket.tailor.client.v2.model.PocketPostRequest;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableList.Builder;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +24,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class PocketsConfigurator {
 
+    public static final String EXTERNAL_ARRANGEMENT_ORIGINATION = "external-arrangement-origination-";
+    public static final String EXTERNAL_ARRANGEMENT_ORIGINATION_1 = EXTERNAL_ARRANGEMENT_ORIGINATION + "1";
     private final PocketsReader pocketsReader = new PocketsReader();
     private final ArrangementsIntegrationRestClient arrangementsIntegrationRestClient;
     private final PocketsRestClient pocketsRestClient;
@@ -64,14 +68,13 @@ public class PocketsConfigurator {
      * Ingest pocket arrangement for 1-to-1 mode.
      *
      * @param legalEntity legal entity
-     * @return pocket arrangement id as String
      */
-    public String ingestPocketArrangementForModeOnetoOneAndSetEntitlements(
+    public void ingestPocketArrangementForModeOnetoOneAndSetEntitlements(
         LegalEntityBase legalEntity, int counter) {
         // -> creating pocket arrangement for legal entity
         log.debug("Going to ingest a pocket arrangement for external legal entity ID: [{}]", legalEntity);
 
-        String pocketArrangementId = null;
+        String pocketArrangementId;
         ArrangementAddedResponse arrangementAddedResponse = ingestPocketArrangement(legalEntity, counter);
 
         if (arrangementAddedResponse != null) {
@@ -88,25 +91,26 @@ public class PocketsConfigurator {
             //      AccessControlValidatorImpl.checkPermissions succeed
             updateDataGroupForPockets(pocketArrangementId, legalEntity);
         }
-
-        return pocketArrangementId;
     }
 
     /**
      * Ingests Pockets for the given user.
      *
      * @param externalUserId External user ID to ingest pockets for.
+     * @return list of ingested pockets
      */
-    public void ingestPockets(String externalUserId) {
+    public List<Pocket> ingestPockets(String externalUserId) {
         log.debug("Going to ingest pockets for user [{}]", externalUserId);
-
+        Builder<Pocket> pocketBuilder = ImmutableList.builder();
         List<PocketPostRequest> pockets = pocketsReader.load();
 
         for (PocketPostRequest pocketPostRequest : pockets) {
             Pocket pocket = pocketsRestClient.ingestPocket(pocketPostRequest);
             log.info("Pocket with ID [{}] and name [{}] created for user [{}]", pocket.getId(), pocket.getName(),
                 externalUserId);
+            pocketBuilder.add(pocket);
         }
+        return pocketBuilder.build();
     }
 
     /**
@@ -130,15 +134,14 @@ public class PocketsConfigurator {
     }
 
     private ArrangementAddedResponse ingestParentPocketArrangement(LegalEntityBase legalEntity) {
-        String externalArrangementId = "external-arrangement-origination-1";
         PostArrangement parentPocketArrangement = ProductSummaryDataGenerator
             .generateParentPocketArrangement(legalEntity.getExternalId());
         return arrangementsIntegrationRestClient
-            .ingestPocketArrangementAndLogResponse(parentPocketArrangement, externalArrangementId, true);
+            .ingestPocketArrangementAndLogResponse(parentPocketArrangement, EXTERNAL_ARRANGEMENT_ORIGINATION_1, true);
     }
 
     private ArrangementAddedResponse ingestPocketArrangement(LegalEntityBase legalEntity, int counter) {
-        String externalArrangementId = "external-arrangement-origination-" + counter;
+        String externalArrangementId = EXTERNAL_ARRANGEMENT_ORIGINATION + counter;
         PostArrangement childPostArrangement = ProductSummaryDataGenerator
             .generateChildPocketArrangement(legalEntity.getExternalId(), externalArrangementId, counter);
         return arrangementsIntegrationRestClient

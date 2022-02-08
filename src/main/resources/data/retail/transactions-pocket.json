@@ -1,0 +1,77 @@
+[
+  {
+    "category": "Shopping",
+    "counterPartyCountry": "NL",
+    "counterPartyName": "H&M",
+    "creditDebitIndicator": "CRDT",
+    "transactionAmountCurrency": {
+      "amount": 3.99,
+      "currencyCode": "EUR"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "Deposit",
+    "typeGroup": "Payment",
+    "description": "Christmas shopping",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Auto & Transport",
+    "counterPartyCountry": "NL",
+    "counterPartyName": "KLM",
+    "creditDebitIndicator": "CRDT",
+    "transactionAmountCurrency": {
+      "amount": 14.99,
+      "currencyCode": "EUR"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "Deposit",
+    "typeGroup": "Payment",
+    "description": "Flight to Amsterdam",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Food & Dining",
+    "counterPartyCountry": "NL",
+    "counterPartyName": "Mcdonalds",
+    "creditDebitIndicator": "CRDT",
+    "transactionAmountCurrency": {
+      "amount": 1199.99,
+      "currencyCode": "EUR"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "Deposit",
+    "typeGroup": "Payment",
+    "description": "Dinner at Mcdonalds",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Travel",
+    "counterPartyCountry": "NL",
+    "counterPartyName": "Cheap Campers",
+    "creditDebitIndicator": "CRDT",
+    "transactionAmountCurrency": {
+      "amount": 4000,
+      "currencyCode": "EUR"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "Deposit",
+    "typeGroup": "Payment",
+    "description": "Travel to Bangkok",
+    "billingStatus": "BILLED"
+  },
+  {
+    "category": "Shopping",
+    "counterPartyCountry": "NL",
+    "counterPartyName": "H&M",
+    "creditDebitIndicator": "DBIT",
+    "transactionAmountCurrency": {
+      "amount": 239.99,
+      "currencyCode": "EUR"
+    },
+    "reference": "czyo9c2n7z",
+    "type": "Withdrawal",
+    "typeGroup": "Payment",
+    "description": "Fashion shopping",
+    "billingStatus": "BILLED"
+  }
+]

@@ -71,6 +71,7 @@ public class ProductSummaryDataGenerator {
 
         String currentAccountArrangementIds = GlobalProperties.getInstance()
             .getString(CommonConstants.PROPERTY_ARRANGEMENT_CURRENT_ACCOUNT_EXTERNAL_IDS);
+        if (currentAccountArrangementIds != null)
         Splitter.on(',').trimResults().split(currentAccountArrangementIds)
             .forEach(staticCurrentAccountArrangementsQueue::add);
 
@@ -223,7 +224,7 @@ public class ProductSummaryDataGenerator {
         PostArrangement arrangementsPostRequestBody = (PostArrangement) new PostArrangement()
             .withLegalEntityIds(Collections.singleton(externalLegalEntityId))
             .withProductId(productId)
-            .withId(externalArrangementId.orElse(UUID.randomUUID().toString()))
+            .withId(externalArrangementId.orElse(generateRandomIdFromProductId(productId)))
             .withName(fullArrangementName)
             .withBankAlias(fullArrangementName)
             .withBookedBalance(generateRandomAmountInRange(10000L, 9999999L))
@@ -317,5 +318,39 @@ public class ProductSummaryDataGenerator {
             .withArrangementId(externalArrangementId)
             .withBalance(generateRandomAmountInRange(1000000L, 1999999L))
             .withUpdatedDate(updatedDate.toInstant().atOffset(ZoneOffset.UTC));
+    }
+
+    // These prefixes are needed for account-mock service to identify the type of product
+    // and return correct mocked response
+    private static String generateRandomIdFromProductId(String productId) {
+        if (productId.equals("1"))
+            return "A01-" + UUID.randomUUID();
+
+        else if (productId.equals("2")){
+            return "A02-" + UUID.randomUUID();
+        }
+
+        else if (productId.equals("3")){
+            return "A03-" + UUID.randomUUID();
+        }
+
+        else if (productId.equals("4")){
+            return "A04-" + UUID.randomUUID();
+        }
+
+        else if (productId.equals("5")){
+            return "A05-" + UUID.randomUUID();
+        }
+
+        else if (productId.equals("6")){
+            return "A06-" + UUID.randomUUID();
+        }
+
+        else if (productId.equals("7")){
+            return "A07-" + UUID.randomUUID();
+        }
+
+        else return UUID.randomUUID().toString();
+
     }
 }

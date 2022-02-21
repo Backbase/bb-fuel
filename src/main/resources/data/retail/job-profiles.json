@@ -239,6 +239,12 @@
     ],
     "permissions": [
       {
+        "businessFunction": "Financial Insights",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
         "businessFunction": "Manage Pockets",
         "privileges": [
           "view",

@@ -86,3 +86,13 @@ backbase:
     approval:
       enabled: false
 ```
+
+## Contentservices setup
+
+- If the property `ingest.content.for.payments` is set to `true` then payments content is ingested into contentservices.
+- The contentservices should be configured with below configuration to support the payments content upload.
+```
+contentservices:
+  whitelist:
+    allowedContentTypes: application/octet-stream,text/html,image/svg+xml
+```

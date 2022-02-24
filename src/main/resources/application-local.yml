@@ -18,6 +18,7 @@ bb-fuel:
     user: http://localhost:8086/user-manager/integration-api
     accountStatement: http://localhost:8085/account-statement-integration-service/service-api
     pockets: http://localhost:8087/pocket-tailor/client-api
+    contentservices: http://localhost:8006/contentservices/client-api
   dbs-service-names:
     accessgroup: access-control
     actions: action-service
@@ -32,3 +33,4 @@ bb-fuel:
     user: user-manager
     products: arrangement-manager
     positivePay: positive-pay-check
+    contentservices: contentservices

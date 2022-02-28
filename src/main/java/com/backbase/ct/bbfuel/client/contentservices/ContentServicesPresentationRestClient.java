@@ -35,12 +35,12 @@ public class ContentServicesPresentationRestClient extends RestClient {
             .post(ENDPOINT_REPOSITORY_CREATE);
     }
 
-    public void uploadTemplate(String repositoryId, String name, String targetPath, File template) {
+    public void uploadTemplate(String repositoryId, String name, String targetPath, File templateFile) {
         requestSpec()
             .pathParam(PATH_PARAM_REPOSITORY_ID, repositoryId)
             .queryParam(QUERY_PARAM_NAME, name)
             .queryParam(QUERY_PARAM_TARGET_PATH, targetPath)
-            .multiPart(template)
+            .multiPart(templateFile)
             .post(ENDPOINT_REPOSITORY_UPLOAD);
     }
 }

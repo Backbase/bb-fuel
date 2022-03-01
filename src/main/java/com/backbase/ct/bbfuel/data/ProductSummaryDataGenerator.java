@@ -265,7 +265,6 @@ public class ProductSummaryDataGenerator {
             .withNumber(String.format("%s", ThreadLocalRandom.current().nextInt(9999)))
             .withPrincipalAmount(generateRandomAmountInRange(10000L, 999999L))
             .withCurrentInvestmentValue(generateRandomAmountInRange(10000L, 999999L))
-            .withDebitAccount(ImmutableList.of("1", "2", DEFAULT_POCKET_EXTERNAL_ID).contains(productId))
             .withCreditAccount(ImmutableList.of("1", "2", "4", "5", DEFAULT_POCKET_EXTERNAL_ID).contains(productId))
             .withAccountHolderNames(faker.name().fullName())
             .withAccountHolderAddressLine1(faker.address().streetAddress())

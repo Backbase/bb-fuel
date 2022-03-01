@@ -1,0 +1,226 @@
+<html lang="en">
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Proof of Payment</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 16px;
+      line-height: 24px;
+      color: rgb(0, 0, 0);
+      margin: 15px 15px;
+    }
+
+    .header-logo {
+      position: fixed;
+      height: 10px;
+    }
+
+    .header-info {
+      position: fixed;
+      font-weight: bold;
+      font-size: 24px;
+      line-height: 34px;
+      height: 50px;
+      top: 100px;
+      color: #000000;
+    }
+
+    .detail-info {
+      position: fixed;
+      width: 620px;
+      height: 89px;
+      top: 200px;
+      color: #616161;
+    }
+
+    .table {
+      position: fixed;
+      border-spacing:0 20px;
+      top: 340px;
+      padding: 12px;
+    }
+
+    .table-header {
+      position: fixed;
+      padding: 15px;
+      width: 630px;
+      top: 300px;
+      background: #F5F5F5;
+      border-radius: 8px;
+      color: #616161;
+      font-weight: bold;
+      text-align: left;
+    }
+
+    .field-header {
+      position: relative;
+      width: 200px;
+      left: 12px;
+      color: #616161;
+      vertical-align: top;
+    }
+
+    .field-header-subtext {
+      font-size: smaller;
+    }
+
+    .field-info {
+      display:block;
+      width: 440px;
+      left: 50px;
+      color: #000000;
+      word-wrap: break-word;
+      vertical-align: top;
+      text-align: justify;
+    }
+
+    .date-of-export {
+      position: fixed;
+      width: 250px;
+      height: 50px;
+      left: 410px;
+      top: 100px;
+      font-size: 14px;
+      line-height: 21px;
+      text-align: right;
+      color: #616161;
+    }
+
+    .date-of-export-info {
+      color: #000000;
+      text-align: right;
+      font-weight: bold;
+      margin-right: 3px
+    }
+
+    .footer {
+      position: fixed;
+      width: 620px;
+      height: 72px;
+      top: 1000px;
+      font-size: 12px;
+      line-height: 18px;
+      color: #616161;
+    }
+  </style>
+</head>
+
+<body>
+<img class="header-logo" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMTk2cHgiIGhlaWdodD0iMTZweCIgdmlld0JveD0iMCAwIDE5NiAxNiIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj4KICAgIDx0aXRsZT4xIExvZ29zLzEgTWFpbi9GdWxsPC90aXRsZT4KICAgIDxkZWZzPgogICAgICAgIDxwYXRoIGQ9Ik0yMC45NDM2Njk1LDAuMDMwNzMyMjkyOSBMNy4zNDE3MzgyLDAuMDMwNzMyMjkyOSBMOS4yOTQ1Mjc5LDMuNTE1MDA2IEwxMC4wNzkzOTkxLDMuNTE1MDA2IEwxMC4xOTIwNjAxLDMuNTE4ODQ3NTQgTDE5LjMyNTEwNzMsMy41MTg4NDc1NCBDMTkuNTYxNjk1MywzLjUxODg0NzU0IDIwLjEzMjUxMDcsMy42Mzc5MzUxNyAyMC4xMzYyNjYxLDQuNDE3NzY3MTEgTDIwLjEzNjI2NjEsMTEuNjM2MDE0NCBDMjAuMTMyNTEwNywxMi40MTk2ODc5IDE5LjU2MTY5NTMsMTIuNTM0OTM0IDE5LjMyNTEwNzMsMTIuNTM0OTM0IEw3LjgwNzQwMzQzLDEyLjU2MTgyNDcgTDcuNzk5ODkyNyw5LjYwMzg0MTU0IEwxNy4yODIxODg4LDkuNjAzODQxNTQgTDE3LjI4MjE4ODgsNi4yODQ3NTM5IEw3LjU5NzEwMyw2LjI5NjI3ODUxIEwzLjkzOTM3NzY4LDAgTDAsMCBMNC40MTYzMDkwMSw3Ljg3MTMwODUyIEw0LjQxMjU1MzY1LDE1Ljk5NjE1ODUgTDcuNzA2MDA4NTgsMTUuOTk2MTU4NSBMNy43MDYwMDg1OCwxNiBMMjEuMTU3NzI1MywxNiBDMjIuNjcxMTM3MywxNiAyMy41NTM2NDgxLDE0LjY1MTYyMDYgMjMuNTUzNjQ4MSwxMS45NDMzMzczIEwyMy41NTM2NDgxLDMuNTMwMzcyMTUgQzIzLjU1MzY0ODEsMS4yMTM5MjU1NyAyMi42NzExMzczLDAuMDMwNzMyMjkyOSAyMC45NDM2Njk1LDAuMDMwNzMyMjkyOSIgaWQ9InBhdGgtMSI+PC9wYXRoPgogICAgICAgIDxwYXRoIGQ9Ik0zNS4yODI4OTA4LDkuNTg5MjY0MzIgTDI0LjQzMTExOTMsOS41ODkyNjQzMiBMMjQuNDMxMTE5MywxNiBMMjEuMDMwMDQyOSwxNiBMMjEuMDMwMDQyOSwzLjI1MTM3NzkxIEMyMS4wMzAwNDI5LDEuMDY5NzM0IDIyLjE0OTkwOTUsMCAyNC4yOTUzNzc5LDAgTDM1LjgwMzIzMjksMCBDMzcuNzQxMzE4NSwwIDM4LjY5NTI3OSwxLjE3NzA5MDgyIDM4LjY5NTI3OSwzLjQ5MjkzMDc1IEwzOC42OTUyNzksNS45NTQ0NjkyMSBMMzguNjk1Mjc5LDExLjM4NzQ5MSBMMzguNjk1Mjc5LDE2IEwzNS4yOTQyMDI2LDE2IEwzNS4yODI4OTA4LDkuNTg5MjY0MzIgWiBNNzcuMzkwNTU3OSwwIEw3Mi45NzEyODk2LDcuODU3OTY1NDUgTDc3LjM5MDU1NzksMTYgTDczLjQ3NDg0NTcsMTYgTDY5Ljg0ODQ5MDMsOS41OTMwOTAyMSBMNjMuOTU2MTMyNSw5LjU5MzA5MDIxIEw2My45NTYxMzI1LDE1Ljk4MDgwNjEgTDYwLjU2NjUyMzYsMTUuOTgwODA2MSBMNjAuNTY2NTIzNiwwLjAwMzgzODc3MTU5IEw2My45NTYxMzI1LDAuMDAzODM4NzcxNTkgTDYzLjk1NjEzMjUsNi4xNDIwMzQ1NSBMNjkuODg2MDY5MSw2LjE0MjAzNDU1IEw3My40NDg1NDA1LDAgTDc3LjM5MDU1NzksMCBaIE0xNjAuNjY5NTI4LDAgTDE2MC42Njk1MjgsMy40OTY3NjQ5MiBMMTQ3LjI1MjE3LDMuNDk2NzY0OTIgTDE0Ny4yNTIxNyw2LjE0MjM0MzY0IEwxNjAuNjY5NTI4LDYuMTQyMzQzNjQgTDE2MC42Njk1MjgsOS41OTY5MzI2NiBMMTQ3LjI1MjE3LDkuNTk2OTMyNjYgTDE0Ny4yNTIxNywxMi41MjI0MDU5IEwxNjAuNjY5NTI4LDEyLjUyMjQwNTkgTDE2MC42Njk1MjgsMTYgTDE0My44NDU0OTQsMTYgTDE0My44NDU0OTQsMCBMMTYwLjY2OTUyOCwwIFogTTE0MC40ODA2ODcsMCBMMTM4LjQ0MjI2MywzLjQ4NTYwNDYxIEwxMjYuOTAwMTIsMy40Nzc5MjcwNiBDMTI2LjY1OTE4MSwzLjQ3NzkyNzA2IDEyNi4wNzc4NjcsMy41OTY5Mjg5OCAxMjYuMDcwMjE4LDQuMzgwMDM4MzkgTDEyNi4wNzAyMTgsNS4yNDc2MDA3NyBDMTI2LjA3Nzg2Nyw2LjAzMDcxMDE3IDEyNi42NTkxODEsNi4xNDU4NzMzMiAxMjYuOTAwMTIsNi4xNDU4NzMzMiBMMTM3LjU5NzA2Myw2LjE0MjAzNDU1IEMxMzkuMzkwNzIzLDYuMTQyMDM0NTUgMTQwLjI4OTQ2NSw3LjIwMTUzNTUxIDE0MC4yODk0NjUsOS43Mjc0NDcyMiBMMTQwLjI4OTQ2NSwxMS45MTU1NDcgQzE0MC4yODk0NjUsMTQuNjQ4NzUyNCAxMzkuMzkwNzIzLDE2IDEzNy41OTcwNjMsMTYgTDEyMS45NzQyNDksMTYgTDEyNC4wNzc2ODgsMTIuNTA2NzE3OSBMMTM1LjkzNzI1OSwxMi40OTkwNDAzIEMxMzYuMTc0Mzc0LDEyLjQ5OTA0MDMgMTM2Ljc1OTUxMiwxMi4zODAwMzg0IDEzNi43NjMzMzcsMTEuNTk2OTI5IEwxMzYuNzYzMzM3LDEwLjQ3MjE2ODkgQzEzNi43NTk1MTIsOS42OTI4OTgyNyAxMzYuMTc4MTk4LDkuNTczODk2MzUgMTM1LjkzNzI1OSw5LjU3Mzg5NjM1IEwxMjQuOTU3MzA4LDkuNTcwMDU3NTggQzEyMy4zMzE5MjMsOS41NzAwNTc1OCAxMjIuNjI0NDAzLDguMzc2MTk5NjIgMTIyLjYyNDQwMyw1Ljk1MzkzNDc0IEwxMjIuNjI0NDAzLDMuNDk3MTIwOTIgQzEyMi42MjQ0MDMsMS4xNzQ2NjQxMSAxMjMuNDU0MzA1LDAgMTI1LjA3NTg2NSwwIEwxNDAuNDgwNjg3LDAgWiBNNTguODg0MTIwMiwwIEw1OC44ODQxMjAyLDMuNDkwOTc5MDcgTDU4Ljg3MjQzNjgsMy40OTA5NzkwNyBMNDYuNDQ5MTMzNywzLjQ5ODY3NjkzIEM0Ni4yMDM3ODMyLDMuNDk4Njc2OTMgNDUuNjExODI2NCwzLjYxNzk5Mzc1IDQ1LjYwNzkzMiw0LjM5OTMyNjQ0IEw0NS42MDc5MzIsMTEuNjI3NjE2MSBDNDUuNjExODI2NCwxMi40MTI3OTc3IDQ2LjIwMzc4MzIsMTIuNTI4MjY1NiA0Ni40NDkxMzM3LDEyLjUyODI2NTYgTDU4Ljg4NDEyMDIsMTIuNTI0NDE2NiBMNTguODg0MTIwMiwxNiBMNDQuNzcwNjI0NywxNiBDNDIuOTc5MTc2NiwxNiA0Mi4wNjAwODU4LDE0LjY0OTAyNTcgNDIuMDYwMDg1OCwxMS45MzU1MzA0IEw0Mi4wNjAwODU4LDMuNTA2Mzc0NzkgQzQyLjA2MDA4NTgsMS4xODE2MjEzNiA0Mi45NzUyODIxLDAgNDQuNzcwNjI0NywwIEw1OC44ODQxMjAyLDAgWiBNMTQuOTg4MTAxNSwwLjAwMDQ0ODE4MjMwMSBDMTYuNzI1MzUsLTAuMDIyNjIyNTI4MSAxNy42NjUyMzYxLDAuODQyNTI5MTEzIDE3LjY2NTIzNjEsMy4xNjg4MjU3NSBMMTcuNjY1MjM2MSwzLjE2ODgyNTc1IEwxNy42NjUyMzYxLDUuOTQ1MDAxMjQgQzE3LjY2NTIzNjEsNi44NDQ3NTg5NSAxNy40OTE4OTY0LDcuNTMzMDM1MTQgMTcuMTY0NDc3MSw4LjAzNjc0NTY1IEMxNy40OTE4OTY0LDguNTM2NjExMDUgMTcuNjY1MjM2MSw5LjIyODczMjM2IDE3LjY2NTIzNjEsMTAuMTI4NDkwMSBMMTcuNjY1MjM2MSwxMC4xMjg0OTAxIEwxNy42NjUyMzYxLDEyLjkwMDgyMDQgQzE3LjY2NTIzNjEsMTUuMjIzMjcyIDE2LjcyNTM1LDE2LjAwMzgzMSAxNC45ODgxMDE1LDE2IEwxNC45ODgxMDE1LDE2IEwxLjI0MzQ0OTc5ZS0xNCwxNiBMMS4yNDM0NDk3OWUtMTQsMC4wMDA0NDgxODIzMDEgWiBNOTQuOTAxNjgwNywwLjAwMDQ0ODE4MjMwMSBDOTYuNjM5MzA4MSwtMC4wMjI2MjI1MjgxIDk3LjU3OTM5OTEsMC44NDI1MjkxMTMgOTcuNTc5Mzk5MSwzLjE2ODgyNTc1IEw5Ny41NzkzOTkxLDMuMTY4ODI1NzUgTDk3LjU3OTM5OTEsNS45NDUwMDEyNCBDOTcuNTc5Mzk5MSw2Ljg0NDc1ODk1IDk3LjQwNjAyMTcsNy41MzMwMzUxNCA5Ny4wNzg1MzA5LDguMDM2NzQ1NjUgQzk3LjQwNjAyMTcsOC41MzY2MTEwNSA5Ny41NzkzOTkxLDkuMjI4NzMyMzYgOTcuNTc5Mzk5MSwxMC4xMjg0OTAxIEw5Ny41NzkzOTkxLDEwLjEyODQ5MDEgTDk3LjU3OTM5OTEsMTIuOTAwODIwNCBDOTcuNTc5Mzk5MSwxNS4yMjMyNzIgOTYuNjM5MzA4MSwxNi4wMDM4MzEgOTQuOTAxNjgwNywxNiBMOTQuOTAxNjgwNywxNiBMNzkuOTE0MTYzMSwxNiBMNzkuOTE0MTYzMSwwLjAwMDQ0ODE4MjMwMSBaIE0xMTUuNzIxMTY3LDAgQzExNy42NTU0ODIsMCAxMTguNjA5NDQyLDEuMTc3MDkwODIgMTE4LjYwOTQ0MiwzLjQ5MjkzMDc1IEwxMTguNjA5NDQyLDE2IEwxMTUuMjA4MzY2LDE2IEwxMTUuMTkzMjgzLDkuNTg5MjY0MzIgTDEwNC4zNDUyODIsOS41ODkyNjQzMiBMMTA0LjM0NTI4MiwxNiBMMTAwLjk0NDIwNiwxNiBMMTAwLjk0NDIwNiwzLjI1MTM3NzkxIEMxMDAuOTQ0MjA2LDEuMDY5NzM0IDEwMi4wNjc4NDMsMCAxMDQuMjEzMzEyLDAgTDExNS43MjExNjcsMCBaIE0xMy4yNTQ3MDUsOS41ODYzMjgzNyBMMy40OTM3NTY4OSw5LjU5MDE3MzQ5IEwzLjQ5Mzc1Njg5LDEyLjUyMzk5ODggTDEzLjI1NDcwNSwxMi41Mjc4NDQgQzEzLjQyODA0NDcsMTIuNTI3ODQ0IDE0LjEyNTI1NTMsMTIuMzI3ODk3OCAxNC4xMDU5OTUzLDExLjU4NTc4OTkgTDE0LjEwNTk5NTMsMTEuNTg1Nzg5OSBMMTQuMTA1OTk1MywxMC41MjQ1MzczIEMxNC4xMjUyNTUzLDkuNzgyNDI5NDEgMTMuNDI4MDQ0Nyw5LjU4NjMyODM3IDEzLjI1NDcwNSw5LjU4NjMyODM3IEwxMy4yNTQ3MDUsOS41ODYzMjgzNyBaIE05My4xNzE3NTksOS41ODYzMjgzNyBMODMuNDA4NjgyLDkuNTkwMTczNDkgTDgzLjQwODY4MiwxMi41MjM5OTg4IEw5My4xNzE3NTksMTIuNTI3ODQ0IEM5My4zNDEyODM2LDEyLjUyNzg0NCA5NC4wNDI0OTkxLDEyLjMyNzg5NzggOTQuMDIzMjM0OSwxMS41ODU3ODk5IEw5NC4wMjMyMzQ5LDExLjU4NTc4OTkgTDk0LjAyMzIzNDksMTAuNTI0NTM3MyBDOTQuMDQyNDk5MSw5Ljc4MjQyOTQxIDkzLjM0NTEzNjUsOS41ODYzMjgzNyA5My4xNzE3NTksOS41ODYzMjgzNyBMOTMuMTcxNzU5LDkuNTg2MzI4MzcgWiBNMzQuNDI2OTY1OCwzLjQ3NzU5NDA2IEMzNC41OTY2NDI2LDMuNDc3NTk0MDYgMzUuMjc5MTIwMiwzLjY3Njk3MSAzNS4yNjAyNjcyLDQuNDEzMTMyMDQgTDM1LjI2MDI2NzIsNC40MTMxMzIwNCBMMzUuMjYwMjY3Miw2LjEzNDY3NTI5IEwyNC40MzQ4ODk5LDYuMTM0Njc1MjkgTDI0LjQzNDg4OTksNC4zNzg2MjQ0OSBDMjQuNDM0ODg5OSwzLjU5NjQ1MzM5IDI1LjAxMTc5MDksMy40Nzc1OTQwNiAyNS4yNDkzMzg0LDMuNDc3NTk0MDYgTDI1LjI0OTMzODQsMy40Nzc1OTQwNiBaIE0xMTQuMzM3MzU4LDMuNDc3NTk0MDYgTDEwNS4xNjM1MDEsMy40Nzc1OTQwNiBDMTA0LjkyNTk1NCwzLjQ3NzU5NDA2IDEwNC4zNDkwNTMsMy41OTY0NTMzOSAxMDQuMzQ5MDUzLDQuMzc4NjI0NDkgTDEwNC4zNDkwNTMsNi4xMzQ2NzUyOSBMMTE1LjE3MDY2LDYuMTM0Njc1MjkgTDExNS4xNzA2Niw0LjQxMzEzMjA0IEMxMTUuMTg5NTEzLDMuNjc2OTcxIDExNC41MDcwMzUsMy40Nzc1OTQwNiAxMTQuMzM3MzU4LDMuNDc3NTk0MDYgWiBNMTMuMjU0NzA1LDMuNDc2NDM1MjIgTDMuNDkzNzU2ODksMy40ODAyODAzNCBMMy40OTM3NTY4OSw2LjExNDE4NjQ1IEwxMy4yNTQ3MDUsNi4xMTgwMzE1NyBDMTMuNDI4MDQ0Nyw2LjExODAzMTU3IDE0LjEyNTI1NTMsNS45MjE5MzA1MyAxNC4xMDU5OTUzLDUuMTc5ODIyNjggTDE0LjEwNTk5NTMsNS4xNzk4MjI2OCBMMTQuMTA1OTk1Myw0LjQxNDY0NDExIEMxNC4xMjUyNTUzLDMuNjcyNTM2MjYgMTMuNDI4MDQ0NywzLjQ3NjQzNTIyIDEzLjI1NDcwNSwzLjQ3NjQzNTIyIEwxMy4yNTQ3MDUsMy40NzY0MzUyMiBaIE05My4xNzE3NTksMy40NzY0MzUyMiBMODMuNDA4NjgyLDMuNDgwMjgwMzQgTDgzLjQwODY4Miw2LjExNDE4NjQ1IEw5My4xNzE3NTksNi4xMTgwMzE1NyBDOTMuMzQxMjgzNiw2LjExODAzMTU3IDk0LjA0MjQ5OTEsNS45MjE5MzA1MyA5NC4wMjMyMzQ5LDUuMTc5ODIyNjggTDk0LjAyMzIzNDksNS4xNzk4MjI2OCBMOTQuMDIzMjM0OSw0LjQxNDY0NDExIEM5NC4wNDI0OTkxLDMuNjcyNTM2MjYgOTMuMzQ1MTM2NSwzLjQ3NjQzNTIyIDkzLjE3MTc1OSwzLjQ3NjQzNTIyIEw5My4xNzE3NTksMy40NzY0MzUyMiBaIiBpZD0icGF0aC0zIj48L3BhdGg+CiAgICA8L2RlZnM+CiAgICA8ZyBpZD0iLS0t4oaqLVZpZXctdHJhbnNhY3Rpb25zLSIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPGcgaWQ9IjQuMy0tLXBkZi1leHBvcnQtLS1mb2xsb3dpbmctcGFnZSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTM3LjAwMDAwMCwgLTM3LjAwMDAwMCkiPgogICAgICAgICAgICA8ZyBpZD0iMS1Mb2dvLzEtTWFpbi9GdWxsIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgzNy4wMDAwMDAsIDM3LjAwMDAwMCkiPgogICAgICAgICAgICAgICAgPGcgaWQ9IkVtYmxlbSI+CiAgICAgICAgICAgICAgICAgICAgPG1hc2sgaWQ9Im1hc2stMiIgZmlsbD0id2hpdGUiPgogICAgICAgICAgICAgICAgICAgICAgICA8dXNlIHhsaW5rOmhyZWY9IiNwYXRoLTEiPjwvdXNlPgogICAgICAgICAgICAgICAgICAgIDwvbWFzaz4KICAgICAgICAgICAgICAgICAgICA8dXNlIGlkPSJTaGFwZSIgZmlsbD0iI0MyMjMyNyIgeGxpbms6aHJlZj0iI3BhdGgtMSI+PC91c2U+CiAgICAgICAgICAgICAgICA8L2c+CiAgICAgICAgICAgICAgICA8ZyBpZD0iVGV4dCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMzUuMzMwNDcyLCAwLjAwMDAwMCkiPgogICAgICAgICAgICAgICAgICAgIDxtYXNrIGlkPSJtYXNrLTQiIGZpbGw9IndoaXRlIj4KICAgICAgICAgICAgICAgICAgICAgICAgPHVzZSB4bGluazpocmVmPSIjcGF0aC0zIj48L3VzZT4KICAgICAgICAgICAgICAgICAgICA8L21hc2s+CiAgICAgICAgICAgICAgICAgICAgPHVzZSBpZD0iQ29tYmluZWQtU2hhcGUiIGZpbGw9IiMzMDJGMkIiIHhsaW5rOmhyZWY9IiNwYXRoLTMiPjwvdXNlPgogICAgICAgICAgICAgICAgPC9nPgogICAgICAgICAgICA8L2c+CiAgICAgICAgPC9nPgogICAgPC9nPgo8L3N2Zz4=" alt="BACKBASE"/>
+<span class="header-info">Payment Confirmation</span>
+
+<div class="date-of-export">
+  <span>Date of export</span>
+  <br/>
+  <span class="date-of-export-info">
+    <span>{{currentTimestamp date_pattern="MMMM dd, yyyy" timezone="Europe/Amsterdam" locale="en_US"}}</span>
+    <br/>
+    <span>{{currentTimestamp date_pattern="hh:mm:ss a z" timezone="Europe/Amsterdam" locale="en_US"}}</span>
+  </span>
+</div>
+<div class="detail-info">
+  <span>To whom it may concern, </span>
+  <br/><br/>
+  <span>Backbase confirms the below payment instruction has been received.</span>
+</div>
+<div>
+  <div>
+    <span class="table-header">Payment Details</span>
+  </div>
+  <table class="table">
+    <tr>
+      <td class="field-header">Transfer from</td>
+      <td class="field-info">
+        <span>{{paymentOrder.originator.name}}</span>
+        <br/>
+        <span>{{paymentOrder.originatorAccount.identification.identification}}</span>
+      </td>
+    </tr>
+
+    <tr>
+      <td class="field-header">Transfer to</td>
+      <td class="field-info">
+        <span>{{paymentOrder.transferTransactionInformation.counterparty.name}}</span>
+        <br/>
+        <span>{{paymentOrder.transferTransactionInformation.counterpartyAccount.identification.identification}}</span>
+      </td>
+    </tr>
+
+    {{#if (or (eq paymentOrder.paymentType "US_DOMESTIC_WIRE")
+              (eq paymentOrder.paymentType "US_DOMESTIC_WIRE_ILE")
+              (eq paymentOrder.paymentType "ACH_CREDIT"))
+    }}
+      <tr>
+        <td class="field-header">Routing transit number</td>
+        <td class="field-info">{{paymentOrder.transferTransactionInformation.counterpartyBank.bankBranchCode}}</td>
+      </tr>
+    {{/if}}
+
+    {{#if (eq paymentOrder.paymentType "INTERNATIONAL_TRANSFER")}}
+      <tr>
+        <td class="field-header">Bank branch code</td>
+        <td class="field-info">{{paymentOrder.transferTransactionInformation.counterpartyBank.bankBranchCode}}</td>
+      </tr>
+      <tr>
+        <td class="field-header">SWIFT/BIC</td>
+        <td class="field-info">{{paymentOrder.transferTransactionInformation.counterpartyBank.bic}}</td>
+      </tr>
+    {{/if}}
+    
+    <tr>
+      <td class="field-header">Amount</td>
+      <td class="field-info">
+        {{formatCurrencyCode paymentOrder.transferTransactionInformation.instructedAmount.currencyCode currency_style="CODE" locale="en_US"}}
+        {{formatAmount paymentOrder.transferTransactionInformation.instructedAmount.amount locale="en_US"}}
+      </td>
+    </tr>
+
+    <tr>
+      <td class="field-header">
+        <span>Execution date</span>
+        <br/>
+        <span class="field-header-subtext">(Requested)</span>
+      </td>
+      <td class="field-info">{{formatDate paymentOrder.requestedExecutionDate date_style="LONG" locale="en_US"}}</td>
+    </tr>
+
+    {{#if paymentOrder.transferTransactionInformation.messageToBank}}
+      <tr>
+        <td class="field-header">Description</td>
+        <td class="field-info">{{paymentOrder.transferTransactionInformation.messageToBank}}</td>
+      </tr>
+    {{/if}}
+
+    <tr>
+      <td class="field-header">Type</td>
+      {{#if (or (eq paymentOrder.paymentType "SEPA_CREDIT_TRANSFER")
+                (eq paymentOrder.paymentType "SEPA_CT_ILE")
+                (eq paymentOrder.paymentType "SEPA_CT_CLOSED"))
+      }}
+        <td class="field-info">SEPA transfer</td>
+      {{else if (eq paymentOrder.paymentType "ACH_CREDIT") }}
+        <td class="field-info">ACH transfer</td>
+      {{else if (or (eq paymentOrder.paymentType "US_DOMESTIC_WIRE")
+                    (eq paymentOrder.paymentType "US_DOMESTIC_WIRE_ILE"))
+      }}
+        <td class="field-info">Wire transfer</td>
+      {{else if (eq paymentOrder.paymentType "INTERNATIONAL_TRANSFER") }}
+        <td class="field-info">International transfer</td>
+      {{else}}
+        <td class="field-info">{{paymentOrder.paymentType}}</td>
+      {{/if}}
+    </tr>
+  </table>
+  <div>
+      <span class="footer">
+        Backbase - Become the Bank that People Love https://www.backbase.com
+      </span>
+  </div>
+</div>
+</body>
+</html>

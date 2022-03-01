@@ -21,6 +21,7 @@ bb-fuel:
     accountStatement: http://accountstatementsintegration.${environment.name}.${environment.domain}/account-statement-integration-service/service-api
     pockets: http://edge.${environment.name}.${environment.domain}/api/pocket-tailor/client-api
     pocketsArrangements: http://arrangementoutboundoriginationmock.${environment.name}.${environment.domain}/service-api
+    contentservices: http://edge.${environment.name}.${environment.domain}/api/contentservices/client-api
   dbs-service-names:
     accessgroup: accessgroup-presentation-service
     actions: actionrecipes-presentation-service
@@ -34,3 +35,4 @@ bb-fuel:
     pfm: categories-management-presentation-service
     user: user-presentation-service
     products: product-summary-presentation-service
+    contentservices: contentservices

@@ -10,6 +10,7 @@ import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROV
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_BILLPAY;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_BILLPAY_ACCOUNTS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_CONTACTS;
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_CONTENT_FOR_PAYMENTS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_LIMITS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_MESSAGES;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_NOTIFICATIONS;
@@ -29,6 +30,7 @@ import com.backbase.ct.bbfuel.configurator.ActionsConfigurator;
 import com.backbase.ct.bbfuel.configurator.ApprovalsConfigurator;
 import com.backbase.ct.bbfuel.configurator.BillPayConfigurator;
 import com.backbase.ct.bbfuel.configurator.ContactsConfigurator;
+import com.backbase.ct.bbfuel.configurator.ContentServicesConfigurator;
 import com.backbase.ct.bbfuel.configurator.LimitsConfigurator;
 import com.backbase.ct.bbfuel.configurator.MessagesConfigurator;
 import com.backbase.ct.bbfuel.configurator.NotificationsConfigurator;
@@ -79,6 +81,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
     private final UserPresentationRestClient userPresentationRestClient;
     private final PocketTailorActuatorClient pocketTailorActuatorClient;
     private final TransactionsConfigurator transactionsConfigurator;
+    private final ContentServicesConfigurator contentServicesConfigurator;
 
     /**
      * Ingest data with services of projects APPR, PO, LIM, NOT, CON, MC, ACT, BPAY and Pockets.
@@ -97,6 +100,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
         this.ingestPockets();
         this.ingestAccountStatementForSelectedUser();
         this.ingestPositivePayChecksForSelectedUser();
+        this.ingestContents();
     }
 
     private void ingestApprovals() {
@@ -291,6 +295,12 @@ public class CapabilitiesDataSetup extends BaseSetup {
                     .flatMap(List::stream)
                     .collect(Collectors.toList())
                     .forEach(this.positivePayConfigurator::ingestPositivePayChecks);
+        }
+    }
+
+    private void ingestContents() {
+        if (this.globalProperties.getBoolean(PROPERTY_INGEST_CONTENT_FOR_PAYMENTS)) {
+            this.contentServicesConfigurator.ingestContentForPayments();
         }
     }
 }

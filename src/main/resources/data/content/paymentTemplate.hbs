@@ -118,9 +118,9 @@
   <span>Date of export</span>
   <br/>
   <span class="date-of-export-info">
-    <span>{{currentTimestamp date_pattern="MMMM dd, yyyy" timezone="Europe/Amsterdam" locale="en_US"}}</span>
+    <span>{{currentTimestamp date_pattern="dd MMMM, yyyy" timezone="Europe/Amsterdam"}}</span>
     <br/>
-    <span>{{currentTimestamp date_pattern="hh:mm:ss a z" timezone="Europe/Amsterdam" locale="en_US"}}</span>
+    <span>{{currentTimestamp date_pattern="hh:mm:ss a z" timezone="Europe/Amsterdam"}}</span>
   </span>
 </div>
 <div class="detail-info">
@@ -186,7 +186,7 @@
         <br/>
         <span class="field-header-subtext">(Requested)</span>
       </td>
-      <td class="field-info">{{formatDate paymentOrder.requestedExecutionDate date_style="LONG" locale="en_US"}}</td>
+      <td class="field-info">{{formatDate paymentOrder.requestedExecutionDate date_pattern="dd MMM, yyyy"}}</td>
     </tr>
 
     {{#if paymentOrder.transferTransactionInformation.messageToBank}}
@@ -206,7 +206,7 @@
       {{else if (eq paymentOrder.paymentType "ACH_CREDIT") }}
         <td class="field-info">ACH transfer</td>
       {{else if (or (eq paymentOrder.paymentType "US_DOMESTIC_WIRE")
-                    (eq paymentOrder.paymentType "US_DOMESTIC_WIRE_ILE"))
+          (eq paymentOrder.paymentType "US_DOMESTIC_WIRE_ILE"))
       }}
         <td class="field-info">Wire transfer</td>
       {{else if (eq paymentOrder.paymentType "INTERNATIONAL_TRANSFER") }}

@@ -118,7 +118,7 @@
   <span>Date of export</span>
   <br/>
   <span class="date-of-export-info">
-    <span>{{currentTimestamp date_pattern="dd MMMM, yyyy" timezone="Europe/Amsterdam"}}</span>
+    <span>{{currentTimestamp date_pattern="MMMM dd, yyyy" timezone="Europe/Amsterdam"}}</span>
     <br/>
     <span>{{currentTimestamp date_pattern="hh:mm:ss a z" timezone="Europe/Amsterdam"}}</span>
   </span>
@@ -138,7 +138,11 @@
       <td class="field-info">
         <span>{{paymentOrder.originator.name}}</span>
         <br/>
-        <span>{{paymentOrder.originatorAccount.identification.identification}}</span>
+        {{#if (eq (stringFormat paymentOrder.originatorAccount.identification.schemeName) "IBAN")}}
+          <span>{{formatIBAN paymentOrder.originatorAccount.identification.identification}}</span>
+        {{else}}
+          <span>{{paymentOrder.originatorAccount.identification.identification}}</span>
+        {{/if}}
       </td>
     </tr>
 
@@ -147,7 +151,11 @@
       <td class="field-info">
         <span>{{paymentOrder.transferTransactionInformation.counterparty.name}}</span>
         <br/>
-        <span>{{paymentOrder.transferTransactionInformation.counterpartyAccount.identification.identification}}</span>
+        {{#if (eq (stringFormat paymentOrder.originatorAccount.identification.schemeName) "IBAN")}}
+          <span>{{formatIBAN paymentOrder.transferTransactionInformation.counterpartyAccount.identification.identification}}</span>
+        {{else}}
+          <span>{{paymentOrder.transferTransactionInformation.counterpartyAccount.identification.identification}}</span>
+        {{/if}}
       </td>
     </tr>
 
@@ -186,13 +194,13 @@
         <br/>
         <span class="field-header-subtext">(Requested)</span>
       </td>
-      <td class="field-info">{{formatDate paymentOrder.requestedExecutionDate date_pattern="dd MMM, yyyy"}}</td>
+      <td class="field-info">{{formatDate paymentOrder.requestedExecutionDate date_pattern="MMM dd, yyyy"}}</td>
     </tr>
 
-    {{#if paymentOrder.transferTransactionInformation.messageToBank}}
+    {{#if paymentOrder.transferTransactionInformation.remittanceInformation.content}}
       <tr>
         <td class="field-header">Description</td>
-        <td class="field-info">{{paymentOrder.transferTransactionInformation.messageToBank}}</td>
+        <td class="field-info">{{paymentOrder.transferTransactionInformation.remittanceInformation.content}}</td>
       </tr>
     {{/if}}
 
@@ -206,7 +214,7 @@
       {{else if (eq paymentOrder.paymentType "ACH_CREDIT") }}
         <td class="field-info">ACH transfer</td>
       {{else if (or (eq paymentOrder.paymentType "US_DOMESTIC_WIRE")
-          (eq paymentOrder.paymentType "US_DOMESTIC_WIRE_ILE"))
+                    (eq paymentOrder.paymentType "US_DOMESTIC_WIRE_ILE"))
       }}
         <td class="field-info">Wire transfer</td>
       {{else if (eq paymentOrder.paymentType "INTERNATIONAL_TRANSFER") }}

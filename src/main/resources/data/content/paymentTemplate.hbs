@@ -151,7 +151,7 @@
       <td class="field-info">
         <span>{{paymentOrder.transferTransactionInformation.counterparty.name}}</span>
         <br/>
-        {{#if (eq (stringFormat paymentOrder.originatorAccount.identification.schemeName) "IBAN")}}
+        {{#if (eq (stringFormat paymentOrder.transferTransactionInformation.counterpartyAccount.identification.schemeName) "IBAN")}}
           <span>{{formatIBAN paymentOrder.transferTransactionInformation.counterpartyAccount.identification.identification}}</span>
         {{else}}
           <span>{{paymentOrder.transferTransactionInformation.counterpartyAccount.identification.identification}}</span>
@@ -214,7 +214,7 @@
       {{else if (eq paymentOrder.paymentType "ACH_CREDIT") }}
         <td class="field-info">ACH transfer</td>
       {{else if (or (eq paymentOrder.paymentType "US_DOMESTIC_WIRE")
-                    (eq paymentOrder.paymentType "US_DOMESTIC_WIRE_ILE"))
+          (eq paymentOrder.paymentType "US_DOMESTIC_WIRE_ILE"))
       }}
         <td class="field-info">Wire transfer</td>
       {{else if (eq paymentOrder.paymentType "INTERNATIONAL_TRANSFER") }}

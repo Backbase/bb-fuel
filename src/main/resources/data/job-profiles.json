@@ -548,15 +548,6 @@
           "view",
           "create"
         ]
-      },
-      {
-        "businessFunction": "Batch Upload Mappings",
-        "privileges": [
-          "view",
-          "create",
-          "edit",
-          "delete"
-        ]
       }
     ]
   },
@@ -862,15 +853,6 @@
         "businessFunction": "Manage Positive Pay",
         "privileges": [
           "view"
-        ]
-      },
-      {
-        "businessFunction": "Batch Upload Mappings",
-        "privileges": [
-          "view",
-          "create",
-          "edit",
-          "delete"
         ]
       }
     ]
@@ -1523,15 +1505,6 @@
           "view",
           "create"
         ]
-      },
-      {
-        "businessFunction": "Batch Upload Mappings",
-        "privileges": [
-          "view",
-          "create",
-          "edit",
-          "delete"
-        ]
       }
     ]
   },
@@ -1658,12 +1631,6 @@
       },
       {
         "businessFunction": "Manage Positive Pay",
-        "privileges": [
-          "view"
-        ]
-      },
-      {
-        "businessFunction": "Batch Upload Mappings",
         "privileges": [
           "view"
         ]

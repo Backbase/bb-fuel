@@ -9,7 +9,7 @@
 
     <groupId>com.backbase.ct</groupId>
     <artifactId>bb-fuel</artifactId>
-    <version>2.6.80-SNAPSHOT</version>
+    <version>2.6.87-SNAPSHOT</version>
     <name>Backbase :: Capability Testing :: bb-fuel</name>
 
     <scm>
@@ -54,6 +54,7 @@
         <arrangement-integration-outbound-link-account-api.version>2.1.1</arrangement-integration-outbound-link-account-api.version>
         <arrangement-integration-outbound-origination-api.version>1.0.3</arrangement-integration-outbound-origination-api.version>
         <arrangement-integration-inbound-api.version>2.4.1</arrangement-integration-inbound-api.version>
+        <contentservices-client-api.version>2.6.0</contentservices-client-api.version>
 
     </properties>
 
@@ -442,6 +443,18 @@
                             <fromFile>arrangement-integration-inbound-api-v${arrangement-integration-inbound-api.version}.yaml</fromFile>
                         </configuration>
                     </execution>
+
+                    <execution>
+                        <id>download-contentservices-client-api-spec</id>
+                        <goals>
+                            <goal>download-single</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <url>https://repo.backbase.com/specs/contentservices</url>
+                            <fromFile>contentservices-client-api-v${contentservices-client-api.version}.yaml</fromFile>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 
@@ -581,6 +594,20 @@
                             <configOptions>
                                 <apiPackage>com.backbase.dbs.positivepay.client.api.v1</apiPackage>
                                 <modelPackage>com.backbase.dbs.positivepay.client.api.v1.model</modelPackage>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>generate-contentservices-client-code</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${api.target}/contentservices-client-api-v${contentservices-client-api.version}.yaml</inputSpec>
+                            <configOptions>
+                                <apiPackage>com.backbase.dbs.contentservices.client.v2</apiPackage>
+                                <modelPackage>com.backbase.dbs.contentservices.client.v2.model</modelPackage>
                             </configOptions>
                         </configuration>
                     </execution>

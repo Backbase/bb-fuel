@@ -227,7 +227,7 @@ public class ProductSummaryDataGenerator {
             .withId(externalArrangementId.orElse(generateRandomIdFromProductId(productId)))
             .withName(fullArrangementName)
             .withBankAlias(fullArrangementName)
-            .withBookedBalance(generateRandomAmountInRange(10000L, 9999999L))
+            .withBookedBalance(generateRandomAmountInRange(-5000L, 10000L))
             .withAvailableBalance(generateRandomAmountInRange(10000L, 9999999L))
             .withCreditLimit(generateRandomAmountInRange(10000L, 999999L))
             .withCurrency(currency)
@@ -258,6 +258,12 @@ public class ProductSummaryDataGenerator {
             .withOverdueSince(generateRandomDateInRange(LocalDate.now().minusDays(30), LocalDate.now().minusDays(1)))
             .withBankBranchCode(generateRandomBranchCode())
             .withBankBranchCode2(generateRandomBranchCode());
+
+        if (arrangementsPostRequestBody.getBookedBalance().compareTo(BigDecimal.ZERO) < 0) {
+            arrangementsPostRequestBody
+              .withPaymentsPastDue(generateRandomNumberInRange(1,30))
+              .withAmountInArrear(generateRandomAmountInRange(10L, 300L));
+        }
 
         if (EUR.equals(currency)) {
             arrangementsPostRequestBody

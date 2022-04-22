@@ -255,14 +255,14 @@ public class ProductSummaryDataGenerator {
             .withReservedAmount(generateRandomAmountInRange(500L, 10000L))
             .withRemainingPeriodicTransfers(generateRandomAmountInRange(500L, 10000L))
             .withNextClosingDate(generateRandomDateInRange(LocalDate.now().minusDays(30), LocalDate.now().minusDays(1)))
-            .withOverdueSince(generateRandomDateInRange(LocalDate.now().minusDays(30), LocalDate.now().minusDays(1)))
             .withBankBranchCode(generateRandomBranchCode())
             .withBankBranchCode2(generateRandomBranchCode());
 
         if (arrangementsPostRequestBody.getBookedBalance().compareTo(BigDecimal.ZERO) < 0) {
             arrangementsPostRequestBody
-              .withPaymentsPastDue(generateRandomNumberInRange(1,30))
-              .withAmountInArrear(generateRandomAmountInRange(10L, 300L));
+              .withPaymentsPastDue(generateRandomNumberInRange(1,5))
+              .withAmountInArrear(generateRandomAmountInRange(10L, 300L))
+              .withOverdueSince(generateRandomDateInRange(LocalDate.now().minusDays(30), LocalDate.now().minusDays(1)));
         }
 
         if (EUR.equals(currency)) {

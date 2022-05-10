@@ -227,7 +227,6 @@ public class ProductSummaryDataGenerator {
             .withId(externalArrangementId.orElse(generateRandomIdFromProductId(productId)))
             .withName(fullArrangementName)
             .withBankAlias(fullArrangementName)
-            .withBookedBalance(generateRandomAmountInRange(-5000L, 10000L))
             .withAvailableBalance(generateRandomAmountInRange(10000L, 9999999L))
             .withCreditLimit(generateRandomAmountInRange(10000L, 999999L))
             .withCurrency(currency)
@@ -246,6 +245,7 @@ public class ProductSummaryDataGenerator {
             .withAccountHolderStreetName(faker.address().streetAddress())
             .withPostCode(faker.address().zipCode())
             .withTown(faker.address().city())
+            .withCreditLimitUsage(generateRandomAmountInRange(10000L, 999999L))
             .withAccountHolderCountry(faker.address().countryCode())
             .withCountrySubDivision(faker.address().state())
             .withBIC(bic)
@@ -258,11 +258,21 @@ public class ProductSummaryDataGenerator {
             .withBankBranchCode(generateRandomBranchCode())
             .withBankBranchCode2(generateRandomBranchCode());
 
-        if (arrangementsPostRequestBody.getBookedBalance().compareTo(BigDecimal.ZERO) < 0) {
-            arrangementsPostRequestBody
-              .withPaymentsPastDue(generateRandomNumberInRange(1,5))
-              .withAmountInArrear(generateRandomAmountInRange(10L, 300L))
-              .withOverdueSince(generateRandomDateInRange(LocalDate.now().minusDays(30), LocalDate.now().minusDays(1)));
+        // Overdrawn and Overdue accounts
+        if ("1".equals(productId)) {
+            arrangementsPostRequestBody.withBookedBalance(generateRandomAmountInRange(-5000L, 10000L));
+            if (arrangementsPostRequestBody.getBookedBalance().compareTo(BigDecimal.ZERO) < 0) {
+                arrangementsPostRequestBody
+                        .withOverdueSince(generateRandomDateInRange(LocalDate.now().minusDays(30), LocalDate.now().minusDays(1)));
+            }
+        }
+        else {
+            arrangementsPostRequestBody.withBookedBalance(generateRandomAmountInRange(0L, 10000L));
+            if((ImmutableList.of("4", "5").contains(productId))) {
+                arrangementsPostRequestBody.withPaymentsPastDue(generateRandomNumberInRange(1,5))
+                .withAmountInArrear(generateRandomAmountInRange(10L, 300L));
+
+            }
         }
 
         if (EUR.equals(currency)) {

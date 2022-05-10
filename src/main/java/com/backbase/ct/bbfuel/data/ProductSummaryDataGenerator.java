@@ -263,14 +263,16 @@ public class ProductSummaryDataGenerator {
             arrangementsPostRequestBody.withBookedBalance(generateRandomAmountInRange(-5000L, 10000L));
             if (arrangementsPostRequestBody.getBookedBalance().compareTo(BigDecimal.ZERO) < 0) {
                 arrangementsPostRequestBody
-                        .withOverdueSince(generateRandomDateInRange(LocalDate.now().minusDays(30), LocalDate.now().minusDays(1)));
+                        .withOverdueSince(generateRandomDateInRange(LocalDate.now().minusDays(30), LocalDate.now().minusDays(1)))
+                        .withAmountInArrear(arrangementsPostRequestBody.getBookedBalance().abs());
             }
         }
         else {
             arrangementsPostRequestBody.withBookedBalance(generateRandomAmountInRange(0L, 10000L));
             if((ImmutableList.of("4", "5").contains(productId))) {
                 arrangementsPostRequestBody.withPaymentsPastDue(generateRandomNumberInRange(1,5))
-                .withAmountInArrear(generateRandomAmountInRange(10L, 300L));
+                .withAmountInArrear(generateRandomAmountInRange(10L, 300L))
+                .withOverdueSince(generateRandomDateInRange(LocalDate.now().minusDays(150), LocalDate.now().minusDays(1)));
 
             }
         }

@@ -1,8 +1,7 @@
 package com.backbase.ct.bbfuel.data;
 
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_CONTACTS_ACCOUNT_TYPES;
-import static com.backbase.ct.bbfuel.data.ProductSummaryDataGenerator.generateRandomIban;
-import static java.util.Arrays.*;
+import static java.util.Arrays.asList;
 
 import com.backbase.ct.bbfuel.util.CommonHelpers;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
@@ -13,12 +12,13 @@ import com.backbase.dbs.productsummary.presentation.rest.spec.v2.contacts.Addres
 import com.backbase.dbs.productsummary.presentation.rest.spec.v2.contacts.ContactsBulkIngestionPostRequestBody;
 import com.github.javafaker.Faker;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import org.apache.groovy.util.Maps;
 
 public class ContactsDataGenerator {
 
@@ -28,6 +28,13 @@ public class ContactsDataGenerator {
     private static final GlobalProperties globalProperties = GlobalProperties.getInstance();
     private static final Faker faker = new Faker();
     private static final List<String> VALID_BIC_LIST = asList("ABNANL2A", "ANDLNL2A", "ARBNNL22", "ARSNNL21");
+    private static final Map<String, String> VALID_COUNTRY_TO_IBAN = Maps.of(
+        "AE", "AE460090000000123456789",
+        "BR", "BR1500000000000010932840814P2",
+        "GB", "GB98MIDL07009312345678",
+        "JO", "JO71CBJO0000000000001234567890",
+        "NL", "NL02ABNA0123456789"
+    );
 
     public static ContactsBulkIngestionPostRequestBody generateContactsBulkIngestionPostRequestBody(
         String externalServiceAgreementId, String externalUserId, int numberOfContacts,
@@ -47,6 +54,7 @@ public class ContactsDataGenerator {
     }
 
     private static ExternalContact generateContact(int numberOfAccounts) {
+        Random random = new Random();
         List<ExternalAccountInformation> accounts = new ArrayList<>();
 
         for (int i = 0; i < numberOfAccounts; i++) {
@@ -54,7 +62,7 @@ public class ContactsDataGenerator {
                 .withExternalId(UUID.randomUUID().toString().substring(0, 32))
                 .withName(faker.lorem().sentence(3, 0).replace(".", ""))
                 .withAlias(faker.lorem().characters(10))
-                .withBic(VALID_BIC_LIST.get(new Random().nextInt(VALID_BIC_LIST.size())))
+                .withBic(getRandomBic())
                 .withAccountHolderAddress(new Address()
                     .withAddressLine1(faker.address().streetAddress())
                     .withAddressLine2(faker.address().secondaryAddress())
@@ -70,7 +78,7 @@ public class ContactsDataGenerator {
                     .withStreetName(faker.address().streetAddress())
                     .withPostCode(faker.address().zipCode())
                     .withTown(faker.address().city())
-                    .withCountry(faker.address().countryCode())
+                    .withCountry(getRandomCountry())
                     .withCountrySubDivision(faker.address().state()));
 
             externalAccountInformation = determineTheUseOfIBANorBBAN(externalAccountInformation);
@@ -106,12 +114,14 @@ public class ContactsDataGenerator {
 
         switch (availableAccountType.toUpperCase()) {
             case IBAN:
-                returnedExternalAccountInformation = externalAccountInformation.withIban(generateRandomIban());
+                returnedExternalAccountInformation = externalAccountInformation.withIban(
+                    getIbanForCountry(externalAccountInformation.getBankAddress().getCountry()));
                 break;
 
             case BBAN:
                 int randomBbanAccount = CommonHelpers.generateRandomNumberInRange(100000, 999999999);
-                returnedExternalAccountInformation = externalAccountInformation.withAccountNumber(String.valueOf(randomBbanAccount));
+                returnedExternalAccountInformation = externalAccountInformation.withAccountNumber(
+                    String.valueOf(randomBbanAccount));
                 break;
 
             default:
@@ -120,5 +130,21 @@ public class ContactsDataGenerator {
         }
 
         return returnedExternalAccountInformation;
+    }
+
+    private static String getRandomCountry() {
+        List<String> countries = new ArrayList<>(VALID_COUNTRY_TO_IBAN.keySet());
+        return countries.get(new Random().nextInt(countries.size()));
+    }
+
+    private static String getIbanForCountry(String country) {
+        if (!VALID_COUNTRY_TO_IBAN.containsKey(country)) {
+            throw new IllegalArgumentException(String.format("Country %s is not supported", country));
+        }
+        return VALID_COUNTRY_TO_IBAN.get(country);
+    }
+
+    private static String getRandomBic() {
+        return VALID_BIC_LIST.get(new Random().nextInt(VALID_BIC_LIST.size()));
     }
 }

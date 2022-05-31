@@ -71,6 +71,7 @@ public final class CommonConstants {
     public static final String PROPERTY_CONTACTS_MIN = "contacts.min";
     public static final String PROPERTY_CONTACTS_MAX = "contacts.max";
     public static final String PROPERTY_CONTACTS_ACCOUNT_TYPES = "contacts.account.types";
+    public static final String PROPERTY_CONTACTS_SANCTIONED_COUNTRIES = "contacts.sanctioned.countries";
     public static final String PROPERTY_INGEST_CONTACTS = "ingest.contacts";
     public static final String PROPERTY_PAYMENTS_MIN = "payments.min";
     public static final String PROPERTY_PAYMENTS_MAX = "payments.max";

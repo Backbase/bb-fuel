@@ -30,7 +30,6 @@ public class ContactsDataGenerator {
 
     private static final GlobalProperties globalProperties = GlobalProperties.getInstance();
     private static final Faker faker = new Faker();
-    private static final List<String> VALID_BIC_LIST = asList("ABNANL2A", "ANDLNL2A", "ARBNNL22", "ARSNNL21");
     private static final List<String> SUPPORTED_SANCTIONED_COUNTRIES =
         asList("AE", "AU", "BR", "CA", "CN", "GB", "HK", "IN", "JO", "JP", "NL", "RU", "SG", "US", "ZA");
     private static final List<String> SUPPORTED_CONTACTS_COUNTRIES =
@@ -60,11 +59,12 @@ public class ContactsDataGenerator {
         List<ExternalAccountInformation> accounts = new ArrayList<>();
 
         for (int i = 0; i < numberOfAccounts; i++) {
+            String country = getRandomCountry();
             ExternalAccountInformation externalAccountInformation = new ExternalAccountInformation()
                 .withExternalId(UUID.randomUUID().toString().substring(0, 32))
                 .withName(faker.lorem().sentence(3, 0).replace(".", ""))
                 .withAlias(faker.lorem().characters(10))
-                .withBic(getRandomBic())
+                .withBic(getBicForCountry(country))
                 .withAccountHolderAddress(new Address()
                     .withAddressLine1(faker.address().streetAddress())
                     .withAddressLine2(faker.address().secondaryAddress())
@@ -80,7 +80,7 @@ public class ContactsDataGenerator {
                     .withStreetName(faker.address().streetAddress())
                     .withPostCode(faker.address().zipCode())
                     .withTown(faker.address().city())
-                    .withCountry(getRandomCountry())
+                    .withCountry(country)
                     .withCountrySubDivision(faker.address().state()));
 
             externalAccountInformation = determineTheUseOfIBANorBBAN(externalAccountInformation);
@@ -134,32 +134,24 @@ public class ContactsDataGenerator {
         return Iban.random(CountryCode.getByCode(country)).getBban();
     }
 
-    private static String getRandomBic() {
-        return VALID_BIC_LIST.get(new Random().nextInt(VALID_BIC_LIST.size()));
+    private static String getBicForCountry(String country) {
+        return Iban.random(CountryCode.getByCode(country)).getBankCode();
     }
 
     private static List<String> getSupportedCountries() {
-        if (useSanctionedCountries()) {
-            return applyCountryFilter(SUPPORTED_SANCTIONED_COUNTRIES);
-        }
-        return applyCountryFilter(SUPPORTED_CONTACTS_COUNTRIES);
+        return globalProperties.getBoolean(PROPERTY_CONTACTS_SANCTIONED_COUNTRIES)
+            ? applyCountryFilter(SUPPORTED_SANCTIONED_COUNTRIES)
+            : applyCountryFilter(SUPPORTED_CONTACTS_COUNTRIES);
     }
 
     private static List<String> applyCountryFilter(List<String> countries) {
+        // filtering not supported countries by iban4j library
         Set<String> supportedCountryCodes = BbanStructure.supportedCountries().stream()
             .map(CountryCode::getAlpha2)
             .collect(Collectors.toSet());
         return countries.stream()
             .filter(supportedCountryCodes::contains)
             .collect(Collectors.toList());
-    }
-
-    private static boolean useSanctionedCountries() {
-        String useSanctionedCountriesFlag = globalProperties.getString(PROPERTY_CONTACTS_SANCTIONED_COUNTRIES);
-        if (StringUtils.isBlank(useSanctionedCountriesFlag)) {
-            return false;
-        }
-        return Boolean.parseBoolean(useSanctionedCountriesFlag);
     }
 
     private static boolean useIbanAccounts() {

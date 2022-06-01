@@ -1,9 +1,10 @@
 package com.backbase.ct.bbfuel.data;
 
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_CONTACTS_ACCOUNT_TYPES;
-import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_CONTACTS_SANCTIONED_COUNTRIES;
-import static java.util.Arrays.asList;
+import static com.backbase.ct.bbfuel.data.ProductSummaryDataGenerator.generateRandomIban;
+import static java.util.Arrays.*;
 
+import com.backbase.ct.bbfuel.util.CommonHelpers;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
 import com.backbase.dbs.integration.external.inbound.contact.rest.spec.v2.contacts.ExternalAccountInformation;
 import com.backbase.dbs.integration.external.inbound.contact.rest.spec.v2.contacts.ExternalContact;
@@ -11,17 +12,13 @@ import com.backbase.dbs.productsummary.presentation.rest.spec.v2.contacts.Access
 import com.backbase.dbs.productsummary.presentation.rest.spec.v2.contacts.Address;
 import com.backbase.dbs.productsummary.presentation.rest.spec.v2.contacts.ContactsBulkIngestionPostRequestBody;
 import com.github.javafaker.Faker;
-import com.github.jknack.handlebars.internal.lang3.StringUtils;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import org.iban4j.CountryCode;
-import org.iban4j.Iban;
-import org.iban4j.bban.BbanStructure;
 
 public class ContactsDataGenerator {
 
@@ -30,13 +27,7 @@ public class ContactsDataGenerator {
 
     private static final GlobalProperties globalProperties = GlobalProperties.getInstance();
     private static final Faker faker = new Faker();
-    private static final List<String> SUPPORTED_SANCTIONED_COUNTRIES =
-        asList("AE", "AU", "BR", "CA", "CN", "GB", "HK", "IN", "JO", "JP", "NL", "RU", "SG", "US", "ZA");
-    private static final List<String> SUPPORTED_CONTACTS_COUNTRIES =
-        asList("AR", "AU", "AT", "BE", "BR", "CA", "CN", "CO", "HR", "CZ", "DK", "EC", "EG", "ET", "FR",
-            "DE", "GR", "HN", "HK", "HU", "IN", "ID", "IE", "IT", "JM", "MY", "MX", "MA", "NA", "NL", "NZ",
-            "NO", "PL", "PT", "RU", "SN", "SG", "ZA", "ES", "LK", "SE", "TH", "TR", "UG", "AE", "GB", "US", "ZW");
-    private static final List<String> SUPPORTED_COUNTRIES = getSupportedCountries();
+    private static final List<String> VALID_BIC_LIST = asList("ABNANL2A", "ANDLNL2A", "ARBNNL22", "ARSNNL21");
 
     public static ContactsBulkIngestionPostRequestBody generateContactsBulkIngestionPostRequestBody(
         String externalServiceAgreementId, String externalUserId, int numberOfContacts,
@@ -59,12 +50,11 @@ public class ContactsDataGenerator {
         List<ExternalAccountInformation> accounts = new ArrayList<>();
 
         for (int i = 0; i < numberOfAccounts; i++) {
-            String country = getRandomCountry();
             ExternalAccountInformation externalAccountInformation = new ExternalAccountInformation()
                 .withExternalId(UUID.randomUUID().toString().substring(0, 32))
                 .withName(faker.lorem().sentence(3, 0).replace(".", ""))
                 .withAlias(faker.lorem().characters(10))
-                .withBic(getBicForCountry(country))
+                .withBic(VALID_BIC_LIST.get(new Random().nextInt(VALID_BIC_LIST.size())))
                 .withAccountHolderAddress(new Address()
                     .withAddressLine1(faker.address().streetAddress())
                     .withAddressLine2(faker.address().secondaryAddress())
@@ -80,7 +70,7 @@ public class ContactsDataGenerator {
                     .withStreetName(faker.address().streetAddress())
                     .withPostCode(faker.address().zipCode())
                     .withTown(faker.address().city())
-                    .withCountry(country)
+                    .withCountry(faker.address().countryCode())
                     .withCountrySubDivision(faker.address().state()));
 
             externalAccountInformation = determineTheUseOfIBANorBBAN(externalAccountInformation);
@@ -109,58 +99,26 @@ public class ContactsDataGenerator {
 
     private static ExternalAccountInformation determineTheUseOfIBANorBBAN(
         ExternalAccountInformation externalAccountInformation) {
+        final String BBAN = "BBAN";
+        final String IBAN = "IBAN";
+        String availableAccountType = globalProperties.getString(PROPERTY_CONTACTS_ACCOUNT_TYPES);
         ExternalAccountInformation returnedExternalAccountInformation;
 
-        if (useIbanAccounts()) {
-            returnedExternalAccountInformation = externalAccountInformation.withIban(
-                getIbanForCountry(externalAccountInformation.getBankAddress().getCountry()));
-        } else {
-            returnedExternalAccountInformation = externalAccountInformation.withAccountNumber(
-                getBbanForCountry(externalAccountInformation.getBankAddress().getCountry()));
+        switch (availableAccountType.toUpperCase()) {
+            case IBAN:
+                returnedExternalAccountInformation = externalAccountInformation.withIban(generateRandomIban());
+                break;
+
+            case BBAN:
+                int randomBbanAccount = CommonHelpers.generateRandomNumberInRange(100000, 999999999);
+                returnedExternalAccountInformation = externalAccountInformation.withAccountNumber(String.valueOf(randomBbanAccount));
+                break;
+
+            default:
+                throw new IllegalStateException(
+                    "Unexpected value: " + availableAccountType + ". Please use IBAN or BBAN");
         }
 
         return returnedExternalAccountInformation;
-    }
-
-    private static String getRandomCountry() {
-        return SUPPORTED_COUNTRIES.get(new Random().nextInt(SUPPORTED_COUNTRIES.size()));
-    }
-
-    private static String getIbanForCountry(String country) {
-        return Iban.random(CountryCode.getByCode(country)).toString();
-    }
-
-    private static String getBbanForCountry(String country) {
-        return Iban.random(CountryCode.getByCode(country)).getBban();
-    }
-
-    private static String getBicForCountry(String country) {
-        return Iban.random(CountryCode.getByCode(country)).getBankCode();
-    }
-
-    private static List<String> getSupportedCountries() {
-        return globalProperties.getBoolean(PROPERTY_CONTACTS_SANCTIONED_COUNTRIES)
-            ? applyCountryFilter(SUPPORTED_SANCTIONED_COUNTRIES)
-            : applyCountryFilter(SUPPORTED_CONTACTS_COUNTRIES);
-    }
-
-    private static List<String> applyCountryFilter(List<String> countries) {
-        // filtering not supported countries by iban4j library
-        Set<String> supportedCountryCodes = BbanStructure.supportedCountries().stream()
-            .map(CountryCode::getAlpha2)
-            .collect(Collectors.toSet());
-        return countries.stream()
-            .filter(supportedCountryCodes::contains)
-            .collect(Collectors.toList());
-    }
-
-    private static boolean useIbanAccounts() {
-        String availableAccountType = globalProperties.getString(PROPERTY_CONTACTS_ACCOUNT_TYPES);
-        if (StringUtils.isBlank(availableAccountType)) {
-            throw new IllegalStateException(
-                "Unexpected value: " + availableAccountType + ". Please use IBAN or BBAN");
-        }
-
-        return "iban".equalsIgnoreCase(availableAccountType);
     }
 }

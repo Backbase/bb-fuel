@@ -439,7 +439,7 @@
                         </goals>
                         <phase>generate-sources</phase>
                         <configuration>
-                            <url>https://artifacts.backbase.com/specs/arrangement-manager</url>
+                            <url>https://repo.backbase.com/specs/arrangement-manager</url>
                             <fromFile>arrangement-integration-inbound-api-v${arrangement-integration-inbound-api.version}.yaml</fromFile>
                         </configuration>
                     </execution>

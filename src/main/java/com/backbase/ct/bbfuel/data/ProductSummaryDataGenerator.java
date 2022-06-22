@@ -259,22 +259,22 @@ public class ProductSummaryDataGenerator {
             .withBankBranchCode2(generateRandomBranchCode());
 
         // Overdrawn and Overdue accounts
-        if ("1".equals(productId)) {
+        if ((ImmutableList.of("1").contains(productId))) {
             arrangementsPostRequestBody.withBookedBalance(generateRandomAmountInRange(-5000L, 10000L));
             if (arrangementsPostRequestBody.getBookedBalance().compareTo(BigDecimal.ZERO) < 0) {
                 arrangementsPostRequestBody
                         .withOverdueSince(generateRandomDateInRange(LocalDate.now().minusDays(30), LocalDate.now().minusDays(1)))
                         .withAmountInArrear(arrangementsPostRequestBody.getBookedBalance().abs());
             }
-        }
-        else {
+        } else if ((ImmutableList.of("4", "5").contains(productId))) {
             arrangementsPostRequestBody.withBookedBalance(generateRandomAmountInRange(0L, 10000L));
-            if((ImmutableList.of("4", "5").contains(productId))) {
-                arrangementsPostRequestBody.withPaymentsPastDue(generateRandomNumberInRange(1,5))
-                .withAmountInArrear(generateRandomAmountInRange(10L, 300L))
-                .withOverdueSince(generateRandomDateInRange(LocalDate.now().minusDays(150), LocalDate.now().minusDays(1)));
-
+            arrangementsPostRequestBody.withPaymentsPastDue(generateRandomNumberInRange(1, 5));
+            if (arrangementsPostRequestBody.getPaymentsPastDue() > 0) {
+                arrangementsPostRequestBody.withAmountInArrear(generateRandomAmountInRange(10L, 300L))
+                        .withOverdueSince(generateRandomDateInRange(LocalDate.now().minusDays(150), LocalDate.now().minusDays(1)));
             }
+        } else {
+            arrangementsPostRequestBody.withBookedBalance(generateRandomAmountInRange(0L, 10000L));
         }
 
         if (EUR.equals(currency)) {

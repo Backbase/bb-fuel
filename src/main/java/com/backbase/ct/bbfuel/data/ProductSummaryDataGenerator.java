@@ -268,7 +268,7 @@ public class ProductSummaryDataGenerator {
             }
         } else if ((ImmutableList.of("4", "5").contains(productId))) {
             arrangementsPostRequestBody.withBookedBalance(generateRandomAmountInRange(0L, 10000L));
-            arrangementsPostRequestBody.withPaymentsPastDue(generateRandomNumberInRange(1, 5));
+            arrangementsPostRequestBody.withPaymentsPastDue(generateRandomNumberInRange(0, 5));
             if (arrangementsPostRequestBody.getPaymentsPastDue() > 0) {
                 arrangementsPostRequestBody.withAmountInArrear(generateRandomAmountInRange(10L, 300L))
                         .withOverdueSince(generateRandomDateInRange(LocalDate.now().minusDays(150), LocalDate.now().minusDays(1)));

@@ -53,7 +53,7 @@
         <!-- Products Specs Versions -->
         <arrangement-integration-outbound-link-account-api.version>2.1.1</arrangement-integration-outbound-link-account-api.version>
         <arrangement-integration-outbound-origination-api.version>1.0.3</arrangement-integration-outbound-origination-api.version>
-        <arrangement-integration-inbound-api.version>2.4.1</arrangement-integration-inbound-api.version>
+        <arrangement-integration-inbound-api.version>2.6.0</arrangement-integration-inbound-api.version>
         <contentservices-client-api.version>2.6.0</contentservices-client-api.version>
 
     </properties>

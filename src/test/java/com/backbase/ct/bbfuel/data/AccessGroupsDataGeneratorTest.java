@@ -21,7 +21,7 @@ public class AccessGroupsDataGeneratorTest {
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
-
+ //test
     private static List<com.backbase.ct.bbfuel.dto.entitlement.Permission> createPermissions(String businessFunction,
         String... privileges) {
         List<com.backbase.ct.bbfuel.dto.entitlement.Permission> permissions = new ArrayList<>();

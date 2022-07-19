@@ -55,7 +55,7 @@
         <arrangement-integration-outbound-origination-api.version>1.0.3</arrangement-integration-outbound-origination-api.version>
         <arrangement-integration-inbound-api.version>2.6.0</arrangement-integration-inbound-api.version>
         <contentservices-client-api.version>2.6.0</contentservices-client-api.version>
-
+        <external-account-aggregator-client-api.version>0.3.0</external-account-aggregator-client-api.version>
     </properties>
 
     <dependencyManagement>
@@ -455,6 +455,18 @@
                             <fromFile>contentservices-client-api-v${contentservices-client-api.version}.yaml</fromFile>
                         </configuration>
                     </execution>
+
+                    <execution>
+                        <id>download-external-account-aggregator-client-api-spec</id>
+                        <goals>
+                            <goal>download-single</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <url>https://artifacts.backbase.com/specs/external-account-aggregator</url>
+                            <fromFile>external-account-aggregator-client-api-v${external-account-aggregator-client-api.version}.yaml</fromFile>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 
@@ -608,6 +620,20 @@
                             <configOptions>
                                 <apiPackage>com.backbase.dbs.contentservices.client.v2</apiPackage>
                                 <modelPackage>com.backbase.dbs.contentservices.client.v2.model</modelPackage>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>generate-external-account-aggregator-client-code</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${api.target}/external-account-aggregator-client-api-v${external-account-aggregator-client-api.version}.yaml</inputSpec>
+                            <configOptions>
+                                <apiPackage>com.backbase.dbs.eaa.client.v1</apiPackage>
+                                <modelPackage>com.backbase.dbs.eaa.client.v1.model</modelPackage>
                             </configOptions>
                         </configuration>
                     </execution>

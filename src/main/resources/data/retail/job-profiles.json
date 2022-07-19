@@ -520,6 +520,15 @@
           "approve",
           "cancel"
         ]
+      },
+      {
+        "businessFunction": "Manage External Accounts",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete"
+        ]
       }
     ]
   }

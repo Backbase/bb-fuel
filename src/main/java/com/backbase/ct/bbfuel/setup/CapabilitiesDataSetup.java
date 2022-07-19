@@ -11,6 +11,7 @@ import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_BILLPA
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_BILLPAY_ACCOUNTS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_CONTACTS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_CONTENT_FOR_PAYMENTS;
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_EAA;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_LIMITS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_MESSAGES;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_NOTIFICATIONS;
@@ -31,6 +32,7 @@ import com.backbase.ct.bbfuel.configurator.ApprovalsConfigurator;
 import com.backbase.ct.bbfuel.configurator.BillPayConfigurator;
 import com.backbase.ct.bbfuel.configurator.ContactsConfigurator;
 import com.backbase.ct.bbfuel.configurator.ContentServicesConfigurator;
+import com.backbase.ct.bbfuel.configurator.ExternalAccountAggregationConfigurator;
 import com.backbase.ct.bbfuel.configurator.LimitsConfigurator;
 import com.backbase.ct.bbfuel.configurator.MessagesConfigurator;
 import com.backbase.ct.bbfuel.configurator.NotificationsConfigurator;
@@ -82,6 +84,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
     private final PocketTailorActuatorClient pocketTailorActuatorClient;
     private final TransactionsConfigurator transactionsConfigurator;
     private final ContentServicesConfigurator contentServicesConfigurator;
+    private final ExternalAccountAggregationConfigurator externalAccountAggregationConfigurator;
 
     /**
      * Ingest data with services of projects APPR, PO, LIM, NOT, CON, MC, ACT, BPAY and Pockets.
@@ -101,6 +104,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
         this.ingestAccountStatementForSelectedUser();
         this.ingestPositivePayChecksForSelectedUser();
         this.ingestContents();
+        this.triggerExternalAccountAggregation();
     }
 
     private void ingestApprovals() {
@@ -301,6 +305,22 @@ public class CapabilitiesDataSetup extends BaseSetup {
     private void ingestContents() {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_CONTENT_FOR_PAYMENTS)) {
             this.contentServicesConfigurator.ingestContentForPayments();
+        }
+    }
+
+    private void triggerExternalAccountAggregation() {
+        if (this.globalProperties.getBoolean(PROPERTY_INGEST_EAA)) {
+
+            this.loginRestClient.loginBankAdmin();
+            this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
+
+            List<LegalEntityWithUsers> legalEntities = this.accessControlSetup
+                .getLegalEntitiesWithUsersExcludingSupport()
+                .stream()
+                .filter(legalEntityWithUsers -> legalEntityWithUsers.getCategory().isRetail())
+                .collect(Collectors.toList());
+
+            externalAccountAggregationConfigurator.aggregateExternalAccounts(legalEntities);
         }
     }
 }

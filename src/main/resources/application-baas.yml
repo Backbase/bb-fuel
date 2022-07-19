@@ -19,6 +19,7 @@ bb-fuel:
     pockets: http://app.${environment.name}.${environment.domain}/api/pocket-tailor/client-api
     pocketsArrangements: http://app.${environment.name}.${environment.domain}/arrangementoutboundoriginationmock/service-api
     contentservices: https://app.${environment.name}.${environment.domain}/api/contentservices/client-api
+    externalAccountAggregator: https://app.${environment.name}.${environment.domain}/api/external-account-aggregator/client-api
   dbs-service-names:
     accessgroup: access-control
     actions: action
@@ -33,3 +34,4 @@ bb-fuel:
     user: user-manager
     products: arrangement-manager
     contentservices: contentservices
+    externalAccountAggregator: external-account-aggregator

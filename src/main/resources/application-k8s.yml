@@ -22,6 +22,7 @@ bb-fuel:
     pockets: http://edge.${environment.name}.${environment.domain}/api/pocket-tailor/client-api
     pocketsArrangements: http://arrangementoutboundoriginationmock.${environment.name}.${environment.domain}/service-api
     contentservices: http://edge.${environment.name}.${environment.domain}/api/contentservices/client-api
+    externalAccountAggregator: http://edge.${environment.name}.${environment.domain}/api/external-account-aggregator/client-api
   dbs-service-names:
     accessgroup: accessgroup-presentation-service
     actions: actionrecipes-presentation-service
@@ -37,3 +38,4 @@ bb-fuel:
     products: product-summary-presentation-service
     positivePay: positive-pay-check
     contentservices: contentservices
+    externalAccountAggregator: external-account-aggregator

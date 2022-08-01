@@ -266,6 +266,12 @@
         ]
       },
       {
+        "businessFunction": "Manage Self-approve Permissions",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
         "businessFunction": "Manage Function Groups",
         "privileges": [
           "view",
@@ -966,6 +972,14 @@
           "approve",
           "view",
           "create",
+          "edit"
+        ]
+      },
+      {
+        "businessFunction": "Manage Self-approve Permissions",
+        "privileges": [
+          "approve",
+          "view",
           "edit"
         ]
       },

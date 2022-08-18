@@ -30,6 +30,7 @@ pipeline {
         booleanParam(name: 'INGEST_ACTIONS', defaultValue: false, description: 'Ingest actions per user')
         booleanParam(name: 'INGEST_BILLPAY', defaultValue: false, description: 'Enrol users into Bill Pay')
         booleanParam(name: 'INGEST_ACCOUNT_STATEMENTS', defaultValue: false, description: 'Ingest Account Statements per user')
+        booleanParam(name: 'INGEST_ACCOUNT_STATEMENTS_PREFERENCES', defaultValue: false, description: 'Ingest Account Statements preferences per user')
         booleanParam(name: 'INGEST_POSITIVE_PAY', defaultValue: false, description: 'Ingest positive pay checks for selected user')
         booleanParam(name: 'USE_PERFORMANCE_TEST_DATA_SETUP', defaultValue: false, description: 'Use performance test data setup\n' +
                 'Only enable when strictly necessary (long running job)')
@@ -84,6 +85,7 @@ pipeline {
                                     "-Dingest.actions=${params.INGEST_ACTIONS} " +
                                     "-Dingest.billpay=${params.INGEST_BILLPAY} " +
                                     "-Dingest.accountStatements=${params.INGEST_ACCOUNT_STATEMENTS} " +
+                                    "-Dingest.accountStatementsPreferences=${params.INGEST_ACCOUNT_STATEMENTS_PREFERENCES} " +
                                     "-Dingest.positivePay=${params.INGEST_POSITIVE_PAY} " +
                                     "-Didentity.feature.toggle=${params.IDENTITY_FEATURE_TOGGLE} " +
                                     "-Didentity.realm=${params.IDENTITY_REALM} " +

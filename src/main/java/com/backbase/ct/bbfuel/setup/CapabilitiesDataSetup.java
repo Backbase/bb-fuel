@@ -2,6 +2,7 @@ package com.backbase.ct.bbfuel.setup;
 
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ACCOUNTSTATEMENTS_USERS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_ACCOUNT_STATEMENTS;
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_ACCOUNT_STATEMENTS_PREFERENCES;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_ACTIONS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_BATCHES;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_CONTACTS;
@@ -284,17 +285,22 @@ public class CapabilitiesDataSetup extends BaseSetup {
     private void ingestAccountStatementForSelectedUser() {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_ACCOUNT_STATEMENTS)) {
             List<String> externalUserIds = this.globalProperties.getList(PROPERTY_ACCOUNTSTATEMENTS_USERS, true);
-            externalUserIds.forEach(this.accountStatementsConfigurator::ingestAccountStatements);
-         }
-     }
+            externalUserIds.forEach(accountStatementsConfigurator::ingestAccountStatements);
+        }
+
+        if (this.globalProperties.getBoolean(PROPERTY_INGEST_ACCOUNT_STATEMENTS_PREFERENCES)) {
+            List<String> externalUserIds = this.globalProperties.getList(PROPERTY_ACCOUNTSTATEMENTS_USERS, true);
+            externalUserIds.forEach(accountStatementsConfigurator::ingestAccountStatementPreferences);
+        }
+    }
 
     private void ingestPositivePayChecksForSelectedUser() {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_POSITIVE_PAY_CHECKS)) {
             this.accessControlSetup.getLegalEntitiesWithUsersExcludingSupportAndEmployee().stream()
-                    .map(LegalEntityWithUsers::getUserExternalIds)
-                    .flatMap(List::stream)
-                    .collect(Collectors.toList())
-                    .forEach(this.positivePayConfigurator::ingestPositivePayChecks);
+                .map(LegalEntityWithUsers::getUserExternalIds)
+                .flatMap(List::stream)
+                .collect(Collectors.toList())
+                .forEach(this.positivePayConfigurator::ingestPositivePayChecks);
         }
     }
 

@@ -8,8 +8,10 @@ import io.restassured.response.Response;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class AccountStatementsPreferencesClient extends RestClient {
@@ -18,7 +20,7 @@ public class AccountStatementsPreferencesClient extends RestClient {
 
 
     private static final String SERVICE_VERSION = "v2";
-    private static final String ENDPOINT_ACCOUNT_STATEMENT_PREFERENCES = "/service-api/v2/account/statements/preferences/mock";
+    private static final String ENDPOINT_ACCOUNT_STATEMENT_PREFERENCES = "/service-api/v2/account/statements/preferences/internal-arrangement-id";
 
     @PostConstruct
     public void init() {
@@ -26,10 +28,14 @@ public class AccountStatementsPreferencesClient extends RestClient {
         setVersion(SERVICE_VERSION);
     }
 
-    public Response createAccountStatementsPreferences(List<EStatementPreferencesRequest> request) {
+    public Response createAccountStatementsPreferences(List<EStatementPreferencesRequest> requests) {
+        requests.forEach(request ->
+            log.info("Account Statement Preference ingested for arrangementId [{}] for userId [{}]", request.getInternalArrangementId(), request.getUserId())
+        );
+
         return requestSpec()
             .contentType(ContentType.JSON)
-            .body(request)
+            .body(requests)
             .post(getPath(ENDPOINT_ACCOUNT_STATEMENT_PREFERENCES));
     }
 }

@@ -64,7 +64,7 @@ public class AccountStatementsConfigurator {
         final Random booleanGenerator = new Random(System.currentTimeMillis());
 
         Function<ArrangementsByBusinessFunctionGetResponseBody, EStatementPreferencesRequest> mapper = arrangement -> new EStatementPreferencesRequest(
-            arrangement.getExternalArrangementId(), externalUserId,
+            arrangement.getId(), externalUserId,
             booleanGenerator.nextBoolean(), booleanGenerator.nextBoolean());
 
         accountStatementsPreferencesClient.createAccountStatementsPreferences(ingest(externalUserId)

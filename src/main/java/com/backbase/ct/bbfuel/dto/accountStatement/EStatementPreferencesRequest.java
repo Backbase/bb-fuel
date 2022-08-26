@@ -6,7 +6,7 @@ import lombok.Value;
 @Value
 public class EStatementPreferencesRequest {
 
-    String externalArrangementId;
+    String internalArrangementId;
     String userId;
     Boolean onlineStatement;
     Boolean paperStatement;

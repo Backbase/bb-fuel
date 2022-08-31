@@ -20,7 +20,7 @@ public class AccountStatementsPreferencesClient extends RestClient {
 
 
     private static final String SERVICE_VERSION = "v2";
-    private static final String ENDPOINT_ACCOUNT_STATEMENT_PREFERENCES = "/service-api/v2/account/statements/preferences/internal-arrangement-id";
+    private static final String ENDPOINT_ACCOUNT_STATEMENT_PREFERENCES = "/account/statements/preferences/mock/internal-arrangement-id";
 
     @PostConstruct
     public void init() {

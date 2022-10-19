@@ -39,7 +39,7 @@
         <api.target>${project.build.directory}/downloaded-api</api.target>
         <openapi-generator-version>5.1.0</openapi-generator-version>
         <boat-maven-plugin.version>0.14.3</boat-maven-plugin.version>
-        <jackson-databind.version>2.11.3</jackson-databind.version>
+        <jackson-databind.version>2.13.4.1</jackson-databind.version>
         <jackson-databind-nullable-version>0.2.1</jackson-databind-nullable-version>
         <swagger-annotations-version>1.6.0</swagger-annotations-version>
         <jsr305-version>3.0.0</jsr305-version>

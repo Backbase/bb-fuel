@@ -528,6 +528,17 @@
         ]
       },
       {
+        "businessFunction": "Batch - ACH Reversal",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
         "businessFunction": "Batch - Intracompany Payments",
         "privileges": [
           "view",
@@ -834,6 +845,17 @@
       },
       {
         "businessFunction": "Batch - ACH Credit",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "Batch - ACH Reversal",
         "privileges": [
           "view",
           "create",
@@ -1329,6 +1351,17 @@
         ]
       },
       {
+        "businessFunction": "Batch - ACH Reversal",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
         "businessFunction": "Batch - Intracompany Payments",
         "privileges": [
           "view",
@@ -1654,6 +1687,12 @@
       },
       {
         "businessFunction": "Batch - ACH Credit",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Batch - ACH Reversal",
         "privileges": [
           "view"
         ]

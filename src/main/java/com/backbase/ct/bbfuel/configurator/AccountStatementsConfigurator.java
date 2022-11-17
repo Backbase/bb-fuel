@@ -7,36 +7,47 @@ import static com.backbase.ct.bbfuel.util.CommonHelpers.generateRandomNumberInRa
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Stream.of;
+import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 import static org.apache.http.HttpStatus.SC_CREATED;
+import static org.apache.http.HttpStatus.SC_INTERNAL_SERVER_ERROR;
+
+import io.restassured.response.Response;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+import java.util.Random;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.stream.Stream;
+
+import org.springframework.stereotype.Service;
 
 import com.backbase.ct.bbfuel.client.accessgroup.UserContextPresentationRestClient;
 import com.backbase.ct.bbfuel.client.accountstatement.AccountStatementsClient;
 import com.backbase.ct.bbfuel.client.accountstatement.AccountStatementsPreferencesClient;
 import com.backbase.ct.bbfuel.client.common.LoginRestClient;
 import com.backbase.ct.bbfuel.client.productsummary.ProductSummaryPresentationRestClient;
+import com.backbase.ct.bbfuel.client.user.UserPresentationRestClient;
+import com.backbase.ct.bbfuel.client.user.UserProfileRestClient;
 import com.backbase.ct.bbfuel.dto.accountStatement.EStatementPreferencesRequest;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
 import com.backbase.dbs.productsummary.presentation.rest.spec.v2.productsummary.ArrangementsByBusinessFunctionGetResponseBody;
-import java.util.Random;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.stream.Stream;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class AccountStatementsConfigurator {
 
+    private static final int RETRY_LIMIT = 2;
     private static final GlobalProperties globalProperties = GlobalProperties.getInstance();
-
+    private static int retryCounter;
     private final LoginRestClient loginRestClient;
     private final UserContextPresentationRestClient userContextPresentationRestClient;
     private final ProductSummaryPresentationRestClient productSummaryPresentationRestClient;
     private final AccountStatementsClient AccountStatementsClient;
     private final AccountStatementsPreferencesClient accountStatementsPreferencesClient;
+    private final UserProfileRestClient userProfileRestClient;
+    private final UserPresentationRestClient userPresentationRestClient;
 
     public void ingestAccountStatements(String externalUserId) {
         int randomAmount = generateRandomNumberInRange(globalProperties.getInt(PROPERTY_ACCOUNTSTATEMENTS_MIN),
@@ -63,13 +74,49 @@ public class AccountStatementsConfigurator {
     public void ingestAccountStatementPreferences(String externalUserId) {
         final Random booleanGenerator = new Random(System.currentTimeMillis());
 
-        Function<ArrangementsByBusinessFunctionGetResponseBody, EStatementPreferencesRequest> mapper = arrangement -> new EStatementPreferencesRequest(
-            arrangement.getId(), externalUserId,
-            booleanGenerator.nextBoolean(), booleanGenerator.nextBoolean());
+        Function<ArrangementsByBusinessFunctionGetResponseBody, EStatementPreferencesRequest> mapper =
+            arrangement -> new EStatementPreferencesRequest(
+                arrangement.getId(), externalUserId,
+                booleanGenerator.nextBoolean(), booleanGenerator.nextBoolean());
 
         accountStatementsPreferencesClient.createAccountStatementsPreferences(ingest(externalUserId)
             .map(mapper)
             .collect(toList()));
+    }
+
+    public void ingestUserProfile(String externalUserId) {
+        loginRestClient.loginBankAdmin();
+        this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
+        String userId = userPresentationRestClient.getUserByExternalId(externalUserId).getId();
+        if(userId.isEmpty()){
+            log.warn("User profile for externalId [{}] WAS NOT CREATED, because such user was not found", externalUserId);
+        }
+        Response userProfileCreationResponse = userProfileRestClient.createUserProfile(userId, externalUserId);
+        if (userProfileCreationResponse.getStatusCode() == SC_BAD_REQUEST) {
+            log.error("User profile for externalId [{}] and userId [{}] WAS NOT CREATED", externalUserId, userId);
+            log.error("Response: " + userProfileCreationResponse.body().asString());
+        }
+        if (userProfileCreationResponse.getStatusCode() == SC_INTERNAL_SERVER_ERROR) {
+            log.warn("User profile for externalId [{}] and userId [{}] was not created due to server error.",
+                externalUserId, userId);
+            retryCounter++;
+            if (retryCounter < RETRY_LIMIT) {
+                // This retry is because of 500 returned from user-profile-manager when service is warming up
+                log.info("Retrying creation in 10 seconds.");
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                ingestUserProfile(externalUserId);
+            }
+            log.warn(userProfileCreationResponse.getStatusLine());
+        }
+        if (userProfileCreationResponse.getStatusCode() == SC_CREATED) {
+            log.info("Ingested user profile for externalId [{}] and userId [{}]", externalUserId, userId);
+        } else {
+            log.error("User profile for externalId [{}] and userId [{}] was not ingested.", externalUserId, userId);
+        }
     }
 
     private Stream<ArrangementsByBusinessFunctionGetResponseBody> ingest(String externalUserId) {

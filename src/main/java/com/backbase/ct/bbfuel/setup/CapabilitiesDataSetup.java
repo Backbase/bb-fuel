@@ -286,6 +286,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_ACCOUNT_STATEMENTS)) {
             List<String> externalUserIds = this.globalProperties.getList(PROPERTY_ACCOUNTSTATEMENTS_USERS, true);
             externalUserIds.forEach(accountStatementsConfigurator::ingestAccountStatements);
+            externalUserIds.forEach(accountStatementsConfigurator::ingestUserProfile);
         }
 
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_ACCOUNT_STATEMENTS_PREFERENCES)) {

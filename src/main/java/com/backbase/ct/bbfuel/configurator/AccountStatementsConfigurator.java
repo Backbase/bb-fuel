@@ -7,8 +7,11 @@ import static com.backbase.ct.bbfuel.util.CommonHelpers.generateRandomNumberInRa
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Stream.of;
+import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 import static org.apache.http.HttpStatus.SC_CREATED;
+import static org.apache.http.HttpStatus.SC_INTERNAL_SERVER_ERROR;
 
+import io.restassured.response.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -35,8 +38,9 @@ import com.backbase.dbs.productsummary.presentation.rest.spec.v2.productsummary.
 @RequiredArgsConstructor
 public class AccountStatementsConfigurator {
 
+    private static final int RETRY_LIMIT = 2;
     private static final GlobalProperties globalProperties = GlobalProperties.getInstance();
-
+    private static int retryCounter;
     private final LoginRestClient loginRestClient;
     private final UserContextPresentationRestClient userContextPresentationRestClient;
     private final ProductSummaryPresentationRestClient productSummaryPresentationRestClient;
@@ -84,8 +88,35 @@ public class AccountStatementsConfigurator {
         loginRestClient.loginBankAdmin();
         this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
         String userId = userPresentationRestClient.getUserByExternalId(externalUserId).getId();
-        userProfileRestClient.createUserProfile(userId, externalUserId);
-        log.info("Ingested user profile for externalId [{}] and userId [{}]", externalUserId, userId);
+        if(userId.isEmpty()){
+            log.warn("User profile for externalId [{}] WAS NOT CREATED, because such user was not found", externalUserId);
+        }
+        Response userProfileCreationResponse = userProfileRestClient.createUserProfile(userId, externalUserId);
+        if (userProfileCreationResponse.getStatusCode() == SC_BAD_REQUEST) {
+            log.error("User profile for externalId [{}] and userId [{}] WAS NOT CREATED", externalUserId, userId);
+            log.error("Response: " + userProfileCreationResponse.body().asString());
+        }
+        if (userProfileCreationResponse.getStatusCode() == SC_INTERNAL_SERVER_ERROR) {
+            log.warn("User profile for externalId [{}] and userId [{}] was not created due to server error.",
+                externalUserId, userId);
+            retryCounter++;
+            if (retryCounter < RETRY_LIMIT) {
+                // This retry is because of 500 returned from user-profile-manager when service is warming up
+                log.info("Retrying creation in 10 seconds.");
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                ingestUserProfile(externalUserId);
+            }
+            log.warn(userProfileCreationResponse.getStatusLine());
+        }
+        if (userProfileCreationResponse.getStatusCode() == SC_CREATED) {
+            log.info("Ingested user profile for externalId [{}] and userId [{}]", externalUserId, userId);
+        } else {
+            log.error("User profile for externalId [{}] and userId [{}] was not ingested.", externalUserId, userId);
+        }
     }
 
     private Stream<ArrangementsByBusinessFunctionGetResponseBody> ingest(String externalUserId) {

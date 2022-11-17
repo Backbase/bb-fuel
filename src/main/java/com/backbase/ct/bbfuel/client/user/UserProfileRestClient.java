@@ -38,9 +38,7 @@ public class UserProfileRestClient extends RestClient {
             .contentType(ContentType.JSON)
             .body(UserProfileData.getUserProfileData(userId, externalUserId))
             .post(String.format(getPath(ENDPOINT_CREATE_USER_PROFILE), externalUserId))
-            .then()
-            .statusCode(SC_CREATED)
-            .extract().response();
+            .andReturn();
     }
 }
 

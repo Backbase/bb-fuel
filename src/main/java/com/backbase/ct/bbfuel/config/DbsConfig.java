@@ -110,7 +110,7 @@ public class DbsConfig {
     private String contentservices;
 
     /**
-     * URI to userProfielManager.
+     * URI to userProfileManager.
      */
     private String userProfileManager;
 }

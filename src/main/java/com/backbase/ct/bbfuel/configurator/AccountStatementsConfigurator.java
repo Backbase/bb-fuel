@@ -4,23 +4,10 @@ import static com.backbase.ct.bbfuel.data.AccountStatementDataGenerator.generate
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ACCOUNTSTATEMENTS_MAX;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ACCOUNTSTATEMENTS_MIN;
 import static com.backbase.ct.bbfuel.util.CommonHelpers.generateRandomNumberInRange;
-import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toList;
-import static java.util.stream.Stream.of;
 import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 import static org.apache.http.HttpStatus.SC_CREATED;
 import static org.apache.http.HttpStatus.SC_INTERNAL_SERVER_ERROR;
-
-import io.restassured.response.Response;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-
-import java.util.Random;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.stream.Stream;
-
-import org.springframework.stereotype.Service;
 
 import com.backbase.ct.bbfuel.client.accessgroup.UserContextPresentationRestClient;
 import com.backbase.ct.bbfuel.client.accountstatement.AccountStatementsClient;
@@ -32,6 +19,14 @@ import com.backbase.ct.bbfuel.client.user.UserProfileRestClient;
 import com.backbase.ct.bbfuel.dto.accountStatement.EStatementPreferencesRequest;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
 import com.backbase.dbs.productsummary.presentation.rest.spec.v2.productsummary.ArrangementsByBusinessFunctionGetResponseBody;
+import io.restassured.response.Response;
+import java.util.List;
+import java.util.Random;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
@@ -44,7 +39,7 @@ public class AccountStatementsConfigurator {
     private final LoginRestClient loginRestClient;
     private final UserContextPresentationRestClient userContextPresentationRestClient;
     private final ProductSummaryPresentationRestClient productSummaryPresentationRestClient;
-    private final AccountStatementsClient AccountStatementsClient;
+    private final AccountStatementsClient accountStatementsClient;
     private final AccountStatementsPreferencesClient accountStatementsPreferencesClient;
     private final UserProfileRestClient userProfileRestClient;
     private final UserPresentationRestClient userPresentationRestClient;
@@ -58,7 +53,7 @@ public class AccountStatementsConfigurator {
             String accountName = arrangement.getName();
             String accountIBAN = arrangement.getIBAN();
 
-            AccountStatementsClient.createAccountStatements(
+            accountStatementsClient.createAccountStatements(
                 generateAccountStatementsRequests(randomAmount, externalUserId, internalArrangementId, accountName,
                     accountIBAN)).then().statusCode(SC_CREATED);
 
@@ -67,7 +62,7 @@ public class AccountStatementsConfigurator {
                 internalArrangementId, accountName, accountIBAN, externalUserId);
         };
 
-        ingest(externalUserId)
+        fetchUserArrangements(externalUserId)
             .forEach(consumer);
     }
 
@@ -79,16 +74,19 @@ public class AccountStatementsConfigurator {
                 arrangement.getId(), externalUserId,
                 booleanGenerator.nextBoolean(), booleanGenerator.nextBoolean());
 
-        accountStatementsPreferencesClient.createAccountStatementsPreferences(ingest(externalUserId)
+        List<EStatementPreferencesRequest> eStatementPreferencesRequests = fetchUserArrangements(externalUserId)
+            .stream()
             .map(mapper)
-            .collect(toList()));
+            .collect(toList());
+
+        accountStatementsPreferencesClient.createAccountStatementsPreferences(eStatementPreferencesRequests);
     }
 
     public void ingestUserProfile(String externalUserId) {
         loginRestClient.loginBankAdmin();
         this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
         String userId = userPresentationRestClient.getUserByExternalId(externalUserId).getId();
-        if(userId.isEmpty()){
+        if (userId.isEmpty()) {
             log.warn("User profile for externalId [{}] WAS NOT CREATED, because such user was not found", externalUserId);
         }
         Response userProfileCreationResponse = userProfileRestClient.createUserProfile(userId, externalUserId);
@@ -119,14 +117,10 @@ public class AccountStatementsConfigurator {
         }
     }
 
-    private Stream<ArrangementsByBusinessFunctionGetResponseBody> ingest(String externalUserId) {
+    private List<ArrangementsByBusinessFunctionGetResponseBody> fetchUserArrangements(String externalUserId) {
         loginRestClient.login(externalUserId, externalUserId);
         userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
-        return of(productSummaryPresentationRestClient.getProductSummaryArrangements().stream(),
-            productSummaryPresentationRestClient.getSepaCtArrangements().stream(),
-            productSummaryPresentationRestClient.getUsDomesticWireArrangements().stream(),
-            productSummaryPresentationRestClient.getAchDebitArrangements().stream())
-            .flatMap(identity());
+        return productSummaryPresentationRestClient.getProductSummaryArrangements();
     }
 }

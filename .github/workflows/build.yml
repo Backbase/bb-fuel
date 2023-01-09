@@ -3,8 +3,7 @@ name: Build
 on:
   pull_request:
     branches: [ "master" ]
-  workflow_dispatch:
-    
+  workflow_dispatch:    
 
 jobs:
   build:
@@ -19,4 +18,7 @@ jobs:
           java-version: '8'
           cache: 'maven'
       - name: Build & Test
+        env:
+          REPO_USERNAME: ${{ secrets.MAVEN_USERNAME }}
+          REPO_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
         run: mvn -B -s settings.xml test

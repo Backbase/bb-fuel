@@ -2,8 +2,8 @@ name: Build
 
 on:
   pull_request:
-    branches: [ "master" ]
-  workflow_dispatch:    
+    branches: [ master ]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -14,9 +14,15 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
-          java-version: '8'
-          cache: 'maven'
+          distribution: temurin
+          java-version: 8
+      - name: Cache local Maven repository
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
       - name: Build & Test
         env:
           REPO_USERNAME: ${{ secrets.MAVEN_USERNAME }}

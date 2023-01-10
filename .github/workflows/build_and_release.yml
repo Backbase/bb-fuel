@@ -1,0 +1,26 @@
+name: Build and release
+
+on:
+  push:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  build_and_release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v3
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 8
+          cache: maven
+      - name: Build & Test
+        env:
+          REPO_USERNAME: ${{ secrets.MAVEN_USERNAME }}
+          REPO_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
+        run: mvn -B -s settings.xml test
+      - name: Echo
+        run: echo "Release (noop)"

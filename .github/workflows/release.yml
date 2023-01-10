@@ -1,4 +1,4 @@
-name: Build and release
+name: Release
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build_and_release:
+  release:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout project
@@ -22,5 +22,14 @@ jobs:
           REPO_USERNAME: ${{ secrets.MAVEN_USERNAME }}
           REPO_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
         run: mvn -B -s settings.xml test
-      - name: Echo
-        run: echo "Release (noop)"
+      - name: Java Maven release
+        uses: qcastel/github-actions-maven-release@v1.12.31
+        env:
+          JAVA_HOME: /usr/lib/jvm/java-1.8-openjdk/
+        with:
+          git-release-bot-name: "release-bot"
+          git-release-bot-email: "release-bot@backbase.com"
+          release-branch-name: "master"
+          skip-perform: true
+
+

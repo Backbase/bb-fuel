@@ -33,6 +33,6 @@ jobs:
       - name: Run GitHub release
         uses: ncipollo/release-action@v1
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          skipIfReleaseExists: true
           artifacts: "target/bb-fuel-*-boot.jar,target/bb-fuel-*-import.jar"
           makeLatest: true

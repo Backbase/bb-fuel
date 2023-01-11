@@ -26,5 +26,6 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
           maven-servers: '[{"id":"Backbase Artifactory Repository","username":"${REPO_USERNAME}","password":"${REPO_PASSWORD}"}]'
+          m2-home-folder: '~/.m2'
           release-branch-name: "master"
           skip-perform: true

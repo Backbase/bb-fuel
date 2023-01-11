@@ -24,9 +24,8 @@ jobs:
           REPO_USERNAME: ${{ secrets.MAVEN_USERNAME }}
           REPO_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
         with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
           maven-servers: '[{"id":"Backbase Artifactory Repository","username":"${REPO_USERNAME}","password":"${REPO_PASSWORD}"}]'
-          git-release-bot-name: "release-bot"
-          git-release-bot-email: "release-bot@backbase.com"
           release-branch-name: "master"
           skip-perform: true
 

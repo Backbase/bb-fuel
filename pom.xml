@@ -13,10 +13,10 @@
     <name>Backbase :: Capability Testing :: bb-fuel</name>
 
     <scm>
-        <connection>scm:git:https://github.com/backbase/bb-fuel.git</connection>
-        <developerConnection>scm:git:https://github.com/backbase/bb-fuel.git</developerConnection>
+        <connection>scm:git:${project.scm.url}</connection>
+        <developerConnection>scm:git:${project.scm.url}</developerConnection>
         <tag>HEAD</tag>
-        <url>https://github.com/backbase/bb-fuel</url>
+        <url>git@github.com:Backbase/bb-fuel.git</url>
     </scm>
 
     <properties>

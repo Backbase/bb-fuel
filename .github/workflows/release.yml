@@ -22,11 +22,14 @@ jobs:
           REPO_USERNAME: ${{ secrets.MAVEN_USERNAME }}
           REPO_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
         run: mvn -B -s settings.xml test
-      - name: Java Maven release
+      - name: Run maven release
         uses: qcastel/github-actions-maven-release@v1.12.31
         env:
           JAVA_HOME: /usr/lib/jvm/java-1.8-openjdk/
+          REPO_USERNAME: ${{ secrets.MAVEN_USERNAME }}
+          REPO_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
         with:
+          maven-args: "-s settings.xml"
           git-release-bot-name: "release-bot"
           git-release-bot-email: "release-bot@backbase.com"
           release-branch-name: "master"

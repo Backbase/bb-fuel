@@ -17,6 +17,17 @@ jobs:
     steps:
       - name: Checkout project
         uses: actions/checkout@v3
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 8
+          cache: maven
+      - name: Build project
+        env:
+          REPO_USERNAME: ${{ secrets.MAVEN_USERNAME }}
+          REPO_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
+        run: mvn -B -s settings.xml package
       - name: Run GitHub release
         uses: ncipollo/release-action@v1
         with:

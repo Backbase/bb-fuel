@@ -1,0 +1,24 @@
+name: GitHub Release
+
+on:
+  push:
+    tags:
+      - '*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        required: true
+
+jobs:
+  execute:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v3
+      - name: Run GitHub release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "target/bb-fuel-*-boot.jar,target/bb-fuel-*-import.jar"
+          makeLatest: true

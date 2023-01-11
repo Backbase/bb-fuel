@@ -42,4 +42,4 @@ jobs:
           skipIfReleaseExists: true
           artifacts: "target/bb-fuel-*-boot.jar,target/bb-fuel-*-import.jar"
           makeLatest: true
-          tag: ${{ inputs.tag }}
+          tag: ${{ steps.most-recent-tag.outputs.tag }}

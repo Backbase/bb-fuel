@@ -3,11 +3,7 @@ name: GitHub Release
 on:
   push:
     tags:
-      - 'bb-fuel-*'
-  workflow_dispatch:
-    inputs:
-      tag:
-        required: true
+      - '*'
 
 jobs:
   execute:

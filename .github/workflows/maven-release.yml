@@ -10,6 +10,13 @@ jobs:
     steps:
       - name: Checkout project
         uses: actions/checkout@v3
+      - name: Cache local Maven repository
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven
+          restore-keys: |
+            ${{ runner.os }}-maven
       - name: Run maven release
         uses: qcastel/github-actions-maven-release@v1.12.31
         env:

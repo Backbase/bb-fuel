@@ -3,7 +3,7 @@ name: GitHub Release
 on:
   push:
     tags:
-      - '*'
+      - 'bb-fuel-*'
   workflow_dispatch:
     inputs:
       tag:
@@ -39,5 +39,6 @@ jobs:
       - name: Run GitHub release
         uses: ncipollo/release-action@v1
         with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
           artifacts: "target/bb-fuel-*-boot.jar,target/bb-fuel-*-import.jar"
           makeLatest: true

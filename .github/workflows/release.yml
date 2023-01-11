@@ -5,7 +5,7 @@ on:
     branches: [ master ]
 
 jobs:
-  execute:
+  release:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout project

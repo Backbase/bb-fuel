@@ -1,0 +1,45 @@
+name: Release
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  execute:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Get most recent tag
+        id: most-recent-tag
+        run: echo "tag=$(git describe --abbrev=0 --tags)" >> $GITHUB_OUTPUT
+      - name: Checkout project
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ steps.most-recent-tag.outputs.tag }}
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 8
+      - name: Cache local Maven repository
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven
+          restore-keys: |
+            ${{ runner.os }}-maven
+      - name: Build project
+        env:
+          REPO_USERNAME: ${{ secrets.MAVEN_USERNAME }}
+          REPO_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
+        run: mvn -B -s settings.xml package
+      - name: Run GitHub release
+        uses: ncipollo/release-action@v1
+        with:
+          skipIfReleaseExists: true
+          artifacts: "target/bb-fuel-*-boot.jar,target/bb-fuel-*-import.jar"
+          makeLatest: true
+          tag: ${{ inputs.tag }}

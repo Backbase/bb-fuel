@@ -134,7 +134,7 @@
   </div>
   <table class="table">
     <tr>
-      <td class="field-header">Transfer from</td>
+      <td class="field-header">Payment from</td>
       <td class="field-info">
         <span>{{paymentOrder.originator.name}}</span>
         <br/>
@@ -147,7 +147,7 @@
     </tr>
 
     <tr>
-      <td class="field-header">Transfer to</td>
+      <td class="field-header">Payment to</td>
       <td class="field-info">
         <span>{{paymentOrder.transferTransactionInformation.counterparty.name}}</span>
         <br/>
@@ -210,15 +210,15 @@
                 (eq paymentOrder.paymentType "SEPA_CT_ILE")
                 (eq paymentOrder.paymentType "SEPA_CT_CLOSED"))
       }}
-        <td class="field-info">SEPA transfer</td>
+        <td class="field-info">SEPA payment</td>
       {{else if (eq paymentOrder.paymentType "ACH_CREDIT") }}
-        <td class="field-info">ACH transfer</td>
+        <td class="field-info">ACH payment</td>
       {{else if (or (eq paymentOrder.paymentType "US_DOMESTIC_WIRE")
           (eq paymentOrder.paymentType "US_DOMESTIC_WIRE_ILE"))
       }}
-        <td class="field-info">Wire transfer</td>
+        <td class="field-info">Wire payment</td>
       {{else if (eq paymentOrder.paymentType "INTERNATIONAL_TRANSFER") }}
-        <td class="field-info">International transfer</td>
+        <td class="field-info">International payment</td>
       {{else}}
         <td class="field-info">{{paymentOrder.paymentType}}</td>
       {{/if}}

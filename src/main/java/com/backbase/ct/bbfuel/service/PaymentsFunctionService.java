@@ -2,7 +2,12 @@ package com.backbase.ct.bbfuel.service;
 
 import static com.backbase.ct.bbfuel.data.CommonConstants.ACH_DEBIT_FUNCTION_NAME;
 import static com.backbase.ct.bbfuel.data.CommonConstants.ACH_DEBIT_INTRACOMPANY_FUNCTION_NAME;
+import static com.backbase.ct.bbfuel.data.CommonConstants.BATCH_ACH_CREDIT;
+import static com.backbase.ct.bbfuel.data.CommonConstants.BATCH_ACH_DEBIT;
+import static com.backbase.ct.bbfuel.data.CommonConstants.BATCH_ACH_REVERSAL;
+import static com.backbase.ct.bbfuel.data.CommonConstants.BATCH_INTRACOMPANY;
 import static com.backbase.ct.bbfuel.data.CommonConstants.BATCH_SEPA_CT_FUNCTION_NAME;
+import static com.backbase.ct.bbfuel.data.CommonConstants.BATCH_TEMPLATES;
 import static com.backbase.ct.bbfuel.data.CommonConstants.SEPA_CT_FUNCTION_NAME;
 import static com.backbase.ct.bbfuel.data.CommonConstants.SEPA_CT_INTRACOMPANY_FUNCTION_NAME;
 import static com.backbase.ct.bbfuel.data.CommonConstants.US_DOMESTIC_WIRE_FUNCTION_NAME;
@@ -39,7 +44,14 @@ public final class PaymentsFunctionService {
      * Business function names within Batch resource.
      */
     public static final List<String> BATCH_FUNCTIONS = unmodifiableList(asList(
-        BATCH_SEPA_CT_FUNCTION_NAME));
+        BATCH_ACH_CREDIT,
+        BATCH_ACH_DEBIT,
+        BATCH_ACH_REVERSAL,
+        BATCH_INTRACOMPANY,
+        BATCH_SEPA_CT_FUNCTION_NAME,
+        BATCH_TEMPLATES
+        )
+    );
 
     /**
      * Simple logic is used to determine the currency from the business function name.

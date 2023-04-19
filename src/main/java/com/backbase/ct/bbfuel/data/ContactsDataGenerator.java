@@ -2,7 +2,8 @@ package com.backbase.ct.bbfuel.data;
 
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_CONTACTS_ACCOUNT_TYPES;
 import static com.backbase.ct.bbfuel.data.ProductSummaryDataGenerator.generateRandomIban;
-import static java.util.Arrays.*;
+import static com.backbase.ct.bbfuel.util.CommonHelpers.createRandomValidRtn;
+import static java.util.Arrays.asList;
 
 import com.backbase.ct.bbfuel.util.CommonHelpers;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
@@ -13,7 +14,6 @@ import com.backbase.dbs.productsummary.presentation.rest.spec.v2.contacts.Addres
 import com.backbase.dbs.productsummary.presentation.rest.spec.v2.contacts.ContactsBulkIngestionPostRequestBody;
 import com.github.javafaker.Faker;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -63,7 +63,7 @@ public class ContactsDataGenerator {
                     .withTown(faker.address().cityName())
                     .withCountry(faker.address().countryCode())
                     .withCountrySubDivision(faker.address().state()))
-                .withBankCode(faker.lorem().characters(10))
+                .withBankCode(createRandomValidRtn())
                 .withBankAddress(new Address()
                     .withAddressLine1(faker.address().streetAddress())
                     .withAddressLine2(faker.address().secondaryAddress())
@@ -111,7 +111,8 @@ public class ContactsDataGenerator {
 
             case BBAN:
                 int randomBbanAccount = CommonHelpers.generateRandomNumberInRange(100000, 999999999);
-                returnedExternalAccountInformation = externalAccountInformation.withAccountNumber(String.valueOf(randomBbanAccount));
+                returnedExternalAccountInformation = externalAccountInformation.withAccountNumber(
+                    String.valueOf(randomBbanAccount));
                 break;
 
             default:

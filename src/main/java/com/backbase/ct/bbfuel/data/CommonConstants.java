@@ -43,6 +43,11 @@ public final class CommonConstants {
     public static final String CONTACTS_FUNCTION_NAME = CONTACTS_RESOURCE_NAME;
     public static final String NOTIFICATIONS_FUNCTION_NAME = "Manage Notifications";
     public static final String BATCH_RESOURCE_NAME = "Batch";
+    public static final String BATCH_TEMPLATES = "Batch Templates";
+    public static final String BATCH_ACH_CREDIT = "Batch - ACH Credit";
+    public static final String BATCH_ACH_DEBIT = "Batch - ACH Debit";
+    public static final String BATCH_ACH_REVERSAL = "Batch - ACH Reversal";
+    public static final String BATCH_INTRACOMPANY = "Batch - Intracompany Payments";
     public static final String BATCH_SEPA_CT_FUNCTION_NAME = "Batch - SEPA CT";
     public static final String PRIVILEGE_CREATE = "create";
     public static final String PRIVILEGE_VIEW = "view";

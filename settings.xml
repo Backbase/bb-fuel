@@ -5,13 +5,13 @@
   <servers>
     <server>
       <id>Backbase Artifact Builds Repository</id>
-      <username>$MAVEN_USERNAME</username>
-      <password>$MAVEN_PASSWORD</password>
+      <username>${env.REPO_USERNAME}</username>
+      <password>${env.REPO_PASSWORD}</password>
     </server>
     <server>
       <id>Backbase Artifactory Repository</id>
-      <username>$MAVEN_USERNAME</username>
-      <password>$MAVEN_PASSWORD</password>
+      <username>${env.REPO_USERNAME}</username>
+      <password>${env.REPO_PASSWORD}</password>
     </server>
   </servers>
 

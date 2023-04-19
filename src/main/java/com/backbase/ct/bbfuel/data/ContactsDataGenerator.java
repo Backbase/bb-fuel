@@ -2,6 +2,7 @@ package com.backbase.ct.bbfuel.data;
 
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_CONTACTS_ACCOUNT_TYPES;
 import static com.backbase.ct.bbfuel.data.ProductSummaryDataGenerator.generateRandomIban;
+import static com.backbase.ct.bbfuel.util.CommonHelpers.createRandomValidRtn;
 import static java.util.Arrays.asList;
 
 import com.backbase.ct.bbfuel.util.CommonHelpers;
@@ -18,7 +19,6 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import org.apache.commons.lang3.RandomUtils;
 
 public class ContactsDataGenerator {
 
@@ -63,7 +63,7 @@ public class ContactsDataGenerator {
                     .withTown(faker.address().cityName())
                     .withCountry(faker.address().countryCode())
                     .withCountrySubDivision(faker.address().state()))
-                .withBankCode(createRandomRtn())
+                .withBankCode(createRandomValidRtn())
                 .withBankAddress(new Address()
                     .withAddressLine1(faker.address().streetAddress())
                     .withAddressLine2(faker.address().secondaryAddress())
@@ -95,23 +95,6 @@ public class ContactsDataGenerator {
                 .withCountry(faker.address().countryCode())
                 .withCountrySubDivision(faker.address().state()))
             .withAccounts(accounts);
-    }
-
-    private static String createRandomRtn() {
-        int rtnNumber = RandomUtils.nextInt(1000_0000, 9000_0000);
-
-        byte[] rtnBytes = new byte[8];
-        int[] rtn = new int[8];
-        for (int i = 7; i >= 0; i--) {
-            rtnBytes[i] = (byte) (rtnNumber % 10 + 48);
-            rtn[i] = rtnNumber % 10;
-            rtnNumber = rtnNumber / 10;
-        }
-
-        return new String(rtnBytes) +
-               (Math.abs((3 * (rtn[0] + rtn[3] + rtn[6])
-                          + 7 * (rtn[1] + rtn[4] + rtn[7])
-                          + (rtn[2] + rtn[5])) % 10 - 10) % 10);
     }
 
     private static ExternalAccountInformation determineTheUseOfIBANorBBAN(

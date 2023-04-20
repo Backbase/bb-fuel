@@ -14,8 +14,8 @@ jobs:
         uses: qcastel/github-actions-maven-release@v1.12.31
         env:
           JAVA_HOME: /usr/lib/jvm/java-1.8-openjdk/
-          REPO_USERNAME: ${{ secrets.MAVEN_USERNAME }}
-          REPO_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
+          REPO_USERNAME: ${{ secrets.REPO_USERNAME }}
+          REPO_PASSWORD: ${{ secrets.REPO_PASSWORD }}
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
           maven-servers: '[{"id":"Backbase Artifactory Repository","username":"${REPO_USERNAME}","password":"${REPO_PASSWORD}"}]'

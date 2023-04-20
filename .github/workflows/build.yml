@@ -24,6 +24,6 @@ jobs:
             ${{ runner.os }}-maven
       - name: Build & Test
         env:
-          REPO_USERNAME: ${{ secrets.MAVEN_USERNAME }}
-          REPO_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
+          REPO_USERNAME: ${{ secrets.REPO_USERNAME }}
+          REPO_PASSWORD: ${{ secrets.REPO_PASSWORD }}
         run: mvn -B -s settings.xml test

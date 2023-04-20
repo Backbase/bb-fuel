@@ -15,13 +15,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ParserUtil {
 
+    private static final ObjectMapper READ_MAPPER = new ObjectMapper().registerModule(new JavaTimeModule());
+    private static final ObjectMapper WRITE_MAPPER = new ObjectMapper();
+
     public static <T> T convertJsonToObject(String jsonLocation, Class<T> valueType) throws IOException {
         InputStream resourceAsStream = valueType.getClassLoader().getResourceAsStream(jsonLocation);
         if (resourceAsStream == null) {
             resourceAsStream = new FileInputStream(jsonLocation);
         }
 
-        return mapper.readValue(resourceAsStream, valueType);
+        return READ_MAPPER.readValue(resourceAsStream, valueType);
     }
 
     public static <T> List<T> convertJsonToList(String jsonLocation, Class<T> valueType) throws IOException {
@@ -29,8 +32,7 @@ public class ParserUtil {
     }
 
     public static void convertObjectToJson(OutputStream output, Object object) throws IOException {
-        new ObjectMapper().writeValue(output, object);
+        WRITE_MAPPER.writeValue(output, object);
     }
 
-    private static ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
 }

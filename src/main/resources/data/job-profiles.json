@@ -574,6 +574,12 @@
           "edit",
           "delete"
         ]
+      },
+      {
+        "businessFunction": "Batch - Manage Confidential",
+        "privileges": [
+          "execute"
+        ]
       }
     ]
   },
@@ -899,6 +905,12 @@
           "create",
           "edit",
           "delete"
+        ]
+      },
+      {
+        "businessFunction": "Batch - List Confidential",
+        "privileges": [
+          "view"
         ]
       }
     ]

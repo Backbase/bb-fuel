@@ -12,6 +12,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.RandomUtils;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class CommonHelpers {
@@ -70,4 +71,23 @@ public final class CommonHelpers {
         return CreditCardType.values()[new Faker().random().nextInt(CreditCardType.values().length)]
             .name().replace("_", " ");
     }
+
+    public static String createRandomValidRtn() {
+        return createValidRtn(RandomUtils.nextInt(1000_0000, 9000_0000));
+    }
+
+    public static String createValidRtn(int baseNumber) {
+        byte[] rtnBytes = new byte[8];
+        int[] rtn = new int[8];
+        for (int i = 7; i >= 0; i--) {
+            rtnBytes[i] = (byte) (baseNumber % 10 + 48);
+            rtn[i] = baseNumber % 10;
+            baseNumber = baseNumber / 10;
+        }
+
+        return new String(rtnBytes) + (Math.abs((3 * (rtn[0] + rtn[3] + rtn[6])
+                                                 + 7 * (rtn[1] + rtn[4] + rtn[7])
+                                                 + (rtn[2] + rtn[5])) % 10 - 10) % 10);
+    }
+
 }

@@ -18,6 +18,7 @@ bb-fuel:
     accountStatement: https://app.${environment.name}.${environment.domain}/accountstatementsintegration/service-api
     pockets: https://app.${environment.name}.${environment.domain}/api/pocket-tailor/client-api
     pocketsArrangements: https://app.${environment.name}.${environment.domain}/arrangementoutboundoriginationmock/service-api
+    contentservices: https://app.${environment.name}.${environment.domain}/api/contentservices/client-api
   dbs-service-names:
     accessgroup: access-control
     actions: action
@@ -31,3 +32,4 @@ bb-fuel:
     pfm: transaction-category-collector
     user: user-manager
     products: arrangement-manager
+    contentservices: contentservices

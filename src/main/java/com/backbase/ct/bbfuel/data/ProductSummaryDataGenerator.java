@@ -71,6 +71,7 @@ public class ProductSummaryDataGenerator {
 
         String currentAccountArrangementIds = GlobalProperties.getInstance()
             .getString(CommonConstants.PROPERTY_ARRANGEMENT_CURRENT_ACCOUNT_EXTERNAL_IDS);
+        if (currentAccountArrangementIds != null)
         Splitter.on(',').trimResults().split(currentAccountArrangementIds)
             .forEach(staticCurrentAccountArrangementsQueue::add);
 
@@ -223,10 +224,9 @@ public class ProductSummaryDataGenerator {
         PostArrangement arrangementsPostRequestBody = (PostArrangement) new PostArrangement()
             .withLegalEntityIds(Collections.singleton(externalLegalEntityId))
             .withProductId(productId)
-            .withId(externalArrangementId.orElse(UUID.randomUUID().toString()))
+            .withId(externalArrangementId.orElse(generateRandomIdFromProductId(productId)))
             .withName(fullArrangementName)
             .withBankAlias(fullArrangementName)
-            .withBookedBalance(generateRandomAmountInRange(10000L, 9999999L))
             .withAvailableBalance(generateRandomAmountInRange(10000L, 9999999L))
             .withCreditLimit(generateRandomAmountInRange(10000L, 999999L))
             .withCurrency(currency)
@@ -235,6 +235,7 @@ public class ProductSummaryDataGenerator {
             .withAccruedInterest(BigDecimal.valueOf(ThreadLocalRandom.current().nextInt(10)))
             .withNumber(String.format("%s", ThreadLocalRandom.current().nextInt(9999)))
             .withPrincipalAmount(generateRandomAmountInRange(10000L, 999999L))
+            .withOutstandingPrincipalAmount(generateRandomAmountInRange(10000L, 999999L))
             .withCurrentInvestmentValue(generateRandomAmountInRange(10000L, 999999L))
             .withDebitAccount(ImmutableList.of("1", "2", DEFAULT_POCKET_EXTERNAL_ID).contains(productId))
             .withCreditAccount(ImmutableList.of("1", "2", "4", "5", DEFAULT_POCKET_EXTERNAL_ID).contains(productId))
@@ -244,6 +245,7 @@ public class ProductSummaryDataGenerator {
             .withAccountHolderStreetName(faker.address().streetAddress())
             .withPostCode(faker.address().zipCode())
             .withTown(faker.address().city())
+            .withCreditLimitUsage(generateRandomAmountInRange(10000L, 999999L))
             .withAccountHolderCountry(faker.address().countryCode())
             .withCountrySubDivision(faker.address().state())
             .withBIC(bic)
@@ -253,9 +255,27 @@ public class ProductSummaryDataGenerator {
             .withReservedAmount(generateRandomAmountInRange(500L, 10000L))
             .withRemainingPeriodicTransfers(generateRandomAmountInRange(500L, 10000L))
             .withNextClosingDate(generateRandomDateInRange(LocalDate.now().minusDays(30), LocalDate.now().minusDays(1)))
-            .withOverdueSince(generateRandomDateInRange(LocalDate.now().minusDays(30), LocalDate.now().minusDays(1)))
             .withBankBranchCode(generateRandomBranchCode())
             .withBankBranchCode2(generateRandomBranchCode());
+
+        // Overdrawn and Overdue accounts
+        if ((ImmutableList.of("1").contains(productId))) {
+            arrangementsPostRequestBody.withBookedBalance(generateRandomAmountInRange(-5000L, 10000L));
+            if (arrangementsPostRequestBody.getBookedBalance().compareTo(BigDecimal.ZERO) < 0) {
+                arrangementsPostRequestBody
+                        .withOverdueSince(generateRandomDateInRange(LocalDate.now().minusDays(30), LocalDate.now().minusDays(1)))
+                        .withAmountInArrear(arrangementsPostRequestBody.getBookedBalance().abs());
+            }
+        } else if ((ImmutableList.of("4", "5").contains(productId))) {
+            arrangementsPostRequestBody.withBookedBalance(generateRandomAmountInRange(0L, 10000L));
+            arrangementsPostRequestBody.withPaymentsPastDue(generateRandomNumberInRange(0, 5));
+            if (arrangementsPostRequestBody.getPaymentsPastDue() > 0) {
+                arrangementsPostRequestBody.withAmountInArrear(generateRandomAmountInRange(10L, 300L))
+                        .withOverdueSince(generateRandomDateInRange(LocalDate.now().minusDays(150), LocalDate.now().minusDays(1)));
+            }
+        } else {
+            arrangementsPostRequestBody.withBookedBalance(generateRandomAmountInRange(0L, 10000L));
+        }
 
         if (EUR.equals(currency)) {
             arrangementsPostRequestBody
@@ -317,5 +337,39 @@ public class ProductSummaryDataGenerator {
             .withArrangementId(externalArrangementId)
             .withBalance(generateRandomAmountInRange(1000000L, 1999999L))
             .withUpdatedDate(updatedDate.toInstant().atOffset(ZoneOffset.UTC));
+    }
+
+    // These prefixes are needed for account-mock service to identify the type of product
+    // and return correct mocked response
+    private static String generateRandomIdFromProductId(String productId) {
+        if (productId.equals("1"))
+            return "A01-" + UUID.randomUUID();
+
+        else if (productId.equals("2")){
+            return "A02-" + UUID.randomUUID();
+        }
+
+        else if (productId.equals("3")){
+            return "A03-" + UUID.randomUUID();
+        }
+
+        else if (productId.equals("4")){
+            return "A04-" + UUID.randomUUID();
+        }
+
+        else if (productId.equals("5")){
+            return "A05-" + UUID.randomUUID();
+        }
+
+        else if (productId.equals("6")){
+            return "A06-" + UUID.randomUUID();
+        }
+
+        else if (productId.equals("7")){
+            return "A07-" + UUID.randomUUID();
+        }
+
+        else return UUID.randomUUID().toString();
+
     }
 }

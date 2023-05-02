@@ -125,6 +125,12 @@
         ]
       },
       {
+        "businessFunction": "Manage Self-approve Permissions",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
         "businessFunction": "Manage Function Groups",
         "privileges": [
           "view",

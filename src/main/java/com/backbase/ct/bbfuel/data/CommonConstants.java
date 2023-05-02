@@ -43,6 +43,11 @@ public final class CommonConstants {
     public static final String CONTACTS_FUNCTION_NAME = CONTACTS_RESOURCE_NAME;
     public static final String NOTIFICATIONS_FUNCTION_NAME = "Manage Notifications";
     public static final String BATCH_RESOURCE_NAME = "Batch";
+    public static final String BATCH_TEMPLATES = "Batch Templates";
+    public static final String BATCH_ACH_CREDIT = "Batch - ACH Credit";
+    public static final String BATCH_ACH_DEBIT = "Batch - ACH Debit";
+    public static final String BATCH_ACH_REVERSAL = "Batch - ACH Reversal";
+    public static final String BATCH_INTRACOMPANY = "Batch - Intracompany Payments";
     public static final String BATCH_SEPA_CT_FUNCTION_NAME = "Batch - SEPA CT";
     public static final String PRIVILEGE_CREATE = "create";
     public static final String PRIVILEGE_VIEW = "view";
@@ -67,9 +72,11 @@ public final class CommonConstants {
     public static final String PROPERTY_INGEST_APPROVALS_FOR_NOTIFICATIONS = "ingest.approvals.for.notifications";
     public static final String PROPERTY_INGEST_APPROVALS_FOR_BATCHES = "ingest.approvals.for.batches";
     public static final String PROPERTY_INGEST_LIMITS = "ingest.limits";
+    public static final String PROPERTY_INGEST_CONTENT_FOR_PAYMENTS = "ingest.content.for.payments";
     public static final String PROPERTY_CONTACTS_MIN = "contacts.min";
     public static final String PROPERTY_CONTACTS_MAX = "contacts.max";
     public static final String PROPERTY_CONTACTS_ACCOUNT_TYPES = "contacts.account.types";
+    public static final String PROPERTY_CONTACTS_SANCTIONED_COUNTRIES = "contacts.sanctioned.countries";
     public static final String PROPERTY_INGEST_CONTACTS = "ingest.contacts";
     public static final String PROPERTY_PAYMENTS_MIN = "payments.min";
     public static final String PROPERTY_PAYMENTS_MAX = "payments.max";
@@ -83,6 +90,7 @@ public final class CommonConstants {
     public static final String PROPERTY_INGEST_BILLPAY = "ingest.billpay";
     public static final String PROPERTY_INGEST_BILLPAY_ACCOUNTS = "ingest.billpay.accounts";
     public static final String PROPERTY_INGEST_ACCOUNT_STATEMENTS = "ingest.accountStatements";
+    public static final String PROPERTY_INGEST_ACCOUNT_STATEMENTS_PREFERENCES = "ingest.accountStatementsPreferences";
     public static final String PROPERTY_ACCOUNTSTATEMENTS_MIN = "accountStatement.min";
     public static final String PROPERTY_ACCOUNTSTATEMENTS_MAX = "accountStatement.max";
     public static final String PROPERTY_ACCOUNTSTATEMENTS_USERS = "accountStatement.externalUserIds";

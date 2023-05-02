@@ -9,14 +9,14 @@
 
     <groupId>com.backbase.ct</groupId>
     <artifactId>bb-fuel</artifactId>
-    <version>2.6.76-SNAPSHOT</version>
+    <version>2.6.108-SNAPSHOT</version>
     <name>Backbase :: Capability Testing :: bb-fuel</name>
 
     <scm>
-        <connection>scm:git:https://github.com/backbase/bb-fuel.git</connection>
-        <developerConnection>scm:git:https://github.com/backbase/bb-fuel.git</developerConnection>
+        <connection>scm:git:${project.scm.url}</connection>
+        <developerConnection>scm:git:${project.scm.url}</developerConnection>
         <tag>HEAD</tag>
-        <url>https://github.com/backbase/bb-fuel</url>
+        <url>git@github.com:Backbase/bb-fuel.git</url>
     </scm>
 
     <properties>
@@ -39,7 +39,7 @@
         <api.target>${project.build.directory}/downloaded-api</api.target>
         <openapi-generator-version>5.1.0</openapi-generator-version>
         <boat-maven-plugin.version>0.14.3</boat-maven-plugin.version>
-        <jackson-databind.version>2.11.3</jackson-databind.version>
+        <jackson-bom.version>2.14.2</jackson-bom.version>
         <jackson-databind-nullable-version>0.2.1</jackson-databind-nullable-version>
         <swagger-annotations-version>1.6.0</swagger-annotations-version>
         <jsr305-version>3.0.0</jsr305-version>
@@ -53,7 +53,8 @@
         <!-- Products Specs Versions -->
         <arrangement-integration-outbound-link-account-api.version>2.1.1</arrangement-integration-outbound-link-account-api.version>
         <arrangement-integration-outbound-origination-api.version>1.0.3</arrangement-integration-outbound-origination-api.version>
-        <arrangement-integration-inbound-api.version>2.4.1</arrangement-integration-inbound-api.version>
+        <arrangement-integration-inbound-api.version>2.6.0</arrangement-integration-inbound-api.version>
+        <contentservices-client-api.version>2.6.0</contentservices-client-api.version>
 
     </properties>
 
@@ -63,6 +64,13 @@
                 <groupId>com.backbase.dbs</groupId>
                 <artifactId>banking-services-bom</artifactId>
                 <version>2.19.3</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson</groupId>
+                <artifactId>jackson-bom</artifactId>
+                <version>${jackson-bom.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -208,7 +216,6 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>${jackson-databind.version}</version>
         </dependency>
         <dependency>
             <groupId>org.openapitools</groupId>
@@ -264,6 +271,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
                 <version>${maven-release-plugin.version}</version>
+                <configuration>
+                    <scmCommentPrefix>[ci skip][maven-release-plugin] </scmCommentPrefix>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -442,6 +452,18 @@
                             <fromFile>arrangement-integration-inbound-api-v${arrangement-integration-inbound-api.version}.yaml</fromFile>
                         </configuration>
                     </execution>
+
+                    <execution>
+                        <id>download-contentservices-client-api-spec</id>
+                        <goals>
+                            <goal>download-single</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <url>https://repo.backbase.com/specs/contentservices</url>
+                            <fromFile>contentservices-client-api-v${contentservices-client-api.version}.yaml</fromFile>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 
@@ -581,6 +603,20 @@
                             <configOptions>
                                 <apiPackage>com.backbase.dbs.positivepay.client.api.v1</apiPackage>
                                 <modelPackage>com.backbase.dbs.positivepay.client.api.v1.model</modelPackage>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>generate-contentservices-client-code</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${api.target}/contentservices-client-api-v${contentservices-client-api.version}.yaml</inputSpec>
+                            <configOptions>
+                                <apiPackage>com.backbase.dbs.contentservices.client.v2</apiPackage>
+                                <modelPackage>com.backbase.dbs.contentservices.client.v2.model</modelPackage>
                             </configOptions>
                         </configuration>
                     </execution>
@@ -884,4 +920,23 @@
             </plugin>
         </plugins>
     </build>
+
+    <repositories>
+        <repository>
+            <id>Backbase Artifactory Repository</id>
+            <url>https://repo.backbase.com/repo</url>
+            <releases>
+                <updatePolicy>always</updatePolicy>
+            </releases>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>Backbase Artifactory Repository</id>
+            <url>https://repo.backbase.com/repo</url>
+            <releases>
+                <updatePolicy>always</updatePolicy>
+            </releases>
+        </pluginRepository>
+    </pluginRepositories>
 </project>

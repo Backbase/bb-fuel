@@ -266,6 +266,12 @@
         ]
       },
       {
+        "businessFunction": "Manage Self-approve Permissions",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
         "businessFunction": "Manage Function Groups",
         "privileges": [
           "view",
@@ -522,6 +528,17 @@
         ]
       },
       {
+        "businessFunction": "Batch - ACH Reversal",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
         "businessFunction": "Batch - Intracompany Payments",
         "privileges": [
           "view",
@@ -547,6 +564,21 @@
         "privileges": [
           "view",
           "create"
+        ]
+      },
+      {
+        "businessFunction": "Batch Upload Mappings",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete"
+        ]
+      },
+      {
+        "businessFunction": "Batch - Manage Confidential",
+        "privileges": [
+          "execute"
         ]
       }
     ]
@@ -829,6 +861,17 @@
         ]
       },
       {
+        "businessFunction": "Batch - ACH Reversal",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
         "businessFunction": "Batch - Intracompany Payments",
         "privileges": [
           "view",
@@ -851,6 +894,21 @@
       },
       {
         "businessFunction": "Manage Positive Pay",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Batch Upload Mappings",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete"
+        ]
+      },
+      {
+        "businessFunction": "Batch - List Confidential",
         "privileges": [
           "view"
         ]
@@ -948,6 +1006,14 @@
           "approve",
           "view",
           "create",
+          "edit"
+        ]
+      },
+      {
+        "businessFunction": "Manage Self-approve Permissions",
+        "privileges": [
+          "approve",
+          "view",
           "edit"
         ]
       },
@@ -1297,6 +1363,17 @@
         ]
       },
       {
+        "businessFunction": "Batch - ACH Reversal",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
         "businessFunction": "Batch - Intracompany Payments",
         "privileges": [
           "view",
@@ -1505,6 +1582,15 @@
           "view",
           "create"
         ]
+      },
+      {
+        "businessFunction": "Batch Upload Mappings",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete"
+        ]
       }
     ]
   },
@@ -1618,6 +1704,12 @@
         ]
       },
       {
+        "businessFunction": "Batch - ACH Reversal",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
         "businessFunction": "Batch - Intracompany Payments",
         "privileges": [
           "view"
@@ -1634,8 +1726,13 @@
         "privileges": [
           "view"
         ]
+      },
+      {
+        "businessFunction": "Batch Upload Mappings",
+        "privileges": [
+          "view"
+        ]
       }
-
     ]
   }
 ]

@@ -103,4 +103,14 @@ public class DbsConfig {
      * URI to positivePay.
      */
     private String positivePay;
+
+    /**
+     * URI to contentServices.
+     */
+    private String contentservices;
+
+    /**
+     * URI to userProfileManager.
+     */
+    private String userProfileManager;
 }

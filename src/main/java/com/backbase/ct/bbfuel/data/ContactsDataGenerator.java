@@ -2,6 +2,8 @@ package com.backbase.ct.bbfuel.data;
 
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_CONTACTS_ACCOUNT_TYPES;
 import static com.backbase.ct.bbfuel.data.ProductSummaryDataGenerator.generateRandomIban;
+import static com.backbase.ct.bbfuel.util.CommonHelpers.createRandomValidRtn;
+import static java.util.Arrays.asList;
 
 import com.backbase.ct.bbfuel.util.CommonHelpers;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
@@ -13,6 +15,7 @@ import com.backbase.dbs.productsummary.presentation.rest.spec.v2.contacts.Contac
 import com.github.javafaker.Faker;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -24,6 +27,7 @@ public class ContactsDataGenerator {
 
     private static final GlobalProperties globalProperties = GlobalProperties.getInstance();
     private static final Faker faker = new Faker();
+    private static final List<String> VALID_BIC_LIST = asList("ABNANL2A", "ANDLNL2A", "ARBNNL22", "ARSNNL21");
 
     public static ContactsBulkIngestionPostRequestBody generateContactsBulkIngestionPostRequestBody(
         String externalServiceAgreementId, String externalUserId, int numberOfContacts,
@@ -50,7 +54,7 @@ public class ContactsDataGenerator {
                 .withExternalId(UUID.randomUUID().toString().substring(0, 32))
                 .withName(faker.lorem().sentence(3, 0).replace(".", ""))
                 .withAlias(faker.lorem().characters(10))
-                .withBic(null)
+                .withBic(VALID_BIC_LIST.get(new Random().nextInt(VALID_BIC_LIST.size())))
                 .withAccountHolderAddress(new Address()
                     .withAddressLine1(faker.address().streetAddress())
                     .withAddressLine2(faker.address().secondaryAddress())
@@ -59,7 +63,7 @@ public class ContactsDataGenerator {
                     .withTown(faker.address().cityName())
                     .withCountry(faker.address().countryCode())
                     .withCountrySubDivision(faker.address().state()))
-                .withBankCode(faker.lorem().characters(10))
+                .withBankCode(createRandomValidRtn())
                 .withBankAddress(new Address()
                     .withAddressLine1(faker.address().streetAddress())
                     .withAddressLine2(faker.address().secondaryAddress())
@@ -107,7 +111,8 @@ public class ContactsDataGenerator {
 
             case BBAN:
                 int randomBbanAccount = CommonHelpers.generateRandomNumberInRange(100000, 999999999);
-                returnedExternalAccountInformation = externalAccountInformation.withAccountNumber(String.valueOf(randomBbanAccount));
+                returnedExternalAccountInformation = externalAccountInformation.withAccountNumber(
+                    String.valueOf(randomBbanAccount));
                 break;
 
             default:

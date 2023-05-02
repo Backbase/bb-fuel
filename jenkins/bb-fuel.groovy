@@ -6,7 +6,7 @@ pipeline {
     parameters {
         string(name: 'BB_FUEL_VERSION', defaultValue: 'latest', description: 'Use latest to get the latest version or add an existing version, and only the version number. E.g: 2.6.9. \n You can see the existing versions at: https://github.com/Backbase/bb-fuel/releases')
         booleanParam(name: 'PRERELEASE', defaultValue: false, description: 'Only applicable if BB_FUEL_VERSION = latest')
-        choice(name: 'SPRING_PROFILES_ACTIVE', choices: 'k8s\nk8s-beta\nk8s-3ang\naws\npcf', description: 'Select the profile to operate.\nK8s (default):\nKubernetes requires environment name\n\nk8s-beta: \nUsed for DBS with lean beta services \n\nk8s-3ang: \nUsed for DBS with triangular services only\n\nAWS: \n Requires environment name\n\nPCF: \nRequires space name (environment name will be ignored)')
+        choice(name: 'SPRING_PROFILES_ACTIVE', choices: 'k8s\nk8s-beta\nk8s-beta-https\nk8s-3ang\naws\npcf', description: 'Select the profile to operate.\nK8s (default):\nKubernetes requires environment name\n\nk8s-beta: \nUsed for DBS with lean beta services \n\nk8s-3ang: \nUsed for DBS with triangular services only\n\nAWS: \n Requires environment name\n\nPCF: \nRequires space name (environment name will be ignored)')
         string(name: 'ENVIRONMENT_NAME', defaultValue: '00.dbs', description: 'K8S environment-creator example: 42.dbs\nK8S Beck example: friendly-feyman\n\nAutoconfig example: frosty-snow-99\nRead before running: https://github.com/Backbase/bb-fuel/blob/master/README.md')
         choice(name: 'INFRA_BASE_URI', choices: 'infra\neditorial\n', description: 'Select the base INFRA URI.(Autoconfig-only)\n\n\nAWS dbs-microservices: infra\n\nAWS dbs-cx6.1-editorial: editorial')
         choice(name: 'ENVIRONMENT_DOMAIN', choices: 'backbase.eu\nbackbase.test\nbackbase.test:8080\n', description: 'Select the base URI.\nK8S environment-creator: backbase.test\nK8S Beck: backbase.eu\n\nAWS: backbase.test:8080\n\n')
@@ -27,10 +27,12 @@ pipeline {
         booleanParam(name: 'INGEST_CONTACTS', defaultValue: false, description: 'Ingest contacts per user')
         booleanParam(name: 'INGEST_NOTIFICATIONS', defaultValue: false, description: 'Ingest notifications on global target group')
         booleanParam(name: 'INGEST_PAYMENTS', defaultValue: false, description: 'Ingest payments per user')
+        booleanParam(name: 'INGEST_CONTENT_FOR_PAYMENTS', defaultValue: false, description: 'Ingest content for payments')
         booleanParam(name: 'INGEST_MESSAGES', defaultValue: false, description: 'Ingest messages per user')
         booleanParam(name: 'INGEST_ACTIONS', defaultValue: false, description: 'Ingest actions per user')
         booleanParam(name: 'INGEST_BILLPAY', defaultValue: false, description: 'Enrol users into Bill Pay')
         booleanParam(name: 'INGEST_ACCOUNT_STATEMENTS', defaultValue: false, description: 'Ingest Account Statements per user')
+        booleanParam(name: 'INGEST_ACCOUNT_STATEMENTS_PREFERENCES', defaultValue: false, description: 'Ingest Account Statements preferences per user')
         booleanParam(name: 'INGEST_POSITIVE_PAY', defaultValue: false, description: 'Ingest positive pay checks for selected user')
         booleanParam(name: 'USE_PERFORMANCE_TEST_DATA_SETUP', defaultValue: false, description: 'Use performance test data setup\n' +
                 'Only enable when strictly necessary (long running job)')
@@ -82,10 +84,12 @@ pipeline {
                                     "-Dingest.contacts=${params.INGEST_CONTACTS} " +
                                     "-Dingest.notifications=${params.INGEST_NOTIFICATIONS} " +
                                     "-Dingest.payments=${params.INGEST_PAYMENTS} " +
+                                    "-Dingest.content.for.payments=${params.INGEST_CONTENT_FOR_PAYMENTS} " +
                                     "-Dingest.messages=${params.INGEST_MESSAGES} " +
                                     "-Dingest.actions=${params.INGEST_ACTIONS} " +
                                     "-Dingest.billpay=${params.INGEST_BILLPAY} " +
                                     "-Dingest.accountStatements=${params.INGEST_ACCOUNT_STATEMENTS} " +
+                                    "-Dingest.accountStatementsPreferences=${params.INGEST_ACCOUNT_STATEMENTS_PREFERENCES} " +
                                     "-Dingest.positivePay=${params.INGEST_POSITIVE_PAY} " +
                                     "-Didentity.feature.toggle=${params.IDENTITY_FEATURE_TOGGLE} " +
                                     "-Didentity.realm=${params.IDENTITY_REALM} " +

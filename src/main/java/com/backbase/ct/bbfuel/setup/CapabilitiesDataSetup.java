@@ -2,6 +2,7 @@ package com.backbase.ct.bbfuel.setup;
 
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_ACCOUNTSTATEMENTS_USERS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_ACCOUNT_STATEMENTS;
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_ACCOUNT_STATEMENTS_PREFERENCES;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_ACTIONS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_BATCHES;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROVALS_FOR_CONTACTS;
@@ -10,6 +11,7 @@ import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_APPROV
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_BILLPAY;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_BILLPAY_ACCOUNTS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_CONTACTS;
+import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_CONTENT_FOR_PAYMENTS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_LIMITS;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_MESSAGES;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_INGEST_NOTIFICATIONS;
@@ -29,6 +31,7 @@ import com.backbase.ct.bbfuel.configurator.ActionsConfigurator;
 import com.backbase.ct.bbfuel.configurator.ApprovalsConfigurator;
 import com.backbase.ct.bbfuel.configurator.BillPayConfigurator;
 import com.backbase.ct.bbfuel.configurator.ContactsConfigurator;
+import com.backbase.ct.bbfuel.configurator.ContentServicesConfigurator;
 import com.backbase.ct.bbfuel.configurator.LimitsConfigurator;
 import com.backbase.ct.bbfuel.configurator.MessagesConfigurator;
 import com.backbase.ct.bbfuel.configurator.NotificationsConfigurator;
@@ -79,6 +82,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
     private final UserPresentationRestClient userPresentationRestClient;
     private final PocketTailorActuatorClient pocketTailorActuatorClient;
     private final TransactionsConfigurator transactionsConfigurator;
+    private final ContentServicesConfigurator contentServicesConfigurator;
 
     /**
      * Ingest data with services of projects APPR, PO, LIM, NOT, CON, MC, ACT, BPAY and Pockets.
@@ -97,6 +101,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
         this.ingestPockets();
         this.ingestAccountStatementForSelectedUser();
         this.ingestPositivePayChecksForSelectedUser();
+        this.ingestContents();
     }
 
     private void ingestApprovals() {
@@ -280,17 +285,29 @@ public class CapabilitiesDataSetup extends BaseSetup {
     private void ingestAccountStatementForSelectedUser() {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_ACCOUNT_STATEMENTS)) {
             List<String> externalUserIds = this.globalProperties.getList(PROPERTY_ACCOUNTSTATEMENTS_USERS, true);
-            externalUserIds.forEach(this.accountStatementsConfigurator::ingestAccountStatements);
-         }
-     }
+            externalUserIds.forEach(accountStatementsConfigurator::ingestAccountStatements);
+            externalUserIds.forEach(accountStatementsConfigurator::ingestUserProfile);
+        }
+
+        if (this.globalProperties.getBoolean(PROPERTY_INGEST_ACCOUNT_STATEMENTS_PREFERENCES)) {
+            List<String> externalUserIds = this.globalProperties.getList(PROPERTY_ACCOUNTSTATEMENTS_USERS, true);
+            externalUserIds.forEach(accountStatementsConfigurator::ingestAccountStatementPreferences);
+        }
+    }
 
     private void ingestPositivePayChecksForSelectedUser() {
         if (this.globalProperties.getBoolean(PROPERTY_INGEST_POSITIVE_PAY_CHECKS)) {
             this.accessControlSetup.getLegalEntitiesWithUsersExcludingSupportAndEmployee().stream()
-                    .map(LegalEntityWithUsers::getUserExternalIds)
-                    .flatMap(List::stream)
-                    .collect(Collectors.toList())
-                    .forEach(this.positivePayConfigurator::ingestPositivePayChecks);
+                .map(LegalEntityWithUsers::getUserExternalIds)
+                .flatMap(List::stream)
+                .collect(Collectors.toList())
+                .forEach(this.positivePayConfigurator::ingestPositivePayChecks);
+        }
+    }
+
+    private void ingestContents() {
+        if (this.globalProperties.getBoolean(PROPERTY_INGEST_CONTENT_FOR_PAYMENTS)) {
+            this.contentServicesConfigurator.ingestContentForPayments();
         }
     }
 }

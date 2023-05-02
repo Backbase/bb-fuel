@@ -1,6 +1,6 @@
 # bb-fuel
 
-[![build_status](https://travis-ci.com/Backbase/bb-fuel.svg?branch=master)](https://travis-ci.com/Backbase/bb-fuel)
+[![Release](https://github.com/Backbase/bb-fuel/actions/workflows/release.yml/badge.svg)](https://github.com/Backbase/bb-fuel/actions/workflows/release.yml)
 
 ## Description
 bb-fuel is a Backbase DBS data loader tool for test and demo data. It can ingest the following:
@@ -22,6 +22,7 @@ bb-fuel is a Backbase DBS data loader tool for test and demo data. It can ingest
 - Bill Pay
 - Account Statements
 - Positive Pay
+- Contents
 
 It is based on REST and relies on DBS service specs.
 

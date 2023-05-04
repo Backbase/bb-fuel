@@ -55,6 +55,7 @@
         <arrangement-integration-outbound-origination-api.version>1.0.3</arrangement-integration-outbound-origination-api.version>
         <arrangement-integration-inbound-api.version>2.6.0</arrangement-integration-inbound-api.version>
         <contentservices-client-api.version>2.6.0</contentservices-client-api.version>
+        <contact-manager-integration-inbound-api.version>2.9.5</contact-manager-integration-inbound-api.version>
 
     </properties>
 
@@ -127,11 +128,6 @@
         <dependency>
             <groupId>com.backbase.dbs.arrangement</groupId>
             <artifactId>arrangement-integration-spec</artifactId>
-        </dependency>
-        <!-- Contact Manager -->
-        <dependency>
-            <groupId>com.backbase.dbs.contact</groupId>
-            <artifactId>contact-integration-external-inbound-spec</artifactId>
         </dependency>
         <!-- Limits -->
         <dependency>
@@ -464,6 +460,18 @@
                             <fromFile>contentservices-client-api-v${contentservices-client-api.version}.yaml</fromFile>
                         </configuration>
                     </execution>
+
+                    <execution>
+                        <id>download-contact-manager-integration-inbound-api-spec</id>
+                        <goals>
+                            <goal>download-single</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <url>https://repo.backbase.com/specs/contact-manager</url>
+                            <fromFile>contact-manager-integration-inbound-api-v${contact-manager-integration-inbound-api.version}.yaml</fromFile>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 
@@ -620,6 +628,20 @@
                             </configOptions>
                         </configuration>
                     </execution>
+
+                    <execution>
+                        <id>generate-contact-manager-integration-inbound-api-client-code</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${api.target}/contact-manager-integration-inbound-api-v${contact-manager-integration-inbound-api.version}.yaml</inputSpec>
+                            <configOptions>
+                                <apiPackage>com.backbase.dbs.contact.integration.inbound.api.v2</apiPackage>
+                                <modelPackage>com.backbase.dbs.contact.integration.inbound.api.v2.model</modelPackage>
+                            </configOptions>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 
@@ -722,14 +744,6 @@
                                 </artifactItem>
 
                                 <artifactItem>
-                                    <groupId>com.backbase.dbs.contact</groupId>
-                                    <artifactId>contact-integration-external-inbound-spec</artifactId>
-                                    <outputDirectory>
-                                        ${project.build.directory}/contact-integration-external-inbound-spec
-                                    </outputDirectory>
-                                </artifactItem>
-
-                                <artifactItem>
                                     <groupId>com.backbase.dbs.messages</groupId>
                                     <artifactId>messages-service-spec</artifactId>
                                     <outputDirectory>
@@ -794,24 +808,6 @@
                             <inputFiles>
                                 <inputFile>
                                     ${project.build.directory}/approval-integration-spec/client-api.raml
-                                </inputFile>
-                            </inputFiles>
-                            <requestHeaders>false</requestHeaders>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>generate-contact-manager-integration-external-inbound-spec</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>raml-api-generator</goal>
-                        </goals>
-                        <configuration>
-                            <serviceId>contact-manager-service</serviceId>
-                            <packageName>dbs.productsummary.presentation</packageName>
-                            <inputFiles>
-                                <inputFile>
-                                    ${project.build.directory}/contact-integration-external-inbound-spec/integration-api.raml
                                 </inputFile>
                             </inputFiles>
                             <requestHeaders>false</requestHeaders>

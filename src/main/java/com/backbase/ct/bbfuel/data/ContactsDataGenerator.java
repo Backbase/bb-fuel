@@ -28,7 +28,7 @@ public class ContactsDataGenerator {
     private static final GlobalProperties globalProperties = GlobalProperties.getInstance();
     private static final Faker faker = new Faker();
     private static final List<String> VALID_BIC_LIST = asList("ABNANL2A", "ANDLNL2A", "ARBNNL22", "ARSNNL21");
-    private static final List<String> VALID_ACCOUNT_TYPE = asList("Checking", "Savings");
+    private static final List<String> VALID_ACCOUNT_TYPE_LIST = asList("Checking", "Savings");
 
     public static ContactsBulkPostRequestBody generateContactsBulkIngestionPostRequestBody(
         String externalServiceAgreementId, String externalUserId, int numberOfContacts,
@@ -64,7 +64,7 @@ public class ContactsDataGenerator {
                     .town(faker.address().cityName())
                     .country(faker.address().countryCode())
                     .countrySubDivision(faker.address().state()))
-                .accountType(VALID_ACCOUNT_TYPE.get(faker.random().nextInt(VALID_ACCOUNT_TYPE.size())))
+                .accountType(VALID_ACCOUNT_TYPE_LIST.get(faker.random().nextInt(VALID_ACCOUNT_TYPE_LIST.size())))
                 .bankCode(createRandomValidRtn())
                 .bankAddress(new Address()
                     .addressLine1(faker.address().streetAddress())

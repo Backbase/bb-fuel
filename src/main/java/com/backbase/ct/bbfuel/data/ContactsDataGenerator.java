@@ -28,7 +28,7 @@ public class ContactsDataGenerator {
     private static final GlobalProperties globalProperties = GlobalProperties.getInstance();
     private static final Faker faker = new Faker();
     private static final List<String> VALID_BIC_LIST = asList("ABNANL2A", "ANDLNL2A", "ARBNNL22", "ARSNNL21");
-    private static final List<String> VALID_ACCOUNT_TYPE = asList("CHECKING", "SAVINGS");
+    private static final List<String> VALID_ACCOUNT_TYPE = asList("Checking", "Savings");
 
     public static ContactsBulkPostRequestBody generateContactsBulkIngestionPostRequestBody(
         String externalServiceAgreementId, String externalUserId, int numberOfContacts,

@@ -2,7 +2,7 @@ package com.backbase.ct.bbfuel.client.contact;
 
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
-import com.backbase.dbs.productsummary.presentation.rest.spec.v2.contacts.ContactsBulkIngestionPostRequestBody;
+import com.backbase.dbs.contact.integration.inbound.api.v2.model.ContactsBulkPostRequestBody;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import javax.annotation.PostConstruct;
@@ -24,7 +24,7 @@ public class ContactIntegrationRestClient extends RestClient {
         setVersion(SERVICE_VERSION);
     }
 
-    public Response ingestContacts(ContactsBulkIngestionPostRequestBody body) {
+    public Response ingestContacts(ContactsBulkPostRequestBody body) {
         return requestSpec()
             .contentType(ContentType.JSON)
             .body(body)

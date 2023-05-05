@@ -10,7 +10,7 @@ import static org.apache.http.HttpStatus.SC_CREATED;
 
 import com.backbase.ct.bbfuel.client.contact.ContactIntegrationRestClient;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
-import com.backbase.dbs.productsummary.presentation.rest.spec.v2.contacts.ContactsBulkIngestionPostRequestBody;
+import com.backbase.dbs.contact.integration.inbound.api.v2.model.ContactsBulkPostRequestBody;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -30,7 +30,7 @@ public class ContactsConfigurator {
             globalProperties.getInt(PROPERTY_CONTACT_ACCOUNTS_MIN),
             globalProperties.getInt(PROPERTY_CONTACT_ACCOUNTS_MAX));
 
-        ContactsBulkIngestionPostRequestBody contactsBulkIngestionPostRequestBody = generateContactsBulkIngestionPostRequestBody(
+        ContactsBulkPostRequestBody contactsBulkIngestionPostRequestBody = generateContactsBulkIngestionPostRequestBody(
             externalServiceAgreementId, externalUserId, numberOfContacts, numberOfAccountsPerContact);
 
         contactIntegrationRestClient.ingestContacts(contactsBulkIngestionPostRequestBody)

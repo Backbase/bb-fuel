@@ -2,7 +2,6 @@ package com.backbase.ct.bbfuel.service;
 
 import static java.util.Collections.synchronizedMap;
 import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
 import static org.apache.commons.lang.StringUtils.deleteWhitespace;
 
 import com.backbase.ct.bbfuel.IngestException;
@@ -45,14 +44,15 @@ public class ProductGroupService {
      * @return list of ids of product groups that have been assigned to the service agreement
      */
     public List<String> findAssignedProductGroupsIds(String externalServiceAgreementId) {
-        return new ArrayList<>(
-            findAssignedProductGroups(externalServiceAgreementId).stream()
-                .map(DbsEntity::getId)
-                .collect(toSet()));
+        return findAssignedProductGroups(externalServiceAgreementId)
+            .stream()
+            .map(DbsEntity::getId)
+            .distinct()
+            .collect(toList());
     }
 
     /**
-     * Find ids of ingested product groups for given externalServiceAgreementId and a user's productGroupNames.
+     * Find unique ids of ingested product groups for given externalServiceAgreementId and a user's productGroupNames.
      *
      * @param externalServiceAgreementId external id of the service agreement
      * @return list of ids of product groups that match on name and have been assigned to the service agreement
@@ -63,6 +63,7 @@ public class ProductGroupService {
             .filter(productGroupSeed -> !CollectionUtils.isEmpty(user.getProductGroupNames())
                 && user.getProductGroupNames().contains(productGroupSeed.getProductGroupName()))
             .map(DbsEntity::getId)
+            .distinct()
             .collect(toList());
     }
 

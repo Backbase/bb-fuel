@@ -37,7 +37,7 @@ public class PermissionsConfigurator {
                         Collectors.toList());
                 log.info(
                     "Data groups already assigned to service agreement [{}], user [{}], function group [{}], skipped assigning data group ids {}",
-                    externalServiceAgreementId, externalUserId, group.getFunctionGroupIdentifier(), ids);
+                    externalServiceAgreementId, externalUserId, group.getFunctionGroupIdentifier().getIdIdentifier(), ids);
             });
         } else if (response.statusCode() == SC_MULTI_STATUS && response.then().extract()
             .as(BatchResponseItem[].class)[0].getStatus().equals(BatchResponseStatusCode.HTTP_STATUS_OK)) {
@@ -48,16 +48,17 @@ public class PermissionsConfigurator {
                     .collect(Collectors.toList());
                 log.info(
                     "Permission assigned for service agreement [{}], user [{}], function group [{}], data groups {}",
-                        externalServiceAgreementId, externalUserId, group.getFunctionGroupIdentifier(), ids);
+                        externalServiceAgreementId, externalUserId, group.getFunctionGroupIdentifier().getIdIdentifier(), ids);
             });
         } else {
             functionGroupDataGroups.forEach(group -> {
                 List<String> ids = group.getDataGroupIdentifiers().stream()
                     .map(IntegrationIdentifier::getIdIdentifier)
                     .collect(Collectors.toList());
-                log.info(
+                log.error(
                     "Failed assigning data groups to service agreement [{}], user [{}], function group [{}], with data group ids {}",
-                    externalServiceAgreementId, externalUserId, group.getFunctionGroupIdentifier(), ids);
+                    externalServiceAgreementId, externalUserId, group.getFunctionGroupIdentifier().getIdIdentifier(), ids);
+                throw new RuntimeException("Failed assigning data groups to service agreement");
             });
         }
     }

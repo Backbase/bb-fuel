@@ -7,5 +7,4 @@
    \ \_______\ \_______\       \ \__\   \ \_______\ \_______\ \_______\
     \|_______|\|_______|        \|__|    \|_______|\|_______|\|_______|
 
-
-${spring.application.name} (${spring.application.version})
+  -- ${spring.application.name} (${spring.application.version}) --

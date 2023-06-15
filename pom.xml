@@ -234,7 +234,7 @@
                     <version>2.0.0</version>
                     <configuration>
                         <toDir>${api.target}</toDir>
-                        <serverId>Backbase Artifactory Repository</serverId>
+                        <serverId>Public Backbase Repository</serverId>
                     </configuration>
                 </plugin>
             </plugins>

@@ -1,7 +1,6 @@
 package com.backbase.ct.bbfuel.service;
 
 import static com.backbase.ct.bbfuel.data.CommonConstants.ACH_DEBIT_FUNCTION_NAME;
-import static com.backbase.ct.bbfuel.data.CommonConstants.ACH_DEBIT_INTRACOMPANY_FUNCTION_NAME;
 import static com.backbase.ct.bbfuel.data.CommonConstants.BATCH_ACH_CREDIT;
 import static com.backbase.ct.bbfuel.data.CommonConstants.BATCH_ACH_DEBIT;
 import static com.backbase.ct.bbfuel.data.CommonConstants.BATCH_ACH_REVERSAL;

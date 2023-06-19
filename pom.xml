@@ -919,7 +919,7 @@
 
     <repositories>
         <repository>
-            <id>Backbase Artifactory Repository</id>
+            <id>Public Backbase Repository</id>
             <url>https://repo.backbase.com/repo</url>
             <releases>
                 <updatePolicy>always</updatePolicy>
@@ -928,7 +928,7 @@
     </repositories>
     <pluginRepositories>
         <pluginRepository>
-            <id>Backbase Artifactory Repository</id>
+            <id>Public Backbase Repository</id>
             <url>https://repo.backbase.com/repo</url>
             <releases>
                 <updatePolicy>always</updatePolicy>

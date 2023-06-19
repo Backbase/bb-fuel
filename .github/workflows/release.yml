@@ -18,7 +18,7 @@ jobs:
           REPO_PASSWORD: ${{ secrets.REPO_PASSWORD }}
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-          maven-servers: '[{"id":"Backbase Artifactory Repository","username":"${REPO_USERNAME}","password":"${REPO_PASSWORD}"}]'
+          maven-servers: '[{"id":"Public Backbase Repository","username":"${REPO_USERNAME}","password":"${REPO_PASSWORD}"}]'
           release-branch-name: "master"
           skip-perform: true
       - name: Get most recent tag

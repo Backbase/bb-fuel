@@ -1,7 +1,5 @@
 package com.backbase.ct.bbfuel.client.user;
 
-import static org.apache.http.HttpStatus.SC_CREATED;
-
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import lombok.RequiredArgsConstructor;

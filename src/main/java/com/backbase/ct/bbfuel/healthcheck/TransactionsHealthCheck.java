@@ -6,7 +6,6 @@ import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.client.transaction.TransactionsIntegrationRestClient;
 import com.backbase.ct.bbfuel.data.CommonConstants;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
-import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

@@ -7,7 +7,7 @@ import com.backbase.ct.bbfuel.client.productsummary.ArrangementsIntegrationRestC
 import com.backbase.ct.bbfuel.data.ProductSummaryDataGenerator;
 import com.backbase.ct.bbfuel.input.PocketsReader;
 import com.backbase.ct.bbfuel.service.AccessGroupService;
-import com.backbase.dbs.accesscontrol.client.v2.model.LegalEntityBase;
+import com.backbase.dbs.user.manager.models.v2.LegalEntity;
 import com.backbase.dbs.arrangement.integration.inbound.api.v2.model.ArrangementAddedResponse;
 import com.backbase.dbs.arrangement.integration.inbound.api.v2.model.PostArrangement;
 import com.backbase.dbs.pocket.tailor.client.v2.model.Pocket;
@@ -39,7 +39,7 @@ public class PocketsConfigurator {
      * @param legalEntity legal entity
      * @return pocket parent arrangement id as String
      */
-    public String ingestPocketArrangementForModeOnetoManyAndSetEntitlements(LegalEntityBase legalEntity) {
+    public String ingestPocketArrangementForModeOnetoManyAndSetEntitlements(LegalEntity legalEntity) {
         // -> creating parent pocket arrangement for legal entity
         log.debug("Going to ingest a parent pocket arrangement for external legal entity ID: [{}]", legalEntity);
 
@@ -70,7 +70,7 @@ public class PocketsConfigurator {
      * @param legalEntity legal entity
      */
     public void ingestPocketArrangementForModeOnetoOneAndSetEntitlements(
-        LegalEntityBase legalEntity, int counter) {
+        LegalEntity legalEntity, int counter) {
         // -> creating pocket arrangement for legal entity
         log.debug("Going to ingest a pocket arrangement for external legal entity ID: [{}]", legalEntity);
 
@@ -133,14 +133,14 @@ public class PocketsConfigurator {
             externalUserId);
     }
 
-    private ArrangementAddedResponse ingestParentPocketArrangement(LegalEntityBase legalEntity) {
+    private ArrangementAddedResponse ingestParentPocketArrangement(LegalEntity legalEntity) {
         PostArrangement parentPocketArrangement = ProductSummaryDataGenerator
             .generateParentPocketArrangement(legalEntity.getExternalId());
         return arrangementsIntegrationRestClient
             .ingestPocketArrangementAndLogResponse(parentPocketArrangement, EXTERNAL_ARRANGEMENT_ORIGINATION_1, true);
     }
 
-    private ArrangementAddedResponse ingestPocketArrangement(LegalEntityBase legalEntity, int counter) {
+    private ArrangementAddedResponse ingestPocketArrangement(LegalEntity legalEntity, int counter) {
         String externalArrangementId = EXTERNAL_ARRANGEMENT_ORIGINATION + counter;
         PostArrangement childPostArrangement = ProductSummaryDataGenerator
             .generateChildPocketArrangement(legalEntity.getExternalId(), externalArrangementId, counter);
@@ -148,7 +148,7 @@ public class PocketsConfigurator {
             .ingestPocketArrangementAndLogResponse(childPostArrangement, externalArrangementId, false);
     }
 
-    private void updateDataGroupForPockets(String pocketArrangementId, LegalEntityBase legalEntity) {
+    private void updateDataGroupForPockets(String pocketArrangementId, LegalEntity legalEntity) {
 
         String dataGroupId = accessGroupService.updateDataGroup(pocketArrangementId,
             getExternalServiceAgreementId(legalEntity));
@@ -156,8 +156,7 @@ public class PocketsConfigurator {
         log.debug("Updated data group with id [{}]", dataGroupId);
     }
 
-    private String getExternalServiceAgreementId(
-        com.backbase.dbs.accesscontrol.client.v2.model.LegalEntityBase legalEntity) {
+    private String getExternalServiceAgreementId(LegalEntity legalEntity) {
         String internalServiceAgreementId = this.legalEntityPresentationRestClient
             .getMasterServiceAgreementOfLegalEntity(legalEntity.getId())
             .getId();

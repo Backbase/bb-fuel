@@ -9,7 +9,7 @@ bb-fuel:
     auth: https://edge-${environment.name}.${environment.domain}/api/auth/login
     tokenconverter: https://tokenconverter-${environment.name}.${environment.domain}
   dbs:
-    accessgroup: https://accessgroup-${environment.name}.${environment.domain}
+    accessgroup: https://accessgroup-${environment.name}.${environment.domain}/integration-api
     accounts: https://account-${environment.name}.${environment.domain}/service-api
     approvals: https://approvals-${environment.name}.${environment.domain}/integration-api
     arrangements: https://arrangement-${environment.name}.${environment.domain}/integration-api

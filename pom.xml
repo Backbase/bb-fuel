@@ -9,7 +9,7 @@
 
     <groupId>com.backbase.ct</groupId>
     <artifactId>bb-fuel</artifactId>
-    <version>2.6.115-SNAPSHOT</version>
+    <version>2.7.0-SNAPSHOT</version>
     <name>Backbase :: Capability Testing :: bb-fuel</name>
 
     <scm>
@@ -53,7 +53,7 @@
         <!-- Products Specs Versions -->
         <arrangement-integration-outbound-link-account-api.version>2.1.1</arrangement-integration-outbound-link-account-api.version>
         <arrangement-integration-outbound-origination-api.version>1.0.3</arrangement-integration-outbound-origination-api.version>
-        <arrangement-integration-inbound-api.version>2.6.0</arrangement-integration-inbound-api.version>
+        <arrangement-integration-inbound-api.version>2.7.2</arrangement-integration-inbound-api.version>
         <contentservices-client-api.version>2.6.0</contentservices-client-api.version>
         <contact-manager-integration-inbound-api.version>2.9.5</contact-manager-integration-inbound-api.version>
 
@@ -313,7 +313,7 @@
                         <phase>generate-sources</phase>
                         <configuration>
                             <url>https://repo.backbase.com/specs/access-control</url>
-                            <fromFile>access-control-client-api-v2.6.0.yaml</fromFile>
+                            <fromFile>access-control-client-api-v3.6.0.yaml</fromFile>
                         </configuration>
                     </execution>
                     <execution>
@@ -497,10 +497,10 @@
                         <goal>generate</goal>
                     </goals>
                     <configuration>
-                        <inputSpec>${api.target}/access-control-client-api-v2.6.0.yaml</inputSpec>
+                        <inputSpec>${api.target}/access-control-client-api-v3.6.0.yaml</inputSpec>
                         <configOptions>
-                            <apiPackage>com.backbase.dbs.accesscontrol.client.v2</apiPackage>
-                            <modelPackage>com.backbase.dbs.accesscontrol.client.v2.model</modelPackage>
+                            <apiPackage>com.backbase.dbs.accesscontrol.client.v3</apiPackage>
+                            <modelPackage>com.backbase.dbs.accesscontrol.client.v3.model</modelPackage>
                         </configOptions>
                     </configuration>
                 </execution>

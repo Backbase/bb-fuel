@@ -5,8 +5,8 @@ import static org.apache.http.HttpStatus.SC_OK;
 
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
-import com.backbase.dbs.accesscontrol.client.v2.model.UserContextPOST;
-import com.backbase.dbs.accesscontrol.client.v2.model.ServiceAgreementItem;
+import com.backbase.dbs.accesscontrol.client.v3.model.ServiceAgreementItem;
+import com.backbase.dbs.accesscontrol.client.v3.model.UserContextPost;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import java.util.Arrays;
@@ -22,10 +22,10 @@ public class UserContextPresentationRestClient extends RestClient {
 
     private final BbFuelConfiguration config;
 
-    private static final String SERVICE_VERSION = "v2";
+    private static final String SERVICE_VERSION = "v3";
     private static final String ENDPOINT_ACCESS_GROUPS = "/accessgroups";
-    private static final String ENDPOINT_USER_CONTEXT = ENDPOINT_ACCESS_GROUPS + "/usercontext";
-    private static final String ENDPOINT_USER_CONTEXT_SERVICE_AGREEMENTS = ENDPOINT_USER_CONTEXT + "/serviceagreements";
+    private static final String ENDPOINT_USER_CONTEXT = ENDPOINT_ACCESS_GROUPS + "/user-context";
+    private static final String ENDPOINT_USER_CONTEXT_SERVICE_AGREEMENTS = ENDPOINT_USER_CONTEXT + "/service-agreements";
 
     @PostConstruct
     public void init() {
@@ -37,13 +37,13 @@ public class UserContextPresentationRestClient extends RestClient {
     public void selectContextBasedOnMasterServiceAgreement() {
         ServiceAgreementItem masterServiceAgreement = getMasterServiceAgreementForUserContext();
 
-        postUserContext(new UserContextPOST()
+        postUserContext(new UserContextPost()
                 .serviceAgreementId(masterServiceAgreement.getId()))
                 .then()
                 .statusCode(SC_NO_CONTENT);
     }
 
-    private Response postUserContext(UserContextPOST userContextPostRequestBody) {
+    private Response postUserContext(UserContextPost userContextPostRequestBody) {
         Response response = requestSpec()
             .contentType(ContentType.JSON)
             .body(userContextPostRequestBody)

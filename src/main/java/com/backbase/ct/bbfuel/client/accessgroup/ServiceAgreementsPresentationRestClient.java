@@ -4,7 +4,7 @@ import static org.apache.http.HttpStatus.SC_OK;
 
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
-import com.backbase.dbs.accesscontrol.client.v2.model.ServiceAgreementItem;
+import com.backbase.dbs.accesscontrol.client.v3.model.ServiceAgreementItem;
 import io.restassured.http.ContentType;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;

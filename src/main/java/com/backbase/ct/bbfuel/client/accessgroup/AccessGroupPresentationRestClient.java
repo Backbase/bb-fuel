@@ -5,8 +5,8 @@ import static org.apache.http.HttpStatus.SC_OK;
 
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
-import com.backbase.dbs.accesscontrol.client.v2.model.DataGroupItem;
-import com.backbase.dbs.accesscontrol.client.v2.model.FunctionGroupItem;
+import com.backbase.dbs.accesscontrol.client.v3.model.DataGroupItem;
+import com.backbase.dbs.accesscontrol.client.v3.model.FunctionGroupItem;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import java.util.List;

@@ -10,7 +10,7 @@ import com.backbase.ct.bbfuel.client.accessgroup.UserContextPresentationRestClie
 import com.backbase.ct.bbfuel.client.common.LoginRestClient;
 import com.backbase.ct.bbfuel.client.legalentity.LegalEntityIntegrationRestClient;
 import com.backbase.ct.bbfuel.client.user.UserPresentationRestClient;
-import com.backbase.dbs.accesscontrol.client.v2.model.ServiceAgreementItem;
+import com.backbase.dbs.accesscontrol.client.v3.model.ServiceAgreementItem;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.Participant;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementPostResponseBody;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.UserServiceAgreementPair;

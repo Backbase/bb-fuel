@@ -30,12 +30,11 @@ public class AccessGroupIntegrationRestClient extends RestClient {
 
     private static final String SERVICE_VERSION = "v3";
     private static final String ENDPOINT_ACCESS_GROUPS = "/accessgroups";
-    private static final String ENDPOINT_FUNCTION = ENDPOINT_ACCESS_GROUPS + "/function-groups";
+    private static final String ENDPOINT_FUNCTION = "/function-groups";
     private static final String ENDPOINT_USERS_PERMISSIONS =
         ENDPOINT_ACCESS_GROUPS + "/users/permissions/user-permissions";
-    private static final String ENDPOINT_DATA = ENDPOINT_ACCESS_GROUPS + "/data-groups/batch";
-    private static final String ENDPOINT_ASSIGNABLE_PERMISSION_SETS_BY_NAME =
-        ENDPOINT_ACCESS_GROUPS + "/permission-sets";
+    private static final String ENDPOINT_DATA = "/data-groups/batch";
+    private static final String ENDPOINT_ASSIGNABLE_PERMISSION_SETS_BY_NAME = "/permission-sets";
     private static final String REGUlAR_USER_APS_NAME = "Regular user APS";
     private List<FunctionsGetResponseBody> allBusinessFunctions = new ArrayList<>();
 

@@ -44,8 +44,6 @@ public class ProductSummaryConfigurator {
             || (!productIds.contains(String.valueOf(1)) && !productIds.isEmpty()) ? 1 : 0;
         int numberOfNonCurrentAccounts = tenPercentOfTotal > 0 ? tenPercentOfTotal : minNumberOfNonCurrentAccounts;
 
-        log.info(String.valueOf(productGroupSeed.getProductIds()));
-
         if (productGroupSeed.getProductIds().contains(String.valueOf(1))) {
             arrangements.addAll(generateCurrentAccountArrangementsPostRequestBodies(
                 externalLegalEntityId, productGroupSeed, numberOfArrangements - numberOfNonCurrentAccounts));
@@ -59,9 +57,7 @@ public class ProductSummaryConfigurator {
                     : numberOfArrangements));
         }
 
-        arrangements.forEach(arrangement -> {
-            log.info("Ingesting Arrangement [{}] for product [{}] under legal entity [{}] id {}",
-                arrangement.getName(), arrangement.getProductId(), externalLegalEntityId, arrangement.getId());
+        arrangements.parallelStream().forEach(arrangement -> {
             ArrangementAddedResponse arrangementsPostResponseBody = arrangementsIntegrationRestClient
                 .ingestArrangement(arrangement);
             log.info("Arrangement [{}] ingested for product [{}] under legal entity [{}]",

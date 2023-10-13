@@ -16,12 +16,12 @@ public class LegalEntityPresentationRestClient extends RestClient {
 
     private final BbFuelConfiguration config;
 
-    private static final String SERVICE_VERSION = "v2";
+    private static final String SERVICE_VERSION = "v3";
     private static final String CLIENT_API = "client-api";
-    private static final String ENDPOINT_LEGAL_ENTITIES = "/legalentities";
+    private static final String ENDPOINT_LEGAL_ENTITIES = "/legal-entities";
     private static final String ENDPOINT_EXTERNAL = ENDPOINT_LEGAL_ENTITIES + "/external/%s";
     private static final String ENDPOINT_SERVICE_AGREEMENTS_MASTER =
-        ENDPOINT_LEGAL_ENTITIES + "/%s/serviceagreements/master";
+        ENDPOINT_LEGAL_ENTITIES + "/%s/service-agreements/master";
 
     @PostConstruct
     public void init() {

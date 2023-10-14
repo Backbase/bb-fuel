@@ -179,28 +179,6 @@
         ]
       },
       {
-        "businessFunction": "US Domestic Wire - Intracompany",
-        "privileges": [
-          "view",
-          "create",
-          "edit",
-          "delete",
-          "approve",
-          "cancel"
-        ]
-      },
-      {
-        "businessFunction": "US Foreign Wire - Intracompany",
-        "privileges": [
-          "view",
-          "create",
-          "edit",
-          "delete",
-          "approve",
-          "cancel"
-        ]
-      },
-      {
         "businessFunction": "Manage Positive Pay",
         "privileges": [
           "view"
@@ -281,17 +259,6 @@
       },
       {
         "businessFunction": "US Domestic Wire",
-        "privileges": [
-          "view",
-          "create",
-          "edit",
-          "delete",
-          "approve",
-          "cancel"
-        ]
-      },
-      {
-        "businessFunction": "US Domestic Wire - Intracompany",
         "privileges": [
           "view",
           "create",
@@ -478,17 +445,6 @@
         ]
       },
       {
-        "businessFunction": "US Foreign Wire - Intracompany",
-        "privileges": [
-          "view",
-          "create",
-          "edit",
-          "delete",
-          "approve",
-          "cancel"
-        ]
-      },
-      {
         "businessFunction": "US Billpay Payees-Search",
         "privileges": [
           "execute"
@@ -610,16 +566,6 @@
         ]
       },
       {
-        "businessFunction": "ACH Credit - Intracompany",
-        "privileges": [
-          "view",
-          "create",
-          "edit",
-          "delete",
-          "approve"
-        ]
-      },
-      {
         "businessFunction": "Product Summary",
         "privileges": [
           "view",
@@ -649,16 +595,6 @@
       },
       {
         "businessFunction": "US Domestic Wire",
-        "privileges": [
-          "view",
-          "create",
-          "edit",
-          "delete",
-          "approve"
-        ]
-      },
-      {
-        "businessFunction": "US Domestic Wire - Intracompany",
         "privileges": [
           "view",
           "create",
@@ -794,16 +730,6 @@
       },
       {
         "businessFunction": "US Foreign Wire",
-        "privileges": [
-          "view",
-          "create",
-          "edit",
-          "delete",
-          "approve"
-        ]
-      },
-      {
-        "businessFunction": "US Foreign Wire - Intracompany",
         "privileges": [
           "view",
           "create",
@@ -1061,29 +987,7 @@
         ]
       },
       {
-        "businessFunction": "US Domestic Wire - Intracompany",
-        "privileges": [
-          "view",
-          "create",
-          "edit",
-          "delete",
-          "approve",
-          "cancel"
-        ]
-      },
-      {
         "businessFunction": "SEPA CT - closed",
-        "privileges": [
-          "view",
-          "create",
-          "edit",
-          "delete",
-          "approve",
-          "cancel"
-        ]
-      },
-      {
-        "businessFunction": "US Foreign Wire - Intracompany",
         "privileges": [
           "view",
           "create",
@@ -1105,17 +1009,6 @@
       },
       {
         "businessFunction": "A2A Transfer",
-        "privileges": [
-          "view",
-          "create",
-          "edit",
-          "delete",
-          "approve",
-          "cancel"
-        ]
-      },
-      {
-        "businessFunction": "ACH Credit - Intracompany",
         "privileges": [
           "view",
           "create",
@@ -1614,31 +1507,13 @@
         ]
       },
       {
-        "businessFunction": "US Domestic Wire - Intracompany",
-        "privileges": [
-          "view"
-        ]
-      },
-      {
         "businessFunction": "SEPA CT - closed",
         "privileges": [
           "view"
         ]
       },
       {
-        "businessFunction": "US Foreign Wire - Intracompany",
-        "privileges": [
-          "view"
-        ]
-      },
-      {
         "businessFunction": "A2A Transfer",
-        "privileges": [
-          "view"
-        ]
-      },
-      {
-        "businessFunction": "ACH Credit - Intracompany",
         "privileges": [
           "view"
         ]

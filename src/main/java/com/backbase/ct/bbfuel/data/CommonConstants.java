@@ -35,7 +35,6 @@ public final class CommonConstants {
     public static final String US_DOMESTIC_WIRE_FUNCTION_NAME = "US Domestic Wire";
     public static final String US_DOMESTIC_WIRE_INTRACOMPANY_FUNCTION_NAME = "US Domestic Wire - Intracompany";
     public static final String US_FOREIGN_WIRE_FUNCTION_NAME = "US Foreign Wire";
-    public static final String US_FOREIGN_WIRE_INTRACOMPANY_FUNCTION_NAME = "US Foreign Wire - Intracompany";
     public static final String PRODUCT_SUMMARY_RESOURCE_NAME = "Product Summary";
     public static final String PAYMENTS_RESOURCE_NAME = "Payments";
     public static final String CONTACTS_RESOURCE_NAME = "Contacts";

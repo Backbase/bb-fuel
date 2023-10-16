@@ -179,6 +179,17 @@
         ]
       },
       {
+        "businessFunction": "US Domestic Wire - Intracompany",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
         "businessFunction": "Manage Positive Pay",
         "privileges": [
           "view"
@@ -259,6 +270,17 @@
       },
       {
         "businessFunction": "US Domestic Wire",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "US Domestic Wire - Intracompany",
         "privileges": [
           "view",
           "create",
@@ -595,6 +617,16 @@
       },
       {
         "businessFunction": "US Domestic Wire",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve"
+        ]
+      },
+      {
+        "businessFunction": "US Domestic Wire - Intracompany",
         "privileges": [
           "view",
           "create",
@@ -966,17 +998,6 @@
         ]
       },
       {
-        "businessFunction": "Intra Company Payments",
-        "privileges": [
-          "view",
-          "create",
-          "edit",
-          "delete",
-          "approve",
-          "cancel"
-        ]
-      },
-      {
         "businessFunction": "Manage Service Agreements",
         "privileges": [
           "view",
@@ -984,6 +1005,17 @@
           "edit",
           "delete",
           "approve"
+        ]
+      },
+      {
+        "businessFunction": "US Domestic Wire - Intracompany",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
         ]
       },
       {
@@ -1501,7 +1533,7 @@
         ]
       },
       {
-        "businessFunction": "Intra Company Payments",
+        "businessFunction": "US Domestic Wire - Intracompany",
         "privileges": [
           "view"
         ]

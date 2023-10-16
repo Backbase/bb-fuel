@@ -44,7 +44,7 @@ import com.backbase.ct.bbfuel.dto.User;
 import com.backbase.ct.bbfuel.dto.UserContext;
 import com.backbase.ct.bbfuel.service.LegalEntityService;
 import com.backbase.ct.bbfuel.service.UserContextService;
-import com.backbase.dbs.accesscontrol.client.v2.model.LegalEntityBase;
+import com.backbase.dbs.user.manager.models.v2.LegalEntity;
 import com.backbase.dbs.pocket.tailor.client.v2.model.Pocket;
 import java.util.Collection;
 import java.util.List;
@@ -247,7 +247,7 @@ public class CapabilitiesDataSetup extends BaseSetup {
                 log.debug("Going to ingest pockets in mode {} for retail user {}",
                     globalProperties.getString(PROPERTY_POCKET_MAPPING_MODE), retailUser);
 
-                LegalEntityBase legalEntity = this.userPresentationRestClient
+                LegalEntity legalEntity = this.userPresentationRestClient
                     .retrieveLegalEntityByExternalUserId(retailUser.getExternalId());
 
                 if (this.globalProperties.getString(PROPERTY_POCKET_MAPPING_MODE).equals(POCKET_MODE_ONE_TO_ONE)) {

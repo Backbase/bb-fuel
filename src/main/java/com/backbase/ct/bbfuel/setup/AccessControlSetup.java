@@ -42,8 +42,8 @@ import com.backbase.ct.bbfuel.service.JobProfileService;
 import com.backbase.ct.bbfuel.service.LegalEntityService;
 import com.backbase.ct.bbfuel.service.ProductGroupService;
 import com.backbase.ct.bbfuel.service.UserContextService;
-import com.backbase.dbs.accesscontrol.client.v2.model.DataGroupItem;
-import com.backbase.dbs.accesscontrol.client.v2.model.LegalEntityBase;
+import com.backbase.dbs.accesscontrol.client.v3.model.DataGroupItem;
+import com.backbase.dbs.user.manager.models.v2.LegalEntity;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.IntegrationIdentifier;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.functiongroups.FunctionGroupBase.Type;
 import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.users.permissions.IntegrationFunctionGroupDataGroup;
@@ -187,7 +187,7 @@ public class AccessControlSetup extends BaseSetup {
         this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
         legalEntityWithUsers.getUsers().forEach(user -> {
-            LegalEntityBase legalEntity = this.userPresentationRestClient
+            LegalEntity legalEntity = this.userPresentationRestClient
                 .retrieveLegalEntityByExternalUserId(user.getExternalId());
             final String legalEntityExternalId = legalEntity.getExternalId();
 

@@ -190,17 +190,6 @@
         ]
       },
       {
-        "businessFunction": "US Foreign Wire - Intracompany",
-        "privileges": [
-          "view",
-          "create",
-          "edit",
-          "delete",
-          "approve",
-          "cancel"
-        ]
-      },
-      {
         "businessFunction": "Manage Positive Pay",
         "privileges": [
           "view"
@@ -478,17 +467,6 @@
         ]
       },
       {
-        "businessFunction": "US Foreign Wire - Intracompany",
-        "privileges": [
-          "view",
-          "create",
-          "edit",
-          "delete",
-          "approve",
-          "cancel"
-        ]
-      },
-      {
         "businessFunction": "US Billpay Payees-Search",
         "privileges": [
           "execute"
@@ -574,6 +552,12 @@
           "edit",
           "delete"
         ]
+      },
+      {
+        "businessFunction": "Batch - Manage Confidential",
+        "privileges": [
+          "execute"
+        ]
       }
     ]
   },
@@ -595,16 +579,6 @@
       },
       {
         "businessFunction": "ACH Credit Transfer",
-        "privileges": [
-          "view",
-          "create",
-          "edit",
-          "delete",
-          "approve"
-        ]
-      },
-      {
-        "businessFunction": "ACH Credit - Intracompany",
         "privileges": [
           "view",
           "create",
@@ -797,16 +771,6 @@
         ]
       },
       {
-        "businessFunction": "US Foreign Wire - Intracompany",
-        "privileges": [
-          "view",
-          "create",
-          "edit",
-          "delete",
-          "approve"
-        ]
-      },
-      {
         "businessFunction": "Payment Templates",
         "privileges": [
           "view",
@@ -899,6 +863,12 @@
           "create",
           "edit",
           "delete"
+        ]
+      },
+      {
+        "businessFunction": "Batch - List Confidential",
+        "privileges": [
+          "view"
         ]
       }
     ]
@@ -1028,17 +998,6 @@
         ]
       },
       {
-        "businessFunction": "Intra Company Payments",
-        "privileges": [
-          "view",
-          "create",
-          "edit",
-          "delete",
-          "approve",
-          "cancel"
-        ]
-      },
-      {
         "businessFunction": "Manage Service Agreements",
         "privileges": [
           "view",
@@ -1071,17 +1030,6 @@
         ]
       },
       {
-        "businessFunction": "US Foreign Wire - Intracompany",
-        "privileges": [
-          "view",
-          "create",
-          "edit",
-          "delete",
-          "approve",
-          "cancel"
-        ]
-      },
-      {
         "businessFunction": "Manage Topics",
         "privileges": [
           "edit",
@@ -1093,17 +1041,6 @@
       },
       {
         "businessFunction": "A2A Transfer",
-        "privileges": [
-          "view",
-          "create",
-          "edit",
-          "delete",
-          "approve",
-          "cancel"
-        ]
-      },
-      {
-        "businessFunction": "ACH Credit - Intracompany",
         "privileges": [
           "view",
           "create",
@@ -1596,12 +1533,6 @@
         ]
       },
       {
-        "businessFunction": "Intra Company Payments",
-        "privileges": [
-          "view"
-        ]
-      },
-      {
         "businessFunction": "US Domestic Wire - Intracompany",
         "privileges": [
           "view"
@@ -1614,19 +1545,7 @@
         ]
       },
       {
-        "businessFunction": "US Foreign Wire - Intracompany",
-        "privileges": [
-          "view"
-        ]
-      },
-      {
         "businessFunction": "A2A Transfer",
-        "privileges": [
-          "view"
-        ]
-      },
-      {
-        "businessFunction": "ACH Credit - Intracompany",
         "privileges": [
           "view"
         ]

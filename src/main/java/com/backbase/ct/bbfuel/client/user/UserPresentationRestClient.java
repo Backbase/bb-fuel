@@ -8,7 +8,6 @@ import static org.apache.http.HttpStatus.SC_OK;
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
 
-import com.backbase.dbs.accesscontrol.client.v2.model.LegalEntityBase;
 import com.backbase.dbs.user.manager.models.v2.*;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
@@ -40,13 +39,13 @@ public class UserPresentationRestClient extends RestClient {
         setInitialPath(config.getDbsServiceNames().getUser() + "/" + CLIENT_API);
     }
 
-    public LegalEntityBase retrieveLegalEntityByExternalUserId(String externalUserId) {
+    public LegalEntity retrieveLegalEntityByExternalUserId(String externalUserId) {
         return requestSpec()
             .get(String.format(getPath(ENDPOINT_EXTERNAL_ID_LEGAL_ENTITIES), externalUserId))
             .then()
             .statusCode(SC_OK)
             .extract()
-            .as(LegalEntityBase.class);
+            .as(LegalEntity.class);
     }
 
     public GetUser getUserByExternalId(String userExternalId) {

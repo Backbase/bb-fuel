@@ -5,8 +5,8 @@ import static org.apache.http.HttpStatus.SC_OK;
 
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
-import com.backbase.dbs.accesscontrol.client.v2.model.DataGroupItem;
-import com.backbase.dbs.accesscontrol.client.v2.model.FunctionGroupItem;
+import com.backbase.dbs.accesscontrol.client.v3.model.DataGroupItem;
+import com.backbase.dbs.accesscontrol.client.v3.model.FunctionGroupItem;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import java.util.List;
@@ -20,7 +20,7 @@ public class AccessGroupPresentationRestClient extends RestClient {
 
     private final BbFuelConfiguration config;
 
-    private static final String SERVICE_VERSION = "v2";
+    private static final String SERVICE_VERSION = "v3";
     private static final String ENDPOINT_ACCESS_GROUPS = "/accessgroups";
     private static final String ENDPOINT_USER_ACCESS = ENDPOINT_ACCESS_GROUPS + "/users";
     private static final String ENDPOINT_FUNCTION_BY_SERVICE_AGREEMENT_ID =

@@ -4,8 +4,8 @@ import static org.apache.http.HttpStatus.SC_OK;
 
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
-import com.backbase.dbs.accesscontrol.client.v2.model.LegalEntityBase;
-import com.backbase.dbs.accesscontrol.client.v2.model.ServiceAgreementItem;
+import com.backbase.dbs.user.manager.models.v2.LegalEntity;
+import com.backbase.dbs.accesscontrol.client.v3.model.ServiceAgreementItem;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -16,12 +16,12 @@ public class LegalEntityPresentationRestClient extends RestClient {
 
     private final BbFuelConfiguration config;
 
-    private static final String SERVICE_VERSION = "v2";
+    private static final String SERVICE_VERSION = "v3";
     private static final String CLIENT_API = "client-api";
-    private static final String ENDPOINT_LEGAL_ENTITIES = "/legalentities";
+    private static final String ENDPOINT_LEGAL_ENTITIES = "/legal-entities";
     private static final String ENDPOINT_EXTERNAL = ENDPOINT_LEGAL_ENTITIES + "/external/%s";
     private static final String ENDPOINT_SERVICE_AGREEMENTS_MASTER =
-        ENDPOINT_LEGAL_ENTITIES + "/%s/serviceagreements/master";
+        ENDPOINT_LEGAL_ENTITIES + "/%s/service-agreements/master";
 
     @PostConstruct
     public void init() {
@@ -30,13 +30,13 @@ public class LegalEntityPresentationRestClient extends RestClient {
         setInitialPath(config.getDbsServiceNames().getLegalentity() + "/" + CLIENT_API);
     }
 
-    public LegalEntityBase retrieveLegalEntityByExternalId(String externalLegalEntityId) {
+    public LegalEntity retrieveLegalEntityByExternalId(String externalLegalEntityId) {
         return requestSpec()
             .get(String.format(getPath(ENDPOINT_EXTERNAL), externalLegalEntityId))
             .then()
             .statusCode(SC_OK)
             .extract()
-            .as(LegalEntityBase.class);
+            .as(LegalEntity.class);
     }
 
 

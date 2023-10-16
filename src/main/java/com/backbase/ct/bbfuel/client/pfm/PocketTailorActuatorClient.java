@@ -2,7 +2,7 @@ package com.backbase.ct.bbfuel.client.pfm;
 
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
-import com.backbase.dbs.accesscontrol.client.v2.model.LegalEntityBase;
+import com.backbase.dbs.user.manager.models.v2.LegalEntity;
 import io.restassured.http.ContentType;
 import javax.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
@@ -27,7 +27,7 @@ public class PocketTailorActuatorClient extends RestClient {
      * @param arrangementId arrangement id
      * @param legalEntity legal entity
      */
-    public void createArrangedLegalEntity(String arrangementId, LegalEntityBase legalEntity) {
+    public void createArrangedLegalEntity(String arrangementId, LegalEntity legalEntity) {
         requestSpec()
             .contentType(ContentType.JSON)
             .body(new ArrangedLegalEntityRequest(arrangementId, legalEntity.getId()))

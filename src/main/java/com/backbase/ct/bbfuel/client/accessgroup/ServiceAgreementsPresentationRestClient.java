@@ -4,7 +4,7 @@ import static org.apache.http.HttpStatus.SC_OK;
 
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
-import com.backbase.dbs.accesscontrol.client.v2.model.ServiceAgreementItem;
+import com.backbase.dbs.accesscontrol.client.v3.model.ServiceAgreementItem;
 import io.restassured.http.ContentType;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -16,9 +16,9 @@ public class ServiceAgreementsPresentationRestClient extends RestClient {
 
     private final BbFuelConfiguration config;
 
-    private static final String SERVICE_VERSION = "v2";
+    private static final String SERVICE_VERSION = "v3";
     private static final String ENDPOINT_ACCESS_GROUPS = "/accessgroups";
-    private static final String ENDPOINT_SERVICE_AGREEMENTS = ENDPOINT_ACCESS_GROUPS + "/serviceagreements";
+    private static final String ENDPOINT_SERVICE_AGREEMENTS = ENDPOINT_ACCESS_GROUPS + "/service-agreements";
     private static final String ENDPOINT_SERVICE_AGREEMENTS_BY_ID = ENDPOINT_SERVICE_AGREEMENTS + "/%s";
 
     @PostConstruct

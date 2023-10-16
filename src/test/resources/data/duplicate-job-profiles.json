@@ -175,17 +175,6 @@
         ]
       },
       {
-        "businessFunction": "Intra Company Payments",
-        "privileges": [
-          "view",
-          "create",
-          "edit",
-          "delete",
-          "approve",
-          "cancel"
-        ]
-      },
-      {
         "businessFunction": "Manage Service Agreements",
         "privileges": [
           "view"
@@ -381,17 +370,6 @@
           "create",
           "edit",
           "delete"
-        ]
-      },
-      {
-        "businessFunction": "Intra Company Payments",
-        "privileges": [
-          "view",
-          "create",
-          "edit",
-          "delete",
-          "approve",
-          "cancel"
         ]
       },
       {

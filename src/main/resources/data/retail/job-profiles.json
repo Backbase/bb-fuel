@@ -509,17 +509,6 @@
           "approve",
           "cancel"
         ]
-      },
-      {
-        "businessFunction": "US Foreign Wire - Intracompany",
-        "privileges": [
-          "view",
-          "create",
-          "edit",
-          "delete",
-          "approve",
-          "cancel"
-        ]
       }
     ]
   }

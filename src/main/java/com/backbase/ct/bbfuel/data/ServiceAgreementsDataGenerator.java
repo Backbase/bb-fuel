@@ -27,7 +27,8 @@ public class ServiceAgreementsDataGenerator {
 
     public static ServiceAgreementPutRequestBody generateServiceAgreementPutRequestBody() {
         return new ServiceAgreementPutRequestBody()
-            .withExternalId(UUID.randomUUID()
-                .toString());
+            .withExternalId(UUID.randomUUID().toString())
+            .withName(faker.company().name())
+            .withDescription(faker.company().catchPhrase());
     }
 }

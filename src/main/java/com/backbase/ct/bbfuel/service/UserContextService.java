@@ -8,7 +8,7 @@ import com.backbase.ct.bbfuel.client.user.UserPresentationRestClient;
 import com.backbase.ct.bbfuel.dto.User;
 import com.backbase.ct.bbfuel.dto.UserContext;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
-import com.backbase.dbs.accesscontrol.client.v2.model.LegalEntityBase;
+import com.backbase.dbs.user.manager.models.v2.LegalEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +36,7 @@ public class UserContextService {
     }
 
     public UserContext getUserContextBasedOnMSAByExternalUserId(User user,
-        LegalEntityBase legalEntity) {
+        LegalEntity legalEntity) {
         this.loginRestClient.loginBankAdmin();
         this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 

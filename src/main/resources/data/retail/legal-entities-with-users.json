@@ -101,8 +101,8 @@
     "category": "RETAIL",
     "users": [
       {
-        "externalId": "fi_pockets_only",
-        "role": "pockets-only",
+        "externalId": "fi_credscr_only",
+        "role": "credscr-only",
         "productGroupNames": ["Retail Accounts U.S"]
       }
     ]
@@ -121,8 +121,18 @@
     "category": "RETAIL",
     "users": [
       {
-        "externalId": "credscr_and_budgets",
-        "role": "pockets-and-budget-only",
+        "externalId": "fi_credscr_and_budgets",
+        "role": "credscr-and-budget-only",
+        "productGroupNames": ["Retail Accounts U.S"]
+      }
+    ]
+  },
+  {
+    "category": "RETAIL",
+    "users": [
+      {
+        "externalId": "fi_without_credscr_and_budgets",
+        "role": "without_credscr-and-budget",
         "productGroupNames": ["Retail Accounts U.S"]
       }
     ]

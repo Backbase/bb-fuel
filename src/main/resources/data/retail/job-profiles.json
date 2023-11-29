@@ -513,11 +513,11 @@
     ]
   },
   {
-    "jobProfileName": "Retail User Pockets only",
+    "jobProfileName": "Retail User Credit Score only",
     "type": "REGULAR",
     "isRetail": "true",
     "roles": [
-      "pockets-only"
+      "credscr-only"
     ],
     "permissions": [
       {
@@ -527,7 +527,7 @@
         ]
       },
       {
-        "businessFunction": "Manage Pockets",
+        "businessFunction": "Credit Score SSO",
         "privileges": [
           "view",
           "create",
@@ -1064,11 +1064,11 @@
     ]
   },
   {
-    "jobProfileName": "Retail User Pockets and Budget only",
+    "jobProfileName": "Retail User Credit Score and Budget only",
     "type": "REGULAR",
     "isRetail": "true",
     "roles": [
-      "pockets-and-budget-only"
+      "credscr-and-budget-only"
     ],
     "permissions": [
       {
@@ -1078,7 +1078,7 @@
         ]
       },
       {
-        "businessFunction": "Manage Pockets",
+        "businessFunction": "Credit Score SSO",
         "privileges": [
           "view",
           "create",
@@ -1094,6 +1094,272 @@
           "create",
           "edit",
           "delete"
+        ]
+      },
+      {
+        "businessFunction": "Contacts",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve"
+        ]
+      },
+      {
+        "businessFunction": "Manage Limits",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete"
+        ]
+      },
+      {
+        "businessFunction": "Manage Action Recipes",
+        "privileges": [
+          "execute",
+          "view",
+          "create",
+          "edit",
+          "delete"
+        ]
+      },
+      {
+        "businessFunction": "Manage Statements",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Manage Notifications",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Manage Topics",
+        "privileges": [
+          "execute",
+          "view",
+          "create",
+          "edit",
+          "delete"
+        ]
+      },
+      {
+        "businessFunction": "Manage Messages",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve"
+        ]
+      },
+      {
+        "businessFunction": "Manage User Profiles",
+        "privileges": [
+          "view",
+          "edit",
+          "create",
+          "delete"
+        ]
+      },
+      {
+        "businessFunction": "Manage Authorized Users",
+        "privileges": [
+          "view",
+          "edit",
+          "create"
+        ]
+      },
+      {
+        "businessFunction": "Manage Cards",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Manage Devices",
+        "privileges": [
+          "view",
+          "edit",
+          "delete"
+        ]
+      },
+      {
+        "businessFunction": "A2A Transfer",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "P2P Transfer",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "SEPA CT",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "SEPA CT - Intracompany",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "ACH Debit",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "Product Summary",
+        "privileges": [
+          "view",
+          "edit"
+        ]
+      },
+      {
+        "businessFunction": "Transactions",
+        "privileges": [
+          "view",
+          "edit"
+        ]
+      },
+      {
+        "businessFunction": "Places",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Stop Checks",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "US Billpay Enrolment",
+        "privileges": [
+          "execute",
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "US Billpay Payments",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete"
+        ]
+      },
+      {
+        "businessFunction": "US Billpay Payees",
+        "privileges": [
+          "view",
+          "create",
+          "edit"
+        ]
+      },
+      {
+        "businessFunction": "US Billpay Payees-Summary",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "US Billpay Accounts",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "US Billpay Payees-Search",
+        "privileges": [
+          "execute"
+        ]
+      },
+      {
+        "businessFunction": "US Domestic Wire",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "US Foreign Wire",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "US Domestic Wire - Intracompany",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      }
+    ]
+  },
+  {
+    "jobProfileName": "Retail User without Credit Score and Budget",
+    "type": "REGULAR",
+    "isRetail": "true",
+    "roles": [
+      "without_credscr-and-budget"
+    ],
+    "permissions": [
+      {
+        "businessFunction": "Financial Insights",
+        "privileges": [
+          "view"
         ]
       },
       {

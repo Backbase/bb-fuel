@@ -48,6 +48,8 @@ public final class CommonConstants {
     public static final String BATCH_ACH_REVERSAL = "Batch - ACH Reversal";
     public static final String BATCH_INTRACOMPANY = "Batch - Intracompany Payments";
     public static final String BATCH_SEPA_CT_FUNCTION_NAME = "Batch - SEPA CT";
+    public static final String BATCH_SEPA_DD_FUNCTION_NAME = "Batch - SEPA DD";
+
     public static final String PRIVILEGE_CREATE = "create";
     public static final String PRIVILEGE_VIEW = "view";
     public static final String PROPERTY_INGEST_ACCESS_CONTROL = "ingest.access.control";

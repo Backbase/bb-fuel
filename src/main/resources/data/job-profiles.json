@@ -484,6 +484,15 @@
         ]
       },
       {
+        "businessFunction": "Batch - SEPA DD",
+        "privileges": [
+          "view",
+          "create",
+          "delete",
+          "approve"
+        ]
+      },
+      {
         "businessFunction": "Batch - ACH Debit",
         "privileges": [
           "view",
@@ -794,6 +803,15 @@
           "delete",
           "approve",
           "cancel"
+        ]
+      },
+      {
+        "businessFunction": "Batch - SEPA DD",
+        "privileges": [
+          "view",
+          "create",
+          "delete",
+          "approve"
         ]
       },
       {
@@ -1277,6 +1295,15 @@
         ]
       },
       {
+        "businessFunction": "Batch - SEPA DD",
+        "privileges": [
+          "view",
+          "create",
+          "delete",
+          "approve"
+        ]
+      },
+      {
         "businessFunction": "Batch - ACH Credit",
         "privileges": [
           "view",
@@ -1594,6 +1621,12 @@
       },
       {
         "businessFunction": "Batch - SEPA CT",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Batch - SEPA DD",
         "privileges": [
           "view"
         ]

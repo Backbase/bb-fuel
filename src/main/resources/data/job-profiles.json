@@ -488,8 +488,10 @@
         "privileges": [
           "view",
           "create",
+          "edit",
           "delete",
-          "approve"
+          "approve",
+          "cancel"
         ]
       },
       {
@@ -810,8 +812,10 @@
         "privileges": [
           "view",
           "create",
+          "edit",
           "delete",
-          "approve"
+          "approve",
+          "cancel"
         ]
       },
       {
@@ -1299,8 +1303,10 @@
         "privileges": [
           "view",
           "create",
+          "edit",
           "delete",
-          "approve"
+          "approve",
+          "cancel"
         ]
       },
       {

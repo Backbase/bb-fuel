@@ -96,5 +96,45 @@
         "productGroupNames": ["Retail Accounts U.S"]
       }
     ]
+  },
+  {
+    "category": "RETAIL",
+    "users": [
+      {
+        "externalId": "fi_credscr_only",
+        "role": "credscr-only",
+        "productGroupNames": ["Retail Accounts U.S"]
+      }
+    ]
+  },
+  {
+    "category": "RETAIL",
+    "users": [
+      {
+        "externalId": "fi_budgets_only",
+        "role": "budget-only",
+        "productGroupNames": ["Retail Accounts U.S"]
+      }
+    ]
+  },
+  {
+    "category": "RETAIL",
+    "users": [
+      {
+        "externalId": "fi_credscr_and_budgets",
+        "role": "credscr-and-budget-only",
+        "productGroupNames": ["Retail Accounts U.S"]
+      }
+    ]
+  },
+  {
+    "category": "RETAIL",
+    "users": [
+      {
+        "externalId": "fi_without_credscr_and_budgets",
+        "role": "without_credscr-and-budget",
+        "productGroupNames": ["Retail Accounts U.S"]
+      }
+    ]
   }
 ]

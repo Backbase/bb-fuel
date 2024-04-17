@@ -1,12 +1,10 @@
 package com.backbase.ct.bbfuel.data;
 
-import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_CONTACTS_ACCOUNT_TYPES;
-import static com.backbase.ct.bbfuel.data.ProductSummaryDataGenerator.generateRandomIban;
 import static com.backbase.ct.bbfuel.util.CommonHelpers.createRandomValidRtn;
 import static java.util.Arrays.asList;
+import static org.iban4j.CountryCode.NL;
+import static org.iban4j.CountryCode.US;
 
-import com.backbase.ct.bbfuel.util.CommonHelpers;
-import com.backbase.ct.bbfuel.util.GlobalProperties;
 import com.backbase.dbs.contact.integration.inbound.api.v2.model.AccessContext;
 import com.backbase.dbs.contact.integration.inbound.api.v2.model.AccessContextScope;
 import com.backbase.dbs.contact.integration.inbound.api.v2.model.Address;
@@ -16,16 +14,18 @@ import com.backbase.dbs.contact.integration.inbound.api.v2.model.ExternalContact
 import com.github.javafaker.Faker;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import org.iban4j.CountryCode;
+import org.iban4j.Iban;
 
 public class ContactsDataGenerator {
 
     private ContactsDataGenerator() {
     }
 
-    private static final GlobalProperties globalProperties = GlobalProperties.getInstance();
     private static final Faker faker = new Faker();
     private static final List<String> VALID_BIC_LIST = asList("ABNANL2A", "ANDLNL2A", "ARBNNL22", "ARSNNL21");
     private static final List<String> VALID_ACCOUNT_TYPE_LIST = asList("Checking", "Savings");
@@ -51,32 +51,9 @@ public class ContactsDataGenerator {
         List<ExternalAccountInformation> accounts = new ArrayList<>();
 
         for (int i = 0; i < numberOfAccounts; i++) {
-            ExternalAccountInformation externalAccountInformation = new ExternalAccountInformation()
-                .externalId(UUID.randomUUID().toString().substring(0, 32))
-                .name(faker.lorem().sentence(3, 0).replace(".", ""))
-                .alias(faker.lorem().characters(10))
-                .bic(VALID_BIC_LIST.get(faker.random().nextInt(VALID_BIC_LIST.size())))
-                .accountHolderAddress(new Address()
-                    .addressLine1(faker.address().streetAddress())
-                    .addressLine2(faker.address().secondaryAddress())
-                    .streetName(faker.address().streetAddress())
-                    .postCode(faker.address().zipCode())
-                    .town(faker.address().cityName())
-                    .country(faker.address().countryCode())
-                    .countrySubDivision(faker.address().state()))
-                .accountType(VALID_ACCOUNT_TYPE_LIST.get(faker.random().nextInt(VALID_ACCOUNT_TYPE_LIST.size())))
-                .bankCode(createRandomValidRtn())
-                .bankAddress(new Address()
-                    .addressLine1(faker.address().streetAddress())
-                    .addressLine2(faker.address().secondaryAddress())
-                    .streetName(faker.address().streetAddress())
-                    .postCode(faker.address().zipCode())
-                    .town(faker.address().city())
-                    .country(faker.address().countryCode())
-                    .countrySubDivision(faker.address().state()));
-
-            externalAccountInformation = determineTheUseOfIBANorBBAN(externalAccountInformation);
-
+            ExternalAccountInformation externalAccountInformation = faker.random().nextInt(3) % 2 == 0 ?
+                generateNlAccountInformation() :
+                generateUsAccountInformation();
             accounts.add(externalAccountInformation);
         }
 
@@ -88,40 +65,40 @@ public class ContactsDataGenerator {
             .emailId(faker.internet().emailAddress())
             .phoneNumber(faker.phoneNumber().phoneNumber())
             .category(faker.lorem().characters(10))
-            .address(new Address()
-                .addressLine1(faker.address().streetAddress())
-                .addressLine2(faker.address().secondaryAddress())
-                .streetName(faker.address().streetAddress())
-                .postCode(faker.address().zipCode())
-                .town(faker.address().city())
-                .country(faker.address().countryCode())
-                .countrySubDivision(faker.address().state()))
+            .address(getAddress(null))
             .accounts(accounts);
     }
 
-    private static ExternalAccountInformation determineTheUseOfIBANorBBAN(
-        ExternalAccountInformation externalAccountInformation) {
-        final String BBAN = "BBAN";
-        final String IBAN = "IBAN";
-        String availableAccountType = globalProperties.getString(PROPERTY_CONTACTS_ACCOUNT_TYPES);
-        ExternalAccountInformation returnedExternalAccountInformation;
+    private static ExternalAccountInformation generateNlAccountInformation() {
+        return getBasicAccountInformation(NL)
+            .iban(Iban.random(NL).toString());
+    }
 
-        switch (availableAccountType.toUpperCase()) {
-            case IBAN:
-                returnedExternalAccountInformation = externalAccountInformation.iban(generateRandomIban());
-                break;
+    private static ExternalAccountInformation generateUsAccountInformation() {
+        return getBasicAccountInformation(US)
+            .accountNumber(faker.number().digits(12));
+    }
 
-            case BBAN:
-                int randomBbanAccount = CommonHelpers.generateRandomNumberInRange(100000, 999999999);
-                returnedExternalAccountInformation = externalAccountInformation.accountNumber(
-                    String.valueOf(randomBbanAccount));
-                break;
+    private static ExternalAccountInformation getBasicAccountInformation(CountryCode code) {
+        return new ExternalAccountInformation()
+            .externalId(UUID.randomUUID().toString().substring(0, 32))
+            .name(faker.lorem().sentence(3, 0).replace(".", ""))
+            .alias(faker.lorem().characters(10))
+            .bic(VALID_BIC_LIST.get(faker.random().nextInt(VALID_BIC_LIST.size())))
+            .accountHolderAddress(getAddress(code))
+            .accountType(VALID_ACCOUNT_TYPE_LIST.get(faker.random().nextInt(VALID_ACCOUNT_TYPE_LIST.size())))
+            .bankCode(createRandomValidRtn())
+            .bankAddress(getAddress(code));
+    }
 
-            default:
-                throw new IllegalStateException(
-                    "Unexpected value: " + availableAccountType + ". Please use IBAN or BBAN");
-        }
-
-        return returnedExternalAccountInformation;
+    private static com.backbase.dbs.contact.integration.inbound.api.v2.model.Address getAddress(CountryCode code) {
+        return new Address()
+            .addressLine1(faker.address().streetAddress())
+            .addressLine2(faker.address().secondaryAddress())
+            .streetName(faker.address().streetAddress())
+            .postCode(faker.address().zipCode())
+            .town(faker.address().city())
+            .country(Objects.nonNull(code) ? code.toString() : faker.address().countryCode())
+            .countrySubDivision(faker.address().state());
     }
 }

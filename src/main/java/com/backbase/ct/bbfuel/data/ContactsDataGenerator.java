@@ -1,6 +1,7 @@
 package com.backbase.ct.bbfuel.data;
 
 import static com.backbase.ct.bbfuel.util.CommonHelpers.createRandomValidRtn;
+import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
 import static java.util.Arrays.asList;
 import static org.iban4j.CountryCode.NL;
 import static org.iban4j.CountryCode.US;
@@ -51,8 +52,8 @@ public class ContactsDataGenerator {
         List<ExternalAccountInformation> accounts = new ArrayList<>();
 
         for (int i = 0; i < numberOfAccounts; i++) {
-            ExternalAccountInformation externalAccountInformation = faker.random().nextInt(3) % 2 == 0 ?
-                generateNlAccountInformation() :
+            ExternalAccountInformation externalAccountInformation = faker.random().nextBoolean() ?
+                generateNlAccountInformation():
                 generateUsAccountInformation();
             accounts.add(externalAccountInformation);
         }
@@ -84,7 +85,7 @@ public class ContactsDataGenerator {
             .externalId(UUID.randomUUID().toString().substring(0, 32))
             .name(faker.lorem().sentence(3, 0).replace(".", ""))
             .alias(faker.lorem().characters(10))
-            .bic(VALID_BIC_LIST.get(faker.random().nextInt(VALID_BIC_LIST.size())))
+            .bic(getRandomFromList(VALID_BIC_LIST))
             .accountHolderAddress(getAddress(code))
             .accountType(VALID_ACCOUNT_TYPE_LIST.get(faker.random().nextInt(VALID_ACCOUNT_TYPE_LIST.size())))
             .bankCode(createRandomValidRtn())

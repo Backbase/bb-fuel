@@ -5,7 +5,9 @@ import static io.restassured.config.HttpClientConfig.httpClientConfig;
 import static java.util.Objects.*;
 import static org.apache.http.HttpStatus.SC_OK;
 
+import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
 import com.backbase.ct.bbfuel.config.MultiTenancyConfig;
+import com.backbase.ct.bbfuel.config.TopstackEphemeralConfig;
 import com.backbase.ct.bbfuel.data.CommonConstants;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -75,6 +77,7 @@ public class RestClient {
     protected static GlobalProperties globalProperties = GlobalProperties.getInstance();
     private static final String X_XSRF_TOKEN_NAME = "X-XSRF-TOKEN";
     private static final String XSRF_TOKEN_NAME = "XSRF-TOKEN";
+    private static final String AUTHORIZATION = "Authorization";
 
     @Getter
     private URI baseURI = null;
@@ -85,6 +88,12 @@ public class RestClient {
 
     private static Map<String, String> cookiesJar = new LinkedHashMap<>();
     private final ResponseParserRegistrar responseParserRegistrar = new ResponseParserRegistrar();
+
+    @Setter
+    private BbFuelConfiguration bbFuelConfig;
+    private static String cachedToken = null;
+    private static long lastTokenFetchTime = 0;
+    private static final long TOKEN_EXPIRY = 3600000;
 
     public RestClient setInitialPath(String initialPath) {
         this.initialPath = initialPath;
@@ -146,6 +155,11 @@ public class RestClient {
             requestSpec.header(TENANT_HEADER_NAME, MultiTenancyConfig.getTenantId());
         }
 
+        if (TopstackEphemeralConfig.isTopstackEphemeralEnvironment()) {
+            String token = fetchToken();
+            requestSpec.header(AUTHORIZATION, "Bearer " + token); // Set the Authorization header// Retrieve the jwt token
+        }
+
         return requestSpec;
     }
 
@@ -189,5 +203,47 @@ public class RestClient {
                 .filter(new ResponseLoggingFilter())
                 .filter(new RequestLoggingFilter());
         }
+    }
+
+    private String buildUrlFromTemplate(String urlTemplate) {
+        String envName = GlobalProperties.getInstance().getString("environment.name");
+        String envDomain = GlobalProperties.getInstance().getString("environment.domain");
+        return urlTemplate.replace("${environment.name}", envName)
+            .replace("${environment.domain}", envDomain);
+    }
+
+    private String fetchToken() {
+        // Check if token is already fetched and not expired
+        if (cachedToken != null && (System.currentTimeMillis() - lastTokenFetchTime) < TOKEN_EXPIRY) {
+            return cachedToken;
+        }
+
+        String tokenUrl = "https://jwt-ep-cbhhl.eph.rndbb.azure.backbaseservices.com/jwt-external-secretkey";
+
+        cachedToken = RestAssured.given()
+            .log().all()
+            .header("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36")
+            .header("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7")
+            .header("accept-language", "en-GB,en-US;q=0.9,en;q=0.8")
+            .header("cache-control", "max-age=0")
+            .header("if-modified-since", "Wed, 17 Apr 2024 13:58:05 GMT")
+            .header("if-none-match", "\"661fd56d-20\"")
+            .header("sec-ch-ua", "\"Google Chrome\";v=\"123\", \"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"123\"")
+            .header("sec-ch-ua-mobile", "?0")
+            .header("sec-ch-ua-platform", "\"macOS\"")
+            .header("sec-fetch-dest", "document")
+            .header("sec-fetch-mode", "navigate")
+            .header("sec-fetch-site", "none")
+            .header("sec-fetch-user", "?1")
+            .header("upgrade-insecure-requests", "1")
+            .get(tokenUrl)
+            .then()
+            .statusCode(200)
+            .extract()
+            .body()
+            .asString();
+
+        lastTokenFetchTime = System.currentTimeMillis();
+        return cachedToken;
     }
 }

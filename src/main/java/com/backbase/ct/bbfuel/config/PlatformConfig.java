@@ -35,4 +35,9 @@ public class PlatformConfig {
      */
     private String identity;
 
+    /**
+     * URI to jwt-expose.
+     */
+    private String jwt;
+
 }

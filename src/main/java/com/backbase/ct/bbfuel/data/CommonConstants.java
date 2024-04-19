@@ -14,6 +14,7 @@ public final class CommonConstants {
     public static final String PROPERTY_HEALTH_CHECK_USE_ACTUATOR = "healthcheck.use.actuator";
     public static final String PROPERTY_LOG_ALL_REQUESTS_RESPONSES = "log.all.requests.responses";
     public static final String PROPERTY_MULTI_TENANCY_ENVIRONMENT = "multi.tenancy.environment";
+    public static final String TOPSTACK_EPHEMERAL_ENVIRONMENT = "topstack.ephemeral.environment";
     public static final String PROPERTY_TENANT_ID = "tenant.id";
 
     // Users

@@ -8,6 +8,7 @@ bb-fuel:
     gateway: https://edge-${environment.name}.${environment.domain}/api
     auth: https://edge-${environment.name}.${environment.domain}/api/auth/login
     tokenconverter: https://tokenconverter-${environment.name}.${environment.domain}
+    jwt: https://jwt-${environment.name}.${environment.domain}/jwt-external-secretkey
   dbs:
     accessgroup: https://accessgroup-${environment.name}.${environment.domain}/integration-api
     accounts: https://account-${environment.name}.${environment.domain}/service-api

@@ -40,6 +40,11 @@ public class DbsConfig {
     private String user;
 
     /**
+     * URI to user mock.
+     */
+    private String usermock;
+
+    /**
      * URI to legalentity.
      */
     private String legalentity;

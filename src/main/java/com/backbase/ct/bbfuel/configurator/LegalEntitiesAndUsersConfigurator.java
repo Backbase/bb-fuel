@@ -12,6 +12,7 @@ import com.backbase.ct.bbfuel.client.accessgroup.UserContextPresentationRestClie
 import com.backbase.ct.bbfuel.client.common.LoginRestClient;
 import com.backbase.ct.bbfuel.client.legalentity.LegalEntityPresentationRestClient;
 import com.backbase.ct.bbfuel.client.user.UserIntegrationRestClient;
+import com.backbase.ct.bbfuel.client.user.UserMockRestClient;
 import com.backbase.ct.bbfuel.client.user.UserPresentationRestClient;
 import com.backbase.ct.bbfuel.data.LegalEntitiesAndUsersDataGenerator;
 import com.backbase.ct.bbfuel.dto.LegalEntityWithUsers;
@@ -37,6 +38,7 @@ public class LegalEntitiesAndUsersConfigurator {
     private final LoginRestClient loginRestClient;
     private final UserContextPresentationRestClient userContextPresentationRestClient;
     private final UserIntegrationRestClient userIntegrationRestClient;
+    private final UserMockRestClient userMockRestClient;
     private final UserPresentationRestClient userPresentationRestClient;
     private final LegalEntityPresentationRestClient legalEntityPresentationRestClient;
     private final LegalEntityService legalEntityService;
@@ -95,6 +97,9 @@ public class LegalEntitiesAndUsersConfigurator {
 
         if (this.globalProperties.getBoolean(PROPERTY_IDENTITY_FEATURE_TOGGLE)) {
             response = this.userIntegrationRestClient.importUserIdentity(user);
+            if (response.statusCode() == SC_CREATED) {
+                this.userMockRestClient.addUserProfileData(user.getExternalId());
+            }
         } else {
             response = this.userIntegrationRestClient.ingestUser(user);
         }

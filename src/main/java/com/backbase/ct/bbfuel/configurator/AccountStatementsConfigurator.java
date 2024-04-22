@@ -18,7 +18,7 @@ import com.backbase.ct.bbfuel.client.user.UserPresentationRestClient;
 import com.backbase.ct.bbfuel.client.user.UserProfileRestClient;
 import com.backbase.ct.bbfuel.dto.accountStatement.EStatementPreferencesRequest;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
-import com.backbase.dbs.productsummary.presentation.rest.spec.v2.productsummary.ArrangementsByBusinessFunctionGetResponseBody;
+import com.backbase.dbs.arrangement.client.api.v2.model.ProductSummaryItem;
 import io.restassured.response.Response;
 import java.util.List;
 import java.util.Random;
@@ -48,7 +48,7 @@ public class AccountStatementsConfigurator {
         int randomAmount = generateRandomNumberInRange(globalProperties.getInt(PROPERTY_ACCOUNTSTATEMENTS_MIN),
             globalProperties.getInt(PROPERTY_ACCOUNTSTATEMENTS_MAX));
 
-        Consumer<ArrangementsByBusinessFunctionGetResponseBody> consumer = arrangement -> {
+        Consumer<ProductSummaryItem> consumer = arrangement -> {
             String internalArrangementId = arrangement.getId();
             String accountName = arrangement.getName();
             String accountIBAN = arrangement.getIBAN();
@@ -69,7 +69,7 @@ public class AccountStatementsConfigurator {
     public void ingestAccountStatementPreferences(String externalUserId) {
         final Random booleanGenerator = new Random(System.currentTimeMillis());
 
-        Function<ArrangementsByBusinessFunctionGetResponseBody, EStatementPreferencesRequest> mapper =
+        Function<ProductSummaryItem, EStatementPreferencesRequest> mapper =
             arrangement -> new EStatementPreferencesRequest(
                 arrangement.getId(), externalUserId,
                 booleanGenerator.nextBoolean(), booleanGenerator.nextBoolean());
@@ -117,7 +117,7 @@ public class AccountStatementsConfigurator {
         }
     }
 
-    private List<ArrangementsByBusinessFunctionGetResponseBody> fetchUserArrangements(String externalUserId) {
+    private List<ProductSummaryItem> fetchUserArrangements(String externalUserId) {
         loginRestClient.login(externalUserId, externalUserId);
         userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 

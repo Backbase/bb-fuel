@@ -50,17 +50,19 @@ public class PaymentsDataGenerator {
         Schedule schedule = null;
         Bank counterpartyBank = null;
         Bank correspondentBank = null;
-        CurrencyTyped currency = new CurrencyTyped().amount(CommonHelpers.generateRandomAmountInRange(1000L, 99999L));
+        CurrencyTyped currency = new CurrencyTyped();
+        currency.setAmount(CommonHelpers.generateRandomAmountInRange(1000L, 99999L));
         Identification identification;
 
         if (paymentMode == PaymentMode.RECURRING) {
             schedule = new Schedule()
-                .startDate(LocalDate.now())
-                .every(getRandomFromEnumValues(EveryEnum.values()))
-                .nonWorkingDayExecutionStrategy(getRandomFromEnumValues(NonWorkingDayExecutionStrategyEnum.values()))
-                .transferFrequency(getRandomFromEnumValues(TransferFrequencyEnum.values()))
-                .on(CommonHelpers.generateRandomNumberInRange(1, 7))
-                .endDate(LocalDate.now().plusYears(1L));
+                .withStartDate(LocalDate.now())
+                .withEvery(getRandomFromEnumValues(EveryEnum.values()))
+                .withNonWorkingDayExecutionStrategy(
+                    getRandomFromEnumValues(NonWorkingDayExecutionStrategyEnum.values()))
+                .withTransferFrequency(getRandomFromEnumValues(TransferFrequencyEnum.values()))
+                .withOn(CommonHelpers.generateRandomNumberInRange(1, 7))
+                .withEndDate(LocalDate.now().plusYears(1L));
         }
 
         if (PAYMENT_TYPE_SEPA_CREDIT_TRANSFER.equals(paymentType)) {
@@ -77,68 +79,72 @@ public class PaymentsDataGenerator {
             identification = generateBbanIdentification();
         }
 
-        return new InitiatePaymentOrderWithId()
-            .id(UUID.randomUUID().toString())
-            .originatorAccount(new AccountIdentification()
-                .name(faker.lorem().sentence(3, 0).replace(".", ""))
-                .identification(
-                    new Identification().schemeName(SchemeNames.ID).identification(originatorArrangementId)))
-            .instructionPriority(getRandomFromEnumValues(InstructionPriority.values()))
-            .paymentMode(paymentMode)
-            .paymentType(paymentType)
-            .requestedExecutionDate(LocalDate.now())
-            .schedule(schedule)
-            .transferTransactionInformation(new InitiateTransaction()
-                .endToEndIdentification(faker.lorem().characters(10))
-                .counterpartyAccount(new InitiateCounterpartyAccount()
-                    .name(faker.lorem().sentence(3, 0).replace(".", ""))
-                    .identification(identification))
-                .instructedAmount(currency)
-                .remittanceInformation(faker.lorem().sentence(3, 0).replace(".", ""))
-                .counterparty(new InvolvedParty()
-                    .name(faker.name().fullName())
-                    .postalAddress(new PostalAddress()
-                        .addressLine1(faker.address().streetAddress())
-                        .addressLine2(faker.address().secondaryAddress())
-                        .streetName(faker.address().streetAddress())
-                        .postCode(faker.address().zipCode())
-                        .town(faker.address().city())
-                        .country(faker.address().countryCode())
-                        .countrySubDivision(faker.address().state())))
-                .counterpartyBank(counterpartyBank)
-                .correspondentBank(correspondentBank));
+        InitiateCounterpartyAccount initiateCounterpartyAccount = new InitiateCounterpartyAccount();
+        initiateCounterpartyAccount.setName(faker.lorem().sentence(3, 0).replace(".", ""));
+        initiateCounterpartyAccount.setIdentification(identification);
+
+        InitiatePaymentOrderWithId initiatePaymentOrder = new InitiatePaymentOrderWithId();
+        initiatePaymentOrder
+            .withId(UUID.randomUUID().toString())
+            .withOriginatorAccount(new AccountIdentification()
+                .withName(faker.lorem().sentence(3, 0).replace(".", ""))
+                .withIdentification(new Identification().withSchemeName(SchemeNames.ID)
+                    .withIdentification(originatorArrangementId)))
+            .withInstructionPriority(getRandomFromEnumValues(InstructionPriority.values()))
+            .withPaymentMode(paymentMode)
+            .withPaymentType(paymentType)
+            .withRequestedExecutionDate(LocalDate.now())
+            .withSchedule(schedule)
+            .withTransferTransactionInformation(new InitiateTransaction()
+                .withEndToEndIdentification(faker.lorem().characters(10))
+                .withCounterpartyAccount(initiateCounterpartyAccount)
+                .withInstructedAmount(currency)
+                .withRemittanceInformation(faker.lorem().sentence(3, 0).replace(".", ""))
+                .withCounterparty(new InvolvedParty()
+                    .withName(faker.name().fullName())
+                    .withPostalAddress(new PostalAddress()
+                        .withAddressLine1(faker.address().streetAddress())
+                        .withAddressLine2(faker.address().secondaryAddress())
+                        .withStreetName(faker.address().streetAddress())
+                        .withPostCode(faker.address().zipCode())
+                        .withTown(faker.address().city())
+                        .withCountry(faker.address().countryCode())
+                        .withCountrySubDivision(faker.address().state())))
+                .withCounterpartyBank(counterpartyBank)
+                .withCorrespondentBank(correspondentBank));
+        return initiatePaymentOrder;
     }
 
     private static Identification generateIbanIdentification() {
         return new Identification()
-            .schemeName(SchemeNames.IBAN)
-            .identification(ProductSummaryDataGenerator.generateRandomIban());
+            .withSchemeName(SchemeNames.IBAN)
+            .withIdentification(ProductSummaryDataGenerator.generateRandomIban());
     }
 
     private static Identification generateBbanIdentification() {
         return new Identification()
-            .schemeName(SchemeNames.BBAN)
-            .identification(String.valueOf(CommonHelpers.generateRandomNumberInRange(0, 999999999)));
+            .withSchemeName(SchemeNames.BBAN)
+            .withIdentification(String.valueOf(CommonHelpers.generateRandomNumberInRange(0, 999999999)));
     }
 
     private static Bank generateCorrespondentBank() {
         return new Bank()
-            .bankBranchCode(getRandomFromList(branchCodes))
-            .name(faker.name().fullName());
+            .withBankBranchCode(getRandomFromList(branchCodes))
+            .withName(faker.name().fullName());
     }
 
     private static Bank generateCounterpartyBank() {
         return new Bank()
-            .bankBranchCode(getRandomFromList(branchCodes))
-            .name(faker.name().fullName())
-            .bic(getRandomFromList(bicCodes))
-            .postalAddress(new PostalAddress()
-                .addressLine1(faker.address().streetAddress())
-                .addressLine2(faker.address().secondaryAddress())
-                .streetName(faker.address().streetAddress())
-                .postCode(faker.address().zipCode())
-                .town(faker.address().city())
-                .country(faker.address().countryCode())
-                .countrySubDivision(faker.address().state()));
+            .withBankBranchCode(getRandomFromList(branchCodes))
+            .withName(faker.name().fullName())
+            .withBic(getRandomFromList(bicCodes))
+            .withPostalAddress(new PostalAddress()
+                .withAddressLine1(faker.address().streetAddress())
+                .withAddressLine2(faker.address().secondaryAddress())
+                .withStreetName(faker.address().streetAddress())
+                .withPostCode(faker.address().zipCode())
+                .withTown(faker.address().city())
+                .withCountry(faker.address().countryCode())
+                .withCountrySubDivision(faker.address().state()));
     }
 }

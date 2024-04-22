@@ -9,7 +9,7 @@ import com.backbase.ct.bbfuel.data.PaymentsDataGenerator;
 import com.backbase.ct.bbfuel.util.CommonHelpers;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
 import com.backbase.dbs.paymentorder.client.api.v3.model.InitiatePaymentOrderWithId;
-import com.backbase.dbs.productsummary.presentation.rest.spec.v2.productsummary.ArrangementsByBusinessFunctionGetResponseBody;
+import com.backbase.dbs.arrangement.client.api.v2.model.ProductSummaryItem;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -41,17 +41,15 @@ public class PaymentsConfigurator {
 
         List<String> ootbPaymentTypes = globalProperties.getList(PROPERTY_PAYMENTS_OOTB_TYPES);
 
-        log.info("ootbPaymentTypes is {}", String.join(",", ootbPaymentTypes));
-
         loginRestClient.login(externalUserId, externalUserId);
         userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
-        List<ArrangementsByBusinessFunctionGetResponseBody> sepaCtArrangements = productSummaryPresentationRestClient
+        List<ProductSummaryItem> sepaCtArrangements = productSummaryPresentationRestClient
             .getSepaCtArrangements();
-        List<ArrangementsByBusinessFunctionGetResponseBody> usDomesticWireArrangements = productSummaryPresentationRestClient
+        List<ProductSummaryItem> usDomesticWireArrangements = productSummaryPresentationRestClient
             .getUsDomesticWireArrangements();
-        List<ArrangementsByBusinessFunctionGetResponseBody> achDebitArrangements = productSummaryPresentationRestClient
+        List<ProductSummaryItem> achDebitArrangements = productSummaryPresentationRestClient
             .getAchDebitArrangements();
-        List<ArrangementsByBusinessFunctionGetResponseBody> usForeignWireArrangements = productSummaryPresentationRestClient
+        List<com.backbase.dbs.arrangement.client.api.v2.model.ProductSummaryItem> usForeignWireArrangements = productSummaryPresentationRestClient
             .getUSForeignWireArrangements();
 
         int randomAmount = CommonHelpers
@@ -63,7 +61,7 @@ public class PaymentsConfigurator {
 
             IntStream.range(0, randomAmount).parallel().forEach(randomNumber -> {
                 String paymentType = getRandomFromList(ootbPaymentTypes);
-                ArrangementsByBusinessFunctionGetResponseBody randomArrangement;
+                ProductSummaryItem randomArrangement;
 
                 if (PAYMENT_TYPE_SEPA_CREDIT_TRANSFER.equals(paymentType)) {
                     randomArrangement = getRandomFromList(sepaCtArrangements);

@@ -13,7 +13,7 @@ import com.backbase.ct.bbfuel.client.common.LoginRestClient;
 import com.backbase.ct.bbfuel.client.productsummary.ProductSummaryPresentationRestClient;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
 import com.backbase.dbs.action.client.v2.model.ActionRecipesPostRequestBodyParent;
-import com.backbase.dbs.productsummary.presentation.rest.spec.v2.productsummary.ArrangementsByBusinessFunctionGetResponseBody;
+import com.backbase.dbs.arrangement.client.api.v2.model.ProductSummaryItem;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -34,7 +34,7 @@ public class ActionsConfigurator {
     private final ActionRecipesPresentationRestClient actionRecipesPresentationRestClient;
 
     public void ingestActions(String externalUserId) {
-        List<ArrangementsByBusinessFunctionGetResponseBody> arrangements = new ArrayList<>();
+        List<ProductSummaryItem> arrangements = new ArrayList<>();
         int randomAmount = generateRandomNumberInRange(globalProperties.getInt(PROPERTY_ACTIONS_MIN),
             globalProperties.getInt(PROPERTY_ACTIONS_MAX));
 

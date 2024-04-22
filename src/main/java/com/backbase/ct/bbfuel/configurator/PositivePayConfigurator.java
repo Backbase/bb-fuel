@@ -17,7 +17,7 @@ import com.backbase.ct.bbfuel.dto.ArrangementId;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
 import com.backbase.dbs.arrangement.integration.inbound.api.v2.model.Subscription;
 import com.backbase.dbs.positivepay.client.api.v1.model.PositivePayPost;
-import com.backbase.dbs.productsummary.presentation.rest.spec.v2.productsummary.ArrangementsByBusinessFunctionGetResponseBody;
+import com.backbase.dbs.arrangement.client.api.v2.model.ProductSummaryItem;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -47,7 +47,7 @@ public class PositivePayConfigurator {
     private final ArrangementsIntegrationRestClient arrangementsIntegrationRestClient;
 
     public void ingestPositivePayChecks(String externalUserId) {
-        List<ArrangementsByBusinessFunctionGetResponseBody> arrangements = new ArrayList<>();
+        List<ProductSummaryItem> arrangements = new ArrayList<>();
 
         int randomAmount = generateRandomNumberInRange(globalProperties.getInt(PROPERTY_POSITIVEPAY_MIN),
                 globalProperties.getInt(PROPERTY_POSITIVEPAY_MAX));

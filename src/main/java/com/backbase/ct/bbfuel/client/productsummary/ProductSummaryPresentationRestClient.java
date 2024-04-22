@@ -14,6 +14,7 @@ import static org.apache.http.HttpStatus.SC_OK;
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
 import com.backbase.ct.bbfuel.dto.ProductSummaryQueryParameters;
+import com.backbase.dbs.arrangement.client.api.v2.model.ProductSummaryItem;
 import io.restassured.response.Response;
 import java.util.Arrays;
 import java.util.List;
@@ -21,7 +22,6 @@ import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import com.backbase.dbs.arrangement.client.api.v2.model.ProductSummaryItem;
 
 @Component
 @RequiredArgsConstructor

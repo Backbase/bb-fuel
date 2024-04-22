@@ -8,7 +8,7 @@ import com.backbase.ct.bbfuel.data.CommonConstants;
 import com.backbase.ct.bbfuel.data.PaymentsDataGenerator;
 import com.backbase.ct.bbfuel.util.CommonHelpers;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
-import com.backbase.dbs.presentation.paymentorder.rest.spec.v2.paymentorders.InitiatePaymentOrder;
+import com.backbase.dbs.paymentorder.client.api.v3.model.InitiatePaymentOrderWithId;
 import com.backbase.dbs.productsummary.presentation.rest.spec.v2.productsummary.ArrangementsByBusinessFunctionGetResponseBody;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +40,8 @@ public class PaymentsConfigurator {
     public void ingestPaymentOrders(String externalUserId) {
 
         List<String> ootbPaymentTypes = globalProperties.getList(PROPERTY_PAYMENTS_OOTB_TYPES);
+
+        log.info("ootbPaymentTypes is {}", String.join(",", ootbPaymentTypes));
 
         loginRestClient.login(externalUserId, externalUserId);
         userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
@@ -75,7 +77,7 @@ public class PaymentsConfigurator {
                     throw new IllegalArgumentException("Unknown payment type " + paymentType);
                 }
 
-                InitiatePaymentOrder initiatePaymentOrder = PaymentsDataGenerator
+                InitiatePaymentOrderWithId initiatePaymentOrder = PaymentsDataGenerator
                     .generateInitiatePaymentOrder(randomArrangement.getId(), randomArrangement.getCurrency(), paymentType);
                 paymentOrderPresentationRestClient.initiatePaymentOrder(initiatePaymentOrder)
                     .then()

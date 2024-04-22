@@ -56,6 +56,7 @@
         <arrangement-integration-inbound-api.version>2.7.2</arrangement-integration-inbound-api.version>
         <contentservices-client-api.version>2.6.0</contentservices-client-api.version>
         <contact-manager-integration-inbound-api.version>2.9.5</contact-manager-integration-inbound-api.version>
+        <payment-order-client-api.version>3.9.0</payment-order-client-api.version>
 
     </properties>
 
@@ -472,6 +473,18 @@
                             <fromFile>contact-manager-integration-inbound-api-v${contact-manager-integration-inbound-api.version}.yaml</fromFile>
                         </configuration>
                     </execution>
+
+                    <execution>
+                        <id>download-payment-order-client-api-spec</id>
+                        <goals>
+                            <goal>download-single</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <url>https://repo.backbase.com/specs/payment</url>
+                            <fromFile>payment-order-client-api-v${payment-order-client-api.version}.yaml</fromFile>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 
@@ -639,6 +652,20 @@
                             <configOptions>
                                 <apiPackage>com.backbase.dbs.contact.integration.inbound.api.v2</apiPackage>
                                 <modelPackage>com.backbase.dbs.contact.integration.inbound.api.v2.model</modelPackage>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>generate-payment-order-client-api-client-code</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${api.target}/payment-order-client-api-v${payment-order-client-api.version}.yaml</inputSpec>
+                            <configOptions>
+                                <apiPackage>com.backbase.dbs.paymentorder.client.api.v3</apiPackage>
+                                <modelPackage>com.backbase.dbs.paymentorder.client.api.v3.model</modelPackage>
                             </configOptions>
                         </configuration>
                     </execution>

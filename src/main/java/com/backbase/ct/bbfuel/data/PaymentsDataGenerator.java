@@ -6,29 +6,31 @@ import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromEnumValues;
 import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
 
 import com.backbase.ct.bbfuel.util.CommonHelpers;
-import com.backbase.dbs.presentation.paymentorder.rest.spec.v2.paymentorders.AccountIdentification;
-import com.backbase.dbs.presentation.paymentorder.rest.spec.v2.paymentorders.Bank;
-import com.backbase.dbs.presentation.paymentorder.rest.spec.v2.paymentorders.Identification;
-import com.backbase.dbs.presentation.paymentorder.rest.spec.v2.paymentorders.IdentifiedPaymentOrder;
-import com.backbase.dbs.presentation.paymentorder.rest.spec.v2.paymentorders.InitiateCounterpartyAccount;
-import com.backbase.dbs.presentation.paymentorder.rest.spec.v2.paymentorders.InitiatePaymentOrder;
-import com.backbase.dbs.presentation.paymentorder.rest.spec.v2.paymentorders.InitiateTransaction;
-import com.backbase.dbs.presentation.paymentorder.rest.spec.v2.paymentorders.InvolvedParty;
-import com.backbase.dbs.presentation.paymentorder.rest.spec.v2.paymentorders.PostalAddress;
-import com.backbase.dbs.presentation.paymentorder.rest.spec.v2.paymentorders.Schedule;
-import com.backbase.rest.spec.common.types.Currency;
+import com.backbase.dbs.paymentorder.client.api.v3.model.AccountIdentification;
+import com.backbase.dbs.paymentorder.client.api.v3.model.Bank;
+import com.backbase.dbs.paymentorder.client.api.v3.model.CurrencyTyped;
+import com.backbase.dbs.paymentorder.client.api.v3.model.Identification;
+import com.backbase.dbs.paymentorder.client.api.v3.model.InitiateCounterpartyAccount;
+import com.backbase.dbs.paymentorder.client.api.v3.model.InitiatePaymentOrderWithId;
+import com.backbase.dbs.paymentorder.client.api.v3.model.InitiateTransaction;
+import com.backbase.dbs.paymentorder.client.api.v3.model.InstructionPriority;
+import com.backbase.dbs.paymentorder.client.api.v3.model.InvolvedParty;
+import com.backbase.dbs.paymentorder.client.api.v3.model.PaymentMode;
+import com.backbase.dbs.paymentorder.client.api.v3.model.PostalAddress;
+import com.backbase.dbs.paymentorder.client.api.v3.model.Schedule;
+import com.backbase.dbs.paymentorder.client.api.v3.model.Schedule.EveryEnum;
+import com.backbase.dbs.paymentorder.client.api.v3.model.Schedule.NonWorkingDayExecutionStrategyEnum;
+import com.backbase.dbs.paymentorder.client.api.v3.model.Schedule.TransferFrequencyEnum;
+import com.backbase.dbs.paymentorder.client.api.v3.model.SchemeNames;
 import com.github.javafaker.Faker;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
-import java.util.Random;
-import org.apache.commons.lang.time.DateUtils;
+import java.util.UUID;
 
 public class PaymentsDataGenerator {
 
     private static Faker faker = new Faker();
-    private static Random random = new Random();
     private static List<String> branchCodes = Arrays
         .asList("114923756", "114910222", "124000054", "113011258", "113110586", "121002042", "122003396", "122232109",
             "122237625", "122237997", "122238572", "122105045", "122105171", "122105320", "122400779", "123006965",
@@ -42,26 +44,23 @@ public class PaymentsDataGenerator {
             "NWBKGB2LXXX", "COBADEFFXXX", "BNPAFRPPXXX", "POALILITXXX", "LOYDGB2LXXX", "NTSBDEB1XXX", "DEUTDEDBPAL",
             "AXISINBB002");
 
-    public static InitiatePaymentOrder generateInitiatePaymentOrder(String originatorArrangementId,
+    public static InitiatePaymentOrderWithId generateInitiatePaymentOrder(String originatorArrangementId,
         String originatorArrangementCurrency, String paymentType) {
-        IdentifiedPaymentOrder.PaymentMode paymentMode = IdentifiedPaymentOrder.PaymentMode.values()[random
-            .nextInt(IdentifiedPaymentOrder.PaymentMode.values().length)];
+        PaymentMode paymentMode = getRandomFromEnumValues(PaymentMode.values());
         Schedule schedule = null;
         Bank counterpartyBank = null;
         Bank correspondentBank = null;
-        Currency currency = new Currency().withAmount(CommonHelpers.generateRandomAmountInRange(1000L, 99999L));
+        CurrencyTyped currency = new CurrencyTyped().amount(CommonHelpers.generateRandomAmountInRange(1000L, 99999L));
         Identification identification;
 
-        if (paymentMode.equals(IdentifiedPaymentOrder.PaymentMode.RECURRING)) {
+        if (paymentMode == PaymentMode.RECURRING) {
             schedule = new Schedule()
-                .withStartDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()))
-                .withEvery(getRandomFromEnumValues(Schedule.Every.values()))
-                .withNonWorkingDayExecutionStrategy(
-                    getRandomFromEnumValues(Schedule.NonWorkingDayExecutionStrategy.values()))
-                .withTransferFrequency(
-                    getRandomFromEnumValues(Schedule.TransferFrequency.values()))
-                .withOn(CommonHelpers.generateRandomNumberInRange(1, 7))
-                .withEndDate(new SimpleDateFormat("yyyy-MM-dd").format(DateUtils.addYears(new Date(), 1)));
+                .startDate(LocalDate.now())
+                .every(getRandomFromEnumValues(EveryEnum.values()))
+                .nonWorkingDayExecutionStrategy(getRandomFromEnumValues(NonWorkingDayExecutionStrategyEnum.values()))
+                .transferFrequency(getRandomFromEnumValues(TransferFrequencyEnum.values()))
+                .on(CommonHelpers.generateRandomNumberInRange(1, 7))
+                .endDate(LocalDate.now().plusYears(1L));
         }
 
         if (PAYMENT_TYPE_SEPA_CREDIT_TRANSFER.equals(paymentType)) {
@@ -78,69 +77,68 @@ public class PaymentsDataGenerator {
             identification = generateBbanIdentification();
         }
 
-        return new InitiatePaymentOrder()
-            .withOriginatorAccount(new AccountIdentification()
-                .withName(faker.lorem().sentence(3, 0).replace(".", ""))
-                .withIdentification(new Identification().withSchemeName(Identification.SchemeName.ID)
-                    .withIdentification(originatorArrangementId)))
-            .withBatchBooking(false)
-            .withInstructionPriority(IdentifiedPaymentOrder.InstructionPriority.values()[random
-                .nextInt(IdentifiedPaymentOrder.InstructionPriority.values().length)])
-            .withPaymentMode(paymentMode)
-            .withPaymentType(paymentType)
-            .withRequestedExecutionDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()))
-            .withSchedule(schedule)
-            .withTransferTransactionInformation(new InitiateTransaction()
-                .withEndToEndIdentification(faker.lorem().characters(10))
-                .withCounterpartyAccount(new InitiateCounterpartyAccount()
-                    .withName(faker.lorem().sentence(3, 0).replace(".", ""))
-                    .withIdentification(identification))
-                .withInstructedAmount(currency)
-                .withRemittanceInformation(faker.lorem().sentence(3, 0).replace(".", ""))
-                .withCounterparty(new InvolvedParty()
-                    .withName(faker.name().fullName())
-                    .withPostalAddress(new PostalAddress()
-                        .withAddressLine1(faker.address().streetAddress())
-                        .withAddressLine2(faker.address().secondaryAddress())
-                        .withStreetName(faker.address().streetAddress())
-                        .withPostCode(faker.address().zipCode())
-                        .withTown(faker.address().city())
-                        .withCountry(faker.address().countryCode())
-                        .withCountrySubDivision(faker.address().state())))
-                .withCounterpartyBank(counterpartyBank)
-                .withCorrespondentBank(correspondentBank));
+        return new InitiatePaymentOrderWithId()
+            .id(UUID.randomUUID().toString())
+            .originatorAccount(new AccountIdentification()
+                .name(faker.lorem().sentence(3, 0).replace(".", ""))
+                .identification(
+                    new Identification().schemeName(SchemeNames.ID).identification(originatorArrangementId)))
+            .instructionPriority(getRandomFromEnumValues(InstructionPriority.values()))
+            .paymentMode(paymentMode)
+            .paymentType(paymentType)
+            .requestedExecutionDate(LocalDate.now())
+            .schedule(schedule)
+            .transferTransactionInformation(new InitiateTransaction()
+                .endToEndIdentification(faker.lorem().characters(10))
+                .counterpartyAccount(new InitiateCounterpartyAccount()
+                    .name(faker.lorem().sentence(3, 0).replace(".", ""))
+                    .identification(identification))
+                .instructedAmount(currency)
+                .remittanceInformation(faker.lorem().sentence(3, 0).replace(".", ""))
+                .counterparty(new InvolvedParty()
+                    .name(faker.name().fullName())
+                    .postalAddress(new PostalAddress()
+                        .addressLine1(faker.address().streetAddress())
+                        .addressLine2(faker.address().secondaryAddress())
+                        .streetName(faker.address().streetAddress())
+                        .postCode(faker.address().zipCode())
+                        .town(faker.address().city())
+                        .country(faker.address().countryCode())
+                        .countrySubDivision(faker.address().state())))
+                .counterpartyBank(counterpartyBank)
+                .correspondentBank(correspondentBank));
     }
 
     private static Identification generateIbanIdentification() {
         return new Identification()
-            .withSchemeName(Identification.SchemeName.IBAN)
-            .withIdentification(ProductSummaryDataGenerator.generateRandomIban());
+            .schemeName(SchemeNames.IBAN)
+            .identification(ProductSummaryDataGenerator.generateRandomIban());
     }
 
     private static Identification generateBbanIdentification() {
         return new Identification()
-            .withSchemeName(Identification.SchemeName.BBAN)
-            .withIdentification(String.valueOf(CommonHelpers.generateRandomNumberInRange(0, 999999999)));
+            .schemeName(SchemeNames.BBAN)
+            .identification(String.valueOf(CommonHelpers.generateRandomNumberInRange(0, 999999999)));
     }
 
     private static Bank generateCorrespondentBank() {
         return new Bank()
-            .withBankBranchCode(getRandomFromList(branchCodes))
-            .withName(faker.name().fullName());
+            .bankBranchCode(getRandomFromList(branchCodes))
+            .name(faker.name().fullName());
     }
 
     private static Bank generateCounterpartyBank() {
         return new Bank()
-            .withBankBranchCode(getRandomFromList(branchCodes))
-            .withName(faker.name().fullName())
-            .withBic(getRandomFromList(bicCodes))
-            .withPostalAddress(new PostalAddress()
-                .withAddressLine1(faker.address().streetAddress())
-                .withAddressLine2(faker.address().secondaryAddress())
-                .withStreetName(faker.address().streetAddress())
-                .withPostCode(faker.address().zipCode())
-                .withTown(faker.address().city())
-                .withCountry(faker.address().countryCode())
-                .withCountrySubDivision(faker.address().state()));
+            .bankBranchCode(getRandomFromList(branchCodes))
+            .name(faker.name().fullName())
+            .bic(getRandomFromList(bicCodes))
+            .postalAddress(new PostalAddress()
+                .addressLine1(faker.address().streetAddress())
+                .addressLine2(faker.address().secondaryAddress())
+                .streetName(faker.address().streetAddress())
+                .postCode(faker.address().zipCode())
+                .town(faker.address().city())
+                .country(faker.address().countryCode())
+                .countrySubDivision(faker.address().state()));
     }
 }

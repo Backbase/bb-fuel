@@ -18,6 +18,7 @@ bb-fuel:
     legalentity: http://legalentity.${environment.name}.${environment.domain}
     transactions: http://transactions.${environment.name}.${environment.domain}/integration-api
     user: http://user-manager.${environment.name}.${environment.domain}/integration-api
+    usermock: http://usermock-${environment.name}.${environment.domain}/service-api
     accountStatement: http://accountstatementsintegration.${environment.name}.${environment.domain}/service-api
     pockets: http://edge.${environment.name}.${environment.domain}/api/pocket-tailor/client-api
     pocketsArrangements: http://arrangementoutboundoriginationmock.${environment.name}.${environment.domain}/service-api

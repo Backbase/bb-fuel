@@ -14,7 +14,7 @@ import static org.apache.http.HttpStatus.SC_OK;
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
 import com.backbase.ct.bbfuel.dto.ProductSummaryQueryParameters;
-import com.backbase.dbs.productsummary.presentation.rest.spec.v2.productsummary.ArrangementsByBusinessFunctionGetResponseBody;
+import com.backbase.dbs.arrangement.client.api.v2.model.ProductSummaryItem;
 import io.restassured.response.Response;
 import java.util.Arrays;
 import java.util.List;
@@ -40,7 +40,7 @@ public class ProductSummaryPresentationRestClient extends RestClient {
         setInitialPath(config.getDbsServiceNames().getProducts() + "/" + CLIENT_API);
     }
 
-    public List<ArrangementsByBusinessFunctionGetResponseBody> getProductSummaryArrangements() {
+    public List<ProductSummaryItem> getProductSummaryArrangements() {
         return Arrays.asList(getProductSummaryContextArrangements(new ProductSummaryQueryParameters()
             .withBusinessFunction(PRODUCT_SUMMARY_FUNCTION_NAME)
             .withResourceName(PRODUCT_SUMMARY_RESOURCE_NAME)
@@ -50,11 +50,11 @@ public class ProductSummaryPresentationRestClient extends RestClient {
             .then()
             .statusCode(SC_OK)
             .extract()
-            .as(ArrangementsByBusinessFunctionGetResponseBody[].class));
+            .as(ProductSummaryItem[].class));
     }
 
-    public List<ArrangementsByBusinessFunctionGetResponseBody> getSepaCtArrangements() {
-        ArrangementsByBusinessFunctionGetResponseBody[] arrangements = getProductSummaryContextArrangements(
+    public List<ProductSummaryItem> getSepaCtArrangements() {
+        ProductSummaryItem[] arrangements = getProductSummaryContextArrangements(
             new ProductSummaryQueryParameters()
                 .withBusinessFunction(SEPA_CT_FUNCTION_NAME)
                 .withResourceName(PAYMENTS_RESOURCE_NAME)
@@ -66,7 +66,7 @@ public class ProductSummaryPresentationRestClient extends RestClient {
             .then()
             .statusCode(SC_OK)
             .extract()
-            .as(ArrangementsByBusinessFunctionGetResponseBody[].class);
+            .as(ProductSummaryItem[].class);
 
         // Make sure the Regex is in sync with payment-order-presentation-service/src/main/resources/application.yml (property: sepacountries)
         return Arrays.stream(arrangements)
@@ -78,7 +78,7 @@ public class ProductSummaryPresentationRestClient extends RestClient {
             .collect(Collectors.toList());
     }
 
-    public List<ArrangementsByBusinessFunctionGetResponseBody> getUsDomesticWireArrangements() {
+    public List<ProductSummaryItem> getUsDomesticWireArrangements() {
         return Arrays.asList(getProductSummaryContextArrangements(new ProductSummaryQueryParameters()
             .withBusinessFunction(US_DOMESTIC_WIRE_FUNCTION_NAME)
             .withResourceName(PAYMENTS_RESOURCE_NAME)
@@ -90,10 +90,10 @@ public class ProductSummaryPresentationRestClient extends RestClient {
             .then()
             .statusCode(SC_OK)
             .extract()
-            .as(ArrangementsByBusinessFunctionGetResponseBody[].class));
+            .as(ProductSummaryItem[].class));
     }
 
-    public List<ArrangementsByBusinessFunctionGetResponseBody> getAchDebitArrangements() {
+    public List<ProductSummaryItem> getAchDebitArrangements() {
         return Arrays.stream(getProductSummaryContextArrangements(new ProductSummaryQueryParameters()
             .withBusinessFunction(ACH_DEBIT_FUNCTION_NAME)
             .withResourceName(PAYMENTS_RESOURCE_NAME)
@@ -105,7 +105,7 @@ public class ProductSummaryPresentationRestClient extends RestClient {
             .then()
             .statusCode(SC_OK)
             .extract()
-            .as(ArrangementsByBusinessFunctionGetResponseBody[].class))
+            .as(ProductSummaryItem[].class))
                 .filter(arrangement -> isValidCurrencyForAchDebit(arrangement.getCurrency())).collect(Collectors.toList());
     }
 
@@ -113,7 +113,7 @@ public class ProductSummaryPresentationRestClient extends RestClient {
         return currency.equals("USD") || currency.equals("CAD");
     }
 
-    public List<ArrangementsByBusinessFunctionGetResponseBody> getUSForeignWireArrangements() {
+    public List<ProductSummaryItem> getUSForeignWireArrangements() {
         return Arrays.asList(getProductSummaryContextArrangements(new ProductSummaryQueryParameters()
             .withBusinessFunction(US_FOREIGN_WIRE_FUNCTION_NAME)
             .withResourceName(PAYMENTS_RESOURCE_NAME)
@@ -125,7 +125,7 @@ public class ProductSummaryPresentationRestClient extends RestClient {
             .then()
             .statusCode(SC_OK)
             .extract()
-            .as(ArrangementsByBusinessFunctionGetResponseBody[].class));
+            .as(ProductSummaryItem[].class));
     }
 
     private Response getProductSummaryContextArrangements(ProductSummaryQueryParameters queryParameters) {

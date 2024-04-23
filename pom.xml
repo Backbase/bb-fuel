@@ -51,11 +51,13 @@
         <common-types.version>1.0.5</common-types.version>
 
         <!-- Products Specs Versions -->
+        <arrangement-client-api.version>2.11.1</arrangement-client-api.version>
         <arrangement-integration-outbound-link-account-api.version>2.1.1</arrangement-integration-outbound-link-account-api.version>
         <arrangement-integration-outbound-origination-api.version>1.0.3</arrangement-integration-outbound-origination-api.version>
         <arrangement-integration-inbound-api.version>2.7.2</arrangement-integration-inbound-api.version>
         <contentservices-client-api.version>2.6.0</contentservices-client-api.version>
         <contact-manager-integration-inbound-api.version>2.9.5</contact-manager-integration-inbound-api.version>
+        <payment-order-client-api.version>3.9.0</payment-order-client-api.version>
 
     </properties>
 
@@ -414,6 +416,18 @@
 
                     <!-- Products Specs -->
                     <execution>
+                        <id>download-arrangement-client-api-spec</id>
+                        <goals>
+                            <goal>download-single</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <url>https://repo.backbase.com/specs/arrangement-manager</url>
+                            <fromFile>arrangement-client-api-v${arrangement-client-api.version}.yaml</fromFile>
+                        </configuration>
+                    </execution>
+
+                    <execution>
                         <id>download-arrangement-outbound-origination-api-spec</id>
                         <goals>
                             <goal>download-single</goal>
@@ -470,6 +484,18 @@
                         <configuration>
                             <url>https://repo.backbase.com/specs/contact-manager</url>
                             <fromFile>contact-manager-integration-inbound-api-v${contact-manager-integration-inbound-api.version}.yaml</fromFile>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>download-payment-order-client-api-spec</id>
+                        <goals>
+                            <goal>download-single</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <url>https://repo.backbase.com/specs/payment</url>
+                            <fromFile>payment-order-client-api-v${payment-order-client-api.version}.yaml</fromFile>
                         </configuration>
                     </execution>
                 </executions>
@@ -642,6 +668,7 @@
                             </configOptions>
                         </configuration>
                     </execution>
+
                 </executions>
             </plugin>
 
@@ -667,6 +694,21 @@
                 </configuration>
 
                 <executions>
+
+                    <execution>
+                        <id>generate-arrangement-client-api</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <inputSpec>${api.target}/arrangement-client-api-v${arrangement-client-api.version}.yaml</inputSpec>
+                            <configOptions>
+                                <apiPackage>com.backbase.dbs.arrangement.client.api.v2</apiPackage>
+                                <modelPackage>com.backbase.dbs.arrangement.client.api.v2.model</modelPackage>
+                            </configOptions>
+                        </configuration>
+                    </execution>
 
                     <execution>
                         <id>generate-arrangement-outbound-origination-client-code</id>
@@ -710,6 +752,22 @@
                             </configOptions>
                         </configuration>
                     </execution>
+
+                    <execution>
+                        <id>generate-payment-order-client-api</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <inputSpec>${api.target}/payment-order-client-api-v${payment-order-client-api.version}.yaml</inputSpec>
+                            <configOptions>
+                                <apiPackage>com.backbase.dbs.paymentorder.client.api.v3</apiPackage>
+                                <modelPackage>com.backbase.dbs.paymentorder.client.api.v3.model</modelPackage>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+
                 </executions>
             </plugin>
 
@@ -764,14 +822,6 @@
                                     <artifactId>product-summary-presentation-spec</artifactId>
                                     <outputDirectory>
                                         ${project.build.directory}/product-summary-presentation-spec
-                                    </outputDirectory>
-                                </artifactItem>
-
-                                <artifactItem>
-                                    <groupId>com.backbase.dbs.paymentorder</groupId>
-                                    <artifactId>payment-order-presentation-spec</artifactId>
-                                    <outputDirectory>
-                                        ${project.build.directory}/payment-order-presentation-spec
                                     </outputDirectory>
                                 </artifactItem>
 
@@ -892,26 +942,6 @@
                         </configuration>
                     </execution>
 
-                    <execution>
-                        <id>generate-payment-order-presentation-spec</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>raml-api-generator</goal>
-                        </goals>
-                        <configuration>
-                            <serviceId>payment-order-presentation-spec</serviceId>
-                            <packageName>dbs.payments</packageName>
-                            <inputFiles>
-                                <inputFile>
-                                    ${project.build.directory}/payment-order-presentation-spec/service-api.raml
-                                </inputFile>
-                                <inputFile>
-                                    ${project.build.directory}/payment-order-presentation-spec/api.raml
-                                </inputFile>
-                            </inputFiles>
-                            <requestHeaders>false</requestHeaders>
-                        </configuration>
-                    </execution>
                 </executions>
             </plugin>
         </plugins>

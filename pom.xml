@@ -108,6 +108,10 @@
             <artifactId>common-types</artifactId>
             <version>${common-types.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.backbase.buildingblocks</groupId>
+            <artifactId>internal-jwt</artifactId>
+        </dependency>
         <!-- DBS Specs -->
         <!-- Access control -->
         <dependency>

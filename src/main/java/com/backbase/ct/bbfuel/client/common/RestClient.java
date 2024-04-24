@@ -10,6 +10,7 @@ import com.backbase.ct.bbfuel.config.MultiTenancyConfig;
 import com.backbase.ct.bbfuel.config.TopstackEphemeralConfig;
 import com.backbase.ct.bbfuel.data.CommonConstants;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
+import com.backbase.ct.bbfuel.util.security.JwtFactory;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -34,11 +35,11 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.SneakyThrows;
 
 /**
  * Usage example:
@@ -93,7 +94,7 @@ public class RestClient {
     private BbFuelConfiguration bbFuelConfig;
     private static String cachedToken = null;
     private static long lastTokenFetchTime = 0;
-    private static final long TOKEN_EXPIRY = 3600000;
+    private static final long TOKEN_EXPIRY = 1800000;
 
     public RestClient setInitialPath(String initialPath) {
         this.initialPath = initialPath;
@@ -157,7 +158,9 @@ public class RestClient {
 
         if (TopstackEphemeralConfig.isTopstackEphemeralEnvironment()) {
             String token = fetchToken();
-            requestSpec.header(AUTHORIZATION, "Bearer " + token); // Set the Authorization header// Retrieve the jwt token
+            requestSpec.header(AUTHORIZATION, "Bearer " + token); // Set the Authorization header// Retrieve the
+            // jwt
+            // token
         }
 
         return requestSpec;
@@ -212,30 +215,17 @@ public class RestClient {
             .replace("${environment.domain}", envDomain);
     }
 
+    @SneakyThrows
     private String fetchToken() {
         // Check if token is already fetched and not expired
         if (cachedToken != null && (System.currentTimeMillis() - lastTokenFetchTime) < TOKEN_EXPIRY) {
             return cachedToken;
         }
 
-        String tokenUrl = "https://jwt-ep-cbhhl.eph.rndbb.azure.backbaseservices.com/jwt-external-secretkey";
+        String tokenUrl = "https://jwt-ep-c2fnt.eph.rndbb.azure.backbaseservices.com/jwt-internal-secretkey";
 
         cachedToken = RestAssured.given()
             .log().all()
-            .header("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36")
-            .header("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7")
-            .header("accept-language", "en-GB,en-US;q=0.9,en;q=0.8")
-            .header("cache-control", "max-age=0")
-            .header("if-modified-since", "Wed, 17 Apr 2024 13:58:05 GMT")
-            .header("if-none-match", "\"661fd56d-20\"")
-            .header("sec-ch-ua", "\"Google Chrome\";v=\"123\", \"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"123\"")
-            .header("sec-ch-ua-mobile", "?0")
-            .header("sec-ch-ua-platform", "\"macOS\"")
-            .header("sec-fetch-dest", "document")
-            .header("sec-fetch-mode", "navigate")
-            .header("sec-fetch-site", "none")
-            .header("sec-fetch-user", "?1")
-            .header("upgrade-insecure-requests", "1")
             .get(tokenUrl)
             .then()
             .statusCode(200)
@@ -244,6 +234,6 @@ public class RestClient {
             .asString();
 
         lastTokenFetchTime = System.currentTimeMillis();
-        return cachedToken;
+        return JwtFactory.generateJwt(cachedToken);
     }
 }

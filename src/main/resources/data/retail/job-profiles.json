@@ -151,7 +151,8 @@
       {
         "businessFunction": "Manage Cards",
         "privileges": [
-          "view"
+          "view",
+          "create"
         ]
       },
       {
@@ -341,7 +342,8 @@
       {
         "businessFunction": "Manage Cards",
         "privileges": [
-          "view"
+          "view",
+          "create"
         ]
       },
       {

@@ -1,5 +1,5 @@
 environment:
-  domain: eph.rndret.azure.backbaseservices.com
+  domain: eph.rndbb.azure.backbaseservices.com
 
 bb-fuel:
   platform:

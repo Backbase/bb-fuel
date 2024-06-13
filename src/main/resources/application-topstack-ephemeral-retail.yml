@@ -1,0 +1,42 @@
+environment:
+  domain: eph.rndret.azure.backbaseservices.com
+
+bb-fuel:
+  platform:
+    registry: https://registry-${environment.name}.${environment.domain}
+    identity: https://identity-${environment.name}.${environment.domain}
+    gateway: https://edge-${environment.name}.${environment.domain}/api
+    auth: https://edge-${environment.name}.${environment.domain}/api/auth/login
+    tokenconverter: https://tokenconverter-${environment.name}.${environment.domain}
+  dbs:
+    accessgroup: https://accessgroup-${environment.name}.${environment.domain}/integration-api
+    accounts: https://account-${environment.name}.${environment.domain}/service-api
+    approvals: https://approvals-${environment.name}.${environment.domain}/integration-api
+    arrangements: https://arrangement-${environment.name}.${environment.domain}/integration-api
+    billpay: https://billpayprovidermock-${environment.name}.${environment.domain}/client-api
+    contactmanager: https://contacts-${environment.name}.${environment.domain}/integration-api
+    legalentity: https://legalentity-${environment.name}.${environment.domain}
+    transactions: https://transactions-${environment.name}.${environment.domain}/integration-api
+    user: https://user-manager-${environment.name}.${environment.domain}/integration-api
+    usermock: https://usermock-${environment.name}.${environment.domain}/service-api
+    accountStatement: https://accountstatementsintegration-${environment.name}.${environment.domain}/service-api
+    pockets: https://edge.${environment.name}-${environment.domain}/api/pocket-tailor/client-api
+    pocketsArrangements: https://arrangementoutboundoriginationmock-${environment.name}.${environment.domain}/service-api
+    contentservices: https://edge.${environment.name}.${environment.domain}/api/contentservices/client-api
+    userProfileManager: http://edge.${environment.name}.${environment.domain}:80/api
+  dbs-service-names:
+    accessgroup: access-control
+    actions: action
+    arrangements: arrangements-manager
+    billpay: billpay-integrator
+    legalentity: access-control
+    limits: limit
+    messages: messages-service
+    notifications: notifications-service
+    payments: payment-order-service
+    pfm: transaction-category-collector
+    user: user-manager
+    products: arrangement-manager
+    positivePay: positive-pay-check
+    contentservices: contentservices
+    userprofilemanager: user-profile-manager

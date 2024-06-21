@@ -20,7 +20,7 @@ bb-fuel:
     user: http://user-manager.${environment.name}.${environment.domain}/integration-api
     usermock: http://usermock-${environment.name}.${environment.domain}/service-api
     accountStatement: http://accountstatementsintegration.${environment.name}.${environment.domain}/service-api
-    pockets: http://edge.${environment.name}.${environment.domain}/api/pocket-tailor/client-api
+    pockets: http://edge-${environment.name}.${environment.domain}/api/pocket-tailor/client-api
     pocketsArrangements: http://arrangementoutboundoriginationmock.${environment.name}.${environment.domain}/service-api
     contentservices: http://edge.${environment.name}.${environment.domain}/api/contentservices/client-api
     userProfileManager: http://edge.${environment.name}.${environment.domain}:80/api

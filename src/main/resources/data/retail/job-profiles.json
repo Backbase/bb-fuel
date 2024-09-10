@@ -196,6 +196,13 @@
         "privileges": [
           "view"
         ]
+      },
+      {
+        "businessFunction": "Manage Credit Card Limit",
+        "privileges": [
+          "view",
+          "edit"
+        ]
       }
     ]
   },
@@ -510,6 +517,13 @@
           "delete",
           "approve",
           "cancel"
+        ]
+      },
+      {
+        "businessFunction": "Manage Credit Card Limit",
+        "privileges": [
+          "view",
+          "edit"
         ]
       }
     ]

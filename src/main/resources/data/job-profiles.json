@@ -393,6 +393,17 @@
         ]
       },
       {
+        "businessFunction": "Manage FX Contracts",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
         "businessFunction": "Manage Limits",
         "privileges": [
           "view"
@@ -724,6 +735,17 @@
           "edit",
           "delete",
           "approve"
+        ]
+      },
+      {
+        "businessFunction": "Manage FX Contracts",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
         ]
       },
       {
@@ -1134,6 +1156,17 @@
           "create",
           "edit",
           "approve"
+        ]
+      },
+      {
+        "businessFunction": "Manage FX Contracts",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
         ]
       },
       {

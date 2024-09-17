@@ -9,6 +9,8 @@ import com.backbase.dbs.approval.integration.spec.IntegrationPolicyAssignmentReq
 import com.backbase.dbs.approval.integration.spec.IntegrationPostBulkApprovalTypeAssignmentRequest;
 import com.backbase.dbs.approval.integration.spec.IntegrationPostPolicyAssignmentBulkRequest;
 import com.backbase.dbs.approval.spec.CreatePolicyItemDto;
+import com.backbase.dbs.approval.spec.LogicalOperator;
+import com.backbase.dbs.approval.spec.LogicalPolicyItemDto;
 import com.backbase.dbs.approval.spec.PostApprovalTypeRequest;
 import com.backbase.dbs.approval.spec.PostPolicyRequest;
 import com.backbase.rest.spec.common.types.Currency;
@@ -51,6 +53,14 @@ public class ApprovalsDataGenerator {
         return policyItem;
     }
 
+    public static LogicalPolicyItemDto createLogicalPolicyItemDto(List<CreatePolicyItemDto> policyItems) {
+        LogicalPolicyItemDto policyItem = new LogicalPolicyItemDto();
+        policyItem.setRank(1);
+        policyItem.setOperator(LogicalOperator.OR);
+        policyItem.setItems(policyItems);
+        return policyItem;
+    }
+
     public static PostPolicyRequest createPostPolicyRequestWithZeroPolicyItems() {
         String name = "0 approvers";
 
@@ -58,6 +68,14 @@ public class ApprovalsDataGenerator {
             .withName(name)
             .withDescription(name)
             .withItems(emptyList());
+    }
+
+    public static PostPolicyRequest createPostLogicalPolicyRequest(String policyName,
+        List<CreatePolicyItemDto> policyItems) {
+        return new PostPolicyRequest()
+            .withName(policyName)
+            .withDescription(policyName)
+            .withLogicalItems(singletonList(createLogicalPolicyItemDto(policyItems)));
     }
 
     public static IntegrationPostPolicyAssignmentBulkRequest createPostPolicyAssignmentBulkRequest(

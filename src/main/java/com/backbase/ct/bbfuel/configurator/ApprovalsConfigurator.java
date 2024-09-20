@@ -63,6 +63,7 @@ public class ApprovalsConfigurator {
     private String policyAId;
     private String policyABId;
     private String policyABCId;
+    private String policyAOr2BId;
 
     public void setupApprovalTypesAndPolicies() {
         createApprovalTypes();
@@ -132,6 +133,12 @@ public class ApprovalsConfigurator {
             createPolicyItemDto(approvalTypeCId, 1)));
 
         log.info("Policy with approval types A, B and C [{}] created", policyABCId);
+
+        policyAOr2BId = approvalIntegrationRestClient.createPolicyWithLogicalItems("Logical policy approver A OR 2B", asList(
+            createPolicyItemDto(approvalTypeAId, 1),
+            createPolicyItemDto(approvalTypeBId, 2)));
+
+        log.info("Policy with logical approval A or 2B [{}] created", policyAOr2BId);
     }
 
     private void assignCurrencyBoundPolicies(String externalServiceAgreementId, int numberOfUsers, String resource,
@@ -195,6 +202,8 @@ public class ApprovalsConfigurator {
             .withAmount(UPPER_BOUND_HUNDRED_THOUSAND));
 
         policyBoundMap.put(policyABCId, null);
+
+        policyBoundMap.put(policyAOr2BId, null);
 
         for (Map.Entry<String, Currency> entry : policyBoundMap.entrySet()) {
             String policyId = entry.getKey();

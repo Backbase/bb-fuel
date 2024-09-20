@@ -2,6 +2,7 @@ package com.backbase.ct.bbfuel.client.approval;
 
 import static com.backbase.ct.bbfuel.data.ApprovalsDataGenerator.createPostApprovalTypeRequest;
 import static com.backbase.ct.bbfuel.data.ApprovalsDataGenerator.createPostBulkApprovalTypesAssignmentRequest;
+import static com.backbase.ct.bbfuel.data.ApprovalsDataGenerator.createPostLogicalPolicyRequest;
 import static com.backbase.ct.bbfuel.data.ApprovalsDataGenerator.createPostPolicyAssignmentBulkRequest;
 import static com.backbase.ct.bbfuel.data.ApprovalsDataGenerator.createPostPolicyRequest;
 import static com.backbase.ct.bbfuel.data.ApprovalsDataGenerator.createPostPolicyRequestWithZeroPolicyItems;
@@ -106,6 +107,16 @@ public class ApprovalIntegrationRestClient extends RestClient {
 
     public String createZeroApprovalPolicy() {
         return createPolicy(createPostPolicyRequestWithZeroPolicyItems())
+            .then()
+            .statusCode(SC_CREATED)
+            .extract()
+            .as(PostPolicyResponse.class)
+            .getPolicy()
+            .getId();
+    }
+
+    public String createPolicyWithLogicalItems(String policyName, List<CreatePolicyItemDto> policyItems) {
+        return createPolicy(createPostLogicalPolicyRequest(policyName, policyItems))
             .then()
             .statusCode(SC_CREATED)
             .extract()

@@ -203,8 +203,6 @@ public class ApprovalsConfigurator {
 
         policyBoundMap.put(policyABCId, null);
 
-        policyBoundMap.put(policyAOr2BId, null);
-
         for (Map.Entry<String, Currency> entry : policyBoundMap.entrySet()) {
             String policyId = entry.getKey();
             Currency upperBound = entry.getValue();

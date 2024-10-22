@@ -51,7 +51,7 @@
         <common-types.version>1.0.5</common-types.version>
 
         <!-- Products Specs Versions -->
-        <arrangement-client-api.version>2.11.1</arrangement-client-api.version>
+        <arrangement-client-api.version>2.12.5</arrangement-client-api.version>
         <arrangement-integration-outbound-link-account-api.version>2.1.1</arrangement-integration-outbound-link-account-api.version>
         <arrangement-integration-outbound-origination-api.version>1.0.3</arrangement-integration-outbound-origination-api.version>
         <arrangement-integration-inbound-api.version>2.7.2</arrangement-integration-inbound-api.version>

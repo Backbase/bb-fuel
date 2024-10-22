@@ -47,5 +47,12 @@
     "productKindName": "Investment Account",
     "productTypeId": "7777777",
     "productTypeName": "Investment Account"
+  },
+  {
+    "id": "102",
+    "productKindId": "kind102",
+    "productKindName": "Investment Portfolio",
+    "productTypeId": "102102102",
+    "productTypeName": "Investment Portfolio"
   }
 ]

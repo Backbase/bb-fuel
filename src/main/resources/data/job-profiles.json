@@ -539,6 +539,16 @@
         ]
       },
       {
+        "businessFunction": "Batch - SEPA DD Reversal",
+        "privileges": [
+          "view",
+          "create",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
         "businessFunction": "Batch - Intracompany Payments",
         "privileges": [
           "view",
@@ -868,6 +878,16 @@
           "view",
           "create",
           "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "Batch - SEPA DD Reversal",
+        "privileges": [
+          "view",
+          "create",
           "delete",
           "approve",
           "cancel"
@@ -1365,6 +1385,16 @@
         ]
       },
       {
+        "businessFunction": "Batch - SEPA DD Reversal",
+        "privileges": [
+          "view",
+          "create",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
         "businessFunction": "Batch - Intracompany Payments",
         "privileges": [
           "view",
@@ -1684,6 +1714,12 @@
       },
       {
         "businessFunction": "Batch - ACH Reversal",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Batch - SEPA DD Reversal",
         "privileges": [
           "view"
         ]

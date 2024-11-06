@@ -5,8 +5,9 @@ import static com.backbase.ct.bbfuel.data.CommonConstants.BATCH_ACH_CREDIT;
 import static com.backbase.ct.bbfuel.data.CommonConstants.BATCH_ACH_DEBIT;
 import static com.backbase.ct.bbfuel.data.CommonConstants.BATCH_ACH_REVERSAL;
 import static com.backbase.ct.bbfuel.data.CommonConstants.BATCH_INTRACOMPANY;
-import static com.backbase.ct.bbfuel.data.CommonConstants.BATCH_SEPA_CT_FUNCTION_NAME;
-import static com.backbase.ct.bbfuel.data.CommonConstants.BATCH_SEPA_DD_FUNCTION_NAME;
+import static com.backbase.ct.bbfuel.data.CommonConstants.BATCH_SEPA_CT;
+import static com.backbase.ct.bbfuel.data.CommonConstants.BATCH_SEPA_DD;
+import static com.backbase.ct.bbfuel.data.CommonConstants.BATCH_SEPA_DD_REVERSAL;
 import static com.backbase.ct.bbfuel.data.CommonConstants.BATCH_TEMPLATES;
 import static com.backbase.ct.bbfuel.data.CommonConstants.SEPA_CT_FUNCTION_NAME;
 import static com.backbase.ct.bbfuel.data.CommonConstants.SEPA_CT_INTRACOMPANY_FUNCTION_NAME;
@@ -46,8 +47,9 @@ public final class PaymentsFunctionService {
         BATCH_ACH_DEBIT,
         BATCH_ACH_REVERSAL,
         BATCH_INTRACOMPANY,
-        BATCH_SEPA_CT_FUNCTION_NAME,
-        BATCH_SEPA_DD_FUNCTION_NAME,
+        BATCH_SEPA_CT,
+        BATCH_SEPA_DD,
+        BATCH_SEPA_DD_REVERSAL,
         BATCH_TEMPLATES
         )
     );

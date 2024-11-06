@@ -9,10 +9,11 @@
       "Current Account",
       "Joint Account",
       "Savings Account",
-      "Credit Card"
+      "Credit Card",
+      "Investment Portfolio"
     ],
     "productIds": [
-      "1","2", "4", "7"
+      "1","2", "4", "7", "10"
     ],
     "numberOfArrangements": {
       "min": 8,

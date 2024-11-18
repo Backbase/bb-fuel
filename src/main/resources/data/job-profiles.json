@@ -404,6 +404,13 @@
         ]
       },
       {
+        "businessFunction": "Manage FX Dashboard",
+        "privileges": [
+          "view",
+          "edit"
+        ]
+      },
+      {
         "businessFunction": "Manage Limits",
         "privileges": [
           "view"
@@ -756,6 +763,13 @@
           "delete",
           "approve",
           "cancel"
+        ]
+      },
+      {
+        "businessFunction": "Manage FX Dashboard",
+        "privileges": [
+          "view",
+          "edit"
         ]
       },
       {
@@ -1187,6 +1201,13 @@
           "delete",
           "approve",
           "cancel"
+        ]
+      },
+      {
+        "businessFunction": "Manage FX Dashboard",
+        "privileges": [
+          "view",
+          "edit"
         ]
       },
       {

@@ -404,6 +404,17 @@
         ]
       },
       {
+        "businessFunction": "Manage FX Spot",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
         "businessFunction": "Manage FX Dashboard",
         "privileges": [
           "view",
@@ -756,6 +767,17 @@
       },
       {
         "businessFunction": "Manage FX Contracts",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "Manage FX Spot",
         "privileges": [
           "view",
           "create",
@@ -1194,6 +1216,17 @@
       },
       {
         "businessFunction": "Manage FX Contracts",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
+        ]
+      },
+      {
+        "businessFunction": "Manage FX Spot",
         "privileges": [
           "view",
           "create",

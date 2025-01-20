@@ -203,6 +203,13 @@
           "view",
           "edit"
         ]
+      },
+      {
+        "businessFunction": "Manage Credit Card Agreement Limit",
+        "privileges": [
+          "view",
+          "edit"
+        ]
       }
     ]
   },
@@ -521,6 +528,13 @@
       },
       {
         "businessFunction": "Manage Credit Card Limit",
+        "privileges": [
+          "view",
+          "edit"
+        ]
+      },
+      {
+        "businessFunction": "Manage Credit Card Agreement Limit",
         "privileges": [
           "view",
           "edit"

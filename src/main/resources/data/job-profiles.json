@@ -398,9 +398,7 @@
           "view",
           "create",
           "edit",
-          "delete",
-          "approve",
-          "cancel"
+          "delete"
         ]
       },
       {
@@ -408,6 +406,15 @@
         "privileges": [
           "view",
           "edit"
+        ]
+      },
+      {
+        "businessFunction": "Manage FX Spot",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete"
         ]
       },
       {
@@ -757,19 +764,19 @@
       {
         "businessFunction": "Manage FX Contracts",
         "privileges": [
-          "view",
-          "create",
-          "edit",
-          "delete",
-          "approve",
-          "cancel"
+          "view"
         ]
       },
       {
         "businessFunction": "Manage FX Dashboard",
         "privileges": [
-          "view",
-          "edit"
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Manage FX Spot",
+        "privileges": [
+          "view"
         ]
       },
       {
@@ -961,6 +968,18 @@
     "permissions": [
       {
         "businessFunction": "Support Access for Payments",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Manage FX Dashboard",
+        "privileges": [
+          "view"
+        ]
+      },
+      {
+        "businessFunction": "Manage FX Spot",
         "privileges": [
           "view"
         ]
@@ -1208,6 +1227,17 @@
         "privileges": [
           "view",
           "edit"
+        ]
+      },
+      {
+        "businessFunction": "Manage FX Spot",
+        "privileges": [
+          "view",
+          "create",
+          "edit",
+          "delete",
+          "approve",
+          "cancel"
         ]
       },
       {

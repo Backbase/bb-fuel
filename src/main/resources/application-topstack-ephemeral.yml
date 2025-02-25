@@ -15,7 +15,7 @@ bb-fuel:
     arrangements: https://arrangement-${environment.name}.${environment.domain}/integration-api
     billpay: https://billpayprovidermock-${environment.name}.${environment.domain}/client-api
     contactmanager: https://contacts-${environment.name}.${environment.domain}/integration-api
-    legalentity: https://legalentity-${environment.name}.${environment.domain}
+    legalentity: https://legalentity-${environment.name}.${environment.domain}/integration-api
     transactions: https://transactions-${environment.name}.${environment.domain}/integration-api
     user: https://user-manager-${environment.name}.${environment.domain}/integration-api
     usermock: https://usermock-${environment.name}.${environment.domain}/service-api

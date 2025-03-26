@@ -24,7 +24,7 @@ jobs:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
           maven-servers: '[{"id":"Public Backbase Repository","username":"${REPO_USERNAME}","password":"${REPO_PASSWORD}"}]'
           release-branch-name: ${{ steps.extract_branch.outputs.branch }}
-          maven-release-version-number: ${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}.${parsedVersion.nextBuildNumber}
+          maven-release-version-number: ${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}.${parsedVersion.buildNumber}
           skip-perform: true
       - name: Get most recent tag
         id: most-recent-tag

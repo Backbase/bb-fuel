@@ -325,8 +325,8 @@
                         </goals>
                         <phase>generate-sources</phase>
                         <configuration>
-                            <url>https://repo.backbase.com/specs/accessgroup-integration-service</url>
-                            <fromFile>accessgroup-integration-inbound-api-v2.2.0.yaml</fromFile>
+                            <url>https://repo.backbase.com/specs/access-control</url>
+                            <fromFile>accessgroup-integration-inbound-api-v2.6.2.yaml</fromFile>
                         </configuration>
                     </execution>
 
@@ -337,8 +337,8 @@
                         </goals>
                         <phase>generate-sources</phase>
                         <configuration>
-                            <url>https://repo.backbase.com/specs/legalentity-integration-service</url>
-                            <fromFile>legalentity-integration-inbound-api-v2.1.0.yaml</fromFile>
+                            <url>https://repo.backbase.com/specs/access-control</url>
+                            <fromFile>legalentity-integration-inbound-api-v2.4.2.yaml</fromFile>
                         </configuration>
                     </execution>
 
@@ -536,7 +536,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${api.target}/accessgroup-integration-inbound-api-v2.2.0.yaml</inputSpec>
+                            <inputSpec>${api.target}/accessgroup-integration-inbound-api-v2.6.2.yaml</inputSpec>
                             <configOptions>
                                 <apiPackage>com.backbase.dbs.accesscontrol.accessgroup.client.v2</apiPackage>
                                 <modelPackage>com.backbase.dbs.accesscontrol.accessgroup.client.v2.model</modelPackage>
@@ -550,7 +550,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${api.target}/legalentity-integration-inbound-api-v2.1.0.yaml</inputSpec>
+                            <inputSpec>${api.target}/legalentity-integration-inbound-api-v2.4.2.yaml</inputSpec>
                             <configOptions>
                                 <apiPackage>com.backbase.dbs.accesscontrol.legalentity.client.v2</apiPackage>
                                 <modelPackage>com.backbase.dbs.accesscontrol.legalentity.client.v2.model</modelPackage>

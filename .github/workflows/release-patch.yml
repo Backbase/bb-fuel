@@ -1,0 +1,38 @@
+name: Release Patch
+
+on:
+  push:
+    branches: [ hotfix/** ]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v3
+      - name: Extract branch name
+        shell: bash
+        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+        id: extract_branch
+      - name: Run Maven release
+        uses: qcastel/github-actions-maven-release@v1.12.31
+        env:
+          JAVA_HOME: /usr/lib/jvm/java-1.8-openjdk/
+          REPO_USERNAME: ${{ secrets.REPO_USERNAME }}
+          REPO_PASSWORD: ${{ secrets.REPO_PASSWORD }}
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          maven-servers: '[{"id":"Public Backbase Repository","username":"${REPO_USERNAME}","password":"${REPO_PASSWORD}"}]'
+          release-branch-name: ${{ steps.extract_branch.outputs.branch }}
+          maven-release-version-number: ${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}.${parsedVersion.nextBuildNumber}
+          skip-perform: true
+      - name: Get most recent tag
+        id: most-recent-tag
+        run: echo "tag=$(git describe --abbrev=0 --tags)" >> $GITHUB_OUTPUT
+      - name: Run GitHub release
+        uses: ncipollo/release-action@v1
+        with:
+          skipIfReleaseExists: true
+          artifacts: "target/bb-fuel-*-boot.jar,target/bb-fuel-*-import.jar"
+          makeLatest: true
+          tag: ${{ steps.most-recent-tag.outputs.tag }}

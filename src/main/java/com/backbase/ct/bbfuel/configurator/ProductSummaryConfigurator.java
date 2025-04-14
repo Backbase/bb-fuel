@@ -10,10 +10,10 @@ import com.backbase.ct.bbfuel.client.productsummary.ArrangementsIntegrationRestC
 import com.backbase.ct.bbfuel.data.ProductSummaryDataGenerator;
 import com.backbase.ct.bbfuel.dto.ArrangementId;
 import com.backbase.ct.bbfuel.dto.entitlement.ProductGroupSeed;
-import com.backbase.dbs.arrangement.integration.inbound.api.v2.model.ArrangementAddedResponse;
-import com.backbase.dbs.arrangement.integration.inbound.api.v2.model.BalanceHistoryItem;
-import com.backbase.dbs.arrangement.integration.inbound.api.v2.model.PostArrangement;
-import com.backbase.dbs.arrangement.integration.inbound.api.v2.model.ProductItem;
+import com.backbase.dbs.arrangement.integration.inbound.api.v3.model.UuidResponse;
+import com.backbase.dbs.arrangement.integration.inbound.api.v3.model.BalanceHistoryItem;
+import com.backbase.dbs.arrangement.integration.inbound.api.v3.model.ArrangementPost;
+import com.backbase.dbs.arrangement.integration.inbound.api.v3.model.ProductPost;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -28,13 +28,13 @@ public class ProductSummaryConfigurator {
     private final ArrangementsIntegrationRestClient arrangementsIntegrationRestClient;
 
     public void ingestProducts() {
-        List<ProductItem> products = ProductSummaryDataGenerator.getProductsFromFile();
+        List<ProductPost> products = ProductSummaryDataGenerator.getProductsFromFile();
         products.stream().parallel()
             .forEach(arrangementsIntegrationRestClient::ingestProductAndLogResponse);
     }
 
     public List<ArrangementId> ingestArrangements(String externalLegalEntityId, ProductGroupSeed productGroupSeed) {
-        List<PostArrangement> arrangements = synchronizedList(new ArrayList<>());
+        List<ArrangementPost> arrangements = synchronizedList(new ArrayList<>());
         List<ArrangementId> arrangementIds = synchronizedList(new ArrayList<>());
         List<String> productIds = productGroupSeed.getProductIds();
 
@@ -58,11 +58,11 @@ public class ProductSummaryConfigurator {
         }
 
         arrangements.parallelStream().forEach(arrangement -> {
-            ArrangementAddedResponse arrangementsPostResponseBody = arrangementsIntegrationRestClient
+            UuidResponse arrangementsPostResponseBody = arrangementsIntegrationRestClient
                 .ingestArrangement(arrangement);
             log.info("Arrangement [{}] ingested for product [{}] under legal entity [{}]",
-                arrangement.getName(), arrangement.getProductId(), externalLegalEntityId);
-            arrangementIds.add(new ArrangementId(arrangementsPostResponseBody.getId(), arrangement.getId()));
+                arrangement.getName(), arrangement.getProduct().getExternalId(), externalLegalEntityId);
+            arrangementIds.add(new ArrangementId(arrangementsPostResponseBody.getId(), arrangement.getExternalId()));
         });
 
         return arrangementIds;

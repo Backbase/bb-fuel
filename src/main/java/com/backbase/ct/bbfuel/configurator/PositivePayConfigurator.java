@@ -15,7 +15,7 @@ import com.backbase.ct.bbfuel.client.productsummary.ProductSummaryPresentationRe
 import com.backbase.ct.bbfuel.data.PositivePayDataGenerator;
 import com.backbase.ct.bbfuel.dto.ArrangementId;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
-import com.backbase.dbs.arrangement.integration.inbound.api.v2.model.Subscription;
+import com.backbase.dbs.arrangement.integration.inbound.api.v3.model.Subscription;
 import com.backbase.dbs.positivepay.client.api.v1.model.PositivePayPost;
 import com.backbase.dbs.arrangement.client.api.v2.model.ProductSummaryItem;
 import java.util.ArrayList;

@@ -22,12 +22,13 @@
     <properties>
         <mainClass>com.backbase.ct.bbfuel.BbFuelApplication</mainClass>
 
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <maven-assembly-plugin.version>2.4.1</maven-assembly-plugin.version>
         <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
 
-        <junit.version>4.13.1</junit.version>
+        <junit.version>4.13.2</junit.version>
+        <lombok.version>1.18.36</lombok.version>
 
         <commons-configuration.version>1.10</commons-configuration.version>
         <commons-collections.version>4.4</commons-collections.version>
@@ -38,11 +39,13 @@
 
         <api.target>${project.build.directory}/downloaded-api</api.target>
         <openapi-generator-version>5.1.0</openapi-generator-version>
-        <boat-maven-plugin.version>0.14.3</boat-maven-plugin.version>
+        <boat-maven-plugin.version>0.17.58</boat-maven-plugin.version>
         <jackson-bom.version>2.14.2</jackson-bom.version>
-        <jackson-databind-nullable-version>0.2.1</jackson-databind-nullable-version>
+        <jackson-databind-nullable-version>0.2.6</jackson-databind-nullable-version>
         <swagger-annotations-version>1.6.0</swagger-annotations-version>
         <jsr305-version>3.0.0</jsr305-version>
+        <maven-surefire-plugin.version>3.5.2</maven-surefire-plugin.version>
+        <jacoco.version>0.8.13</jacoco.version>
 
         <javafaker.version>1.0.2</javafaker.version>
         <iban4j.version>3.2.1</iban4j.version>
@@ -51,10 +54,10 @@
         <common-types.version>1.0.5</common-types.version>
 
         <!-- Products Specs Versions -->
-        <arrangement-client-api.version>2.11.1</arrangement-client-api.version>
-        <arrangement-integration-outbound-link-account-api.version>2.1.1</arrangement-integration-outbound-link-account-api.version>
-        <arrangement-integration-outbound-origination-api.version>1.0.3</arrangement-integration-outbound-origination-api.version>
-        <arrangement-integration-inbound-api.version>2.7.2</arrangement-integration-inbound-api.version>
+        <arrangement-client-api.version>2.16.1</arrangement-client-api.version>
+        <arrangement-integration-outbound-link-account-api.version>2.4.1</arrangement-integration-outbound-link-account-api.version>
+        <arrangement-integration-outbound-origination-api.version>1.2.1</arrangement-integration-outbound-origination-api.version>
+        <arrangement-integration-inbound-api.version>3.2.1</arrangement-integration-inbound-api.version>
         <contentservices-client-api.version>2.6.0</contentservices-client-api.version>
         <contact-manager-integration-inbound-api.version>2.9.5</contact-manager-integration-inbound-api.version>
         <payment-order-client-api.version>3.9.0</payment-order-client-api.version>
@@ -188,6 +191,11 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.annotation</groupId>
+            <artifactId>jakarta.annotation-api</artifactId>
+            <version>2.1.1</version>
         </dependency>
         <dependency>
             <groupId>io.rest-assured</groupId>
@@ -747,8 +755,8 @@
                         <configuration>
                             <inputSpec>${api.target}/arrangement-integration-inbound-api-v${arrangement-integration-inbound-api.version}.yaml</inputSpec>
                             <configOptions>
-                                <apiPackage>com.backbase.dbs.arrangement.integration.inbound.api.v2</apiPackage>
-                                <modelPackage>com.backbase.dbs.arrangement.integration.inbound.api.v2.model</modelPackage>
+                                <apiPackage>com.backbase.dbs.arrangement.integration.inbound.api.v3</apiPackage>
+                                <modelPackage>com.backbase.dbs.arrangement.integration.inbound.api.v3.model</modelPackage>
                             </configOptions>
                         </configuration>
                     </execution>

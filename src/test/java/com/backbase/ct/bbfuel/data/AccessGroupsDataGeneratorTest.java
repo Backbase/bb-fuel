@@ -5,9 +5,9 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
 
 import com.backbase.ct.bbfuel.dto.entitlement.JobProfile;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.config.functions.FunctionsGetResponseBody;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.IntegrationPrivilege;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.Permission;
+import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.FunctionsGetResponseBody;
+import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.IntegrationPrivilege;
+import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.Permission;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -34,11 +34,11 @@ public class AccessGroupsDataGeneratorTest {
     private static List<FunctionsGetResponseBody> createFunctionsGetResponseBodys(String businessFunction) {
         List<FunctionsGetResponseBody> functions = new ArrayList<>();
         functions.add(new FunctionsGetResponseBody()
-            .withName("awesome business")
-            .withPrivileges(createIntegrationPrivileges()));
+            .name("awesome business")
+            .privileges(createIntegrationPrivileges()));
         functions.add(new FunctionsGetResponseBody()
-            .withName(businessFunction)
-            .withPrivileges(createIntegrationPrivileges()));
+            .name(businessFunction)
+            .privileges(createIntegrationPrivileges()));
 
         return functions;
     }
@@ -47,7 +47,7 @@ public class AccessGroupsDataGeneratorTest {
         List<IntegrationPrivilege> privileges = new ArrayList<>();
         Arrays.stream(PRIVILEGES)
             .forEach(privilege -> {
-                privileges.add(new IntegrationPrivilege().withPrivilege(privilege));
+                privileges.add(new IntegrationPrivilege().privilege(privilege));
             });
 
         return privileges;

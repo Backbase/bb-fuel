@@ -4,10 +4,10 @@ import static com.backbase.ct.bbfuel.util.ResponseUtils.isBadRequestException;
 import static org.apache.http.HttpStatus.SC_MULTI_STATUS;
 
 import com.backbase.ct.bbfuel.client.accessgroup.AccessGroupIntegrationRestClient;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.BatchResponseItem;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.BatchResponseStatusCode;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.IntegrationIdentifier;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.users.permissions.IntegrationFunctionGroupDataGroup;
+import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.BatchResponseItem;
+import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.IntegrationDataGroupIdentifier;
+import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.IntegrationFunctionGroupDataGroup;
+import com.backbase.dbs.arrangement.integration.inbound.api.v3.model.BatchResponseStatusCode;
 import io.restassured.response.Response;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,7 +33,7 @@ public class PermissionsConfigurator {
 
             functionGroupDataGroups.forEach(group -> {
                 List<String> ids = group.getDataGroupIdentifiers().stream()
-                    .map(IntegrationIdentifier::getIdIdentifier).collect(
+                    .map(IntegrationDataGroupIdentifier::getIdIdentifier).collect(
                         Collectors.toList());
                 log.info(
                     "Data groups already assigned to service agreement [{}], user [{}], function group [{}], skipped assigning data group ids {}",
@@ -44,7 +44,7 @@ public class PermissionsConfigurator {
 
             functionGroupDataGroups.forEach(group -> {
                 List<String> ids = group.getDataGroupIdentifiers().stream()
-                    .map(IntegrationIdentifier::getIdIdentifier)
+                    .map(IntegrationDataGroupIdentifier::getIdIdentifier)
                     .collect(Collectors.toList());
                 log.info(
                     "Permission assigned for service agreement [{}], user [{}], function group [{}], data groups {}",
@@ -53,7 +53,7 @@ public class PermissionsConfigurator {
         } else {
             functionGroupDataGroups.forEach(group -> {
                 List<String> ids = group.getDataGroupIdentifiers().stream()
-                    .map(IntegrationIdentifier::getIdIdentifier)
+                    .map(IntegrationDataGroupIdentifier::getIdIdentifier)
                     .collect(Collectors.toList());
                 log.error(
                     "Failed assigning data groups to service agreement [{}], user [{}], function group [{}], with data group ids {}",

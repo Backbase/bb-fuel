@@ -23,8 +23,8 @@ import com.backbase.ct.bbfuel.service.LegalEntityService;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
 
 
-import com.backbase.dbs.user.manager.models.v2.UserExternal;
-import com.backbase.dbs.accesscontrol.legalentity.client.v2.model.LegalEntityCreateItem;
+import com.backbase.dbs.user.manager.integration.api.v2.model.UserExternal;
+import com.backbase.dbs.accesscontrol.legalentity.integration.v2.model.LegalEntityCreateItem;
 import io.restassured.response.Response;
 import lombok.extern.slf4j.Slf4j;
 import lombok.RequiredArgsConstructor;

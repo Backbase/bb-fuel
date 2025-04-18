@@ -1,7 +1,7 @@
 package com.backbase.ct.bbfuel.data;
 
-import com.backbase.dbs.contentservices.client.v2.model.AntivirusScanTrigger;
-import com.backbase.dbs.contentservices.client.v2.model.Repository;
+import com.backbase.dbs.contentservices.client.v3.model.AntivirusScanTrigger;
+import com.backbase.dbs.contentservices.client.v3.model.Repository;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;

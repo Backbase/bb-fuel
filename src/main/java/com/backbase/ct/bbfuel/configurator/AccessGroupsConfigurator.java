@@ -3,7 +3,6 @@ package com.backbase.ct.bbfuel.configurator;
 import static com.backbase.ct.bbfuel.data.AccessGroupsDataGenerator.createPermissionsForJobProfile;
 import static com.backbase.ct.bbfuel.data.AccessGroupsDataGenerator.createPermissionsWithAllPrivileges;
 import static com.backbase.ct.bbfuel.service.JobProfileService.ADMIN_FUNCTION_GROUP_NAME;
-import static java.util.stream.Collectors.toList;
 
 import com.backbase.ct.bbfuel.client.accessgroup.AccessGroupIntegrationRestClient;
 import com.backbase.ct.bbfuel.dto.ArrangementId;
@@ -12,9 +11,9 @@ import com.backbase.ct.bbfuel.dto.entitlement.ProductGroupSeed;
 import com.backbase.ct.bbfuel.service.AccessGroupService;
 import com.backbase.ct.bbfuel.service.JobProfileService;
 import com.backbase.ct.bbfuel.service.ProductGroupService;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.config.functions.FunctionsGetResponseBody;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.Permission;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.functiongroups.FunctionGroupBase.Type;
+import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.FunctionsGetResponseBody;
+import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.Permission;
+import com.backbase.dbs.accesscontrol.client.v3.model.FunctionGroupType;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -35,7 +34,7 @@ public class AccessGroupsConfigurator {
 
     public JobProfile ingestAdminFunctionGroup(String externalServiceAgreementId) {
         JobProfile adminProfile = new JobProfile(ADMIN_FUNCTION_GROUP_NAME, null, null, null,
-            null, Type.REGULAR.toString());
+            null, FunctionGroupType.REGULAR.toString());
         adminProfile.setExternalServiceAgreementId(externalServiceAgreementId);
         ingestFunctionGroup(adminProfile);
         return adminProfile;
@@ -67,7 +66,7 @@ public class AccessGroupsConfigurator {
         List<ArrangementId> arrangementIds) {
         List<String> internalArrangementIds = arrangementIds.stream()
             .map(ArrangementId::getInternalArrangementId)
-            .collect(toList());
+            .toList();
 
         String dataGroupId = productGroupService.retrieveIdFromCache(productGroupSeed);
         if (dataGroupId != null) {

@@ -42,11 +42,12 @@ import com.backbase.ct.bbfuel.service.JobProfileService;
 import com.backbase.ct.bbfuel.service.LegalEntityService;
 import com.backbase.ct.bbfuel.service.ProductGroupService;
 import com.backbase.ct.bbfuel.service.UserContextService;
+import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.FunctionGroupItem.TypeEnum;
+import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.IntegrationDataGroupIdentifier;
+import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.IntegrationFunctionGroupDataGroup;
+import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.IntegrationIdentifier;
 import com.backbase.dbs.accesscontrol.client.v3.model.DataGroupItem;
-import com.backbase.dbs.user.manager.models.v2.LegalEntity;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.IntegrationIdentifier;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.functiongroups.FunctionGroupBase.Type;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.users.permissions.IntegrationFunctionGroupDataGroup;
+import com.backbase.dbs.user.manager.client.api.v2.model.LegalEntity;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import java.util.ArrayList;
@@ -95,7 +96,7 @@ public class AccessControlSetup extends BaseSetup {
     private List<ProductGroupSeed> productGroupSeedTemplates;
 
     private static final Predicate<JobProfile> JOB_PROFILE_IS_TEMPLATE =
-        jobProfile -> jobProfile.getType().equals(Type.TEMPLATE.toString());
+        jobProfile -> jobProfile.getType().equals(TypeEnum.TEMPLATE.toString());
 
     private static final Predicate<String> SERVICE_AGREEMENT_NAME_IS_BANK =
         serviceAgreementName -> serviceAgreementName.equals("Bank");
@@ -346,15 +347,15 @@ public class AccessControlSetup extends BaseSetup {
             .forEach(jobProfile -> {
                 List<String> dataGroupIds = this.productGroupService
                     .findAssignedProductGroupsIds(externalServiceAgreementId, user);
-                List<IntegrationIdentifier> dataGroupIdentifiers = new ArrayList<>();
+                List<IntegrationDataGroupIdentifier> dataGroupIdentifiers = new ArrayList<>();
 
                 dataGroupIds.forEach(
-                    dataGroupId -> dataGroupIdentifiers.add(new IntegrationIdentifier().withIdIdentifier(dataGroupId)));
+                    dataGroupId -> dataGroupIdentifiers.add(new IntegrationDataGroupIdentifier().idIdentifier(dataGroupId)));
 
                 functionGroupDataGroups.add(new IntegrationFunctionGroupDataGroup()
-                    .withFunctionGroupIdentifier(
-                        new IntegrationIdentifier().withIdIdentifier(jobProfile.getId()))
-                    .withDataGroupIdentifiers(dataGroupIdentifiers));
+                    .functionGroupIdentifier(
+                        new IntegrationIdentifier().idIdentifier(jobProfile.getId()))
+                    .dataGroupIdentifiers(dataGroupIdentifiers));
 
             });
 

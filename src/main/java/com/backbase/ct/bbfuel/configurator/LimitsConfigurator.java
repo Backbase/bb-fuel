@@ -13,7 +13,7 @@ import com.backbase.ct.bbfuel.client.accessgroup.ServiceAgreementsPresentationRe
 import com.backbase.ct.bbfuel.client.accessgroup.UserContextPresentationRestClient;
 import com.backbase.ct.bbfuel.client.common.LoginRestClient;
 import com.backbase.ct.bbfuel.client.limit.LimitsPresentationRestClient;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.config.functions.FunctionsGetResponseBody;
+import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.FunctionsGetResponseBody;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;

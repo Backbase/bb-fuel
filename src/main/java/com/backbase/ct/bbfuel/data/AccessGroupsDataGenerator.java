@@ -3,46 +3,46 @@ package com.backbase.ct.bbfuel.data;
 import static java.util.stream.Collectors.toList;
 
 import com.backbase.ct.bbfuel.dto.entitlement.JobProfile;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.IntegrationItemIdentifier;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.config.functions.FunctionsGetResponseBody;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.datagroups.IntegrationDataGroupCreate;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.IntegrationPrivilege;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.Permission;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.Privilege;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.functiongroups.FunctionGroupBase.Type;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.functiongroups.FunctionGroupPostRequestBody;
+import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.FunctionGroupItem;
+import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.FunctionGroupItem.TypeEnum;
+import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.FunctionsGetResponseBody;
+import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.IntegrationDataGroupCreate;
+import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.IntegrationItemIdentifier;
+import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.IntegrationPrivilege;
+import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.Permission;
+import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.Privilege;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AccessGroupsDataGenerator {
 
-    public static FunctionGroupPostRequestBody generateFunctionGroupPostRequestBody(String externalServiceAgreementId,
+    public static FunctionGroupItem generateFunctionGroupPostRequestBody(String externalServiceAgreementId,
         String functionGroupName, String functionGroupType, List<Permission> permissions) {
-        return new FunctionGroupPostRequestBody()
-            .withName(functionGroupName)
-            .withDescription(functionGroupName)
-            .withType(Type.fromValue(functionGroupType))
-            .withExternalServiceAgreementId(externalServiceAgreementId)
-            .withPermissions(permissions);
+        return new FunctionGroupItem()
+            .name(functionGroupName)
+            .description(functionGroupName)
+            .type(TypeEnum.fromValue(functionGroupType))
+            .externalServiceAgreementId(externalServiceAgreementId)
+            .permissions(permissions);
     }
 
     public static IntegrationDataGroupCreate generateDataGroupPostRequestBody(String externalServiceAgreementId,
         String dataGroupName, String type, List<String> items) {
         List<IntegrationItemIdentifier> dataItems = new ArrayList();
-        items.forEach(item -> dataItems.add(new IntegrationItemIdentifier().withInternalIdIdentifier(item)));
+        items.forEach(item -> dataItems.add(new IntegrationItemIdentifier().internalIdIdentifier(item)));
 
         return new IntegrationDataGroupCreate()
-            .withName(dataGroupName)
-            .withDescription(dataGroupName)
-            .withExternalServiceAgreementId(externalServiceAgreementId)
-            .withType(type)
-            .withDataItems(dataItems);
+            .name(dataGroupName)
+            .description(dataGroupName)
+            .externalServiceAgreementId(externalServiceAgreementId)
+            .type(type)
+            .dataItems(dataItems);
     }
 
     public static Permission createPermission(String functionId, List<Privilege> privileges) {
         return new Permission()
-            .withFunctionId(functionId)
-            .withAssignedPrivileges(privileges);
+            .functionId(functionId)
+            .assignedPrivileges(privileges);
     }
 
     private static FunctionsGetResponseBody detectBusinessFunction(String businessFunction,
@@ -81,7 +81,7 @@ public class AccessGroupsDataGenerator {
         List<Privilege> privileges = new ArrayList<>();
 
         for (IntegrationPrivilege integrationPrivilege : integrationPrivileges) {
-            privileges.add(new Privilege().withPrivilege(integrationPrivilege.getPrivilege()));
+            privileges.add(new Privilege().privilege(integrationPrivilege.getPrivilege()));
         }
 
         return createPermission(function.getFunctionId(), privileges);
@@ -92,7 +92,7 @@ public class AccessGroupsDataGenerator {
         List<Privilege> privileges = privilegeNames.stream()
         .map(privilegeName -> {
             if (validNames.contains(privilegeName)) {
-                return new Privilege().withPrivilege(privilegeName);
+                return new Privilege().privilege(privilegeName);
             } else {
                 throw new IllegalArgumentException(
                     String.format("Business Function [%s] does not allow for privilege [%s] but allows: %s",

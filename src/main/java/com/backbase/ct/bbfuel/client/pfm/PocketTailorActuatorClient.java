@@ -2,9 +2,9 @@ package com.backbase.ct.bbfuel.client.pfm;
 
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
-import com.backbase.dbs.user.manager.models.v2.LegalEntity;
+import com.backbase.dbs.user.manager.client.api.v2.model.LegalEntity;
 import io.restassured.http.ContentType;
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

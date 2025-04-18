@@ -10,13 +10,13 @@ import com.backbase.ct.bbfuel.client.accessgroup.UserContextPresentationRestClie
 import com.backbase.ct.bbfuel.client.common.LoginRestClient;
 import com.backbase.ct.bbfuel.client.legalentity.LegalEntityIntegrationRestClient;
 import com.backbase.ct.bbfuel.client.user.UserPresentationRestClient;
+import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.IdItem;
+import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.Participant;
+import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.UserServiceAgreementPair;
 import com.backbase.dbs.accesscontrol.client.v3.model.ServiceAgreementItem;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.Participant;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementPostResponseBody;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.UserServiceAgreementPair;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Set;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -32,7 +32,7 @@ public class ServiceAgreementsConfigurator {
     private final ServiceAgreementsIntegrationRestClient serviceAgreementsIntegrationRestClient;
     private final UserContextPresentationRestClient userContextPresentationRestClient;
 
-    public String ingestServiceAgreementWithProvidersAndConsumers(Set<Participant> participants) {
+    public String ingestServiceAgreementWithProvidersAndConsumers(List<Participant> participants) {
         loginRestClient.loginBankAdmin();
         userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
         enrichParticipantsWithExternalId(participants);
@@ -42,7 +42,7 @@ public class ServiceAgreementsConfigurator {
             .then()
             .statusCode(SC_CREATED)
             .extract()
-            .as(ServiceAgreementPostResponseBody.class)
+            .as(IdItem.class)
             .getId();
 
         if (log.isInfoEnabled()) {
@@ -65,7 +65,7 @@ public class ServiceAgreementsConfigurator {
         log.info("Service agreement [{}] updated with external id", internalServiceAgreementId);
     }
 
-    private void enrichParticipantsWithExternalId(Set<Participant> participants) {
+    private void enrichParticipantsWithExternalId(List<Participant> participants) {
         for (Participant participant : participants) {
             String externalAdminUserId = participant.getAdmins()
                 .iterator()
@@ -85,7 +85,7 @@ public class ServiceAgreementsConfigurator {
         serviceAgreementsIntegrationRestClient
             .addServiceAgreementAdminsBulk(Collections.singletonList(
                 new UserServiceAgreementPair()
-                    .withExternalUserId(user)
-                    .withExternalServiceAgreementId(msa.getExternalId())));
+                    .externalUserId(user)
+                    .externalServiceAgreementId(msa.getExternalId())));
     }
 }

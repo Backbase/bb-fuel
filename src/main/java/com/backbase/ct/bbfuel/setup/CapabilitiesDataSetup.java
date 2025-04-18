@@ -44,7 +44,7 @@ import com.backbase.ct.bbfuel.dto.User;
 import com.backbase.ct.bbfuel.dto.UserContext;
 import com.backbase.ct.bbfuel.service.LegalEntityService;
 import com.backbase.ct.bbfuel.service.UserContextService;
-import com.backbase.dbs.user.manager.models.v2.LegalEntity;
+import com.backbase.dbs.user.manager.client.api.v2.model.LegalEntity;
 import com.backbase.dbs.pocket.tailor.client.v2.model.Pocket;
 import java.util.Collection;
 import java.util.List;

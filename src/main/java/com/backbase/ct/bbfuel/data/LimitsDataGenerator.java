@@ -1,10 +1,9 @@
 package com.backbase.ct.bbfuel.data;
 
 import static java.util.Arrays.asList;
-import com.backbase.presentation.limit.rest.spec.v2.limits.AmountRequiredTransactionalLimitsBound;
-import com.backbase.presentation.limit.rest.spec.v2.limits.CreateLimitRequestBody;
-import com.backbase.presentation.limit.rest.spec.v2.limits.Entity;
-
+import com.backbase.dbs.limit.client.api.v2.model.CreateLimitRequestBody;
+import com.backbase.dbs.limit.client.api.v2.model.Entity;
+import com.backbase.dbs.limit.client.api.v2.model.TransactionalLimitsBound;
 import java.math.BigDecimal;
 
 public class LimitsDataGenerator {
@@ -37,7 +36,7 @@ public class LimitsDataGenerator {
                     .withEtype(PRIVILEGE_ENTITY)
                     .withEref(privilege)))
             .withCurrency(currency)
-            .withTransactionalLimitsBound(new AmountRequiredTransactionalLimitsBound()
+            .withTransactionalLimitsBound(new TransactionalLimitsBound()
                 .withAmount(limitAmount))
             .withShadow(false);
     }

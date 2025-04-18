@@ -7,7 +7,7 @@ import com.backbase.ct.bbfuel.client.productsummary.ArrangementsIntegrationRestC
 import com.backbase.ct.bbfuel.data.ProductSummaryDataGenerator;
 import com.backbase.ct.bbfuel.input.PocketsReader;
 import com.backbase.ct.bbfuel.service.AccessGroupService;
-import com.backbase.dbs.user.manager.models.v2.LegalEntity;
+import com.backbase.dbs.user.manager.client.api.v2.model.LegalEntity;
 import com.backbase.dbs.arrangement.integration.inbound.api.v3.model.UuidResponse;
 import com.backbase.dbs.arrangement.integration.inbound.api.v3.model.ArrangementPost;
 import com.backbase.dbs.pocket.tailor.client.v2.model.Pocket;

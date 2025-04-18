@@ -2,13 +2,13 @@ package com.backbase.ct.bbfuel.client.limit;
 
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
-import com.backbase.presentation.limit.rest.spec.v2.limits.CreateLimitRequestBody;
+import com.backbase.dbs.limit.client.api.v2.model.CreateLimitRequestBody;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 
 @Component
 @RequiredArgsConstructor

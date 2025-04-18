@@ -10,11 +10,11 @@ import static org.apache.http.HttpStatus.SC_OK;
 import com.backbase.ct.bbfuel.client.accessgroup.AccessGroupIntegrationRestClient;
 import com.backbase.ct.bbfuel.client.accessgroup.AccessGroupPresentationRestClient;
 import com.backbase.ct.bbfuel.client.accessgroup.ServiceAgreementsIntegrationRestClient;
+import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.BatchResponseItemExtended;
+import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.IdItem;
+import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.Permission;
 import com.backbase.dbs.accesscontrol.client.v3.model.DataGroupItem;
 import com.backbase.dbs.accesscontrol.client.v3.model.FunctionGroupItem;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.BatchResponseItem;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.Permission;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.functiongroups.FunctionGroupPostResponseBody;
 import io.restassured.response.Response;
 import java.util.List;
 import java.util.stream.Stream;
@@ -64,7 +64,7 @@ public class AccessGroupService {
             String functionGroupId = response.then()
                 .statusCode(SC_CREATED)
                 .extract()
-                .as(FunctionGroupPostResponseBody.class)
+                .as(IdItem.class)
                 .getId();
 
             log.info("Function group \"{}\" [{}] ingested under service agreement [{}])",
@@ -99,7 +99,7 @@ public class AccessGroupService {
             String dataGroupId = Stream.of(response.then()
                 .statusCode(SC_MULTI_STATUS)
                 .extract()
-                .as(BatchResponseItem[].class))
+                .as(BatchResponseItemExtended[].class))
                     .filter(batchResponseItem -> StringUtils.isNotEmpty(batchResponseItem.getResourceId()))
                     .findFirst().get().getResourceId();
 

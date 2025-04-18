@@ -2,11 +2,11 @@ package com.backbase.ct.bbfuel.client.contentservices;
 
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
-import com.backbase.dbs.contentservices.client.v2.model.Repository;
+import com.backbase.dbs.contentservices.client.v3.model.Repository;
 import io.restassured.http.ContentType;
 import java.io.File;
 import java.util.List;
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

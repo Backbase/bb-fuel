@@ -1,34 +1,34 @@
 package com.backbase.ct.bbfuel.data;
 
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.CreateStatus;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.Participant;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementPostRequestBody;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.serviceagreements.ServiceAgreementPutRequestBody;
+import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.CreateStatus;
+import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.Participant;
+import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.ServiceAgreement;
+import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.ServiceAgreementPut;
 import com.github.javafaker.Faker;
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 
 public class ServiceAgreementsDataGenerator {
 
     private static Faker faker = new Faker();
 
-    public static ServiceAgreementPostRequestBody generateServiceAgreementPostRequestBody(
-        Set<Participant> participants) {
+    public static ServiceAgreement generateServiceAgreementPostRequestBody(
+        List<Participant> participants) {
         String randomLegalEntityName = faker.name().lastName() + " " +
           faker.company().industry().replaceAll("(/| or).*", "").trim();
 
-        return new ServiceAgreementPostRequestBody()
-            .withName(randomLegalEntityName)
-            .withDescription(randomLegalEntityName)
-            .withExternalId(UUID.randomUUID().toString())
-            .withStatus(CreateStatus.ENABLED)
-            .withParticipants(participants);
+        return new ServiceAgreement()
+            .name(randomLegalEntityName)
+            .description(randomLegalEntityName)
+            .externalId(UUID.randomUUID().toString())
+            .status(CreateStatus.ENABLED)
+            .participants(participants);
     }
 
-    public static ServiceAgreementPutRequestBody generateServiceAgreementPutRequestBody() {
-        return new ServiceAgreementPutRequestBody()
-            .withExternalId(UUID.randomUUID().toString())
-            .withName(faker.company().name())
-            .withDescription(faker.company().catchPhrase());
+    public static ServiceAgreementPut generateServiceAgreementPutRequestBody() {
+        return new ServiceAgreementPut()
+            .externalId(UUID.randomUUID().toString())
+            .name(faker.company().name())
+            .description(faker.company().catchPhrase());
     }
 }

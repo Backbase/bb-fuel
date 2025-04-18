@@ -4,9 +4,9 @@ import static org.apache.http.HttpStatus.SC_OK;
 
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
-import com.backbase.dbs.user.manager.models.v2.LegalEntity;
+import com.backbase.dbs.user.manager.client.api.v2.model.LegalEntity;
 import com.backbase.dbs.accesscontrol.client.v3.model.ServiceAgreementItem;
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

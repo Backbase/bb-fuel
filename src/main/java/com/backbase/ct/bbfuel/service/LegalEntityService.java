@@ -5,7 +5,7 @@ import static org.apache.http.HttpStatus.SC_CREATED;
 
 import com.backbase.ct.bbfuel.client.legalentity.LegalEntityIntegrationRestClient;
 import com.backbase.ct.bbfuel.util.ResponseUtils;
-import com.backbase.dbs.accesscontrol.legalentity.client.v2.model.LegalEntityCreateItem;
+import com.backbase.dbs.accesscontrol.legalentity.integration.v2.model.LegalEntityCreateItem;
 import io.restassured.response.Response;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

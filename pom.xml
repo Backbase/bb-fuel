@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <artifactId>service-sdk-starter-core</artifactId>
         <groupId>com.backbase.buildingblocks</groupId>
-        <version>11.2.1</version>
+        <version>19.0.0</version>
+        <relativePath/>
     </parent>
 
     <groupId>com.backbase.ct</groupId>
     <artifactId>bb-fuel</artifactId>
-    <version>2.7.23-SNAPSHOT</version>
+    <version>3.0.0-SNAPSHOT</version>
     <name>Backbase :: Capability Testing :: bb-fuel</name>
 
     <scm>
@@ -22,24 +24,18 @@
     <properties>
         <mainClass>com.backbase.ct.bbfuel.BbFuelApplication</mainClass>
 
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-        <maven-assembly-plugin.version>2.4.1</maven-assembly-plugin.version>
-        <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
-
-        <junit.version>4.13.2</junit.version>
-        <lombok.version>1.18.36</lombok.version>
-
         <commons-configuration.version>1.10</commons-configuration.version>
         <commons-collections.version>4.4</commons-collections.version>
 
-        <rest-assured.version>4.2.0</rest-assured.version>
-        <groovy.version>3.0.7</groovy.version>
+        <rest-assured.version>5.4.0</rest-assured.version>
         <guava.version>32.0.0-jre</guava.version>
+        <archunit.skip>true</archunit.skip>
 
         <api.target>${project.build.directory}/downloaded-api</api.target>
-        <openapi-generator-version>5.1.0</openapi-generator-version>
+        <unpacked-api.target>${project.build.directory}/unpacked-api</unpacked-api.target>
+        <openapi-generator-version>7.12.0</openapi-generator-version>
         <boat-maven-plugin.version>0.17.58</boat-maven-plugin.version>
+        <backbase.specs.url>https://repo.backbase.com/specs</backbase.specs.url>
         <jackson-bom.version>2.14.2</jackson-bom.version>
         <jackson-databind-nullable-version>0.2.6</jackson-databind-nullable-version>
         <swagger-annotations-version>1.6.0</swagger-annotations-version>
@@ -53,30 +49,14 @@
         <service-sdk.version>11.0.0</service-sdk.version>
         <common-types.version>1.0.5</common-types.version>
 
-        <!-- Products Specs Versions -->
-        <arrangement-client-api.version>2.16.1</arrangement-client-api.version>
-        <arrangement-integration-outbound-link-account-api.version>2.4.1</arrangement-integration-outbound-link-account-api.version>
-        <arrangement-integration-outbound-origination-api.version>1.2.1</arrangement-integration-outbound-origination-api.version>
-        <arrangement-integration-inbound-api.version>3.2.1</arrangement-integration-inbound-api.version>
-        <contentservices-client-api.version>2.6.0</contentservices-client-api.version>
-        <contact-manager-integration-inbound-api.version>2.9.5</contact-manager-integration-inbound-api.version>
-        <payment-order-client-api.version>3.9.0</payment-order-client-api.version>
-
     </properties>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.backbase.dbs</groupId>
-                <artifactId>banking-services-bom</artifactId>
-                <version>2.19.3</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson</groupId>
-                <artifactId>jackson-bom</artifactId>
-                <version>${jackson-bom.version}</version>
+                <groupId>com.backbase</groupId>
+                <artifactId>backbase-bom</artifactId>
+                <version>2025.03.9-LTS</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -113,40 +93,9 @@
             <artifactId>common-types</artifactId>
             <version>${common-types.version}</version>
         </dependency>
-        <!-- DBS Specs -->
-        <!-- Access control -->
         <dependency>
-            <groupId>com.backbase.dbs.accessgroup</groupId>
-            <artifactId>accessgroup-integration-spec</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.backbase.dbs.approval</groupId>
-            <artifactId>approval-integration-spec</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-simple</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <!-- Arrangement Manager -->
-        <dependency>
-            <groupId>com.backbase.dbs.arrangement</groupId>
-            <artifactId>arrangement-integration-spec</artifactId>
-        </dependency>
-        <!-- Limits -->
-        <dependency>
-            <groupId>com.backbase.dbs.limit</groupId>
-            <artifactId>limit-spec</artifactId>
-        </dependency>
-        <!-- User manager -->
-        <dependency>
-            <groupId>com.backbase.dbs.user</groupId>
-            <artifactId>user-manager-spec</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.backbase.dbs.user</groupId>
-            <artifactId>user-integration-external-outbound-spec</artifactId>
+            <groupId>jakarta.annotation</groupId>
+            <artifactId>jakarta.annotation-api</artifactId>
         </dependency>
         <!-- Generic dependencies -->
         <dependency>
@@ -158,16 +107,6 @@
             <groupId>commons-configuration</groupId>
             <artifactId>commons-configuration</artifactId>
             <version>${commons-configuration.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy</artifactId>
-            <version>${groovy.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy-xml</artifactId>
-            <version>${groovy.version}</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -278,7 +217,7 @@
                 <artifactId>maven-release-plugin</artifactId>
                 <version>${maven-release-plugin.version}</version>
                 <configuration>
-                    <scmCommentPrefix>[ci skip][maven-release-plugin] </scmCommentPrefix>
+                    <scmCommentPrefix>[ci skip][maven-release-plugin]</scmCommentPrefix>
                 </configuration>
             </plugin>
             <plugin>
@@ -286,21 +225,17 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <executions>
                     <execution>
+                        <id>repackage</id>
                         <goals>
                             <goal>repackage</goal>
                         </goals>
+                        <configuration>
+                            <mainClass>${mainClass}</mainClass>
+                            <layout>JAR</layout>
+                        </configuration>
                     </execution>
-                </executions>
-                <configuration>
-                    <mainClass>${mainClass}</mainClass>
-                    <layout>JAR</layout>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <executions>
                     <execution>
+                        <id>build-info-repackage</id>
                         <goals>
                             <goal>build-info</goal>
                             <goal>repackage</goal>
@@ -312,43 +247,148 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>unpack-spec-dependencies</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <includes>**/*.yaml</includes>
+                            <artifactItems>
+
+                                <artifactItem>
+                                    <groupId>com.backbase.dbs.approval</groupId>
+                                    <artifactId>approval-service</artifactId>
+                                    <type>zip</type>
+                                    <classifier>api</classifier>
+                                    <outputDirectory>${unpacked-api.target}</outputDirectory>
+                                </artifactItem>
+
+                                <artifactItem>
+                                    <groupId>com.backbase.dbs.messages</groupId>
+                                    <artifactId>messages-service</artifactId>
+                                    <type>zip</type>
+                                    <classifier>api</classifier>
+                                    <outputDirectory>${unpacked-api.target}</outputDirectory>
+                                </artifactItem>
+
+                                <artifactItem>
+                                    <groupId>com.backbase.dbs.notifications</groupId>
+                                    <artifactId>notifications-service</artifactId>
+                                    <type>zip</type>
+                                    <classifier>api</classifier>
+                                    <outputDirectory>${unpacked-api.target}</outputDirectory>
+                                </artifactItem>
+
+                                <artifactItem>
+                                    <groupId>com.backbase.dbs.user</groupId>
+                                    <artifactId>user-manager</artifactId>
+                                    <type>zip</type>
+                                    <classifier>api</classifier>
+                                    <outputDirectory>${unpacked-api.target}</outputDirectory>
+                                </artifactItem>
+
+                                <artifactItem>
+                                    <groupId>com.backbase.dbs.limit</groupId>
+                                    <artifactId>limit</artifactId>
+                                    <type>zip</type>
+                                    <classifier>api</classifier>
+                                    <outputDirectory>${unpacked-api.target}</outputDirectory>
+                                </artifactItem>
+
+                                <artifactItem>
+                                    <groupId>com.backbase.products</groupId>
+                                    <artifactId>arrangement-manager</artifactId>
+                                    <type>zip</type>
+                                    <classifier>api</classifier>
+                                    <outputDirectory>${unpacked-api.target}</outputDirectory>
+                                </artifactItem>
+
+                                <artifactItem>
+                                    <groupId>com.backbase.dbs.paymentorder</groupId>
+                                    <artifactId>payment-order-service</artifactId>
+                                    <type>zip</type>
+                                    <classifier>api</classifier>
+                                    <outputDirectory>${unpacked-api.target}</outputDirectory>
+                                </artifactItem>
+
+                                <artifactItem>
+                                    <groupId>com.backbase.dbs.accesscontrol</groupId>
+                                    <artifactId>access-control</artifactId>
+                                    <type>zip</type>
+                                    <classifier>api</classifier>
+                                    <outputDirectory>${unpacked-api.target}</outputDirectory>
+                                </artifactItem>
+
+                                <artifactItem>
+                                    <groupId>com.backbase.dbs.transaction</groupId>
+                                    <artifactId>transaction-manager</artifactId>
+                                    <type>zip</type>
+                                    <classifier>api</classifier>
+                                    <outputDirectory>${unpacked-api.target}</outputDirectory>
+                                </artifactItem>
+
+                                <artifactItem>
+                                    <groupId>com.backbase.dbs.contact</groupId>
+                                    <artifactId>contact-manager</artifactId>
+                                    <type>zip</type>
+                                    <classifier>api</classifier>
+                                    <outputDirectory>${unpacked-api.target}</outputDirectory>
+                                </artifactItem>
+
+                                <artifactItem>
+                                    <groupId>com.backbase.dbs.billpay</groupId>
+                                    <artifactId>billpay-integrator</artifactId>
+                                    <type>zip</type>
+                                    <classifier>api</classifier>
+                                    <outputDirectory>${unpacked-api.target}</outputDirectory>
+                                </artifactItem>
+
+                                <artifactItem>
+                                    <groupId>com.backbase.positive-pay</groupId>
+                                    <artifactId>positive-pay-check</artifactId>
+                                    <type>zip</type>
+                                    <classifier>api</classifier>
+                                    <outputDirectory>${unpacked-api.target}</outputDirectory>
+                                </artifactItem>
+
+                                <artifactItem>
+                                    <groupId>com.backbase.dbs.pfm</groupId>
+                                    <artifactId>transaction-category-collector</artifactId>
+                                    <type>zip</type>
+                                    <classifier>api</classifier>
+                                    <outputDirectory>${unpacked-api.target}</outputDirectory>
+                                </artifactItem>
+
+                                <artifactItem>
+                                    <groupId>com.backbase.pfm.pocket</groupId>
+                                    <artifactId>pocket-tailor</artifactId>
+                                    <type>zip</type>
+                                    <classifier>api</classifier>
+                                    <outputDirectory>${unpacked-api.target}</outputDirectory>
+                                </artifactItem>
+
+                                <artifactItem>
+                                    <groupId>com.backbase.cxp</groupId>
+                                    <artifactId>contentservices</artifactId>
+                                    <type>zip</type>
+                                    <classifier>api</classifier>
+                                    <outputDirectory>${unpacked-api.target}</outputDirectory>
+                                </artifactItem>
+
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>wagon-maven-plugin</artifactId>
                 <executions>
-                    <execution>
-                        <id>download-access-control-client-api-spec</id>
-                        <goals>
-                            <goal>download-single</goal>
-                        </goals>
-                        <phase>generate-sources</phase>
-                        <configuration>
-                            <url>https://repo.backbase.com/specs/access-control</url>
-                            <fromFile>access-control-client-api-v3.6.0.yaml</fromFile>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>download-accessgroup-integration-api-spec</id>
-                        <goals>
-                            <goal>download-single</goal>
-                        </goals>
-                        <phase>generate-sources</phase>
-                        <configuration>
-                            <url>https://repo.backbase.com/specs/access-control</url>
-                            <fromFile>accessgroup-integration-inbound-api-v2.6.2.yaml</fromFile>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>download-legal-entity-integration-api-spec</id>
-                        <goals>
-                            <goal>download-single</goal>
-                        </goals>
-                        <phase>generate-sources</phase>
-                        <configuration>
-                            <url>https://repo.backbase.com/specs/access-control</url>
-                            <fromFile>legalentity-integration-inbound-api-v2.4.2.yaml</fromFile>
-                        </configuration>
-                    </execution>
 
                     <execution>
                         <id>download-action-api-spec</id>
@@ -357,155 +397,11 @@
                         </goals>
                         <phase>generate-sources</phase>
                         <configuration>
-                            <url>https://repo.backbase.com/specs/action</url>
+                            <url>${backbase.specs.url}/action</url>
                             <fromFile>action-client-api-v2.0.0.yaml</fromFile>
                         </configuration>
                     </execution>
 
-                    <execution>
-                        <id>download-billpay-api-spec</id>
-                        <goals>
-                            <goal>download-single</goal>
-                        </goals>
-                        <phase>generate-sources</phase>
-                        <configuration>
-                            <url>https://repo.backbase.com/specs/billpay-integrator</url>
-                            <fromFile>billpay-integration-external-provider-outbound-api-v2.0.0.yaml</fromFile>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>download-transaction-manager-integration-api-spec</id>
-                        <goals>
-                            <goal>download-single</goal>
-                        </goals>
-                        <phase>generate-sources</phase>
-                        <configuration>
-                            <url>https://repo.backbase.com/specs/transaction-manager</url>
-                            <fromFile>transaction-manager-integration-inbound-api-v2.0.0.yaml</fromFile>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>download-transaction-category-collector-api-spec</id>
-                        <goals>
-                            <goal>download-single</goal>
-                        </goals>
-                        <phase>generate-sources</phase>
-                        <configuration>
-                            <url>https://repo.backbase.com/specs/transaction-category-collector</url>
-                            <fromFile>transaction-category-collector-client-api-v2.0.0.yaml</fromFile>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>download-pocket-tailor-client-api-spec</id>
-                        <goals>
-                            <goal>download-single</goal>
-                        </goals>
-                        <phase>generate-sources</phase>
-                        <configuration>
-                            <url>https://repo.backbase.com/specs/pocket-tailor</url>
-                            <fromFile>pocket-tailor-client-api-v2.0.0.yaml</fromFile>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>download-positive-pay-client-api</id>
-                        <goals>
-                            <goal>download-single</goal>
-                        </goals>
-                        <phase>generate-sources</phase>
-                        <configuration>
-                            <url>https://repo.backbase.com/specs/positive-pay</url>
-                            <fromFile>positive-pay-client-api-v1.0.0.yaml</fromFile>
-                        </configuration>
-                    </execution>
-
-                    <!-- Products Specs -->
-                    <execution>
-                        <id>download-arrangement-client-api-spec</id>
-                        <goals>
-                            <goal>download-single</goal>
-                        </goals>
-                        <phase>generate-sources</phase>
-                        <configuration>
-                            <url>https://repo.backbase.com/specs/arrangement-manager</url>
-                            <fromFile>arrangement-client-api-v${arrangement-client-api.version}.yaml</fromFile>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>download-arrangement-outbound-origination-api-spec</id>
-                        <goals>
-                            <goal>download-single</goal>
-                        </goals>
-                        <phase>generate-sources</phase>
-                        <configuration>
-                            <url>https://repo.backbase.com/specs/arrangement-manager</url>
-                            <fromFile>arrangement-integration-outbound-origination-api-v${arrangement-integration-outbound-origination-api.version}.yaml</fromFile>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>download-arrangement-integration-outbound-link-account-api-spec</id>
-                        <goals>
-                            <goal>download-single</goal>
-                        </goals>
-                        <phase>generate-sources</phase>
-                        <configuration>
-                            <url>https://repo.backbase.com/specs/arrangement-manager</url>
-                            <fromFile>arrangement-integration-outbound-link-account-api-v${arrangement-integration-outbound-link-account-api.version}.yaml</fromFile>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>download-arrangement-integration-inbound-api</id>
-                        <goals>
-                            <goal>download-single</goal>
-                        </goals>
-                        <phase>generate-sources</phase>
-                        <configuration>
-                            <url>https://repo.backbase.com/specs/arrangement-manager</url>
-                            <fromFile>arrangement-integration-inbound-api-v${arrangement-integration-inbound-api.version}.yaml</fromFile>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>download-contentservices-client-api-spec</id>
-                        <goals>
-                            <goal>download-single</goal>
-                        </goals>
-                        <phase>generate-sources</phase>
-                        <configuration>
-                            <url>https://repo.backbase.com/specs/contentservices</url>
-                            <fromFile>contentservices-client-api-v${contentservices-client-api.version}.yaml</fromFile>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>download-contact-manager-integration-inbound-api-spec</id>
-                        <goals>
-                            <goal>download-single</goal>
-                        </goals>
-                        <phase>generate-sources</phase>
-                        <configuration>
-                            <url>https://repo.backbase.com/specs/contact-manager</url>
-                            <fromFile>contact-manager-integration-inbound-api-v${contact-manager-integration-inbound-api.version}.yaml</fromFile>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>download-payment-order-client-api-spec</id>
-                        <goals>
-                            <goal>download-single</goal>
-                        </goals>
-                        <phase>generate-sources</phase>
-                        <configuration>
-                            <url>https://repo.backbase.com/specs/payment</url>
-                            <fromFile>payment-order-client-api-v${payment-order-client-api.version}.yaml</fromFile>
-                        </configuration>
-                    </execution>
                 </executions>
             </plugin>
 
@@ -519,6 +415,7 @@
                     <generateApiTests>false</generateApiTests>
                     <generateModelTests>false</generateModelTests>
                     <configOptions>
+                        <useJakartaEe>true</useJakartaEe>
                         <library>rest-assured</library>
                         <dateLibrary>java8</dateLibrary>
                         <serializationLibrary>jackson</serializationLibrary>
@@ -526,28 +423,31 @@
                 </configuration>
                 <executions>
                     <execution>
-                    <id>generate-access-control-client-code</id>
-                    <goals>
-                        <goal>generate</goal>
-                    </goals>
-                    <configuration>
-                        <inputSpec>${api.target}/access-control-client-api-v3.6.0.yaml</inputSpec>
-                        <configOptions>
-                            <apiPackage>com.backbase.dbs.accesscontrol.client.v3</apiPackage>
-                            <modelPackage>com.backbase.dbs.accesscontrol.client.v3.model</modelPackage>
-                        </configOptions>
-                    </configuration>
-                </execution>
-                    <execution>
-                        <id>generate-accessgroup-integration-client-code</id>
+                        <id>generate-access-control-client-code</id>
                         <goals>
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${api.target}/accessgroup-integration-inbound-api-v2.6.2.yaml</inputSpec>
+                            <inputSpec>${unpacked-api.target}/access-control/access-control-client-api-v3.16.0.yaml</inputSpec>
                             <configOptions>
-                                <apiPackage>com.backbase.dbs.accesscontrol.accessgroup.client.v2</apiPackage>
-                                <modelPackage>com.backbase.dbs.accesscontrol.accessgroup.client.v2.model</modelPackage>
+                                <apiPackage>com.backbase.dbs.accesscontrol.client.v3</apiPackage>
+                                <modelPackage>com.backbase.dbs.accesscontrol.client.v3.model</modelPackage>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-accessgroup-integration-inbound-code</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>
+                                ${unpacked-api.target}/access-control/accessgroup-integration-inbound-api-v3.7.0.yaml
+                            </inputSpec>
+                            <configOptions>
+                                <apiPackage>com.backbase.dbs.accesscontrol.accessgroup.integration.v3</apiPackage>
+                                <modelPackage>com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model
+                                </modelPackage>
                             </configOptions>
                         </configuration>
                     </execution>
@@ -558,10 +458,11 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${api.target}/legalentity-integration-inbound-api-v2.4.2.yaml</inputSpec>
+                            <inputSpec>${unpacked-api.target}/access-control/legalentity-integration-inbound-api-v2.6.0.yaml</inputSpec>
                             <configOptions>
-                                <apiPackage>com.backbase.dbs.accesscontrol.legalentity.client.v2</apiPackage>
-                                <modelPackage>com.backbase.dbs.accesscontrol.legalentity.client.v2.model</modelPackage>
+                                <apiPackage>com.backbase.dbs.accesscontrol.legalentity.integration.v2</apiPackage>
+                                <modelPackage>com.backbase.dbs.accesscontrol.legalentity.integration.v2.model
+                                </modelPackage>
                             </configOptions>
                         </configuration>
                     </execution>
@@ -585,7 +486,9 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${api.target}/billpay-integration-external-provider-outbound-api-v2.0.0.yaml</inputSpec>
+                            <inputSpec>
+                                ${unpacked-api.target}/billpay-integrator/billpay-integration-external-provider-outbound-api-v2.2.0.yaml
+                            </inputSpec>
                             <configOptions>
                                 <apiPackage>com.backbase.dbs.billpay.client.v2</apiPackage>
                                 <modelPackage>com.backbase.dbs.billpay.client.v2.model</modelPackage>
@@ -599,7 +502,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${api.target}/transaction-manager-integration-inbound-api-v2.0.0.yaml</inputSpec>
+                            <inputSpec>${unpacked-api.target}/transaction-manager/transaction-manager-integration-inbound-api-v2.7.0.yaml</inputSpec>
                             <configOptions>
                                 <apiPackage>com.backbase.dbs.transaction.client.v2</apiPackage>
                                 <modelPackage>com.backbase.dbs.transaction.client.v2.model</modelPackage>
@@ -613,7 +516,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${api.target}/transaction-category-collector-client-api-v2.0.0.yaml</inputSpec>
+                            <inputSpec>${unpacked-api.target}/transaction-category-collector/transaction-category-collector-client-api-v2.1.0.yaml</inputSpec>
                             <configOptions>
                                 <apiPackage>com.backbase.dbs.transaction.categories.client.v2</apiPackage>
                                 <modelPackage>com.backbase.dbs.transaction.categories.client.v2.model</modelPackage>
@@ -627,7 +530,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${api.target}/pocket-tailor-client-api-v2.0.0.yaml</inputSpec>
+                            <inputSpec>${unpacked-api.target}/pocket-tailor/pocket-tailor-client-api-v2.6.0.yaml</inputSpec>
                             <configOptions>
                                 <apiPackage>com.backbase.dbs.pocket.tailor.client.v2</apiPackage>
                                 <modelPackage>com.backbase.dbs.pocket.tailor.client.v2.model</modelPackage>
@@ -641,7 +544,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${api.target}/positive-pay-client-api-v1.0.0.yaml</inputSpec>
+                            <inputSpec>${unpacked-api.target}/positive-pay-check/positive-pay-checks-client-api-v1.33.0.yaml</inputSpec>
                             <configOptions>
                                 <apiPackage>com.backbase.dbs.positivepay.client.api.v1</apiPackage>
                                 <modelPackage>com.backbase.dbs.positivepay.client.api.v1.model</modelPackage>
@@ -655,10 +558,12 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${api.target}/contentservices-client-api-v${contentservices-client-api.version}.yaml</inputSpec>
+                            <inputSpec>
+                                ${unpacked-api.target}/contentservices/contentservices-client-api-v3.1.0.yaml
+                            </inputSpec>
                             <configOptions>
-                                <apiPackage>com.backbase.dbs.contentservices.client.v2</apiPackage>
-                                <modelPackage>com.backbase.dbs.contentservices.client.v2.model</modelPackage>
+                                <apiPackage>com.backbase.dbs.contentservices.client.v3</apiPackage>
+                                <modelPackage>com.backbase.dbs.contentservices.client.v3.model</modelPackage>
                             </configOptions>
                         </configuration>
                     </execution>
@@ -669,7 +574,9 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${api.target}/contact-manager-integration-inbound-api-v${contact-manager-integration-inbound-api.version}.yaml</inputSpec>
+                            <inputSpec>
+                                ${unpacked-api.target}/contact-manager/contact-manager-integration-inbound-api-v2.21.0.yaml
+                            </inputSpec>
                             <configOptions>
                                 <apiPackage>com.backbase.dbs.contact.integration.inbound.api.v2</apiPackage>
                                 <modelPackage>com.backbase.dbs.contact.integration.inbound.api.v2.model</modelPackage>
@@ -710,7 +617,8 @@
                         </goals>
                         <phase>generate-sources</phase>
                         <configuration>
-                            <inputSpec>${api.target}/arrangement-client-api-v${arrangement-client-api.version}.yaml</inputSpec>
+                            <inputSpec>${unpacked-api.target}/arrangement-manager/arrangement-client-api-v*.yaml
+                            </inputSpec>
                             <configOptions>
                                 <apiPackage>com.backbase.dbs.arrangement.client.api.v2</apiPackage>
                                 <modelPackage>com.backbase.dbs.arrangement.client.api.v2.model</modelPackage>
@@ -724,10 +632,14 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${api.target}/arrangement-integration-outbound-origination-api-v${arrangement-integration-outbound-origination-api.version}.yaml</inputSpec>
+                            <inputSpec>
+                                ${unpacked-api.target}/arrangement-manager/arrangement-integration-outbound-origination-api-v*.yaml
+                            </inputSpec>
                             <configOptions>
-                                <apiPackage>com.backbase.dbs.arrangement.integration.outbound.origination.v1</apiPackage>
-                                <modelPackage>com.backbase.dbs.arrangement.integration.outbound.origination.v1.model</modelPackage>
+                                <apiPackage>com.backbase.dbs.arrangement.integration.outbound.origination.v1
+                                </apiPackage>
+                                <modelPackage>com.backbase.dbs.arrangement.integration.outbound.origination.v1.model
+                                </modelPackage>
                             </configOptions>
                         </configuration>
                     </execution>
@@ -738,10 +650,13 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${api.target}/arrangement-integration-outbound-link-account-api-v${arrangement-integration-outbound-link-account-api.version}.yaml</inputSpec>
+                            <inputSpec>
+                                ${unpacked-api.target}/arrangement-manager/arrangement-integration-outbound-link-account-api-v*.yaml
+                            </inputSpec>
                             <configOptions>
                                 <apiPackage>com.backbase.dbs.arrangement.integration.outbound.link.v2</apiPackage>
-                                <modelPackage>com.backbase.dbs.arrangement.integration.outbound.link.v2.model</modelPackage>
+                                <modelPackage>com.backbase.dbs.arrangement.integration.outbound.link.v2.model
+                                </modelPackage>
                             </configOptions>
                         </configuration>
                     </execution>
@@ -753,10 +668,13 @@
                         </goals>
                         <phase>generate-sources</phase>
                         <configuration>
-                            <inputSpec>${api.target}/arrangement-integration-inbound-api-v${arrangement-integration-inbound-api.version}.yaml</inputSpec>
+                            <inputSpec>
+                                ${unpacked-api.target}/arrangement-manager/arrangement-integration-inbound-api-v3*.yaml
+                            </inputSpec>
                             <configOptions>
                                 <apiPackage>com.backbase.dbs.arrangement.integration.inbound.api.v3</apiPackage>
-                                <modelPackage>com.backbase.dbs.arrangement.integration.inbound.api.v3.model</modelPackage>
+                                <modelPackage>com.backbase.dbs.arrangement.integration.inbound.api.v3.model
+                                </modelPackage>
                             </configOptions>
                         </configuration>
                     </execution>
@@ -768,7 +686,9 @@
                         </goals>
                         <phase>generate-sources</phase>
                         <configuration>
-                            <inputSpec>${api.target}/payment-order-client-api-v${payment-order-client-api.version}.yaml</inputSpec>
+                            <inputSpec>
+                                ${unpacked-api.target}/payment/payment-order-client-api-v*.yaml
+                            </inputSpec>
                             <configOptions>
                                 <apiPackage>com.backbase.dbs.paymentorder.client.api.v3</apiPackage>
                                 <modelPackage>com.backbase.dbs.paymentorder.client.api.v3.model</modelPackage>
@@ -776,177 +696,112 @@
                         </configuration>
                     </execution>
 
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
                     <execution>
-                        <id>unpack-spec-dependencies</id>
-                        <phase>generate-sources</phase>
+                        <id>generate-user-manager-client-api</id>
                         <goals>
-                            <goal>unpack</goal>
+                            <goal>generate</goal>
                         </goals>
-                        <configuration>
-                            <includes>**/*.raml,**/*.json,**/*.md,**/*.csv</includes>
-                            <artifactItems>
-
-                                <artifactItem>
-                                    <groupId>com.backbase.dbs.actions</groupId>
-                                    <artifactId>action-spec</artifactId>
-                                    <outputDirectory>
-                                        ${project.build.directory}/action-spec
-                                    </outputDirectory>
-                                </artifactItem>
-
-                                <artifactItem>
-                                    <groupId>com.backbase.dbs.approval</groupId>
-                                    <artifactId>approval-integration-spec</artifactId>
-                                    <outputDirectory>
-                                        ${project.build.directory}/approval-integration-spec
-                                    </outputDirectory>
-                                </artifactItem>
-
-                                <artifactItem>
-                                    <groupId>com.backbase.dbs.messages</groupId>
-                                    <artifactId>messages-service-spec</artifactId>
-                                    <outputDirectory>
-                                        ${project.build.directory}/messages-service-spec
-                                    </outputDirectory>
-                                </artifactItem>
-
-                                <artifactItem>
-                                    <groupId>com.backbase.dbs.notifications</groupId>
-                                    <artifactId>notifications-spec</artifactId>
-                                    <outputDirectory>
-                                        ${project.build.directory}/notifications-spec
-                                    </outputDirectory>
-                                </artifactItem>
-
-                                <artifactItem>
-                                    <groupId>com.backbase.dbs.productsummary</groupId>
-                                    <artifactId>product-summary-presentation-spec</artifactId>
-                                    <outputDirectory>
-                                        ${project.build.directory}/product-summary-presentation-spec
-                                    </outputDirectory>
-                                </artifactItem>
-
-                                <artifactItem>
-                                    <groupId>com.backbase.dbs.user</groupId>
-                                    <artifactId>user-manager-spec</artifactId>
-                                    <outputDirectory>
-                                        ${project.build.directory}/user-manager-spec
-                                    </outputDirectory>
-                                </artifactItem>
-                            </artifactItems>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>com.backbase.codegen</groupId>
-                <artifactId>raml-api-maven-plugin-1-0</artifactId>
-                <version>${service-sdk.version}</version>
-                <configuration>
-                    <outputFile>target/generated-sources</outputFile>
-                </configuration>
-                <executions>
-
-                    <execution>
-                        <id>generate-approval-integration-spec</id>
                         <phase>generate-sources</phase>
-                        <goals>
-                            <goal>raml-api-generator</goal>
-                        </goals>
                         <configuration>
-                            <serviceId>approval-service</serviceId>
-                            <packageName>dbs.approval.integration</packageName>
-                            <inputFiles>
-                                <inputFile>
-                                    ${project.build.directory}/approval-integration-spec/client-api.raml
-                                </inputFile>
-                            </inputFiles>
-                            <requestHeaders>false</requestHeaders>
+                            <inputSpec>${unpacked-api.target}/user-manager/user-manager-client-api-v*.yaml</inputSpec>
+                            <configOptions>
+                                <apiPackage>com.backbase.dbs.user.manager.client.api.v2</apiPackage>
+                                <modelPackage>com.backbase.dbs.user.manager.client.api.v2.model</modelPackage>
+                            </configOptions>
                         </configuration>
                     </execution>
 
                     <execution>
-                        <id>generate-messages-service-spec</id>
-                        <phase>generate-sources</phase>
+                        <id>generate-user-manager-service-api</id>
                         <goals>
-                            <goal>raml-api-generator</goal>
+                            <goal>generate</goal>
                         </goals>
+                        <phase>generate-sources</phase>
                         <configuration>
-                            <serviceId>messages-service-spec</serviceId>
-                            <packageName>dbs.messages</packageName>
-                            <inputFiles>
-                                <inputFile>
-                                    ${project.build.directory}/messages-service-spec/service-api.raml
-                                </inputFile>
-                            </inputFiles>
-                            <requestHeaders>false</requestHeaders>
+                            <inputSpec>${unpacked-api.target}/user-manager/user-manager-service-api-v*.yaml</inputSpec>
+                            <configOptions>
+                                <apiPackage>com.backbase.dbs.user.manager.service.api.v2</apiPackage>
+                                <modelPackage>com.backbase.dbs.user.manager.service.api.v2.model</modelPackage>
+                            </configOptions>
                         </configuration>
                     </execution>
 
                     <execution>
-                        <id>generate-notifications-spec</id>
-                        <phase>generate-sources</phase>
+                        <id>generate-user-manager-integration-api</id>
                         <goals>
-                            <goal>raml-api-generator</goal>
+                            <goal>generate</goal>
                         </goals>
+                        <phase>generate-sources</phase>
                         <configuration>
-                            <serviceId>notifications-spec</serviceId>
-                            <packageName>dbs.notifications</packageName>
-                            <inputFiles>
-                                <inputFile>
-                                    ${project.build.directory}/notifications-spec/service-api.raml
-                                </inputFile>
-                            </inputFiles>
-                            <requestHeaders>false</requestHeaders>
+                            <inputSpec>
+                                ${unpacked-api.target}/user-manager/user-manager-integration-inbound-api-v*.yaml
+                            </inputSpec>
+                            <configOptions>
+                                <apiPackage>com.backbase.dbs.user.manager.integration.api.v2</apiPackage>
+                                <modelPackage>com.backbase.dbs.user.manager.integration.api.v2.model</modelPackage>
+                            </configOptions>
                         </configuration>
                     </execution>
 
                     <execution>
-                        <id>generate-product-summary-presentation-spec</id>
-                        <phase>generate-sources</phase>
+                        <id>generate-approval-integration-api</id>
                         <goals>
-                            <goal>raml-api-generator</goal>
+                            <goal>generate</goal>
                         </goals>
+                        <phase>generate-sources</phase>
                         <configuration>
-                            <serviceId>productsummary-service</serviceId>
-                            <packageName>dbs.productsummary.presentation</packageName>
-                            <inputFiles>
-                                <inputFile>
-                                    ${project.build.directory}/product-summary-presentation-spec/service-api.raml
-                                </inputFile>
-                            </inputFiles>
-                            <requestHeaders>false</requestHeaders>
+                            <inputSpec>${unpacked-api.target}/approval/approval-integration-inbound-api-v*.yaml
+                            </inputSpec>
+                            <configOptions>
+                                <apiPackage>com.backbase.dbs.approval.integration.api.v2</apiPackage>
+                                <modelPackage>com.backbase.dbs.approval.integration.api.v2.model</modelPackage>
+                            </configOptions>
                         </configuration>
                     </execution>
 
                     <execution>
-                        <id>generate-user-manager-spec</id>
-                        <phase>generate-sources</phase>
+                        <id>generate-notification-service-api</id>
                         <goals>
-                            <goal>raml-api-generator</goal>
+                            <goal>generate</goal>
                         </goals>
+                        <phase>generate-sources</phase>
                         <configuration>
-                            <serviceId>user-manager-spec</serviceId>
-                            <packageName>dbs.user</packageName>
-                            <inputFiles>
-                                <inputFile>
-                                    ${project.build.directory}/user-manager-spec/service-api.raml
-                                </inputFile>
-                                <inputFile>
-                                    ${project.build.directory}/user-manager-spec/client-api.raml
-                                </inputFile>
-                                <inputFile>
-                                    ${project.build.directory}/user-manager-spec/integration-api.raml
-                                </inputFile>
-                            </inputFiles>
-                            <requestHeaders>false</requestHeaders>
+                            <inputSpec>${unpacked-api.target}/notification/notification-service-api-v*.yaml</inputSpec>
+                            <configOptions>
+                                <apiPackage>com.backbase.dbs.notification.service.api.v2</apiPackage>
+                                <modelPackage>com.backbase.dbs.notification.service.api.v2.model</modelPackage>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>generate-message-service-api</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <inputSpec>${unpacked-api.target}/message/message-service-api-v*.yaml
+                            </inputSpec>
+                            <configOptions>
+                                <apiPackage>com.backbase.dbs.message.service.api.v5</apiPackage>
+                                <modelPackage>com.backbase.dbs.message.service.api.v5.model</modelPackage>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>generate-limit-client-api</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <inputSpec>${unpacked-api.target}/limit/limit-client-api-v*.yaml</inputSpec>
+                            <configOptions>
+                                <apiPackage>com.backbase.dbs.limit.client.api.v2</apiPackage>
+                                <modelPackage>com.backbase.dbs.limit.client.api.v2.model</modelPackage>
+                            </configOptions>
                         </configuration>
                     </execution>
 

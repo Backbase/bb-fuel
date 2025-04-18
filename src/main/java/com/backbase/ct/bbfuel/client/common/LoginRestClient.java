@@ -16,7 +16,7 @@ import com.backbase.ct.bbfuel.service.LegalEntityService;
 import io.restassured.response.ValidatableResponse;
 import java.util.HashMap;
 import java.util.Map;
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

@@ -27,9 +27,8 @@ import com.backbase.ct.bbfuel.client.common.LoginRestClient;
 import com.backbase.ct.bbfuel.dto.entitlement.JobProfile;
 import com.backbase.ct.bbfuel.service.JobProfileService;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
-import com.backbase.dbs.approval.integration.spec.IntegrationPolicyAssignmentRequest;
-import com.backbase.rest.spec.common.types.Currency;
-import java.math.BigDecimal;
+import com.backbase.dbs.approval.integration.api.v2.model.Currency;
+import com.backbase.dbs.approval.integration.api.v2.model.IntegrationPolicyAssignmentRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -53,9 +52,9 @@ public class ApprovalsConfigurator {
     private final ApprovalIntegrationRestClient approvalIntegrationRestClient;
     private final JobProfileService jobProfileService;
 
-    private static final BigDecimal UPPER_BOUND_HUNDRED = new BigDecimal("100.0");
-    private static final BigDecimal UPPER_BOUND_THOUSAND = new BigDecimal("1000.0");
-    private static final BigDecimal UPPER_BOUND_HUNDRED_THOUSAND = new BigDecimal("100000.0");
+    private static final String UPPER_BOUND_HUNDRED = "100.0";
+    private static final String UPPER_BOUND_THOUSAND = "1000.0";
+    private static final String UPPER_BOUND_HUNDRED_THOUSAND = "100000.0";
     private String approvalTypeAId;
     private String approvalTypeBId;
     private String approvalTypeCId;

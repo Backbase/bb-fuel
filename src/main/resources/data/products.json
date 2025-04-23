@@ -1,51 +1,37 @@
 [
   {
-    "id": "1",
-    "productKindId": "kind1",
-    "productKindName": "Current Account",
-    "productTypeId": "1111111",
-    "productTypeName": "Current Account"
+    "externalId": "1",
+    "productKindExternalId": "kind1",
+    "name": "Current Account"
   },
   {
-    "id": "2",
-    "productKindId": "kind2",
-    "productKindName": "Savings Account",
-    "productTypeId": "2222222",
-    "productTypeName": "Savings Account"
+    "externalId": "2",
+    "productKindExternalId": "kind2",
+    "name": "Savings Account"
   },
   {
-    "id": "3",
-    "productKindId": "kind3",
-    "productKindName": "Debit Card",
-    "productTypeId": "333333",
-    "productTypeName": "Debit Card"
+    "externalId": "3",
+    "productKindExternalId": "kind3",
+    "name": "Debit Card"
   },
   {
-    "id": "4",
-    "productKindId": "kind4",
-    "productKindName": "Credit Card",
-    "productTypeId": "4444444",
-    "productTypeName": "Credit Card"
+    "externalId": "4",
+    "productKindExternalId": "kind4",
+    "name": "Credit Card"
   },
   {
-    "id": "5",
-    "productKindId": "kind5",
-    "productKindName": "Loan",
-    "productTypeId": "5555555",
-    "productTypeName": "Loan"
+    "externalId": "5",
+    "productKindExternalId": "kind5",
+    "name": "Loan"
   },
   {
-    "id": "6",
-    "productKindId": "kind6",
-    "productKindName": "Term Deposit",
-    "productTypeId": "6666666",
-    "productTypeName": "Term Deposit"
+    "externalId": "6",
+    "productKindExternalId": "kind6",
+    "name": "Term Deposit"
   },
   {
-    "id": "7",
-    "productKindId": "kind7",
-    "productKindName": "Investment Account",
-    "productTypeId": "7777777",
-    "productTypeName": "Investment Account"
+    "externalId": "7",
+    "productKindExternalId": "kind7",
+    "name": "Investment Account"
   }
 ]

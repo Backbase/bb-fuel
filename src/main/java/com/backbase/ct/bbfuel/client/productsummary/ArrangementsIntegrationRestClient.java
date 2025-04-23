@@ -30,10 +30,10 @@ public class ArrangementsIntegrationRestClient extends RestClient {
     public static final String X_CHANGE_KEY = "x-change-key";
     public static final String X_CHANGE_VALUE = "x-change-value";
 
-    private static final String SERVICE_VERSION = "v2";
+    private static final String SERVICE_VERSION = "v3";
     private static final String ENDPOINT_ARRANGEMENTS = "/arrangements";
     private static final String ENDPOINT_PRODUCTS = "/products";
-    private static final String ENDPOINT_BALANCE_HISTORY = "/balance-history";
+    private static final String ENDPOINT_BALANCE_HISTORY = "/balance-histories";
     private static final String ENDPOINT_SUBSCRIPTION = "/subscriptions";
 
     @PostConstruct

@@ -1,9 +1,7 @@
 [
   {
-    "id": "1",
-    "productKindId": "kind1",
-    "productKindName": "Current Account",
-    "productTypeId": "1111111",
-    "productTypeName": "Current Account"
+    "externalId": "1",
+    "productKindExternalId": "kind1",
+    "name": "Current Account"
   }
 ]

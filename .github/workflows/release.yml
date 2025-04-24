@@ -11,7 +11,7 @@ jobs:
       - name: Checkout project
         uses: actions/checkout@v3
       - name: Run Maven release
-        uses: qcastel/github-actions-maven-release@v1.12.31
+        uses: qcastel/github-actions-maven-release@v1.12.43
         env:
           JAVA_HOME: /usr/lib/jvm/java-21-openjdk/
           REPO_USERNAME: ${{ secrets.REPO_USERNAME }}

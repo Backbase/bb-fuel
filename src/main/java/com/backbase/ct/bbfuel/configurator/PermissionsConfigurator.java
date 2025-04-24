@@ -40,7 +40,7 @@ public class PermissionsConfigurator {
                     externalServiceAgreementId, externalUserId, group.getFunctionGroupIdentifier().getIdIdentifier(), ids);
             });
         } else if (response.statusCode() == SC_MULTI_STATUS && response.then().extract()
-            .as(BatchResponseItem[].class)[0].getStatus().equals(BatchResponseStatusCode.HTTP_STATUS_OK)) {
+            .as(BatchResponseItem[].class)[0].getStatus().equals(BatchResponseItem.StatusEnum.HTTP_STATUS_OK)) {
 
             functionGroupDataGroups.forEach(group -> {
                 List<String> ids = group.getDataGroupIdentifiers().stream()

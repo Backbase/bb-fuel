@@ -134,11 +134,11 @@ public class ApprovalsConfigurator {
 
         log.info("Policy with approval types A, B and C [{}] created", policyABCId);
 
-        policyAOr2BId = approvalIntegrationRestClient.createPolicyWithLogicalItems("Logical policy approver A OR 2B", asList(
+        policyAOr2BId = approvalIntegrationRestClient.createPolicyWithLogicalItems("Logical policy approver A OR two-B", asList(
             createPolicyItemDto(approvalTypeAId, 1),
             createPolicyItemDto(approvalTypeBId, 2)));
 
-        log.info("Policy with logical approval A or 2B [{}] created", policyAOr2BId);
+        log.info("Policy with logical approval A or two-B [{}] created", policyAOr2BId);
     }
 
     private void assignCurrencyBoundPolicies(String externalServiceAgreementId, int numberOfUsers, String resource,

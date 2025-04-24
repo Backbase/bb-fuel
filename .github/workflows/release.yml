@@ -13,7 +13,7 @@ jobs:
       - name: Run Maven release
         uses: qcastel/github-actions-maven-release@v1.12.31
         env:
-          JAVA_HOME: /usr/lib/jvm/java-1.8-openjdk/
+          JAVA_HOME: /usr/lib/jvm/java-21-openjdk/
           REPO_USERNAME: ${{ secrets.REPO_USERNAME }}
           REPO_PASSWORD: ${{ secrets.REPO_PASSWORD }}
         with:

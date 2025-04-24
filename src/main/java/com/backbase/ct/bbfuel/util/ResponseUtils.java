@@ -6,8 +6,8 @@ import static org.apache.http.HttpStatus.SC_NOT_FOUND;
 
 
 import com.backbase.buildingblocks.presentation.errors.BadRequestException;
+import com.backbase.buildingblocks.presentation.errors.ConflictException;
 import com.backbase.buildingblocks.presentation.errors.NotFoundException;
-import com.backbase.dbs.user.rest.spec.v2.users.ConflictException;
 import io.restassured.response.Response;
 
 public class ResponseUtils {

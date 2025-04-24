@@ -2,10 +2,10 @@ package com.backbase.ct.bbfuel.client.messagecenter;
 
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
-import com.backbase.dbs.messages.rest.spec.v4.messagecenter.TopicsPostRequestBody;
+import com.backbase.dbs.message.service.api.v5.model.TopicsPostRequestBody;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

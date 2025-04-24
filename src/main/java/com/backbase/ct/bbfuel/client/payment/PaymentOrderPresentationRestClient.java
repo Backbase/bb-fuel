@@ -5,7 +5,7 @@ import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
 import com.backbase.dbs.paymentorder.client.api.v3.model.InitiatePaymentOrderWithId;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

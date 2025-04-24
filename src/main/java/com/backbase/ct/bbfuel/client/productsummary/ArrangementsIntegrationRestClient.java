@@ -5,16 +5,16 @@ import static org.apache.http.HttpStatus.SC_CREATED;
 
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
-import com.backbase.dbs.arrangement.integration.inbound.api.v2.model.ArrangementAddedResponse;
-import com.backbase.dbs.arrangement.integration.inbound.api.v2.model.BalanceHistoryItem;
-import com.backbase.dbs.arrangement.integration.inbound.api.v2.model.PostArrangement;
-import com.backbase.dbs.arrangement.integration.inbound.api.v2.model.ProductItem;
-import com.backbase.dbs.arrangement.integration.inbound.api.v2.model.Subscription;
+import com.backbase.dbs.arrangement.integration.inbound.api.v3.model.UuidResponse;
+import com.backbase.dbs.arrangement.integration.inbound.api.v3.model.BalanceHistoryItem;
+import com.backbase.dbs.arrangement.integration.inbound.api.v3.model.ArrangementPost;
+import com.backbase.dbs.arrangement.integration.inbound.api.v3.model.ProductPost;
+import com.backbase.dbs.arrangement.integration.inbound.api.v3.model.Subscription;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import java.util.HashMap;
 import java.util.Map;
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -30,10 +30,10 @@ public class ArrangementsIntegrationRestClient extends RestClient {
     public static final String X_CHANGE_KEY = "x-change-key";
     public static final String X_CHANGE_VALUE = "x-change-value";
 
-    private static final String SERVICE_VERSION = "v2";
+    private static final String SERVICE_VERSION = "v3";
     private static final String ENDPOINT_ARRANGEMENTS = "/arrangements";
     private static final String ENDPOINT_PRODUCTS = "/products";
-    private static final String ENDPOINT_BALANCE_HISTORY = "/balance-history";
+    private static final String ENDPOINT_BALANCE_HISTORY = "/balance-histories";
     private static final String ENDPOINT_SUBSCRIPTION = "/subscriptions";
 
     @PostConstruct
@@ -42,7 +42,7 @@ public class ArrangementsIntegrationRestClient extends RestClient {
         setVersion(SERVICE_VERSION);
     }
 
-    public ArrangementAddedResponse ingestArrangement(PostArrangement body) {
+    public UuidResponse ingestArrangement(ArrangementPost body) {
         return requestSpec()
             .contentType(ContentType.JSON)
             .body(body)
@@ -50,10 +50,10 @@ public class ArrangementsIntegrationRestClient extends RestClient {
             .then()
             .statusCode(SC_CREATED)
             .extract()
-            .as(ArrangementAddedResponse.class);
+            .as(UuidResponse.class);
     }
 
-    public Response ingestPocketArrangement(PostArrangement body) {
+    public Response ingestPocketArrangement(ArrangementPost body) {
         return requestSpec()
             .contentType(ContentType.JSON)
             .body(body)
@@ -65,11 +65,11 @@ public class ArrangementsIntegrationRestClient extends RestClient {
      * with the 3 specified headers, result in an arrangement with an
      * external arrangement id based on the method's argument externalArrangementId's value.
      *
-     * @param body PostArrangement
+     * @param body ArrangementPost
      * @param externalArrangementId external arrangement id
      * @return Response
      */
-    public Response ingestPocketArrangementOneToOne(PostArrangement body, String externalArrangementId) {
+    public Response ingestPocketArrangementOneToOne(ArrangementPost body, String externalArrangementId) {
         Map<String, String> headers = new HashMap<>();
         headers.put(X_CHANGE_PATH, "$");
         headers.put(X_CHANGE_KEY, "externalArrangementId");
@@ -87,11 +87,11 @@ public class ArrangementsIntegrationRestClient extends RestClient {
      * @param modeOneToMany boolean for choosing ingestion method
      * @param arrangement the pocket arrangement generated for 1-to-many or 1-to-1 mode
      * @param externalArrangementId external arrangement id
-     * @return ArrangementAddedResponse
+     * @return UuidResponse
      */
-    public ArrangementAddedResponse ingestPocketArrangementAndLogResponse(PostArrangement arrangement,
+    public UuidResponse ingestPocketArrangementAndLogResponse(ArrangementPost arrangement,
         String externalArrangementId, boolean modeOneToMany) {
-        ArrangementAddedResponse arrangementsPostResponseBody = null;
+        UuidResponse arrangementsPostResponseBody = null;
         Response response;
         if (modeOneToMany) {
             response = ingestPocketArrangement(arrangement);
@@ -99,24 +99,24 @@ public class ArrangementsIntegrationRestClient extends RestClient {
             response = ingestPocketArrangementOneToOne(arrangement, externalArrangementId);
         }
         if (isBadRequestExceptionWithErrorKey(response, "arrangements.api.alreadyExists.arrangement")) {
-            log.info("Arrangement [{}] already exists, skipped ingesting this arrangement", arrangement.getProductId());
+            log.info("Arrangement [{}] already exists, skipped ingesting this arrangement", arrangement.getExternalId());
         } else {
-            log.info("Arrangement [{}] ingested", arrangement.getId());
+            log.info("Arrangement [{}] ingested", arrangement.getExternalId());
             arrangementsPostResponseBody = response.then()
                 .statusCode(SC_CREATED)
                 .extract()
-                .as(ArrangementAddedResponse.class);
+                .as(UuidResponse.class);
         }
         return arrangementsPostResponseBody;
     }
 
-    public void ingestProductAndLogResponse(ProductItem product) {
+    public void ingestProductAndLogResponse(ProductPost product) {
         Response response = ingestProduct(product);
 
         if (isBadRequestExceptionWithErrorKey(response, "account.api.product.alreadyExists")) {
-            log.info("Product [{}] already exists, skipped ingesting this product", product.getProductKindName());
+            log.info("Product [{}] already exists, skipped ingesting this product", product.getExternalId());
         } else if (response.statusCode() == SC_CREATED) {
-            log.info("Product [{}] ingested", product.getProductKindName());
+            log.info("Product [{}] ingested", product.getName());
         } else {
             response.then()
                 .statusCode(SC_CREATED);
@@ -130,7 +130,7 @@ public class ArrangementsIntegrationRestClient extends RestClient {
             .post(getPath(ENDPOINT_BALANCE_HISTORY));
     }
 
-    private Response ingestProduct(ProductItem body) {
+    private Response ingestProduct(ProductPost body) {
         return requestSpec()
             .contentType(ContentType.JSON)
             .body(body)

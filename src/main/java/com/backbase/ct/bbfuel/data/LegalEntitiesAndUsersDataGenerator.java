@@ -3,9 +3,9 @@ package com.backbase.ct.bbfuel.data;
 import static com.backbase.ct.bbfuel.data.CommonConstants.*;
 
 import com.backbase.ct.bbfuel.dto.User;
-import com.backbase.dbs.user.manager.models.v2.UserExternal;
-import com.backbase.dbs.accesscontrol.legalentity.client.v2.model.LegalEntityCreateItem;
-import com.backbase.dbs.accesscontrol.legalentity.client.v2.model.LegalEntityType;
+import com.backbase.dbs.accesscontrol.legalentity.integration.v2.model.LegalEntityCreateItem;
+import com.backbase.dbs.accesscontrol.legalentity.integration.v2.model.LegalEntityType;
+import com.backbase.dbs.user.manager.integration.api.v2.model.UserExternal;
 import com.github.javafaker.Faker;
 import com.google.common.base.Strings;
 import java.util.Optional;

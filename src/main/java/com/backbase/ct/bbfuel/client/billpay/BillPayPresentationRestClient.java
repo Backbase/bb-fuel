@@ -1,6 +1,6 @@
 package com.backbase.ct.bbfuel.client.billpay;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 
 import org.springframework.stereotype.Component;
 

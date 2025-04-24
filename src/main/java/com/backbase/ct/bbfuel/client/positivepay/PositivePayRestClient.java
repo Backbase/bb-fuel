@@ -2,13 +2,13 @@ package com.backbase.ct.bbfuel.client.positivepay;
 
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
-import com.backbase.dbs.positivepay.client.api.v1.model.PositivePayPost;
+import com.backbase.dbs.positivepay.client.api.v1.model.IssuedCheckRequest;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 
 @Component
 @RequiredArgsConstructor
@@ -26,7 +26,7 @@ public class PositivePayRestClient extends RestClient {
         setInitialPath(config.getDbsServiceNames().getPositivePay() + "/" + CLIENT_API);
     }
 
-    public Response submitPositivePayChecks(PositivePayPost positivePayPostRequestBody) {
+    public Response submitPositivePayChecks(IssuedCheckRequest positivePayPostRequestBody) {
         return requestSpec()
                 .contentType(ContentType.JSON)
                 .body(positivePayPostRequestBody)

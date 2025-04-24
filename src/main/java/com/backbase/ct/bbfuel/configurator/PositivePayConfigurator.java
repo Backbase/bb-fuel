@@ -15,8 +15,8 @@ import com.backbase.ct.bbfuel.client.productsummary.ProductSummaryPresentationRe
 import com.backbase.ct.bbfuel.data.PositivePayDataGenerator;
 import com.backbase.ct.bbfuel.dto.ArrangementId;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
-import com.backbase.dbs.arrangement.integration.inbound.api.v2.model.Subscription;
-import com.backbase.dbs.positivepay.client.api.v1.model.PositivePayPost;
+import com.backbase.dbs.arrangement.integration.inbound.api.v3.model.Subscription;
+import com.backbase.dbs.positivepay.client.api.v1.model.IssuedCheckRequest;
 import com.backbase.dbs.arrangement.client.api.v2.model.ProductSummaryItem;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,7 +64,7 @@ public class PositivePayConfigurator {
         IntStream.range(0, randomAmount).parallel().forEach(randomNumber -> {
             String internalArrangementId = getRandomFromList(arrangements).getId();
 
-            PositivePayPost positivePayPostRequestBody = positivePayDataGenerator.generatePositivePayPostRequestBody(internalArrangementId);
+            IssuedCheckRequest positivePayPostRequestBody = positivePayDataGenerator.generatePositivePayPostRequestBody(internalArrangementId);
 
             PositivePayRestClient.submitPositivePayChecks(positivePayPostRequestBody).then().statusCode(SC_OK);
 

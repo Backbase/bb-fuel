@@ -10,7 +10,7 @@ import com.backbase.dbs.accesscontrol.client.v3.model.FunctionGroupItem;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import java.util.List;
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

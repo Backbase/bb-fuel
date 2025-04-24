@@ -1,7 +1,7 @@
 package com.backbase.ct.bbfuel.data;
 
+import com.backbase.dbs.positivepay.client.api.v1.model.IssuedCheckRequest;
 import com.github.javafaker.Faker;
-import com.backbase.dbs.positivepay.client.api.v1.model.PositivePayPost;
 import com.backbase.dbs.positivepay.client.api.v1.model.Currency;
 
 import java.time.LocalDate;
@@ -17,12 +17,12 @@ public class PositivePayDataGenerator {
     private  Random random = new Random();
 
     private Currency amountDetails = new Currency()
-            .amount(generateRandomAmountInRange(1000L, 999999999999L).toString())
+            .amount(generateRandomAmountInRange(1000L, 999999999999L))
             .currencyCode("USD");
 
-    public PositivePayPost generatePositivePayPostRequestBody(String internalArrangementId) {
+    public IssuedCheckRequest generatePositivePayPostRequestBody(String internalArrangementId) {
 
-        return new PositivePayPost()
+        return new IssuedCheckRequest()
                 .arrangementId(internalArrangementId)
                 .payeeName(faker.name().firstName() + ' ' + faker.name().lastName())
                 .checkNumber(String.valueOf(generateRandomNumberInRange(234567,1234567890)))

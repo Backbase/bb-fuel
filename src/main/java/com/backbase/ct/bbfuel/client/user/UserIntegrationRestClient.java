@@ -7,11 +7,11 @@ import static com.backbase.ct.bbfuel.data.CommonConstants.PROPERTY_IDENTITY_FEAT
 
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
-import com.backbase.dbs.user.manager.models.v2.ImportIdentityRequest;
-import com.backbase.dbs.user.manager.models.v2.UserExternal;
+import com.backbase.dbs.user.manager.integration.api.v2.model.ImportIdentityRequest;
+import com.backbase.dbs.user.manager.integration.api.v2.model.UserExternal;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

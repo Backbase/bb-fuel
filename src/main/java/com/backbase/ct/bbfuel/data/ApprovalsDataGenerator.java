@@ -3,17 +3,17 @@ package com.backbase.ct.bbfuel.data;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 
-import com.backbase.dbs.approval.integration.spec.IntegrationApprovalTypeAssignmentDto;
-import com.backbase.dbs.approval.integration.spec.IntegrationPolicyAssignmentRequest;
-import com.backbase.dbs.approval.integration.spec.IntegrationPolicyAssignmentRequestBounds;
-import com.backbase.dbs.approval.integration.spec.IntegrationPostBulkApprovalTypeAssignmentRequest;
-import com.backbase.dbs.approval.integration.spec.IntegrationPostPolicyAssignmentBulkRequest;
-import com.backbase.dbs.approval.spec.CreatePolicyItemDto;
-import com.backbase.dbs.approval.spec.LogicalOperator;
-import com.backbase.dbs.approval.spec.LogicalPolicyItemDto;
-import com.backbase.dbs.approval.spec.PostApprovalTypeRequest;
-import com.backbase.dbs.approval.spec.PostPolicyRequest;
-import com.backbase.rest.spec.common.types.Currency;
+import com.backbase.dbs.approval.integration.api.v2.model.CreatePolicyItemDto;
+import com.backbase.dbs.approval.integration.api.v2.model.Currency;
+import com.backbase.dbs.approval.integration.api.v2.model.IntegrationApprovalTypeAssignmentDto;
+import com.backbase.dbs.approval.integration.api.v2.model.IntegrationPolicyAssignmentRequest;
+import com.backbase.dbs.approval.integration.api.v2.model.IntegrationPolicyAssignmentRequestBounds;
+import com.backbase.dbs.approval.integration.api.v2.model.IntegrationPostBulkApprovalTypeAssignmentRequest;
+import com.backbase.dbs.approval.integration.api.v2.model.IntegrationPostPolicyAssignmentBulkRequest;
+import com.backbase.dbs.approval.integration.api.v2.model.LogicalOperator;
+import com.backbase.dbs.approval.integration.api.v2.model.LogicalPolicyItemDto;
+import com.backbase.dbs.approval.integration.api.v2.model.PostApprovalTypeRequest;
+import com.backbase.dbs.approval.integration.api.v2.model.PostPolicyRequest;
 import java.util.List;
 
 public class ApprovalsDataGenerator {

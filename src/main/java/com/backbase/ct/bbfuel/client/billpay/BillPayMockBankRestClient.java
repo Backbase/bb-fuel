@@ -6,7 +6,7 @@ import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
 import com.backbase.dbs.billpay.client.v2.model.UserByIdPutRequestBody;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

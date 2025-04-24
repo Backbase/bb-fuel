@@ -9,7 +9,7 @@ import com.backbase.ct.bbfuel.data.CommonConstants;
 import com.backbase.ct.bbfuel.data.NotificationsDataGenerator;
 import com.backbase.ct.bbfuel.util.CommonHelpers;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
-import com.backbase.dbs.notifications.rest.spec.v2.notifications.NotificationsPostRequestBody;
+import com.backbase.dbs.notification.service.api.v2.model.NotificationsPostRequestBody;
 import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

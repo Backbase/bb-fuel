@@ -1,26 +1,26 @@
 package com.backbase.ct.bbfuel.client.accessgroup;
 
-import static java.util.Arrays.asList;
-import static java.util.Collections.singletonList;
-import static org.apache.http.HttpStatus.SC_OK;
-
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
 import com.backbase.ct.bbfuel.dto.entitlement.AssignablePermissionSet;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.config.functions.FunctionsGetResponseBody;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.datagroups.IntegrationDataGroupCreate;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.function.IntegrationPrivilege;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.functiongroups.FunctionGroupPostRequestBody;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.users.permissions.IntegrationAssignUserPermissions;
-import com.backbase.integration.accessgroup.rest.spec.v2.accessgroups.users.permissions.IntegrationFunctionGroupDataGroup;
+import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.FunctionGroupItem;
+import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.FunctionsGetResponseBody;
+import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.IntegrationAssignUserPermissions;
+import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.IntegrationDataGroupCreate;
+import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.IntegrationFunctionGroupDataGroup;
+import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.IntegrationPrivilege;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import jakarta.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
+import static org.apache.http.HttpStatus.SC_OK;
 
 @Component
 @RequiredArgsConstructor
@@ -42,7 +42,7 @@ public class AccessGroupIntegrationRestClient extends RestClient {
         setVersion(SERVICE_VERSION);
     }
 
-    public Response ingestFunctionGroup(FunctionGroupPostRequestBody body) {
+    public Response ingestFunctionGroup(FunctionGroupItem body) {
         return requestSpec()
             .contentType(ContentType.JSON)
             .body(body)
@@ -64,12 +64,12 @@ public class AccessGroupIntegrationRestClient extends RestClient {
                 .forEach(permission -> {
                     allBusinessFunctions.add(
                         new FunctionsGetResponseBody()
-                            .withFunctionId(permission.getFunctionId())
-                            .withName(permission.getFunctionName())
-                            .withResource(permission.getResourceName())
-                            .withPrivileges(permission.getPrivileges()
+                            .functionId(permission.getFunctionId())
+                            .name(permission.getFunctionName())
+                            .resource(permission.getResourceName())
+                            .privileges(permission.getPrivileges()
                                 .stream()
-                                .map(privilege -> new IntegrationPrivilege().withPrivilege(privilege))
+                                .map(privilege -> new IntegrationPrivilege().privilege(privilege))
                                 .collect(Collectors.toList()))
                     );
                 });
@@ -118,8 +118,8 @@ public class AccessGroupIntegrationRestClient extends RestClient {
         List<IntegrationFunctionGroupDataGroup> functionGroupDataGroups) {
 
         return assignPermissions(new IntegrationAssignUserPermissions()
-            .withExternalUserId(externalUserId)
-            .withExternalServiceAgreementId(externalServiceAgreementId)
-            .withFunctionGroupDataGroups(functionGroupDataGroups));
+            .externalUserId(externalUserId)
+            .externalServiceAgreementId(externalServiceAgreementId)
+            .functionGroupDataGroups(functionGroupDataGroups));
     }
 }

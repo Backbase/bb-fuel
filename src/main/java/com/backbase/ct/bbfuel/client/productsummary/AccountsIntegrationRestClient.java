@@ -9,7 +9,7 @@ import groovy.util.logging.Slf4j;
 import io.restassured.http.ContentType;
 import java.util.Arrays;
 import java.util.List;
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

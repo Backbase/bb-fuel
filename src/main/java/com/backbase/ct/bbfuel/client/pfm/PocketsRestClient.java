@@ -7,7 +7,7 @@ import com.backbase.dbs.pocket.tailor.client.v2.model.PocketPostRequest;
 import io.restassured.http.ContentType;
 import java.util.HashMap;
 import java.util.Map;
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpStatus;

@@ -127,9 +127,19 @@ public class RestClient {
             .httpClient(httpClientConfig().setParam(PARAMETER_NAME, TIMEOUT_VALUE));
 
         RequestSpecification requestSpec = new TestSpecificationImpl(
-            new RequestSpecificationImpl(getBaseURI().toString(), getBaseURI().getPort(),
-                getInitialPath(), RestAssured.DEFAULT_AUTH, Collections.emptyList(), null,
-                RestAssured.DEFAULT_URL_ENCODING_ENABLED, restAssuredConfig, logRepository, null),
+            new RequestSpecificationImpl(
+                getBaseURI().toString(),
+                getBaseURI().getPort(),
+                getInitialPath(),
+                RestAssured.DEFAULT_AUTH,
+                Collections.emptyList(),
+                null,
+                RestAssured.DEFAULT_URL_ENCODING_ENABLED,
+                restAssuredConfig,
+                logRepository,
+                null,
+                true,
+                false),
             new ResponseSpecificationImpl(RestAssured.DEFAULT_BODY_ROOT_PATH, null,
                 this.responseParserRegistrar, restAssuredConfig, logRepository))
             .getRequestSpecification();

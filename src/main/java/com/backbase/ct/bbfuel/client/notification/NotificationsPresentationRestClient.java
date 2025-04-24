@@ -2,10 +2,10 @@ package com.backbase.ct.bbfuel.client.notification;
 
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
-import com.backbase.dbs.notifications.rest.spec.v2.notifications.NotificationsPostRequestBody;
+import com.backbase.dbs.notification.service.api.v2.model.NotificationsPostRequestBody;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

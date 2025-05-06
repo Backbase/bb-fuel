@@ -223,8 +223,7 @@
       {
         "businessFunction": "Audit",
         "privileges": [
-          "view",
-          "create"
+          "view"
         ]
       },
       {
@@ -1003,8 +1002,7 @@
       {
         "businessFunction": "Audit",
         "privileges": [
-          "view",
-          "create"
+          "view"
         ]
       },
       {

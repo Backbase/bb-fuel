@@ -14,6 +14,7 @@ import com.backbase.ct.bbfuel.client.accountstatement.AccountStatementsClient;
 import com.backbase.ct.bbfuel.client.accountstatement.AccountStatementsPreferencesClient;
 import com.backbase.ct.bbfuel.client.common.LoginRestClient;
 import com.backbase.ct.bbfuel.client.productsummary.ProductSummaryPresentationRestClient;
+import com.backbase.ct.bbfuel.client.tokenconverter.TokenConverterServiceApiClient;
 import com.backbase.ct.bbfuel.client.user.UserPresentationRestClient;
 import com.backbase.ct.bbfuel.client.user.UserProfileRestClient;
 import com.backbase.ct.bbfuel.dto.accountStatement.EStatementPreferencesRequest;
@@ -43,6 +44,7 @@ public class AccountStatementsConfigurator {
     private final AccountStatementsPreferencesClient accountStatementsPreferencesClient;
     private final UserProfileRestClient userProfileRestClient;
     private final UserPresentationRestClient userPresentationRestClient;
+    private final TokenConverterServiceApiClient tokenConverter;
 
     public void ingestAccountStatements(String externalUserId) {
         int randomAmount = generateRandomNumberInRange(globalProperties.getInt(PROPERTY_ACCOUNTSTATEMENTS_MIN),
@@ -53,7 +55,7 @@ public class AccountStatementsConfigurator {
             String accountName = arrangement.getName();
             String accountIBAN = arrangement.getIBAN();
 
-            accountStatementsClient.createAccountStatements(
+            accountStatementsClient.createAccountStatements(tokenConverter,
                 generateAccountStatementsRequests(randomAmount, externalUserId, internalArrangementId, accountName,
                     accountIBAN)).then().statusCode(SC_CREATED);
 
@@ -79,7 +81,7 @@ public class AccountStatementsConfigurator {
             .map(mapper)
             .collect(toList());
 
-        accountStatementsPreferencesClient.createAccountStatementsPreferences(eStatementPreferencesRequests);
+        accountStatementsPreferencesClient.createAccountStatementsPreferences(tokenConverter, eStatementPreferencesRequests);
     }
 
     public void ingestUserProfile(String externalUserId) {

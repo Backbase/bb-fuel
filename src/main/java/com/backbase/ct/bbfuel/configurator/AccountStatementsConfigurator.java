@@ -14,7 +14,6 @@ import com.backbase.ct.bbfuel.client.accountstatement.AccountStatementsClient;
 import com.backbase.ct.bbfuel.client.accountstatement.AccountStatementsPreferencesClient;
 import com.backbase.ct.bbfuel.client.common.LoginRestClient;
 import com.backbase.ct.bbfuel.client.productsummary.ProductSummaryPresentationRestClient;
-import com.backbase.ct.bbfuel.client.tokenconverter.TokenConverterServiceApiClient;
 import com.backbase.ct.bbfuel.client.user.UserPresentationRestClient;
 import com.backbase.ct.bbfuel.client.user.UserProfileRestClient;
 import com.backbase.ct.bbfuel.dto.accountStatement.EStatementPreferencesRequest;
@@ -44,7 +43,6 @@ public class AccountStatementsConfigurator {
     private final AccountStatementsPreferencesClient accountStatementsPreferencesClient;
     private final UserProfileRestClient userProfileRestClient;
     private final UserPresentationRestClient userPresentationRestClient;
-    private final TokenConverterServiceApiClient tokenConverter;
 
     public void ingestAccountStatements(String externalUserId) {
         int randomAmount = generateRandomNumberInRange(globalProperties.getInt(PROPERTY_ACCOUNTSTATEMENTS_MIN),
@@ -55,7 +53,7 @@ public class AccountStatementsConfigurator {
             String accountName = arrangement.getName();
             String accountIBAN = arrangement.getIBAN();
 
-            accountStatementsClient.createAccountStatements(tokenConverter,
+            accountStatementsClient.createAccountStatements(
                 generateAccountStatementsRequests(randomAmount, externalUserId, internalArrangementId, accountName,
                     accountIBAN)).then().statusCode(SC_CREATED);
 
@@ -81,7 +79,7 @@ public class AccountStatementsConfigurator {
             .map(mapper)
             .collect(toList());
 
-        accountStatementsPreferencesClient.createAccountStatementsPreferences(tokenConverter, eStatementPreferencesRequests);
+        accountStatementsPreferencesClient.createAccountStatementsPreferences(eStatementPreferencesRequests);
     }
 
     public void ingestUserProfile(String externalUserId) {
@@ -89,7 +87,8 @@ public class AccountStatementsConfigurator {
         this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
         String userId = userPresentationRestClient.getUserByExternalId(externalUserId).getId();
         if (userId.isEmpty()) {
-            log.warn("User profile for externalId [{}] WAS NOT CREATED, because such user was not found", externalUserId);
+            log.warn("User profile for externalId [{}] WAS NOT CREATED, because such user was not found",
+                externalUserId);
         }
         Response userProfileCreationResponse = userProfileRestClient.createUserProfile(userId, externalUserId);
         if (userProfileCreationResponse.getStatusCode() == SC_BAD_REQUEST) {

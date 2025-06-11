@@ -22,6 +22,7 @@ public class AccountStatementsPreferencesClient extends RestClient {
     private static final String SERVICE_VERSION = "v2";
     private static final String ENDPOINT_ACCOUNT_STATEMENT_PREFERENCES = "/account/statements/preferences/mock/internal-arrangement-id";
     private final BbFuelConfiguration config;
+    private final TokenConverterServiceApiClient tokenConverterServiceApiClient;
 
     @PostConstruct
     public void init() {
@@ -29,8 +30,7 @@ public class AccountStatementsPreferencesClient extends RestClient {
         setVersion(SERVICE_VERSION);
     }
 
-    public Response createAccountStatementsPreferences(TokenConverterServiceApiClient tokenConverterServiceApiClient,
-        List<EStatementPreferencesRequest> requests) {
+    public Response createAccountStatementsPreferences(List<EStatementPreferencesRequest> requests) {
         requests.forEach(request ->
             log.info("Account Statement Preference ingested for arrangementId [{}] for userId [{}]",
                 request.getInternalArrangementId(), request.getUserId())

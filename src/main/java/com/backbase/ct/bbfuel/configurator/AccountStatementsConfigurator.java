@@ -79,7 +79,7 @@ public class AccountStatementsConfigurator {
             .map(mapper)
             .collect(toList());
 
-        accountStatementsPreferencesClient.createAccountStatementsPreferences(eStatementPreferencesRequests);
+        accountStatementsPreferencesClient.createAccountStatementsPreferences(eStatementPreferencesRequests).then().statusCode(SC_CREATED);
     }
 
     public void ingestUserProfile(String externalUserId) {
@@ -87,7 +87,8 @@ public class AccountStatementsConfigurator {
         this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
         String userId = userPresentationRestClient.getUserByExternalId(externalUserId).getId();
         if (userId.isEmpty()) {
-            log.warn("User profile for externalId [{}] WAS NOT CREATED, because such user was not found", externalUserId);
+            log.warn("User profile for externalId [{}] WAS NOT CREATED, because such user was not found",
+                externalUserId);
         }
         Response userProfileCreationResponse = userProfileRestClient.createUserProfile(userId, externalUserId);
         if (userProfileCreationResponse.getStatusCode() == SC_BAD_REQUEST) {

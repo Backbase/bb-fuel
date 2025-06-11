@@ -79,7 +79,7 @@ public class AccountStatementsConfigurator {
             .map(mapper)
             .collect(toList());
 
-        accountStatementsPreferencesClient.createAccountStatementsPreferences(eStatementPreferencesRequests);
+        accountStatementsPreferencesClient.createAccountStatementsPreferences(eStatementPreferencesRequests).then().statusCode(SC_CREATED);
     }
 
     public void ingestUserProfile(String externalUserId) {

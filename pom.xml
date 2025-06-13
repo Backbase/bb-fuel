@@ -10,13 +10,13 @@
 
     <groupId>com.backbase.ct</groupId>
     <artifactId>bb-fuel</artifactId>
-    <version>3.0.2-SNAPSHOT</version>
+    <version>3.0.2</version>
     <name>Backbase :: Capability Testing :: bb-fuel</name>
 
     <scm>
         <connection>scm:git:${project.scm.url}</connection>
         <developerConnection>scm:git:${project.scm.url}</developerConnection>
-        <tag>HEAD</tag>
+        <tag>bb-fuel-3.0.2</tag>
         <url>git@github.com:Backbase/bb-fuel.git</url>
     </scm>
 

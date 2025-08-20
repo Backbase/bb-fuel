@@ -453,32 +453,95 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>generate-accessgroup-integration-inbound-code</id>
+                        <id>generate-ac-assign-permissions-integration-inbound-code</id>
                         <goals>
                             <goal>generate</goal>
                         </goals>
                         <configuration>
                             <inputSpec>
-                                ${unpacked-api.target}/access-control/accessgroup-integration-inbound-api-v3.7.0.yaml
+                                ${unpacked-api.target}/access-control/assign-permissions-integration-inbound-api-v1.0.0.yaml
                             </inputSpec>
                             <configOptions>
-                                <apiPackage>com.backbase.dbs.accesscontrol.accessgroup.integration.v3</apiPackage>
-                                <modelPackage>com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model
+                                <apiPackage>com.backbase.dbs.accesscontrol.ac-assign-permissions.integration.v1</apiPackage>
+                                <modelPackage>com.backbase.dbs.accesscontrol.ac-assign-permissions.integration.v1.model
                                 </modelPackage>
                             </configOptions>
                         </configuration>
                     </execution>
-
                     <execution>
-                        <id>generate-legalentity-integration-client-code</id>
+                        <id>generate-ac-data-group-integration-inbound-code</id>
                         <goals>
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${unpacked-api.target}/access-control/legalentity-integration-inbound-api-v2.6.0.yaml</inputSpec>
+                            <inputSpec>
+                                ${unpacked-api.target}/access-control/data-group-integration-inbound-api-v1.0.0.yaml
+                            </inputSpec>
                             <configOptions>
-                                <apiPackage>com.backbase.dbs.accesscontrol.legalentity.integration.v2</apiPackage>
-                                <modelPackage>com.backbase.dbs.accesscontrol.legalentity.integration.v2.model
+                                <apiPackage>com.backbase.dbs.accesscontrol.ac-data-group.integration.v1</apiPackage>
+                                <modelPackage>com.backbase.dbs.accesscontrol.ac-data-group.integration.v1.model
+                                </modelPackage>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-ac-function-group-integration-inbound-code</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>
+                                ${unpacked-api.target}/access-control/function-group-integration-inbound-api-v1.0.0.yaml
+                            </inputSpec>
+                            <configOptions>
+                                <apiPackage>com.backbase.dbs.accesscontrol.ac-function-group.integration.v1</apiPackage>
+                                <modelPackage>com.backbase.dbs.accesscontrol.ac-function-group.integration.v1.model
+                                </modelPackage>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-ac-service-agreement-integration-inbound-code</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>
+                                ${unpacked-api.target}/access-control/service-agreement-integration-inbound-api-v1.0.0.yaml
+                            </inputSpec>
+                            <configOptions>
+                                <apiPackage>com.backbase.dbs.accesscontrol.ac-service-agreement.integration.v1</apiPackage>
+                                <modelPackage>com.backbase.dbs.accesscontrol.ac-service-agreement.integration.v1.model
+                                </modelPackage>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-ac-permission-set-integration-inbound-code</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>
+                                ${unpacked-api.target}/access-control/permission-set-integration-inbound-api-v1.0.0.yaml
+                            </inputSpec>
+                            <configOptions>
+                                <apiPackage>com.backbase.dbs.accesscontrol.ac-permission-set.integration.v1</apiPackage>
+                                <modelPackage>com.backbase.dbs.accesscontrol.ac-permission-set.integration.v1.model
+                                </modelPackage>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-ac-legalentity-integration-client-code</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${unpacked-api.target}/access-control/legal-entity-integration-inbound-api-v3.0.0.yaml</inputSpec>
+                            <configOptions>
+                                <apiPackage>com.backbase.dbs.accesscontrol.ac-legalentity.integration.v3</apiPackage>
+                                <modelPackage>com.backbase.dbs.accesscontrol.ac-legalentity.integration.v3.model
                                 </modelPackage>
                             </configOptions>
                         </configuration>

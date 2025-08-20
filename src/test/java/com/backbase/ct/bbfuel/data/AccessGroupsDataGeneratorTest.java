@@ -5,19 +5,20 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
 
 import com.backbase.ct.bbfuel.dto.entitlement.JobProfile;
-import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.FunctionsGetResponseBody;
-import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.IntegrationPrivilege;
-import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.Permission;
+import com.backbase.dbs.accesscontrol.ac_function_group.integration.v1.model.Permission;
+import com.backbase.dbs.accesscontrol.ac_permission_set.integration.v1.model.PermissionItem;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 public class AccessGroupsDataGeneratorTest {
 
-    private static final String[] PRIVILEGES = "execute,view,create,edit,delete,approve,cCancel".split(",");
+    private static final Set<String> PRIVILEGES = Set.of("execute", "view", "create", "edit", "delete", "approve",
+        "cCancel");
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
@@ -31,26 +32,16 @@ public class AccessGroupsDataGeneratorTest {
         return permissions;
     }
 
-    private static List<FunctionsGetResponseBody> createFunctionsGetResponseBodys(String businessFunction) {
-        List<FunctionsGetResponseBody> functions = new ArrayList<>();
-        functions.add(new FunctionsGetResponseBody()
-            .name("awesome business")
-            .privileges(createIntegrationPrivileges()));
-        functions.add(new FunctionsGetResponseBody()
-            .name(businessFunction)
-            .privileges(createIntegrationPrivileges()));
+    private static List<PermissionItem> createPermissionItems(String businessFunction) {
+        List<PermissionItem> functions = new ArrayList<>();
+        functions.add(new PermissionItem()
+            .businessFunctionName("awesome business")
+            .privileges(PRIVILEGES));
+        functions.add(new PermissionItem()
+            .businessFunctionName(businessFunction)
+            .privileges(PRIVILEGES));
 
         return functions;
-    }
-
-    private static List<IntegrationPrivilege> createIntegrationPrivileges() {
-        List<IntegrationPrivilege> privileges = new ArrayList<>();
-        Arrays.stream(PRIVILEGES)
-            .forEach(privilege -> {
-                privileges.add(new IntegrationPrivilege().privilege(privilege));
-            });
-
-        return privileges;
     }
 
     @Test
@@ -59,10 +50,10 @@ public class AccessGroupsDataGeneratorTest {
         JobProfile jobProfile = new JobProfile();
         jobProfile.setPermissions(createPermissions(businessFunction, "view", "create", "approve"));
 
-        List<FunctionsGetResponseBody> functions = createFunctionsGetResponseBodys(businessFunction);
+        List<PermissionItem> functions = createPermissionItems(businessFunction);
         List<Permission> permissions = AccessGroupsDataGenerator.createPermissionsForJobProfile(jobProfile, functions);
         assertThat(permissions, hasSize(1));
-        assertThat(permissions.get(0).getAssignedPrivileges(), hasSize(3));
+        assertThat(permissions.get(0).getPrivileges(), hasSize(3));
     }
 
     @Test
@@ -70,7 +61,7 @@ public class AccessGroupsDataGeneratorTest {
         String businessFunction = "Manage Users";
         JobProfile jobProfile = new JobProfile();
         jobProfile.setPermissions(createPermissions(businessFunction, "write"));
-        List<FunctionsGetResponseBody> functions = createFunctionsGetResponseBodys(businessFunction);
+        List<PermissionItem> functions = createPermissionItems(businessFunction);
 
         expectedException.expect(IllegalArgumentException.class);
         expectedException.expectMessage(containsString("does not allow for privilege"));
@@ -82,7 +73,7 @@ public class AccessGroupsDataGeneratorTest {
         String businessFunction = "Manage Melons";
         JobProfile jobProfile = new JobProfile();
         jobProfile.setPermissions(createPermissions(businessFunction, "write"));
-        List<FunctionsGetResponseBody> functions = createFunctionsGetResponseBodys("Manage Users");
+        List<PermissionItem> functions = createPermissionItems("Manage Users");
 
         expectedException.expect(IllegalArgumentException.class);
         expectedException.expectMessage(containsString("No matching business function"));
@@ -91,9 +82,9 @@ public class AccessGroupsDataGeneratorTest {
 
     @Test
     public void testCreatePermissionsWithAllPrivileges() {
-        List<FunctionsGetResponseBody> functions = createFunctionsGetResponseBodys("Manage Users");
+        List<PermissionItem> functions = createPermissionItems("Manage Users");
         List<Permission> permissions = AccessGroupsDataGenerator.createPermissionsWithAllPrivileges(functions);
         assertThat(permissions, hasSize(functions.size()));
-        assertThat(permissions.get(0).getAssignedPrivileges(), hasSize(functions.get(0).getPrivileges().size()));
+        assertThat(permissions.get(0).getPrivileges(), hasSize(functions.get(0).getPrivileges().size()));
     }
 }

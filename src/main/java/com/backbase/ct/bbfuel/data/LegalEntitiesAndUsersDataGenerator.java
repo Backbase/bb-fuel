@@ -1,10 +1,11 @@
 package com.backbase.ct.bbfuel.data;
 
-import static com.backbase.ct.bbfuel.data.CommonConstants.*;
+import static com.backbase.ct.bbfuel.data.CommonConstants.EXTERNAL_LEGAL_ENTITY_ID_PREFIX;
+import static com.backbase.ct.bbfuel.data.CommonConstants.EXTERNAL_ROOT_LEGAL_ENTITY_ID;
 
 import com.backbase.ct.bbfuel.dto.User;
-import com.backbase.dbs.accesscontrol.legalentity.integration.v2.model.LegalEntityCreateItem;
-import com.backbase.dbs.accesscontrol.legalentity.integration.v2.model.LegalEntityType;
+import com.backbase.dbs.accesscontrol.ac_legalentity.integration.v3.model.LegalEntityItem;
+import com.backbase.dbs.accesscontrol.ac_legalentity.integration.v3.model.LegalEntityType;
 import com.backbase.dbs.user.manager.integration.api.v2.model.UserExternal;
 import com.github.javafaker.Faker;
 import com.google.common.base.Strings;
@@ -15,21 +16,21 @@ public class LegalEntitiesAndUsersDataGenerator {
 
     private static Faker faker = new Faker();
 
-    public static LegalEntityCreateItem generateRootLegalEntitiesPostRequestBody(String externalLegalEntityId) {
-        return new LegalEntityCreateItem()
-                .externalId(externalLegalEntityId)
-                .name("Bank")
-                .parentExternalId(null)
-                .type(LegalEntityType.BANK);
+    public static LegalEntityItem generateRootLegalEntitiesPostRequestBody(String externalLegalEntityId) {
+        return new LegalEntityItem()
+            .externalId(externalLegalEntityId)
+            .name("Bank")
+            .parentExternalId(null)
+            .type(LegalEntityType.BANK);
     }
 
-    public static LegalEntityCreateItem composeLegalEntitiesPostRequestBody(String legalEntityExternalId,
+    public static LegalEntityItem composeLegalEntitiesPostRequestBody(String legalEntityExternalId,
         String legalEntityName,
         String parentLegalEntityExternalId, String type) {
         String randomLegalEntityName = faker.name().lastName() + " "
             + faker.company().industry().replaceAll("(/| or).*", "").trim();
 
-        return new LegalEntityCreateItem()
+        return new LegalEntityItem()
             .externalId(Optional.ofNullable(legalEntityExternalId).orElse(generateExternalLegalEntityId()))
             .name(Optional.ofNullable(legalEntityName).orElse(randomLegalEntityName))
             .parentExternalId(

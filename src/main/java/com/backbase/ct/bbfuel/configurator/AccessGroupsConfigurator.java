@@ -11,10 +11,12 @@ import com.backbase.ct.bbfuel.dto.entitlement.ProductGroupSeed;
 import com.backbase.ct.bbfuel.service.AccessGroupService;
 import com.backbase.ct.bbfuel.service.JobProfileService;
 import com.backbase.ct.bbfuel.service.ProductGroupService;
-import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.FunctionsGetResponseBody;
-import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.Permission;
+import com.backbase.dbs.accesscontrol.ac_function_group.integration.v1.model.Permission;
+import com.backbase.dbs.accesscontrol.ac_permission_set.integration.v1.model.PermissionItem;
 import com.backbase.dbs.accesscontrol.client.v3.model.FunctionGroupType;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -45,7 +47,7 @@ public class AccessGroupsConfigurator {
      * A profile without explicit permissions will be granted all.
      */
     public synchronized void ingestFunctionGroup(JobProfile jobProfile) {
-        List<FunctionsGetResponseBody> functions = this.accessGroupIntegrationRestClient.retrieveFunctions();
+        List<PermissionItem> functions = this.accessGroupIntegrationRestClient.retrieveFunctions();
 
         String functionGroupId = jobProfileService.retrieveIdFromCache(jobProfile);
         if (functionGroupId != null) {
@@ -64,9 +66,9 @@ public class AccessGroupsConfigurator {
 
     public synchronized void ingestDataGroupForArrangements(ProductGroupSeed productGroupSeed,
         List<ArrangementId> arrangementIds) {
-        List<String> internalArrangementIds = arrangementIds.stream()
+        Set<String> internalArrangementIds = arrangementIds.stream()
             .map(ArrangementId::getInternalArrangementId)
-            .toList();
+            .collect(Collectors.toSet());
 
         String dataGroupId = productGroupService.retrieveIdFromCache(productGroupSeed);
         if (dataGroupId != null) {

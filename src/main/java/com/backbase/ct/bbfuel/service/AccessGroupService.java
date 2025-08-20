@@ -10,13 +10,14 @@ import static org.apache.http.HttpStatus.SC_OK;
 import com.backbase.ct.bbfuel.client.accessgroup.AccessGroupIntegrationRestClient;
 import com.backbase.ct.bbfuel.client.accessgroup.AccessGroupPresentationRestClient;
 import com.backbase.ct.bbfuel.client.accessgroup.ServiceAgreementsIntegrationRestClient;
-import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.BatchResponseItemExtended;
-import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.IdItem;
-import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.Permission;
+import com.backbase.dbs.accesscontrol.ac_data_group.integration.v1.model.BatchResponseItemExtended;
+import com.backbase.dbs.accesscontrol.ac_function_group.integration.v1.model.Permission;
+import com.backbase.dbs.accesscontrol.ac_function_group.integration.v1.model.ResultId;
 import com.backbase.dbs.accesscontrol.client.v3.model.DataGroupItem;
 import com.backbase.dbs.accesscontrol.client.v3.model.FunctionGroupItem;
 import io.restassured.response.Response;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -64,7 +65,7 @@ public class AccessGroupService {
             String functionGroupId = response.then()
                 .statusCode(SC_CREATED)
                 .extract()
-                .as(IdItem.class)
+                .as(ResultId.class)
                 .getId();
 
             log.info("Function group \"{}\" [{}] ingested under service agreement [{}])",
@@ -75,7 +76,7 @@ public class AccessGroupService {
     }
 
     public String ingestDataGroup(String externalServiceAgreementId, String dataGroupName,
-        String type, List<String> internalArrangementIds) {
+        String type, Set<String> internalArrangementIds) {
         Response response = accessGroupIntegrationRestClient.ingestDataGroup(
             generateDataGroupPostRequestBody(externalServiceAgreementId, dataGroupName, type, internalArrangementIds));
 

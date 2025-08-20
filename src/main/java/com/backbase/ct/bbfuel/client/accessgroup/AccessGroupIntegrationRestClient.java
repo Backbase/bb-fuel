@@ -26,7 +26,7 @@ public class AccessGroupIntegrationRestClient extends RestClient {
 
     private final BbFuelConfiguration config;
 
-    private static final String SERVICE_VERSION = "v1";
+    private static final String SERVICE_VERSION = "v1/access-control";
     private static final String ENDPOINT_FUNCTION = "/function-groups";
     private static final String ENDPOINT_USERS_PERMISSIONS = "/user-permissions";
     private static final String ENDPOINT_DATA = "/data-groups/batch/ingest";

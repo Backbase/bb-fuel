@@ -18,7 +18,7 @@ public class LegalEntityIntegrationRestClient extends RestClient {
 
     private final BbFuelConfiguration config;
 
-    private static final String SERVICE_VERSION = "v3";
+    private static final String SERVICE_VERSION = "v3/access-control";
     private static final String ENDPOINT_LEGAL_ENTITIES = "/legal-entities";
     private static final String ENDPOINT_SERVICE_AGREEMENTS_SINGLE =
         ENDPOINT_LEGAL_ENTITIES + "/%s/service-agreements/single";

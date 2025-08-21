@@ -11,6 +11,7 @@ import com.backbase.ct.bbfuel.client.accessgroup.AccessGroupIntegrationRestClien
 import com.backbase.ct.bbfuel.client.accessgroup.AccessGroupPresentationRestClient;
 import com.backbase.ct.bbfuel.client.accessgroup.ServiceAgreementsIntegrationRestClient;
 import com.backbase.dbs.accesscontrol.ac_data_group.integration.v1.model.BatchResponseItemExtended;
+import com.backbase.dbs.accesscontrol.ac_data_group.integration.v1.model.BatchResponseItemExtended.StatusEnum;
 import com.backbase.dbs.accesscontrol.ac_function_group.integration.v1.model.Permission;
 import com.backbase.dbs.accesscontrol.ac_function_group.integration.v1.model.ResultId;
 import com.backbase.dbs.accesscontrol.client.v3.model.DataGroupItem;
@@ -18,6 +19,7 @@ import com.backbase.dbs.accesscontrol.client.v3.model.FunctionGroupItem;
 import io.restassured.response.Response;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,10 +39,12 @@ public class AccessGroupService {
 
     private final ServiceAgreementsIntegrationRestClient serviceAgreementsIntegrationRestClient;
 
-    public String ingestFunctionGroup(String externalServiceAgreementId, String functionGroupName, String functionGroupType,
+    public String ingestFunctionGroup(String externalServiceAgreementId, String functionGroupName,
+        String functionGroupType,
         List<Permission> permissions) {
         Response response = accessGroupIntegrationRestClient.ingestFunctionGroup(
-            generateFunctionGroupPostRequestBody(externalServiceAgreementId, functionGroupName, functionGroupType, permissions));
+            generateFunctionGroupPostRequestBody(externalServiceAgreementId, functionGroupName, functionGroupType,
+                permissions));
 
         if (isBadRequestException(response, "Function Group with given name already exists")) {
 
@@ -52,9 +56,12 @@ public class AccessGroupService {
             FunctionGroupItem existingFunctionGroup = accessGroupPresentationRestClient
                 .retrieveFunctionGroupsByServiceAgreement(internalServiceAgreementId)
                 .stream()
-                .filter(functionGroupsGetResponseBody -> functionGroupName.equals(functionGroupsGetResponseBody.getName()))
+                .filter(
+                    functionGroupsGetResponseBody -> functionGroupName.equals(functionGroupsGetResponseBody.getName()))
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException(String.format("No existing function group found by service agreement [%s] and name [%s]", externalServiceAgreementId, functionGroupName)));
+                .orElseThrow(() -> new RuntimeException(
+                    String.format("No existing function group found by service agreement [%s] and name [%s]",
+                        externalServiceAgreementId, functionGroupName)));
 
             log.info("Function group \"{}\" [{}] already exists, skipped ingesting this function group",
                 existingFunctionGroup.getName(), existingFunctionGroup.getId());
@@ -92,17 +99,28 @@ public class AccessGroupService {
                 .stream()
                 .filter(dataGroupsGetResponseBody -> dataGroupName.equals(dataGroupsGetResponseBody.getName()))
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException(String.format("No existing data group found by service agreement [%s] and name [%s]", externalServiceAgreementId, dataGroupName)));
+                .orElseThrow(() -> new RuntimeException(
+                    String.format("No existing data group found by service agreement [%s] and name [%s]",
+                        externalServiceAgreementId, dataGroupName)));
 
             return existingDataGroup.getId();
 
         } else {
-            String dataGroupId = Stream.of(response.then()
+            BatchResponseItemExtended[] responseItems = response.then()
                 .statusCode(SC_MULTI_STATUS)
                 .extract()
-                .as(BatchResponseItemExtended[].class))
-                    .filter(batchResponseItem -> StringUtils.isNotEmpty(batchResponseItem.getResourceId()))
-                    .findFirst().get().getResourceId();
+                .as(BatchResponseItemExtended[].class);
+
+            Stream.of(responseItems).map(BatchResponseItemExtended::getStatus)
+                .filter(Predicate.not(StatusEnum.HTTP_STATUS_CREATED::equals))
+                .findAny()
+                .ifPresent(status -> {
+                    throw new RuntimeException("Failed to ingest data group: " + response.asString());
+                });
+
+            String dataGroupId = Stream.of(responseItems)
+                .filter(batchResponseItem -> StringUtils.isNotEmpty(batchResponseItem.getResourceId()))
+                .findFirst().get().getResourceId();
 
             log.info("Data group \"{}\" [{}] ingested under service agreement [{}]",
                 dataGroupName, dataGroupId, externalServiceAgreementId);
@@ -114,7 +132,7 @@ public class AccessGroupService {
     /**
      * Update data group.
      *
-     * @param pocketArrangementId  pocket arrangement id, created by 1-to-many or 1-to-1 mode
+     * @param pocketArrangementId        pocket arrangement id, created by 1-to-many or 1-to-1 mode
      * @param externalServiceAgreementId external service agreement id
      * @return id of updated data group
      */

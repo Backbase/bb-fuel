@@ -28,6 +28,7 @@ public class ServiceAgreementsDataGenerator {
     public static ServiceAgreementUpdateRequest generateServiceAgreementPutRequestBody() {
         return new ServiceAgreementUpdateRequest()
             .externalId(UUID.randomUUID().toString())
+            .status(Status.ENABLED)
             .name(faker.company().name())
             .description(faker.company().catchPhrase());
     }

@@ -31,14 +31,13 @@ public class AccessGroupsDataGenerator {
         };
     }
 
-    public static DataGroupBatchIngest generateDataGroupPostRequestBody(String externalServiceAgreementId,
+    public static List<DataGroupBatchIngest> generateDataGroupPostRequestBody(String externalServiceAgreementId,
         String dataGroupName, String type, Set<String> items) {
-        return new DataGroupBatchIngest()
-            .name(dataGroupName)
+        return List.of(new DataGroupBatchIngest().name(dataGroupName)
             .description(dataGroupName)
             .externalServiceAgreementId(externalServiceAgreementId)
             .type(type)
-            .dataItems(items);
+            .dataItems(items));
     }
 
     private static PermissionItem detectBusinessFunction(String businessFunction,

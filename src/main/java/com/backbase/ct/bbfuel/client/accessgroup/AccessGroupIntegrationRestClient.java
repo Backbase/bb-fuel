@@ -46,7 +46,7 @@ public class AccessGroupIntegrationRestClient extends RestClient {
             .post(getPath(ENDPOINT_FUNCTION));
     }
 
-    public Response ingestDataGroup(DataGroupBatchIngest body) {
+    public Response ingestDataGroup(List<DataGroupBatchIngest> body) {
         return requestSpec().contentType(ContentType.JSON)
             .body(body)
             .post(getPath(ENDPOINT_DATA));

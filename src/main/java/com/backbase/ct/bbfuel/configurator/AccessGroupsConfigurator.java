@@ -43,8 +43,7 @@ public class AccessGroupsConfigurator {
     }
 
     /**
-     * Ingest a function group aka job profile.
-     * A profile without explicit permissions will be granted all.
+     * Ingest a function group aka job profile. A profile without explicit permissions will be granted all.
      */
     public synchronized void ingestFunctionGroup(JobProfile jobProfile) {
         List<PermissionItem> functions = this.accessGroupIntegrationRestClient.retrieveFunctions();
@@ -66,8 +65,8 @@ public class AccessGroupsConfigurator {
 
     public synchronized void ingestDataGroupForArrangements(ProductGroupSeed productGroupSeed,
         List<ArrangementId> arrangementIds) {
-        Set<String> internalArrangementIds = arrangementIds.stream()
-            .map(ArrangementId::getInternalArrangementId)
+        Set<String> externalArrangementIds = arrangementIds.stream()
+            .map(ArrangementId::getExternalArrangementId)
             .collect(Collectors.toSet());
 
         String dataGroupId = productGroupService.retrieveIdFromCache(productGroupSeed);
@@ -76,7 +75,7 @@ public class AccessGroupsConfigurator {
         }
 
         dataGroupId = accessGroupService.ingestDataGroup(productGroupSeed.getExternalServiceAgreementId(),
-            productGroupSeed.getProductGroupName(), ARRANGEMENTS, internalArrangementIds);
+            productGroupSeed.getProductGroupName(), ARRANGEMENTS, externalArrangementIds);
         productGroupSeed.setId(dataGroupId);
 
         productGroupService.saveAssignedProductGroup(productGroupSeed);

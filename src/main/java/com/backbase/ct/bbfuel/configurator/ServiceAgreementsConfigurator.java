@@ -3,7 +3,7 @@ package com.backbase.ct.bbfuel.configurator;
 import static com.backbase.ct.bbfuel.data.ServiceAgreementsDataGenerator.generateServiceAgreementPostRequestBody;
 import static com.backbase.ct.bbfuel.data.ServiceAgreementsDataGenerator.generateServiceAgreementPutRequestBody;
 import static org.apache.http.HttpStatus.SC_CREATED;
-import static org.apache.http.HttpStatus.SC_OK;
+import static org.apache.http.HttpStatus.SC_NO_CONTENT;
 
 import com.backbase.ct.bbfuel.client.accessgroup.ServiceAgreementsIntegrationRestClient;
 import com.backbase.ct.bbfuel.client.accessgroup.UserContextPresentationRestClient;
@@ -60,7 +60,7 @@ public class ServiceAgreementsConfigurator {
         serviceAgreementsIntegrationRestClient
             .updateServiceAgreement(externalServiceAgreementId, generateServiceAgreementPutRequestBody())
             .then()
-            .statusCode(SC_OK);
+            .statusCode(SC_NO_CONTENT);
 
         log.info("Service agreement [{}] updated with external id", externalServiceAgreementId);
     }

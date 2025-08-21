@@ -52,12 +52,12 @@ public class PermissionsConfigurator {
             });
         } else {
             functionGroupDataGroups.forEach(group -> {
-                List<String> ids = group.getDataGroups().stream()
+                List<String> dgNames = group.getDataGroups().stream()
                     .map(DataGroupNameIdentifier::getName)
                     .collect(Collectors.toList());
                 log.error(
                     "Failed assigning data groups to service agreement [{}], user [{}], function group {}, with data group names {}",
-                    externalServiceAgreementId, externalUserId, group.getFunctionGroup().getName(), ids);
+                    externalServiceAgreementId, externalUserId, group.getFunctionGroup().getName(), dgNames);
                 throw new RuntimeException("Failed assigning data groups to service agreement");
             });
         }

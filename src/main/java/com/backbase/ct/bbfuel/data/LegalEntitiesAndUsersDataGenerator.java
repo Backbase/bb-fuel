@@ -21,7 +21,8 @@ public class LegalEntitiesAndUsersDataGenerator {
             .externalId(externalLegalEntityId)
             .name("Bank")
             .parentExternalId(null)
-            .type(LegalEntityType.BANK);
+            .type(LegalEntityType.BANK)
+            .createSingleServiceAgreement(true);
     }
 
     public static LegalEntityItem composeLegalEntitiesPostRequestBody(String legalEntityExternalId,
@@ -35,7 +36,8 @@ public class LegalEntitiesAndUsersDataGenerator {
             .name(Optional.ofNullable(legalEntityName).orElse(randomLegalEntityName))
             .parentExternalId(
                 Optional.ofNullable(parentLegalEntityExternalId).orElse(EXTERNAL_ROOT_LEGAL_ENTITY_ID))
-            .type((!Strings.isNullOrEmpty(type)) ? LegalEntityType.fromValue(type) : LegalEntityType.CUSTOMER);
+            .type((!Strings.isNullOrEmpty(type)) ? LegalEntityType.fromValue(type) : LegalEntityType.CUSTOMER)
+            .createSingleServiceAgreement(true);
     }
 
     public static UserExternal generateUsersPostRequestBody(User user, String legalEntityId) {

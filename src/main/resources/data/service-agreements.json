@@ -3,21 +3,35 @@
     "participants": [
       {
         "admins": [
-          "U0001021"
+          {
+            "externalUserId": "U0001021"
+          }
         ],
         "users": [
-          "U0001022",
-          "U0001023",
-          "U0001024",
-          "U0001025"
+          {
+            "externalUserId": "U0001022"
+          },
+          {
+            "externalUserId": "U0001023"
+          },
+          {
+            "externalUserId": "U0001024"
+          },
+          {
+            "externalUserId": "U0001025"
+          }
         ],
         "sharingUsers": true,
         "sharingAccounts": false
       },
       {
         "admins": [
-          "U0000010",
-          "U0000011"
+          {
+            "externalUserId": "U0000010"
+          },
+          {
+            "externalUserId": "U0000011"
+          }
         ],
         "sharingUsers": false,
         "sharingAccounts": true
@@ -28,19 +42,26 @@
     "participants": [
       {
         "admins": [
-          "U0001021"
+          {
+            "externalUserId": "U0001021"
+          }
         ],
         "users": [
-          "U0001024",
-          "U0001025"
+          {
+            "externalUserId": "U0001024"
+          },
+          {
+            "externalUserId": "U0001025"
+          }
         ],
         "sharingUsers": true,
         "sharingAccounts": false
       },
       {
         "admins": [
-          "U0000010",
-          "U0000011"
+          {
+            "externalUserId": "U0000010"
+          }
         ],
         "sharingUsers": false,
         "sharingAccounts": true
@@ -51,18 +72,53 @@
     "participants": [
       {
         "admins": [
-          "U0001021"
+          {
+            "externalUserId": "U0001021"
+          }
         ],
         "users": [
-          "U0001024",
-          "U0001025"
+          {
+            "externalUserId": "U0001026"
+          },
+          {
+            "externalUserId": "U0001027"
+          },
+          {
+            "externalUserId": "U0001028"
+          },
+          {
+            "externalUserId": "U0001029"
+          },
+          {
+            "externalUserId": "U0001030"
+          }
         ],
         "sharingUsers": true,
         "sharingAccounts": false
       },
       {
         "admins": [
-          "U0000010"
+          {
+            "externalUserId": "U0000010"
+          }
+        ],
+        "sharingUsers": false,
+        "sharingAccounts": true
+      },
+      {
+        "admins": [
+          {
+            "externalUserId": "U0001001"
+          }
+        ],
+        "sharingUsers": false,
+        "sharingAccounts": true
+      },
+      {
+        "admins": [
+          {
+            "externalUserId": "U0001011"
+          }
         ],
         "sharingUsers": false,
         "sharingAccounts": true
@@ -73,35 +129,41 @@
     "participants": [
       {
         "admins": [
-          "U0001021"
+          {
+            "externalUserId": "U0001021"
+          }
         ],
         "users": [
-          "U0001026",
-          "U0001027",
-          "U0001028",
-          "U0001029",
-          "U0001030"
+          {
+            "externalUserId": "U0001024"
+          }
         ],
         "sharingUsers": true,
         "sharingAccounts": false
       },
       {
         "admins": [
-          "U0000010"
+          {
+            "externalUserId": "U0000010"
+          }
         ],
         "sharingUsers": false,
         "sharingAccounts": true
       },
       {
         "admins": [
-          "U0001001"
+          {
+            "externalUserId": "U0001001"
+          }
         ],
         "sharingUsers": false,
         "sharingAccounts": true
       },
       {
         "admins": [
-          "U0001011"
+          {
+            "externalUserId": "U0001011"
+          }
         ],
         "sharingUsers": false,
         "sharingAccounts": true
@@ -112,59 +174,32 @@
     "participants": [
       {
         "admins": [
-          "U0001021"
+          {
+            "externalUserId": "U0001021"
+          }
         ],
         "users": [
-          "U0001024"
+          {
+            "externalUserId": "U0001024"
+          }
         ],
         "sharingUsers": true,
         "sharingAccounts": false
       },
       {
         "admins": [
-          "U0000010"
+          {
+            "externalUserId": "U0000010"
+          }
         ],
         "sharingUsers": false,
         "sharingAccounts": true
       },
       {
         "admins": [
-          "U0001001"
-        ],
-        "sharingUsers": false,
-        "sharingAccounts": true
-      },
-      {
-        "admins": [
-          "U0001011"
-        ],
-        "sharingUsers": false,
-        "sharingAccounts": true
-      }
-    ]
-  },
-  {
-    "participants": [
-      {
-        "admins": [
-          "U0001021"
-        ],
-        "users": [
-          "U0001024"
-        ],
-        "sharingUsers": true,
-        "sharingAccounts": false
-      },
-      {
-        "admins": [
-          "U0000010"
-        ],
-        "sharingUsers": false,
-        "sharingAccounts": true
-      },
-      {
-        "admins": [
-          "U0001001"
+          {
+            "externalUserId": "U0001001"
+          }
         ],
         "sharingUsers": false,
         "sharingAccounts": true

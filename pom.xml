@@ -4,7 +4,7 @@
     <parent>
         <artifactId>service-sdk-starter-core</artifactId>
         <groupId>com.backbase.buildingblocks</groupId>
-        <version>19.0.0</version>
+        <version>19.1.1</version>
         <relativePath />
     </parent>
 
@@ -55,7 +55,8 @@
             <dependency>
                 <groupId>com.backbase</groupId>
                 <artifactId>backbase-bom</artifactId>
-                <version>2025.03.9-LTS</version>
+                <version>2025.09.4-LTS</version>
+<!--                <version>2025.03.9-LTS</version>-->
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -390,7 +391,7 @@
                                 </artifactItem>
 
                                 <artifactItem>
-                                    <groupId>com.backbase.cxp</groupId>
+                                    <groupId>com.backbase.cxp.contentservices</groupId>
                                     <artifactId>contentservices</artifactId>
                                     <type>zip</type>
                                     <classifier>api</classifier>
@@ -445,7 +446,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${unpacked-api.target}/access-control/access-control-client-api-v3.16.0.yaml</inputSpec>
+                            <inputSpec>${unpacked-api.target}/access-control/access-control-client-api-v3.18.1.yaml</inputSpec>
                             <configOptions>
                                 <apiPackage>com.backbase.dbs.accesscontrol.client.v3</apiPackage>
                                 <modelPackage>com.backbase.dbs.accesscontrol.client.v3.model</modelPackage>
@@ -459,7 +460,7 @@
                         </goals>
                         <configuration>
                             <inputSpec>
-                                ${unpacked-api.target}/access-control/assign-permissions-integration-inbound-api-v1.0.0.yaml
+                                ${unpacked-api.target}/access-control/assign-permissions-integration-inbound-api-v1.0.1.yaml
                             </inputSpec>
                             <configOptions>
                                 <apiPackage>com.backbase.dbs.accesscontrol.ac-assign-permissions.integration.v1</apiPackage>
@@ -475,7 +476,7 @@
                         </goals>
                         <configuration>
                             <inputSpec>
-                                ${unpacked-api.target}/access-control/data-group-integration-inbound-api-v1.0.0.yaml
+                                ${unpacked-api.target}/access-control/data-group-integration-inbound-api-v1.0.2.yaml
                             </inputSpec>
                             <configOptions>
                                 <apiPackage>com.backbase.dbs.accesscontrol.ac-data-group.integration.v1</apiPackage>
@@ -491,7 +492,7 @@
                         </goals>
                         <configuration>
                             <inputSpec>
-                                ${unpacked-api.target}/access-control/function-group-integration-inbound-api-v1.0.0.yaml
+                                ${unpacked-api.target}/access-control/function-group-integration-inbound-api-v1.0.2.yaml
                             </inputSpec>
                             <configOptions>
                                 <apiPackage>com.backbase.dbs.accesscontrol.ac-function-group.integration.v1</apiPackage>
@@ -507,7 +508,7 @@
                         </goals>
                         <configuration>
                             <inputSpec>
-                                ${unpacked-api.target}/access-control/service-agreement-integration-inbound-api-v1.0.0.yaml
+                                ${unpacked-api.target}/access-control/service-agreement-integration-inbound-api-v1.0.3.yaml
                             </inputSpec>
                             <configOptions>
                                 <apiPackage>com.backbase.dbs.accesscontrol.ac-service-agreement.integration.v1</apiPackage>
@@ -523,7 +524,7 @@
                         </goals>
                         <configuration>
                             <inputSpec>
-                                ${unpacked-api.target}/access-control/permission-set-integration-inbound-api-v1.0.0.yaml
+                                ${unpacked-api.target}/access-control/permission-set-integration-inbound-api-v1.0.1.yaml
                             </inputSpec>
                             <configOptions>
                                 <apiPackage>com.backbase.dbs.accesscontrol.ac-permission-set.integration.v1</apiPackage>
@@ -538,7 +539,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${unpacked-api.target}/access-control/legal-entity-integration-inbound-api-v3.0.0.yaml</inputSpec>
+                            <inputSpec>${unpacked-api.target}/access-control/legal-entity-integration-inbound-api-v3.0.1.yaml</inputSpec>
                             <configOptions>
                                 <apiPackage>com.backbase.dbs.accesscontrol.ac-legalentity.integration.v3</apiPackage>
                                 <modelPackage>com.backbase.dbs.accesscontrol.ac-legalentity.integration.v3.model
@@ -582,7 +583,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${unpacked-api.target}/transaction-manager/transaction-manager-integration-inbound-api-v2.7.0.yaml</inputSpec>
+                            <inputSpec>${unpacked-api.target}/transaction-manager/transaction-manager-integration-inbound-api-v2.7.2.yaml</inputSpec>
                             <configOptions>
                                 <apiPackage>com.backbase.dbs.transaction.client.v2</apiPackage>
                                 <modelPackage>com.backbase.dbs.transaction.client.v2.model</modelPackage>
@@ -596,7 +597,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${unpacked-api.target}/transaction-category-collector/transaction-category-collector-client-api-v2.1.0.yaml</inputSpec>
+                            <inputSpec>${unpacked-api.target}/transaction-category-collector/transaction-category-collector-client-api-v2.3.0.yaml</inputSpec>
                             <configOptions>
                                 <apiPackage>com.backbase.dbs.transaction.categories.client.v2</apiPackage>
                                 <modelPackage>com.backbase.dbs.transaction.categories.client.v2.model</modelPackage>
@@ -610,7 +611,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${unpacked-api.target}/pocket-tailor/pocket-tailor-client-api-v2.6.0.yaml</inputSpec>
+                            <inputSpec>${unpacked-api.target}/pocket-tailor/pocket-tailor-client-api-v2.8.0.yaml</inputSpec>
                             <configOptions>
                                 <apiPackage>com.backbase.dbs.pocket.tailor.client.v2</apiPackage>
                                 <modelPackage>com.backbase.dbs.pocket.tailor.client.v2.model</modelPackage>
@@ -624,7 +625,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${unpacked-api.target}/positive-pay-check/positive-pay-checks-client-api-v1.33.0.yaml</inputSpec>
+                            <inputSpec>${unpacked-api.target}/positive-pay-checks-client-api-v1.33.0.yaml</inputSpec>
                             <configOptions>
                                 <apiPackage>com.backbase.dbs.positivepay.client.api.v1</apiPackage>
                                 <modelPackage>com.backbase.dbs.positivepay.client.api.v1.model</modelPackage>
@@ -655,7 +656,7 @@
                         </goals>
                         <configuration>
                             <inputSpec>
-                                ${unpacked-api.target}/contact-manager/contact-manager-integration-inbound-api-v2.21.0.yaml
+                                ${unpacked-api.target}/contact-manager/contact-manager-integration-inbound-api-v2.22.0.yaml
                             </inputSpec>
                             <configOptions>
                                 <apiPackage>com.backbase.dbs.contact.integration.inbound.api.v2</apiPackage>
@@ -846,10 +847,10 @@
                         </goals>
                         <phase>generate-sources</phase>
                         <configuration>
-                            <inputSpec>${unpacked-api.target}/notification/notification-service-api-v*.yaml</inputSpec>
+                            <inputSpec>${unpacked-api.target}/notification/notifications-client-api-v3.yaml</inputSpec>
                             <configOptions>
-                                <apiPackage>com.backbase.dbs.notification.service.api.v2</apiPackage>
-                                <modelPackage>com.backbase.dbs.notification.service.api.v2.model</modelPackage>
+                                <apiPackage>com.backbase.dbs.notifications.client.api.v3</apiPackage>
+                                <modelPackage>com.backbase.dbs.notifications.client.api.v3.model</modelPackage>
                             </configOptions>
                         </configuration>
                     </execution>

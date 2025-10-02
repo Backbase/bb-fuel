@@ -53,16 +53,16 @@ public class ServiceAgreementsConfigurator {
     }
 
     public void updateMasterServiceAgreementWithExternalIdByLegalEntity(String externalLegalEntityId) {
-        String externalServiceAgreementId = legalEntityIntegrationRestClient
+        String serviceAgreementId = legalEntityIntegrationRestClient
             .getSingleServiceAgreementOfLegalEntity(externalLegalEntityId)
-            .getExternalId();
+            .getId();
 
         serviceAgreementsIntegrationRestClient
-            .updateServiceAgreement(externalServiceAgreementId, generateServiceAgreementPutRequestBody())
+            .updateServiceAgreement(serviceAgreementId, generateServiceAgreementPutRequestBody())
             .then()
             .statusCode(SC_NO_CONTENT);
 
-        log.info("Service agreement [{}] updated with external id", externalServiceAgreementId);
+        log.info("Service agreement [{}] updated with external id", serviceAgreementId);
     }
 
     private void enrichParticipantsWithExternalId(List<ParticipantCreateRequest> participants) {

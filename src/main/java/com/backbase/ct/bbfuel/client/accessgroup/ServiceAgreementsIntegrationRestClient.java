@@ -24,7 +24,7 @@ public class ServiceAgreementsIntegrationRestClient extends RestClient {
     private final BbFuelConfiguration config;
     private static final String SERVICE_VERSION = "v1/access-control";
     private static final String ENDPOINT_SERVICE_AGREEMENTS = "/service-agreements";
-    private static final String ENDPOINT_SERVICE_AGREEMENTS_BY_ID = ENDPOINT_SERVICE_AGREEMENTS + "/%s";
+    private static final String ENDPOINT_SERVICE_AGREEMENTS_BY_ID = ENDPOINT_SERVICE_AGREEMENTS + "/internal/%s";
     private static final String ADD_ADMINS_IN_SA = ENDPOINT_SERVICE_AGREEMENTS + "/batch/admins";
 
     @PostConstruct
@@ -40,11 +40,11 @@ public class ServiceAgreementsIntegrationRestClient extends RestClient {
             .post(getPath(ENDPOINT_SERVICE_AGREEMENTS));
     }
 
-    public Response updateServiceAgreement(String externalServiceAgreementId, ServiceAgreementUpdateRequest body) {
+    public Response updateServiceAgreement(String serviceAgreementId, ServiceAgreementUpdateRequest body) {
         return requestSpec()
             .contentType(ContentType.JSON)
             .body(body)
-            .put(getPath(String.format(ENDPOINT_SERVICE_AGREEMENTS_BY_ID, externalServiceAgreementId)));
+            .put(getPath(String.format(ENDPOINT_SERVICE_AGREEMENTS_BY_ID, serviceAgreementId)));
     }
 
     public ServiceAgreementDetails retrieveServiceAgreementByExternalId(String externalServiceAgreementId) {

@@ -25,6 +25,7 @@ public class ServiceAgreementsIntegrationRestClient extends RestClient {
     private static final String SERVICE_VERSION = "v1/access-control";
     private static final String ENDPOINT_SERVICE_AGREEMENTS = "/service-agreements";
     private static final String ENDPOINT_SERVICE_AGREEMENTS_BY_ID = ENDPOINT_SERVICE_AGREEMENTS + "/internal/%s";
+    private static final String ENDPOINT_SERVICE_AGREEMENTS_BY_EXTERNAL_ID = ENDPOINT_SERVICE_AGREEMENTS + "/%s";
     private static final String ADD_ADMINS_IN_SA = ENDPOINT_SERVICE_AGREEMENTS + "/batch/admins";
 
     @PostConstruct
@@ -49,7 +50,7 @@ public class ServiceAgreementsIntegrationRestClient extends RestClient {
 
     public ServiceAgreementDetails retrieveServiceAgreementByExternalId(String externalServiceAgreementId) {
         return requestSpec()
-            .get(getPath(String.format(ENDPOINT_SERVICE_AGREEMENTS_BY_ID, externalServiceAgreementId)))
+            .get(getPath(String.format(ENDPOINT_SERVICE_AGREEMENTS_BY_EXTERNAL_ID, externalServiceAgreementId)))
             .then()
             .statusCode(SC_OK)
             .extract()

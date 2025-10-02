@@ -10,7 +10,7 @@
 
     <groupId>com.backbase.ct</groupId>
     <artifactId>bb-fuel</artifactId>
-    <version>3.0.4-SNAPSHOT</version>
+    <version>3.1.0-SNAPSHOT</version>
     <name>Backbase :: Capability Testing :: bb-fuel</name>
 
     <scm>
@@ -56,7 +56,6 @@
                 <groupId>com.backbase</groupId>
                 <artifactId>backbase-bom</artifactId>
                 <version>2025.09.4-LTS</version>
-<!--                <version>2025.03.9-LTS</version>-->
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -570,6 +569,11 @@
                             <inputSpec>
                                 ${unpacked-api.target}/billpay-integrator/billpay-integration-external-provider-outbound-api-v2.2.0.yaml
                             </inputSpec>
+                            <typeMappings>
+                                <!--for some reason the com.backbase.dbs.billpay.client.v2.model.ErrorItem is not generated-->
+                                <!--so after spending a few hours on that, I gave up and just borrowed it from another package-->
+                                <typeMapping>error-item=com.backbase.dbs.arrangement.client.api.v2.model.ErrorItem</typeMapping>
+                            </typeMappings>
                             <configOptions>
                                 <apiPackage>com.backbase.dbs.billpay.client.v2</apiPackage>
                                 <modelPackage>com.backbase.dbs.billpay.client.v2.model</modelPackage>

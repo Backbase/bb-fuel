@@ -587,10 +587,10 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${unpacked-api.target}/transaction-manager/transaction-manager-integration-inbound-api-v2.7.2.yaml</inputSpec>
+                            <inputSpec>${unpacked-api.target}/transaction-manager/transaction-manager-integration-inbound-api-v3.0.2.yaml</inputSpec>
                             <configOptions>
-                                <apiPackage>com.backbase.dbs.transaction.client.v2</apiPackage>
-                                <modelPackage>com.backbase.dbs.transaction.client.v2.model</modelPackage>
+                                <apiPackage>com.backbase.dbs.transaction.client.v3</apiPackage>
+                                <modelPackage>com.backbase.dbs.transaction.client.v3.model</modelPackage>
                             </configOptions>
                         </configuration>
                     </execution>

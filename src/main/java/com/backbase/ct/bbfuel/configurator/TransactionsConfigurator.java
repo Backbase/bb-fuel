@@ -9,7 +9,7 @@ import com.backbase.ct.bbfuel.input.TransactionsReader;
 import com.backbase.ct.bbfuel.util.CommonHelpers;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
 import com.backbase.dbs.pocket.tailor.client.v2.model.Pocket;
-import com.backbase.dbs.transaction.client.v2.model.TransactionsPostRequestBody;
+import com.backbase.dbs.transaction.client.v3.model.TransactionsPostRequestBody;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
 import java.util.ArrayList;

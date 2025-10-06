@@ -5,7 +5,7 @@ import static java.util.Arrays.asList;
 
 import com.backbase.ct.bbfuel.data.CommonConstants;
 import com.backbase.ct.bbfuel.util.ParserUtil;
-import com.backbase.dbs.transaction.client.v2.model.TransactionsPostRequestBody;
+import com.backbase.dbs.transaction.client.v3.model.TransactionsPostRequestBody;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;

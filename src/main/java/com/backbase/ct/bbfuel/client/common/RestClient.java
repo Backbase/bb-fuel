@@ -75,6 +75,7 @@ public class RestClient {
     protected static GlobalProperties globalProperties = GlobalProperties.getInstance();
     private static final String X_XSRF_TOKEN_NAME = "X-XSRF-TOKEN";
     private static final String XSRF_TOKEN_NAME = "XSRF-TOKEN";
+    private static final String USER_CONTEXT_HEADER = "X-User-Context";
 
     @Getter
     private URI baseURI = null;
@@ -149,6 +150,9 @@ public class RestClient {
 //        requestSpec.queryParam("_csrf", getCookies().get("XSRF-TOKEN"));
         if (!isNull(getCookies().get(XSRF_TOKEN_NAME))) {
             requestSpec.header(X_XSRF_TOKEN_NAME, getCookies().get(XSRF_TOKEN_NAME));
+        }
+        if (!isNull(getCookies().get(USER_CONTEXT_HEADER))) {
+            requestSpec.header(USER_CONTEXT_HEADER, getCookies().get(USER_CONTEXT_HEADER));
         }
 
         requestSpec.cookies(getCookies());

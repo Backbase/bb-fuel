@@ -8,9 +8,9 @@ import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
 import com.backbase.dbs.accesscontrol.client.v3.model.ServiceAgreementItem;
 import com.backbase.dbs.accesscontrol.client.v3.model.UserContextPost;
 import io.restassured.http.ContentType;
+import io.restassured.http.Header;
 import io.restassured.response.Response;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +21,8 @@ import org.springframework.stereotype.Component;
 public class UserContextPresentationRestClient extends RestClient {
 
     private final BbFuelConfiguration config;
+
+    private static final String USER_CONTEXT_HEADER = "X-User-Context";
 
     private static final String SERVICE_VERSION = "v3";
     private static final String ENDPOINT_ACCESS_GROUPS = "/accessgroups";
@@ -49,10 +51,9 @@ public class UserContextPresentationRestClient extends RestClient {
             .body(userContextPostRequestBody)
             .post(getPath(ENDPOINT_USER_CONTEXT));
 
-        Map<String, String> cookies = new HashMap<>(response.then()
-            .extract()
-            .cookies());
-        setUpCookies(cookies);
+        Header userContextHeader = response.then().extract()
+            .headers().get(USER_CONTEXT_HEADER);
+        setUpCookies(Map.of(userContextHeader.getName(), userContextHeader.getValue()));
 
         return response;
     }

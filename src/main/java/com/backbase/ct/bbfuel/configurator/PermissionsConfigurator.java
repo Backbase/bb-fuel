@@ -4,10 +4,9 @@ import static com.backbase.ct.bbfuel.util.ResponseUtils.isBadRequestException;
 import static org.apache.http.HttpStatus.SC_MULTI_STATUS;
 
 import com.backbase.ct.bbfuel.client.accessgroup.AccessGroupIntegrationRestClient;
-import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.BatchResponseItem;
-import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.IntegrationDataGroupIdentifier;
-import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.IntegrationFunctionGroupDataGroup;
-import com.backbase.dbs.arrangement.integration.inbound.api.v3.model.BatchResponseStatusCode;
+import com.backbase.dbs.accesscontrol.ac_assign_permissions.integration.v1.model.BatchResponseItemExtended;
+import com.backbase.dbs.accesscontrol.ac_assign_permissions.integration.v1.model.DataGroupNameIdentifier;
+import com.backbase.dbs.accesscontrol.ac_assign_permissions.integration.v1.model.UserPermissionItem;
 import io.restassured.response.Response;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,7 +22,7 @@ public class PermissionsConfigurator {
     private final AccessGroupIntegrationRestClient accessGroupIntegrationRestClient;
 
     public void assignPermissions(String externalUserId, String externalServiceAgreementId,
-        List<IntegrationFunctionGroupDataGroup> functionGroupDataGroups) {
+        List<UserPermissionItem> functionGroupDataGroups) {
         Response response = accessGroupIntegrationRestClient.assignPermissions(
             externalUserId,
             externalServiceAgreementId,
@@ -32,32 +31,33 @@ public class PermissionsConfigurator {
         if (isBadRequestException(response, "dataAccessGroup.assign.error.message.E_ASSIGNED")) {
 
             functionGroupDataGroups.forEach(group -> {
-                List<String> ids = group.getDataGroupIdentifiers().stream()
-                    .map(IntegrationDataGroupIdentifier::getIdIdentifier).collect(
+                List<String> ids = group.getDataGroups().stream()
+                    .map(DataGroupNameIdentifier::getName).collect(
                         Collectors.toList());
                 log.info(
-                    "Data groups already assigned to service agreement [{}], user [{}], function group [{}], skipped assigning data group ids {}",
-                    externalServiceAgreementId, externalUserId, group.getFunctionGroupIdentifier().getIdIdentifier(), ids);
+                    "Data groups already assigned to service agreement [{}], user [{}], function group {}, skipped assigning data group names {}",
+                    externalServiceAgreementId, externalUserId, group.getFunctionGroup().getName(), ids);
             });
         } else if (response.statusCode() == SC_MULTI_STATUS && response.then().extract()
-            .as(BatchResponseItem[].class)[0].getStatus().equals(BatchResponseItem.StatusEnum.HTTP_STATUS_OK)) {
+            .as(BatchResponseItemExtended[].class)[0].getStatus()
+            .equals(BatchResponseItemExtended.StatusEnum.HTTP_STATUS_OK)) {
 
             functionGroupDataGroups.forEach(group -> {
-                List<String> ids = group.getDataGroupIdentifiers().stream()
-                    .map(IntegrationDataGroupIdentifier::getIdIdentifier)
+                List<String> ids = group.getDataGroups().stream()
+                    .map(DataGroupNameIdentifier::getName)
                     .collect(Collectors.toList());
                 log.info(
-                    "Permission assigned for service agreement [{}], user [{}], function group [{}], data groups {}",
-                        externalServiceAgreementId, externalUserId, group.getFunctionGroupIdentifier().getIdIdentifier(), ids);
+                    "Permission assigned for service agreement [{}], user [{}], function group {}, data group names {}",
+                    externalServiceAgreementId, externalUserId, group.getFunctionGroup().getName(), ids);
             });
         } else {
             functionGroupDataGroups.forEach(group -> {
-                List<String> ids = group.getDataGroupIdentifiers().stream()
-                    .map(IntegrationDataGroupIdentifier::getIdIdentifier)
+                List<String> dgNames = group.getDataGroups().stream()
+                    .map(DataGroupNameIdentifier::getName)
                     .collect(Collectors.toList());
                 log.error(
-                    "Failed assigning data groups to service agreement [{}], user [{}], function group [{}], with data group ids {}",
-                    externalServiceAgreementId, externalUserId, group.getFunctionGroupIdentifier().getIdIdentifier(), ids);
+                    "Failed assigning data groups to service agreement [{}], user [{}], function group {}, with data group names {}",
+                    externalServiceAgreementId, externalUserId, group.getFunctionGroup().getName(), dgNames);
                 throw new RuntimeException("Failed assigning data groups to service agreement");
             });
         }

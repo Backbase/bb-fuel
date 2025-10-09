@@ -11,11 +11,16 @@ import com.backbase.ct.bbfuel.configurator.AccessGroupsConfigurator;
 import com.backbase.ct.bbfuel.configurator.PermissionsConfigurator;
 import com.backbase.ct.bbfuel.configurator.ServiceAgreementsConfigurator;
 import com.backbase.ct.bbfuel.data.CommonConstants;
+import com.backbase.ct.bbfuel.dto.entitlement.JobProfile;
 import com.backbase.ct.bbfuel.service.ProductGroupService;
 import com.backbase.ct.bbfuel.util.ParserUtil;
-import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.*;
+import com.backbase.dbs.accesscontrol.ac_assign_permissions.integration.v1.model.DataGroupNameIdentifier;
+import com.backbase.dbs.accesscontrol.ac_assign_permissions.integration.v1.model.FunctionGroupNameIdentifier;
+import com.backbase.dbs.accesscontrol.ac_assign_permissions.integration.v1.model.UserPermissionItem;
+import com.backbase.dbs.accesscontrol.ac_service_agreement.integration.v1.model.ParticipantCreateRequest;
+import com.backbase.dbs.accesscontrol.ac_service_agreement.integration.v1.model.ServiceAgreementCreateRequest;
+import com.backbase.dbs.accesscontrol.ac_service_agreement.integration.v1.model.User;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -35,20 +40,19 @@ public class ServiceAgreementsSetup extends BaseSetup {
     private final UserPresentationRestClient userPresentationRestClient;
     private final AccessControlSetup accessControlSetup;
     private final ProductGroupService productGroupService;
-    private String adminFunctionGroupId;
 
     @Override
     public void initiate() throws IOException {
         if (this.globalProperties.getBoolean(CommonConstants.PROPERTY_INGEST_CUSTOM_SERVICE_AGREEMENTS)) {
-            ServiceAgreement[] serviceAgreementPostRequestBodies = ParserUtil
+            ServiceAgreementCreateRequest[] serviceAgreementPostRequestBodies = ParserUtil
                 .convertJsonToObject(
                     this.globalProperties.getString(CommonConstants.PROPERTY_SERVICE_AGREEMENTS_JSON),
-                    ServiceAgreement[].class);
+                    ServiceAgreementCreateRequest[].class);
             ingestCustomServiceAgreements(asList(serviceAgreementPostRequestBodies));
         }
     }
 
-    private void ingestCustomServiceAgreements(List<ServiceAgreement> serviceAgreementPostRequestBodies) {
+    private void ingestCustomServiceAgreements(List<ServiceAgreementCreateRequest> serviceAgreementPostRequestBodies) {
         this.loginRestClient.loginBankAdmin();
         this.userContextPresentationRestClient.selectContextBasedOnMasterServiceAgreement();
 
@@ -61,28 +65,30 @@ public class ServiceAgreementsSetup extends BaseSetup {
                 .retrieveServiceAgreement(internalServiceAgreementId)
                 .getExternalId();
 
-            setupFunctionDataGroups(internalServiceAgreementId, externalServiceAgreementId,
+            JobProfile jobProfile = setupFunctionDataGroups(internalServiceAgreementId, externalServiceAgreementId,
                 serviceAgreementPostRequestBody.getParticipants());
-            setupPermissions(externalServiceAgreementId, serviceAgreementPostRequestBody.getParticipants());
+            setupPermissions(externalServiceAgreementId, serviceAgreementPostRequestBody.getParticipants(), jobProfile);
         });
     }
 
-    private void setupFunctionDataGroups(String internalServiceAgreementId, String externalServiceAgreementId,
-        List<Participant> participants) {
-        List<Participant> participantsSharingAccounts = participants.stream()
-            .filter(Participant::getSharingAccounts)
+    private JobProfile setupFunctionDataGroups(String internalServiceAgreementId, String externalServiceAgreementId,
+        List<ParticipantCreateRequest> participants) {
+        List<ParticipantCreateRequest> participantsSharingAccounts = participants.stream()
+            .filter(ParticipantCreateRequest::getSharingAccounts)
             .toList();
 
         Set<String> users = participants.stream()
-            .map(Participant::getUsers)
+            .map(ParticipantCreateRequest::getUsers)
             .flatMap(List::stream)
+            .map(User::getExternalUserId)
             .collect(Collectors.toSet());
 
         String externalAdminUserId = participantsSharingAccounts.iterator()
             .next()
             .getAdmins()
             .iterator()
-            .next();
+            .next()
+            .getExternalUserId();
 
         String externalLegalEntityId = this.userPresentationRestClient
             .retrieveLegalEntityByExternalUserId(externalAdminUserId)
@@ -92,29 +98,35 @@ public class ServiceAgreementsSetup extends BaseSetup {
             .ingestDataGroupArrangementsForServiceAgreement(internalServiceAgreementId, externalServiceAgreementId,
                 externalLegalEntityId, users.size() == 1); //RB20180923: simplified assumption holds for now
 
-        adminFunctionGroupId = this.accessGroupsConfigurator
-            .ingestAdminFunctionGroup(externalServiceAgreementId).getId();
+        return this.accessGroupsConfigurator.ingestAdminFunctionGroup(externalServiceAgreementId);
     }
 
-    private void setupPermissions(String externalServiceAgreementId, List<Participant> participants) {
-        for (Participant participant : participants) {
-            List<String> externalUserIds = participant.getUsers();
+    private void setupPermissions(String externalServiceAgreementId, List<ParticipantCreateRequest> participants,
+        JobProfile jobProfile) {
+        for (ParticipantCreateRequest participant : participants) {
+            List<String> externalUserIds = participant.getUsers().stream()
+                .map(User::getExternalUserId)
+                .toList();
 
             for (String externalUserId : externalUserIds) {
-                List<String> dataGroupIds = this.productGroupService
-                    .findAssignedProductGroupsIds(externalServiceAgreementId);
+                List<String> dataGroupNames = this.productGroupService
+                    .findAssignedProductGroupsNames(externalServiceAgreementId);
 
-                List<IntegrationDataGroupIdentifier> dataGroupIdentifiers = new ArrayList<>();
-                dataGroupIds.forEach(dataGroupId -> dataGroupIdentifiers.add(new IntegrationDataGroupIdentifier().idIdentifier(dataGroupId)));
+                List<DataGroupNameIdentifier> dataGroupIdentifiers = dataGroupNames.stream()
+                    .map(dataGroupName -> new DataGroupNameIdentifier()
+                        .name(dataGroupName)
+                        .dataGroupType("ARRANGEMENTS") //todo get rid of magic string
+                        .serviceAgreementExternalId(externalServiceAgreementId))
+                    .toList();
 
                 this.permissionsConfigurator.assignPermissions(
                     externalUserId,
                     externalServiceAgreementId,
                     // TODO assess impact for different job profiles
-                    singletonList(new IntegrationFunctionGroupDataGroup()
-                        .functionGroupIdentifier(
-                            new IntegrationIdentifier().idIdentifier(this.adminFunctionGroupId))
-                        .dataGroupIdentifiers(dataGroupIdentifiers)));
+                    singletonList(new UserPermissionItem()
+                        .functionGroup(new FunctionGroupNameIdentifier().name(jobProfile.getJobProfileName())
+                            .serviceAgreementExternalId(jobProfile.getExternalServiceAgreementId()))
+                        .dataGroups(dataGroupIdentifiers)));
             }
         }
     }

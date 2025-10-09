@@ -7,7 +7,6 @@ import static com.backbase.ct.bbfuel.util.ResponseUtils.isConflictException;
 import static com.backbase.ct.bbfuel.util.ResponseUtils.isNotFoundException;
 import static org.apache.http.HttpStatus.SC_CREATED;
 
-
 import com.backbase.ct.bbfuel.client.accessgroup.UserContextPresentationRestClient;
 import com.backbase.ct.bbfuel.client.common.LoginRestClient;
 import com.backbase.ct.bbfuel.client.legalentity.LegalEntityPresentationRestClient;
@@ -16,18 +15,14 @@ import com.backbase.ct.bbfuel.client.user.UserMockRestClient;
 import com.backbase.ct.bbfuel.client.user.UserPresentationRestClient;
 import com.backbase.ct.bbfuel.data.LegalEntitiesAndUsersDataGenerator;
 import com.backbase.ct.bbfuel.dto.LegalEntityWithUsers;
-
-
 import com.backbase.ct.bbfuel.dto.User;
 import com.backbase.ct.bbfuel.service.LegalEntityService;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
-
-
+import com.backbase.dbs.accesscontrol.ac_legalentity.integration.v3.model.LegalEntityItem;
 import com.backbase.dbs.user.manager.integration.api.v2.model.UserExternal;
-import com.backbase.dbs.accesscontrol.legalentity.integration.v2.model.LegalEntityCreateItem;
 import io.restassured.response.Response;
-import lombok.extern.slf4j.Slf4j;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -64,7 +59,7 @@ public class LegalEntitiesAndUsersConfigurator {
         this.serviceAgreementsConfigurator
             .updateMasterServiceAgreementWithExternalIdByLegalEntity(externalLegalEntityId);
 
-        User admin = root. getUsers().get(0);
+        User admin = root.getUsers().get(0);
         this.userIntegrationRestClient.ingestAdminAndLogResponse(LegalEntitiesAndUsersDataGenerator
             .generateUsersPostRequestBody(admin, EXTERNAL_ROOT_LEGAL_ENTITY_ID));
         this.serviceAgreementsConfigurator
@@ -72,7 +67,7 @@ public class LegalEntitiesAndUsersConfigurator {
     }
 
     private void ingestLegalEntityAndUsers(LegalEntityWithUsers legalEntityWithUsers) {
-        final LegalEntityCreateItem requestBody = LegalEntitiesAndUsersDataGenerator
+        final LegalEntityItem requestBody = LegalEntitiesAndUsersDataGenerator
             .composeLegalEntitiesPostRequestBody(
                 legalEntityWithUsers.getLegalEntityExternalId(),
                 legalEntityWithUsers.getLegalEntityName(),
@@ -85,11 +80,9 @@ public class LegalEntitiesAndUsersConfigurator {
         String externalLegalEntityId = this.legalEntityService.ingestLegalEntity(requestBody);
 
         legalEntityWithUsers.getUsers().parallelStream()
-            .forEach(
-                user -> this.ingestUserAndLogResponse(LegalEntitiesAndUsersDataGenerator
+            .forEach(user -> this.ingestUserAndLogResponse(LegalEntitiesAndUsersDataGenerator
                     .generateUsersPostRequestBody(user, externalLegalEntityId)));
     }
-    
 
     private void ingestUserAndLogResponse(UserExternal user) {
 
@@ -104,7 +97,8 @@ public class LegalEntitiesAndUsersConfigurator {
             response = this.userIntegrationRestClient.ingestUser(user);
         }
 
-        if (isBadRequestException(response, "User already exists") || isConflictException(response, "User already exists")) {
+        if (isBadRequestException(response, "User already exists") || isConflictException(response,
+            "User already exists")) {
             log.info("User [{}] already exists, skipped ingesting this user", user.getExternalId());
         } else if (isNotFoundException(response, "Identity does not exist in Identity Service")) {
             log.info("Identity for user [{}] not found, creating identity", user.getExternalId());
@@ -112,10 +106,7 @@ public class LegalEntitiesAndUsersConfigurator {
             String legalEntityId = legalEntityPresentationRestClient
                 .retrieveLegalEntityByExternalId(user.getLegalEntityExternalId()).getId();
 
-            UserExternal userBody = new UserExternal();
-
-            userBody
-                .withExternalId(user.getExternalId())
+            UserExternal userBody = new UserExternal().withExternalId(user.getExternalId())
                 .withFullName(user.getFullName())
                 .withLegalEntityExternalId(user.getLegalEntityExternalId())
                 .withPreferredLanguage(user.getPreferredLanguage());
@@ -126,8 +117,7 @@ public class LegalEntitiesAndUsersConfigurator {
                 user.getExternalId(), user.getLegalEntityExternalId());
         } else {
             log.info("User [{}] could not be ingested", user.getExternalId());
-            response.then()
-                .statusCode(SC_CREATED);
+            response.then().statusCode(SC_CREATED);
         }
     }
 }

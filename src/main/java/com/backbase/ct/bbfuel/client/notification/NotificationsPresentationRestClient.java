@@ -2,7 +2,7 @@ package com.backbase.ct.bbfuel.client.notification;
 
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
-import com.backbase.dbs.notification.service.api.v2.model.NotificationsPostRequestBody;
+import com.backbase.dbs.notifications.client.api.v3.model.NotificationsPostRequestBody;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import jakarta.annotation.PostConstruct;
@@ -15,7 +15,7 @@ public class NotificationsPresentationRestClient extends RestClient {
 
     private final BbFuelConfiguration config;
 
-    private static final String SERVICE_VERSION = "v2";
+    private static final String SERVICE_VERSION = "v3";
     private static final String PATH_EMPLOYEE = "/employee";
     private static final String ENDPOINT_NOTIFICATIONS = PATH_EMPLOYEE + "/notifications";
 

@@ -1,14 +1,16 @@
 package com.backbase.ct.bbfuel.client.accessgroup;
 
+import static java.util.Collections.singletonList;
+import static org.apache.http.HttpStatus.SC_OK;
+
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
-import com.backbase.ct.bbfuel.dto.entitlement.AssignablePermissionSet;
-import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.FunctionGroupItem;
-import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.FunctionsGetResponseBody;
-import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.IntegrationAssignUserPermissions;
-import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.IntegrationDataGroupCreate;
-import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.IntegrationFunctionGroupDataGroup;
-import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.IntegrationPrivilege;
+import com.backbase.dbs.accesscontrol.ac_assign_permissions.integration.v1.model.AssignUserPermissionsBatch;
+import com.backbase.dbs.accesscontrol.ac_assign_permissions.integration.v1.model.UserPermissionItem;
+import com.backbase.dbs.accesscontrol.ac_data_group.integration.v1.model.DataGroupBatchIngest;
+import com.backbase.dbs.accesscontrol.ac_function_group.integration.v1.model.FunctionGroupIngest;
+import com.backbase.dbs.accesscontrol.ac_permission_set.integration.v1.model.AssignablePermissionSetsList;
+import com.backbase.dbs.accesscontrol.ac_permission_set.integration.v1.model.PermissionItem;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import jakarta.annotation.PostConstruct;
@@ -18,23 +20,19 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import static java.util.Arrays.asList;
-import static java.util.Collections.singletonList;
-import static org.apache.http.HttpStatus.SC_OK;
-
 @Component
 @RequiredArgsConstructor
 public class AccessGroupIntegrationRestClient extends RestClient {
 
     private final BbFuelConfiguration config;
 
-    private static final String SERVICE_VERSION = "v3";
+    private static final String SERVICE_VERSION = "v1/access-control";
     private static final String ENDPOINT_FUNCTION = "/function-groups";
-    private static final String ENDPOINT_USERS_PERMISSIONS = "/users/permissions/user-permissions";
-    private static final String ENDPOINT_DATA = "/data-groups/batch";
+    private static final String ENDPOINT_USERS_PERMISSIONS = "/user-permissions";
+    private static final String ENDPOINT_DATA = "/data-groups/batch/ingest";
     private static final String ENDPOINT_ASSIGNABLE_PERMISSION_SETS_BY_NAME = "/permission-sets";
     private static final String REGUlAR_USER_APS_NAME = "Regular user APS";
-    private List<FunctionsGetResponseBody> allBusinessFunctions = new ArrayList<>();
+    private List<PermissionItem> allBusinessFunctions = new ArrayList<>();
 
     @PostConstruct
     public void init() {
@@ -42,70 +40,43 @@ public class AccessGroupIntegrationRestClient extends RestClient {
         setVersion(SERVICE_VERSION);
     }
 
-    public Response ingestFunctionGroup(FunctionGroupItem body) {
-        return requestSpec()
-            .contentType(ContentType.JSON)
+    public Response ingestFunctionGroup(FunctionGroupIngest body) {
+        return requestSpec().contentType(ContentType.JSON)
             .body(body)
             .post(getPath(ENDPOINT_FUNCTION));
     }
 
-    public Response ingestDataGroup(IntegrationDataGroupCreate... body) {
-        return requestSpec()
-            .contentType(ContentType.JSON)
+    public Response ingestDataGroup(List<DataGroupBatchIngest> body) {
+        return requestSpec().contentType(ContentType.JSON)
             .body(body)
             .post(getPath(ENDPOINT_DATA));
     }
 
-    public List<FunctionsGetResponseBody> retrieveFunctions() {
+    public List<PermissionItem> retrieveFunctions() {
         if (allBusinessFunctions.isEmpty()) {
-            retrieveDefaultUserAps()
-                .get(0)
-                .getPermissions()
-                .forEach(permission -> {
-                    allBusinessFunctions.add(
-                        new FunctionsGetResponseBody()
-                            .functionId(permission.getFunctionId())
-                            .name(permission.getFunctionName())
-                            .resource(permission.getResourceName())
-                            .privileges(permission.getPrivileges()
-                                .stream()
-                                .map(privilege -> new IntegrationPrivilege().privilege(privilege))
-                                .collect(Collectors.toList()))
-                    );
-                });
+            allBusinessFunctions.addAll(retrieveDefaultUserAps().getPermissionSets().get(0).getPermissions());
         }
         return allBusinessFunctions;
     }
 
-    private List<AssignablePermissionSet> retrieveDefaultUserAps() {
-        return asList(requestSpec()
+    public List<PermissionItem> retrieveFunctions(List<String> functionNames) {
+        return retrieveFunctions().stream()
+            .filter(function -> functionNames.contains(function.getBusinessFunctionName()))
+            .collect(Collectors.toList());
+    }
+
+    private AssignablePermissionSetsList retrieveDefaultUserAps() {
+        return requestSpec()
             .contentType(ContentType.JSON)
             .queryParam("name", REGUlAR_USER_APS_NAME)
             .get(getPath(ENDPOINT_ASSIGNABLE_PERMISSION_SETS_BY_NAME))
             .then()
             .statusCode(SC_OK)
             .extract()
-            .as(AssignablePermissionSet[].class));
+            .as(AssignablePermissionSetsList.class);
     }
 
-    public List<FunctionsGetResponseBody> retrieveFunctions(List<String> functionNames) {
-        List<FunctionsGetResponseBody> functions = retrieveFunctions();
-
-        return functions.stream()
-            .filter(function -> functionNames.contains(function.getName()))
-            .collect(Collectors.toList());
-    }
-
-    public List<FunctionsGetResponseBody> retrieveFunctionsNotContainingProvidedFunctionNames(
-        List<String> functionNames) {
-        List<FunctionsGetResponseBody> functions = retrieveFunctions();
-
-        return functions.stream()
-            .filter(function -> !functionNames.contains(function.getName()))
-            .collect(Collectors.toList());
-    }
-
-    public Response assignPermissions(IntegrationAssignUserPermissions body) {
+    public Response assignPermissions(AssignUserPermissionsBatch body) {
         return requestSpec()
             .contentType(ContentType.JSON)
             .body(singletonList(body))
@@ -115,11 +86,11 @@ public class AccessGroupIntegrationRestClient extends RestClient {
     public Response assignPermissions(
         String externalUserId,
         String externalServiceAgreementId,
-        List<IntegrationFunctionGroupDataGroup> functionGroupDataGroups) {
+        List<UserPermissionItem> functionGroupDataGroups) {
 
-        return assignPermissions(new IntegrationAssignUserPermissions()
+        return assignPermissions(new AssignUserPermissionsBatch()
             .externalUserId(externalUserId)
             .externalServiceAgreementId(externalServiceAgreementId)
-            .functionGroupDataGroups(functionGroupDataGroups));
+            .permissions(functionGroupDataGroups));
     }
 }

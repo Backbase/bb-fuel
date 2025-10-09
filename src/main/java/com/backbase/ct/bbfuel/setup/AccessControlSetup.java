@@ -42,10 +42,10 @@ import com.backbase.ct.bbfuel.service.JobProfileService;
 import com.backbase.ct.bbfuel.service.LegalEntityService;
 import com.backbase.ct.bbfuel.service.ProductGroupService;
 import com.backbase.ct.bbfuel.service.UserContextService;
-import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.FunctionGroupItem.TypeEnum;
-import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.IntegrationDataGroupIdentifier;
-import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.IntegrationFunctionGroupDataGroup;
-import com.backbase.dbs.accesscontrol.accessgroup.integration.v3.model.IntegrationIdentifier;
+import com.backbase.dbs.accesscontrol.ac_assign_permissions.integration.v1.model.DataGroupNameIdentifier;
+import com.backbase.dbs.accesscontrol.ac_assign_permissions.integration.v1.model.FunctionGroupNameIdentifier;
+import com.backbase.dbs.accesscontrol.ac_assign_permissions.integration.v1.model.UserPermissionItem;
+import com.backbase.dbs.accesscontrol.ac_function_group.integration.v1.model.FunctionGroupIngest.TypeEnum;
 import com.backbase.dbs.accesscontrol.client.v3.model.DataGroupItem;
 import com.backbase.dbs.user.manager.client.api.v2.model.LegalEntity;
 import com.google.common.collect.ArrayListMultimap;
@@ -96,7 +96,7 @@ public class AccessControlSetup extends BaseSetup {
     private List<ProductGroupSeed> productGroupSeedTemplates;
 
     private static final Predicate<JobProfile> JOB_PROFILE_IS_TEMPLATE =
-        jobProfile -> jobProfile.getType().equals(TypeEnum.TEMPLATE.toString());
+        jobProfile -> jobProfile.getType().equals("TEMPLATE");
 
     private static final Predicate<String> SERVICE_AGREEMENT_NAME_IS_BANK =
         serviceAgreementName -> serviceAgreementName.equals("Bank");
@@ -336,26 +336,28 @@ public class AccessControlSetup extends BaseSetup {
         }
     }
 
-    private void assignPermissions(User user,
-        String externalServiceAgreementId, boolean isRetail) {
-        List<IntegrationFunctionGroupDataGroup> functionGroupDataGroups = new ArrayList<>();
+    private void assignPermissions(User user, String externalServiceAgreementId, boolean isRetail) {
+        List<UserPermissionItem> functionGroupDataGroups = new ArrayList<>();
 
         this.jobProfileService.getAssignedJobProfiles(externalServiceAgreementId)
             .stream()
             .filter(JOB_PROFILE_IS_TEMPLATE.negate())
             .filter(jobProfile -> jobProfileService.isJobProfileForUserRole(jobProfile, user.getRole(), isRetail))
             .forEach(jobProfile -> {
-                List<String> dataGroupIds = this.productGroupService
-                    .findAssignedProductGroupsIds(externalServiceAgreementId, user);
-                List<IntegrationDataGroupIdentifier> dataGroupIdentifiers = new ArrayList<>();
+                List<String> dataGroupNames = this.productGroupService
+                    .findAssignedProductGroupsNames(externalServiceAgreementId, user);
 
-                dataGroupIds.forEach(
-                    dataGroupId -> dataGroupIdentifiers.add(new IntegrationDataGroupIdentifier().idIdentifier(dataGroupId)));
+                List<DataGroupNameIdentifier> dataGroupIdentifiers = dataGroupNames.stream()
+                    .map(dataGroupName -> new DataGroupNameIdentifier()
+                        .name(dataGroupName)
+                        .dataGroupType("ARRANGEMENTS") //todo get rid of magic string
+                        .serviceAgreementExternalId(externalServiceAgreementId))
+                    .toList();
 
-                functionGroupDataGroups.add(new IntegrationFunctionGroupDataGroup()
-                    .functionGroupIdentifier(
-                        new IntegrationIdentifier().idIdentifier(jobProfile.getId()))
-                    .dataGroupIdentifiers(dataGroupIdentifiers));
+                functionGroupDataGroups.add(new UserPermissionItem()
+                    .functionGroup(new FunctionGroupNameIdentifier().name(jobProfile.getJobProfileName())
+                        .serviceAgreementExternalId(jobProfile.getExternalServiceAgreementId()))
+                    .dataGroups(dataGroupIdentifiers));
 
             });
 

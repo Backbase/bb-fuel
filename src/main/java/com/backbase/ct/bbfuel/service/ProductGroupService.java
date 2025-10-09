@@ -43,10 +43,10 @@ public class ProductGroupService {
      * @param externalServiceAgreementId external id of the service agreement
      * @return list of ids of product groups that have been assigned to the service agreement
      */
-    public List<String> findAssignedProductGroupsIds(String externalServiceAgreementId) {
+    public List<String> findAssignedProductGroupsNames(String externalServiceAgreementId) {
         return findAssignedProductGroups(externalServiceAgreementId)
             .stream()
-            .map(DbsEntity::getId)
+            .map(ProductGroupSeed::getProductGroupName)
             .distinct()
             .collect(toList());
     }
@@ -57,12 +57,12 @@ public class ProductGroupService {
      * @param externalServiceAgreementId external id of the service agreement
      * @return list of ids of product groups that match on name and have been assigned to the service agreement
      */
-    public List<String> findAssignedProductGroupsIds(String externalServiceAgreementId, User user) {
+    public List<String> findAssignedProductGroupsNames(String externalServiceAgreementId, User user) {
         return findAssignedProductGroups(externalServiceAgreementId)
             .stream()
-            .filter(productGroupSeed -> !CollectionUtils.isEmpty(user.getProductGroupNames())
-                && user.getProductGroupNames().contains(productGroupSeed.getProductGroupName()))
-            .map(DbsEntity::getId)
+            .map(ProductGroupSeed::getProductGroupName)
+            .filter(productGroupName -> !CollectionUtils.isEmpty(user.getProductGroupNames())
+                && user.getProductGroupNames().contains(productGroupName))
             .distinct()
             .collect(toList());
     }

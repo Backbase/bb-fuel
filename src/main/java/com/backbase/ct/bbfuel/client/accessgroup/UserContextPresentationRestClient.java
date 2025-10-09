@@ -10,9 +10,10 @@ import com.backbase.dbs.accesscontrol.client.v3.model.UserContextPost;
 import io.restassured.http.ContentType;
 import io.restassured.http.Header;
 import io.restassured.response.Response;
-import java.util.Arrays;
-import java.util.Map;
 import jakarta.annotation.PostConstruct;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +28,8 @@ public class UserContextPresentationRestClient extends RestClient {
     private static final String SERVICE_VERSION = "v3";
     private static final String ENDPOINT_ACCESS_GROUPS = "/accessgroups";
     private static final String ENDPOINT_USER_CONTEXT = ENDPOINT_ACCESS_GROUPS + "/user-context";
-    private static final String ENDPOINT_USER_CONTEXT_SERVICE_AGREEMENTS = ENDPOINT_USER_CONTEXT + "/service-agreements";
+    private static final String ENDPOINT_USER_CONTEXT_SERVICE_AGREEMENTS =
+        ENDPOINT_USER_CONTEXT + "/service-agreements";
 
     @PostConstruct
     public void init() {
@@ -40,9 +42,9 @@ public class UserContextPresentationRestClient extends RestClient {
         ServiceAgreementItem masterServiceAgreement = getMasterServiceAgreementForUserContext();
 
         postUserContext(new UserContextPost()
-                .serviceAgreementId(masterServiceAgreement.getId()))
-                .then()
-                .statusCode(SC_NO_CONTENT);
+            .serviceAgreementId(masterServiceAgreement.getId()))
+            .then()
+            .statusCode(SC_NO_CONTENT);
     }
 
     private Response postUserContext(UserContextPost userContextPostRequestBody) {
@@ -51,10 +53,12 @@ public class UserContextPresentationRestClient extends RestClient {
             .body(userContextPostRequestBody)
             .post(getPath(ENDPOINT_USER_CONTEXT));
 
-        Header userContextHeader = response.then().extract()
-            .headers().get(USER_CONTEXT_HEADER);
-        setUpCookies(Map.of(userContextHeader.getName(), userContextHeader.getValue()));
-
+        Map<String, String> cookies = new HashMap<>(response.then().extract().cookies());
+        Header userContextHeader = response.then().extract().headers().get(USER_CONTEXT_HEADER);
+        if (userContextHeader != null) {
+            cookies.put(userContextHeader.getName(), userContextHeader.getValue());
+        }
+        setUpCookies(cookies);
         return response;
     }
 

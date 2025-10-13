@@ -2,9 +2,9 @@ package com.backbase.ct.bbfuel.data;
 
 import com.backbase.ct.bbfuel.util.CommonHelpers;
 import com.backbase.ct.bbfuel.util.GlobalProperties;
-import com.backbase.dbs.transaction.client.v2.model.TransactionsPostRequestBody;
-import com.backbase.dbs.transaction.client.v2.model.TransactionsPostRequestBody.CreditDebitIndicatorEnum;
-import com.backbase.dbs.transaction.client.v2.model.Currency;
+import com.backbase.dbs.transaction.client.v3.model.TransactionsPostRequestBody;
+import com.backbase.dbs.transaction.client.v3.model.TransactionsPostRequestBody.CreditDebitIndicatorEnum;
+import com.backbase.dbs.transaction.client.v3.model.Currency;
 import com.github.javafaker.Faker;
 import org.iban4j.Iban;
 

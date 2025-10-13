@@ -2,7 +2,7 @@ package com.backbase.ct.bbfuel.client.transaction;
 
 import com.backbase.ct.bbfuel.client.common.RestClient;
 import com.backbase.ct.bbfuel.config.BbFuelConfiguration;
-import com.backbase.dbs.transaction.client.v2.model.TransactionsPostRequestBody;
+import com.backbase.dbs.transaction.client.v3.model.TransactionsPostRequestBody;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import java.util.List;
@@ -16,7 +16,7 @@ public class TransactionsIntegrationRestClient extends RestClient {
 
     private final BbFuelConfiguration config;
 
-    private static final String SERVICE_VERSION = "v2";
+    private static final String SERVICE_VERSION = "v3";
     private static final String ENDPOINT_TRANSACTIONS = "/transactions";
 
     @PostConstruct

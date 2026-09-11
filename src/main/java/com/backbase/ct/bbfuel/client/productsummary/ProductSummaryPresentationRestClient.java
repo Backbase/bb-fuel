@@ -7,8 +7,11 @@ import static com.backbase.ct.bbfuel.data.CommonConstants.PRIVILEGE_VIEW;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PRODUCT_SUMMARY_FUNCTION_NAME;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PRODUCT_SUMMARY_RESOURCE_NAME;
 import static com.backbase.ct.bbfuel.data.CommonConstants.SEPA_CT_FUNCTION_NAME;
+import static com.backbase.ct.bbfuel.data.CommonConstants.FCY_WIRE_FUNCTION_NAME;
+import static com.backbase.ct.bbfuel.data.CommonConstants.US_CROSS_BORDER_WIRE_FUNCTION_NAME;
 import static com.backbase.ct.bbfuel.data.CommonConstants.US_DOMESTIC_WIRE_FUNCTION_NAME;
 import static com.backbase.ct.bbfuel.data.CommonConstants.US_FOREIGN_WIRE_FUNCTION_NAME;
+import static com.backbase.ct.bbfuel.data.CommonConstants.US_FX_FOREIGN_WIRE_FUNCTION_NAME;
 import static org.apache.http.HttpStatus.SC_OK;
 
 import com.backbase.ct.bbfuel.client.common.RestClient;
@@ -79,18 +82,7 @@ public class ProductSummaryPresentationRestClient extends RestClient {
     }
 
     public List<ProductSummaryItem> getUsDomesticWireArrangements() {
-        return Arrays.asList(getProductSummaryContextArrangements(new ProductSummaryQueryParameters()
-            .withBusinessFunction(US_DOMESTIC_WIRE_FUNCTION_NAME)
-            .withResourceName(PAYMENTS_RESOURCE_NAME)
-            .withPrivilege(PRIVILEGE_CREATE)
-            .withDebitAccount(true)
-            .withCreditAccount(true)
-            .withSize(999)
-            .withOrderBy("name"))
-            .then()
-            .statusCode(SC_OK)
-            .extract()
-            .as(ProductSummaryItem[].class));
+        return getPaymentArrangements(US_DOMESTIC_WIRE_FUNCTION_NAME);
     }
 
     public List<ProductSummaryItem> getAchDebitArrangements() {
@@ -114,8 +106,24 @@ public class ProductSummaryPresentationRestClient extends RestClient {
     }
 
     public List<ProductSummaryItem> getUSForeignWireArrangements() {
+        return getPaymentArrangements(US_FOREIGN_WIRE_FUNCTION_NAME);
+    }
+
+    public List<ProductSummaryItem> getUsCrossBorderWireArrangements() {
+        return getPaymentArrangements(US_CROSS_BORDER_WIRE_FUNCTION_NAME);
+    }
+
+    public List<ProductSummaryItem> getUsFxForeignWireArrangements() {
+        return getPaymentArrangements(US_FX_FOREIGN_WIRE_FUNCTION_NAME);
+    }
+
+    public List<ProductSummaryItem> getFcyWireArrangements() {
+        return getPaymentArrangements(FCY_WIRE_FUNCTION_NAME);
+    }
+
+    private List<ProductSummaryItem> getPaymentArrangements(String businessFunction) {
         return Arrays.asList(getProductSummaryContextArrangements(new ProductSummaryQueryParameters()
-            .withBusinessFunction(US_FOREIGN_WIRE_FUNCTION_NAME)
+            .withBusinessFunction(businessFunction)
             .withResourceName(PAYMENTS_RESOURCE_NAME)
             .withPrivilege(PRIVILEGE_CREATE)
             .withDebitAccount(true)

@@ -112,5 +112,23 @@
 118,ACH Debit,Payments,delete,0,1046,5
 119,ACH Debit,Payments,approve,0,1046,6
 120,ACH Debit,Payments,cancel,0,1046,7
+121,US Cross Border Wire,Payments,view,0,1267,2
+122,US Cross Border Wire,Payments,create,1,1267,3
+123,US Cross Border Wire,Payments,edit,0,1267,4
+124,US Cross Border Wire,Payments,delete,0,1267,5
+125,US Cross Border Wire,Payments,approve,0,1267,6
+126,US Cross Border Wire,Payments,cancel,0,1267,7
+127,US FX Foreign Wire,Payments,view,0,1268,2
+128,US FX Foreign Wire,Payments,create,1,1268,3
+129,US FX Foreign Wire,Payments,edit,0,1268,4
+130,US FX Foreign Wire,Payments,delete,0,1268,5
+131,US FX Foreign Wire,Payments,approve,0,1268,6
+132,US FX Foreign Wire,Payments,cancel,0,1268,7
+133,FCY Wire,Payments,view,0,1269,2
+134,FCY Wire,Payments,create,1,1269,3
+135,FCY Wire,Payments,edit,0,1269,4
+136,FCY Wire,Payments,delete,0,1269,5
+137,FCY Wire,Payments,approve,0,1269,6
+138,FCY Wire,Payments,cancel,0,1269,7
 
 

@@ -13,6 +13,9 @@
 1016,manage.statements,Manage Statements,account.statements,Account Statements
 1017,us.domestic.wire,US Domestic Wire,payments,Payments
 1018,us.foreign.wire,US Foreign Wire,payments,Payments
+1267,us.cross.border.wire,US Cross Border Wire,payments,Payments
+1268,us.fx.foreign.wire,US FX Foreign Wire,payments,Payments
+1269,fcy.wire,FCY Wire,payments,Payments
 1019,manage.data.groups,Manage Data Groups,entitlements,Entitlements
 1020,manage.function.groups,Manage Function Groups,entitlements,Entitlements
 1021,us.billpay.payments,US Billpay Payments,payments,Payments

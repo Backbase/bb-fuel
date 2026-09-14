@@ -35,6 +35,9 @@ public final class CommonConstants {
     public static final String US_DOMESTIC_WIRE_FUNCTION_NAME = "US Domestic Wire";
     public static final String US_DOMESTIC_WIRE_INTRACOMPANY_FUNCTION_NAME = "US Domestic Wire - Intracompany";
     public static final String US_FOREIGN_WIRE_FUNCTION_NAME = "US Foreign Wire";
+    public static final String US_CROSS_BORDER_WIRE_FUNCTION_NAME = "US Cross Border Wire";
+    public static final String US_FX_FOREIGN_WIRE_FUNCTION_NAME = "US FX Foreign Wire";
+    public static final String FCY_WIRE_FUNCTION_NAME = "FCY Wire";
     public static final String PRODUCT_SUMMARY_RESOURCE_NAME = "Product Summary";
     public static final String PAYMENTS_RESOURCE_NAME = "Payments";
     public static final String CONTACTS_RESOURCE_NAME = "Contacts";
@@ -116,6 +119,9 @@ public final class CommonConstants {
     public static final String PAYMENT_TYPE_US_DOMESTIC_WIRE = "US_DOMESTIC_WIRE";
     public static final String PAYMENT_TYPE_ACH_DEBIT = "ACH_DEBIT";
     public static final String PAYMENT_TYPE_US_FOREIGN_WIRE = "US_FOREIGN_WIRE";
+    public static final String PAYMENT_TYPE_US_CROSS_BORDER_WIRE = "US_CROSS_BORDER_WIRE";
+    public static final String PAYMENT_TYPE_US_FX_FOREIGN_WIRE = "US_FX_FOREIGN_WIRE";
+    public static final String PAYMENT_TYPE_FCY_WIRE = "FCY_WIRE";
     public static final String PROPERTY_PAYMENTS_OOTB_TYPES = "payments.ootb.types";
 
     // Contacts

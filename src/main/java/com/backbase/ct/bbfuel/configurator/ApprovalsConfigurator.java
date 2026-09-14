@@ -148,8 +148,9 @@ public class ApprovalsConfigurator {
             List<IntegrationPolicyAssignmentRequest> generatedItems;
 
             if (numberOfUsers < 3) {
-                generatedItems = getPolicyAssignmentsBasedOnZeroApprovalPolicyOnly(
-                    externalServiceAgreementId, resource, functionName);
+                generatedItems = getZeroApprovalCurrencyBoundPolicyAssignments(
+                    externalServiceAgreementId, resource, functionName,
+                    determineCurrencyForFunction(functionName));
             } else {
                 generatedItems = getCurrencyPolicyAssignments(externalServiceAgreementId, resource,
                     functionName, determineCurrencyForFunction(functionName));
@@ -223,6 +224,18 @@ public class ApprovalsConfigurator {
             resource,
             businessFunction,
             singletonList(createPolicyAssignmentRequestBounds(policyZeroId, null))));
+    }
+
+    private List<IntegrationPolicyAssignmentRequest> getZeroApprovalCurrencyBoundPolicyAssignments(
+        String externalServiceAgreementId, String resource, String businessFunction, String currencyCode) {
+        Currency upperBound = new Currency()
+            .withCurrencyCode(currencyCode)
+            .withAmount(UPPER_BOUND_HUNDRED);
+        return singletonList(createPolicyAssignmentRequest(
+            externalServiceAgreementId,
+            resource,
+            businessFunction,
+            singletonList(createPolicyAssignmentRequestBounds(policyZeroId, upperBound))));
     }
 
     private List<IntegrationPolicyAssignmentRequest> getPolicyAssignments(

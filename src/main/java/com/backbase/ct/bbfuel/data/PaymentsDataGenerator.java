@@ -1,7 +1,9 @@
 package com.backbase.ct.bbfuel.data;
 
 import static com.backbase.ct.bbfuel.data.CommonConstants.PAYMENT_TYPE_ACH_DEBIT;
+import static com.backbase.ct.bbfuel.data.CommonConstants.PAYMENT_TYPE_FCY_WIRE;
 import static com.backbase.ct.bbfuel.data.CommonConstants.PAYMENT_TYPE_SEPA_CREDIT_TRANSFER;
+import static com.backbase.ct.bbfuel.data.CommonConstants.PAYMENT_TYPE_US_FX_FOREIGN_WIRE;
 import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromEnumValues;
 import static com.backbase.ct.bbfuel.util.CommonHelpers.getRandomFromList;
 
@@ -70,6 +72,12 @@ public class PaymentsDataGenerator {
             identification = generateIbanIdentification();
         } else if (PAYMENT_TYPE_ACH_DEBIT.equals(paymentType)) {
             counterpartyBank = generateCounterpartyBank();
+            currency.setCurrencyCode(originatorArrangementCurrency);
+            identification = generateBbanIdentification();
+        } else if (PAYMENT_TYPE_US_FX_FOREIGN_WIRE.equals(paymentType)
+            || PAYMENT_TYPE_FCY_WIRE.equals(paymentType)) {
+            counterpartyBank = generateCounterpartyBank();
+            correspondentBank = generateCorrespondentBank();
             currency.setCurrencyCode(originatorArrangementCurrency);
             identification = generateBbanIdentification();
         } else {

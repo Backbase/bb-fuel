@@ -31,7 +31,8 @@
   {
     "productGroupName": "Finance International",
     "currencies": [
-      "USD"
+      "USD",
+      "EUR"
     ],
     "currentAccountNames": [
       "Assets",

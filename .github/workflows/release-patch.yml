@@ -17,8 +17,10 @@ jobs:
       - name: Resolve release branch for Maven action
         id: release-branch
         run: |
-          # qcastel/github-actions-maven-release compares basename(ref), not full ref (e.g. 3.0.1 vs hotfix/3.0.1).
+          # qcastel compares basename(ref) to release-branch-name (3.0.1 on hotfix/3.0.1).
+          # It then runs `git checkout <release-branch-name>`; there is no branch 3.0.1, only tag bb-fuel-3.0.1.
           echo "name=${GITHUB_REF_NAME##*/}" >> "$GITHUB_OUTPUT"
+          echo "ref=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
       - name: Resolve patch release version
         id: patch-version
         run: |
@@ -53,6 +55,8 @@ jobs:
           release-branch-name: ${{ steps.release-branch.outputs.name }}
           maven-release-version-number: ${{ steps.patch-version.outputs.release }}
           maven-development-version-number: ${{ steps.patch-version.outputs.development }}
+          maven-options: "-DbranchName=${{ steps.release-branch.outputs.ref }}"
+          git-skip-sanity-check: true
           skip-perform: true
       - name: Get most recent tag
         id: most-recent-tag

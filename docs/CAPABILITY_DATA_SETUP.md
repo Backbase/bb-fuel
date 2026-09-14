@@ -68,7 +68,7 @@ Periodic limit per service agreement, for function group "Admin":
 
 - Transactional limit with amount of 1,000,000
 - Privileges "create" and "approve"
-- Functions SEPA CT, ACH Debit, US Domestic Wire and US Foreign Wire
+- Functions SEPA CT, ACH Debit, US Domestic Wire, US Foreign Wire, US Cross Border Wire, US FX Foreign Wire, and FCY Wire
 
 ## Notifications setup
 Global notifications are only created by the bank manager using approvals

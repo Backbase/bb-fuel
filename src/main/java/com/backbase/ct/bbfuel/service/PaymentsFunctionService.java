@@ -13,7 +13,10 @@ import static com.backbase.ct.bbfuel.data.CommonConstants.SEPA_CT_FUNCTION_NAME;
 import static com.backbase.ct.bbfuel.data.CommonConstants.SEPA_CT_INTRACOMPANY_FUNCTION_NAME;
 import static com.backbase.ct.bbfuel.data.CommonConstants.US_DOMESTIC_WIRE_FUNCTION_NAME;
 import static com.backbase.ct.bbfuel.data.CommonConstants.US_DOMESTIC_WIRE_INTRACOMPANY_FUNCTION_NAME;
+import static com.backbase.ct.bbfuel.data.CommonConstants.FCY_WIRE_FUNCTION_NAME;
+import static com.backbase.ct.bbfuel.data.CommonConstants.US_CROSS_BORDER_WIRE_FUNCTION_NAME;
 import static com.backbase.ct.bbfuel.data.CommonConstants.US_FOREIGN_WIRE_FUNCTION_NAME;
+import static com.backbase.ct.bbfuel.data.CommonConstants.US_FX_FOREIGN_WIRE_FUNCTION_NAME;
 import static java.util.Arrays.asList;
 import static java.util.Collections.unmodifiableList;
 
@@ -37,6 +40,9 @@ public final class PaymentsFunctionService {
         US_DOMESTIC_WIRE_FUNCTION_NAME,
         US_DOMESTIC_WIRE_INTRACOMPANY_FUNCTION_NAME,
         US_FOREIGN_WIRE_FUNCTION_NAME,
+        US_CROSS_BORDER_WIRE_FUNCTION_NAME,
+        US_FX_FOREIGN_WIRE_FUNCTION_NAME,
+        FCY_WIRE_FUNCTION_NAME,
         ACH_DEBIT_FUNCTION_NAME));
 
     /**
@@ -55,14 +61,21 @@ public final class PaymentsFunctionService {
     );
 
     /**
-     * Simple logic is used to determine the currency from the business function name.
-     * If it contains SEPA (case insensitive) it is EUR otherwise USD.
+     * Determines the currency from the business function name.
+     * SEPA, US FX Foreign Wire, and FCY Wire use EUR; other payment functions use USD.
      *
      * @param functionName business function name
      * @return currency
      */
     public static String determineCurrencyForFunction(String functionName) {
-        return functionName.toUpperCase().contains("SEPA") ? "EUR" : "USD";
+        if (functionName.toUpperCase().contains("SEPA")) {
+            return "EUR";
+        }
+        if (US_FX_FOREIGN_WIRE_FUNCTION_NAME.equals(functionName)
+            || FCY_WIRE_FUNCTION_NAME.equals(functionName)) {
+            return "EUR";
+        }
+        return "USD";
     }
 
 }

@@ -1,0 +1,76 @@
+name: Release Patch
+
+on:
+  push:
+    branches:
+      - "hotfix/**"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+      - name: Resolve release branch for Maven action
+        id: release-branch
+        run: |
+          # qcastel compares basename(ref) to release-branch-name (e.g. 3.0.3 on hotfix/3.0.3).
+          # It then runs `git checkout <release-branch-name>`; only tag bb-fuel-<base> exists, not branch <base>.
+          echo "name=${GITHUB_REF_NAME##*/}" >> "$GITHUB_OUTPUT"
+          echo "ref=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
+      - name: Resolve patch release version
+        id: patch-version
+        run: |
+          # hotfix/<base> → bb-fuel-<base>.1, bb-fuel-<base>.2, … while bb-fuel-<base> already exists.
+          BASE="${GITHUB_REF_NAME##*/}"
+          MAX_QUALIFIER=0
+          for tag in $(git tag -l "bb-fuel-${BASE}" "bb-fuel-${BASE}.*"); do
+            ver="${tag#bb-fuel-}"
+            if [ "$ver" = "$BASE" ]; then
+              continue
+            fi
+            suffix="${ver#${BASE}.}"
+            if [ "$suffix" != "$ver" ] && [[ "$suffix" =~ ^[0-9]+$ ]] && [ "$suffix" -gt "$MAX_QUALIFIER" ]; then
+              MAX_QUALIFIER=$suffix
+            fi
+          done
+          NEXT=$((MAX_QUALIFIER + 1))
+          RELEASE="${BASE}.${NEXT}"
+          DEV="${BASE}.$((NEXT + 1))-SNAPSHOT"
+          echo "release=$RELEASE" >> "$GITHUB_OUTPUT"
+          echo "development=$DEV" >> "$GITHUB_OUTPUT"
+          echo "Releasing bb-fuel-${RELEASE}; next development version ${DEV}"
+      - name: Run Maven release
+        uses: qcastel/github-actions-maven-release@v1.12.43
+        env:
+          JAVA_HOME: /usr/lib/jvm/java-21-openjdk/
+          REPO_USERNAME: ${{ secrets.REPO_USERNAME }}
+          REPO_PASSWORD: ${{ secrets.REPO_PASSWORD }}
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          maven-servers: '[{"id":"Public Backbase Repository","username":"${REPO_USERNAME}","password":"${REPO_PASSWORD}"}]'
+          release-branch-name: ${{ steps.release-branch.outputs.name }}
+          maven-release-version-number: ${{ steps.patch-version.outputs.release }}
+          maven-development-version-number: ${{ steps.patch-version.outputs.development }}
+          maven-options: "-DbranchName=${{ steps.release-branch.outputs.ref }}"
+          git-skip-sanity-check: true
+          skip-perform: true
+      - name: Get most recent tag
+        id: most-recent-tag
+        run: |
+          TAG=$(git describe --abbrev=0 --tags)
+          if [ -z "$TAG" ]; then
+            echo "No git tag found after Maven release" >&2
+            exit 1
+          fi
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+      - name: Run GitHub release
+        uses: ncipollo/release-action@v1
+        with:
+          skipIfReleaseExists: true
+          artifacts: "target/bb-fuel-*-boot.jar,target/bb-fuel-*-import.jar"
+          makeLatest: true
+          tag: ${{ steps.most-recent-tag.outputs.tag }}

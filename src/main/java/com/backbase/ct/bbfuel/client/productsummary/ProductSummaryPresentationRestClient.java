@@ -82,7 +82,7 @@ public class ProductSummaryPresentationRestClient extends RestClient {
     }
 
     public List<ProductSummaryItem> getUsDomesticWireArrangements() {
-        return getPaymentArrangements(US_DOMESTIC_WIRE_FUNCTION_NAME);
+        return getPaymentArrangements(US_DOMESTIC_WIRE_FUNCTION_NAME, "USD");
     }
 
     public List<ProductSummaryItem> getAchDebitArrangements() {
@@ -106,23 +106,23 @@ public class ProductSummaryPresentationRestClient extends RestClient {
     }
 
     public List<ProductSummaryItem> getUSForeignWireArrangements() {
-        return getPaymentArrangements(US_FOREIGN_WIRE_FUNCTION_NAME);
+        return getPaymentArrangements(US_FOREIGN_WIRE_FUNCTION_NAME, "USD");
     }
 
     public List<ProductSummaryItem> getUsCrossBorderWireArrangements() {
-        return getPaymentArrangements(US_CROSS_BORDER_WIRE_FUNCTION_NAME);
+        return getPaymentArrangements(US_CROSS_BORDER_WIRE_FUNCTION_NAME, "USD");
     }
 
     public List<ProductSummaryItem> getUsFxForeignWireArrangements() {
-        return getPaymentArrangements(US_FX_FOREIGN_WIRE_FUNCTION_NAME);
+        return getPaymentArrangements(US_FX_FOREIGN_WIRE_FUNCTION_NAME, "EUR");
     }
 
     public List<ProductSummaryItem> getFcyWireArrangements() {
-        return getPaymentArrangements(FCY_WIRE_FUNCTION_NAME);
+        return getPaymentArrangements(FCY_WIRE_FUNCTION_NAME, "EUR");
     }
 
-    private List<ProductSummaryItem> getPaymentArrangements(String businessFunction) {
-        return Arrays.asList(getProductSummaryContextArrangements(new ProductSummaryQueryParameters()
+    private List<ProductSummaryItem> getPaymentArrangements(String businessFunction, String currency) {
+        return Arrays.stream(getProductSummaryContextArrangements(new ProductSummaryQueryParameters()
             .withBusinessFunction(businessFunction)
             .withResourceName(PAYMENTS_RESOURCE_NAME)
             .withPrivilege(PRIVILEGE_CREATE)
@@ -133,7 +133,9 @@ public class ProductSummaryPresentationRestClient extends RestClient {
             .then()
             .statusCode(SC_OK)
             .extract()
-            .as(ProductSummaryItem[].class));
+            .as(ProductSummaryItem[].class))
+            .filter(arrangement -> currency.equals(arrangement.getCurrency()))
+            .collect(Collectors.toList());
     }
 
     private Response getProductSummaryContextArrangements(ProductSummaryQueryParameters queryParameters) {

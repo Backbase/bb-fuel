@@ -55,32 +55,46 @@ public class PaymentsConfigurator {
             List<ProductSummaryItem> arrangements = getArrangementsForPaymentType(paymentType);
             if (!isEmpty(arrangements)) {
                 arrangementsByPaymentType.put(paymentType, arrangements);
+            } else {
+                log.warn("No debit arrangements available for configured payment type [{}]", paymentType);
             }
         }
 
         if (arrangementsByPaymentType.isEmpty()) {
+            log.warn("Payment order ingestion skipped for user [{}]: no arrangements found for any configured type",
+                externalUserId);
             return;
         }
 
         List<String> availablePaymentTypes = new ArrayList<>(arrangementsByPaymentType.keySet());
 
+        for (String paymentType : availablePaymentTypes) {
+            ingestPaymentOrder(externalUserId, paymentType, arrangementsByPaymentType.get(paymentType));
+        }
+
         int randomAmount = CommonHelpers
             .generateRandomNumberInRange(globalProperties.getInt(CommonConstants.PROPERTY_PAYMENTS_MIN),
                 globalProperties.getInt(CommonConstants.PROPERTY_PAYMENTS_MAX));
 
-        IntStream.range(0, randomAmount).parallel().forEach(randomNumber -> {
+        int additionalOrders = Math.max(0, randomAmount - availablePaymentTypes.size());
+        IntStream.range(0, additionalOrders).parallel().forEach(randomNumber -> {
             String paymentType = getRandomFromList(availablePaymentTypes);
-            ProductSummaryItem randomArrangement = getRandomFromList(arrangementsByPaymentType.get(paymentType));
-
-            InitiatePaymentOrderWithId initiatePaymentOrder = PaymentsDataGenerator
-                .generateInitiatePaymentOrder(randomArrangement.getId(), randomArrangement.getCurrency(), paymentType);
-            paymentOrderPresentationRestClient.initiatePaymentOrder(initiatePaymentOrder)
-                .then()
-                .statusCode(SC_ACCEPTED);
-
-            log.info("Payment order ingested for originator account [{}] for user [{}]",
-                initiatePaymentOrder.getOriginatorAccount().getIdentification().getIdentification(), externalUserId);
+            ingestPaymentOrder(externalUserId, paymentType, arrangementsByPaymentType.get(paymentType));
         });
+    }
+
+    private void ingestPaymentOrder(String externalUserId, String paymentType,
+        List<ProductSummaryItem> arrangements) {
+        ProductSummaryItem randomArrangement = getRandomFromList(arrangements);
+
+        InitiatePaymentOrderWithId initiatePaymentOrder = PaymentsDataGenerator
+            .generateInitiatePaymentOrder(randomArrangement.getId(), randomArrangement.getCurrency(), paymentType);
+        paymentOrderPresentationRestClient.initiatePaymentOrder(initiatePaymentOrder)
+            .then()
+            .statusCode(SC_ACCEPTED);
+
+        log.info("Payment order ingested for originator account [{}] for user [{}]",
+            initiatePaymentOrder.getOriginatorAccount().getIdentification().getIdentification(), externalUserId);
     }
 
     private List<ProductSummaryItem> getArrangementsForPaymentType(String paymentType) {

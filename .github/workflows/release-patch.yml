@@ -11,6 +11,14 @@ jobs:
     steps:
       - name: Checkout project
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+      - name: Resolve release branch for Maven action
+        id: release-branch
+        run: |
+          # qcastel/github-actions-maven-release compares basename(ref), not full ref (e.g. 3.0.1 vs hotfix/3.0.1).
+          echo "name=${GITHUB_REF_NAME##*/}" >> "$GITHUB_OUTPUT"
       - name: Run Maven release
         uses: qcastel/github-actions-maven-release@v1.12.43
         env:
@@ -20,11 +28,17 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
           maven-servers: '[{"id":"Public Backbase Repository","username":"${REPO_USERNAME}","password":"${REPO_PASSWORD}"}]'
-          release-branch-name: ${{ github.ref_name }}
+          release-branch-name: ${{ steps.release-branch.outputs.name }}
           skip-perform: true
       - name: Get most recent tag
         id: most-recent-tag
-        run: echo "tag=$(git describe --abbrev=0 --tags)" >> $GITHUB_OUTPUT
+        run: |
+          TAG=$(git describe --abbrev=0 --tags)
+          if [ -z "$TAG" ]; then
+            echo "No git tag found after Maven release" >&2
+            exit 1
+          fi
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
       - name: Run GitHub release
         uses: ncipollo/release-action@v1
         with:

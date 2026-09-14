@@ -19,6 +19,28 @@ jobs:
         run: |
           # qcastel/github-actions-maven-release compares basename(ref), not full ref (e.g. 3.0.1 vs hotfix/3.0.1).
           echo "name=${GITHUB_REF_NAME##*/}" >> "$GITHUB_OUTPUT"
+      - name: Resolve patch release version
+        id: patch-version
+        run: |
+          # hotfix/3.0.1 → bb-fuel-3.0.1.1, bb-fuel-3.0.1.2, … while bb-fuel-3.0.1 already exists.
+          BASE="${GITHUB_REF_NAME##*/}"
+          MAX_QUALIFIER=0
+          for tag in $(git tag -l "bb-fuel-${BASE}" "bb-fuel-${BASE}.*"); do
+            ver="${tag#bb-fuel-}"
+            if [ "$ver" = "$BASE" ]; then
+              continue
+            fi
+            suffix="${ver#${BASE}.}"
+            if [ "$suffix" != "$ver" ] && [[ "$suffix" =~ ^[0-9]+$ ]] && [ "$suffix" -gt "$MAX_QUALIFIER" ]; then
+              MAX_QUALIFIER=$suffix
+            fi
+          done
+          NEXT=$((MAX_QUALIFIER + 1))
+          RELEASE="${BASE}.${NEXT}"
+          DEV="${BASE}.$((NEXT + 1))-SNAPSHOT"
+          echo "release=$RELEASE" >> "$GITHUB_OUTPUT"
+          echo "development=$DEV" >> "$GITHUB_OUTPUT"
+          echo "Releasing bb-fuel-${RELEASE}; next development version ${DEV}"
       - name: Run Maven release
         uses: qcastel/github-actions-maven-release@v1.12.43
         env:
@@ -29,6 +51,8 @@ jobs:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
           maven-servers: '[{"id":"Public Backbase Repository","username":"${REPO_USERNAME}","password":"${REPO_PASSWORD}"}]'
           release-branch-name: ${{ steps.release-branch.outputs.name }}
+          maven-release-version-number: ${{ steps.patch-version.outputs.release }}
+          maven-development-version-number: ${{ steps.patch-version.outputs.development }}
           skip-perform: true
       - name: Get most recent tag
         id: most-recent-tag
